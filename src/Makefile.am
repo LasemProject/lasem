@@ -11,12 +11,12 @@ AM_CFLAGS =\
 	 -Wall\
 	 -g
 
-bin_PROGRAMS = gmathml
+bin_PROGRAMS = gmathml-test
 
 gmathml_SOURCES = \
-	main.c
+	gmathml-test.c
 
-gmathml_LDFLAGS = 
+gmathml_LDFLAGS =
 
 gmathml_LDADD = $(GMATHML_LIBS)
 
