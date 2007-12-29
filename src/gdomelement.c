@@ -34,6 +34,25 @@ gdom_element_get_node_type (GDomNode *node)
 	return GDOM_NODE_TYPE_ELEMENT_NODE;
 }
 
+char*
+gdom_element_get_attribute (GDomElement* self, const char* name)
+{
+	g_return_val_if_fail (GDOM_IS_ELEMENT (self), NULL);
+	g_return_val_if_fail (name != NULL, NULL);
+
+	return GDOM_ELEMENT_GET_CLASS (self)->get_attribute (self, name);
+}
+
+void
+gdom_element_set_attribute (GDomElement* self, const char* name, const char* attribute_value)
+{
+	g_return_if_fail (GDOM_IS_ELEMENT (self));
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (attribute_value != NULL);
+
+	GDOM_ELEMENT_GET_CLASS (self)->set_attribute (self, name, attribute_value);
+}
+
 static void
 gdom_element_init (GDomElement *element)
 {

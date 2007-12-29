@@ -39,6 +39,8 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 
 struct _GMathmlElement {
 	GDomElement	element;
+
+	GHashTable *attributes;
 };
 
 struct _GMathmlElementClass {
@@ -46,6 +48,9 @@ struct _GMathmlElementClass {
 };
 
 GType gmathml_element_get_type (void);
+
+void 		gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view);
+void 		gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
 G_END_DECLS
 

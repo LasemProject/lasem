@@ -10,17 +10,20 @@ AM_CFLAGS =\
 bin_PROGRAMS = gmathml-test
 
 gmathml_test_SOURCES = 			\
-	gdomdocument.c			\
 	gdomnode.c			\
 	gdomnodelist.c			\
+	gdomdocument.c			\
 	gdomelement.c			\
 	gdomcharacterdata.c		\
 	gdomtext.c			\
+	gmathmldocument.c		\
 	gmathmlelement.c		\
+	gmathmlmathelement.c		\
 	gmathmlpresentationtoken.c	\
 	gmathmlnumberelement.c		\
 	gmathmlpresentationcontainer.c	\
 	gmathmlrowelement.c		\
+	gmathmlview.c			\
 	gmathml-test.c
 
 gmathml_test_LDFLAGS =

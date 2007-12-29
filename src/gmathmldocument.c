@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmldocument.c
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,23 +20,32 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
+#include <gmathmldocument.h>
+#include <gmathmlmathelement.h>
 
-#include <gdom.h>
+static gboolean
+gmathml_document_can_add_node (GDomNode *self, GDomNode *child)
+{
+	return (GMATHML_IS_MATH_ELEMENT (child));
+}
 
-G_BEGIN_DECLS
+GDomNode *
+gmathml_document_new (void)
+{
+	return g_object_new (GMATHML_TYPE_DOCUMENT, NULL);
+}
 
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
+static void
+gmathml_document_init (GMathmlDocument *document)
+{
+}
 
-typedef struct _GMathmlView GMathmlView;
+static void
+gmathml_document_class_init (GMathmlDocumentClass *document_class)
+{
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (document_class);
 
-G_END_DECLS
+	node_class->can_add_node = gmathml_document_can_add_node;
+}
 
-#endif
+G_DEFINE_TYPE (GMathmlDocument, gmathml_document, GDOM_TYPE_DOCUMENT)

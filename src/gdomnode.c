@@ -26,24 +26,51 @@
 char*
 gdom_node_get_node_name (GDomNode* self)
 {
-	return GDOM_NODE_GET_CLASS (self)->get_node_name (self);
+	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
+
+	g_return_val_if_fail (node_class != NULL, NULL);
+
+	if (node_class->get_node_name)
+		return node_class->get_node_name (self);
+
+	return NULL;
 }
 
 char*
 gdom_node_get_node_value (GDomNode* self)
 {
-	return GDOM_NODE_GET_CLASS (self)->get_node_value (self);
+	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
+
+	g_return_val_if_fail (node_class != NULL, NULL);
+
+	if (node_class->get_node_value)
+		return node_class->get_node_value (self);
+
+	return NULL;
 }
 
 void
 gdom_node_set_node_value (GDomNode* self, const char* new_value)
 {
-	GDOM_NODE_GET_CLASS (self)->set_node_value (self, new_value);
+	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
+
+	g_return_if_fail (node_class != NULL);
+	g_return_if_fail (new_value != NULL);
+
+	if (node_class->set_node_value)
+		node_class->set_node_value (self, new_value);
 }
 
 GDomNodeType gdom_node_get_node_type (GDomNode* self)
 {
-	return GDOM_NODE_GET_CLASS (self)->get_node_type (self);
+	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
+
+	g_return_val_if_fail (node_class != NULL, 0);
+
+	if (node_class->get_node_type)
+		return node_class->get_node_type (self);
+
+	return 0;
 }
 
 GDomNode*
@@ -110,7 +137,7 @@ gdom_node_get_owner_document (GDomNode* self)
 	     !GDOM_IS_DOCUMENT (parent);
 	     parent = parent->parent_node);
 
-	return parent;
+	return GDOM_DOCUMENT (parent);
 }
 
 GDomNode*
@@ -216,8 +243,15 @@ gdom_node_dump (GDomNode *self)
 			text = gdom_node_get_node_value (self);
 			g_print ("%s", text != NULL ? text : "null");
 			break;
+		case GDOM_NODE_TYPE_DOCUMENT_NODE:
+			g_print ("Mathml Document\n");
+			if (self->first_child != NULL) {
+				gdom_node_dump (self->first_child);
+				g_print ("\n");
+			}
+			break;
 		default:
-			g_print ("Not supported");
+			g_print ("Not supported\n");
 			break;
 	}
 }

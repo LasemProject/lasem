@@ -21,6 +21,7 @@
  */
 
 #include <gdomdocument.h>
+#include <gdomelement.h>
 #include <gdomtext.h>
 
 static char *
@@ -33,6 +34,28 @@ static GDomNodeType
 gdom_document_get_node_type (GDomNode *node)
 {
 	return GDOM_NODE_TYPE_DOCUMENT_NODE;
+}
+
+GDomElement *
+gdom_document_get_document_element (GDomDocument *self)
+{
+	g_return_val_if_fail (GDOM_IS_DOCUMENT (self), NULL);
+
+	return GDOM_ELEMENT (gdom_node_get_first_child (GDOM_NODE (self)));
+}
+
+GDomElement *
+gdom_document_create_element (GDomDocument *document, const char *tag_name)
+{
+	GDomDocumentClass *document_class;
+
+	g_return_val_if_fail (GDOM_IS_DOCUMENT (document), NULL);
+
+	document_class = GDOM_DOCUMENT_GET_CLASS (document);
+	if (document_class->create_element != NULL)
+		return document_class->create_element (document, tag_name);
+
+	return NULL;
 }
 
 GDomText *

@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmlmathelement.c
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,23 +20,38 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
+#include <gmathmlmathelement.h>
 
-#include <gdom.h>
+GDomNode *
+gmathml_math_element_new (void)
+{
+	return g_object_new (GMATHML_TYPE_MATH_ELEMENT, NULL);
+}
 
-G_BEGIN_DECLS
+static char *
+gmathml_math_element_get_node_name (GDomNode *node)
+{
+	return "math";
+}
 
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
+static gboolean
+gmathml_math_element_can_add_node (GDomNode *self, GDomNode *child)
+{
+	return (GMATHML_IS_ELEMENT (child));
+}
 
-typedef struct _GMathmlView GMathmlView;
+static void
+gmathml_math_element_init (GMathmlMathElement *self)
+{
+}
 
-G_END_DECLS
+static void
+gmathml_math_element_class_init (GMathmlMathElementClass *klass)
+{
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
 
-#endif
+	node_class->get_node_name = gmathml_math_element_get_node_name;
+	node_class->can_add_node = gmathml_math_element_can_add_node;
+}
+
+G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)
