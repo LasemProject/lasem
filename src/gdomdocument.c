@@ -23,6 +23,18 @@
 #include <gdomdocument.h>
 #include <gdomtext.h>
 
+static char *
+gdom_document_get_node_name (GDomNode *node)
+{
+	return "#document";
+}
+
+static GDomNodeType
+gdom_document_get_node_type (GDomNode *node)
+{
+	return GDOM_NODE_TYPE_DOCUMENT_NODE;
+}
+
 GDomText *
 gdom_document_create_text_node_base (GDomDocument *document, const char *data)
 {
@@ -45,9 +57,12 @@ gdom_document_init (GDomDocument *document)
 static void
 gdom_document_class_init (GDomDocumentClass *klass)
 {
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
+
+	node_class->get_node_name = gdom_document_get_node_name;
+	node_class->get_node_type = gdom_document_get_node_type;
+
 	klass->create_text_node = gdom_document_create_text_node_base;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GDomDocument, gdom_document, GDOM_TYPE_NODE)
-
-
