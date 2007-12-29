@@ -1,7 +1,3 @@
-## Process this file with automake to produce Makefile.in
-
-## Created by Anjuta
-
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
@@ -13,10 +9,21 @@ AM_CFLAGS =\
 
 bin_PROGRAMS = gmathml-test
 
-gmathml_SOURCES = \
+gmathml_test_SOURCES = 			\
+	gdomdocument.c			\
+	gdomnode.c			\
+	gdomnodelist.c			\
+	gdomelement.c			\
+	gdomcharacterdata.c		\
+	gdomtext.c			\
+	gmathmlelement.c		\
+	gmathmlpresentationtoken.c	\
+	gmathmlnumberelement.c		\
+	gmathmlpresentationcontainer.c	\
+	gmathmlrowelement.c		\
 	gmathml-test.c
 
-gmathml_LDFLAGS =
+gmathml_test_LDFLAGS =
 
-gmathml_LDADD = $(GMATHML_LIBS)
+gmathml_test_LDADD = $(GMATHML_LIBS)
 
