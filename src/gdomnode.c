@@ -191,7 +191,7 @@ GDomNode*
 gdom_node_append_child (GDomNode* self, GDomNode* new_child)
 {
 	g_return_val_if_fail (GDOM_IS_NODE (self), NULL);
-	g_return_val_if_fail (GDOM_NODE_GET_CLASS (self)->can_add_node (self, new_child), NULL);
+	g_return_val_if_fail (GDOM_NODE_GET_CLASS (self)->can_append_child (self, new_child), NULL);
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
 
 	if (self->first_child == NULL)
@@ -208,7 +208,7 @@ gdom_node_append_child (GDomNode* self, GDomNode* new_child)
 }
 
 static gboolean
-gdom_node_can_add_node (GDomNode *self, GDomNode* new_child)
+gdom_node_can_append_child (GDomNode *self, GDomNode* new_child)
 {
 	return FALSE;
 }
@@ -264,7 +264,7 @@ gdom_node_init (GDomNode *node)
 static void
 gdom_node_class_init (GDomNodeClass *klass)
 {
-	klass->can_add_node = gdom_node_can_add_node;
+	klass->can_append_child = gdom_node_can_append_child;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GDomNode, gdom_node, G_TYPE_OBJECT)

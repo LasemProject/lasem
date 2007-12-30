@@ -76,7 +76,7 @@ struct _GDomNodeClass {
 
 	/* Implementation virtuals */
 
-	gboolean		(*can_add_node) (GDomNode *self, GDomNode *new_child);
+	gboolean		(*can_append_child) (GDomNode *self, GDomNode *new_child);
 };
 
 GType gdom_node_get_type (void);

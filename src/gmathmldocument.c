@@ -24,7 +24,7 @@
 #include <gmathmlmathelement.h>
 
 static gboolean
-gmathml_document_can_add_node (GDomNode *self, GDomNode *child)
+gmathml_document_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GMATHML_IS_MATH_ELEMENT (child));
 }
@@ -45,7 +45,7 @@ gmathml_document_class_init (GMathmlDocumentClass *document_class)
 {
 	GDomNodeClass *node_class = GDOM_NODE_CLASS (document_class);
 
-	node_class->can_add_node = gmathml_document_can_add_node;
+	node_class->can_append_child = gmathml_document_can_append_child;
 }
 
 G_DEFINE_TYPE (GMathmlDocument, gmathml_document, GDOM_TYPE_DOCUMENT)

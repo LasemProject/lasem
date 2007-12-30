@@ -24,7 +24,7 @@
 #include <gdomtext.h>
 
 static gboolean
-gmathml_presentation_token_can_add_node (GDomNode *self, GDomNode *child)
+gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GDOM_IS_TEXT (child) /*||
 		GMATHML_IS_GLYPH_ELEMENT (child) ||
@@ -41,7 +41,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *klass)
 {
 	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
 
-	node_class->can_add_node = gmathml_presentation_token_can_add_node;
+	node_class->can_append_child = gmathml_presentation_token_can_append_child;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

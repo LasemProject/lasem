@@ -35,7 +35,7 @@ gmathml_math_element_get_node_name (GDomNode *node)
 }
 
 static gboolean
-gmathml_math_element_can_add_node (GDomNode *self, GDomNode *child)
+gmathml_math_element_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GMATHML_IS_ELEMENT (child));
 }
@@ -51,7 +51,7 @@ gmathml_math_element_class_init (GMathmlMathElementClass *klass)
 	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
 
 	node_class->get_node_name = gmathml_math_element_get_node_name;
-	node_class->can_add_node = gmathml_math_element_can_add_node;
+	node_class->can_append_child = gmathml_math_element_can_append_child;
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)
