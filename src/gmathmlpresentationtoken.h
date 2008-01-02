@@ -42,7 +42,7 @@ struct _GMathmlPresentationToken {
 };
 
 struct _GMathmlPresentationTokenClass {
-	GDomElementClass  parent_class;
+	GMathmlElementClass  parent_class;
 };
 
 GType gmathml_presentation_token_get_type (void);

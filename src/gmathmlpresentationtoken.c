@@ -21,6 +21,7 @@
  */
 
 #include <gmathmlpresentationtoken.h>
+#include <gmathmlview.h>
 #include <gdomtext.h>
 
 static gboolean
@@ -29,6 +30,59 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 	return (GDOM_IS_TEXT (child) /*||
 		GMATHML_IS_GLYPH_ELEMENT (child) ||
 		GMATHML_IS_ALIGN_MARK_ELEMENT (child)*/);
+}
+
+/* View methods */
+
+static char *
+gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
+{
+	GDomNode *node;
+	GString *string = g_string_new ("");
+	char *text;
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+		if (GDOM_IS_TEXT (node)) {
+			g_string_append (string, gdom_node_get_node_value (node));
+		}
+	}
+
+	text = g_strdup (string->str);
+
+	g_string_free (string, TRUE);
+
+	return text;
+}
+
+static const GMathmlBbox *
+gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
+{
+	char *text;
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
+
+	gmathml_view_measure_text (view, text, &self->bbox);
+
+	g_free (text);
+
+	return &self->bbox;
+}
+
+static void
+gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view)
+{
+}
+
+static void
+gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
+{
+	char *text;
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
+
+	gmathml_view_show_text (view, text);
+
+	g_free (text);
 }
 
 static void
@@ -40,8 +94,13 @@ static void
 gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *klass)
 {
 	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
+	GMathmlElementClass *element_class = GMATHML_ELEMENT_CLASS (klass);
 
 	node_class->can_append_child = gmathml_presentation_token_can_append_child;
+
+	element_class->layout = gmathml_presentation_token_layout;
+	element_class->measure = gmathml_presentation_token_measure;
+	element_class->render = gmathml_presentation_token_render;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

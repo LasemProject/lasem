@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 
 typedef struct _GMathmlDocument GMathmlDocument;
 typedef struct _GMathmlElement GMathmlElement;
+typedef struct _GMathmlFractionElement GMathmlFractionElement;
 typedef struct _GMathmlMathElement GMathmlMathElement;
 typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
 typedef struct _GMathmlNumberElement GMathmlNumberElement;

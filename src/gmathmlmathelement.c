@@ -22,6 +22,18 @@
 
 #include <gmathmlmathelement.h>
 
+static void
+gmathml_math_element_layout (GMathmlElement *element, GMathmlView *view)
+{
+	gmathml_element_layout (GMATHML_ELEMENT (GDOM_NODE(element)->first_child), view);
+}
+
+static const GMathmlBbox *
+gmathml_math_element_measure (GMathmlElement *element, GMathmlView *view)
+{
+	return gmathml_element_measure (GMATHML_ELEMENT (GDOM_NODE(element)->first_child), view);
+}
+
 GDomNode *
 gmathml_math_element_new (void)
 {
@@ -37,7 +49,10 @@ gmathml_math_element_get_node_name (GDomNode *node)
 static gboolean
 gmathml_math_element_can_append_child (GDomNode *self, GDomNode *child)
 {
-	return (GMATHML_IS_ELEMENT (child));
+	/* Math element has only one element child */
+
+	return (GMATHML_IS_ELEMENT (child) &&
+		self->first_child == NULL);
 }
 
 static void
@@ -48,10 +63,14 @@ gmathml_math_element_init (GMathmlMathElement *self)
 static void
 gmathml_math_element_class_init (GMathmlMathElementClass *klass)
 {
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (klass);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (klass);
 
-	node_class->get_node_name = gmathml_math_element_get_node_name;
-	node_class->can_append_child = gmathml_math_element_can_append_child;
+	d_node_class->get_node_name = gmathml_math_element_get_node_name;
+	d_node_class->can_append_child = gmathml_math_element_can_append_child;
+
+	m_element_class->layout = gmathml_math_element_layout;
+	m_element_class->measure = gmathml_math_element_measure;
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)

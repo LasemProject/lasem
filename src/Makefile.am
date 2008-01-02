@@ -19,11 +19,13 @@ gmathml_test_SOURCES = 			\
 	gmathmldocument.c		\
 	gmathmlelement.c		\
 	gmathmlmathelement.c		\
+	gmathmlfractionelement.c	\
 	gmathmlpresentationtoken.c	\
 	gmathmlnumberelement.c		\
 	gmathmlpresentationcontainer.c	\
 	gmathmlrowelement.c		\
 	gmathmlview.c			\
+	gmathmlutils.c			\
 	gmathml-test.c
 
 gmathml_test_LDFLAGS =

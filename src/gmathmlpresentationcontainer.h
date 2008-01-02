@@ -42,7 +42,7 @@ struct _GMathmlPresentationContainer {
 };
 
 struct _GMathmlPresentationContainerClass {
-	GDomElementClass  parent_class;
+	GMathmlElementClass  parent_class;
 };
 
 GType gmathml_presentation_container_get_type (void);

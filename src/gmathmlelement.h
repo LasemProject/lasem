@@ -24,7 +24,9 @@
 #define GMATHML_ELEMENT_H
 
 #include <gmathml.h>
+#include <gmathmlutils.h>
 #include <gdomelement.h>
+#include <cairo.h>
 
 G_BEGIN_DECLS
 
@@ -41,16 +43,25 @@ struct _GMathmlElement {
 	GDomElement	element;
 
 	GHashTable *attributes;
+
+	/* View */
+
+	GMathmlBbox bbox;
 };
 
 struct _GMathmlElementClass {
 	GDomElementClass  parent_class;
+
+	void (*layout) (GMathmlElement *element, GMathmlView *view);
+	const GMathmlBbox * (*measure) (GMathmlElement *element, GMathmlView *view);
+	void (*render) (GMathmlElement *element, GMathmlView *view);
 };
 
 GType gmathml_element_get_type (void);
 
-void 		gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view);
-void 		gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
+void 				gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view);
+const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlView *view);
+void 				gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
 G_END_DECLS
 

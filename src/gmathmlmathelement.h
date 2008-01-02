@@ -42,7 +42,7 @@ struct _GMathmlMathElement {
 };
 
 struct _GMathmlMathElementClass {
-	GDomElementClass  parent_class;
+	GMathmlElementClass  parent_class;
 };
 
 GType gmathml_math_element_get_type (void);

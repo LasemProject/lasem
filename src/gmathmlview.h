@@ -24,6 +24,7 @@
 #define GMATHML_VIEW_H
 
 #include <gmathml.h>
+#include <gmathmlutils.h>
 #include <cairo.h>
 #include <pango/pangocairo.h>
 
@@ -37,14 +38,12 @@ G_BEGIN_DECLS
 #define GMATHML_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GMATHML_TYPE_VIEW, GMathmlViewClass))
 
 typedef struct _GMathmlViewClass GMathmlViewClass;
+typedef struct _GMathmlViewPrivate GMathmlViewPrivate;
 
 struct _GMathmlView {
 	GObject	object;
 
-	GMathmlDocument *document;
-
-	PangoLayout *pango_layout;
-	PangoContext *pango_context;
+	GMathmlViewPrivate *priv;
 };
 
 struct _GMathmlViewClass {
@@ -53,8 +52,13 @@ struct _GMathmlViewClass {
 
 GType gmathml_view_get_type (void);
 
-GMathmlView *	gmathml_view_new 	(GMathmlDocument *document);
-void 		gmathml_view_render 	(GMathmlView *view, cairo_t *cr);
+GMathmlView *	gmathml_view_new 		(GMathmlDocument *document);
+void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
+
+void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
+void 		gmathml_view_show_text 		(GMathmlView *view, char const *text);
+
+void 		gmathml_view_rel_move_to 	(GMathmlView *view, double dx, double dy);
 
 G_END_DECLS
 
