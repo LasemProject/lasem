@@ -69,7 +69,8 @@ gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
 }
 
 static void
-gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view)
+gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view,
+				   double x, double y, const GMathmlBbox *bbox)
 {
 }
 
@@ -80,7 +81,7 @@ gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_show_text (view, text);
+	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
 }

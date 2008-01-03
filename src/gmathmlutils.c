@@ -37,7 +37,7 @@ gmathml_bbox_add_over (GMathmlBbox *self, const GMathmlBbox *bbox)
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (bbox != NULL);
 
-	self->ascent += bbox->ascent + bbox->descent;
+	self->height += bbox->height + bbox->depth;
 	self->width = MAX (self->width, bbox->width);
 }
 
@@ -47,6 +47,6 @@ gmathml_bbox_add_under (GMathmlBbox *self, const GMathmlBbox *bbox)
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (bbox != NULL);
 
-	self->descent += bbox->ascent + bbox->descent;
+	self->depth += bbox->height + bbox->depth;
 	self->width = MAX (self->width, bbox->width);
 }

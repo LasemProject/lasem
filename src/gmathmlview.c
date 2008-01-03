@@ -53,38 +53,39 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
 	bbox->width = pango_units_to_double (rect.width);
-	bbox->ascent = pango_units_to_double (PANGO_ASCENT (rect));
-	bbox->descent = pango_units_to_double (PANGO_DESCENT (rect));
+	bbox->height = pango_units_to_double (PANGO_ASCENT (rect));
+	bbox->depth = pango_units_to_double (PANGO_DESCENT (rect));
 }
 
 void
-gmathml_view_show_text (GMathmlView *view, char const *text)
+gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
 	PangoLayoutLine *line;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
-	g_message ("View: show_text %s", text);
+	g_message ("View: show_text %s at %g, %g", text, x, y);
 
+	cairo_move_to (view->priv->cairo, x, y);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
-	line = pango_layout_get_line_readonly (view->priv->pango_layout, 0);
-	pango_cairo_show_layout_line (view->priv->cairo, line);
+	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
 void
-gmathml_view_rel_move_to (GMathmlView *view, double dx, double dy)
+gmathml_view_draw_line (GMathmlView *view, double x0, double y0, double x1, double y1)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
-	g_message ("View: move_to %g, %g", dx, dy);
-
-	cairo_rel_move_to (view->priv->cairo, dx, dy);
+	cairo_move_to (view->priv->cairo, x0, y0);
+	cairo_line_to (view->priv->cairo, x1, y1);
+	cairo_stroke (view->priv->cairo);
 }
 
 void
 gmathml_view_render (GMathmlView *view, cairo_t *cr)
 {
 	GDomElement *root;
+	const GMathmlBbox *bbox;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
@@ -93,9 +94,11 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 
 	view->priv->cairo = cr;
 
-	gmathml_element_measure (GMATHML_ELEMENT (root), view);
+	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
 
-	gmathml_element_layout (GMATHML_ELEMENT (root), view);
+	g_message ("bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
+
+	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
 

@@ -23,6 +23,8 @@
 #include <gmathmlfractionelement.h>
 #include <gmathmlview.h>
 
+static GObjectClass *parent_class;
+
 static const GMathmlBbox *
 gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 {
@@ -31,8 +33,8 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	self->bbox.width = 0.0;
 	/* FIXME attribute setting */
-	self->bbox.ascent = 1.0;
-	self->bbox.descent = 1.0;
+	self->bbox.height = 1.0;
+	self->bbox.depth = 1.0;
 
 	node = GDOM_NODE (self)->first_child;
 
@@ -56,17 +58,36 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 }
 
 static void
-gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
+gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
+				 double x, double y, const GMathmlBbox *bbox)
 {
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 
-	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-		if (GMATHML_IS_ELEMENT (node)) {
-			gmathml_element_render (GMATHML_ELEMENT (node), view);
+	node = GDOM_NODE (self)->first_child;
+
+	if (node != NULL) {
+		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+		gmathml_element_layout (GMATHML_ELEMENT (node), view,
+					x + (bbox->width - child_bbox->width) / 2.0,
+					y - child_bbox->depth, child_bbox);
+
+		node = node->next_sibling;
+		if (node != NULL) {
 			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
-			gmathml_view_rel_move_to (view, child_bbox->width, 0);
+			gmathml_element_layout (GMATHML_ELEMENT (node), view,
+						x + (bbox->width - child_bbox->width) / 2.0,
+						y + child_bbox->height, child_bbox);
 		}
+	}
+}
+
+static void
+gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
+{
+	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	gmathml_view_draw_line (view, self->x, self->y, self->x + self->bbox.width, self->y);
 }
 
 GDomNode *
@@ -100,10 +121,13 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (fraction_class);
 	GMathmlElementClass *element_class = GMATHML_ELEMENT_CLASS (fraction_class);
 
+	parent_class = g_type_class_peek_parent (fraction_class);
+
 	d_node_class->get_node_name = gmathml_fraction_element_get_node_name;
 	d_node_class->can_append_child = gmathml_fraction_element_can_append_child;
 
 	element_class->measure = gmathml_fraction_element_measure;
+	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
 }
 

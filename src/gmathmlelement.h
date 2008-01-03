@@ -46,22 +46,27 @@ struct _GMathmlElement {
 
 	/* View */
 
+	gboolean measure_done;
+
+	double x, y;
 	GMathmlBbox bbox;
 };
 
 struct _GMathmlElementClass {
 	GDomElementClass  parent_class;
 
-	void (*layout) (GMathmlElement *element, GMathmlView *view);
-	const GMathmlBbox * (*measure) (GMathmlElement *element, GMathmlView *view);
-	void (*render) (GMathmlElement *element, GMathmlView *view);
+	const GMathmlBbox * 	(*measure) 	(GMathmlElement *element, GMathmlView *view);
+	void 			(*layout) 	(GMathmlElement *element, GMathmlView *view,
+						 double x, double y, const GMathmlBbox *bbox);
+	void 			(*render)	(GMathmlElement *element, GMathmlView *view);
 };
 
 GType gmathml_element_get_type (void);
 
-void 				gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view);
 const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlView *view);
-void 				gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
+void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
+							 double x, double y, const GMathmlBbox *bbox);
+void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
 G_END_DECLS
 

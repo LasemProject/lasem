@@ -29,8 +29,8 @@ G_BEGIN_DECLS
 
 typedef struct {
 	double width;
-	double ascent;
-	double descent;
+	double height;
+	double depth;
 } GMathmlBbox;
 
 void 		gmathml_bbox_add_to_right 	(GMathmlBbox *bbox, const GMathmlBbox *new_bbox);

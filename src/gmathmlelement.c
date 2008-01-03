@@ -23,7 +23,8 @@
 #include <gmathmlelement.h>
 
 static GObjectClass *parent_class;
-static const GMathmlBbox null_bbox = {0.0, 0.0, 0.0};
+
+static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
 
 const GMathmlBbox *
 gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
@@ -32,29 +33,41 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 
 	g_return_val_if_fail (element_class != NULL, &null_bbox);
 
-	if (element_class->measure) {
-		const GMathmlBbox *bbox;
+	if (!element->measure_done) {
+		if (element_class->measure) {
+			element->bbox = *(element_class->measure (element, view));
 
-		bbox = element_class->measure (element, view);
+			g_message ("BBox (%s) %g, %g, %g",
+				   gdom_node_get_node_name (GDOM_NODE (element)),
+				   element->bbox.width, element->bbox.height, element->bbox.depth);
+		} else {
+			element->bbox.width = 0.0;
+			element->bbox.height = 0.0;
+			element->bbox.depth = 0.0;
+		}
 
-		g_message ("BBox (%s) %g, %g, %g",
-			   gdom_node_get_node_name (GDOM_NODE (element)),
-			   bbox->width, bbox->ascent, bbox->descent);
-		return bbox;
+		element->measure_done = TRUE;
 	}
 
-	return &null_bbox;
+	return &element->bbox;
 }
 
 void
-gmathml_element_layout (GMathmlElement *element, GMathmlView *view)
+gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
+			double x, double y, const GMathmlBbox *bbox)
 {
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_GET_CLASS (element);
+	GMathmlElementClass *element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
 	g_return_if_fail (element_class != NULL);
 
+	g_message ("Assigned bbox for %s = %g, %g, %g",
+		   gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth);
+
+	self->x = x;
+	self->y = y;
+
 	if (element_class->layout)
-		element_class->layout (element, view);
+		element_class->layout (self, view, x, y, bbox);
 }
 
 static void
