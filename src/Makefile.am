@@ -24,6 +24,7 @@ gmathml_test_SOURCES = 			\
 	gmathmlnumberelement.c		\
 	gmathmlpresentationcontainer.c	\
 	gmathmlrowelement.c		\
+	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlutils.c			\
 	gmathml-test.c

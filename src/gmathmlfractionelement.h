@@ -39,6 +39,8 @@ typedef struct _GMathmlFractionElementClass GMathmlFractionElementClass;
 
 struct _GMathmlFractionElement {
 	GMathmlElement presentation_container;
+
+	GMathmlBooleanAttribute bevelled;
 };
 
 struct _GMathmlFractionElementClass {

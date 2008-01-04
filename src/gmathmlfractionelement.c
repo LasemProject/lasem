@@ -115,6 +115,13 @@ gmathml_fraction_element_can_append_child (GDomNode *self, GDomNode *child)
 		 self->first_child->next_sibling == NULL));
 }
 
+void
+gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)
+{
+	gmathml_attributes_add_attribute (m_element_class->attributes, "bevelled", GMATHML_ATTRIBUTE_BOOLEAN,
+					  offsetof (GMathmlFractionElement, bevelled));
+}
+
 static void
 gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class)
 {
@@ -129,6 +136,12 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
+
+	element_class->attributes = gmathml_attributes_new ();
+
+	gmathml_element_class_add_element_attributes (element_class);
+	gmathml_element_class_add_style_attributes (element_class);
+	gmathml_element_class_add_fraction_attributes (element_class);
 }
 
 G_DEFINE_TYPE (GMathmlFractionElement, gmathml_fraction_element, GMATHML_TYPE_ELEMENT)

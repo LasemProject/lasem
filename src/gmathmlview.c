@@ -60,8 +60,6 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 void
 gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
-	PangoLayoutLine *line;
-
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
 	g_message ("View: show_text %s at %g, %g", text, x, y);

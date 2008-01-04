@@ -83,6 +83,10 @@ int main()
 	g_assert (gdom_node_append_child (math_element, fraction) != NULL);
 	g_assert (gdom_node_append_child (document, math_element) != NULL);
 
+	g_message ("math class=%s", gdom_element_get_attribute (GDOM_ELEMENT (math_element), "class"));
+	gdom_element_set_attribute (GDOM_ELEMENT (math_element), "class", "toto");
+	g_message ("math class=%s", gdom_element_get_attribute (GDOM_ELEMENT (math_element), "class"));
+
 	gdom_node_dump (document);
 
 	view = gmathml_view_new (GMATHML_DOCUMENT (document));

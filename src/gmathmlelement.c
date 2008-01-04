@@ -94,29 +94,45 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 static void
 gmathml_element_set_attribute (GDomElement *self, const char* name, const char *value)
 {
-	g_hash_table_replace (GMATHML_ELEMENT (self)->attributes, g_strdup (name), g_strdup (value));
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
+
+	gmathml_attributes_set_attribute (m_element_class->attributes, self,
+					  name, value);
 }
 
-char *
+const char *
 gmathml_element_get_attribute (GDomElement *self, const char *name)
 {
-	return g_hash_table_lookup (GMATHML_ELEMENT (self)->attributes, name);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
+
+	return gmathml_attributes_get_attribute (m_element_class->attributes, self, name);
 }
 
 static void
 gmathml_element_init (GMathmlElement *element)
 {
-	element->attributes = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 }
 
 static void
 gmathml_element_finalize (GObject *object)
 {
-	GMathmlElement *element = GMATHML_ELEMENT (object);
-
-	g_hash_table_unref (element->attributes);
-
 	parent_class->finalize (object);
+}
+
+void
+gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_class)
+{
+	gmathml_attributes_add_attribute (m_element_class->attributes, "class", GMATHML_ATTRIBUTE_STRING,
+					  offsetof (GMathmlElement, class_name));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "id", GMATHML_ATTRIBUTE_STRING,
+					  offsetof (GMathmlElement, id));
+}
+
+void
+gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
+{
+	gmathml_attributes_add_attribute (m_element_class->attributes, "display", GMATHML_ATTRIBUTE_BOOLEAN,
+					  offsetof (GMathmlElement, display));
 }
 
 static void
@@ -131,7 +147,13 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 
 	d_element_class->get_attribute = gmathml_element_get_attribute;
 	d_element_class->set_attribute = gmathml_element_set_attribute;
+
 	m_element_class->render = gmathml_element_render_default;
+
+	m_element_class->attributes = gmathml_attributes_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+	gmathml_element_class_add_style_attributes (m_element_class);
 }
 
 G_DEFINE_ABSTRACT_TYPE (GMathmlElement, gmathml_element, GDOM_TYPE_ELEMENT)

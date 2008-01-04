@@ -34,7 +34,7 @@ gdom_element_get_node_type (GDomNode *node)
 	return GDOM_NODE_TYPE_ELEMENT_NODE;
 }
 
-char*
+const char*
 gdom_element_get_attribute (GDomElement* self, const char* name)
 {
 	g_return_val_if_fail (GDOM_IS_ELEMENT (self), NULL);

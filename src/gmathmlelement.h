@@ -25,6 +25,7 @@
 
 #include <gmathml.h>
 #include <gmathmlutils.h>
+#include <gmathmlattributes.h>
 #include <gdomelement.h>
 #include <cairo.h>
 
@@ -42,7 +43,10 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 struct _GMathmlElement {
 	GDomElement	element;
 
-	GHashTable *attributes;
+	GMathmlStringAttribute	class_name;
+	GMathmlStringAttribute	id;
+
+	GMathmlBooleanAttribute display;
 
 	/* View */
 
@@ -54,6 +58,8 @@ struct _GMathmlElement {
 
 struct _GMathmlElementClass {
 	GDomElementClass  parent_class;
+
+	GMathmlAttributes *attributes;
 
 	const GMathmlBbox * 	(*measure) 	(GMathmlElement *element, GMathmlView *view);
 	void 			(*layout) 	(GMathmlElement *element, GMathmlView *view,
@@ -67,6 +73,9 @@ const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlVi
 void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);
 void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
+
+void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
+void 			gmathml_element_class_add_style_attributes 	(GMathmlElementClass *m_element_class);
 
 G_END_DECLS
 

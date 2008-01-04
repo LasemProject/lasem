@@ -44,14 +44,14 @@ struct _GDomElement {
 struct _GDomElementClass {
 	GDomNodeClass parent_class;
 
-	char* (*get_attribute) (GDomElement* self, const char* name);
-	void (*set_attribute) (GDomElement* self, const char* name, const char* attribute_value);
+	const char* 	(*get_attribute) (GDomElement* self, const char* name);
+	void 		(*set_attribute) (GDomElement* self, const char* name, const char* attribute_value);
 };
 
 GType gdom_element_get_type (void);
 
-char* 	gdom_element_get_attribute 	(GDomElement* self, const char* name);
-void 	gdom_element_set_attribute 	(GDomElement* self, const char* name, const char* attribute_value);
+const char* 	gdom_element_get_attribute 	(GDomElement* self, const char* name);
+void 		gdom_element_set_attribute 	(GDomElement* self, const char* name, const char* attribute_value);
 
 G_END_DECLS
 
