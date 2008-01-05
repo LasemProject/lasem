@@ -128,6 +128,10 @@ gmathml_element_init (GMathmlElement *element)
 static void
 gmathml_element_finalize (GObject *object)
 {
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS (object);
+
+	gmathml_attributes_finalize_attributes (m_element_class->attributes, object);
+
 	parent_class->finalize (object);
 }
 
@@ -145,6 +149,8 @@ gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_cla
 void
 gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
 {
+	gmathml_attributes_add_attribute (m_element_class->attributes, "scriptlevel", GMATHML_ATTRIBUTE_INT,
+					  offsetof (GMathmlElement, script_level));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "display", GMATHML_ATTRIBUTE_BOOLEAN,
 					  offsetof (GMathmlElement, display));
 }

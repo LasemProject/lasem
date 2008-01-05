@@ -22,6 +22,7 @@ gmathml_test_SOURCES = 			\
 	gmathmldocument.c		\
 	gmathmlelement.c		\
 	gmathmlmathelement.c		\
+	gmathmlscriptelement.c		\
 	gmathmlfractionelement.c	\
 	gmathmlpresentationtoken.c	\
 	gmathmlnumberelement.c		\

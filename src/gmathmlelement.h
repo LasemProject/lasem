@@ -46,6 +46,7 @@ struct _GMathmlElement {
 	GMathmlStringAttribute	class_name;
 	GMathmlStringAttribute	id;
 
+	GMathmlIntAttribute script_level;
 	GMathmlBooleanAttribute display;
 
 	/* View */

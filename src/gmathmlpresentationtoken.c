@@ -79,10 +79,12 @@ gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view,
 static void
 gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 {
+	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
+	gmathml_view_set_color (view, &token->math_color.color);
 	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
@@ -95,17 +97,32 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 
 /* GMathmlPresentationToken class */
 
-static void
-gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *klass)
+void
+gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class)
 {
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_CLASS (klass);
+	gmathml_attributes_add_attribute (m_element_class->attributes, "mathcolor", GMATHML_ATTRIBUTE_COLOR,
+					  offsetof (GMathmlPresentationToken, math_color));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "mathbackground", GMATHML_ATTRIBUTE_COLOR,
+					  offsetof (GMathmlPresentationToken, math_background));
+}
 
-	node_class->can_append_child = gmathml_presentation_token_can_append_child;
+static void
+gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_class)
+{
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (token_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (token_class);
 
-	element_class->layout = gmathml_presentation_token_layout;
-	element_class->measure = gmathml_presentation_token_measure;
-	element_class->render = gmathml_presentation_token_render;
+	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;
+
+	m_element_class->layout = gmathml_presentation_token_layout;
+	m_element_class->measure = gmathml_presentation_token_measure;
+	m_element_class->render = gmathml_presentation_token_render;
+
+	m_element_class->attributes = gmathml_attributes_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+	gmathml_element_class_add_style_attributes (m_element_class);
+	gmathml_element_class_add_token_attributes (m_element_class);
 }
 
 G_DEFINE_ABSTRACT_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

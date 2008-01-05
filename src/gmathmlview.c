@@ -70,6 +70,15 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 }
 
 void
+gmathml_view_set_color (GMathmlView *view, const PangoColor *color)
+{
+	cairo_set_source_rgb (view->priv->cairo,
+			      color->red / 65535.0,
+			      color->green / 65535.0,
+			      color->blue / 65535.0);
+}
+
+void
 gmathml_view_draw_line (GMathmlView *view, double x0, double y0, double x1, double y1)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));

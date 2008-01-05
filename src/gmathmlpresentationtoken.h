@@ -39,6 +39,9 @@ typedef struct _GMathmlPresentationTokenClass GMathmlPresentationTokenClass;
 
 struct _GMathmlPresentationToken {
 	GMathmlElement	element;
+
+	GMathmlColorAttribute math_color;
+	GMathmlColorAttribute math_background;
 };
 
 struct _GMathmlPresentationTokenClass {

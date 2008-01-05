@@ -58,6 +58,8 @@ void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, char const *text);
 
+void 		gmathml_view_set_color 		(GMathmlView *view, const PangoColor *color);
+
 void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0, double x1, double y1);
 G_END_DECLS
 
