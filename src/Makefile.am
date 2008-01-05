@@ -31,6 +31,7 @@ gmathml_test_SOURCES = 			\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlutils.c			\
+	gmathmlparser.c			\
 	gmathml-test.c
 
 gmathml_test_LDFLAGS =
