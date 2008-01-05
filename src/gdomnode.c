@@ -23,6 +23,10 @@
 #include <gdomnode.h>
 #include <gdomdocument.h>
 
+static GObjectClass *parent_class = NULL;
+
+/* GDomNode implementation */
+
 char*
 gdom_node_get_node_name (GDomNode* self)
 {
@@ -262,9 +266,29 @@ gdom_node_init (GDomNode *node)
 }
 
 static void
-gdom_node_class_init (GDomNodeClass *klass)
+gdom_node_finalize (GObject *object)
 {
-	klass->can_append_child = gdom_node_can_append_child;
+	GDomNode *node = GDOM_NODE (object);
+	GDomNode *child;
+
+	for (child = node->first_child; child != NULL; child = child->next_sibling)
+		g_object_unref (child);
+
+	parent_class->finalize (object);
+}
+
+/* GDomNode class */
+
+static void
+gdom_node_class_init (GDomNodeClass *node_class)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (node_class);
+
+	parent_class = g_type_class_peek_parent (node_class);
+
+	object_class->finalize = gdom_node_finalize;
+
+	node_class->can_append_child = gdom_node_can_append_child;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GDomNode, gdom_node, G_TYPE_OBJECT)
