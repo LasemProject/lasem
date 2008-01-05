@@ -22,6 +22,8 @@
 
 #include <gdomelement.h>
 
+/* GDomNode implementation */
+
 static char *
 gdom_element_get_node_value (GDomNode *node)
 {
@@ -33,6 +35,8 @@ gdom_element_get_node_type (GDomNode *node)
 {
 	return GDOM_NODE_TYPE_ELEMENT_NODE;
 }
+
+/* GDomElement implementation */
 
 const char*
 gdom_element_get_attribute (GDomElement* self, const char* name)
@@ -57,6 +61,8 @@ static void
 gdom_element_init (GDomElement *element)
 {
 }
+
+/* GDomElement class */
 
 static void
 gdom_element_class_init (GDomElementClass *klass)

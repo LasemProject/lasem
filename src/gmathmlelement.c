@@ -26,6 +26,27 @@ static GObjectClass *parent_class;
 
 static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
 
+/* GDomElement implementation */
+
+static void
+gmathml_element_set_attribute (GDomElement *self, const char* name, const char *value)
+{
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
+
+	gmathml_attributes_set_attribute (m_element_class->attributes, self,
+					  name, value);
+}
+
+const char *
+gmathml_element_get_attribute (GDomElement *self, const char *name)
+{
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
+
+	return gmathml_attributes_get_attribute (m_element_class->attributes, self, name);
+}
+
+/* GMathmlElement implementation */
+
 const GMathmlBbox *
 gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 {
@@ -100,23 +121,6 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 }
 
 static void
-gmathml_element_set_attribute (GDomElement *self, const char* name, const char *value)
-{
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
-
-	gmathml_attributes_set_attribute (m_element_class->attributes, self,
-					  name, value);
-}
-
-const char *
-gmathml_element_get_attribute (GDomElement *self, const char *name)
-{
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
-
-	return gmathml_attributes_get_attribute (m_element_class->attributes, self, name);
-}
-
-static void
 gmathml_element_init (GMathmlElement *element)
 {
 }
@@ -126,6 +130,8 @@ gmathml_element_finalize (GObject *object)
 {
 	parent_class->finalize (object);
 }
+
+/* GMathmlElement class */
 
 void
 gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_class)

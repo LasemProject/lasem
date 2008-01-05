@@ -24,6 +24,8 @@
 #include <gdomelement.h>
 #include <gdomtext.h>
 
+/* GDomNode implementation */
+
 static char *
 gdom_document_get_node_name (GDomNode *node)
 {
@@ -35,6 +37,8 @@ gdom_document_get_node_type (GDomNode *node)
 {
 	return GDOM_NODE_TYPE_DOCUMENT_NODE;
 }
+
+/* GDomDocument implementation */
 
 GDomElement *
 gdom_document_get_document_element (GDomDocument *self)
@@ -76,6 +80,8 @@ static void
 gdom_document_init (GDomDocument *document)
 {
 }
+
+/* GDomDocument class */
 
 static void
 gdom_document_class_init (GDomDocumentClass *klass)

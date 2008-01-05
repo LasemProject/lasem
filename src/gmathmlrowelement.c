@@ -22,11 +22,7 @@
 
 #include <gmathmlrowelement.h>
 
-GDomNode *
-gmathml_row_element_new (void)
-{
-	return g_object_new (GMATHML_TYPE_ROW_ELEMENT, NULL);
-}
+/* GDomNode implementation */
 
 static char *
 gmathml_row_element_get_node_name (GDomNode *node)
@@ -34,16 +30,26 @@ gmathml_row_element_get_node_name (GDomNode *node)
 	return "mrow";
 }
 
-static void
-gmathml_row_element_init (GMathmlRowElement *element)
-{
-}
-
 static gboolean
 gmathml_row_element_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GMATHML_IS_ELEMENT (child));
 }
+
+/* GMathmlRowElement implementation */
+
+GDomNode *
+gmathml_row_element_new (void)
+{
+	return g_object_new (GMATHML_TYPE_ROW_ELEMENT, NULL);
+}
+
+static void
+gmathml_row_element_init (GMathmlRowElement *element)
+{
+}
+
+/* GMathmlRowElement class */
 
 static void
 gmathml_row_element_class_init (GMathmlRowElementClass *klass)

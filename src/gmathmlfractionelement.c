@@ -25,6 +25,24 @@
 
 static GObjectClass *parent_class;
 
+/* GDomNode implementation */
+
+static char *
+gmathml_fraction_element_get_node_name (GDomNode *node)
+{
+	return "mfrac";
+}
+
+static gboolean
+gmathml_fraction_element_can_append_child (GDomNode *self, GDomNode *child)
+{
+	return (GMATHML_IS_ELEMENT (child) &&
+		(self->first_child == NULL ||
+		 self->first_child->next_sibling == NULL));
+}
+
+/* GMathmlElement implementation */
+
 static const GMathmlBbox *
 gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 {
@@ -90,16 +108,12 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 	gmathml_view_draw_line (view, self->x, self->y, self->x + self->bbox.width, self->y);
 }
 
+/* GMathmlFraction implementation */
+
 GDomNode *
 gmathml_fraction_element_new (void)
 {
 	return g_object_new (GMATHML_TYPE_FRACTION_ELEMENT, NULL);
-}
-
-static char *
-gmathml_fraction_element_get_node_name (GDomNode *node)
-{
-	return "mfrac";
 }
 
 static void
@@ -107,13 +121,7 @@ gmathml_fraction_element_init (GMathmlFractionElement *element)
 {
 }
 
-static gboolean
-gmathml_fraction_element_can_append_child (GDomNode *self, GDomNode *child)
-{
-	return (GMATHML_IS_ELEMENT (child) &&
-		(self->first_child == NULL ||
-		 self->first_child->next_sibling == NULL));
-}
+/* GMathmlFractionElement class */
 
 void
 gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)

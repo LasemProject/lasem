@@ -23,6 +23,8 @@
 #include <gmathmlpresentationcontainer.h>
 #include <gmathmlview.h>
 
+/* GMathmlElement implementation */
+
 static const GMathmlBbox *
 gmathml_presentation_container_measure (GMathmlElement *self, GMathmlView *view)
 {
@@ -66,10 +68,14 @@ gmathml_presentation_container_layout (GMathmlElement *self, GMathmlView *view,
 		}
 }
 
+/* GMathmlPresentationContainer implementation */
+
 static void
 gmathml_presentation_container_init (GMathmlPresentationContainer *container)
 {
 }
+
+/* GMathmlPresentationContainer class */
 
 static void
 gmathml_presentation_container_class_init (GMathmlPresentationContainerClass *klass)

@@ -22,24 +22,7 @@
 
 #include <gmathmlmathelement.h>
 
-static const GMathmlBbox *
-gmathml_math_element_measure (GMathmlElement *element, GMathmlView *view)
-{
-	return gmathml_element_measure (GMATHML_ELEMENT (GDOM_NODE(element)->first_child), view);
-}
-
-static void
-gmathml_math_element_layout (GMathmlElement *self, GMathmlView *view,
-			     double x, double y, const GMathmlBbox *bbox)
-{
-	gmathml_element_layout (GMATHML_ELEMENT (GDOM_NODE(self)->first_child), view, x, y, bbox);
-}
-
-GDomNode *
-gmathml_math_element_new (void)
-{
-	return g_object_new (GMATHML_TYPE_MATH_ELEMENT, NULL);
-}
+/* GdomNode implementation */
 
 static char *
 gmathml_math_element_get_node_name (GDomNode *node)
@@ -56,10 +39,35 @@ gmathml_math_element_can_append_child (GDomNode *self, GDomNode *child)
 		self->first_child == NULL);
 }
 
+/* GMathmlElement implementation */
+
+static const GMathmlBbox *
+gmathml_math_element_measure (GMathmlElement *element, GMathmlView *view)
+{
+	return gmathml_element_measure (GMATHML_ELEMENT (GDOM_NODE(element)->first_child), view);
+}
+
+static void
+gmathml_math_element_layout (GMathmlElement *self, GMathmlView *view,
+			     double x, double y, const GMathmlBbox *bbox)
+{
+	gmathml_element_layout (GMATHML_ELEMENT (GDOM_NODE(self)->first_child), view, x, y, bbox);
+}
+
+/* GMathmlMathElement implementation */
+
+GDomNode *
+gmathml_math_element_new (void)
+{
+	return g_object_new (GMATHML_TYPE_MATH_ELEMENT, NULL);
+}
+
 static void
 gmathml_math_element_init (GMathmlMathElement *self)
 {
 }
+
+/* GMathmlMathElement class */
 
 static void
 gmathml_math_element_class_init (GMathmlMathElementClass *klass)

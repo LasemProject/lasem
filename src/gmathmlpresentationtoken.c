@@ -24,6 +24,8 @@
 #include <gmathmlview.h>
 #include <gdomtext.h>
 
+/* GDomNode implementation */
+
 static gboolean
 gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 {
@@ -32,7 +34,7 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 		GMATHML_IS_ALIGN_MARK_ELEMENT (child)*/);
 }
 
-/* View methods */
+/* GMathmlElement implementation */
 
 static char *
 gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
@@ -90,6 +92,8 @@ static void
 gmathml_presentation_token_init (GMathmlPresentationToken *token)
 {
 }
+
+/* GMathmlPresentationToken class */
 
 static void
 gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *klass)

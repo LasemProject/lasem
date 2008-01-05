@@ -28,11 +28,15 @@
 #include <gmathmlnumberelement.h>
 #include <string.h>
 
+/* GDomNode implementation */
+
 static gboolean
 gmathml_document_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GMATHML_IS_MATH_ELEMENT (child));
 }
+
+/* GDomDocument implementation */
 
 static GDomElement *
 gmathml_document_create_element (GDomDocument *document, const char *tag_name)
@@ -53,6 +57,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 	return GDOM_ELEMENT (node);
 }
 
+/* GMathmlDocument implementation */
+
 GDomNode *
 gmathml_document_new (void)
 {
@@ -63,6 +69,8 @@ static void
 gmathml_document_init (GMathmlDocument *document)
 {
 }
+
+/* GMathmlDocument class */
 
 static void
 gmathml_document_class_init (GMathmlDocumentClass *m_document_class)

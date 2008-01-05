@@ -22,11 +22,7 @@
 
 #include <gmathmloperatorelement.h>
 
-GDomNode *
-gmathml_operator_element_new (void)
-{
-	return g_object_new (GMATHML_TYPE_OPERATOR_ELEMENT, NULL);
-}
+/* GDomNode implementation */
 
 static char *
 gmathml_operator_element_get_node_name (GDomNode *node)
@@ -34,10 +30,20 @@ gmathml_operator_element_get_node_name (GDomNode *node)
 	return "mo";
 }
 
+/* GMathmlOperatorElement implementation */
+
+GDomNode *
+gmathml_operator_element_new (void)
+{
+	return g_object_new (GMATHML_TYPE_OPERATOR_ELEMENT, NULL);
+}
+
 static void
 gmathml_operator_element_init (GMathmlOperatorElement *self)
 {
 }
+
+/* GMathmlOperatorElement class */
 
 void
 gmathml_element_class_add_operator_attributes (GMathmlElementClass *m_element_class)
@@ -73,4 +79,3 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 }
 
 G_DEFINE_TYPE (GMathmlOperatorElement, gmathml_operator_element, GMATHML_TYPE_PRESENTATION_TOKEN)
-

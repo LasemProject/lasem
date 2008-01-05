@@ -22,17 +22,7 @@
 
 #include <gdomtext.h>
 
-GDomNode *
-gdom_text_new (const char *data)
-{
-	GDomNode *node;
-
-	node = g_object_new (GDOM_TYPE_TEXT, NULL);
-
-	gdom_character_data_set_data (GDOM_CHARACTER_DATA (node), data);
-
-	return node;
-}
+/* GDomNode implementation */
 
 static char *
 gdom_text_get_node_name (GDomNode *node)
@@ -52,10 +42,26 @@ gdom_text_get_node_type (GDomNode *node)
 	return GDOM_NODE_TYPE_TEXT_NODE;
 }
 
+/* GDomText implementation */
+
+GDomNode *
+gdom_text_new (const char *data)
+{
+	GDomNode *node;
+
+	node = g_object_new (GDOM_TYPE_TEXT, NULL);
+
+	gdom_character_data_set_data (GDOM_CHARACTER_DATA (node), data);
+
+	return node;
+}
+
 static void
 gdom_text_init (GDomText *text_node)
 {
 }
+
+/* GDomText class */
 
 static void
 gdom_text_class_init (GDomTextClass *klass)
