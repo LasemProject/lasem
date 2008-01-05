@@ -30,7 +30,7 @@ AM_PROG_LIBTOOL
 
 
 
-PKG_CHECK_MODULES(GMATHML, [gobject-2.0 glib-2.0 cairo >= 1.2 pangocairo ])
+PKG_CHECK_MODULES(GMATHML, [gobject-2.0 glib-2.0 cairo >= 1.2 pangocairo libxml-2.0])
 AC_SUBST(GMATHML_CFLAGS)
 AC_SUBST(GMATHML_LIBS)
 
