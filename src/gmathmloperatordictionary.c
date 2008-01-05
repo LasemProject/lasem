@@ -389,9 +389,6 @@ gmathml_get_operator_dictionary (void)
 	for (i = 0; i < G_N_ELEMENTS (gmathml_operators); i++) {
 		utf8 = gmathml_entity_get_utf8 (gmathml_operators[i].name);
 
-		if (utf8 == NULL)
-			utf8 = gmathml_operators[i].name;
-
 		switch (gmathml_operators[i].form) {
 			case GMATHML_FORM_PREFIX:
 				prefix = "E*";
@@ -414,6 +411,8 @@ gmathml_get_operator_dictionary (void)
 
 	return operator_hash;
 }
+
+static const GMathmlOperator gmathml_operator_default = {"Default", GMATHML_FORM_INFIX, GMATHML_THICK_MATH_SPACE, GMATHML_THICK_MATH_SPACE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, GMATHML_1_PX, GMATHML_SIZE_INFINITY, TRUE};
 
 const GMathmlOperator *
 gmathml_operator_get_attributes (const char *utf8, GMathmlForm form)
@@ -439,6 +438,9 @@ gmathml_operator_get_attributes (const char *utf8, GMathmlForm form)
 	op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
 
 	g_free (key);
+
+	if (op == NULL)
+		return &gmathml_operator_default;
 
 	return op;
 }

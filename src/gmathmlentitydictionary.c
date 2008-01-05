@@ -2140,5 +2140,12 @@ gmathml_get_entity_dictionary (void)
 const char *
 gmathml_entity_get_utf8 (const char *name)
 {
-	return g_hash_table_lookup (gmathml_get_entity_dictionary (), name);
+	const char *utf8;
+
+	utf8 = g_hash_table_lookup (gmathml_get_entity_dictionary (), name);
+
+	if (utf8 == NULL)
+		return name;
+
+	return utf8;
 }
