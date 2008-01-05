@@ -22,11 +22,35 @@
 
 #include <gmathmldocument.h>
 #include <gmathmlmathelement.h>
+#include <gmathmlfractionelement.h>
+#include <gmathmloperatorelement.h>
+#include <gmathmlrowelement.h>
+#include <gmathmlnumberelement.h>
+#include <string.h>
 
 static gboolean
 gmathml_document_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GMATHML_IS_MATH_ELEMENT (child));
+}
+
+static GDomElement *
+gmathml_document_create_element (GDomDocument *document, const char *tag_name)
+{
+	GDomNode *node = NULL;
+
+	if (strcmp (tag_name, "math") == 0)
+		node = gmathml_math_element_new ();
+	else if (strcmp (tag_name, "mfrac") == 0)
+		node = gmathml_fraction_element_new ();
+	else if (strcmp (tag_name, "mo") == 0)
+		node = gmathml_operator_element_new ();
+	else if (strcmp (tag_name, "mrow") == 0)
+		node = gmathml_row_element_new ();
+	else if (strcmp (tag_name, "mn") == 0)
+		node = gmathml_number_element_new ();
+
+	return GDOM_ELEMENT (node);
 }
 
 GDomNode *
@@ -41,11 +65,14 @@ gmathml_document_init (GMathmlDocument *document)
 }
 
 static void
-gmathml_document_class_init (GMathmlDocumentClass *document_class)
+gmathml_document_class_init (GMathmlDocumentClass *m_document_class)
 {
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (document_class);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (m_document_class);
+	GDomDocumentClass *d_document_class = GDOM_DOCUMENT_CLASS (m_document_class);
 
-	node_class->can_append_child = gmathml_document_can_append_child;
+	d_node_class->can_append_child = gmathml_document_can_append_child;
+
+	d_document_class->create_element = gmathml_document_create_element;
 }
 
 G_DEFINE_TYPE (GMathmlDocument, gmathml_document, GDOM_TYPE_DOCUMENT)
