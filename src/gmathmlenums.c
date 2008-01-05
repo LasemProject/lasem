@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmlenums.c
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,25 +20,4 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
-
-#include <gdom.h>
-
-G_BEGIN_DECLS
-
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlFractionElement GMathmlFractionElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlOperatorElement GMathmlOperatorElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
-
-typedef struct _GMathmlView GMathmlView;
-
-G_END_DECLS
-
-#endif
+#include <gmathmlenums.h>

@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmlentitydictionary.h
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,24 +20,14 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
+#ifndef GMATHML_ENTITY_DICTIONARY_H
+#define GMATHML_ENTITY_DICTIONARY_H
 
-#include <gdom.h>
+#include <gmathml.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlFractionElement GMathmlFractionElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlOperatorElement GMathmlOperatorElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
-
-typedef struct _GMathmlView GMathmlView;
+const char 	*gmathml_entity_get_utf8 	(const char *name);
 
 G_END_DECLS
 

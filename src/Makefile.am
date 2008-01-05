@@ -16,12 +16,16 @@ gmathml_test_SOURCES = 			\
 	gdomelement.c			\
 	gdomcharacterdata.c		\
 	gdomtext.c			\
+	gmathmlenums.c			\
+	gmathmlentitydictionary.c	\
+	gmathmloperatordictionary.c	\
 	gmathmldocument.c		\
 	gmathmlelement.c		\
 	gmathmlmathelement.c		\
 	gmathmlfractionelement.c	\
 	gmathmlpresentationtoken.c	\
 	gmathmlnumberelement.c		\
+	gmathmloperatorelement.c	\
 	gmathmlpresentationcontainer.c	\
 	gmathmlrowelement.c		\
 	gmathmlattributes.c		\

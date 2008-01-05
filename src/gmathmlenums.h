@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmlenums.h
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,25 +20,35 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
+#ifndef GMATHML_ENUMS_H
+#define GMATHML_ENUMS_H
 
-#include <gdom.h>
+#include <gmathml.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlFractionElement GMathmlFractionElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlOperatorElement GMathmlOperatorElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
+typedef enum {
+	GMATHML_FORM_PREFIX,
+	GMATHML_FORM_POSTFIX,
+	GMATHML_FORM_INFIX
+} GMathmlForm;
 
-typedef struct _GMathmlView GMathmlView;
+typedef enum {
+	GMATHML_VERY_VERY_THIN_MATH_SPACE,
+	GMATHML_VERY_THIN_MATH_SPACE,
+	GMATHML_THIN_MATH_SPACE,
+	GMATHML_MEDIUM_MATH_SPACE,
+	GMATHML_THICK_MATH_SPACE,
+	GMATHML_VERY_THICK_MATH_SPACE,
+	GMATHML_VERY_VERY_THICK_MATH_SPACE
+} GMathmlNamedSpace;
+
+#define GMATHML_SIZE_INFINITY 10
+#define GMATHML_ZERO_EM 0
+#define GMATHML_1_PX 1
+#define GMATHML_0_PX 0
 
 G_END_DECLS
 
 #endif
+

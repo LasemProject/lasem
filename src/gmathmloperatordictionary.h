@@ -1,4 +1,4 @@
-/* gmathml.h
+/* gmathmloperatordictionary.h
  *
  * Copyright (C) 2007  Emmanuel Pacaud
  *
@@ -20,25 +20,33 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_H
-#define GMATHML_H
+#ifndef GMATHML_OPERATOR_DICTIONARY_H
+#define GMATHML_OPERATOR_DICTIONARY_H
 
-#include <gdom.h>
+#include <gmathml.h>
+#include <gmathmlenums.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GMathmlDocument GMathmlDocument;
-typedef struct _GMathmlElement GMathmlElement;
-typedef struct _GMathmlFractionElement GMathmlFractionElement;
-typedef struct _GMathmlMathElement GMathmlMathElement;
-typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
-typedef struct _GMathmlNumberElement GMathmlNumberElement;
-typedef struct _GMathmlOperatorElement GMathmlOperatorElement;
-typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
-typedef struct _GMathmlRowElement GMathmlRowElement;
+typedef struct {
+	const char 		*name;
+	GMathmlForm		 form;
+	GMathmlNamedSpace	 l_space;
+	GMathmlNamedSpace	 r_space;
+	gboolean		 stretchy;
+	gboolean		 fence;
+	gboolean		 accent;
+	gboolean		 large_op;
+	gboolean		 movable_limits;
+	gboolean		 separator;
+	int			 min_size;
+	int			 max_size;
+	gboolean		 symmetric;
+} GMathmlOperator;
 
-typedef struct _GMathmlView GMathmlView;
+const GMathmlOperator *		gmathml_operator_get_attributes (const char *utf8, GMathmlForm form);
 
 G_END_DECLS
 
 #endif
+

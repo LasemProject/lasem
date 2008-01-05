@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <gdomtext.h>
+#include <gmathmloperatordictionary.h>
 #include <gmathmldocument.h>
 #include <gmathmlmathelement.h>
 #include <gmathmlfractionelement.h>
@@ -49,6 +50,9 @@ int main()
 	cairo_surface_t *surface;
 
 	g_type_init ();
+
+	g_assert (gmathml_operator_get_attributes ("toto", GMATHML_FORM_PREFIX) == NULL);
+	g_assert (gmathml_operator_get_attributes ("<>", GMATHML_FORM_INFIX) != NULL);
 
 	document = gmathml_document_new ();
 	g_assert (GDOM_IS_NODE (document));
