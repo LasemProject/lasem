@@ -29,7 +29,11 @@ static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
 const GMathmlBbox *
 gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 {
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_GET_CLASS (element);
+	GMathmlElementClass *element_class;
+
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (element), &null_bbox);
+
+	element_class = GMATHML_ELEMENT_GET_CLASS (element);
 
 	g_return_val_if_fail (element_class != NULL, &null_bbox);
 
@@ -56,7 +60,11 @@ void
 gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 			double x, double y, const GMathmlBbox *bbox)
 {
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_GET_CLASS (self);
+	GMathmlElementClass *element_class;
+
+	g_return_if_fail (GMATHML_IS_ELEMENT (self));
+
+	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
 	g_return_if_fail (element_class != NULL);
 
