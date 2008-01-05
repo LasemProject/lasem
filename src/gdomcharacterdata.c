@@ -22,6 +22,10 @@
 
 #include <gdomcharacterdata.h>
 
+static GObjectClass *parent_class = NULL;
+
+/* GDomCharacterData implementation */
+
 char*
 gdom_character_data_get_data (GDomCharacterData* self)
 {
@@ -46,9 +50,25 @@ gdom_character_data_init (GDomCharacterData *character_data)
 }
 
 static void
-gdom_character_data_class_init (GDomCharacterDataClass *klass)
+gdom_character_data_finalize (GObject *object)
 {
+	GDomCharacterData *self = GDOM_CHARACTER_DATA (object);
+
+	g_free (self->data);
+
+	parent_class->finalize (object);
+}
+
+/* GDomCharacterData class */
+
+static void
+gdom_character_data_class_init (GDomCharacterDataClass *character_data_class)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (character_data_class);
+
+	parent_class = g_type_class_peek_parent (character_data_class);
+
+	object_class->finalize = gdom_character_data_finalize;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GDomCharacterData, gdom_character_data, GDOM_TYPE_NODE)
-
