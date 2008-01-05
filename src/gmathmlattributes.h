@@ -24,12 +24,15 @@
 #define GMATHML_ATTRIBUTES_H
 
 #include <gmathml.h>
+#include <pango/pango-attributes.h>
 
 G_BEGIN_DECLS
 
 typedef enum {
 	GMATHML_ATTRIBUTE_BOOLEAN,
-	GMATHML_ATTRIBUTE_STRING
+	GMATHML_ATTRIBUTE_INT,
+	GMATHML_ATTRIBUTE_STRING,
+	GMATHML_ATTRIBUTE_COLOR
 } GMathmlAttributeType;
 
 typedef struct _GMathmlAttributes GMathmlAttributes;
@@ -37,6 +40,12 @@ typedef struct _GMathmlAttributes GMathmlAttributes;
 typedef struct {
 	gboolean	is_defined;
 } GMathmlAttribute;
+
+typedef struct {
+	GMathmlAttribute base;
+	char *string;
+	int value;
+} GMathmlIntAttribute;
 
 typedef struct {
 	GMathmlAttribute base;
@@ -49,12 +58,10 @@ typedef struct {
 } GMathmlBooleanAttribute;
 
 typedef struct {
-	GMathmlStringAttribute class_name;
-	GMathmlStringAttribute id;
-} GMathmlElementAttributes;
-
-typedef struct {
-} GMathmlStyleAttributes;
+	GMathmlAttribute base;
+	char *string;
+	PangoColor color;
+} GMathmlColorAttribute;
 
 GMathmlAttributes * 	gmathml_attributes_new 			(void);
 void 			gmathml_attributes_add_attribute 	(GMathmlAttributes *attributes,
@@ -71,6 +78,8 @@ char const * 		gmathml_attributes_get_attribute 	(GMathmlAttributes *attributes,
 gboolean 		gmathml_attributes_is_attribute_defined	(GMathmlAttributes *attributes,
 								 void *instance,
 								 const char *attr_name);
+void 			gmathml_attributes_finalize_attributes 	(GMathmlAttributes *attributes, void *instance);
+
 G_END_DECLS
 
 #endif

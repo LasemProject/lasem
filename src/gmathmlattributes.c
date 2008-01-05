@@ -22,6 +22,7 @@
 
 #include <gmathmlattributes.h>
 #include <string.h>
+#include <stdlib.h>
 #include <glib/gmem.h>
 #include <glib/ghash.h>
 
@@ -52,6 +53,40 @@ gmathml_boolean_attribute_from_string (GMathmlAttribute *attr, const char *strin
 }
 
 static const char *
+gmathml_int_attribute_to_string (GMathmlAttribute *attr)
+{
+	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
+
+	if (int_attr->string == NULL)
+		int_attr->string = g_strdup_printf ("%i", int_attr->value);
+
+	return int_attr->string;
+}
+
+static void
+gmathml_int_attribute_from_string (GMathmlAttribute *attr, const char *string)
+{
+	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
+
+	g_free (int_attr->string);
+	int_attr->string = NULL;
+
+	if (string != NULL)
+		int_attr->value = atoi (string);
+	else
+		int_attr = 0;
+}
+
+static void
+gmathml_int_attribute_finalize (GMathmlAttribute *attr)
+{
+	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
+
+	g_free (int_attr->string);
+	int_attr->string = NULL;
+}
+
+static const char *
 gmathml_string_attribute_to_string (GMathmlAttribute *attr)
 {
 	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
@@ -78,6 +113,42 @@ gmathml_string_attribute_finalize (GMathmlAttribute *attr)
 	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
 
 	g_free (str_attr->string);
+	str_attr->string = NULL;
+}
+
+static const char *
+gmathml_color_attribute_to_string (GMathmlAttribute *attr)
+{
+	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
+
+	if (color_attr->string != NULL) {
+		color_attr->string = pango_color_to_string (&color_attr->color);
+	}
+
+	return color_attr->string;
+}
+
+static void
+gmathml_color_attribute_from_string (GMathmlAttribute *attr, const char *string)
+{
+	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
+
+	g_free (color_attr->string);
+
+	if (string != NULL) {
+		color_attr->string = g_strdup (string);
+		pango_color_parse (&color_attr->color, color_attr->string);
+	} else
+		color_attr->string = NULL;
+}
+
+static void
+gmathml_color_attribute_finalize (GMathmlAttribute *attr)
+{
+	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
+
+	g_free (color_attr->string);
+	color_attr->string = NULL;
 }
 
 inline static const char*
@@ -107,9 +178,19 @@ static const GMathmlAttributeClass gmathml_attribute_classes[] = {
 		NULL
 	},
 	{
+		gmathml_int_attribute_to_string,
+		gmathml_int_attribute_from_string,
+		gmathml_int_attribute_finalize
+	},
+	{
 		gmathml_string_attribute_to_string,
 		gmathml_string_attribute_from_string,
 		gmathml_string_attribute_finalize
+	},
+	{
+		gmathml_color_attribute_to_string,
+		gmathml_color_attribute_from_string,
+		gmathml_color_attribute_finalize
 	}
 };
 
@@ -208,4 +289,25 @@ gmathml_attributes_is_attribute_defined (GMathmlAttributes *attributes,
 		return FALSE;
 
 	return ((GMathmlAttribute *)((void *)(instance + attr_infos->attr_offset)))->is_defined;
+}
+
+static void
+gmathml_attribute_finalize_cb (gpointer key,
+			       gpointer value,
+			       gpointer instance)
+{
+	GMathmlAttributeInfos *attr_infos = value;
+
+	if (attr_infos->attr_class->finalize)
+		attr_infos->attr_class->finalize (instance + attr_infos->attr_offset);
+}
+
+void
+gmathml_attributes_finalize_attributes (GMathmlAttributes *attributes, void *instance)
+{
+	GHashTable *hash = (GHashTable *) attributes;
+
+	g_return_if_fail (attributes != NULL);
+
+	g_hash_table_foreach (hash, gmathml_attribute_finalize_cb, instance);
 }
