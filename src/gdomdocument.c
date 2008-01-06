@@ -26,7 +26,7 @@
 
 /* GDomNode implementation */
 
-static char *
+static const char *
 gdom_document_get_node_name (GDomNode *node)
 {
 	return "#document";
