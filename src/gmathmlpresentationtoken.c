@@ -26,6 +26,22 @@
 
 /* GDomNode implementation */
 
+static const char *
+gmathml_presentation_token_get_node_name (GDomNode *node)
+{
+	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (node);
+
+	switch (token->type) {
+		case GMATHML_PRESENTATION_TOKEN_TYPE_NUMBER:
+			return "mn";
+		case GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER:
+			return "mi";
+		case GMATHML_PRESENTATION_TOKEN_TYPE_TEXT:
+		default:
+			return "mtext";
+	}
+}
+
 static gboolean
 gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 {
@@ -49,7 +65,7 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 		}
 	}
 
-	text = g_strdup (string->str);
+	text = g_strdup (/* FIXME is it safe ? */g_strstrip (string->str));
 
 	g_string_free (string, TRUE);
 
@@ -59,10 +75,12 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 static const GMathmlBbox *
 gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
 {
+	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
+	gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);
 	gmathml_view_measure_text (view, text, &self->bbox);
 
 	g_free (text);
@@ -84,10 +102,49 @@ gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_set_color (view, &token->math_color.color);
+	gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);
 	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
+}
+
+GDomNode *
+gmathml_number_element_new (void)
+{
+	GDomNode *node;
+
+	node = g_object_new (GMATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
+
+	GMATHML_PRESENTATION_TOKEN (node)->type = GMATHML_PRESENTATION_TOKEN_TYPE_NUMBER;
+
+	return node;
+}
+
+GDomNode *
+gmathml_identifier_element_new (void)
+{
+	GDomNode *node;
+
+	node = g_object_new (GMATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
+
+	GMATHML_PRESENTATION_TOKEN (node)->type = GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER;
+
+	return node;
+}
+
+GDomNode *
+gmathml_text_element_new (void)
+{
+	GDomNode *node;
+
+	node = g_object_new (GMATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
+
+	GMATHML_PRESENTATION_TOKEN (node)->type = GMATHML_PRESENTATION_TOKEN_TYPE_TEXT;
+
+	return node;
 }
 
 static void
@@ -100,10 +157,13 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 void
 gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class)
 {
+	/*FIXME math_variant */
+	gmathml_attributes_add_attribute (m_element_class->attributes, "mathsize", GMATHML_ATTRIBUTE_VUNIT,
+					  offsetof (GMathmlPresentationToken, token_attrs.math_size));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "mathcolor", GMATHML_ATTRIBUTE_COLOR,
-					  offsetof (GMathmlPresentationToken, math_color));
+					  offsetof (GMathmlPresentationToken, token_attrs.math_color));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "mathbackground", GMATHML_ATTRIBUTE_COLOR,
-					  offsetof (GMathmlPresentationToken, math_background));
+					  offsetof (GMathmlPresentationToken, token_attrs.math_background));
 }
 
 static void
@@ -112,6 +172,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (token_class);
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (token_class);
 
+	d_node_class->get_node_name = gmathml_presentation_token_get_node_name;
 	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;
 
 	m_element_class->layout = gmathml_presentation_token_layout;
@@ -125,4 +186,4 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	gmathml_element_class_add_token_attributes (m_element_class);
 }
 
-G_DEFINE_ABSTRACT_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

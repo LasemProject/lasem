@@ -28,6 +28,12 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	GMATHML_PRESENTATION_TOKEN_TYPE_NUMBER,
+	GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER,
+	GMATHML_PRESENTATION_TOKEN_TYPE_TEXT
+} GMathmlPresentationTokenType;
+
 #define GMATHML_TYPE_PRESENTATION_TOKEN             (gmathml_presentation_token_get_type ())
 #define GMATHML_PRESENTATION_TOKEN(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GMATHML_TYPE_PRESENTATION_TOKEN, GMathmlPresentationToken))
 #define GMATHML_PRESENTATION_TOKEN_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GMATHML_TYPE_PRESENTATION_TOKEN, GMathmlPresentationTokenClass))
@@ -40,8 +46,9 @@ typedef struct _GMathmlPresentationTokenClass GMathmlPresentationTokenClass;
 struct _GMathmlPresentationToken {
 	GMathmlElement	element;
 
-	GMathmlColorAttribute math_color;
-	GMathmlColorAttribute math_background;
+	GMathmlPresentationTokenType type;
+
+	GMathmlTokenAttributes token_attrs;
 };
 
 struct _GMathmlPresentationTokenClass {
@@ -49,6 +56,10 @@ struct _GMathmlPresentationTokenClass {
 };
 
 GType gmathml_presentation_token_get_type (void);
+
+GDomNode *	gmathml_number_element_new (void);
+GDomNode *	gmathml_identifier_element_new (void);
+GDomNode *	gmathml_text_element_new (void);
 
 G_END_DECLS
 
