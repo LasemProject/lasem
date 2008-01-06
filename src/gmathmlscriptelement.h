@@ -28,6 +28,12 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	GMATHML_SCRIPT_ELEMENT_TYPE_SUB,
+	GMATHML_SCRIPT_ELEMENT_TYPE_SUP,
+	GMATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP
+} GMathmlScriptElementType;
+
 #define GMATHML_TYPE_SCRIPT_ELEMENT             (gmathml_script_element_get_type ())
 #define GMATHML_SCRIPT_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GMATHML_TYPE_SCRIPT_ELEMENT, GMathmlScriptElement))
 #define GMATHML_SCRIPT_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GMATHML_TYPE_SCRIPT_ELEMENT, GMathmlScriptElementClass))
@@ -39,6 +45,8 @@ typedef struct _GMathmlScriptElementClass GMathmlScriptElementClass;
 
 struct _GMathmlScriptElement {
 	GMathmlElement	element;
+
+	GMathmlScriptElementType type;
 };
 
 struct _GMathmlScriptElementClass {
@@ -46,6 +54,10 @@ struct _GMathmlScriptElementClass {
 };
 
 GType gmathml_script_element_get_type (void);
+
+GDomNode * 	gmathml_sub_element_new 	(void);
+GDomNode * 	gmathml_sup_element_new 	(void);
+GDomNode * 	gmathml_sub_sup_element_new 	(void);
 
 G_END_DECLS
 
