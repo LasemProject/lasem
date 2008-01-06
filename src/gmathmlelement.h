@@ -43,11 +43,8 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 struct _GMathmlElement {
 	GDomElement	element;
 
-	GMathmlStringAttribute	class_name;
-	GMathmlStringAttribute	id;
-
-	GMathmlIntAttribute script_level;
-	GMathmlBooleanAttribute display;
+	GMathmlElementAttributes element_attrs;
+	GMathmlStyleAttributes style_attrs;
 
 	/* View */
 
