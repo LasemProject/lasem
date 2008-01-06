@@ -22,10 +22,11 @@
 
 #include <gmathmldocument.h>
 #include <gmathmlmathelement.h>
+#include <gmathmlradicalelement.h>
+#include <gmathmlscriptelement.h>
 #include <gmathmlfractionelement.h>
 #include <gmathmloperatorelement.h>
 #include <gmathmlrowelement.h>
-#include <gmathmlnumberelement.h>
 #include <string.h>
 
 /* GDomNode implementation */
@@ -45,6 +46,16 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 
 	if (strcmp (tag_name, "math") == 0)
 		node = gmathml_math_element_new ();
+	else if (strcmp (tag_name, "msqrt") == 0)
+		node = gmathml_sqrt_element_new ();
+	else if (strcmp (tag_name, "mroot") == 0)
+		node = gmathml_root_element_new ();
+	else if (strcmp (tag_name, "msub") == 0)
+		node = gmathml_sub_element_new ();
+	else if (strcmp (tag_name, "msup") == 0)
+		node = gmathml_sup_element_new ();
+	else if (strcmp (tag_name, "msubsup") == 0)
+		node = gmathml_sub_sup_element_new ();
 	else if (strcmp (tag_name, "mfrac") == 0)
 		node = gmathml_fraction_element_new ();
 	else if (strcmp (tag_name, "mo") == 0)
@@ -53,6 +64,10 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_row_element_new ();
 	else if (strcmp (tag_name, "mn") == 0)
 		node = gmathml_number_element_new ();
+	else if (strcmp (tag_name, "mi") == 0)
+		node = gmathml_identifier_element_new ();
+	else if (strcmp (tag_name, "mtext") == 0)
+		node = gmathml_text_element_new ();
 
 	return GDOM_ELEMENT (node);
 }
