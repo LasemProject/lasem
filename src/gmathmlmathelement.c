@@ -24,7 +24,7 @@
 
 /* GdomNode implementation */
 
-static char *
+static const char *
 gmathml_math_element_get_node_name (GDomNode *node)
 {
 	return "math";
@@ -65,6 +65,18 @@ gmathml_math_element_new (void)
 static void
 gmathml_math_element_init (GMathmlMathElement *self)
 {
+	GMathmlElement *m_element = GMATHML_ELEMENT (self);
+
+	g_message ("Init math element");
+
+	m_element->style_attrs.script_level.value = 0;
+	m_element->style_attrs.display_style.value = FALSE;
+	m_element->style_attrs.script_size_multiplier.value = 0.71;
+	m_element->style_attrs.script_min_size.value = 1;
+	m_element->style_attrs.script_min_size.unit = GMATHML_UNIT_PX;
+	/* FIXME background */
+	m_element->style_attrs.very_very_thin_math_space.value = 0.05555556;
+	m_element->style_attrs.very_very_thin_math_space.unit = GMATHML_UNIT_EM;
 }
 
 /* GMathmlMathElement class */
