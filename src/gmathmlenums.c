@@ -21,3 +21,79 @@
  */
 
 #include <gmathmlenums.h>
+#include <string.h>
+
+static const char *gmathml_named_space_strings[] = {
+	"veryverythinmathspace",
+	"verythinmathspace",
+	"thinmathspace",
+	"mediummathspace",
+	"thickmathspace",
+	"verythickmathspace",
+	"veryverythickmathspace",
+	"mediummathspace"
+};
+
+const char *
+gmathml_named_space_to_string (GMathmlNamedSpace named_space)
+{
+	return gmathml_named_space_strings[CLAMP (named_space,
+						  GMATHML_NAMED_SPACE_VERY_VERY_THIN,
+						  GMATHML_NAMED_SPACE_ERROR)];
+}
+
+GMathmlNamedSpace
+gmathml_named_space_from_string (const char *string)
+{
+	int i;
+
+	if (string == NULL)
+		return GMATHML_NAMED_SPACE_ERROR;
+
+	for (i = 0; i < G_N_ELEMENTS (gmathml_named_space_strings) - 1; i++)
+		if (strcmp (string, gmathml_named_space_strings[i]) == 0)
+			return i;
+
+	return GMATHML_NAMED_SPACE_ERROR;
+}
+
+static const char *gmathml_variant_strings[] = {
+	"normal",
+	"bold",
+	"italic",
+	"bold-italic",
+	"double-struck",
+	"bold-fraktur",
+	"script",
+	"bold-script",
+	"fraktur",
+	"sans-serif",
+	"bold-sans-serif",
+	"sans-serif-italic",
+	"sans-serif-bold-italic",
+	"monospace",
+	"normal"
+};
+
+const char *
+gmathml_variant_to_string (GMathmlVariant variant)
+{
+	return gmathml_variant_strings[CLAMP (variant,
+					      GMATHML_VARIANT_NORMAL,
+					      GMATHML_VARIANT_ERROR)];
+}
+
+GMathmlVariant
+gmathml_variant_from_string (const char *string)
+{
+	int i;
+
+	if (string == NULL)
+		return GMATHML_VARIANT_ERROR;
+
+	for (i = 0; i < G_N_ELEMENTS (gmathml_variant_strings) - 1; i++)
+		if (strcmp (string, gmathml_variant_strings[i]) == 0)
+			return i;
+
+	return GMATHML_VARIANT_ERROR;
+}
