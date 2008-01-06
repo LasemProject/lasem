@@ -22,10 +22,10 @@ gmathml_test_SOURCES = 			\
 	gmathmldocument.c		\
 	gmathmlelement.c		\
 	gmathmlmathelement.c		\
+	gmathmlradicalelement.c		\
 	gmathmlscriptelement.c		\
 	gmathmlfractionelement.c	\
 	gmathmlpresentationtoken.c	\
-	gmathmlnumberelement.c		\
 	gmathmloperatorelement.c	\
 	gmathmlpresentationcontainer.c	\
 	gmathmlrowelement.c		\
