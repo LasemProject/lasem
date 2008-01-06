@@ -22,6 +22,8 @@
 
 #include <gmathmlutils.h>
 
+const GMathmlBbox gmathml_bbox_null = {0.0, 0.0, 0.0};
+
 void
 gmathml_bbox_add_to_right (GMathmlBbox *self, const GMathmlBbox *bbox)
 {
@@ -29,6 +31,10 @@ gmathml_bbox_add_to_right (GMathmlBbox *self, const GMathmlBbox *bbox)
 	g_return_if_fail (bbox != NULL);
 
 	self->width += bbox->width;
+	if (bbox->height > self->height)
+		self->height = bbox->height;
+	if (bbox->depth > self->depth)
+		self->depth = bbox->depth;
 }
 
 void
