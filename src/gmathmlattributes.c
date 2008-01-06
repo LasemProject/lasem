@@ -87,6 +87,103 @@ gmathml_int_attribute_finalize (GMathmlAttribute *attr)
 }
 
 static const char *
+gmathml_double_attribute_to_string (GMathmlAttribute *attr)
+{
+	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
+
+	if (double_attr->string == NULL)
+		double_attr->string = g_strdup_printf ("%g", double_attr->value);
+
+	return double_attr->string;
+}
+
+static void
+gmathml_double_attribute_from_string (GMathmlAttribute *attr, const char *string)
+{
+	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
+
+	g_free (double_attr->string);
+	double_attr->string = NULL;
+
+	if (string != NULL)
+		double_attr->value = g_strtod (string, NULL);
+	else
+		double_attr = 0;
+}
+
+static void
+gmathml_double_attribute_finalize (GMathmlAttribute *attr)
+{
+	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
+
+	g_free (double_attr->string);
+	double_attr->string = NULL;
+}
+
+static const char *
+gmathml_unit_attribute_to_string (GMathmlAttribute *attr)
+{
+	GMathmlUnitAttribute *unit_attr = (GMathmlUnitAttribute *) attr;
+
+	if (unit_attr->string == NULL)
+		unit_attr->string = g_strdup_printf ("%g", unit_attr->value);
+
+	return unit_attr->string;
+}
+
+static void
+gmathml_unit_attribute_from_string (GMathmlAttribute *attr, const char *string)
+{
+	GMathmlUnitAttribute *unit_attr = (GMathmlUnitAttribute *) attr;
+
+	g_free (unit_attr->string);
+	unit_attr->string = NULL;
+
+	if (string != NULL) {
+		char *unit_str;
+
+		unit_attr->value = g_strtod (string, &unit_str);
+
+		if (unit_str[0] != '\0' ) {
+			if (strcmp (unit_str, "em") == 0)
+				unit_attr->unit = GMATHML_UNIT_EM;
+			else if (strcmp (unit_str, "ex") == 0)
+				unit_attr->unit = GMATHML_UNIT_EX;
+			else if (strcmp (unit_str, "in") == 0)
+				unit_attr->unit = GMATHML_UNIT_IN;
+			else if (strcmp (unit_str, "cm") == 0)
+				unit_attr->unit = GMATHML_UNIT_CM;
+			else if (strcmp (unit_str, "mm") == 0)
+				unit_attr->unit = GMATHML_UNIT_MM;
+			else if (strcmp (unit_str, "pt") == 0)
+				unit_attr->unit = GMATHML_UNIT_PT;
+			else if (strcmp (unit_str, "px") == 0)
+				unit_attr->unit = GMATHML_UNIT_PX;
+			else if (strcmp (unit_str, "pc") == 0)
+				unit_attr->unit = GMATHML_UNIT_PC;
+			else if (strcmp (unit_str, "%") == 0)
+				unit_attr->unit = GMATHML_UNIT_PERCENT;
+			else {
+				unit_attr->value *= 100.0;
+				unit_attr->unit = GMATHML_UNIT_PERCENT;
+			}
+		}
+	} else {
+		unit_attr->value = 0;
+		unit_attr->unit = GMATHML_UNIT_PX;
+	}
+}
+
+static void
+gmathml_unit_attribute_finalize (GMathmlAttribute *attr)
+{
+	GMathmlUnitAttribute *unit_attr = (GMathmlUnitAttribute *) attr;
+
+	g_free (unit_attr->string);
+	unit_attr->string = NULL;
+}
+
+static const char *
 gmathml_string_attribute_to_string (GMathmlAttribute *attr)
 {
 	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
@@ -183,6 +280,16 @@ static const GMathmlAttributeClass gmathml_attribute_classes[] = {
 		gmathml_int_attribute_finalize
 	},
 	{
+		gmathml_double_attribute_to_string,
+		gmathml_double_attribute_from_string,
+		gmathml_double_attribute_finalize
+	},
+	{
+		gmathml_unit_attribute_to_string,
+		gmathml_unit_attribute_from_string,
+		gmathml_unit_attribute_finalize
+	},
+	{
 		gmathml_string_attribute_to_string,
 		gmathml_string_attribute_from_string,
 		gmathml_string_attribute_finalize
@@ -253,6 +360,7 @@ gmathml_attributes_set_attribute (GMathmlAttributes *attributes,
 		return FALSE;
 
 	attr_infos->attr_class->from_string (instance + attr_infos->attr_offset, attr_value);
+	((GMathmlAttribute *)((void *)(instance + attr_infos->attr_offset)))->is_defined = TRUE;
 
 	return TRUE;
 }

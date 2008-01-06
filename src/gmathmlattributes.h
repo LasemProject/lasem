@@ -24,6 +24,7 @@
 #define GMATHML_ATTRIBUTES_H
 
 #include <gmathml.h>
+#include <gmathmlenums.h>
 #include <pango/pango-attributes.h>
 
 G_BEGIN_DECLS
@@ -31,37 +32,91 @@ G_BEGIN_DECLS
 typedef enum {
 	GMATHML_ATTRIBUTE_BOOLEAN,
 	GMATHML_ATTRIBUTE_INT,
+	GMATHML_ATTRIBUTE_DOUBLE,
+	GMATHML_ATTRIBUTE_UNIT,
 	GMATHML_ATTRIBUTE_STRING,
 	GMATHML_ATTRIBUTE_COLOR
 } GMathmlAttributeType;
 
+#define GMATHML_ATTRIBUTE_VUNIT GMATHML_ATTRIBUTE_UNIT
+#define GMATHML_ATTRIBUTE_HUNIT GMATHML_ATTRIBUTE_UNIT
+
+#define GMathmlVUnitAttribute GMathmlUnitAttribute
+#define GMathmlHUnitAttribute GMathmlUnitAttribute
+
 typedef struct _GMathmlAttributes GMathmlAttributes;
+
+/* All attribute structures must begin with the is_defined field */
 
 typedef struct {
 	gboolean	is_defined;
 } GMathmlAttribute;
 
 typedef struct {
-	GMathmlAttribute base;
+	gboolean	is_defined;
 	char *string;
 	int value;
 } GMathmlIntAttribute;
 
 typedef struct {
-	GMathmlAttribute base;
+	gboolean	is_defined;
+	char *string;
+	double value;
+} GMathmlDoubleAttribute;
+
+/* FIXME real HUnit and VUnit */
+
+typedef struct {
+	gboolean	is_defined;
+	char *string;
+	double value;
+	GMathmlUnit unit;
+} GMathmlUnitAttribute;
+
+typedef struct {
+	gboolean	is_defined;
 	char *string;
 } GMathmlStringAttribute;
 
 typedef struct {
-	GMathmlAttribute base;
+	gboolean	is_defined;
 	gboolean value;
 } GMathmlBooleanAttribute;
 
 typedef struct {
-	GMathmlAttribute base;
+	gboolean	is_defined;
 	char *string;
 	PangoColor color;
 } GMathmlColorAttribute;
+
+typedef struct {
+	GMathmlStringAttribute	class_name;
+	GMathmlStringAttribute	id;
+} GMathmlElementAttributes;
+
+typedef struct {
+	GMathmlIntAttribute script_level;
+	GMathmlBooleanAttribute display_style;
+	GMathmlDoubleAttribute script_size_multiplier;
+	GMathmlVUnitAttribute script_min_size;
+	GMathmlColorAttribute background;
+	GMathmlHUnitAttribute very_very_thin_math_space;
+	GMathmlHUnitAttribute very_thin_math_space;
+	GMathmlHUnitAttribute thin_math_space;
+	GMathmlHUnitAttribute medium_math_space;
+	GMathmlHUnitAttribute thick_math_space;
+	GMathmlHUnitAttribute very_thick_math_space;
+	GMathmlHUnitAttribute very_very_thick_math_space;
+} GMathmlStyleAttributes;
+
+typedef struct {
+#if 0
+	GMathmlVariantAttribute math_variant;
+#endif
+	GMathmlVUnitAttribute math_size;
+	GMathmlColorAttribute math_color;
+	GMathmlColorAttribute math_background;
+} GMathmlTokenAttributes;
 
 GMathmlAttributes * 	gmathml_attributes_new 			(void);
 void 			gmathml_attributes_add_attribute 	(GMathmlAttributes *attributes,
