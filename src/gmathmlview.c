@@ -32,9 +32,14 @@ struct _GMathmlViewPrivate {
 
 	PangoLayout *pango_layout;
 	PangoContext *pango_context;
+	PangoFontDescription *font_description;
 
 	/* cairo != NULL only during rendering */
 	cairo_t *cairo;
+	const GMathmlStyleAttributes *style_attrs;
+	const GMathmlTokenAttributes *token_attrs;
+
+	double font_size;
 };
 
 void
@@ -48,7 +53,10 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 		return;
 
 	g_return_if_fail (bbox != NULL);
+	g_return_if_fail (view->priv->style_attrs != NULL);
+	g_return_if_fail (view->priv->token_attrs != NULL);
 
+	pango_font_description_set_size (view->priv->font_description, 12);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
@@ -61,21 +69,77 @@ void
 gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (view->priv->style_attrs != NULL);
+	g_return_if_fail (view->priv->token_attrs != NULL);
 
 	g_message ("View: show_text %s at %g, %g", text, x, y);
 
+	cairo_set_source_rgb (view->priv->cairo,
+			      view->priv->token_attrs->math_color.color.red,
+			      view->priv->token_attrs->math_color.color.green,
+			      view->priv->token_attrs->math_color.color.blue);
 	cairo_move_to (view->priv->cairo, x, y);
+	pango_font_description_set_size (view->priv->font_description, 12);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
 void
-gmathml_view_set_color (GMathmlView *view, const PangoColor *color)
+gmathml_view_set_style (GMathmlView *view,
+			const GMathmlStyleAttributes *style_attrs,
+			const GMathmlTokenAttributes *token_attrs)
 {
-	cairo_set_source_rgb (view->priv->cairo,
-			      color->red / 65535.0,
-			      color->green / 65535.0,
-			      color->blue / 65535.0);
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	view->priv->style_attrs = style_attrs;
+	view->priv->token_attrs = token_attrs;
+}
+
+double
+gmathml_view_get_length (GMathmlView *view, const GMathmlUnitAttribute *attr,
+			 double default_value)
+{
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
+	g_return_val_if_fail (attr != NULL, 0.0);
+
+	switch (attr->unit) {
+		case GMATHML_UNIT_EX:
+			return gmathml_view_get_length_ex (view, attr->value);
+		case GMATHML_UNIT_EM:
+			return gmathml_view_get_length_em (view, attr->value);
+		case GMATHML_UNIT_PERCENT:
+			return attr->value * default_value / 100.0;
+		default:
+			break;
+	}
+
+	return 0.0;
+}
+
+double
+gmathml_view_get_length_ex (GMathmlView *view, double value)
+{
+	PangoRectangle rect;
+
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
+
+	pango_layout_set_text (view->priv->pango_layout, "x", -1);
+	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
+
+	return (pango_units_to_double (rect.height - rect.y));
+}
+
+double
+gmathml_view_get_length_em (GMathmlView *view, double value)
+{
+	PangoRectangle rect;
+
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
+
+	pango_layout_set_text (view->priv->pango_layout, "M", -1);
+	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
+
+	return (pango_units_to_double (rect.width - rect.x));
 }
 
 void
@@ -100,6 +164,9 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 	g_return_if_fail (GMATHML_IS_ELEMENT (root));
 
 	view->priv->cairo = cr;
+	view->priv->style_attrs = NULL;
+	view->priv->token_attrs = NULL;
+	view->priv->font_size = 12; /* 12 pts */
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
 
@@ -110,6 +177,8 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
 
 	view->priv->cairo = NULL;
+	view->priv->style_attrs = NULL;
+	view->priv->token_attrs = NULL;
 }
 
 GMathmlView *
@@ -137,6 +206,9 @@ gmathml_view_init (GMathmlView *view)
 	fontmap = PANGO_CAIRO_FONT_MAP (pango_cairo_font_map_get_default ());
 	view->priv->pango_context = pango_cairo_font_map_create_context (fontmap);
 	view->priv->pango_layout = pango_layout_new (view->priv->pango_context);
+	view->priv->font_description = pango_font_description_new ();
+	pango_font_description_set_family (view->priv->font_description, "Times new roman");
+	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 }
 
 static void
