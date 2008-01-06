@@ -24,7 +24,7 @@
 
 /* GDomNode implementation */
 
-static char *
+static const char *
 gdom_element_get_node_value (GDomNode *node)
 {
 	return NULL;

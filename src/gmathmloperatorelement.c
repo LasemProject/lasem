@@ -24,7 +24,7 @@
 
 /* GDomNode implementation */
 
-static char *
+static const char *
 gmathml_operator_element_get_node_name (GDomNode *node)
 {
 	return "mo";

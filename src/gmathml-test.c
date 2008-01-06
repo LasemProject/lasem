@@ -26,7 +26,6 @@
 #include <gmathmldocument.h>
 #include <gmathmlmathelement.h>
 #include <gmathmlfractionelement.h>
-#include <gmathmlnumberelement.h>
 #include <gmathmlrowelement.h>
 #include <gmathmlview.h>
 #include <gmathmlparser.h>
