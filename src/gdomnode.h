@@ -64,34 +64,44 @@ struct _GDomNode {
 struct _GDomNodeClass {
 	GObjectClass parent_class;
 
-	/* DOM node implementation */
+	/* DOM node virtuals */
 
-	char* 			(*get_node_name) (GDomNode* self);
-	char* 			(*get_node_value) (GDomNode* self);
-	void 			(*set_node_value) (GDomNode* self, const char* new_value);
-	GDomNodeType 		(*get_node_type) (GDomNode* self);
-//        GDomNodeList* 		(*get_child_nodes) (GDomNode* self);
-//        GDomNamedNodeMap* 	(*get_attributes) (GDomNode* self);
-	gboolean 		(*has_child_nodes) (GDomNode* self);
+	const char* 		(*get_node_name) 	(GDomNode* self);
+	const char* 		(*get_node_value) 	(GDomNode* self);
+	void 			(*set_node_value) 	(GDomNode* self, const char* new_value);
+	GDomNodeType 		(*get_node_type) 	(GDomNode* self);
+#if 0
+	GDomNodeList* 		(*get_child_nodes) (GDomNode* self);
+	GDomNamedNodeMap* 	(*get_attributes) (GDomNode* self);
+#endif
+
+	/* Validation virtuals */
+
+	gboolean		(*can_append_child) 	(GDomNode *self, GDomNode *new_child);
 
 	/* Implementation virtuals */
 
-	gboolean		(*can_append_child) (GDomNode *self, GDomNode *new_child);
+	void			(*post_new_child) 	(GDomNode *parent, GDomNode *child);
+	void			(*pre_remove_child) 	(GDomNode *parent, GDomNode *child);
 };
 
 GType gdom_node_get_type (void);
 
-char* 			gdom_node_get_node_name 	(GDomNode* self);
-char* 			gdom_node_get_node_value 	(GDomNode* self);
+const char* 		gdom_node_get_node_name 	(GDomNode* self);
+const char* 		gdom_node_get_node_value 	(GDomNode* self);
 void 			gdom_node_set_node_value 	(GDomNode* self, const char* new_value);
 GDomNodeType 		gdom_node_get_node_type 	(GDomNode* self);
 GDomNode* 		gdom_node_get_parent_node 	(GDomNode* self);
-//GDomNodeList* 		gdom_node_get_child_nodes 	(GDomNode* self);
+#if 0
+GDomNodeList* 		gdom_node_get_child_nodes 	(GDomNode* self);
+#endif
 GDomNode* 		gdom_node_get_first_child 	(GDomNode* self);
 GDomNode* 		gdom_node_get_last_child 	(GDomNode* self);
 GDomNode* 		gdom_node_get_previous_sibling 	(GDomNode* self);
 GDomNode* 		gdom_node_get_next_sibling 	(GDomNode* self);
-//GDomNamedNodeMap* 	gdom_node_get_attributes 	(GDomNode* self);
+#if 0
+GDomNamedNodeMap* 	gdom_node_get_attributes 	(GDomNode* self);
+#endif
 GDomNode* 		gdom_node_insert_before		(GDomNode* self, GDomNode* new_child, GDomNode* ref_child);
 GDomNode* 		gdom_node_replace_child 	(GDomNode* self, GDomNode* new_child, GDomNode* old_child);
 GDomNode* 		gdom_node_append_child 		(GDomNode* self, GDomNode* new_child);

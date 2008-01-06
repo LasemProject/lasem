@@ -22,12 +22,13 @@
 
 #include <gdomnode.h>
 #include <gdomdocument.h>
+#include <stdio.h>
 
 static GObjectClass *parent_class = NULL;
 
 /* GDomNode implementation */
 
-char*
+const char*
 gdom_node_get_node_name (GDomNode* self)
 {
 	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
@@ -40,7 +41,7 @@ gdom_node_get_node_name (GDomNode* self)
 	return NULL;
 }
 
-char*
+const char*
 gdom_node_get_node_value (GDomNode* self)
 {
 	GDomNodeClass *node_class = GDOM_NODE_GET_CLASS (self);
@@ -164,6 +165,7 @@ GDomNode*
 gdom_node_remove_child (GDomNode* self, GDomNode* old_child)
 {
 	GDomNode *node;
+	GDomNodeClass *node_class;
 
 	g_return_val_if_fail (GDOM_IS_NODE (self), NULL);
 	g_return_val_if_fail (GDOM_IS_NODE (old_child), NULL);
@@ -173,6 +175,11 @@ gdom_node_remove_child (GDomNode* self, GDomNode* old_child)
 	     node = node->next_sibling);
 
 	g_return_val_if_fail (node != NULL, NULL);
+
+	node_class = GDOM_NODE_GET_CLASS (self);
+
+	if (node_class->pre_remove_child)
+		node_class->pre_remove_child (self, old_child);
 
 	if (self->first_child == old_child)
 		self->first_child = old_child->next_sibling;
@@ -194,6 +201,8 @@ gdom_node_remove_child (GDomNode* self, GDomNode* old_child)
 GDomNode*
 gdom_node_append_child (GDomNode* self, GDomNode* new_child)
 {
+	GDomNodeClass *node_class;
+
 	g_return_val_if_fail (GDOM_IS_NODE (self), NULL);
 	g_return_val_if_fail (GDOM_NODE_GET_CLASS (self)->can_append_child (self, new_child), NULL);
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
@@ -208,6 +217,11 @@ gdom_node_append_child (GDomNode* self, GDomNode* new_child)
 	new_child->previous_sibling = self->last_child;
 	self->last_child = new_child;
 
+	node_class = GDOM_NODE_GET_CLASS (self);
+
+	if (node_class->post_new_child)
+		node_class->post_new_child (self, new_child);
+
 	return new_child;
 }
 
@@ -220,7 +234,9 @@ gdom_node_can_append_child (GDomNode *self, GDomNode* new_child)
 gboolean
 gdom_node_has_child_nodes (GDomNode* self)
 {
-	return GDOM_NODE_GET_CLASS (self)->has_child_nodes (self);
+	g_return_val_if_fail (GDOM_IS_NODE (self), FALSE);
+
+	return self->first_child != NULL;
 }
 
 void
@@ -228,7 +244,7 @@ gdom_node_dump (GDomNode *self)
 {
 	GDomNode *node;
 	GDomNodeType type;
-	char *text;
+	const char *text;
 
 	g_return_if_fail (GDOM_IS_NODE (self));
 
@@ -236,26 +252,26 @@ gdom_node_dump (GDomNode *self)
 
 	switch (type) {
 		case GDOM_NODE_TYPE_ELEMENT_NODE:
-			g_print ("<%s>", gdom_node_get_node_name (self));
+			printf ("<%s>", gdom_node_get_node_name (self));
 			for (node = self->first_child;
 			     node != NULL;
 			     node = node->next_sibling)
 				gdom_node_dump (node);
-			g_print ("</%s>", gdom_node_get_node_name (self));
+			printf ("</%s>", gdom_node_get_node_name (self));
 			break;
 		case GDOM_NODE_TYPE_TEXT_NODE:
 			text = gdom_node_get_node_value (self);
-			g_print ("%s", text != NULL ? text : "null");
+			printf ("%s", text != NULL ? text : "null");
 			break;
 		case GDOM_NODE_TYPE_DOCUMENT_NODE:
-			g_print ("Mathml Document\n");
+			printf ("Mathml Document\n");
 			if (self->first_child != NULL) {
 				gdom_node_dump (self->first_child);
-				g_print ("\n");
+				printf ("\n");
 			}
 			break;
 		default:
-			g_print ("Not supported\n");
+			printf ("Not supported\n");
 			break;
 	}
 }
