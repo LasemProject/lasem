@@ -57,6 +57,42 @@ gmathml_named_space_from_string (const char *string)
 	return GMATHML_NAMED_SPACE_ERROR;
 }
 
+static const char *gmathml_unit_strings[] = {
+	"em",
+	"ex",
+	"in",
+	"cm",
+	"mm",
+	"pt",
+	"px",
+	"pc",
+	"%",
+	""
+};
+
+const char *
+gmathml_unit_to_string (GMathmlUnit unit)
+{
+	return gmathml_named_space_strings[CLAMP (unit,
+						  GMATHML_UNIT_EM,
+						  GMATHML_UNIT_NONE)];
+}
+
+GMathmlUnit
+gmathml_unit_from_string (const char *string)
+{
+	int i;
+
+	if (string == NULL)
+		return GMATHML_UNIT_NONE;
+
+	for (i = 0; i < G_N_ELEMENTS (gmathml_unit_strings) - 1; i++)
+		if (strcmp (string, gmathml_unit_strings[i]) == 0)
+			return i;
+
+	return GMATHML_UNIT_NONE;
+}
+
 static const char *gmathml_variant_strings[] = {
 	"normal",
 	"bold",

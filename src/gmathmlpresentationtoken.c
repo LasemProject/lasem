@@ -158,7 +158,7 @@ void
 gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class)
 {
 	/*FIXME math_variant */
-	gmathml_attributes_add_attribute (m_element_class->attributes, "mathsize", GMATHML_ATTRIBUTE_VUNIT,
+	gmathml_attributes_add_attribute (m_element_class->attributes, "mathsize", GMATHML_ATTRIBUTE_VLENGTH,
 					  offsetof (GMathmlPresentationToken, token_attrs.math_size));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "mathcolor", GMATHML_ATTRIBUTE_COLOR,
 					  offsetof (GMathmlPresentationToken, token_attrs.math_color));

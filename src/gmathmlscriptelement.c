@@ -22,6 +22,7 @@
 
 #include <gmathmlscriptelement.h>
 #include <gmathmlview.h>
+#include <math.h>
 
 /* GdomNode implementation */
 
@@ -60,17 +61,56 @@ gmathml_script_element_can_append_child (GDomNode *self, GDomNode *child)
 }
 
 static void
-gmathml_script_element_post_new_child (GDomNode *parent, GDomNode *child)
+gmathml_script_element_update_child_pointers (GMathmlScriptElement *self)
 {
-	if (child != parent->first_child) {
+	GDomNode *node;
+
+	node = GDOM_NODE (self)->first_child;
+	if (node == NULL) {
+		self->base = NULL;
+		self->subscript = NULL;
+		self->superscript = NULL;
+		return;
+	} else
+		self->base = GMATHML_ELEMENT (node);
+
+	node = node->next_sibling;
+	if (node != NULL)
+		switch (self->type) {
+			case GMATHML_SCRIPT_ELEMENT_TYPE_SUP:
+				self->subscript = NULL;
+				self->superscript = GMATHML_ELEMENT (node);
+				break;
+			case GMATHML_SCRIPT_ELEMENT_TYPE_SUB:
+				self->subscript = GMATHML_ELEMENT (node);
+				self->superscript = NULL;
+				break;
+			default:
+				self->subscript = GMATHML_ELEMENT (node);
+				node = node->next_sibling;
+				if (node != NULL)
+					self->superscript = GMATHML_ELEMENT (node);
+		}
+	else {
+		self->subscript = NULL;
+		self->superscript = NULL;
+	}
+}
+
+static void
+gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
+{
+	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
+
+	if (child != self->first_child) {
 		GMathmlElement *child_element = GMATHML_ELEMENT (child);
 
-		if (!child_element->style_attrs.script_level.is_defined)
-			child_element->style_attrs.script_level.value =
-				GMATHML_ELEMENT (parent)->style_attrs.script_level.value;
-		if (!child_element->style_attrs.display_style.is_defined)
-			child_element->style_attrs.display_style.value = FALSE;
+		gmathml_increment_attribute_set_default (&child_element->style_attrs.script_level,
+							 1, GMATHML_LEVEL_TYPE_UP);
+		gmathml_boolean_attribute_set_default (&child_element->style_attrs.display_style, FALSE);
 	}
+
+	gmathml_script_element_update_child_pointers (script);
 }
 
 /* GMathmlElement implementation */
@@ -119,9 +159,48 @@ static void
 gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 			     double x, double y, const GMathmlBbox *bbox)
 {
-	double default_length = gmathml_view_get_length_ex (view, 1.0);
+	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
+	const GMathmlBbox *base_bbox, *subscript_bbox, *superscript_bbox;
+	double super_shift, sub_shift;
 
-	g_message ("default_length = %g", default_length);
+	if (script->base == NULL)
+		return;
+
+	base_bbox = script->base != NULL ?  gmathml_element_measure (script->base, view) : NULL;
+	subscript_bbox = script->subscript != NULL ?  gmathml_element_measure (script->subscript, view) : NULL;
+	superscript_bbox = script->superscript != NULL ?  gmathml_element_measure (script->superscript, view) : NULL;
+
+	/* Find automatic position */
+
+	super_shift = gmathml_view_get_length_ex (view, 1.0);
+	sub_shift = gmathml_view_get_length_ex (view, 0.5);
+
+	g_message ("super_shift = %g", super_shift);
+	g_message ("sub_shift   = %g", sub_shift);
+
+	if (superscript_bbox != NULL && subscript_bbox != NULL) {
+		double delta = (super_shift + sub_shift) - (superscript_bbox->depth + subscript_bbox->height);
+		if (delta < 0.0) {
+			super_shift += fabs (delta) * 0.5;
+			sub_shift += fabs (delta) * 0.5;
+		}
+	}
+
+	super_shift = gmathml_view_get_length (view, &script->superscript_shift, super_shift);
+	sub_shift = gmathml_view_get_length (view, &script->subscript_shift, sub_shift);
+
+	g_message ("super_shift = %g", super_shift);
+	g_message ("sub_shift   = %g", sub_shift);
+
+	gmathml_element_layout (script->base, view, x, y, base_bbox);
+	if (script->subscript)
+		gmathml_element_layout (script->subscript, view,
+					x + base_bbox->width,
+					y + sub_shift, subscript_bbox);
+	if (script->superscript)
+		gmathml_element_layout (script->superscript, view,
+					x + base_bbox->width,
+					y - super_shift, superscript_bbox);
 }
 
 /* GMathmlScriptElement implementation */

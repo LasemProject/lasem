@@ -96,7 +96,7 @@ gmathml_view_set_style (GMathmlView *view,
 }
 
 double
-gmathml_view_get_length (GMathmlView *view, const GMathmlUnitAttribute *attr,
+gmathml_view_get_length (GMathmlView *view, const GMathmlLengthAttribute *attr,
 			 double default_value)
 {
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);

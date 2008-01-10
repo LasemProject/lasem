@@ -69,14 +69,25 @@ gmathml_math_element_init (GMathmlMathElement *self)
 
 	g_message ("Init math element");
 
-	m_element->style_attrs.script_level.value = 0;
-	m_element->style_attrs.display_style.value = FALSE;
-	m_element->style_attrs.script_size_multiplier.value = 0.71;
-	m_element->style_attrs.script_min_size.value = 1;
-	m_element->style_attrs.script_min_size.unit = GMATHML_UNIT_PX;
+	gmathml_increment_attribute_set_default (&m_element->style_attrs.script_level, 0, GMATHML_LEVEL_TYPE_UP);
+	gmathml_boolean_attribute_set_default (&m_element->style_attrs.display_style, FALSE);
+	gmathml_double_attribute_set_default (&m_element->style_attrs.script_size_multiplier, 0.71);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.script_min_size, 1.0, GMATHML_UNIT_PX);
 	/* FIXME background */
-	m_element->style_attrs.very_very_thin_math_space.value = 0.05555556;
-	m_element->style_attrs.very_very_thin_math_space.unit = GMATHML_UNIT_EM;
+	gmathml_length_attribute_set_default (&m_element->style_attrs.very_very_thin_math_space,
+					      0.0555556, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.very_thin_math_space,
+					      0.111111, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.thin_math_space,
+					      0.166667, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.medium_math_space,
+					      0.222222, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.thick_math_space,
+					      0.277778, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.very_thick_math_space,
+					      0.333333, GMATHML_UNIT_EM);
+	gmathml_length_attribute_set_default (&m_element->style_attrs.very_very_thick_math_space,
+					      0.388889, GMATHML_UNIT_EM);
 }
 
 /* GMathmlMathElement class */

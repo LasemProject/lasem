@@ -40,8 +40,9 @@ gmathml_element_post_new_child (GDomNode *parent, GDomNode *child)
 	parent_style = &(GMATHML_ELEMENT (parent)->style_attrs);
 	child_style = &(GMATHML_ELEMENT (child)->style_attrs);
 
-	if (!child_style->script_level.is_defined)
-		child_style->script_level.value = parent_style->script_level.value;
+	gmathml_increment_attribute_set_default (&child_style->script_level,
+						 parent_style->script_level.value,
+						 parent_style->script_level.type);
 }
 
 static void
@@ -182,14 +183,32 @@ gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class
 					  GMATHML_ATTRIBUTE_DOUBLE,
 					  offsetof (GMathmlElement, style_attrs.script_size_multiplier));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "scriptminsize",
-					  GMATHML_ATTRIBUTE_VUNIT,
+					  GMATHML_ATTRIBUTE_VLENGTH,
 					  offsetof (GMathmlElement, style_attrs.script_min_size));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "background",
 					  GMATHML_ATTRIBUTE_COLOR,
 					  offsetof (GMathmlElement, style_attrs.background));
 	gmathml_attributes_add_attribute (m_element_class->attributes, "veryverythinmathspace",
-					  GMATHML_ATTRIBUTE_HUNIT,
+					  GMATHML_ATTRIBUTE_HLENGTH,
 					  offsetof (GMathmlElement, style_attrs.very_very_thin_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "verythinmathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.very_thin_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "thinmathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.thin_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "mediummathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.medium_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "thickmathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.thick_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "verythickmathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.very_thick_math_space));
+	gmathml_attributes_add_attribute (m_element_class->attributes, "veryverythickmathspace",
+					  GMATHML_ATTRIBUTE_HLENGTH,
+					  offsetof (GMathmlElement, style_attrs.very_very_thick_math_space));
 }
 
 static void

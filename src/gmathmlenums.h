@@ -28,6 +28,12 @@
 G_BEGIN_DECLS
 
 typedef enum {
+	GMATHML_LEVEL_TYPE_ABSOLUTE,
+	GMATHML_LEVEL_TYPE_UP,
+	GMATHML_LEVEL_TYPE_DOWN
+} GMathmlLevelType;
+
+typedef enum {
 	GMATHML_FORM_PREFIX,
 	GMATHML_FORM_POSTFIX,
 	GMATHML_FORM_INFIX
@@ -56,8 +62,12 @@ typedef enum {
 	GMATHML_UNIT_PT,
 	GMATHML_UNIT_PX,
 	GMATHML_UNIT_PC,
-	GMATHML_UNIT_PERCENT
+	GMATHML_UNIT_PERCENT,
+	GMATHML_UNIT_NONE
 } GMathmlUnit;
+
+const char * 		gmathml_unit_to_string 			(GMathmlUnit unit);
+GMathmlUnit 		gmathml_unit_from_string 		(const char *string);
 
 typedef enum {
 	GMATHML_VARIANT_NORMAL,

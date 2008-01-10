@@ -46,7 +46,14 @@ typedef struct _GMathmlScriptElementClass GMathmlScriptElementClass;
 struct _GMathmlScriptElement {
 	GMathmlElement	element;
 
+	GMathmlElement *base;
+	GMathmlElement *subscript;
+	GMathmlElement *superscript;
+
 	GMathmlScriptElementType type;
+
+	GMathmlVLengthAttribute subscript_shift;
+	GMathmlVLengthAttribute superscript_shift;
 };
 
 struct _GMathmlScriptElementClass {
