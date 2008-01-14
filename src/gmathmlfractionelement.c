@@ -126,8 +126,8 @@ gmathml_fraction_element_init (GMathmlFractionElement *element)
 void
 gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attributes_add_attribute (m_element_class->attributes, "bevelled", GMATHML_ATTRIBUTE_BOOLEAN,
-					  offsetof (GMathmlFractionElement, bevelled));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
+					     offsetof (GMathmlFractionElement, bevelled));
 }
 
 static void
@@ -145,7 +145,7 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
 
-	element_class->attributes = gmathml_attributes_new ();
+	element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (element_class);
 	gmathml_element_class_add_style_attributes (element_class);

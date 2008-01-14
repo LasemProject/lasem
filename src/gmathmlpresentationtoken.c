@@ -157,13 +157,14 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 void
 gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class)
 {
-	/*FIXME math_variant */
-	gmathml_attributes_add_attribute (m_element_class->attributes, "mathsize", GMATHML_ATTRIBUTE_VLENGTH,
-					  offsetof (GMathmlPresentationToken, token_attrs.math_size));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "mathcolor", GMATHML_ATTRIBUTE_COLOR,
-					  offsetof (GMathmlPresentationToken, token_attrs.math_color));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "mathbackground", GMATHML_ATTRIBUTE_COLOR,
-					  offsetof (GMathmlPresentationToken, token_attrs.math_background));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
+					     offsetof (GMathmlPresentationToken, token_attrs.math_variant));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
+					     offsetof (GMathmlPresentationToken, token_attrs.math_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
+					     offsetof (GMathmlPresentationToken, token_attrs.math_color));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
+					     offsetof (GMathmlPresentationToken, token_attrs.math_background));
 }
 
 static void
@@ -179,7 +180,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->measure = gmathml_presentation_token_measure;
 	m_element_class->render = gmathml_presentation_token_render;
 
-	m_element_class->attributes = gmathml_attributes_new ();
+	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 	gmathml_element_class_add_style_attributes (m_element_class);

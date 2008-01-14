@@ -26,6 +26,7 @@
 #include <glib/gmem.h>
 #include <glib/ghash.h>
 
+#if 0
 typedef struct {
 	const char * 	(*to_string)	(GMathmlAttribute *attr);
 	void 		(*from_string)	(GMathmlAttribute *attr, const char *string);
@@ -425,102 +426,118 @@ static const GMathmlAttributeClass gmathml_attribute_classes[] = {
 	}
 };
 
+#endif
+
 typedef struct {
-	const GMathmlAttributeClass *attr_class;
 	ptrdiff_t attr_offset;
 } GMathmlAttributeInfos;
 
-typedef struct GHashTable _GMathmlAttributes;
-
-GMathmlAttributes *
-gmathml_attributes_new (void)
+GMathmlAttributeMap *
+gmathml_attribute_map_new (void)
 {
-	GHashTable *hash;
+	GMathmlAttributeMap *map;
 
-	hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	map = g_new0 (GMathmlAttributeMap, 1);
+	g_return_val_if_fail (map != NULL,  NULL);
 
-	return (GMathmlAttributes *) hash;
+	map->hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+
+	return map;
 }
 
 void
-gmathml_attributes_add_attribute (GMathmlAttributes *attributes,
-				  const char *attr_name,
-				  GMathmlAttributeType attr_type,
-				  ptrdiff_t attr_offset)
+gmathml_attribute_map_free (GMathmlAttributeMap *map)
 {
-	GHashTable *hash = (GHashTable *) attributes;
+	g_return_if_fail (map != NULL);
+
+	g_hash_table_unref (map->hash);
+	g_free (map);
+}
+
+void
+gmathml_attribute_map_add_attribute (GMathmlAttributeMap *map,
+				     const char *attr_name,
+				     ptrdiff_t attr_offset)
+{
 	GMathmlAttributeInfos *attr_infos;
 
-	g_return_if_fail (attributes != NULL);
+	g_return_if_fail (map != NULL);
 	g_return_if_fail (attr_name != NULL);
-	g_return_if_fail (attr_type >= 0 && attr_type < G_N_ELEMENTS (gmathml_attribute_classes));
 	g_return_if_fail (attr_offset >= 0);
 
-	if (g_hash_table_lookup (hash, attr_name) != NULL) {
+	if (g_hash_table_lookup (map->hash, attr_name) != NULL) {
 		g_warning ("[GMathmlAttributes::add_attribute] %s already defined", attr_name);
 		return;
 	}
 
 	attr_infos = g_new (GMathmlAttributeInfos, 1);
-	attr_infos->attr_class = &gmathml_attribute_classes [attr_type];
 	attr_infos->attr_offset = attr_offset;
 
-	g_hash_table_insert (hash, (char *) attr_name, attr_infos);
+	g_hash_table_insert (map->hash, (char *) attr_name, attr_infos);
 }
 
 gboolean
-gmathml_attributes_set_attribute (GMathmlAttributes *attributes,
-				  void *instance,
-				  const char *attr_name,
-				  const char *attr_value)
+gmathml_attribute_map_set_attribute (GMathmlAttributeMap *map,
+				     void *instance,
+				     const char *attr_name,
+				     const char *attr_value)
 {
-	GHashTable *hash = (GHashTable *) attributes;
 	GMathmlAttributeInfos *attr_infos;
+	GMathmlAttributeValue *attribute;
 
-	g_return_val_if_fail (attributes != NULL, FALSE);
+	g_return_val_if_fail (map != NULL, FALSE);
 
-	attr_infos = g_hash_table_lookup (hash, attr_name);
+	attr_infos = g_hash_table_lookup (map->hash, attr_name);
 	if (attr_infos == NULL)
 		return FALSE;
 
-	attr_infos->attr_class->from_string (instance + attr_infos->attr_offset, attr_value);
-	((GMathmlAttribute *)((void *)(instance + attr_infos->attr_offset)))->is_defined = TRUE;
+	attribute = (void *)(instance + attr_infos->attr_offset);
+	g_return_val_if_fail (attribute != NULL, FALSE);
+
+	g_free (attribute->value);
+	attribute->value = attr_value != NULL ? g_strdup (attr_value) : NULL;
 
 	return TRUE;
 }
 
 char const *
-gmathml_attributes_get_attribute (GMathmlAttributes *attributes,
-				  void *instance,
-				  const char *attr_name)
+gmathml_attribute_map_get_attribute (GMathmlAttributeMap *map,
+				     void *instance,
+				     const char *attr_name)
 {
-	GHashTable *hash = (GHashTable *) attributes;
 	GMathmlAttributeInfos *attr_infos;
+	GMathmlAttributeValue *attribute;
 
-	g_return_val_if_fail (attributes != NULL, FALSE);
+	g_return_val_if_fail (map != NULL, NULL);
 
-	attr_infos = g_hash_table_lookup (hash, attr_name);
+	attr_infos = g_hash_table_lookup (map->hash, attr_name);
 	if (attr_infos == NULL)
 		return NULL;
 
-	return attr_infos->attr_class->to_string (instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attr_infos->attr_offset);
+	g_return_val_if_fail (attribute != NULL, NULL);
+
+	return attribute->value;
 }
 
 gboolean
-gmathml_attributes_is_attribute_defined (GMathmlAttributes *attributes,
-					 void *instance,
-					 const char *attr_name)
+gmathml_attribute_map_is_attribute_defined (GMathmlAttributeMap *map,
+					    void *instance,
+					    const char *attr_name)
 {
-	GHashTable *hash = (GHashTable *) attributes;
 	GMathmlAttributeInfos *attr_infos;
+	GMathmlAttributeValue *attribute;
 
-	g_return_val_if_fail (attributes != NULL, FALSE);
+	g_return_val_if_fail (map != NULL, FALSE);
 
-	attr_infos = g_hash_table_lookup (hash, attr_name);
+	attr_infos = g_hash_table_lookup (map->hash, attr_name);
 	if (attr_infos == NULL)
 		return FALSE;
 
-	return ((GMathmlAttribute *)((void *)(instance + attr_infos->attr_offset)))->is_defined;
+	attribute = (void *)(instance + attr_infos->attr_offset);
+	g_return_val_if_fail (attribute != NULL, FALSE);
+
+	return attribute->value != NULL;
 }
 
 static void
@@ -529,17 +546,84 @@ gmathml_attribute_finalize_cb (gpointer key,
 			       gpointer instance)
 {
 	GMathmlAttributeInfos *attr_infos = value;
+	GMathmlAttributeValue *attribute;
 
-	if (attr_infos->attr_class->finalize)
-		attr_infos->attr_class->finalize (instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attr_infos->attr_offset);
+	if (attribute != NULL) {
+		g_free (attribute->value);
+		g_free (attribute->css_value);
+	}
 }
 
 void
-gmathml_attributes_finalize_attributes (GMathmlAttributes *attributes, void *instance)
+gmathml_attribute_map_free_attributes (GMathmlAttributeMap *map, void *instance)
 {
-	GHashTable *hash = (GHashTable *) attributes;
+	g_return_if_fail (map != NULL);
 
-	g_return_if_fail (attributes != NULL);
-
-	g_hash_table_foreach (hash, gmathml_attribute_finalize_cb, instance);
+	g_hash_table_foreach (map->hash, gmathml_attribute_finalize_cb, instance);
 }
+
+char const *
+gmathml_attribute_value_get_actual_value (const GMathmlAttributeValue *attribute)
+{
+	g_return_val_if_fail (attribute != NULL, NULL);
+
+	if (attribute->css_value != NULL &&
+	    attribute->css_type >= GMATHML_CSS_TYPE_AUTHOR)
+		return attribute->css_value;
+
+	return attribute->value;
+}
+
+void
+gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
+				 gboolean default_value)
+{
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = default_value;
+		return;
+	}
+
+	attribute->value = (strcmp (string, "true") == 0);
+}
+
+void
+gmathml_attribute_double_parse (GMathmlAttributeDouble *attribute,
+				double default_value)
+{
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = default_value;
+		return;
+	}
+
+	attribute->value = atof (string);
+}
+
+void
+gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
+				      int default_value)
+{
+	int value;
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = default_value;
+		return;
+	}
+
+	value = atoi (string);
+	if (string[0] == '+')
+		attribute->value = value + default_value;
+	else if (string[0] == '-')
+		attribute->value = value - default_value;
+	else
+		attribute->value = value;
+}
+

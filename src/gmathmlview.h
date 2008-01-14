@@ -25,7 +25,8 @@
 
 #include <gmathml.h>
 #include <gmathmlutils.h>
-#include <gmathmlattributes.h>
+#include <gmathmlelement.h>
+#include <gmathmlpresentationtoken.h>
 #include <cairo.h>
 #include <pango/pangocairo.h>
 
@@ -61,8 +62,8 @@ void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, char con
 
 void 		gmathml_view_set_style 		(GMathmlView *view, const GMathmlStyleAttributes *style_attrs,
 						 const GMathmlTokenAttributes *token_attrs);
-double 		gmathml_view_get_length 	(GMathmlView *view, const GMathmlLengthAttribute *attr,
-						 double default_value);
+//double 		gmathml_view_get_length 	(GMathmlView *view, const GMathmlLengthAttribute *attr,
+//                                                 double default_value);
 double 		gmathml_view_get_length_ex 	(GMathmlView *view, double value);
 double 		gmathml_view_get_length_em 	(GMathmlView *view, double value);
 

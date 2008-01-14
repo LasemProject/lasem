@@ -31,18 +31,6 @@ static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
 static void
 gmathml_element_post_new_child (GDomNode *parent, GDomNode *child)
 {
-	GMathmlStyleAttributes *parent_style;
-	GMathmlStyleAttributes *child_style;
-
-	if (!GMATHML_IS_ELEMENT (child))
-		return;
-
-	parent_style = &(GMATHML_ELEMENT (parent)->style_attrs);
-	child_style = &(GMATHML_ELEMENT (child)->style_attrs);
-
-	gmathml_increment_attribute_set_default (&child_style->script_level,
-						 parent_style->script_level.value,
-						 parent_style->script_level.type);
 }
 
 static void
@@ -57,8 +45,8 @@ gmathml_element_set_attribute (GDomElement *self, const char* name, const char *
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
 
-	gmathml_attributes_set_attribute (m_element_class->attributes, self,
-					  name, value);
+	gmathml_attribute_map_set_attribute (m_element_class->attributes, self,
+					     name, value);
 }
 
 const char *
@@ -66,10 +54,28 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
 
-	return gmathml_attributes_get_attribute (m_element_class->attributes, self, name);
+	return gmathml_attribute_map_get_attribute (m_element_class->attributes, self, name);
 }
 
 /* GMathmlElement implementation */
+
+static void
+_update_attributes (GMathmlElement *self)
+{
+}
+
+void
+gmathml_element_update_attributes (GMathmlElement *element)
+{
+	GMathmlElementClass *element_class;
+
+	g_return_if_fail (GMATHML_IS_ELEMENT (element));
+
+	element_class = GMATHML_ELEMENT_GET_CLASS (element);
+
+	if (element_class->update_attributes)
+		element_class->update_attributes (element);
+}
 
 const GMathmlBbox *
 gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
@@ -124,7 +130,7 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 }
 
 static void
-gmathml_element_render_default (GMathmlElement *element, GMathmlView *view)
+_render (GMathmlElement *element, GMathmlView *view)
 {
 	GDomNode *node;
 
@@ -154,7 +160,7 @@ gmathml_element_finalize (GObject *object)
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS (object);
 
-	gmathml_attributes_finalize_attributes (m_element_class->attributes, object);
+	gmathml_attribute_map_free_attributes (m_element_class->attributes, object);
 
 	parent_class->finalize (object);
 }
@@ -164,51 +170,39 @@ gmathml_element_finalize (GObject *object)
 void
 gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attributes_add_attribute (m_element_class->attributes, "class", GMATHML_ATTRIBUTE_STRING,
-					  offsetof (GMathmlElement, element_attrs.class_name));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "id", GMATHML_ATTRIBUTE_STRING,
-					  offsetof (GMathmlElement, element_attrs.id));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "class",
+					     offsetof (GMathmlElement, element_attrs.class_name));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "id",
+					     offsetof (GMathmlElement, element_attrs.id));
 }
 
 void
 gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attributes_add_attribute (m_element_class->attributes, "scriptlevel",
-					  GMATHML_ATTRIBUTE_INT,
-					  offsetof (GMathmlElement, style_attrs.script_level));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "display",
-					  GMATHML_ATTRIBUTE_BOOLEAN,
-					  offsetof (GMathmlElement, style_attrs.display_style));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
-					  GMATHML_ATTRIBUTE_DOUBLE,
-					  offsetof (GMathmlElement, style_attrs.script_size_multiplier));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "scriptminsize",
-					  GMATHML_ATTRIBUTE_VLENGTH,
-					  offsetof (GMathmlElement, style_attrs.script_min_size));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "background",
-					  GMATHML_ATTRIBUTE_COLOR,
-					  offsetof (GMathmlElement, style_attrs.background));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "veryverythinmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.very_very_thin_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "verythinmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.very_thin_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "thinmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.thin_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "mediummathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.medium_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "thickmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.thick_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "verythickmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.very_thick_math_space));
-	gmathml_attributes_add_attribute (m_element_class->attributes, "veryverythickmathspace",
-					  GMATHML_ATTRIBUTE_HLENGTH,
-					  offsetof (GMathmlElement, style_attrs.very_very_thick_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
+					     offsetof (GMathmlElement, style_attrs.script_level));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
+					     offsetof (GMathmlElement, style_attrs.display_style));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
+					     offsetof (GMathmlElement, style_attrs.script_size_multiplier));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
+					     offsetof (GMathmlElement, style_attrs.script_min_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "background",
+					     offsetof (GMathmlElement, style_attrs.background));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
+					     offsetof (GMathmlElement, style_attrs.very_very_thin_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
+					     offsetof (GMathmlElement, style_attrs.very_thin_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thinmathspace",
+					     offsetof (GMathmlElement, style_attrs.thin_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mediummathspace",
+					     offsetof (GMathmlElement, style_attrs.medium_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thickmathspace",
+					     offsetof (GMathmlElement, style_attrs.thick_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythickmathspace",
+					     offsetof (GMathmlElement, style_attrs.very_thick_math_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
+					     offsetof (GMathmlElement, style_attrs.very_very_thick_math_space));
 }
 
 static void
@@ -228,9 +222,10 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	d_element_class->get_attribute = gmathml_element_get_attribute;
 	d_element_class->set_attribute = gmathml_element_set_attribute;
 
-	m_element_class->render = gmathml_element_render_default;
+	m_element_class->update_attributes = _update_attributes;
+	m_element_class->render = _render;
 
-	m_element_class->attributes = gmathml_attributes_new ();
+	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 	gmathml_element_class_add_style_attributes (m_element_class);

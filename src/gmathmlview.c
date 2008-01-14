@@ -74,10 +74,11 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	g_message ("View: show_text %s at %g, %g", text, x, y);
 
-	cairo_set_source_rgb (view->priv->cairo,
-			      view->priv->token_attrs->math_color.color.red,
-			      view->priv->token_attrs->math_color.color.green,
-			      view->priv->token_attrs->math_color.color.blue);
+#warning TODO
+/*        cairo_set_source_rgb (view->priv->cairo,*/
+/*                              view->priv->token_attrs->math_color.color.red,*/
+/*                              view->priv->token_attrs->math_color.color.green,*/
+/*                              view->priv->token_attrs->math_color.color.blue);*/
 	cairo_move_to (view->priv->cairo, x, y);
 	pango_font_description_set_size (view->priv->font_description, 12);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
@@ -95,6 +96,7 @@ gmathml_view_set_style (GMathmlView *view,
 	view->priv->token_attrs = token_attrs;
 }
 
+#if 0
 double
 gmathml_view_get_length (GMathmlView *view, const GMathmlLengthAttribute *attr,
 			 double default_value)
@@ -115,6 +117,7 @@ gmathml_view_get_length (GMathmlView *view, const GMathmlLengthAttribute *attr,
 
 	return 0.0;
 }
+#endif
 
 double
 gmathml_view_get_length_ex (GMathmlView *view, double value)

@@ -105,9 +105,10 @@ gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
 	if (child != self->first_child) {
 		GMathmlElement *child_element = GMATHML_ELEMENT (child);
 
-		gmathml_increment_attribute_set_default (&child_element->style_attrs.script_level,
-							 1, GMATHML_LEVEL_TYPE_UP);
-		gmathml_boolean_attribute_set_default (&child_element->style_attrs.display_style, FALSE);
+#warning TODO
+/*                gmathml_increment_attribute_set_default (&child_element->style_attrs.script_level,*/
+/*                                                         1, GMATHML_LEVEL_TYPE_UP);*/
+/*                gmathml_boolean_attribute_set_default (&child_element->style_attrs.display_style, FALSE);*/
 	}
 
 	gmathml_script_element_update_child_pointers (script);
@@ -186,8 +187,9 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 		}
 	}
 
-	super_shift = gmathml_view_get_length (view, &script->superscript_shift, super_shift);
-	sub_shift = gmathml_view_get_length (view, &script->subscript_shift, sub_shift);
+#warning TODO
+/*        super_shift = gmathml_view_get_length (view, &script->superscript_shift, super_shift);*/
+/*        sub_shift = gmathml_view_get_length (view, &script->subscript_shift, sub_shift);*/
 
 	g_message ("super_shift = %g", super_shift);
 	g_message ("sub_shift   = %g", sub_shift);

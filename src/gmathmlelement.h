@@ -57,12 +57,14 @@ struct _GMathmlElement {
 struct _GMathmlElementClass {
 	GDomElementClass  parent_class;
 
-	GMathmlAttributes *attributes;
+	GMathmlAttributeMap *attributes;
 
-	const GMathmlBbox * 	(*measure) 	(GMathmlElement *element, GMathmlView *view);
-	void 			(*layout) 	(GMathmlElement *element, GMathmlView *view,
-						 double x, double y, const GMathmlBbox *bbox);
-	void 			(*render)	(GMathmlElement *element, GMathmlView *view);
+	void			(*update_attributes)	(GMathmlElement *element);
+
+	const GMathmlBbox * 	(*measure) 		(GMathmlElement *element, GMathmlView *view);
+	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,
+							 double x, double y, const GMathmlBbox *bbox);
+	void 			(*render)		(GMathmlElement *element, GMathmlView *view);
 };
 
 GType gmathml_element_get_type (void);

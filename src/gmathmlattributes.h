@@ -30,141 +30,93 @@
 G_BEGIN_DECLS
 
 typedef enum {
-	GMATHML_ATTRIBUTE_BOOLEAN,
-	GMATHML_ATTRIBUTE_INT,
-	GMATHML_ATTRIBUTE_INCREMENT,
-	GMATHML_ATTRIBUTE_DOUBLE,
-	GMATHML_ATTRIBUTE_LENGTH,
-	GMATHML_ATTRIBUTE_STRING,
-	GMATHML_ATTRIBUTE_COLOR
-} GMathmlAttributeType;
-
-#define GMATHML_ATTRIBUTE_VLENGTH GMATHML_ATTRIBUTE_LENGTH
-#define GMATHML_ATTRIBUTE_HLENGTH GMATHML_ATTRIBUTE_LENGTH
-
-typedef struct _GMathmlAttributes GMathmlAttributes;
-
-/* All attribute structures must begin with the is_defined field */
+	GMATHML_CSS_TYPE_USER,
+	GMATHML_CSS_TYPE_AUTHOR,
+	GMATHML_CSS_TYPE_AUTHOR_IMPORTANT,
+	GMATHML_CSS_TYPE_USER_IMPORTANT
+} GMathmlCssType;
 
 typedef struct {
-	gboolean	is_defined;
-} GMathmlAttribute;
+	char *value;
+	char *css_value;
+	GMathmlCssType css_type;
+} GMathmlAttributeValue;
 
 typedef struct {
-	gboolean	is_defined;
-	gboolean value;
-} GMathmlBooleanAttribute;
+	GHashTable *hash;
+	GArray *array;
+} GMathmlAttributeMap;
 
-void 	gmathml_boolean_attribute_set_default 	(GMathmlBooleanAttribute *self,
-						 gboolean value);
+GMathmlAttributeMap *	gmathml_attribute_map_new 		(void);
+void			gmathml_attribute_map_free 		(GMathmlAttributeMap *map);
 
-typedef struct {
-	gboolean	is_defined;
-	char *string;
-	int value;
-} GMathmlIntAttribute;
+void			gmathml_attribute_map_add_attribute 		(GMathmlAttributeMap *map,
+									 char const *name,
+									 ptrdiff_t offset);
 
-void 	gmathml_int_attribute_set_default 	(GMathmlIntAttribute *self,
-						 int value);
+void			gmathml_attribute_map_free_attributes 		(GMathmlAttributeMap *map,
+									 void *instance);
+void			gmathml_attribute_map_free_css_values		(GMathmlAttributeMap *map,
+									 void *instance);
 
-typedef struct {
-	gboolean	is_defined;
-	char *string;
-	int value;
-	GMathmlLevelType type;
-} GMathmlIncrementAttribute;
+gboolean		gmathml_attribute_map_set_attribute		(GMathmlAttributeMap *map,
+									 void *instance,
+									 char const *attr_name,
+									 char const *attr_value);
+char const *		gmathml_attribute_map_get_attribute		(GMathmlAttributeMap *map,
+									 void *instance,
+									 char const *name);
+void			gmathml_attribute_map_set_css_attribute		(GMathmlAttributeMap *map,
+									 void *instance,
+									 char const *name,
+									 char const *value,
+									 GMathmlCssType css_type);
+gboolean		gmathml_attribute_map_is_attribute_defined	(GMathmlAttributeMap *map,
+									 void *instance,
+									 char const *name);
 
-void 	gmathml_increment_attribute_set_default (GMathmlIncrementAttribute *self,
-						 unsigned int value,
-						 GMathmlLevelType type);
-
-typedef struct {
-	gboolean	is_defined;
-	char *string;
-	double value;
-} GMathmlDoubleAttribute;
-
-void 	gmathml_double_attribute_set_default	(GMathmlDoubleAttribute *self,
-						 double value);
-
-/* FIXME real HUnit and VUnit */
 
 typedef struct {
-	gboolean	is_defined;
-	char *string;
-	double value;
-	GMathmlUnit unit;
-} GMathmlLengthAttribute;
-
-#define GMathmlVLengthAttribute GMathmlLengthAttribute
-#define GMathmlHLengthAttribute GMathmlLengthAttribute
-
-void 	gmathml_length_attribute_set_default 	(GMathmlLengthAttribute *self,
-						 double value,
-						 GMathmlUnit unit);
-
-typedef struct {
-	gboolean	is_defined;
-	char *string;
-} GMathmlStringAttribute;
-
-void 	gmathml_string_attribute_set_default 	(GMathmlStringAttribute *self,
-						 const char *string);
-
-typedef struct {
-	gboolean	is_defined;
-	char *string;
-	PangoColor color;
-} GMathmlColorAttribute;
-
-void 	gmathml_color_attribute_set_default 	(GMathmlColorAttribute *self,
-						 const PangoColor *color);
-
-typedef struct {
-	GMathmlStringAttribute	class_name;
-	GMathmlStringAttribute	id;
+	GMathmlAttributeValue class_name;
+	GMathmlAttributeValue id;
 } GMathmlElementAttributes;
 
 typedef struct {
-	GMathmlIncrementAttribute script_level;
-	GMathmlBooleanAttribute display_style;
-	GMathmlDoubleAttribute script_size_multiplier;
-	GMathmlVLengthAttribute script_min_size;
-	GMathmlColorAttribute background;
-	GMathmlHLengthAttribute very_very_thin_math_space;
-	GMathmlVLengthAttribute very_thin_math_space;
-	GMathmlVLengthAttribute thin_math_space;
-	GMathmlVLengthAttribute medium_math_space;
-	GMathmlVLengthAttribute thick_math_space;
-	GMathmlVLengthAttribute very_thick_math_space;
-	GMathmlVLengthAttribute very_very_thick_math_space;
-} GMathmlStyleAttributes;
+	GMathmlAttributeValue attr;
+	gboolean value;
+} GMathmlAttributeBoolean;
 
 typedef struct {
-#if 0
-	GMathmlVariantAttribute math_variant;
-#endif
-	GMathmlVLengthAttribute math_size;
-	GMathmlColorAttribute math_color;
-	GMathmlColorAttribute math_background;
-} GMathmlTokenAttributes;
+	GMathmlAttributeValue attr;
+	double value;
+} GMathmlAttributeDouble;
 
-GMathmlAttributes * 	gmathml_attributes_new 			(void);
-void 			gmathml_attributes_add_attribute 	(GMathmlAttributes *attributes,
-								 const char *attr_name,
-								 GMathmlAttributeType attr_type,
-								 ptrdiff_t attr_offset);
-gboolean 		gmathml_attributes_set_attribute 	(GMathmlAttributes *attributes,
-								 void *instance,
-								 const char *attr_name,
-								 const char *attr_value);
-char const * 		gmathml_attributes_get_attribute 	(GMathmlAttributes *attributes,
-								 void *instance,
-								 const char *attr_name);
-gboolean 		gmathml_attributes_is_attribute_defined	(GMathmlAttributes *attributes,
-								 void *instance,
-								 const char *attr_name);
-void 			gmathml_attributes_finalize_attributes 	(GMathmlAttributes *attributes, void *instance);
+typedef struct {
+	GMathmlAttributeValue attr;
+	int value;
+} GMathmlAttributeScriptLevel;
+
+typedef struct {
+	GMathmlAttributeScriptLevel script_level;
+	GMathmlAttributeBoolean display_style;
+	GMathmlAttributeDouble script_size_multiplier;
+	GMathmlAttributeValue script_min_size;
+	GMathmlAttributeValue background;
+	GMathmlAttributeValue very_very_thin_math_space;
+	GMathmlAttributeValue very_thin_math_space;
+	GMathmlAttributeValue thin_math_space;
+	GMathmlAttributeValue medium_math_space;
+	GMathmlAttributeValue thick_math_space;
+	GMathmlAttributeValue very_thick_math_space;
+	GMathmlAttributeValue very_very_thick_math_space;
+} GMathmlStyleAttributes;
+
+void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
+							 gboolean default_value);
+void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
+							 double default_value);
+void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
+							 int default_value);
 
 G_END_DECLS
 
