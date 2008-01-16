@@ -45,9 +45,9 @@ typedef struct _GMathmlPresentationTokenClass GMathmlPresentationTokenClass;
 
 typedef struct {
 	GMathmlAttributeValue math_variant;
-	GMathmlAttributeValue math_size;
-	GMathmlAttributeValue math_color;
-	GMathmlAttributeValue math_background;
+	GMathmlAttributeLength math_size;
+	GMathmlAttributeColor math_color;
+	GMathmlAttributeColor math_background;
 } GMathmlTokenAttributes;
 
 struct _GMathmlPresentationToken {

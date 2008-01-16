@@ -627,3 +627,42 @@ gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
 		attribute->value = value;
 }
 
+void
+gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
+			       double red,
+			       double green,
+			       double blue,
+			       double alpha)
+{
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	g_message ("color = %s", string);
+	if (string == NULL) {
+		attribute->red = red;
+		attribute->green = green;
+		attribute->blue = blue;
+		attribute->alpha = alpha;
+		return;
+	}
+
+	if (strcmp (string, "transparent") == 0) {
+		attribute->red = 0.0;
+		attribute->green = 0.0;
+		attribute->blue = 0.0;
+		attribute->alpha = 0.0;
+	} else {
+		PangoColor color;
+
+		pango_color_parse (&color, string);
+		attribute->alpha = 1.0;
+		attribute->red = color.red / 65535.0;
+		attribute->green = color.green / 65535.0;
+		attribute->blue = color.blue / 65535.0;
+	}
+}
+
+void gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
+				     double value, GMathmlUnit unit)
+{
+}

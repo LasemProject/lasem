@@ -69,6 +69,8 @@ struct _GMathmlElementClass {
 
 GType gmathml_element_get_type (void);
 
+void 			gmathml_element_update_attributes 	(GMathmlElement *element);
+
 const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlView *view);
 void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);

@@ -97,18 +97,32 @@ typedef struct {
 } GMathmlAttributeScriptLevel;
 
 typedef struct {
+	GMathmlAttributeValue attr;
+	double red;
+	double green;
+	double blue;
+	double alpha;
+} GMathmlAttributeColor;
+
+typedef struct {
+	GMathmlAttributeValue attr;
+	double value;
+	GMathmlUnit unit;
+} GMathmlAttributeLength;
+
+typedef struct {
 	GMathmlAttributeScriptLevel script_level;
 	GMathmlAttributeBoolean display_style;
 	GMathmlAttributeDouble script_size_multiplier;
-	GMathmlAttributeValue script_min_size;
-	GMathmlAttributeValue background;
-	GMathmlAttributeValue very_very_thin_math_space;
-	GMathmlAttributeValue very_thin_math_space;
-	GMathmlAttributeValue thin_math_space;
-	GMathmlAttributeValue medium_math_space;
-	GMathmlAttributeValue thick_math_space;
-	GMathmlAttributeValue very_thick_math_space;
-	GMathmlAttributeValue very_very_thick_math_space;
+	GMathmlAttributeLength script_min_size;
+	GMathmlAttributeColor background;
+	GMathmlAttributeLength very_very_thin_math_space;
+	GMathmlAttributeLength very_thin_math_space;
+	GMathmlAttributeLength thin_math_space;
+	GMathmlAttributeLength medium_math_space;
+	GMathmlAttributeLength thick_math_space;
+	GMathmlAttributeLength very_thick_math_space;
+	GMathmlAttributeLength very_very_thick_math_space;
 } GMathmlStyleAttributes;
 
 void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
@@ -117,6 +131,11 @@ void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
 							 double default_value);
 void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
 							 int default_value);
+void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
+							 double red, double green, double blue, double alpha);
+void		gmathml_attribute_length_parse		(GMathmlAttributeLength *attribute,
+							 double value, GMathmlUnit unit);
+
 
 G_END_DECLS
 

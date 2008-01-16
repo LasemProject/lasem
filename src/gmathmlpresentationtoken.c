@@ -52,6 +52,16 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
+static void
+gmathml_presentation_token_update_attributes (GMathmlElement *self)
+{
+	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
+
+	gmathml_attribute_length_parse (&token->token_attrs.math_size, 12.0, GMATHML_UNIT_PT);
+	gmathml_attribute_color_parse (&token->token_attrs.math_color, 0.0, 0.0, 0.0, 1.0);
+	gmathml_attribute_color_parse (&token->token_attrs.math_background, 0.0, 0.0, 0.0, 1.0);
+}
+
 static char *
 gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 {
@@ -179,6 +189,8 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->layout = gmathml_presentation_token_layout;
 	m_element_class->measure = gmathml_presentation_token_measure;
 	m_element_class->render = gmathml_presentation_token_render;
+
+	m_element_class->update_attributes = gmathml_presentation_token_update_attributes;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

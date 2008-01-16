@@ -74,11 +74,11 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	g_message ("View: show_text %s at %g, %g", text, x, y);
 
-#warning TODO
-/*        cairo_set_source_rgb (view->priv->cairo,*/
-/*                              view->priv->token_attrs->math_color.color.red,*/
-/*                              view->priv->token_attrs->math_color.color.green,*/
-/*                              view->priv->token_attrs->math_color.color.blue);*/
+	cairo_set_source_rgba (view->priv->cairo,
+			       view->priv->token_attrs->math_color.red,
+			       view->priv->token_attrs->math_color.green,
+			       view->priv->token_attrs->math_color.blue,
+			       view->priv->token_attrs->math_color.alpha);
 	cairo_move_to (view->priv->cairo, x, y);
 	pango_font_description_set_size (view->priv->font_description, 12);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
@@ -170,6 +170,8 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 	view->priv->style_attrs = NULL;
 	view->priv->token_attrs = NULL;
 	view->priv->font_size = 12; /* 12 pts */
+
+	gmathml_element_update_attributes (GMATHML_ELEMENT (root));
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
 
