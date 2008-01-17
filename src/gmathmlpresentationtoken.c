@@ -56,10 +56,35 @@ static void
 gmathml_presentation_token_update_attributes (GMathmlElement *self)
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
+	GDomNode *parent;
 
-	gmathml_attribute_length_parse (&token->token_attrs.math_size, 12.0, GMATHML_UNIT_PT);
-	gmathml_attribute_color_parse (&token->token_attrs.math_color, 0.0, 0.0, 0.0, 1.0);
-	gmathml_attribute_color_parse (&token->token_attrs.math_background, 0.0, 0.0, 0.0, 1.0);
+	for (parent = GDOM_NODE (self)->parent_node;
+	     parent != NULL && !GMATHML_IS_PRESENTATION_TOKEN (parent);
+	     parent = parent->parent_node);
+
+	if (GMATHML_IS_PRESENTATION_TOKEN (parent)) {
+		GMathmlPresentationToken *parent_token;
+
+		parent_token = GMATHML_PRESENTATION_TOKEN (parent);
+
+		gmathml_attribute_length_parse (&token->token_attrs.math_size,
+					        parent_token->token_attrs.math_size.value,
+						parent_token->token_attrs.math_size.unit);
+		gmathml_attribute_color_parse (&token->token_attrs.math_color,
+					       parent_token->token_attrs.math_color.red,
+					       parent_token->token_attrs.math_color.green,
+					       parent_token->token_attrs.math_color.blue,
+					       parent_token->token_attrs.math_color.alpha);
+		gmathml_attribute_color_parse (&token->token_attrs.math_background,
+					       parent_token->token_attrs.math_background.red,
+					       parent_token->token_attrs.math_background.green,
+					       parent_token->token_attrs.math_background.blue,
+					       parent_token->token_attrs.math_background.alpha);
+	} else {
+		gmathml_attribute_length_parse (&token->token_attrs.math_size, 12.0, GMATHML_UNIT_PT);
+		gmathml_attribute_color_parse (&token->token_attrs.math_color, 0.0, 0.0, 0.0, 1.0);
+		gmathml_attribute_color_parse (&token->token_attrs.math_background, 0.0, 0.0, 0.0, 1.0);
+	}
 }
 
 static char *

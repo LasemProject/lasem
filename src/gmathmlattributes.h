@@ -106,6 +106,11 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
+	GMathmlVariant value;
+} GMathmlAttributeVariant;
+
+typedef struct {
+	GMathmlAttributeValue attr;
 	double value;
 	GMathmlUnit unit;
 } GMathmlAttributeLength;

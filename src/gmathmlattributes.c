@@ -26,408 +26,6 @@
 #include <glib/gmem.h>
 #include <glib/ghash.h>
 
-#if 0
-typedef struct {
-	const char * 	(*to_string)	(GMathmlAttribute *attr);
-	void 		(*from_string)	(GMathmlAttribute *attr, const char *string);
-	void 		(*finalize) 	(GMathmlAttribute *attr);
-} GMathmlAttributeClass;
-
-/* Boolean attribute */
-
-static const char *
-gmathml_boolean_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlBooleanAttribute *bool_attr = (GMathmlBooleanAttribute *) attr;
-
-	return (bool_attr->value ? "true" : "false");
-}
-
-static void
-gmathml_boolean_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlBooleanAttribute *bool_attr = (GMathmlBooleanAttribute *) attr;
-
-	if (string != NULL &&
-	    strcmp ("true", string) == 0)
-		bool_attr->value = TRUE;
-	else
-		bool_attr->value = FALSE;
-}
-
-void
-gmathml_boolean_attribute_set_default (GMathmlBooleanAttribute *self,
-				       gboolean value)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined)
-		self->value = value;
-}
-
-/* Integer attribute */
-
-static const char *
-gmathml_int_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
-
-	if (int_attr->string == NULL)
-		int_attr->string = g_strdup_printf ("%i", int_attr->value);
-
-	return int_attr->string;
-}
-
-static void
-gmathml_int_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
-
-	g_free (int_attr->string);
-	int_attr->string = NULL;
-
-	if (string != NULL)
-		int_attr->value = atoi (string);
-	else
-		int_attr = 0;
-}
-
-static void
-gmathml_int_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlIntAttribute *int_attr = (GMathmlIntAttribute *) attr;
-
-	g_free (int_attr->string);
-	int_attr->string = NULL;
-}
-
-void
-gmathml_int_attribute_set_default (GMathmlIntAttribute *self,
-				   int value)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = NULL;
-		self->value = value;
-	}
-}
-
-/* Increment attribute ([+|-] integer) */
-
-static const char *
-gmathml_increment_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlIncrementAttribute *increment_attr = (GMathmlIncrementAttribute *) attr;
-
-	if (increment_attr->string == NULL) {
-		switch (increment_attr->type) {
-			case GMATHML_LEVEL_TYPE_UP:
-				increment_attr->string = g_strdup_printf ("+%ui", increment_attr->value);
-				break;
-			case GMATHML_LEVEL_TYPE_DOWN:
-				increment_attr->string = g_strdup_printf ("-%ui", increment_attr->value);
-				break;
-			case GMATHML_LEVEL_TYPE_ABSOLUTE:
-			default:
-				increment_attr->string = g_strdup_printf ("%ui", increment_attr->value);
-				break;
-		}
-	}
-
-	return increment_attr->string;
-}
-
-static void
-gmathml_increment_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlIncrementAttribute *increment_attr = (GMathmlIncrementAttribute *) attr;
-
-	g_free (increment_attr->string);
-	increment_attr->string = NULL;
-
-	if (string != NULL) {
-		increment_attr->value = atoi (string);
-		if (*string == '+')
-			increment_attr->type = GMATHML_LEVEL_TYPE_UP;
-		else if (*string == '-')
-			increment_attr->type = GMATHML_LEVEL_TYPE_DOWN;
-		else
-			increment_attr->type = GMATHML_LEVEL_TYPE_ABSOLUTE;
-	} else {
-		increment_attr->value = 0;
-		increment_attr->type = GMATHML_LEVEL_TYPE_UP;
-	}
-}
-
-static void
-gmathml_increment_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlIncrementAttribute *increment_attr = (GMathmlIncrementAttribute *) attr;
-
-	g_free (increment_attr->string);
-	increment_attr->string = NULL;
-}
-
-void
-gmathml_increment_attribute_set_default (GMathmlIncrementAttribute *self,
-					 unsigned int value,
-					 GMathmlLevelType type)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = NULL;
-		self->value = value;
-		self->type = type;
-	}
-}
-
-/* Double attribute */
-
-static const char *
-gmathml_double_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
-
-	if (double_attr->string == NULL)
-		double_attr->string = g_strdup_printf ("%g", double_attr->value);
-
-	return double_attr->string;
-}
-
-static void
-gmathml_double_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
-
-	g_free (double_attr->string);
-	double_attr->string = NULL;
-
-	if (string != NULL)
-		double_attr->value = g_strtod (string, NULL);
-	else
-		double_attr = 0;
-}
-
-static void
-gmathml_double_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlDoubleAttribute *double_attr = (GMathmlDoubleAttribute *) attr;
-
-	g_free (double_attr->string);
-	double_attr->string = NULL;
-}
-
-void
-gmathml_double_attribute_set_default (GMathmlDoubleAttribute *self,
-				      double value)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = NULL;
-		self->value = value;
-	}
-}
-
-/* Length attribute (number [unit])*/
-
-static const char *
-gmathml_length_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlLengthAttribute *length_attr = (GMathmlLengthAttribute *) attr;
-
-	if (length_attr->string == NULL)
-		length_attr->string = g_strdup_printf ("%g%s",
-						       length_attr->value,
-						       gmathml_unit_to_string (length_attr->unit));
-
-	return length_attr->string;
-}
-
-static void
-gmathml_length_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlLengthAttribute *length_attr = (GMathmlLengthAttribute *) attr;
-
-	g_free (length_attr->string);
-	length_attr->string = NULL;
-
-	if (string != NULL) {
-		char *unit_str;
-
-		length_attr->value = g_strtod (string, &unit_str);
-		length_attr->unit = gmathml_unit_from_string (unit_str);
-		if (length_attr->unit == GMATHML_UNIT_NONE)
-			length_attr->value *= 100.0;
-	} else {
-		length_attr->value = 0;
-		length_attr->unit = GMATHML_UNIT_PX;
-	}
-}
-
-static void
-gmathml_length_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlLengthAttribute *length_attr = (GMathmlLengthAttribute *) attr;
-
-	g_free (length_attr->string);
-	length_attr->string = NULL;
-}
-
-void
-gmathml_length_attribute_set_default (GMathmlLengthAttribute *self,
-				      double value,
-				      GMathmlUnit unit)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = NULL;
-		self->value = value;
-		self->unit = unit;
-	}
-}
-
-/* String attribute */
-
-static const char *
-gmathml_string_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
-
-	return str_attr->string;
-}
-
-static void
-gmathml_string_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
-
-	g_free (str_attr->string);
-
-	if (string != NULL)
-		str_attr->string = g_strdup (string);
-	else
-		str_attr->string = NULL;
-}
-
-static void
-gmathml_string_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlStringAttribute *str_attr = (GMathmlStringAttribute *) attr;
-
-	g_free (str_attr->string);
-	str_attr->string = NULL;
-}
-
-void
-gmathml_string_attribute_set_default (GMathmlStringAttribute *self,
-				      const char *string)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = string != NULL ? g_strdup (string) : NULL;
-	}
-}
-
-/* Color attribute */
-
-static const char *
-gmathml_color_attribute_to_string (GMathmlAttribute *attr)
-{
-	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
-
-	if (color_attr->string != NULL) {
-		color_attr->string = pango_color_to_string (&color_attr->color);
-	}
-
-	return color_attr->string;
-}
-
-static void
-gmathml_color_attribute_from_string (GMathmlAttribute *attr, const char *string)
-{
-	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
-
-	g_free (color_attr->string);
-
-	if (string != NULL) {
-		color_attr->string = g_strdup (string);
-		pango_color_parse (&color_attr->color, color_attr->string);
-	} else
-		color_attr->string = NULL;
-}
-
-static void
-gmathml_color_attribute_finalize (GMathmlAttribute *attr)
-{
-	GMathmlColorAttribute *color_attr = (GMathmlColorAttribute *) attr;
-
-	g_free (color_attr->string);
-	color_attr->string = NULL;
-}
-
-void
-gmathml_color_attribute_set_default (GMathmlColorAttribute *self,
-				     const PangoColor *color)
-{
-	g_return_if_fail (self != NULL);
-
-	if (!self->is_defined) {
-		g_free (self->string);
-		self->string = NULL;
-		self->color = *color;
-	}
-}
-
-static const GMathmlAttributeClass gmathml_attribute_classes[] = {
-	{
-		gmathml_boolean_attribute_to_string,
-		gmathml_boolean_attribute_from_string,
-		NULL
-	},
-	{
-		gmathml_int_attribute_to_string,
-		gmathml_int_attribute_from_string,
-		gmathml_int_attribute_finalize
-	},
-	{
-		gmathml_increment_attribute_to_string,
-		gmathml_increment_attribute_from_string,
-		gmathml_increment_attribute_finalize
-	},
-	{
-		gmathml_double_attribute_to_string,
-		gmathml_double_attribute_from_string,
-		gmathml_double_attribute_finalize
-	},
-	{
-		gmathml_length_attribute_to_string,
-		gmathml_length_attribute_from_string,
-		gmathml_length_attribute_finalize
-	},
-	{
-		gmathml_string_attribute_to_string,
-		gmathml_string_attribute_from_string,
-		gmathml_string_attribute_finalize
-	},
-	{
-		gmathml_color_attribute_to_string,
-		gmathml_color_attribute_from_string,
-		gmathml_color_attribute_finalize
-	}
-};
-
-#endif
-
 typedef struct {
 	ptrdiff_t attr_offset;
 } GMathmlAttributeInfos;
@@ -609,22 +207,23 @@ void
 gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
 				      int default_value)
 {
-	int value;
 	const char *string;
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = default_value;
-		return;
-	}
 
-	value = atoi (string);
-	if (string[0] == '+')
-		attribute->value = value + default_value;
-	else if (string[0] == '-')
-		attribute->value = value - default_value;
-	else
-		attribute->value = value;
+	if (string == NULL)
+		attribute->value = default_value;
+	else {
+		int value;
+
+		value = atoi (string);
+		if (string[0] == '+')
+			attribute->value = value + default_value;
+		else if (string[0] == '-')
+			attribute->value = value - default_value;
+		else
+			attribute->value = value;
+	}
 }
 
 void
@@ -637,31 +236,59 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	const char *string;
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+
 	if (string == NULL) {
 		attribute->red = red;
 		attribute->green = green;
 		attribute->blue = blue;
 		attribute->alpha = alpha;
-		return;
-	}
-
-	if (strcmp (string, "transparent") == 0) {
-		attribute->red = 0.0;
-		attribute->green = 0.0;
-		attribute->blue = 0.0;
-		attribute->alpha = 0.0;
 	} else {
-		PangoColor color;
+		if (strcmp (string, "transparent") == 0) {
+			attribute->red = 0.0;
+			attribute->green = 0.0;
+			attribute->blue = 0.0;
+			attribute->alpha = 0.0;
+		} else {
+			PangoColor color;
 
-		pango_color_parse (&color, string);
-		attribute->alpha = 1.0;
-		attribute->red = color.red / 65535.0;
-		attribute->green = color.green / 65535.0;
-		attribute->blue = color.blue / 65535.0;
+			pango_color_parse (&color, string);
+			attribute->alpha = 1.0;
+			attribute->red = color.red / 65535.0;
+			attribute->green = color.green / 65535.0;
+			attribute->blue = color.blue / 65535.0;
+		}
 	}
+}
+
+void gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
+				      GMathmlVariant variant)
+{
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+
+	if (string == NULL)
+		attribute->value = variant;
+	else
+		attribute->value = gmathml_variant_from_string (string);
 }
 
 void gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 				     double value, GMathmlUnit unit)
 {
+	const char *string;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+
+	if (string == NULL) {
+		attribute->value = value;
+		attribute->unit = unit;
+	} else {
+		char *unit_str;
+
+		attribute->value = g_strtod (string, &unit_str);
+		attribute->unit = gmathml_unit_from_string (unit_str);
+		if (attribute->unit == GMATHML_UNIT_NONE)
+			attribute->value *= 100.0;
+	}
 }
