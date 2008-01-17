@@ -24,13 +24,13 @@
 
 /* GDomNode implementation */
 
-static char *
+static const char *
 gdom_text_get_node_name (GDomNode *node)
 {
 	return "#text";
 }
 
-static char *
+static const char *
 gdom_text_get_node_value (GDomNode *node)
 {
 	return GDOM_CHARACTER_DATA (node)->data;
