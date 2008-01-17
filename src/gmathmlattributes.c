@@ -637,7 +637,6 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	const char *string;
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	g_message ("color = %s", string);
 	if (string == NULL) {
 		attribute->red = red;
 		attribute->green = green;

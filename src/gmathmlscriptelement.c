@@ -103,9 +103,9 @@ gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
 	if (child != self->first_child) {
-		GMathmlElement *child_element = GMATHML_ELEMENT (child);
-
 #warning TODO
+/*                GMathmlElement *child_element = GMATHML_ELEMENT (child);*/
+
 /*                gmathml_increment_attribute_set_default (&child_element->style_attrs.script_level,*/
 /*                                                         1, GMATHML_LEVEL_TYPE_UP);*/
 /*                gmathml_boolean_attribute_set_default (&child_element->style_attrs.display_style, FALSE);*/

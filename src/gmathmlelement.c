@@ -79,7 +79,6 @@ _update_attributes (GMathmlElement *self)
 	gmathml_attribute_double_parse (&self->style_attrs.script_size_multiplier, 0.71);
 	gmathml_attribute_color_parse (&self->style_attrs.background, 0.0, 0.0, 0.0, 0.0);
 
-#warning TODO
 /*        gmathml_boolean_attribute_set_default (&m_element->style_attrs.display_style, FALSE);*/
 /*        gmathml_double_attribute_set_default (&m_element->style_attrs.script_size_multiplier, 0.71);*/
 /*        gmathml_length_attribute_set_default (&m_element->style_attrs.script_min_size, 1.0, GMATHML_UNIT_PX);*/
@@ -116,7 +115,8 @@ gmathml_element_update_attributes (GMathmlElement *element)
 		element_class->update_attributes (element);
 
 	for (node = GDOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
-		gmathml_element_update_attributes (GMATHML_ELEMENT (element));
+		if (GMATHML_IS_ELEMENT (node))
+			gmathml_element_update_attributes (GMATHML_ELEMENT (node));
 }
 
 const GMathmlBbox *
