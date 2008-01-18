@@ -44,7 +44,6 @@ struct _GMathmlElement {
 	GDomElement	element;
 
 	GMathmlElementAttributes element_attrs;
-	GMathmlStyleAttributes style_attrs;
 
 	/* View */
 
@@ -77,7 +76,6 @@ void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
 void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
 void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
-void 			gmathml_element_class_add_style_attributes 	(GMathmlElementClass *m_element_class);
 
 G_END_DECLS
 

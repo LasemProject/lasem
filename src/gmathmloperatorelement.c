@@ -75,7 +75,7 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_style_attributes (m_element_class);
+	gmathml_element_class_add_operator_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlOperatorElement, gmathml_operator_element, GMATHML_TYPE_PRESENTATION_TOKEN)

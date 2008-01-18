@@ -110,12 +110,12 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 static const GMathmlBbox *
 gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
 {
-	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
+/*        GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);*/
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);
+/*        gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);*/
 	gmathml_view_measure_text (view, text, &self->bbox);
 
 	g_free (text);
@@ -132,12 +132,12 @@ gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view,
 static void
 gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 {
-	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
+/*        GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);*/
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);
+/*        gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);*/
 	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
@@ -220,7 +220,6 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_style_attributes (m_element_class);
 	gmathml_element_class_add_token_attributes (m_element_class);
 }
 

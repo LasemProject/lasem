@@ -28,6 +28,7 @@ gmathml_test_SOURCES = 			\
 	gmathmlpresentationtoken.c	\
 	gmathmloperatorelement.c	\
 	gmathmlpresentationcontainer.c	\
+	gmathmlstyleelement.c		\
 	gmathmlrowelement.c		\
 	gmathmlattributes.c		\
 	gmathmlview.c			\

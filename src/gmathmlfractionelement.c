@@ -148,7 +148,6 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (element_class);
-	gmathml_element_class_add_style_attributes (element_class);
 	gmathml_element_class_add_fraction_attributes (element_class);
 }
 

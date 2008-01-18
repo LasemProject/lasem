@@ -27,6 +27,7 @@
 #include <gmathmlfractionelement.h>
 #include <gmathmloperatorelement.h>
 #include <gmathmlrowelement.h>
+#include <gmathmlstyleelement.h>
 #include <string.h>
 
 /* GDomNode implementation */
@@ -68,6 +69,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_identifier_element_new ();
 	else if (strcmp (tag_name, "mtext") == 0)
 		node = gmathml_text_element_new ();
+	else if (strcmp (tag_name, "mstyle") == 0)
+		node = gmathml_style_element_new ();
 
 	return GDOM_ELEMENT (node);
 }

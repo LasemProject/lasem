@@ -37,6 +37,7 @@ typedef struct _GMathmlPresentationToken GMathmlPresentationToken;
 typedef struct _GMathmlNumberElement GMathmlNumberElement;
 typedef struct _GMathmlOperatorElement GMathmlOperatorElement;
 typedef struct _GMathmlPresentationContainer GMathmlPresentationContainer;
+typedef struct _GMathmlStyleElement GMathmlStyleElement;
 typedef struct _GMathmlRowElement GMathmlRowElement;
 
 typedef struct _GMathmlView GMathmlView;
