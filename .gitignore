@@ -19,3 +19,5 @@ missing
 mkinstalldirs
 stamp*
 autom4te*
+gmathml.svg
+tags
