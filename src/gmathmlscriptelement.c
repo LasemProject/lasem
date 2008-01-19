@@ -102,15 +102,6 @@ gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
-	if (child != self->first_child) {
-#warning TODO
-/*                GMathmlElement *child_element = GMATHML_ELEMENT (child);*/
-
-/*                gmathml_increment_attribute_set_default (&child_element->style_attrs.script_level,*/
-/*                                                         1, GMATHML_LEVEL_TYPE_UP);*/
-/*                gmathml_boolean_attribute_set_default (&child_element->style_attrs.display_style, FALSE);*/
-	}
-
 	gmathml_script_element_update_child_pointers (script);
 }
 
@@ -162,7 +153,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 	const GMathmlBbox *base_bbox, *subscript_bbox, *superscript_bbox;
-	double super_shift, sub_shift;
+	double super_shift, sub_shift, ex;
 
 	if (script->base == NULL)
 		return;
@@ -173,8 +164,9 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	/* Find automatic position */
 
-	super_shift = gmathml_view_get_length_ex (view, 1.0);
-	sub_shift = gmathml_view_get_length_ex (view, 0.5);
+	ex = gmathml_view_get_ex_length (view);
+	super_shift = ex;
+	sub_shift = ex * 0.5;
 
 	g_message ("super_shift = %g", super_shift);
 	g_message ("sub_shift   = %g", sub_shift);
@@ -187,9 +179,8 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 		}
 	}
 
-#warning TODO
-/*        super_shift = gmathml_view_get_length (view, &script->superscript_shift, super_shift);*/
-/*        sub_shift = gmathml_view_get_length (view, &script->subscript_shift, sub_shift);*/
+	gmathml_attribute_length_parse (&script->superscript_shift, super_shift, ex);
+	gmathml_attribute_length_parse (&script->subscript_shift, sub_shift, ex);
 
 	g_message ("super_shift = %g", super_shift);
 	g_message ("sub_shift   = %g", sub_shift);

@@ -58,14 +58,16 @@ GMathmlView *	gmathml_view_new 		(GMathmlDocument *document);
 void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
 
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
-void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, char const *text);
+void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
 
-void 		gmathml_view_set_style 		(GMathmlView *view, const GMathmlStyleAttributes *style_attrs,
-						 const GMathmlTokenAttributes *token_attrs);
-//double 		gmathml_view_get_length 	(GMathmlView *view, const GMathmlLengthAttribute *attr,
-//                                                 double default_value);
-double 		gmathml_view_get_length_ex 	(GMathmlView *view, double value);
-double 		gmathml_view_get_length_em 	(GMathmlView *view, double value);
+void		gmathml_view_push_style		(GMathmlView *view, const GMathmlStyleElement *style);
+void		gmathml_view_pop_style		(GMathmlView *view);
+
+void		gmathml_view_push_element	(GMathmlView *view, const GMathmlElement *element);
+void		gmathml_view_pop_element	(GMathmlView *view);
+
+double 		gmathml_view_get_ex_length 	(GMathmlView *view);
+double 		gmathml_view_get_em_length 	(GMathmlView *view);
 
 void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0, double x1, double y1);
 G_END_DECLS

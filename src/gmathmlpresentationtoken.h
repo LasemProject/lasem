@@ -43,19 +43,15 @@ typedef enum {
 
 typedef struct _GMathmlPresentationTokenClass GMathmlPresentationTokenClass;
 
-typedef struct {
-	GMathmlAttributeVariant math_variant;
-	GMathmlAttributeLength math_size;
-	GMathmlAttributeColor math_color;
-	GMathmlAttributeColor math_background;
-} GMathmlTokenAttributes;
-
 struct _GMathmlPresentationToken {
 	GMathmlElement	element;
 
 	GMathmlPresentationTokenType type;
 
-	GMathmlTokenAttributes token_attrs;
+	GMathmlAttributeVariant math_variant;
+	GMathmlAttributeLength math_size;
+	GMathmlAttributeColor math_color;
+	GMathmlAttributeColor math_background;
 };
 
 struct _GMathmlPresentationTokenClass {

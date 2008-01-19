@@ -21,6 +21,7 @@
  */
 
 #include <gmathmlelement.h>
+#include <gmathmlview.h>
 
 static GObjectClass *parent_class;
 
@@ -60,15 +61,19 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 /* GMathmlElement implementation */
 
 static void
-_update_attributes (GMathmlElement *self)
+_update (GMathmlElement *self, GMathmlView *view)
 {
+	GDomNode *node;
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+		if (GMATHML_IS_ELEMENT (node))
+			gmathml_element_update (GMATHML_ELEMENT (node), view);
 }
 
 void
-gmathml_element_update_attributes (GMathmlElement *element)
+gmathml_element_update (GMathmlElement *element, GMathmlView *view)
 {
 	GMathmlElementClass *element_class;
-	GDomNode *node;
 
 	g_return_if_fail (GMATHML_IS_ELEMENT (element));
 
@@ -76,12 +81,11 @@ gmathml_element_update_attributes (GMathmlElement *element)
 
 	element_class = GMATHML_ELEMENT_GET_CLASS (element);
 
-	if (element_class->update_attributes)
-		element_class->update_attributes (element);
-
-	for (node = GDOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
-		if (GMATHML_IS_ELEMENT (node))
-			gmathml_element_update_attributes (GMATHML_ELEMENT (node));
+	if (element_class->update) {
+		gmathml_view_push_element (view, element);
+		element_class->update (element, view);
+		gmathml_view_pop_element (view);
+	}
 }
 
 const GMathmlBbox *
@@ -97,7 +101,9 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 
 	if (!element->measure_done) {
 		if (element_class->measure) {
+			gmathml_view_push_element (view, element);
 			element->bbox = *(element_class->measure (element, view));
+			gmathml_view_pop_element (view);
 
 			g_message ("BBox (%s) %g, %g, %g",
 				   gdom_node_get_node_name (GDOM_NODE (element)),
@@ -132,8 +138,11 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 	self->x = x;
 	self->y = y;
 
-	if (element_class->layout)
+	if (element_class->layout) {
+		gmathml_view_push_element (view, self);
 		element_class->layout (self, view, x, y, bbox);
+		gmathml_view_pop_element (view);
+	}
 }
 
 static void
@@ -153,8 +162,11 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 
 	g_return_if_fail (element_class != NULL);
 
-	if (element_class->render)
+	if (element_class->render) {
+		gmathml_view_push_element (view, element);
 		element_class->render (element, view);
+		gmathml_view_pop_element (view);
+	}
 }
 
 static void
@@ -178,9 +190,11 @@ void
 gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_class)
 {
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "class",
-					     offsetof (GMathmlElement, element_attrs.class_name));
+					     offsetof (GMathmlElement, class_name));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "id",
-					     offsetof (GMathmlElement, element_attrs.id));
+					     offsetof (GMathmlElement, id));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "href",
+					     offsetof (GMathmlElement, href));
 }
 
 static void
@@ -200,7 +214,7 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	d_element_class->get_attribute = gmathml_element_get_attribute;
 	d_element_class->set_attribute = gmathml_element_set_attribute;
 
-	m_element_class->update_attributes = _update_attributes;
+	m_element_class->update = _update;
 	m_element_class->render = _render;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();

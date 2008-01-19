@@ -43,7 +43,12 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 struct _GMathmlElement {
 	GDomElement	element;
 
-	GMathmlElementAttributes element_attrs;
+	GMathmlAttributeValue class_name;
+	GMathmlAttributeValue id;
+	GMathmlAttributeValue href;
+
+	GMathmlAttributeScriptLevel script_level;
+	GMathmlAttributeBoolean display_style;
 
 	/* View */
 
@@ -58,8 +63,7 @@ struct _GMathmlElementClass {
 
 	GMathmlAttributeMap *attributes;
 
-	void			(*update_attributes)	(GMathmlElement *element);
-
+	void			(*update)		(GMathmlElement *element, GMathmlView *view);
 	const GMathmlBbox * 	(*measure) 		(GMathmlElement *element, GMathmlView *view);
 	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);
@@ -68,12 +72,12 @@ struct _GMathmlElementClass {
 
 GType gmathml_element_get_type (void);
 
-void 			gmathml_element_update_attributes 	(GMathmlElement *element);
+void 			gmathml_element_update 			(GMathmlElement *element, GMathmlView *view);
 
-const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlView *view);
-void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
-							 double x, double y, const GMathmlBbox *bbox);
-void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
+const GMathmlBbox *	gmathml_element_measure			(GMathmlElement *element, GMathmlView *view);
+void 			gmathml_element_layout 			(GMathmlElement *element, GMathmlView *view,
+								 double x, double y, const GMathmlBbox *bbox);
+void 			gmathml_element_render 			(GMathmlElement *element, GMathmlView *view);
 
 void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
 

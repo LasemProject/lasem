@@ -53,7 +53,7 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_presentation_token_update_attributes (GMathmlElement *self)
+gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 	GDomNode *parent;
@@ -67,23 +67,23 @@ gmathml_presentation_token_update_attributes (GMathmlElement *self)
 
 		parent_token = GMATHML_PRESENTATION_TOKEN (parent);
 
-		gmathml_attribute_length_parse (&token->token_attrs.math_size,
-					        parent_token->token_attrs.math_size.value,
-						parent_token->token_attrs.math_size.unit);
-		gmathml_attribute_color_parse (&token->token_attrs.math_color,
-					       parent_token->token_attrs.math_color.red,
-					       parent_token->token_attrs.math_color.green,
-					       parent_token->token_attrs.math_color.blue,
-					       parent_token->token_attrs.math_color.alpha);
-		gmathml_attribute_color_parse (&token->token_attrs.math_background,
-					       parent_token->token_attrs.math_background.red,
-					       parent_token->token_attrs.math_background.green,
-					       parent_token->token_attrs.math_background.blue,
-					       parent_token->token_attrs.math_background.alpha);
+		gmathml_attribute_length_parse (&token->math_size,
+						parent_token->math_size.value,
+						gmathml_view_get_em_length (view));
+		gmathml_attribute_color_parse (&token->math_color,
+					       parent_token->math_color.red,
+					       parent_token->math_color.green,
+					       parent_token->math_color.blue,
+					       parent_token->math_color.alpha);
+		gmathml_attribute_color_parse (&token->math_background,
+					       parent_token->math_background.red,
+					       parent_token->math_background.green,
+					       parent_token->math_background.blue,
+					       parent_token->math_background.alpha);
 	} else {
-		gmathml_attribute_length_parse (&token->token_attrs.math_size, 12.0, GMATHML_UNIT_PT);
-		gmathml_attribute_color_parse (&token->token_attrs.math_color, 0.0, 0.0, 0.0, 1.0);
-		gmathml_attribute_color_parse (&token->token_attrs.math_background, 0.0, 0.0, 0.0, 1.0);
+		gmathml_attribute_length_parse (&token->math_size, 12.0, gmathml_view_get_em_length (view));
+		gmathml_attribute_color_parse (&token->math_color, 0.0, 0.0, 0.0, 1.0);
+		gmathml_attribute_color_parse (&token->math_background, 0.0, 0.0, 0.0, 1.0);
 	}
 }
 
@@ -110,12 +110,10 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 static const GMathmlBbox *
 gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
 {
-/*        GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);*/
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-/*        gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);*/
 	gmathml_view_measure_text (view, text, &self->bbox);
 
 	g_free (text);
@@ -132,12 +130,10 @@ gmathml_presentation_token_layout (GMathmlElement *self, GMathmlView *view,
 static void
 gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 {
-/*        GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);*/
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-/*        gmathml_view_set_style (view, &self->style_attrs, &token->token_attrs);*/
 	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
@@ -193,13 +189,13 @@ void
 gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class)
 {
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					     offsetof (GMathmlPresentationToken, token_attrs.math_variant));
+					     offsetof (GMathmlPresentationToken, math_variant));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					     offsetof (GMathmlPresentationToken, token_attrs.math_size));
+					     offsetof (GMathmlPresentationToken, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
-					     offsetof (GMathmlPresentationToken, token_attrs.math_color));
+					     offsetof (GMathmlPresentationToken, math_color));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
-					     offsetof (GMathmlPresentationToken, token_attrs.math_background));
+					     offsetof (GMathmlPresentationToken, math_background));
 }
 
 static void
@@ -215,7 +211,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->measure = gmathml_presentation_token_measure;
 	m_element_class->render = gmathml_presentation_token_render;
 
-	m_element_class->update_attributes = gmathml_presentation_token_update_attributes;
+	m_element_class->update = gmathml_presentation_token_update;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

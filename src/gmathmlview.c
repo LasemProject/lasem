@@ -23,6 +23,7 @@
 #include <gmathmlview.h>
 #include <gmathmldocument.h>
 #include <gmathmlelement.h>
+#include <gmathmlstyleelement.h>
 
 static GObjectClass *parent_class;
 
@@ -34,29 +35,32 @@ struct _GMathmlViewPrivate {
 	PangoContext *pango_context;
 	PangoFontDescription *font_description;
 
-	/* cairo != NULL only during rendering */
+	/* rendering context */
 	cairo_t *cairo;
-	const GMathmlStyleAttributes *style_attrs;
-	const GMathmlTokenAttributes *token_attrs;
-
-	double font_size;
+	const GMathmlStyleElement *current_style;
+	const GMathmlElement *current_element;
+	GSList *styles;
+	GSList *elements;
 };
 
 void
 gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbox)
 {
+	GMathmlPresentationToken *token;
 	PangoRectangle rect;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element));
+
+	token = GMATHML_PRESENTATION_TOKEN (view->priv->current_element);
 
 	if (text == NULL)
 		return;
 
 	g_return_if_fail (bbox != NULL);
-	g_return_if_fail (view->priv->style_attrs != NULL);
-	g_return_if_fail (view->priv->token_attrs != NULL);
 
-	pango_font_description_set_size (view->priv->font_description, 12);
+	pango_font_description_set_size (view->priv->font_description,
+					 token->math_size.value);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
@@ -68,64 +72,97 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 void
 gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
+	GMathmlPresentationToken *token;
+
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (view->priv->style_attrs != NULL);
-	g_return_if_fail (view->priv->token_attrs != NULL);
+	g_return_if_fail (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element));
+
+	token = GMATHML_PRESENTATION_TOKEN (view->priv->current_element);
+
+	if (text == NULL)
+		return;
 
 	g_message ("View: show_text %s at %g, %g", text, x, y);
 
 	cairo_set_source_rgba (view->priv->cairo,
-			       view->priv->token_attrs->math_color.red,
-			       view->priv->token_attrs->math_color.green,
-			       view->priv->token_attrs->math_color.blue,
-			       view->priv->token_attrs->math_color.alpha);
+			       token->math_color.red,
+			       token->math_color.green,
+			       token->math_color.blue,
+			       token->math_color.alpha);
 	cairo_move_to (view->priv->cairo, x, y);
-	pango_font_description_set_size (view->priv->font_description, 12);
+
+	pango_font_description_set_size (view->priv->font_description,
+					 token->math_size.value);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
 void
-gmathml_view_set_style (GMathmlView *view,
-			const GMathmlStyleAttributes *style_attrs,
-			const GMathmlTokenAttributes *token_attrs)
+gmathml_view_push_style (GMathmlView *view, const GMathmlStyleElement *style)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_STYLE_ELEMENT (style));
 
-	view->priv->style_attrs = style_attrs;
-	view->priv->token_attrs = token_attrs;
+	view->priv->styles = g_slist_prepend (view->priv->styles, (void *) style);
+	view->priv->current_style = style;
 }
 
-#if 0
-double
-gmathml_view_get_length (GMathmlView *view, const GMathmlLengthAttribute *attr,
-			 double default_value)
+void
+gmathml_view_pop_style (GMathmlView *view)
 {
-	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
-	g_return_val_if_fail (attr != NULL, 0.0);
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (view->priv->styles != NULL);
 
-	switch (attr->unit) {
-		case GMATHML_UNIT_EX:
-			return gmathml_view_get_length_ex (view, attr->value);
-		case GMATHML_UNIT_EM:
-			return gmathml_view_get_length_em (view, attr->value);
-		case GMATHML_UNIT_PERCENT:
-			return attr->value * default_value / 100.0;
-		default:
-			break;
-	}
+	view->priv->styles = g_slist_remove (view->priv->styles, view->priv->styles->data);
 
-	return 0.0;
+	if (view->priv->styles != NULL)
+		view->priv->current_style = view->priv->styles->data;
+	else
+		view->priv->current_style = NULL;
 }
-#endif
+
+void
+gmathml_view_push_element (GMathmlView *view, const GMathmlElement *element)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (element));
+
+	view->priv->elements = g_slist_prepend (view->priv->elements, (void *) element);
+	view->priv->current_element = element;
+}
+
+void
+gmathml_view_pop_element (GMathmlView *view)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (view->priv->elements != NULL);
+
+	view->priv->elements = g_slist_remove (view->priv->elements, view->priv->elements->data);
+
+	if (view->priv->elements != NULL)
+		view->priv->current_element = view->priv->elements->data;
+	else
+		view->priv->current_element = NULL;
+}
 
 double
-gmathml_view_get_length_ex (GMathmlView *view, double value)
+gmathml_view_get_ex_length (GMathmlView *view)
 {
 	PangoRectangle rect;
+	double font_size;
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
+	if (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element))
+		font_size = GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
+	else if (view->priv->current_style != NULL)
+		font_size = view->priv->current_style->math_size.value;
+	else {
+		g_warning ("[GMathmlView::get_em_length] can't get font size");
+		return 0.0;
+	}
+
+	pango_font_description_set_size (view->priv->font_description, font_size);
 	pango_layout_set_text (view->priv->pango_layout, "x", -1);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
@@ -133,12 +170,23 @@ gmathml_view_get_length_ex (GMathmlView *view, double value)
 }
 
 double
-gmathml_view_get_length_em (GMathmlView *view, double value)
+gmathml_view_get_em_length (GMathmlView *view)
 {
 	PangoRectangle rect;
+	double font_size;
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
+	if (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element))
+		font_size = GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
+	else if (view->priv->current_style != NULL)
+		font_size = view->priv->current_style->math_size.value;
+	else {
+		g_warning ("[GMathmlView::get_em_length] can't get font size");
+		return 0.0;
+	}
+
+	pango_font_description_set_size (view->priv->font_description, font_size);
 	pango_layout_set_text (view->priv->pango_layout, "M", -1);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
@@ -167,11 +215,12 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 	g_return_if_fail (GMATHML_IS_ELEMENT (root));
 
 	view->priv->cairo = cr;
-	view->priv->style_attrs = NULL;
-	view->priv->token_attrs = NULL;
-	view->priv->font_size = 12; /* 12 pts */
+	view->priv->current_style = NULL;
+	view->priv->current_element = NULL;
+	view->priv->styles = NULL;
+	view->priv->elements = NULL;
 
-	gmathml_element_update_attributes (GMATHML_ELEMENT (root));
+	gmathml_element_update (GMATHML_ELEMENT (root), view);
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
 
@@ -182,8 +231,18 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
 
 	view->priv->cairo = NULL;
-	view->priv->style_attrs = NULL;
-	view->priv->token_attrs = NULL;
+
+	if (view->priv->styles != NULL) {
+		g_warning ("[GMathmlView::render] dangling styles (check push/pop style calls)");
+		g_slist_free (view->priv->styles);
+		view->priv->styles = NULL;
+	}
+
+	if (view->priv->elements != NULL) {
+		g_warning ("[GMathmlView::render] dangling elements (check push/pop element calls)");
+		g_slist_free (view->priv->elements);
+		view->priv->elements = NULL;
+	}
 }
 
 GMathmlView *

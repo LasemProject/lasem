@@ -77,11 +77,6 @@ gboolean		gmathml_attribute_map_is_attribute_defined	(GMathmlAttributeMap *map,
 
 
 typedef struct {
-	GMathmlAttributeValue class_name;
-	GMathmlAttributeValue id;
-} GMathmlElementAttributes;
-
-typedef struct {
 	GMathmlAttributeValue attr;
 	gboolean value;
 } GMathmlAttributeBoolean;
@@ -112,23 +107,7 @@ typedef struct {
 typedef struct {
 	GMathmlAttributeValue attr;
 	double value;
-	GMathmlUnit unit;
 } GMathmlAttributeLength;
-
-typedef struct {
-	GMathmlAttributeScriptLevel script_level;
-	GMathmlAttributeBoolean display_style;
-	GMathmlAttributeDouble script_size_multiplier;
-	GMathmlAttributeLength script_min_size;
-	GMathmlAttributeColor background;
-	GMathmlAttributeLength very_very_thin_math_space;
-	GMathmlAttributeLength very_thin_math_space;
-	GMathmlAttributeLength thin_math_space;
-	GMathmlAttributeLength medium_math_space;
-	GMathmlAttributeLength thick_math_space;
-	GMathmlAttributeLength very_thick_math_space;
-	GMathmlAttributeLength very_very_thick_math_space;
-} GMathmlStyleAttributes;
 
 void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
 							 gboolean default_value);
@@ -139,7 +118,7 @@ void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attrib
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
 							 double red, double green, double blue, double alpha);
 void		gmathml_attribute_length_parse		(GMathmlAttributeLength *attribute,
-							 double value, GMathmlUnit unit);
+							 double default_value, double exm);
 
 
 G_END_DECLS

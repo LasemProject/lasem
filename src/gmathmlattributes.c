@@ -273,22 +273,49 @@ void gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
 		attribute->value = gmathml_variant_from_string (string);
 }
 
-void gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
-				     double value, GMathmlUnit unit)
+void gmathml_attribute_length_parse (GMathmlAttributeLength *attribute, double default_value, double exm)
 {
 	const char *string;
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 
-	if (string == NULL) {
-		attribute->value = value;
-		attribute->unit = unit;
-	} else {
+	if (string == NULL)
+		attribute->value = default_value;
+	else {
+		GMathmlUnit unit;
 		char *unit_str;
+		double value;
 
-		attribute->value = g_strtod (string, &unit_str);
-		attribute->unit = gmathml_unit_from_string (unit_str);
-		if (attribute->unit == GMATHML_UNIT_NONE)
-			attribute->value *= 100.0;
+		value = g_strtod (string, &unit_str);
+		unit = gmathml_unit_from_string (unit_str);
+
+		switch (unit) {
+			case GMATHML_UNIT_PX:
+			case GMATHML_UNIT_PT:
+				attribute->value = value;
+				break;
+			case GMATHML_UNIT_CM:
+				attribute->value = value * 72.0 / 2.54;
+				break;
+			case GMATHML_UNIT_MM:
+				attribute->value = value * 72.0 / 25.4;
+				break;
+			case GMATHML_UNIT_IN:
+				attribute->value = value * 72.0;
+				break;
+			case GMATHML_UNIT_EM:
+			case GMATHML_UNIT_EX:
+				attribute->value = value * exm;
+				break;
+			case GMATHML_UNIT_PERCENT:
+				attribute->value = default_value * value / 100.0;
+				break;
+			case GMATHML_UNIT_PC:
+				attribute->value = value * 72.0 / 6.0;
+				break;
+			case GMATHML_UNIT_NONE:
+				attribute->value = default_value * value;
+				break;
+		}
 	}
 }

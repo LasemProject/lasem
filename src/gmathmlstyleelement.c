@@ -33,7 +33,7 @@ gmathml_style_element_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static void
-gmathml_style_element_update_attributes (GMathmlElement *self)
+gmathml_style_element_update (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlStyleElement *style = GMATHML_STYLE_ELEMENT (self);
 	GDomNode *parent;
@@ -43,35 +43,35 @@ gmathml_style_element_update_attributes (GMathmlElement *self)
 	     parent = parent->parent_node);
 
 	if (GMATHML_IS_STYLE_ELEMENT (parent)) {
-		gmathml_attribute_script_level_parse (&style->style_attrs.script_level,
-						      GMATHML_STYLE_ELEMENT (parent)->style_attrs.script_level.value);
-		gmathml_attribute_boolean_parse (&style->style_attrs.display_style,
-						 GMATHML_STYLE_ELEMENT (parent)->style_attrs.display_style.value);
+		gmathml_attribute_script_level_parse (&self->script_level,
+						      GMATHML_ELEMENT (parent)->script_level.value);
+		gmathml_attribute_boolean_parse (&self->display_style,
+						 GMATHML_ELEMENT (parent)->display_style.value);
 	} else {
-		gmathml_attribute_script_level_parse (&style->style_attrs.script_level, 0.0);
-		gmathml_attribute_boolean_parse (&style->style_attrs.display_style, FALSE);
+		gmathml_attribute_script_level_parse (&self->script_level, 0.0);
+		gmathml_attribute_boolean_parse (&self->display_style, FALSE);
 	}
 
-	gmathml_attribute_double_parse (&style->style_attrs.script_size_multiplier, 0.71);
-	gmathml_attribute_color_parse (&style->style_attrs.background, 0.0, 0.0, 0.0, 0.0);
+	gmathml_attribute_double_parse (&style->script_size_multiplier, 0.71);
+	gmathml_attribute_color_parse (&style->background, 0.0, 0.0, 0.0, 0.0);
 
-/*        gmathml_boolean_attribute_set_default (&m_element->style_attrs.display_style, FALSE);*/
-/*        gmathml_double_attribute_set_default (&m_element->style_attrs.script_size_multiplier, 0.71);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.script_min_size, 1.0, GMATHML_UNIT_PX);*/
+/*        gmathml_boolean_attribute_set_default (&m_element->display_style, FALSE);*/
+/*        gmathml_double_attribute_set_default (&m_element->script_size_multiplier, 0.71);*/
+/*        gmathml_length_attribute_set_default (&m_element->script_min_size, 1.0, GMATHML_UNIT_PX);*/
 	/* FIXME background */
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.very_very_thin_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->very_very_thin_math_space,*/
 /*                                              0.0555556, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.very_thin_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->very_thin_math_space,*/
 /*                                              0.111111, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.thin_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->thin_math_space,*/
 /*                                              0.166667, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.medium_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->medium_math_space,*/
 /*                                              0.222222, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.thick_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->thick_math_space,*/
 /*                                              0.277778, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.very_thick_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->very_thick_math_space,*/
 /*                                              0.333333, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->style_attrs.very_very_thick_math_space,*/
+/*        gmathml_length_attribute_set_default (&m_element->very_very_thick_math_space,*/
 /*                                              0.388889, GMATHML_UNIT_EM);*/
 }
 
@@ -90,33 +90,41 @@ gmathml_style_element_init (GMathmlStyleElement *self)
 
 /* GMathmlStyleElement class */
 
-void
+static void
 gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
 {
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
-					     offsetof (GMathmlStyleElement, style_attrs.script_level));
+					     offsetof (GMathmlElement, script_level));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
-					     offsetof (GMathmlStyleElement, style_attrs.display_style));
+					     offsetof (GMathmlElement, display_style));
+
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
-					     offsetof (GMathmlStyleElement, style_attrs.script_size_multiplier));
+					     offsetof (GMathmlStyleElement, script_size_multiplier));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
-					     offsetof (GMathmlStyleElement, style_attrs.script_min_size));
+					     offsetof (GMathmlStyleElement, script_min_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "background",
-					     offsetof (GMathmlStyleElement, style_attrs.background));
+					     offsetof (GMathmlStyleElement, background));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.very_very_thin_math_space));
+					     offsetof (GMathmlStyleElement, very_very_thin_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.very_thin_math_space));
+					     offsetof (GMathmlStyleElement, very_thin_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thinmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.thin_math_space));
+					     offsetof (GMathmlStyleElement, thin_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mediummathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.medium_math_space));
+					     offsetof (GMathmlStyleElement, medium_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thickmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.thick_math_space));
+					     offsetof (GMathmlStyleElement, thick_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythickmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.very_thick_math_space));
+					     offsetof (GMathmlStyleElement, very_thick_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
-					     offsetof (GMathmlStyleElement, style_attrs.very_very_thick_math_space));
+					     offsetof (GMathmlStyleElement, very_very_thick_math_space));
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
+					     offsetof (GMathmlStyleElement, math_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
+					     offsetof (GMathmlStyleElement, math_color));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
+					     offsetof (GMathmlStyleElement, math_background));
 }
 
 static void
@@ -127,7 +135,7 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *operator_class)
 
 	node_class->get_node_name = gmathml_style_element_get_node_name;
 
-	m_element_class->update_attributes = gmathml_style_element_update_attributes;
+	m_element_class->update = gmathml_style_element_update;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

@@ -39,6 +39,8 @@ typedef struct _GMathmlMathElementClass GMathmlMathElementClass;
 
 struct _GMathmlMathElement {
 	GMathmlElement	element;
+
+	GMathmlStyleElement *default_style;
 };
 
 struct _GMathmlMathElementClass {

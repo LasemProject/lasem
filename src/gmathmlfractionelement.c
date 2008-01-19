@@ -43,6 +43,16 @@ gmathml_fraction_element_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
+static void
+gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view)
+{
+	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
+
+	gmathml_attribute_boolean_parse (&fraction->bevelled, FALSE);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view);
+}
+
 static const GMathmlBbox *
 gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 {
@@ -144,6 +154,8 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
+
+	element_class->update = gmathml_fraction_element_update;
 
 	element_class->attributes = gmathml_attribute_map_new ();
 
