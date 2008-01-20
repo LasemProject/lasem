@@ -148,49 +148,29 @@ gmathml_view_pop_element (GMathmlView *view)
 double
 gmathml_view_get_ex_length (GMathmlView *view)
 {
-	PangoRectangle rect;
-	double font_size;
-
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
 	if (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element))
-		font_size = GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
+		return 0.5 * GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
 	else if (view->priv->current_style != NULL)
-		font_size = view->priv->current_style->math_size.value;
-	else {
-		g_warning ("[GMathmlView::get_em_length] can't get font size");
-		return 0.0;
-	}
+		return 0.5 * view->priv->current_style->math_size.value;
 
-	pango_font_description_set_size (view->priv->font_description, font_size);
-	pango_layout_set_text (view->priv->pango_layout, "x", -1);
-	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
-
-	return (pango_units_to_double (rect.height - rect.y));
+	g_warning ("[GMathmlView::get_em_length] can't get font size");
 }
 
 double
 gmathml_view_get_em_length (GMathmlView *view)
 {
-	PangoRectangle rect;
-	double font_size;
-
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
 	if (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element))
-		font_size = GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
+		return GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
 	else if (view->priv->current_style != NULL)
-		font_size = view->priv->current_style->math_size.value;
-	else {
-		g_warning ("[GMathmlView::get_em_length] can't get font size");
-		return 0.0;
-	}
+		return view->priv->current_style->math_size.value;
 
-	pango_font_description_set_size (view->priv->font_description, font_size);
-	pango_layout_set_text (view->priv->pango_layout, "M", -1);
-	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
-	return (pango_units_to_double (rect.width - rect.x));
+	g_warning ("[GMathmlView::get_em_length] can't get font size");
+	return 0.0;
 }
 
 void
