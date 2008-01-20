@@ -45,52 +45,31 @@ gmathml_math_element_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
-static void
-gmathml_math_element_update (GMathmlElement *self, GMathmlView *view)
-{
-	gmathml_view_push_style (view, GMATHML_MATH_ELEMENT (self)->default_style);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view);
-
-	gmathml_view_pop_style (view);
-}
-
 static const GMathmlBbox *
 gmathml_math_element_measure (GMathmlElement *self, GMathmlView *view)
 {
 	const GMathmlBbox *bbox;
 
-	gmathml_view_push_style (view, GMATHML_MATH_ELEMENT (self)->default_style);
-
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (GDOM_NODE(self)->first_child), view);
-
-	gmathml_view_pop_style (view);
 
 	return bbox;
 }
 
 static void
-gmathml_math_element_layout (GMathmlElement *self, GMathmlView *view,
-			     double x, double y, const GMathmlBbox *bbox)
+gmathml_math_element_layout (GMathmlElement *self, GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
 {
-	gmathml_view_push_style (view, GMATHML_MATH_ELEMENT (self)->default_style);
-
 	gmathml_element_layout (GMATHML_ELEMENT (GDOM_NODE(self)->first_child), view, x, y, bbox);
-
-	gmathml_view_pop_style (view);
-}
-
-static void
-gmathml_math_element_render (GMathmlElement *self, GMathmlView *view)
-{
-	gmathml_view_push_style (view, GMATHML_MATH_ELEMENT (self)->default_style);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
-
-	gmathml_view_pop_style (view);
 }
 
 /* GMathmlMathElement implementation */
+
+const GMathmlStyle *
+gmathml_math_element_get_default_style (GMathmlMathElement *math_element)
+{
+	g_return_val_if_fail (GMATHML_IS_MATH_ELEMENT (math_element), NULL);
+
+	return math_element->default_style;
+}
 
 GDomNode *
 gmathml_math_element_new (void)
@@ -101,7 +80,32 @@ gmathml_math_element_new (void)
 static void
 gmathml_math_element_init (GMathmlMathElement *self)
 {
-	self->default_style = GMATHML_STYLE_ELEMENT (gmathml_style_element_new ());
+	GMathmlStyle *style;
+
+	style = gmathml_style_new ();
+	self->default_style = style;
+	g_return_if_fail (style != NULL);
+
+	style->script_size_multiplier = 0.71;
+	style->script_min_size = 8.0;
+
+	style->math_size = 12.0;
+	style->math_color.red = 0;
+	style->math_color.green = 0;
+	style->math_color.blue = 0;
+	style->math_color.alpha = 1;
+	style->math_background.red = 0;
+	style->math_background.green = 0;
+	style->math_background.blue = 0;
+	style->math_background.alpha = 1;
+}
+
+static void
+gmathml_math_element_finalize (GObject *object)
+{
+	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (object);
+
+	gmathml_style_free (math_element->default_style);
 }
 
 /* GMathmlMathElement class */
@@ -115,13 +119,13 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 
 	parent_class = g_type_class_peek_parent (object_class);
 
+	object_class->finalize = gmathml_math_element_finalize;
+
 	d_node_class->get_node_name = gmathml_math_element_get_node_name;
 	d_node_class->can_append_child = gmathml_math_element_can_append_child;
 
-	m_element_class->update = gmathml_math_element_update;
 	m_element_class->measure = gmathml_math_element_measure;
 	m_element_class->layout = gmathml_math_element_layout;
-	m_element_class->render = gmathml_math_element_render;
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)

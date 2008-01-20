@@ -61,31 +61,40 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 /* GMathmlElement implementation */
 
 static void
-_update (GMathmlElement *self, GMathmlView *view)
+_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GDomNode *node;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node))
-			gmathml_element_update (GMATHML_ELEMENT (node), view);
+			gmathml_element_update (GMATHML_ELEMENT (node), view, style);
+
 }
 
 void
-gmathml_element_update (GMathmlElement *element, GMathmlView *view)
+gmathml_element_update (GMathmlElement *self, GMathmlView *view, const GMathmlStyle *style)
 {
 	GMathmlElementClass *element_class;
+	GMathmlStyle *new_style;
 
-	g_return_if_fail (GMATHML_IS_ELEMENT (element));
+	g_return_if_fail (GMATHML_IS_ELEMENT (self));
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (style != NULL);
 
-	g_message ("Update %s", gdom_node_get_node_name (GDOM_NODE (element)));
+	g_message ("Update %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
-	element_class = GMATHML_ELEMENT_GET_CLASS (element);
+	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
-	if (element_class->update) {
-		gmathml_view_push_element (view, element);
-		element_class->update (element, view);
-		gmathml_view_pop_element (view);
-	}
+	new_style = gmathml_style_duplicate (style);
+	gmathml_view_push_element (view, self);
+
+	gmathml_style_dump (new_style);
+
+	if (element_class->update)
+		element_class->update (self, view, new_style);
+
+	gmathml_view_pop_element (view);
+	gmathml_style_free (new_style);
 }
 
 const GMathmlBbox *

@@ -22,9 +22,49 @@
 
 #include <gmathmlattributes.h>
 #include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <glib/gmem.h>
 #include <glib/ghash.h>
+
+GMathmlStyle *
+gmathml_style_new (void)
+{
+	GMathmlStyle *style = g_new0 (GMathmlStyle, 1);
+
+	return style;
+}
+
+void
+gmathml_style_free (GMathmlStyle *style)
+{
+	g_return_if_fail (style != NULL);
+
+	g_free (style);
+}
+
+GMathmlStyle *
+gmathml_style_duplicate (const GMathmlStyle *from)
+{
+	GMathmlStyle *style;
+
+	g_return_val_if_fail (from != NULL, NULL);
+
+	style = g_new (GMathmlStyle, 1);
+	g_return_val_if_fail (style != NULL, NULL);
+
+	memcpy (style, from, sizeof (GMathmlStyle));
+
+	return style;
+}
+
+void
+gmathml_style_dump (const GMathmlStyle *style)
+{
+	printf ("math_size =              %g\n", style->math_size);
+	printf ("script_level =           %d\n", style->script_level);
+	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
+}
 
 typedef struct {
 	ptrdiff_t attr_offset;
@@ -175,147 +215,173 @@ gmathml_attribute_value_get_actual_value (const GMathmlAttributeValue *attribute
 
 void
 gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
-				 gboolean default_value)
+				 gboolean *style_value)
 {
 	const char *string;
 
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		attribute->value = default_value;
+		attribute->value = *style_value;
 		return;
 	}
 
 	attribute->value = (strcmp (string, "true") == 0);
+	*style_value = attribute->value;
 }
 
 void
 gmathml_attribute_double_parse (GMathmlAttributeDouble *attribute,
-				double default_value)
+				double *style_value)
 {
 	const char *string;
 
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		attribute->value = default_value;
+		attribute->value = *style_value;
 		return;
 	}
 
 	attribute->value = atof (string);
+	*style_value = attribute->value;
 }
 
 void
 gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
-				      int default_value)
+				      int *style_value)
 {
 	const char *string;
+	int value;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-
-	if (string == NULL)
-		attribute->value = default_value;
-	else {
-		int value;
-
-		value = atoi (string);
-		if (string[0] == '+')
-			attribute->value = value + default_value;
-		else if (string[0] == '-')
-			attribute->value = value - default_value;
-		else
-			attribute->value = value;
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
 	}
+
+	value = atoi (string);
+	if (string[0] == '+')
+		attribute->value = value + *style_value;
+	else if (string[0] == '-')
+		attribute->value = value - *style_value;
+	else
+		attribute->value = value;
+	*style_value = attribute->value;
 }
 
 void
 gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
-			       double red,
-			       double green,
-			       double blue,
-			       double alpha)
+			       GMathmlColor *style_color)
 {
 	const char *string;
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_color != NULL);
 
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		attribute->red = red;
-		attribute->green = green;
-		attribute->blue = blue;
-		attribute->alpha = alpha;
+		attribute->color.red = style_color->red;
+		attribute->color.green = style_color->green;
+		attribute->color.blue = style_color->blue;
+		attribute->color.alpha = style_color->alpha;
+		return;
+	}
+
+	if (strcmp (string, "transparent") == 0) {
+		attribute->color.red = 0.0;
+		attribute->color.green = 0.0;
+		attribute->color.blue = 0.0;
+		attribute->color.alpha = 0.0;
 	} else {
-		if (strcmp (string, "transparent") == 0) {
-			attribute->red = 0.0;
-			attribute->green = 0.0;
-			attribute->blue = 0.0;
-			attribute->alpha = 0.0;
-		} else {
-			PangoColor color;
+		PangoColor color;
 
-			pango_color_parse (&color, string);
-			attribute->alpha = 1.0;
-			attribute->red = color.red / 65535.0;
-			attribute->green = color.green / 65535.0;
-			attribute->blue = color.blue / 65535.0;
-		}
+		pango_color_parse (&color, string);
+		attribute->color.alpha = 1.0;
+		attribute->color.red = color.red / 65535.0;
+		attribute->color.green = color.green / 65535.0;
+		attribute->color.blue = color.blue / 65535.0;
 	}
+	*style_color = attribute->color;
 }
 
-void gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
-				      GMathmlVariant variant)
+void
+gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
+				 GMathmlVariant *style_value)
 {
 	const char *string;
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
 
-	if (string == NULL)
-		attribute->value = variant;
-	else
-		attribute->value = gmathml_variant_from_string (string);
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
+	}
+
+	attribute->value = gmathml_variant_from_string (string);
+	*style_value = attribute->value;
 }
 
-void gmathml_attribute_length_parse (GMathmlAttributeLength *attribute, double default_value, double exm)
+void
+gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
+				double *style_value,
+				double font_size)
 {
+	GMathmlUnit unit;
 	const char *string;
+	char *unit_str;
+	double value;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-
-	if (string == NULL)
-		attribute->value = default_value;
-	else {
-		GMathmlUnit unit;
-		char *unit_str;
-		double value;
-
-		value = g_strtod (string, &unit_str);
-		unit = gmathml_unit_from_string (unit_str);
-
-		switch (unit) {
-			case GMATHML_UNIT_PX:
-			case GMATHML_UNIT_PT:
-				attribute->value = value;
-				break;
-			case GMATHML_UNIT_CM:
-				attribute->value = value * 72.0 / 2.54;
-				break;
-			case GMATHML_UNIT_MM:
-				attribute->value = value * 72.0 / 25.4;
-				break;
-			case GMATHML_UNIT_IN:
-				attribute->value = value * 72.0;
-				break;
-			case GMATHML_UNIT_EM:
-			case GMATHML_UNIT_EX:
-				attribute->value = value * exm;
-				break;
-			case GMATHML_UNIT_PERCENT:
-				attribute->value = default_value * value / 100.0;
-				break;
-			case GMATHML_UNIT_PC:
-				attribute->value = value * 72.0 / 6.0;
-				break;
-			case GMATHML_UNIT_NONE:
-				attribute->value = default_value * value;
-				break;
-		}
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
 	}
+
+	value = g_strtod (string, &unit_str);
+	unit = gmathml_unit_from_string (unit_str);
+
+	switch (unit) {
+		case GMATHML_UNIT_PX:
+		case GMATHML_UNIT_PT:
+			attribute->value = value;
+			break;
+		case GMATHML_UNIT_CM:
+			attribute->value = value * 72.0 / 2.54;
+			break;
+		case GMATHML_UNIT_MM:
+			attribute->value = value * 72.0 / 25.4;
+			break;
+		case GMATHML_UNIT_IN:
+			attribute->value = value * 72.0;
+			break;
+		case GMATHML_UNIT_EM:
+			attribute->value = value * font_size;
+			break;
+		case GMATHML_UNIT_EX:
+			attribute->value = value * font_size * 0.5;
+			break;
+		case GMATHML_UNIT_PERCENT:
+			attribute->value = *style_value * value / 100.0;
+			break;
+		case GMATHML_UNIT_PC:
+			attribute->value = value * 72.0 / 6.0;
+			break;
+		case GMATHML_UNIT_NONE:
+			attribute->value = *style_value * value;
+			break;
+	}
+	*style_value = attribute->value;
 }

@@ -22,6 +22,10 @@
 
 #include <gmathmlstyleelement.h>
 
+#include <math.h>
+
+GObject *parent_class;
+
 /* GDomNode implementation */
 
 static const char *
@@ -33,31 +37,20 @@ gmathml_style_element_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static void
-gmathml_style_element_update (GMathmlElement *self, GMathmlView *view)
+gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
-	GMathmlStyleElement *style = GMATHML_STYLE_ELEMENT (self);
-	GDomNode *parent;
+	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
-	for (parent = GDOM_NODE (self)->parent_node;
-	     parent != NULL && !GMATHML_IS_STYLE_ELEMENT (parent);
-	     parent = parent->parent_node);
+	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
+	gmathml_attribute_boolean_parse (&style_element->display_style, &style->display_style);
 
-	if (GMATHML_IS_STYLE_ELEMENT (parent)) {
-		gmathml_attribute_script_level_parse (&self->script_level,
-						      GMATHML_ELEMENT (parent)->script_level.value);
-		gmathml_attribute_boolean_parse (&self->display_style,
-						 GMATHML_ELEMENT (parent)->display_style.value);
-	} else {
-		gmathml_attribute_script_level_parse (&self->script_level, 0.0);
-		gmathml_attribute_boolean_parse (&self->display_style, FALSE);
-	}
+	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
+	gmathml_attribute_color_parse (&style_element->background, &style->background);
+	gmathml_attribute_length_parse (&style_element->script_min_size, &style->script_min_size, style->math_size);
 
-	gmathml_attribute_double_parse (&style->script_size_multiplier, 0.71);
-	gmathml_attribute_color_parse (&style->background, 0.0, 0.0, 0.0, 0.0);
+	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
+	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
 
-/*        gmathml_boolean_attribute_set_default (&m_element->display_style, FALSE);*/
-/*        gmathml_double_attribute_set_default (&m_element->script_size_multiplier, 0.71);*/
-/*        gmathml_length_attribute_set_default (&m_element->script_min_size, 1.0, GMATHML_UNIT_PX);*/
 	/* FIXME background */
 /*        gmathml_length_attribute_set_default (&m_element->very_very_thin_math_space,*/
 /*                                              0.0555556, GMATHML_UNIT_EM);*/
@@ -73,6 +66,8 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view)
 /*                                              0.333333, GMATHML_UNIT_EM);*/
 /*        gmathml_length_attribute_set_default (&m_element->very_very_thick_math_space,*/
 /*                                              0.388889, GMATHML_UNIT_EM);*/
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 
 /* GMathmlStyleElement implementation */
@@ -94,10 +89,9 @@ static void
 gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
 {
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
-					     offsetof (GMathmlElement, script_level));
+					     offsetof (GMathmlStyleElement, script_level));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
-					     offsetof (GMathmlElement, display_style));
-
+					     offsetof (GMathmlStyleElement, display_style));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
 					     offsetof (GMathmlStyleElement, script_size_multiplier));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
@@ -119,6 +113,8 @@ gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
 					     offsetof (GMathmlStyleElement, very_very_thick_math_space));
 
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
+					     offsetof (GMathmlStyleElement, math_variant));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
 					     offsetof (GMathmlStyleElement, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
@@ -128,10 +124,12 @@ gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class
 }
 
 static void
-gmathml_style_element_class_init (GMathmlStyleElementClass *operator_class)
+gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 {
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (operator_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (operator_class);
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (style_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (style_class);
+
+	parent_class = g_type_class_peek_parent (style_class);
 
 	node_class->get_node_name = gmathml_style_element_get_node_name;
 

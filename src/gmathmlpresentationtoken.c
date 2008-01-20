@@ -24,6 +24,10 @@
 #include <gmathmlview.h>
 #include <gdomtext.h>
 
+#include <math.h>
+
+GObjectClass *parent_class;
+
 /* GDomNode implementation */
 
 static const char *
@@ -53,38 +57,15 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view)
+gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
-	GDomNode *parent;
 
-	for (parent = GDOM_NODE (self)->parent_node;
-	     parent != NULL && !GMATHML_IS_PRESENTATION_TOKEN (parent);
-	     parent = parent->parent_node);
+	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size);
+	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
+	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
 
-	if (GMATHML_IS_PRESENTATION_TOKEN (parent)) {
-		GMathmlPresentationToken *parent_token;
-
-		parent_token = GMATHML_PRESENTATION_TOKEN (parent);
-
-		gmathml_attribute_length_parse (&token->math_size,
-						parent_token->math_size.value,
-						gmathml_view_get_em_length (view));
-		gmathml_attribute_color_parse (&token->math_color,
-					       parent_token->math_color.red,
-					       parent_token->math_color.green,
-					       parent_token->math_color.blue,
-					       parent_token->math_color.alpha);
-		gmathml_attribute_color_parse (&token->math_background,
-					       parent_token->math_background.red,
-					       parent_token->math_background.green,
-					       parent_token->math_background.blue,
-					       parent_token->math_background.alpha);
-	} else {
-		gmathml_attribute_length_parse (&token->math_size, 12.0, gmathml_view_get_em_length (view));
-		gmathml_attribute_color_parse (&token->math_color, 0.0, 0.0, 0.0, 1.0);
-		gmathml_attribute_color_parse (&token->math_background, 0.0, 0.0, 0.0, 1.0);
-	}
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 
 static char *
@@ -203,6 +184,8 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 {
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (token_class);
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (token_class);
+
+	parent_class = g_type_class_peek_parent (token_class);
 
 	d_node_class->get_node_name = gmathml_presentation_token_get_node_name;
 	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;

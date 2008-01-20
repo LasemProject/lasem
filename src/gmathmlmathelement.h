@@ -40,7 +40,7 @@ typedef struct _GMathmlMathElementClass GMathmlMathElementClass;
 struct _GMathmlMathElement {
 	GMathmlElement	element;
 
-	GMathmlStyleElement *default_style;
+	GMathmlStyle *default_style;
 };
 
 struct _GMathmlMathElementClass {
@@ -50,6 +50,8 @@ struct _GMathmlMathElementClass {
 GType gmathml_math_element_get_type (void);
 
 GDomNode *gmathml_math_element_new (void);
+
+const GMathmlStyle *gmathml_math_element_get_default_style (GMathmlMathElement *math_element);
 
 G_END_DECLS
 

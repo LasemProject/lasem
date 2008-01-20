@@ -40,6 +40,8 @@ typedef struct _GMathmlStyleElementClass GMathmlStyleElementClass;
 struct _GMathmlStyleElement {
 	GMathmlPresentationContainer presentation_container;
 
+	GMathmlAttributeScriptLevel script_level;
+	GMathmlAttributeBoolean display_style;
 	GMathmlAttributeDouble script_size_multiplier;
 	GMathmlAttributeLength script_min_size;
 	GMathmlAttributeColor background;
@@ -51,6 +53,7 @@ struct _GMathmlStyleElement {
 	GMathmlAttributeLength very_thick_math_space;
 	GMathmlAttributeLength very_very_thick_math_space;
 
+	GMathmlAttributeVariant math_variant;
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor math_color;
 	GMathmlAttributeColor math_background;

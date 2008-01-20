@@ -29,6 +29,41 @@
 
 G_BEGIN_DECLS
 
+typedef struct {
+	double red;
+	double green;
+	double blue;
+	double alpha;
+} GMathmlColor;
+
+typedef struct {
+	/* mstyle */
+	int script_level;
+	gboolean display_style;
+	double script_size_multiplier;
+	double script_min_size;
+	GMathmlColor background;
+	double very_very_thin_math_space;
+	double very_thin_math_space;
+	double thin_math_space;
+	double medium_math_space;
+	double thick_math_space;
+	double very_thick_math_space;
+	double very_very_thick_math_space;
+	/* tokens */
+	GMathmlVariant math_variant;
+	double math_size;
+	GMathmlColor math_color;
+	GMathmlColor math_background;
+	/* mfrac */
+	gboolean bevelled;
+} GMathmlStyle;
+
+GMathmlStyle *	gmathml_style_new 	(void);
+void		gmathml_style_free 	(GMathmlStyle *style);
+GMathmlStyle *	gmathml_style_duplicate (const GMathmlStyle *from);
+void 		gmathml_style_dump 	(const GMathmlStyle *style);
+
 typedef enum {
 	GMATHML_CSS_TYPE_USER,
 	GMATHML_CSS_TYPE_AUTHOR,
@@ -93,10 +128,7 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
-	double red;
-	double green;
-	double blue;
-	double alpha;
+	GMathmlColor color;
 } GMathmlAttributeColor;
 
 typedef struct {
@@ -110,16 +142,16 @@ typedef struct {
 } GMathmlAttributeLength;
 
 void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
-							 gboolean default_value);
+							 gboolean *default_value);
 void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
-							 double default_value);
+							 double *default_value);
 void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
-							 int default_value);
+							 int *default_value);
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
-							 double red, double green, double blue, double alpha);
+							 GMathmlColor *default_color);
 void		gmathml_attribute_length_parse		(GMathmlAttributeLength *attribute,
-							 double default_value, double exm);
-
+							 double *default_value,
+							 double font_size);
 
 G_END_DECLS
 

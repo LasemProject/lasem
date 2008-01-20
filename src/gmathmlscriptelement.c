@@ -107,6 +107,23 @@ gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
+static void
+gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+{
+	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
+
+	if (script->base != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
+
+	style->math_size = style->math_size * style->script_size_multiplier;
+	style->script_level++;
+
+	if (script->subscript != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (script->subscript), view, style);
+	if (script->superscript != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (script->superscript), view, style);
+}
+
 static const GMathmlBbox *
 gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 {
@@ -164,7 +181,8 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	/* Find automatic position */
 
-	ex = gmathml_view_get_ex_length (view);
+/*        ex = gmathml_view_get_ex_length (view);*/
+	ex = 0;
 	super_shift = ex;
 	sub_shift = ex * 0.5;
 
@@ -179,8 +197,8 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 		}
 	}
 
-	gmathml_attribute_length_parse (&script->superscript_shift, super_shift, ex);
-	gmathml_attribute_length_parse (&script->subscript_shift, sub_shift, ex);
+	gmathml_attribute_length_parse (&script->superscript_shift, &super_shift, ex);
+	gmathml_attribute_length_parse (&script->subscript_shift, &sub_shift, ex);
 
 	g_message ("super_shift = %g", super_shift);
 	g_message ("sub_shift   = %g", sub_shift);
@@ -254,6 +272,7 @@ gmathml_script_element_class_init (GMathmlScriptElementClass *script_class)
 	d_node_class->can_append_child = gmathml_script_element_can_append_child;
 	d_node_class->post_new_child = gmathml_script_element_post_new_child;
 
+	m_element_class->update = gmathml_script_element_update;
 	m_element_class->measure = gmathml_script_element_measure;
 	m_element_class->layout = gmathml_script_element_layout;
 }
