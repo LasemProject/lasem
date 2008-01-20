@@ -146,7 +146,7 @@ gmathml_view_pop_element (GMathmlView *view)
 }
 
 double
-gmathml_view_get_ex_length (GMathmlView *view)
+gmathml_view_get_font_size (GMathmlView *view)
 {
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
@@ -155,22 +155,20 @@ gmathml_view_get_ex_length (GMathmlView *view)
 	else if (view->priv->current_style != NULL)
 		return 0.5 * view->priv->current_style->math_size.value;
 
-	g_warning ("[GMathmlView::get_em_length] can't get font size");
+	g_warning ("[GMathmlView::get_font_size] can't get font size");
+	return 0.0;
+}
+
+double
+gmathml_view_get_ex_length (GMathmlView *view)
+{
+	return gmathml_view_get_font_size (view);
 }
 
 double
 gmathml_view_get_em_length (GMathmlView *view)
 {
-	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
-
-	if (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element))
-		return GMATHML_PRESENTATION_TOKEN (view->priv->current_element)->math_size.value;
-	else if (view->priv->current_style != NULL)
-		return view->priv->current_style->math_size.value;
-
-
-	g_warning ("[GMathmlView::get_em_length] can't get font size");
-	return 0.0;
+	return 0.5 * gmathml_view_get_font_size (view);
 }
 
 void
