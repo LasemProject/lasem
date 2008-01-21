@@ -30,12 +30,6 @@ gmathml_row_element_get_node_name (GDomNode *node)
 	return "mrow";
 }
 
-static gboolean
-gmathml_row_element_can_append_child (GDomNode *self, GDomNode *child)
-{
-	return (GMATHML_IS_ELEMENT (child));
-}
-
 /* GMathmlRowElement implementation */
 
 GDomNode *
@@ -57,7 +51,6 @@ gmathml_row_element_class_init (GMathmlRowElementClass *klass)
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (klass);
 
 	d_node_class->get_node_name = gmathml_row_element_get_node_name;
-	d_node_class->can_append_child = gmathml_row_element_can_append_child;
 }
 
 G_DEFINE_TYPE (GMathmlRowElement, gmathml_row_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

@@ -29,6 +29,14 @@ static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
 
 /* GDomNode implementation */
 
+static gboolean
+gmathml_element_can_append_child (GDomNode *self, GDomNode *child)
+{
+	/* Math element has only one element child */
+
+	return (GMATHML_IS_ELEMENT (child));
+}
+
 static void
 gmathml_element_post_new_child (GDomNode *parent, GDomNode *child)
 {
@@ -97,6 +105,34 @@ gmathml_element_update (GMathmlElement *self, GMathmlView *view, const GMathmlSt
 	gmathml_style_free (new_style);
 }
 
+static const GMathmlBbox *
+_measure (GMathmlElement *self, GMathmlView *view)
+{
+	GDomNode *node;
+	const GMathmlBbox *child_bbox;
+	gboolean is_set = FALSE;
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+		if (GMATHML_IS_ELEMENT (node)) {
+			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			if (is_set)
+				gmathml_bbox_add_to_right (&self->bbox, child_bbox);
+			else {
+				self->bbox = *child_bbox;
+					is_set = TRUE;
+			}
+		}
+	}
+
+	if (!is_set) {
+		self->bbox.width = 0.0;
+		self->bbox.height = 0.0;
+		self->bbox.depth = 0.0;
+	}
+
+	return &self->bbox;
+}
+
 const GMathmlBbox *
 gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 {
@@ -127,6 +163,21 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 	}
 
 	return &element->bbox;
+}
+
+static void
+_layout (GMathmlElement *self, GMathmlView *view,
+	 double x, double y, const GMathmlBbox *bbox)
+{
+	GDomNode *node;
+	const GMathmlBbox *child_bbox;
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+		if (GMATHML_IS_ELEMENT (node)) {
+			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			gmathml_element_layout (GMATHML_ELEMENT (node), view, x, y, child_bbox);
+			x += child_bbox->width;
+		}
 }
 
 void
@@ -217,6 +268,7 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 
 	object_class->finalize = gmathml_element_finalize;
 
+	d_node_class->can_append_child = gmathml_element_can_append_child;
 	d_node_class->post_new_child = gmathml_element_post_new_child;
 	d_node_class->pre_remove_child = gmathml_element_pre_remove_child;
 
@@ -224,6 +276,8 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	d_element_class->set_attribute = gmathml_element_set_attribute;
 
 	m_element_class->update = _update;
+	m_element_class->measure = _measure;
+	m_element_class->layout = _layout;
 	m_element_class->render = _render;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();

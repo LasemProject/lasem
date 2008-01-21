@@ -25,49 +25,6 @@
 
 /* GMathmlElement implementation */
 
-static const GMathmlBbox *
-gmathml_presentation_container_measure (GMathmlElement *self, GMathmlView *view)
-{
-	GDomNode *node;
-	const GMathmlBbox *child_bbox;
-	gboolean is_set = FALSE;
-
-	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
-			if (is_set)
-				gmathml_bbox_add_to_right (&self->bbox, child_bbox);
-			else {
-				self->bbox = *child_bbox;
-					is_set = TRUE;
-			}
-		}
-	}
-
-	if (!is_set) {
-		self->bbox.width = 0.0;
-		self->bbox.height = 0.0;
-		self->bbox.depth = 0.0;
-	}
-
-	return &self->bbox;
-}
-
-static void
-gmathml_presentation_container_layout (GMathmlElement *self, GMathmlView *view,
-				       double x, double y, const GMathmlBbox *bbox)
-{
-	GDomNode *node;
-	const GMathmlBbox *child_bbox;
-
-	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
-			gmathml_element_layout (GMATHML_ELEMENT (node), view, x, y, child_bbox);
-			x += child_bbox->width;
-		}
-}
-
 /* GMathmlPresentationContainer implementation */
 
 static void
@@ -80,10 +37,6 @@ gmathml_presentation_container_init (GMathmlPresentationContainer *container)
 static void
 gmathml_presentation_container_class_init (GMathmlPresentationContainerClass *klass)
 {
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (klass);
-
-	m_element_class->measure = gmathml_presentation_container_measure;
-	m_element_class->layout = gmathml_presentation_container_layout;
 }
 
 G_DEFINE_ABSTRACT_TYPE (GMathmlPresentationContainer, gmathml_presentation_container, GMATHML_TYPE_ELEMENT)
