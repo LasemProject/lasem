@@ -36,6 +36,18 @@ gmathml_math_element_get_node_name (GDomNode *node)
 
 /* GMathmlElement implementation */
 
+static void
+gmathml_math_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+{
+	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (self);
+	GMathmlMode default_mode;
+
+	gmathml_attribute_mode_parse (&math_element->mode, &default_mode);
+
+	style->display_style = (default_mode == GMATHML_MODE_DISPLAY);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+}
 /* GMathmlMathElement implementation */
 
 const GMathmlStyle *
@@ -64,6 +76,7 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
 	style->script_min_size = 8.0;
+	style->very_very_thin_math_space = 0.0555556;
 
 	style->math_size = 12.0;
 	style->math_color.red = 0;
@@ -91,12 +104,22 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (math_class);
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (math_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (math_class);
 
 	parent_class = g_type_class_peek_parent (math_class);
 
 	object_class->finalize = gmathml_math_element_finalize;
 
 	d_node_class->get_node_name = gmathml_math_element_get_node_name;
+
+	m_element_class->update = gmathml_math_element_update;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mode",
+					     offsetof (GMathmlMathElement, mode));
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)

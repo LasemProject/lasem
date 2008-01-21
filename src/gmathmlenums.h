@@ -34,6 +34,14 @@ typedef enum {
 } GMathmlForm;
 
 typedef enum {
+	GMATHML_MODE_DISPLAY,
+	GMATHML_MODE_INLINE
+} GMathmlMode;
+
+const char *		gmathml_mode_to_string			(GMathmlMode mode);
+GMathmlMode		gmathml_mode_from_string		(const char *string);
+
+typedef enum {
 	GMATHML_NAMED_SPACE_VERY_VERY_THIN,
 	GMATHML_NAMED_SPACE_VERY_THIN,
 	GMATHML_NAMED_SPACE_THIN,

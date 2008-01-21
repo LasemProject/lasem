@@ -72,7 +72,7 @@ void
 gmathml_style_dump (const GMathmlStyle *style)
 {
 	printf ("math_size =              %g\n", style->math_size);
-	printf ("script_level =           %d\n", style->script_level);
+	printf ("script_level =           %d (%s)\n", style->script_level, style->display_style ? "TRUE" : "FALSE");
 	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
 }
 
@@ -238,6 +238,7 @@ gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
 		return;
 	}
 
+	g_message ("boolean = -%s-", string);
 	attribute->value = (strcmp (string, "true") == 0);
 	*style_value = attribute->value;
 }
@@ -320,6 +321,25 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 		attribute->color.blue = color.blue / 65535.0;
 	}
 	*style_color = attribute->color;
+}
+
+void
+gmathml_attribute_mode_parse (GMathmlAttributeMode *attribute,
+			      GMathmlMode *style_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
+	}
+
+	attribute->value = gmathml_mode_from_string (string);
+	*style_value = attribute->value;
 }
 
 void

@@ -134,6 +134,11 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
+	GMathmlMode value;
+} GMathmlAttributeMode;
+
+typedef struct {
+	GMathmlAttributeValue attr;
 	GMathmlVariant value;
 } GMathmlAttributeVariant;
 
@@ -148,6 +153,10 @@ void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
 							 double *default_value);
 void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
 							 int *default_value);
+void 		gmathml_attribute_mode_parse 		(GMathmlAttributeMode *attribute,
+							 GMathmlMode *style_value);
+void 		gmathml_attribute_variant_parse 	(GMathmlAttributeLength *attribute,
+							 GMathmlVariant *style_value);
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
 							 GMathmlColor *default_color);
 void		gmathml_attribute_length_parse		(GMathmlAttributeLength *attribute,

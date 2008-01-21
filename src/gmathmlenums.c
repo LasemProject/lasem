@@ -23,6 +23,32 @@
 #include <gmathmlenums.h>
 #include <string.h>
 
+static const char *gmathml_mode_strings[] = {
+	"display",
+	"inline"
+};
+
+const char *
+gmathml_mode_to_string (GMathmlMode mode)
+{
+	return gmathml_mode_strings[CLAMP (mode, GMATHML_MODE_DISPLAY, GMATHML_MODE_INLINE)];
+}
+
+GMathmlMode
+gmathml_mode_from_string (const char *string)
+{
+	int i;
+
+	if (string == NULL)
+		return GMATHML_MODE_DISPLAY;
+
+	for (i = 0; i < G_N_ELEMENTS (gmathml_mode_strings) - 1; i++)
+		if (strcmp (string, gmathml_mode_strings[i]) == 0)
+			return i;
+
+	return GMATHML_MODE_DISPLAY;
+}
+
 static const char *gmathml_named_space_strings[] = {
 	"veryverythinmathspace",
 	"verythinmathspace",

@@ -41,6 +41,8 @@ struct _GMathmlMathElement {
 	GMathmlElement	element;
 
 	GMathmlStyle *default_style;
+
+	GMathmlAttributeMode mode;
 };
 
 struct _GMathmlMathElementClass {

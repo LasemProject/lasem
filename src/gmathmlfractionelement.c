@@ -51,7 +51,8 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
-	gmathml_style_change_script_level (style, +1);
+	if (!style->display_style)
+		gmathml_style_change_script_level (style, +1);
 
 	node = GDOM_NODE (self)->first_child;
 	if (node == NULL)

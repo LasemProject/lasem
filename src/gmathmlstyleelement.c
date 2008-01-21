@@ -41,8 +41,12 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 {
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
+	g_message ("StyleElement: style display = %s", style->display_style ? "TRUE" : "FALSE");
+
 	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
 	gmathml_attribute_boolean_parse (&style_element->display_style, &style->display_style);
+
+	g_message ("StyleElement: attribute display = %s", style_element->display_style.value ? "TRUE" : "FALSE");
 
 	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	gmathml_attribute_color_parse (&style_element->background, &style->background);
@@ -86,11 +90,24 @@ gmathml_style_element_init (GMathmlStyleElement *self)
 /* GMathmlStyleElement class */
 
 static void
-gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class)
+gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 {
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (style_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (style_class);
+
+	parent_class = g_type_class_peek_parent (style_class);
+
+	node_class->get_node_name = gmathml_style_element_get_node_name;
+
+	m_element_class->update = gmathml_style_element_update;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
 					     offsetof (GMathmlStyleElement, script_level));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",
 					     offsetof (GMathmlStyleElement, display_style));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
 					     offsetof (GMathmlStyleElement, script_size_multiplier));
@@ -121,24 +138,6 @@ gmathml_element_class_add_style_attributes (GMathmlElementClass *m_element_class
 					     offsetof (GMathmlStyleElement, math_color));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
 					     offsetof (GMathmlStyleElement, math_background));
-}
-
-static void
-gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
-{
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (style_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (style_class);
-
-	parent_class = g_type_class_peek_parent (style_class);
-
-	node_class->get_node_name = gmathml_style_element_get_node_name;
-
-	m_element_class->update = gmathml_style_element_update;
-
-	m_element_class->attributes = gmathml_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_style_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)
