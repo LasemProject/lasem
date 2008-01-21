@@ -115,8 +115,7 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
 
-	style->math_size = style->math_size * style->script_size_multiplier;
-	style->script_level++;
+	gmathml_style_change_script_level (style, +1);
 
 	if (script->subscript != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->subscript), view, style);

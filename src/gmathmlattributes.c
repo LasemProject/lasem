@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include <glib/gmem.h>
 #include <glib/ghash.h>
+#include <math.h>
 
 GMathmlStyle *
 gmathml_style_new (void)
@@ -56,6 +57,15 @@ gmathml_style_duplicate (const GMathmlStyle *from)
 	memcpy (style, from, sizeof (GMathmlStyle));
 
 	return style;
+}
+
+void
+gmathml_style_change_script_level (GMathmlStyle *style, int increment)
+{
+	style->math_size = style->math_size * pow (style->script_size_multiplier, increment);
+	style->script_level += increment;
+	if (style->math_size < style->script_min_size)
+		style->math_size = style->script_min_size;
 }
 
 void

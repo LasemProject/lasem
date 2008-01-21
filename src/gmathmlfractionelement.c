@@ -47,10 +47,23 @@ static void
 gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
+	GDomNode *node;
 
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	gmathml_style_change_script_level (style, +1);
+
+	node = GDOM_NODE (self)->first_child;
+	if (node == NULL)
+		return;
+
+	gmathml_element_update (GMATHML_ELEMENT (node), view, style);
+
+	node = node->next_sibling;
+	if (node == NULL)
+		return;
+
+	gmathml_element_update (GMATHML_ELEMENT (node), view, style);
 }
 
 static const GMathmlBbox *

@@ -59,10 +59,11 @@ typedef struct {
 	gboolean bevelled;
 } GMathmlStyle;
 
-GMathmlStyle *	gmathml_style_new 	(void);
-void		gmathml_style_free 	(GMathmlStyle *style);
-GMathmlStyle *	gmathml_style_duplicate (const GMathmlStyle *from);
-void 		gmathml_style_dump 	(const GMathmlStyle *style);
+GMathmlStyle *	gmathml_style_new 			(void);
+void		gmathml_style_free 			(GMathmlStyle *style);
+GMathmlStyle *	gmathml_style_duplicate 		(const GMathmlStyle *from);
+void 		gmathml_style_change_script_level 	(GMathmlStyle *style, int increment);
+void 		gmathml_style_dump 			(const GMathmlStyle *style);
 
 typedef enum {
 	GMATHML_CSS_TYPE_USER,
