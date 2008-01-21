@@ -60,6 +60,8 @@ void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
 
+void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
+
 void		gmathml_view_push_style		(GMathmlView *view, const GMathmlStyleElement *style);
 void		gmathml_view_pop_style		(GMathmlView *view);
 

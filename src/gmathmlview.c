@@ -76,6 +76,7 @@ void
 gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
 	GMathmlPresentationToken *token;
+	PangoRectangle rect;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element));
@@ -92,13 +93,24 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 			       token->math_color.color.green,
 			       token->math_color.color.blue,
 			       token->math_color.color.alpha);
-	cairo_move_to (view->priv->cairo, x, y);
 
 	pango_font_description_set_size (view->priv->font_description,
 					 token->math_size.value * PANGO_SCALE);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
+	cairo_move_to (view->priv->cairo, x, y - pango_units_to_double (PANGO_ASCENT (rect)));
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
+}
+
+void
+gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
+{
+	cairo_move_to (view->priv->cairo, x, y);
+	cairo_set_line_width (view->priv->cairo, 0.5);
+	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
+	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
+	cairo_stroke (view->priv->cairo);
 }
 
 void

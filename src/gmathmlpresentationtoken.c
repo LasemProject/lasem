@@ -61,7 +61,7 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMat
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 
-	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size);
+	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
 
@@ -115,6 +115,7 @@ gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
+	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
 	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);

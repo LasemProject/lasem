@@ -41,35 +41,35 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 {
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
-	g_message ("StyleElement: style display = %s", style->display_style ? "TRUE" : "FALSE");
-
-	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
 	gmathml_attribute_boolean_parse (&style_element->display_style, &style->display_style);
-
-	g_message ("StyleElement: attribute display = %s", style_element->display_style.value ? "TRUE" : "FALSE");
 
 	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	gmathml_attribute_color_parse (&style_element->background, &style->background);
-	gmathml_attribute_length_parse (&style_element->script_min_size, &style->script_min_size, style->math_size);
+	gmathml_attribute_length_parse (&style_element->script_min_size, &style->script_min_size, style->font_size);
+
+	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
+
+	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->font_size);
+
+	style->font_size = style_element->math_size.value;
 
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
 
-	/* FIXME background */
-/*        gmathml_length_attribute_set_default (&m_element->very_very_thin_math_space,*/
-/*                                              0.0555556, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->very_thin_math_space,*/
-/*                                              0.111111, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->thin_math_space,*/
-/*                                              0.166667, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->medium_math_space,*/
-/*                                              0.222222, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->thick_math_space,*/
-/*                                              0.277778, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->very_thick_math_space,*/
-/*                                              0.333333, GMATHML_UNIT_EM);*/
-/*        gmathml_length_attribute_set_default (&m_element->very_very_thick_math_space,*/
-/*                                              0.388889, GMATHML_UNIT_EM);*/
+	gmathml_attribute_length_parse (&style_element->very_very_thin_math_space,
+					&style->very_very_thin_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->very_thin_math_space,
+					&style->very_thin_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->thin_math_space,
+					&style->thin_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->medium_math_space,
+					&style->medium_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->thick_math_space,
+					&style->thick_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->very_thick_math_space,
+					&style->very_thick_math_space, style->font_size);
+	gmathml_attribute_length_parse (&style_element->very_very_thick_math_space,
+					&style->very_very_thick_math_space, style->font_size);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }

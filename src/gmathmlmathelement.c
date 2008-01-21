@@ -73,12 +73,30 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
+	style->font_size = 12.0;
+
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
-	style->script_min_size = 8.0;
-	style->very_very_thin_math_space = 0.0555556;
+	style->script_min_size.value = 8.0;
+	style->script_min_size.unit = GMATHML_UNIT_PT;
 
-	style->math_size = 12.0;
+	style->very_very_thin_math_space.value = 0.0555556;
+	style->very_very_thin_math_space.unit = GMATHML_UNIT_EM;
+	style->very_thin_math_space.value = 0.111111;
+	style->very_thin_math_space.unit = GMATHML_UNIT_EM;
+	style->thin_math_space.value = 0.166667;
+	style->thin_math_space.unit = GMATHML_UNIT_EM;
+	style->medium_math_space.value = 0.222222;
+	style->medium_math_space.unit = GMATHML_UNIT_EM;
+	style->thick_math_space.value = 0.277778;
+	style->thick_math_space.unit = GMATHML_UNIT_EM;
+	style->very_thick_math_space.value = 0.333333;
+	style->very_thick_math_space.unit = GMATHML_UNIT_EM;
+	style->very_very_thick_math_space.value = 0.388889;
+	style->very_very_thick_math_space.unit = GMATHML_UNIT_EM;
+
+	style->math_size.value = 12.0;
+	style->math_size.unit = GMATHML_UNIT_PT;
 	style->math_color.red = 0;
 	style->math_color.green = 0;
 	style->math_color.blue = 0;
@@ -87,6 +105,11 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->math_background.green = 0;
 	style->math_background.blue = 0;
 	style->math_background.alpha = 1;
+
+	style->subscript_shift.value = 0;
+	style->subscript_shift.unit = GMATHML_UNIT_PT;
+	style->superscript_shift.value = 0;
+	style->superscript_shift.unit = GMATHML_UNIT_PT;
 }
 
 static void

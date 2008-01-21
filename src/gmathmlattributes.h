@@ -37,26 +37,35 @@ typedef struct {
 } GMathmlColor;
 
 typedef struct {
+	double value;
+	GMathmlUnit unit;
+} GMathmlLength;
+
+typedef struct {
+	double font_size;
 	/* mstyle */
 	int script_level;
 	gboolean display_style;
 	double script_size_multiplier;
-	double script_min_size;
+	GMathmlLength script_min_size;
 	GMathmlColor background;
-	double very_very_thin_math_space;
-	double very_thin_math_space;
-	double thin_math_space;
-	double medium_math_space;
-	double thick_math_space;
-	double very_thick_math_space;
-	double very_very_thick_math_space;
+	GMathmlLength very_very_thin_math_space;
+	GMathmlLength very_thin_math_space;
+	GMathmlLength thin_math_space;
+	GMathmlLength medium_math_space;
+	GMathmlLength thick_math_space;
+	GMathmlLength very_thick_math_space;
+	GMathmlLength very_very_thick_math_space;
 	/* tokens */
 	GMathmlVariant math_variant;
-	double math_size;
+	GMathmlLength math_size;
 	GMathmlColor math_color;
 	GMathmlColor math_background;
 	/* mfrac */
 	gboolean bevelled;
+	/* msubsup */
+	GMathmlLength subscript_shift;
+	GMathmlLength superscript_shift;
 } GMathmlStyle;
 
 GMathmlStyle *	gmathml_style_new 			(void);
@@ -144,6 +153,7 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
+	GMathmlLength length;
 	double value;
 } GMathmlAttributeLength;
 
@@ -159,8 +169,8 @@ void 		gmathml_attribute_variant_parse 	(GMathmlAttributeLength *attribute,
 							 GMathmlVariant *style_value);
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
 							 GMathmlColor *default_color);
-void		gmathml_attribute_length_parse		(GMathmlAttributeLength *attribute,
-							 double *default_value,
+void 		gmathml_attribute_length_parse 		(GMathmlAttributeLength *attribute,
+							 GMathmlLength *style_value,
 							 double font_size);
 
 G_END_DECLS

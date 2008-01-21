@@ -62,16 +62,20 @@ gmathml_style_duplicate (const GMathmlStyle *from)
 void
 gmathml_style_change_script_level (GMathmlStyle *style, int increment)
 {
-	style->math_size = style->math_size * pow (style->script_size_multiplier, increment);
+	style->font_size = style->font_size * pow (style->script_size_multiplier, increment);
 	style->script_level += increment;
-	if (style->math_size < style->script_min_size)
-		style->math_size = style->script_min_size;
+
+	if (style->font_size < style->script_min_size.value)
+		style->font_size = style->script_min_size.value;
+
+	style->math_size.value = style->font_size;
+	style->math_size.unit = GMATHML_UNIT_PT;
 }
 
 void
 gmathml_style_dump (const GMathmlStyle *style)
 {
-	printf ("math_size =              %g\n", style->math_size);
+	printf ("font_size =              %g\n", style->font_size);
 	printf ("script_level =           %d (%s)\n", style->script_level, style->display_style ? "TRUE" : "FALSE");
 	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
 }
@@ -363,55 +367,54 @@ gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
 
 void
 gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
-				double *style_value,
+				GMathmlLength *style_value,
 				double font_size)
 {
-	GMathmlUnit unit;
 	const char *string;
 	char *unit_str;
-	double value;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
+		attribute->length.value = style_value->value;
+		attribute->length.unit = style_value->unit;
+	} else {
+		attribute->length.value = g_strtod (string, &unit_str);
+		attribute->length.unit = gmathml_unit_from_string (unit_str);
+		style_value->value = attribute->length.value;
+		style_value->unit = attribute->length.unit;
 	}
 
-	value = g_strtod (string, &unit_str);
-	unit = gmathml_unit_from_string (unit_str);
-
-	switch (unit) {
+	switch (attribute->length.unit) {
 		case GMATHML_UNIT_PX:
 		case GMATHML_UNIT_PT:
-			attribute->value = value;
-			break;
-		case GMATHML_UNIT_CM:
-			attribute->value = value * 72.0 / 2.54;
-			break;
-		case GMATHML_UNIT_MM:
-			attribute->value = value * 72.0 / 25.4;
-			break;
-		case GMATHML_UNIT_IN:
-			attribute->value = value * 72.0;
-			break;
-		case GMATHML_UNIT_EM:
-			attribute->value = value * font_size;
-			break;
-		case GMATHML_UNIT_EX:
-			attribute->value = value * font_size * 0.5;
-			break;
-		case GMATHML_UNIT_PERCENT:
-			attribute->value = *style_value * value / 100.0;
+			attribute->value = attribute->length.value;
 			break;
 		case GMATHML_UNIT_PC:
-			attribute->value = value * 72.0 / 6.0;
+			attribute->value = attribute->length.value * 72.0 / 6.0;
+			break;
+		case GMATHML_UNIT_CM:
+			attribute->value = attribute->length.value * 72.0 / 2.54;
+			break;
+		case GMATHML_UNIT_MM:
+			attribute->value = attribute->length.value * 72.0 / 25.4;
+			break;
+		case GMATHML_UNIT_IN:
+			attribute->value = attribute->length.value * 72.0;
+			break;
+		case GMATHML_UNIT_EM:
+			attribute->value = attribute->length.value * font_size;
+			break;
+		case GMATHML_UNIT_EX:
+			attribute->value = attribute->length.value * font_size * 0.5;
+			break;
+		case GMATHML_UNIT_PERCENT:
+			attribute->value = style_value->value * attribute->length.value / 100.0;
 			break;
 		case GMATHML_UNIT_NONE:
-			attribute->value = *style_value * value;
+			attribute->value = style_value->value * attribute->length.value;
 			break;
 	}
-	*style_value = attribute->value;
 }

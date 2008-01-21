@@ -112,6 +112,9 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
+	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->font_size);
+	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->font_size);
+
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
 
@@ -165,11 +168,12 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 
 static void
 gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
-			     double x, double y, const GMathmlBbox *bbox)
+			       double x, double y, const GMathmlBbox *bbox)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 	const GMathmlBbox *base_bbox, *subscript_bbox, *superscript_bbox;
-	double super_shift, sub_shift, ex;
+	GMathmlLength super_shift, sub_shift;
+	double ex;
 
 	if (script->base == NULL)
 		return;
@@ -182,35 +186,35 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 /*        ex = gmathml_view_get_ex_length (view);*/
 	ex = 0;
-	super_shift = ex;
-	sub_shift = ex * 0.5;
+	super_shift.value = ex;
+	super_shift.unit = GMATHML_UNIT_PT;
+	sub_shift.value = ex * 0.5;
+	sub_shift.unit = GMATHML_UNIT_PT;
 
-	g_message ("super_shift = %g", super_shift);
-	g_message ("sub_shift   = %g", sub_shift);
+	g_message ("super_shift = %g", super_shift.value);
+	g_message ("sub_shift   = %g", sub_shift.value);
 
 	if (superscript_bbox != NULL && subscript_bbox != NULL) {
-		double delta = (super_shift + sub_shift) - (superscript_bbox->depth + subscript_bbox->height);
+		double delta = (super_shift.value + sub_shift.value) -
+			(superscript_bbox->depth + subscript_bbox->height);
 		if (delta < 0.0) {
-			super_shift += fabs (delta) * 0.5;
-			sub_shift += fabs (delta) * 0.5;
+			super_shift.value += fabs (delta) * 0.5;
+			sub_shift.value += fabs (delta) * 0.5;
 		}
 	}
 
-	gmathml_attribute_length_parse (&script->superscript_shift, &super_shift, ex);
-	gmathml_attribute_length_parse (&script->subscript_shift, &sub_shift, ex);
-
-	g_message ("super_shift = %g", super_shift);
-	g_message ("sub_shift   = %g", sub_shift);
+	g_message ("super_shift = %g", super_shift.value);
+	g_message ("sub_shift   = %g", sub_shift.value);
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,
 					x + base_bbox->width,
-					y + sub_shift, subscript_bbox);
+					y + sub_shift.value, subscript_bbox);
 	if (script->superscript)
 		gmathml_element_layout (script->superscript, view,
 					x + base_bbox->width,
-					y - super_shift, superscript_bbox);
+					y - super_shift.value, superscript_bbox);
 }
 
 /* GMathmlScriptElement implementation */
