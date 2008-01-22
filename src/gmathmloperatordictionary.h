@@ -25,23 +25,24 @@
 
 #include <gmathml.h>
 #include <gmathmlenums.h>
+#include <gmathmlattributes.h>
 
 G_BEGIN_DECLS
 
 typedef struct {
-	const char 		*name;
-	GMathmlForm		 form;
-	GMathmlNamedSpace	 l_space;
-	GMathmlNamedSpace	 r_space;
-	gboolean		 stretchy;
-	gboolean		 fence;
-	gboolean		 accent;
-	gboolean		 large_op;
-	gboolean		 movable_limits;
-	gboolean		 separator;
-	int			 min_size;
-	int			 max_size;
-	gboolean		 symmetric;
+	const char 	*name;
+	GMathmlForm	 form;
+	GMathmlSpace	 left_space;
+	GMathmlSpace	 right_space;
+	gboolean	 stretchy;
+	gboolean	 fence;
+	gboolean	 accent;
+	gboolean	 large_op;
+	gboolean	 movable_limits;
+	gboolean	 separator;
+	GMathmlSpace	 min_size;
+	GMathmlSpace	 max_size;
+	gboolean	 symmetric;
 } GMathmlOperator;
 
 const GMathmlOperator *		gmathml_operator_get_attributes (const char *utf8, GMathmlForm form);

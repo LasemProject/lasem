@@ -42,18 +42,18 @@ const char *		gmathml_mode_to_string			(GMathmlMode mode);
 GMathmlMode		gmathml_mode_from_string		(const char *string);
 
 typedef enum {
-	GMATHML_NAMED_SPACE_VERY_VERY_THIN,
-	GMATHML_NAMED_SPACE_VERY_THIN,
-	GMATHML_NAMED_SPACE_THIN,
-	GMATHML_NAMED_SPACE_MEDIUM,
-	GMATHML_NAMED_SPACE_THICK,
-	GMATHML_NAMED_SPACE_VERY_THICK,
-	GMATHML_NAMED_SPACE_VERY_VERY_THICK,
-	GMATHML_NAMED_SPACE_ERROR
-} GMathmlNamedSpace;
+	GMATHML_SPACE_NAME_VERY_VERY_THIN,
+	GMATHML_SPACE_NAME_VERY_THIN,
+	GMATHML_SPACE_NAME_THIN,
+	GMATHML_SPACE_NAME_MEDIUM,
+	GMATHML_SPACE_NAME_THICK,
+	GMATHML_SPACE_NAME_VERY_THICK,
+	GMATHML_SPACE_NAME_VERY_VERY_THICK,
+	GMATHML_SPACE_NAME_ERROR
+} GMathmlSpaceName;
 
-const char * 		gmathml_named_space_to_string 		(GMathmlNamedSpace named_space);
-GMathmlNamedSpace 	gmathml_named_space_from_string 	(const char *string);
+const char * 		gmathml_space_name_to_string 		(GMathmlSpaceName name);
+GMathmlSpaceName 	gmathml_space_name_from_string 		(const char *string);
 
 typedef enum {
 	GMATHML_UNIT_EM,
@@ -91,11 +91,6 @@ typedef enum {
 
 const char * 		gmathml_variant_to_string 	(GMathmlVariant variant);
 GMathmlVariant 		gmathml_variant_from_string 	(const char *string);
-
-#define GMATHML_SIZE_INFINITY 10
-#define GMATHML_ZERO_EM 0
-#define GMATHML_1_PX 1
-#define GMATHML_0_PX 0
 
 G_END_DECLS
 

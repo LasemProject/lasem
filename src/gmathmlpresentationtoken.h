@@ -64,6 +64,10 @@ GDomNode *	gmathml_number_element_new (void);
 GDomNode *	gmathml_identifier_element_new (void);
 GDomNode *	gmathml_text_element_new (void);
 
+/* Extra functions */
+
+char *		gmathml_presentation_token_get_text 	(GMathmlPresentationToken *self);
+
 G_END_DECLS
 
 #endif

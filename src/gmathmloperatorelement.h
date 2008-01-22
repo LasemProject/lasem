@@ -41,17 +41,17 @@ struct _GMathmlOperatorElement {
 	GMathmlPresentationToken presentation_token;
 
 	GMathmlAttributeValue form;
-	GMathmlAttributeValue fence;
-	GMathmlAttributeValue separator;
-	GMathmlAttributeValue l_space;
-	GMathmlAttributeValue r_space;
-	GMathmlAttributeValue stretchy;
-	GMathmlAttributeValue symmetric;
-	GMathmlAttributeValue max_size;
-	GMathmlAttributeValue min_size;
-	GMathmlAttributeValue large_op;
-	GMathmlAttributeValue movable_limits;
-	GMathmlAttributeValue accent;
+	GMathmlAttributeBoolean fence;
+	GMathmlAttributeBoolean separator;
+	GMathmlAttributeSpace left_space;
+	GMathmlAttributeSpace right_space;
+	GMathmlAttributeBoolean stretchy;
+	GMathmlAttributeBoolean symmetric;
+	GMathmlAttributeSpace max_size;
+	GMathmlAttributeSpace min_size;
+	GMathmlAttributeBoolean large_op;
+	GMathmlAttributeBoolean movable_limits;
+	GMathmlAttributeBoolean accent;
 };
 
 struct _GMathmlOperatorElementClass {
@@ -65,4 +65,3 @@ GDomNode *gmathml_operator_element_new (void);
 G_END_DECLS
 
 #endif
-

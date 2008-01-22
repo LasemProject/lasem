@@ -28,6 +28,34 @@
 #include <glib/ghash.h>
 #include <math.h>
 
+double
+gmathml_length_compute (GMathmlLength *length, double default_value, double font_size)
+{
+	switch (length->unit) {
+		case GMATHML_UNIT_PX:
+		case GMATHML_UNIT_PT:
+			return length->value;
+		case GMATHML_UNIT_PC:
+			return length->value * 72.0 / 6.0;
+		case GMATHML_UNIT_CM:
+			return length->value * 72.0 / 2.54;
+		case GMATHML_UNIT_MM:
+			return length->value * 72.0 / 25.4;
+		case GMATHML_UNIT_IN:
+			return length->value * 72.0;
+		case GMATHML_UNIT_EM:
+			return length->value * font_size;
+		case GMATHML_UNIT_EX:
+			return length->value * font_size * 0.5;
+		case GMATHML_UNIT_PERCENT:
+			return default_value * length->value / 100.0;
+		case GMATHML_UNIT_NONE:
+			return default_value * length->value;
+	}
+
+	return 0.0;
+}
+
 GMathmlStyle *
 gmathml_style_new (void)
 {
@@ -378,43 +406,82 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		attribute->length.value = style_value->value;
-		attribute->length.unit = style_value->unit;
+		attribute->length = *style_value;
 	} else {
 		attribute->length.value = g_strtod (string, &unit_str);
 		attribute->length.unit = gmathml_unit_from_string (unit_str);
-		style_value->value = attribute->length.value;
-		style_value->unit = attribute->length.unit;
+		*style_value = attribute->length;
 	}
 
-	switch (attribute->length.unit) {
-		case GMATHML_UNIT_PX:
-		case GMATHML_UNIT_PT:
-			attribute->value = attribute->length.value;
+	attribute->value = gmathml_length_compute (&attribute->length, style_value->value, font_size);
+}
+
+void
+gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
+			       GMathmlSpace *style_value,
+			       GMathmlStyle *style)
+{
+	const char *string;
+	char *unit_str;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style != NULL);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->space = *style_value;
+	} else {
+		attribute->space.name = gmathml_space_name_from_string (string);
+		if (attribute->space.name == GMATHML_SPACE_NAME_ERROR) {
+			attribute->space.length.value = g_strtod (string, &unit_str);
+			attribute->space.length.unit = gmathml_unit_from_string (unit_str);
+		} else {
+			attribute->space.length.value = 0.0;
+			attribute->space.length.unit = GMATHML_UNIT_PX;
+		}
+		*style_value = attribute->space;
+	}
+
+	switch (attribute->space.name) {
+		case GMATHML_SPACE_NAME_VERY_VERY_THIN:
+			attribute->value = gmathml_length_compute (&style->very_very_thin_math_space,
+								   style->very_very_thin_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_PC:
-			attribute->value = attribute->length.value * 72.0 / 6.0;
+		case GMATHML_SPACE_NAME_VERY_THIN:
+			attribute->value = gmathml_length_compute (&style->very_thin_math_space,
+								   style->very_thin_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_CM:
-			attribute->value = attribute->length.value * 72.0 / 2.54;
+		case GMATHML_SPACE_NAME_THIN:
+			attribute->value = gmathml_length_compute (&style->thin_math_space,
+								   style->thin_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_MM:
-			attribute->value = attribute->length.value * 72.0 / 25.4;
+		case GMATHML_SPACE_NAME_MEDIUM:
+			attribute->value = gmathml_length_compute (&style->medium_math_space,
+								   style->medium_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_IN:
-			attribute->value = attribute->length.value * 72.0;
+		case GMATHML_SPACE_NAME_THICK:
+			attribute->value = gmathml_length_compute (&style->thick_math_space,
+								   style->thick_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_EM:
-			attribute->value = attribute->length.value * font_size;
+		case GMATHML_SPACE_NAME_VERY_THICK:
+			attribute->value = gmathml_length_compute (&style->very_thick_math_space,
+								   style->very_thick_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_EX:
-			attribute->value = attribute->length.value * font_size * 0.5;
+		case GMATHML_SPACE_NAME_VERY_VERY_THICK:
+			attribute->value = gmathml_length_compute (&style->very_very_thick_math_space,
+								   style->very_very_thick_math_space_value,
+								   style->font_size);
 			break;
-		case GMATHML_UNIT_PERCENT:
-			attribute->value = style_value->value * attribute->length.value / 100.0;
-			break;
-		case GMATHML_UNIT_NONE:
-			attribute->value = style_value->value * attribute->length.value;
-			break;
+		case GMATHML_SPACE_NAME_ERROR:
+		default:
+			attribute->value = gmathml_length_compute (&attribute->space.length,
+								   style_value->length.value,
+								   style->font_size);
 	}
 }

@@ -49,7 +49,7 @@ gmathml_mode_from_string (const char *string)
 	return GMATHML_MODE_DISPLAY;
 }
 
-static const char *gmathml_named_space_strings[] = {
+static const char *gmathml_space_name_strings[] = {
 	"veryverythinmathspace",
 	"verythinmathspace",
 	"thinmathspace",
@@ -57,30 +57,30 @@ static const char *gmathml_named_space_strings[] = {
 	"thickmathspace",
 	"verythickmathspace",
 	"veryverythickmathspace",
-	"mediummathspace"
+	"mediummathspace",
 };
 
 const char *
-gmathml_named_space_to_string (GMathmlNamedSpace named_space)
+gmathml_space_name_to_string (GMathmlSpaceName space_name)
 {
-	return gmathml_named_space_strings[CLAMP (named_space,
-						  GMATHML_NAMED_SPACE_VERY_VERY_THIN,
-						  GMATHML_NAMED_SPACE_ERROR)];
+	return gmathml_space_name_strings[CLAMP (space_name,
+						 GMATHML_SPACE_NAME_VERY_VERY_THIN,
+						 GMATHML_SPACE_NAME_ERROR)];
 }
 
-GMathmlNamedSpace
-gmathml_named_space_from_string (const char *string)
+GMathmlSpaceName
+gmathml_space_name_from_string (const char *string)
 {
 	int i;
 
 	if (string == NULL)
-		return GMATHML_NAMED_SPACE_ERROR;
+		return GMATHML_SPACE_NAME_ERROR;
 
-	for (i = 0; i < G_N_ELEMENTS (gmathml_named_space_strings) - 1; i++)
-		if (strcmp (string, gmathml_named_space_strings[i]) == 0)
+	for (i = 0; i < G_N_ELEMENTS (gmathml_space_name_strings) - 1; i++)
+		if (strcmp (string, gmathml_space_name_strings[i]) == 0)
 			return i;
 
-	return GMATHML_NAMED_SPACE_ERROR;
+	return GMATHML_SPACE_NAME_ERROR;
 }
 
 static const char *gmathml_unit_strings[] = {
@@ -99,9 +99,9 @@ static const char *gmathml_unit_strings[] = {
 const char *
 gmathml_unit_to_string (GMathmlUnit unit)
 {
-	return gmathml_named_space_strings[CLAMP (unit,
-						  GMATHML_UNIT_EM,
-						  GMATHML_UNIT_NONE)];
+	return gmathml_unit_strings[CLAMP (unit,
+					   GMATHML_UNIT_EM,
+					   GMATHML_UNIT_NONE)];
 }
 
 GMathmlUnit

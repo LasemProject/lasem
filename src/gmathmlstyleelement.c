@@ -71,6 +71,14 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 	gmathml_attribute_length_parse (&style_element->very_very_thick_math_space,
 					&style->very_very_thick_math_space, style->font_size);
 
+	style->very_very_thin_math_space_value = style_element->very_very_thin_math_space.value;
+	style->very_thin_math_space_value = style_element->very_thin_math_space.value;
+	style->thin_math_space_value = style_element->thin_math_space.value;
+	style->medium_math_space_value = style_element->medium_math_space.value;
+	style->thick_math_space_value = style_element->thick_math_space.value;
+	style->very_thick_math_space_value = style_element->very_thick_math_space.value;
+	style->very_very_thick_math_space_value = style_element->very_very_thick_math_space.value;
+
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 

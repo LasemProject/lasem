@@ -21,6 +21,10 @@
  */
 
 #include <gmathmloperatorelement.h>
+#include <gmathmloperatordictionary.h>
+#include <gmathmlview.h>
+
+static GObject *parent_class;
 
 /* GDomNode implementation */
 
@@ -28,6 +32,80 @@ static const char *
 gmathml_operator_element_get_node_name (GDomNode *node)
 {
 	return "mo";
+}
+
+static void
+gmathml_operator_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+{
+	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
+	const GMathmlOperator *operator;
+	GMathmlSpace space;
+	char *text;
+	gboolean flag;
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
+
+	operator = gmathml_operator_get_attributes (text, GMATHML_FORM_INFIX);
+
+	g_message ("Find operator: %s", operator->name);
+
+	space = operator->left_space;
+	gmathml_attribute_space_parse (&operator_element->left_space, &space, style);
+	space = operator->right_space;
+	gmathml_attribute_space_parse (&operator_element->right_space, &space, style);
+	flag = operator->stretchy;
+	gmathml_attribute_boolean_parse (&operator_element->stretchy, &flag);
+	flag = operator->fence;
+	gmathml_attribute_boolean_parse (&operator_element->fence, &flag);
+	flag = operator->accent;
+	gmathml_attribute_boolean_parse (&operator_element->accent, &flag);
+	flag = operator->large_op;
+	gmathml_attribute_boolean_parse (&operator_element->large_op, &flag);
+	flag = operator->movable_limits;
+	gmathml_attribute_boolean_parse (&operator_element->movable_limits, &flag);
+	flag = operator->separator;
+	gmathml_attribute_boolean_parse (&operator_element->separator, &flag);
+	space = operator->min_size;
+	gmathml_attribute_space_parse (&operator_element->min_size, &space, style);
+	space = operator->max_size;
+	gmathml_attribute_space_parse (&operator_element->max_size, &space, style);
+	flag = operator->symmetric;
+	gmathml_attribute_boolean_parse (&operator_element->symmetric, &flag);
+
+	g_free (text);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+}
+
+static const GMathmlBbox *
+gmathml_operator_measure (GMathmlElement *self, GMathmlView *view)
+{
+	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
+	char *text;
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
+
+	gmathml_view_measure_text (view, text, &self->bbox);
+
+	self->bbox.width += operator_element->left_space.value + operator_element->right_space.value;
+
+	g_free (text);
+
+	return &self->bbox;
+}
+
+static void
+gmathml_operator_render (GMathmlElement *self, GMathmlView *view)
+{
+	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
+	char *text;
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
+
+	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
+	gmathml_view_show_text (view, self->x + operator_element->left_space.value, self->y, text);
+
+	g_free (text);
 }
 
 /* GMathmlOperatorElement implementation */
@@ -45,15 +123,34 @@ gmathml_operator_element_init (GMathmlOperatorElement *self)
 
 /* GMathmlOperatorElement class */
 
-void
-gmathml_element_class_add_operator_attributes (GMathmlElementClass *m_element_class)
+static void
+gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class)
 {
+	GDomNodeClass *node_class = GDOM_NODE_CLASS (operator_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (operator_class);
+
+	parent_class = g_type_class_peek_parent (operator_class);
+
+	node_class->get_node_name = gmathml_operator_element_get_node_name;
+
+	m_element_class->update = gmathml_operator_element_update;
+	m_element_class->measure = gmathml_operator_measure;
+	m_element_class->render = gmathml_operator_render;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "form",
 					     offsetof (GMathmlOperatorElement, form));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fence",
 					     offsetof (GMathmlOperatorElement, fence));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "separator",
 					     offsetof (GMathmlOperatorElement, separator));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "lspace",
+					     offsetof (GMathmlOperatorElement, left_space));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "rspace",
+					     offsetof (GMathmlOperatorElement, right_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
 					     offsetof (GMathmlOperatorElement, stretchy));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
@@ -62,20 +159,6 @@ gmathml_element_class_add_operator_attributes (GMathmlElementClass *m_element_cl
 					     offsetof (GMathmlOperatorElement, accent));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
 					     offsetof (GMathmlOperatorElement, movable_limits));
-}
-
-static void
-gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class)
-{
-	GDomNodeClass *node_class = GDOM_NODE_CLASS (operator_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (operator_class);
-
-	node_class->get_node_name = gmathml_operator_element_get_node_name;
-
-	m_element_class->attributes = gmathml_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_operator_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlOperatorElement, gmathml_operator_element, GMATHML_TYPE_PRESENTATION_TOKEN)

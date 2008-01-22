@@ -95,6 +95,14 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->very_very_thick_math_space.value = 0.388889;
 	style->very_very_thick_math_space.unit = GMATHML_UNIT_EM;
 
+	style->very_very_thin_math_space_value = 0.0555556 * style->font_size;
+	style->very_thin_math_space_value = 0.111111 * style->font_size;
+	style->thin_math_space_value = 0.166667 * style->font_size;
+	style->medium_math_space_value = 0.222222 * style->font_size;
+	style->thick_math_space_value = 0.277778 * style->font_size;
+	style->very_thick_math_space_value = 0.333333 * style->font_size;
+	style->very_very_thick_math_space_value = 0.388889 * style->font_size;
+
 	style->math_size.value = 12.0;
 	style->math_size.unit = GMATHML_UNIT_PT;
 	style->math_color.red = 0;

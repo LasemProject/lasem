@@ -26,7 +26,7 @@
 
 #include <math.h>
 
-GObjectClass *parent_class;
+static GObjectClass *parent_class;
 
 /* GDomNode implementation */
 
@@ -68,12 +68,14 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMat
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 
-static char *
+char *
 gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 {
 	GDomNode *node;
 	GString *string = g_string_new ("");
 	char *text;
+
+	g_return_val_if_fail (GMATHML_IS_PRESENTATION_TOKEN (self), NULL);
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GDOM_IS_TEXT (node)) {
