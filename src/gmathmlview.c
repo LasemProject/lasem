@@ -50,6 +50,8 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 {
 	GMathmlPresentationToken *token;
 	PangoRectangle rect;
+	PangoLayoutIter *iter;
+	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element));
@@ -67,9 +69,13 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
+	iter = pango_layout_get_iter (view->priv->pango_layout);
+	baseline = pango_layout_iter_get_baseline (iter);
+	pango_layout_iter_free (iter);
+
 	bbox->width = pango_units_to_double (rect.width);
-	bbox->height = pango_units_to_double (PANGO_ASCENT (rect));
-	bbox->depth = pango_units_to_double (PANGO_DESCENT (rect));
+	bbox->height = pango_units_to_double (baseline - rect.y);
+	bbox->depth = pango_units_to_double (rect.height - baseline);
 }
 
 void
@@ -77,6 +83,8 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
 	GMathmlPresentationToken *token;
 	PangoRectangle rect;
+	PangoLayoutIter *iter;
+	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_PRESENTATION_TOKEN (view->priv->current_element));
@@ -99,7 +107,12 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
-	cairo_move_to (view->priv->cairo, x, y - pango_units_to_double (PANGO_ASCENT (rect)));
+
+	iter = pango_layout_get_iter (view->priv->pango_layout);
+	baseline = pango_layout_iter_get_baseline (iter);
+	pango_layout_iter_free (iter);
+
+	cairo_move_to (view->priv->cairo, x, y - pango_units_to_double (baseline));
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
