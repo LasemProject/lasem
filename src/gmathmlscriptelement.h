@@ -50,6 +50,9 @@ struct _GMathmlScriptElement {
 	GMathmlElement *subscript;
 	GMathmlElement *superscript;
 
+	double subscript_offset;
+	double superscript_offset;
+
 	GMathmlScriptElementType type;
 
 	GMathmlAttributeLength subscript_shift;

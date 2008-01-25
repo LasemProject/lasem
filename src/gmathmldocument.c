@@ -72,6 +72,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 	else if (strcmp (tag_name, "mstyle") == 0)
 		node = gmathml_style_element_new ();
 
+	g_message ("Create a new %s element", tag_name);
+
 	return GDOM_ELEMENT (node);
 }
 

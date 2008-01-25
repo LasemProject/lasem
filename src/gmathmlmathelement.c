@@ -118,6 +118,9 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->subscript_shift.unit = GMATHML_UNIT_PT;
 	style->superscript_shift.value = 0;
 	style->superscript_shift.unit = GMATHML_UNIT_PT;
+
+	style->line_thickness.value = 0.1;
+	style->line_thickness.unit = GMATHML_UNIT_EM;
 }
 
 static void

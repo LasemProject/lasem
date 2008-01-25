@@ -38,14 +38,24 @@ static void
 gmathml_operator_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
+	GDomNode *node = GDOM_NODE (self);
 	const GMathmlOperator *operator;
 	GMathmlSpace space;
+	GMathmlForm form;
 	char *text;
 	gboolean flag;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	operator = gmathml_operator_get_attributes (text, GMATHML_FORM_INFIX);
+	if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
+	    (node->previous_sibling == NULL && node->next_sibling == NULL))
+		form = GMATHML_FORM_INFIX;
+	else if (node->previous_sibling == NULL)
+		form = GMATHML_FORM_PREFIX;
+	else
+		form = GMATHML_FORM_POSTFIX;
+
+	operator = gmathml_operator_get_attributes (text, form);
 
 	g_message ("Find operator: %s", operator->name);
 

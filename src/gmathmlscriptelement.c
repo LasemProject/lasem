@@ -119,6 +119,7 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
 
 	gmathml_style_change_script_level (style, +1);
+	style->display_style = FALSE;
 
 	if (script->subscript != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->subscript), view, style);
@@ -129,11 +130,12 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 static const GMathmlBbox *
 gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 {
+	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (element);
 	GDomNode *node = GDOM_NODE (element);
-	GMathmlBbox const *base_bbox;
-	GMathmlBbox const *child_bbox;
+	GMathmlBbox const *base_bbox = NULL;
+	GMathmlBbox const *subscript_bbox = NULL;
+	GMathmlBbox const *superscript_bbox = NULL;
 	GMathmlBbox children_bbox = {0.0, 0.0, 0.0};
-	GMathmlScriptElementType type = GMATHML_SCRIPT_ELEMENT (element)->type;
 
 	element->bbox.width = 0.0;
 	element->bbox.height = 0.0;
@@ -148,20 +150,58 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 		node = node->next_sibling;
 
 		if (node != NULL) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
+			GMathmlBbox const *bbox;
+
+			bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
 							      view);
-			gmathml_bbox_add_to_right (&children_bbox, child_bbox);
 
-			node = node->next_sibling;
+			switch (script->type) {
+				case GMATHML_SCRIPT_ELEMENT_TYPE_SUP:
+					superscript_bbox = bbox;
+					break;
+				case GMATHML_SCRIPT_ELEMENT_TYPE_SUB:
+					subscript_bbox = bbox;
+					break;
+				case GMATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP:
+					subscript_bbox = bbox;
 
-			if (node != NULL && type == GMATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP) {
-				child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
-								      view);
-				gmathml_bbox_add_under (&children_bbox, child_bbox);
+					node = node->next_sibling;
+
+					if (node != NULL)
+						superscript_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
+											    view);
 			}
-			gmathml_bbox_add_to_right (&element->bbox, &children_bbox);
 		}
 	}
+
+	if (superscript_bbox != NULL)
+		script->superscript_offset = base_bbox->height * 0.5;
+	else
+		script->superscript_offset = 0.0;
+
+	if (subscript_bbox != NULL)
+		script->subscript_offset = base_bbox->depth;
+	else
+		script->subscript_offset = 0.0;
+
+	if (superscript_bbox != NULL && subscript_bbox != NULL) {
+		double delta = (script->superscript_offset + script->subscript_offset) -
+			(superscript_bbox->depth + subscript_bbox->height);
+		if (delta < 0.0) {
+			script->superscript_offset += fabs (delta) * 0.5;
+			script->subscript_offset += fabs (delta) * 0.5;
+		}
+	}
+
+	script->superscript_offset = MAX (script->superscript_offset, script->superscript_shift.value);
+	script->subscript_offset = MAX (script->subscript_offset, script->subscript_shift.value);
+
+	if (subscript_bbox != NULL)
+		gmathml_bbox_merge_vertically (&children_bbox, subscript_bbox, -script->subscript_offset);
+	if (superscript_bbox != NULL)
+		gmathml_bbox_merge_vertically (&children_bbox, superscript_bbox, script->superscript_offset);
+
+	gmathml_bbox_add_to_right (&element->bbox, &children_bbox);
 
 	return &element->bbox;
 }
@@ -171,50 +211,24 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 			       double x, double y, const GMathmlBbox *bbox)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
-	const GMathmlBbox *base_bbox, *subscript_bbox, *superscript_bbox;
-	GMathmlLength super_shift, sub_shift;
-	double ex;
+	const GMathmlBbox *base_bbox;
 
 	if (script->base == NULL)
 		return;
 
-	base_bbox = script->base != NULL ?  gmathml_element_measure (script->base, view) : NULL;
-	subscript_bbox = script->subscript != NULL ?  gmathml_element_measure (script->subscript, view) : NULL;
-	superscript_bbox = script->superscript != NULL ?  gmathml_element_measure (script->superscript, view) : NULL;
-
-	/* Find automatic position */
-
-/*        ex = gmathml_view_get_ex_length (view);*/
-	ex = 0;
-	super_shift.value = ex;
-	super_shift.unit = GMATHML_UNIT_PT;
-	sub_shift.value = ex * 0.5;
-	sub_shift.unit = GMATHML_UNIT_PT;
-
-	g_message ("super_shift = %g", super_shift.value);
-	g_message ("sub_shift   = %g", sub_shift.value);
-
-	if (superscript_bbox != NULL && subscript_bbox != NULL) {
-		double delta = (super_shift.value + sub_shift.value) -
-			(superscript_bbox->depth + subscript_bbox->height);
-		if (delta < 0.0) {
-			super_shift.value += fabs (delta) * 0.5;
-			sub_shift.value += fabs (delta) * 0.5;
-		}
-	}
-
-	g_message ("super_shift = %g", super_shift.value);
-	g_message ("sub_shift   = %g", sub_shift.value);
+	base_bbox = gmathml_element_measure (script->base, view);
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,
 					x + base_bbox->width,
-					y + sub_shift.value, subscript_bbox);
+					y + script->subscript_offset,
+					gmathml_element_measure (script->subscript, view));
 	if (script->superscript)
 		gmathml_element_layout (script->superscript, view,
 					x + base_bbox->width,
-					y - super_shift.value, superscript_bbox);
+					y - script->superscript_offset,
+					gmathml_element_measure (script->superscript, view));
 }
 
 /* GMathmlScriptElement implementation */

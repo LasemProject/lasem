@@ -49,12 +49,16 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 
 	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
 
+	/* token */
+
 	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->font_size);
 
 	style->font_size = style_element->math_size.value;
 
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
+
+	/* mstyle */
 
 	gmathml_attribute_length_parse (&style_element->very_very_thin_math_space,
 					&style->very_very_thin_math_space, style->font_size);
@@ -78,6 +82,10 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 	style->thick_math_space_value = style_element->thick_math_space.value;
 	style->very_thick_math_space_value = style_element->very_thick_math_space.value;
 	style->very_very_thick_math_space_value = style_element->very_very_thick_math_space.value;
+
+	/* mfrac */
+
+	gmathml_attribute_length_parse (&style_element->line_thickness, &style->line_thickness, style->font_size);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
@@ -146,6 +154,9 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 					     offsetof (GMathmlStyleElement, math_color));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
 					     offsetof (GMathmlStyleElement, math_background));
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+					     offsetof (GMathmlStyleElement, line_thickness));
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

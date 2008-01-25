@@ -49,7 +49,7 @@ void
 gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbox)
 {
 	GMathmlPresentationToken *token;
-	PangoRectangle rect;
+	PangoRectangle rect, ink_rect;
 	PangoLayoutIter *iter;
 	int baseline;
 
@@ -67,7 +67,7 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 					 token->math_size.value * PANGO_SCALE);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
-	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
+	pango_layout_get_extents (view->priv->pango_layout, &ink_rect, &rect);
 
 	iter = pango_layout_get_iter (view->priv->pango_layout);
 	baseline = pango_layout_iter_get_baseline (iter);
@@ -75,14 +75,15 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 
 	bbox->width = pango_units_to_double (rect.width);
 	bbox->height = pango_units_to_double (baseline - rect.y);
-	bbox->depth = pango_units_to_double (rect.height - baseline);
+	bbox->depth = pango_units_to_double (rect.height + rect.y - baseline);
+	bbox->ink_height = pango_units_to_double (baseline - ink_rect.y);
+	bbox->ink_depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
 }
 
 void
 gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 {
 	GMathmlPresentationToken *token;
-	PangoRectangle rect;
 	PangoLayoutIter *iter;
 	int baseline;
 
@@ -106,7 +107,6 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 					 token->math_size.value * PANGO_SCALE);
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
-	pango_layout_get_extents (view->priv->pango_layout, NULL, &rect);
 
 	iter = pango_layout_get_iter (view->priv->pango_layout);
 	baseline = pango_layout_iter_get_baseline (iter);
@@ -119,11 +119,18 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 void
 gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
 {
+#if 0
 	cairo_move_to (view->priv->cairo, x, y);
-	cairo_set_line_width (view->priv->cairo, 0.5);
+	cairo_set_line_width (view->priv->cairo, 0.1);
+	cairo_set_source_rgb (view->priv->cairo, 0,0,0);
 	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
 	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
 	cairo_stroke (view->priv->cairo);
+	cairo_set_source_rgb (view->priv->cairo, 1,0,0);
+	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->ink_height);
+	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->ink_depth);
+	cairo_stroke (view->priv->cairo);
+#endif
 }
 
 void
@@ -151,10 +158,12 @@ gmathml_view_pop_element (GMathmlView *view)
 }
 
 void
-gmathml_view_draw_line (GMathmlView *view, double x0, double y0, double x1, double y1)
+gmathml_view_draw_line (GMathmlView *view, double x0, double y0, double x1, double y1,
+			double thickness)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
+	cairo_set_line_width (view->priv->cairo, thickness);
 	cairo_move_to (view->priv->cairo, x0, y0);
 	cairo_line_to (view->priv->cairo, x1, y1);
 	cairo_stroke (view->priv->cairo);

@@ -59,7 +59,7 @@ int main(int argc, char **argv)
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		cairo_move_to (cairo, 0, 25);
+		cairo_translate (cairo, 0, 25);
 		gmathml_view_render (view, cairo);
 
 		cairo_destroy (cairo);

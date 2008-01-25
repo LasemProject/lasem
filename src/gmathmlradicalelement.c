@@ -40,18 +40,18 @@ gmathml_radical_get_node_name (GDomNode *node)
 
 /* GMathmlElement implementation */
 
+#if 0
 static const GMathmlBbox *
 gmathml_radical_element_measure (GMathmlElement *element, GMathmlView *view)
 {
-	return gmathml_element_measure (GMATHML_ELEMENT (GDOM_NODE(element)->first_child), view);
 }
 
 static void
 gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 			     double x, double y, const GMathmlBbox *bbox)
 {
-	gmathml_element_layout (GMATHML_ELEMENT (GDOM_NODE(self)->first_child), view, x, y, bbox);
 }
+#endif
 
 /* GMathmlRadicalElement implementation */
 
@@ -92,12 +92,8 @@ static void
 gmathml_radical_element_class_init (GMathmlRadicalElementClass *radical_class)
 {
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (radical_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (radical_class);
 
 	d_node_class->get_node_name = gmathml_radical_get_node_name;
-
-	m_element_class->measure = gmathml_radical_element_measure;
-	m_element_class->layout = gmathml_radical_element_layout;
 }
 
-G_DEFINE_ABSTRACT_TYPE (GMathmlRadicalElement, gmathml_radical_element, GMATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (GMathmlRadicalElement, gmathml_radical_element, GMATHML_TYPE_ELEMENT)

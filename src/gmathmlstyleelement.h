@@ -57,6 +57,8 @@ struct _GMathmlStyleElement {
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor math_color;
 	GMathmlAttributeColor math_background;
+
+	GMathmlAttributeLength line_thickness;
 };
 
 struct _GMathmlStyleElementClass {

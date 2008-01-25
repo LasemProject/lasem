@@ -3,6 +3,7 @@
 #include <gmathml.h>
 #include <gmathmldocument.h>
 #include <gmathmlpresentationtoken.h>
+#include <gmathmlentitydictionary.h>
 #include <libxml/parser.h>
 #include <string.h>
 
@@ -100,12 +101,36 @@ gmathml_parser_characters (void *user_data, const xmlChar *ch, int len)
 	}
 }
 
+static xmlEntityPtr
+gmathml_parser_get_entity (void *user_data, const xmlChar *name)
+{
+	const char *utf8;
+
+	utf8 = gmathml_entity_get_utf8 ((char *) name);
+	if (utf8 != NULL) {
+		xmlEntity *entity;
+
+		entity = g_new0 (xmlEntity, 1);
+
+		entity->type = XML_ENTITY_DECL;
+		entity->name = name;
+		entity->content = (xmlChar *) utf8;
+		entity->length = g_utf8_strlen (utf8, -1);
+		entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
+
+		return entity;
+	}
+
+	return xmlGetPredefinedEntity(name);
+}
+
 static xmlSAXHandler sax_handler = {
 	.startDocument = gmathml_parser_start_document,
 	.endDocument = gmathml_parser_end_document,
 	.startElement = gmathml_parser_start_element,
 	.endElement = gmathml_parser_end_element,
-	.characters = gmathml_parser_characters
+	.characters = gmathml_parser_characters,
+	.getEntity = gmathml_parser_get_entity
 };
 
 GDomNode *

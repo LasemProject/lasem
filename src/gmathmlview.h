@@ -71,7 +71,8 @@ void		gmathml_view_pop_element	(GMathmlView *view);
 double 		gmathml_view_get_ex_length 	(GMathmlView *view);
 double 		gmathml_view_get_em_length 	(GMathmlView *view);
 
-void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0, double x1, double y1);
+void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0,
+						 double x1, double y1, double thickness);
 G_END_DECLS
 
 #endif

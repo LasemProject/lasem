@@ -80,6 +80,8 @@ typedef struct {
 	/* msubsup */
 	GMathmlLength subscript_shift;
 	GMathmlLength superscript_shift;
+	/* mfrac */
+	GMathmlLength line_thickness;
 } GMathmlStyle;
 
 GMathmlStyle *	gmathml_style_new 			(void);

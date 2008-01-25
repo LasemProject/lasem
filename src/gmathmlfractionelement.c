@@ -49,7 +49,12 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GDomNode *node;
 
+	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->font_size);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
+
+	g_message ("Line thickness = %g", style->line_thickness.value);
+
+	fraction->offset = style->font_size * 0.45;
 
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
@@ -70,6 +75,7 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 static const GMathmlBbox *
 gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 {
+	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 
@@ -96,6 +102,9 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	gmathml_bbox_add_under (&self->bbox, child_bbox);
 
+	self->bbox.depth -= fraction->offset;
+	self->bbox.height += fraction->offset;
+
 	return &self->bbox;
 }
 
@@ -103,6 +112,7 @@ static void
 gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 				 double x, double y, const GMathmlBbox *bbox)
 {
+	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 
@@ -112,14 +122,14 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 		gmathml_element_layout (GMATHML_ELEMENT (node), view,
 					x + (bbox->width - child_bbox->width) / 2.0,
-					y - child_bbox->depth, child_bbox);
+					y - child_bbox->depth - fraction->offset, child_bbox);
 
 		node = node->next_sibling;
 		if (node != NULL) {
 			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + (bbox->width - child_bbox->width) / 2.0,
-						y + child_bbox->height, child_bbox);
+						y + child_bbox->height - fraction->offset, child_bbox);
 		}
 	}
 }
@@ -127,9 +137,12 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 static void
 gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 {
+	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 
-	gmathml_view_draw_line (view, self->x, self->y, self->x + self->bbox.width, self->y);
+	gmathml_view_draw_line (view, self->x, self->y - fraction->offset,
+				self->x + self->bbox.width, self->y - fraction->offset,
+				fraction->line_thickness.value);
 }
 
 /* GMathmlFraction implementation */
@@ -150,6 +163,8 @@ gmathml_fraction_element_init (GMathmlFractionElement *element)
 void
 gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)
 {
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+					     offsetof (GMathmlFractionElement, line_thickness));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
 					     offsetof (GMathmlFractionElement, bevelled));
 }

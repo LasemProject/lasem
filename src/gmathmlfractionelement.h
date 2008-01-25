@@ -40,7 +40,10 @@ typedef struct _GMathmlFractionElementClass GMathmlFractionElementClass;
 struct _GMathmlFractionElement {
 	GMathmlElement presentation_container;
 
+	GMathmlAttributeLength line_thickness;
 	GMathmlAttributeBoolean bevelled;
+
+	double offset;
 };
 
 struct _GMathmlFractionElementClass {

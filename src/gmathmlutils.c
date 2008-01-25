@@ -56,3 +56,16 @@ gmathml_bbox_add_under (GMathmlBbox *self, const GMathmlBbox *bbox)
 	self->depth += bbox->height + bbox->depth;
 	self->width = MAX (self->width, bbox->width);
 }
+
+void
+gmathml_bbox_merge_vertically (GMathmlBbox *self, const GMathmlBbox *bbox, double offset)
+{
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (bbox != NULL);
+
+	if (bbox->height + offset > self->height)
+		self->height = bbox->height + offset;
+	if (bbox->depth - offset > self->depth)
+		self->depth = bbox->depth - offset;
+	self->width = MAX (self->width, bbox->width);
+}
