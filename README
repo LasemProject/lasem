@@ -1,0 +1,5 @@
+GMathml aims to be a C/Gobject based mathml renderer and editor, supporting CSS style sheets.
+
+It uses cairo and pango as it's rendering abstraction layer, and then support numerous output formats: xlib, PNG, SVG, PDF, PS, EPS...
+
+The API tries to follow the MathML DOM.
