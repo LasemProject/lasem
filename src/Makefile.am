@@ -7,9 +7,9 @@ AM_CFLAGS =\
 	 -Wall\
 	 -g
 
-bin_PROGRAMS = gmathml-test
+bin_PROGRAMS = gmathmlsvg
 
-gmathml_test_SOURCES = 			\
+gmathmlsvg_SOURCES = 			\
 	gdomnode.c			\
 	gdomnodelist.c			\
 	gdomdocument.c			\
@@ -34,9 +34,9 @@ gmathml_test_SOURCES = 			\
 	gmathmlview.c			\
 	gmathmlutils.c			\
 	gmathmlparser.c			\
-	gmathml-test.c
+	gmathmlsvg.c
 
-gmathml_test_LDFLAGS =
+gmathmlsvg_LDFLAGS =
 
-gmathml_test_LDADD = $(GMATHML_LIBS)
+gmathmlsvg_LDADD = $(GMATHML_LIBS)
 

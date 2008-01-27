@@ -119,7 +119,6 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 void
 gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
 {
-#if 0
 	cairo_move_to (view->priv->cairo, x, y);
 	cairo_set_line_width (view->priv->cairo, 0.1);
 	cairo_set_source_rgb (view->priv->cairo, 0,0,0);
@@ -130,7 +129,6 @@ gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox
 	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->ink_height);
 	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->ink_depth);
 	cairo_stroke (view->priv->cairo);
-#endif
 }
 
 void
