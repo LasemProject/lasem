@@ -48,7 +48,6 @@ gmathml_length_compute (GMathmlLength *length, double default_value, double font
 		case GMATHML_UNIT_EX:
 			return length->value * font_size * 0.5;
 		case GMATHML_UNIT_PERCENT:
-			g_message ("new_value = %g * %g / 100.0", default_value, length->value);
 			return default_value * length->value / 100.0;
 		case GMATHML_UNIT_NONE:
 			return default_value * length->value;

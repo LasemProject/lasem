@@ -52,9 +52,8 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->font_size);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
-	g_message ("Line thickness = %g", style->line_thickness.value);
-
 	fraction->offset = style->font_size * 0.45;
+	fraction->padding = style->font_size * 0.2 + style->line_thickness.value * 0.5;
 
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
@@ -102,8 +101,8 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	gmathml_bbox_add_under (&self->bbox, child_bbox);
 
-	self->bbox.depth -= fraction->offset;
-	self->bbox.height += fraction->offset;
+	self->bbox.height += fraction->padding + fraction->offset;
+	self->bbox.depth += fraction->padding - fraction->offset;
 
 	return &self->bbox;
 }
@@ -122,14 +121,22 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 		gmathml_element_layout (GMATHML_ELEMENT (node), view,
 					x + (bbox->width - child_bbox->width) / 2.0,
-					y - child_bbox->depth - fraction->offset, child_bbox);
+					y - child_bbox->depth -
+					fraction->padding -
+					fraction->offset, child_bbox);
 
 		node = node->next_sibling;
 		if (node != NULL) {
 			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+
+			g_message ("[GMathmlFractionElement::layout] numerator height  %g",
+				   child_bbox->height);
+
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + (bbox->width - child_bbox->width) / 2.0,
-						y + child_bbox->height - fraction->offset, child_bbox);
+						y + child_bbox->height +
+						fraction->padding -
+						fraction->offset, child_bbox);
 		}
 	}
 }
@@ -154,8 +161,10 @@ gmathml_fraction_element_new (void)
 }
 
 static void
-gmathml_fraction_element_init (GMathmlFractionElement *element)
+gmathml_fraction_element_init (GMathmlFractionElement *self)
 {
+	self->offset = 0.0;
+	self->padding = 0.0;
 }
 
 /* GMathmlFractionElement class */

@@ -31,8 +31,6 @@ typedef struct {
 	double width;
 	double height;
 	double depth;
-	double ink_height;
-	double ink_depth;
 } GMathmlBbox;
 
 const GMathmlBbox gmathml_bbox_null;

@@ -44,6 +44,7 @@ struct _GMathmlFractionElement {
 	GMathmlAttributeBoolean bevelled;
 
 	double offset;
+	double padding;
 };
 
 struct _GMathmlFractionElementClass {

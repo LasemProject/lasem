@@ -76,10 +76,8 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 	pango_layout_iter_free (iter);
 
 	bbox->width = pango_units_to_double (rect.width);
-	bbox->height = pango_units_to_double (baseline - rect.y);
-	bbox->depth = pango_units_to_double (rect.height + rect.y - baseline);
-	bbox->ink_height = pango_units_to_double (baseline - ink_rect.y);
-	bbox->ink_depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+	bbox->height = pango_units_to_double (baseline - ink_rect.y);
+	bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
 }
 
 void
@@ -126,13 +124,9 @@ gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox
 	if (view->priv->debug) {
 		cairo_move_to (view->priv->cairo, x, y);
 		cairo_set_line_width (view->priv->cairo, 0.1);
-		cairo_set_source_rgb (view->priv->cairo, 0,0,0);
+		cairo_set_source_rgb (view->priv->cairo, 1,0,0);
 		cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
 		cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
-		cairo_stroke (view->priv->cairo);
-		cairo_set_source_rgb (view->priv->cairo, 1,0,0);
-		cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->ink_height);
-		cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->ink_depth);
 		cairo_stroke (view->priv->cairo);
 	}
 }
