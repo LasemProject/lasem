@@ -159,3 +159,33 @@ gmathml_variant_from_string (const char *string)
 
 	return GMATHML_VARIANT_ERROR;
 }
+
+static const char *gmathml_form_strings[] = {
+	"prefix",
+	"postfix",
+	"infix",
+	"normal"
+};
+
+const char *
+gmathml_form_to_string (GMathmlForm form)
+{
+	return gmathml_form_strings[CLAMP (form,
+					   GMATHML_FORM_PREFIX,
+					   GMATHML_FORM_ERROR)];
+}
+
+GMathmlForm
+gmathml_form_from_string (const char *string)
+{
+	int i;
+
+	if (string == NULL)
+		return GMATHML_FORM_ERROR;
+
+	for (i = 0; i < G_N_ELEMENTS (gmathml_form_strings) - 1; i++)
+		if (strcmp (string, gmathml_form_strings[i]) == 0)
+			return i;
+
+	return GMATHML_FORM_ERROR;
+}

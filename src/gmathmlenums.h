@@ -28,12 +28,6 @@
 G_BEGIN_DECLS
 
 typedef enum {
-	GMATHML_FORM_PREFIX,
-	GMATHML_FORM_POSTFIX,
-	GMATHML_FORM_INFIX
-} GMathmlForm;
-
-typedef enum {
 	GMATHML_MODE_DISPLAY,
 	GMATHML_MODE_INLINE
 } GMathmlMode;
@@ -91,6 +85,16 @@ typedef enum {
 
 const char * 		gmathml_variant_to_string 	(GMathmlVariant variant);
 GMathmlVariant 		gmathml_variant_from_string 	(const char *string);
+
+typedef enum {
+	GMATHML_FORM_PREFIX,
+	GMATHML_FORM_POSTFIX,
+	GMATHML_FORM_INFIX,
+	GMATHML_FORM_ERROR
+} GMathmlForm;
+
+const char *		gmathml_form_to_string 			(GMathmlForm form);
+GMathmlForm 		gmathml_form_from_string 		(const char *string);
 
 G_END_DECLS
 

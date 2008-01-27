@@ -48,6 +48,7 @@ gmathml_length_compute (GMathmlLength *length, double default_value, double font
 		case GMATHML_UNIT_EX:
 			return length->value * font_size * 0.5;
 		case GMATHML_UNIT_PERCENT:
+			g_message ("new_value = %g * %g / 100.0", default_value, length->value);
 			return default_value * length->value / 100.0;
 		case GMATHML_UNIT_NONE:
 			return default_value * length->value;
@@ -375,7 +376,26 @@ gmathml_attribute_mode_parse (GMathmlAttributeMode *attribute,
 }
 
 void
-gmathml_attribute_variant_parse (GMathmlAttributeLength *attribute,
+gmathml_attribute_form_parse (GMathmlAttributeForm *attribute,
+			      GMathmlForm *style_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
+	}
+
+	attribute->value = gmathml_form_from_string (string);
+	*style_value = attribute->value;
+}
+
+void
+gmathml_attribute_variant_parse (GMathmlAttributeVariant *attribute,
 				 GMathmlVariant *style_value)
 {
 	const char *string;
@@ -408,8 +428,23 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 	if (string == NULL) {
 		attribute->length = *style_value;
 	} else {
-		attribute->length.value = g_strtod (string, &unit_str);
-		attribute->length.unit = gmathml_unit_from_string (unit_str);
+		GMathmlUnit unit;
+		double value;
+
+		value = g_strtod (string, &unit_str);
+		unit = gmathml_unit_from_string (unit_str);
+
+		if (unit == GMATHML_UNIT_NONE) {
+			unit = style_value->unit;
+			value *= style_value->value;
+		} else if (unit == GMATHML_UNIT_PERCENT) {
+			unit = style_value->unit;
+			value *= style_value->value / 100.0;
+		}
+
+		attribute->length.unit = unit;
+		attribute->length.value = value;
+
 		*style_value = attribute->length;
 	}
 
@@ -433,12 +468,27 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 	} else {
 		attribute->space.name = gmathml_space_name_from_string (string);
 		if (attribute->space.name == GMATHML_SPACE_NAME_ERROR) {
-			attribute->space.length.value = g_strtod (string, &unit_str);
-			attribute->space.length.unit = gmathml_unit_from_string (unit_str);
+			GMathmlUnit unit;
+			double value;
+
+			value = g_strtod (string, &unit_str);
+			unit = gmathml_unit_from_string (unit_str);
+
+			if (unit == GMATHML_UNIT_NONE) {
+				unit = style_value->length.unit;
+				value *= style_value->length.value;
+			} else if (unit == GMATHML_UNIT_PERCENT) {
+				unit = style_value->length.unit;
+				value *= style_value->length.value / 100.0;
+			}
+
+			attribute->space.length.unit = unit;
+			attribute->space.length.value = value;
 		} else {
 			attribute->space.length.value = 0.0;
 			attribute->space.length.unit = GMATHML_UNIT_PX;
 		}
+
 		*style_value = attribute->space;
 	}
 

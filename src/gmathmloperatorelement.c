@@ -55,6 +55,8 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	else
 		form = GMATHML_FORM_POSTFIX;
 
+	gmathml_attribute_form_parse (&operator_element->form, &form);
+
 	operator = gmathml_operator_get_attributes (text, form);
 
 	g_message ("Find operator: %s", operator->name);
