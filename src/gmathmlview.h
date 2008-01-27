@@ -56,6 +56,7 @@ GType gmathml_view_get_type (void);
 
 GMathmlView *	gmathml_view_new 		(GMathmlDocument *document);
 void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
+void 		gmathml_view_measure 		(GMathmlView *view, double *width, double *height);
 
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
@@ -73,6 +74,9 @@ double 		gmathml_view_get_em_length 	(GMathmlView *view);
 
 void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0,
 						 double x1, double y1, double thickness);
+
+void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
+
 G_END_DECLS
 
 #endif

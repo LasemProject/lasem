@@ -30,23 +30,32 @@
 #include <gmathmlview.h>
 #include <gmathmlparser.h>
 #include <glib/gmessages.h>
+#include <glib/goption.h>
 #include <cairo-svg.h>
+
+static gboolean debug = FALSE;
+
+static const GOptionEntry entries[] =
+{
+  { "debug", 'd', 0, G_OPTION_ARG_NONE, &debug, "Debug mode", NULL },
+  { NULL }
+};
 
 int main(int argc, char **argv)
 {
 	GDomNode *document;
 	GMathmlView *view;
+	GError *error = NULL;
+	GOptionContext *context;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
+	double height, width;
 
 	g_type_init ();
 
-	g_assert (gmathml_operator_get_attributes ("toto", GMATHML_FORM_PREFIX) != NULL);
-	g_assert (gmathml_operator_get_attributes ("<>", GMATHML_FORM_INFIX) != NULL);
-
-/*        g_message ("math class=%s", gdom_element_get_attribute (GDOM_ELEMENT (math_element), "class"));*/
-/*        gdom_element_set_attribute (GDOM_ELEMENT (math_element), "class", "toto");*/
-/*        g_message ("math class=%s", gdom_element_get_attribute (GDOM_ELEMENT (math_element), "class"));*/
+	context = g_option_context_new (NULL);
+	g_option_context_add_main_entries (context, entries, NULL);
+	g_option_context_parse (context, &argc, &argv, &error);
 
 	if (argc > 1) {
 		document = gmathml_document_from_file (argv[1]);
@@ -55,11 +64,14 @@ int main(int argc, char **argv)
 
 		view = gmathml_view_new (GMATHML_DOCUMENT (document));
 
-		surface = cairo_svg_surface_create ("gmathml.svg", 200.0, 50.0);
+		gmathml_view_set_debug (view, debug);
+
+		gmathml_view_measure (view, &width, &height);
+
+		surface = cairo_svg_surface_create ("gmathml.svg", width, height);
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		cairo_translate (cairo, 0, 25);
 		gmathml_view_render (view, cairo);
 
 		cairo_destroy (cairo);

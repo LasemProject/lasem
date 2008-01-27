@@ -32,6 +32,8 @@ static GObjectClass *parent_class;
 
 struct _GMathmlViewPrivate {
 
+	gboolean debug;
+
 	GMathmlDocument *document;
 
 	PangoLayout *pango_layout;
@@ -119,16 +121,20 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 void
 gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
 {
-	cairo_move_to (view->priv->cairo, x, y);
-	cairo_set_line_width (view->priv->cairo, 0.1);
-	cairo_set_source_rgb (view->priv->cairo, 0,0,0);
-	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
-	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
-	cairo_stroke (view->priv->cairo);
-	cairo_set_source_rgb (view->priv->cairo, 1,0,0);
-	cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->ink_height);
-	cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->ink_depth);
-	cairo_stroke (view->priv->cairo);
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	if (view->priv->debug) {
+		cairo_move_to (view->priv->cairo, x, y);
+		cairo_set_line_width (view->priv->cairo, 0.1);
+		cairo_set_source_rgb (view->priv->cairo, 0,0,0);
+		cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
+		cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
+		cairo_stroke (view->priv->cairo);
+		cairo_set_source_rgb (view->priv->cairo, 1,0,0);
+		cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->ink_height);
+		cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->ink_depth);
+		cairo_stroke (view->priv->cairo);
+	}
 }
 
 void
@@ -168,6 +174,35 @@ gmathml_view_draw_line (GMathmlView *view, double x0, double y0, double x1, doub
 }
 
 void
+gmathml_view_measure (GMathmlView *view, double *width, double *height)
+{
+	GDomElement *root;
+	const GMathmlBbox *bbox;
+
+	if (width != NULL)
+		*width = 0.0;
+	if (height != NULL)
+		*height = 0.0;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
+	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (root));
+
+	gmathml_element_update (GMATHML_ELEMENT (root), view,
+				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
+
+	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
+
+	if (bbox != NULL) {
+		if (width != NULL)
+			*width = bbox->width;
+		if (height != NULL)
+			*height = bbox->height + bbox->depth;
+	}
+}
+
+void
 gmathml_view_render (GMathmlView *view, cairo_t *cr)
 {
 	GDomElement *root;
@@ -191,7 +226,10 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 
+	cairo_save (cr);
+	cairo_translate (cr, 0, bbox->height);
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
+	cairo_restore (cr);
 
 	view->priv->cairo = NULL;
 
@@ -200,6 +238,14 @@ gmathml_view_render (GMathmlView *view, cairo_t *cr)
 		g_slist_free (view->priv->elements);
 		view->priv->elements = NULL;
 	}
+}
+
+void
+gmathml_view_set_debug (GMathmlView *view, gboolean debug)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	view->priv->debug = debug;
 }
 
 GMathmlView *
