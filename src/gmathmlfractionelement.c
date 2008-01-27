@@ -79,9 +79,8 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 	const GMathmlBbox *child_bbox;
 
 	self->bbox.width = 0.0;
-	/* FIXME attribute setting */
-	self->bbox.height = 1.0;
-	self->bbox.depth = 1.0;
+	self->bbox.height = 0.0;
+	self->bbox.depth = 0.0;
 
 	node = GDOM_NODE (self)->first_child;
 
