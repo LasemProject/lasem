@@ -21,10 +21,16 @@ gmathmlsvg_SOURCES = 			\
 	gmathmloperatordictionary.c	\
 	gmathmldocument.c		\
 	gmathmlelement.c		\
+	gmathmlphantomelement.c		\
 	gmathmlmathelement.c		\
+	gmathmltableelement.c		\
+	gmathmltablerowelement.c	\
+	gmathmltablecellelement.c	\
+	gmathmlspaceelement.c		\
 	gmathmlradicalelement.c		\
 	gmathmlscriptelement.c		\
 	gmathmlfractionelement.c	\
+	gmathmlunderoverelement.c	\
 	gmathmlpresentationtoken.c	\
 	gmathmloperatorelement.c	\
 	gmathmlpresentationcontainer.c	\

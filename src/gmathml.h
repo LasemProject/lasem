@@ -29,7 +29,13 @@ G_BEGIN_DECLS
 
 typedef struct _GMathmlDocument GMathmlDocument;
 typedef struct _GMathmlElement GMathmlElement;
+typedef struct _GMathmlPhantomElement GMathmlPhantomElement;
+typedef struct _GMathmlTableElement GMathmlTableElement;
+typedef struct _GMathmlTableRowElement GMathmlTableRowElement;
+typedef struct _GMathmlTableCellElement GMathmlTableCellElement;
+typedef struct _GMathmlSpaceElement GMathmlSpaceElement;
 typedef struct _GMathmlFractionElement GMathmlFractionElement;
+typedef struct _GMathmlUnderOverElement GMathmlUnderOverElement;
 typedef struct _GMathmlMathElement GMathmlMathElement;
 typedef struct _GMathmlRadicalElement GMathmlRadicalElement;
 typedef struct _GMathmlScriptElement GMathmlScriptElement;

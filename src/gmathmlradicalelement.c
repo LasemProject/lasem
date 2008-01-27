@@ -22,6 +22,8 @@
 
 #include <gmathmlradicalelement.h>
 
+static GObjectClass *parent_class;
+
 /* GdomNode implementation */
 
 static const char *
@@ -40,18 +42,22 @@ gmathml_radical_get_node_name (GDomNode *node)
 
 /* GMathmlElement implementation */
 
-#if 0
 static const GMathmlBbox *
-gmathml_radical_element_measure (GMathmlElement *element, GMathmlView *view)
+gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 {
+	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+
+	self->bbox.width += 10;
+
+	return &self->bbox;
 }
 
 static void
 gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
-			     double x, double y, const GMathmlBbox *bbox)
+				double x, double y, const GMathmlBbox *bbox)
 {
+	GMATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x + 10.0, y, bbox);
 }
-#endif
 
 /* GMathmlRadicalElement implementation */
 
@@ -92,8 +98,14 @@ static void
 gmathml_radical_element_class_init (GMathmlRadicalElementClass *radical_class)
 {
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (radical_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (radical_class);
+
+	parent_class = g_type_class_peek_parent (radical_class);
 
 	d_node_class->get_node_name = gmathml_radical_get_node_name;
+
+	m_element_class->measure = gmathml_radical_element_measure;
+	m_element_class->layout = gmathml_radical_element_layout;
 }
 
 G_DEFINE_TYPE (GMathmlRadicalElement, gmathml_radical_element, GMATHML_TYPE_ELEMENT)

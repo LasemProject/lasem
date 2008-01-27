@@ -21,10 +21,16 @@
  */
 
 #include <gmathmldocument.h>
+#include <gmathmlphantomelement.h>
 #include <gmathmlmathelement.h>
+#include <gmathmltableelement.h>
+#include <gmathmltablerowelement.h>
+#include <gmathmltablecellelement.h>
+#include <gmathmlspaceelement.h>
 #include <gmathmlradicalelement.h>
 #include <gmathmlscriptelement.h>
 #include <gmathmlfractionelement.h>
+#include <gmathmlunderoverelement.h>
 #include <gmathmloperatorelement.h>
 #include <gmathmlrowelement.h>
 #include <gmathmlstyleelement.h>
@@ -47,6 +53,14 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 
 	if (strcmp (tag_name, "math") == 0)
 		node = gmathml_math_element_new ();
+	else if (strcmp (tag_name, "mtable") == 0)
+		node = gmathml_table_element_new ();
+	else if (strcmp (tag_name, "mr") == 0)
+		node = gmathml_table_row_element_new ();
+	else if (strcmp (tag_name, "md") == 0)
+		node = gmathml_table_cell_element_new ();
+	else if (strcmp (tag_name, "mspace") == 0)
+		node = gmathml_space_element_new ();
 	else if (strcmp (tag_name, "msqrt") == 0)
 		node = gmathml_sqrt_element_new ();
 	else if (strcmp (tag_name, "mroot") == 0)
@@ -59,6 +73,12 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_sub_sup_element_new ();
 	else if (strcmp (tag_name, "mfrac") == 0)
 		node = gmathml_fraction_element_new ();
+	else if (strcmp (tag_name, "munder") == 0)
+		node = gmathml_under_element_new ();
+	else if (strcmp (tag_name, "mover") == 0)
+		node = gmathml_over_element_new ();
+	else if (strcmp (tag_name, "munderover") == 0)
+		node = gmathml_under_over_element_new ();
 	else if (strcmp (tag_name, "mo") == 0)
 		node = gmathml_operator_element_new ();
 	else if (strcmp (tag_name, "mrow") == 0)
@@ -71,6 +91,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_text_element_new ();
 	else if (strcmp (tag_name, "mstyle") == 0)
 		node = gmathml_style_element_new ();
+	else if (strcmp (tag_name, "mphantom") == 0)
+		node = gmathml_phantom_element_new ();
 
 	g_message ("Create a new %s element", tag_name);
 
