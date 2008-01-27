@@ -1,0 +1,14 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+	<msubsup>
+		<mfrac>
+			<mrow>
+				<mn mathcolor="red">totolaripette</mn>
+				<mo>+</mo>
+				<mn mathcolor="blue">2</mn>
+			</mrow>
+			<mn>12.3</mn>
+		</mfrac>
+		<mn>2</mn>
+		<mn>2</mn>
+	</msubsup>
+</math>
