@@ -1,4 +1,7 @@
 .deps
 *.o
+*.lo
+*.la
+.libs
 gmathmlsvg
 *.swp
