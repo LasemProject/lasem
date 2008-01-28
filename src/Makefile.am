@@ -5,17 +5,20 @@ INCLUDES = \
 
 AM_CFLAGS =\
 	 -Wall\
+	 -Werror \
 	 -g
 
-bin_PROGRAMS = gmathmlsvg
+lib_LTLIBRARIES = libgdom.la libgmathml.la
 
-gmathmlsvg_SOURCES = 			\
+libgdom_la_SOURCES =			\
 	gdomnode.c			\
 	gdomnodelist.c			\
 	gdomdocument.c			\
 	gdomelement.c			\
 	gdomcharacterdata.c		\
-	gdomtext.c			\
+	gdomtext.c
+
+libgmathml_la_SOURCES =			\
 	gmathmlenums.c			\
 	gmathmlentitydictionary.c	\
 	gmathmloperatordictionary.c	\
@@ -39,10 +42,14 @@ gmathmlsvg_SOURCES = 			\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlutils.c			\
-	gmathmlparser.c			\
+	gmathmlparser.c
+
+bin_PROGRAMS = gmathmlsvg
+
+gmathmlsvg_SOURCES = 			\
 	gmathmlsvg.c
 
 gmathmlsvg_LDFLAGS =
 
-gmathmlsvg_LDADD = $(GMATHML_LIBS)
+gmathmlsvg_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
 
