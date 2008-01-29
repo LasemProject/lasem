@@ -44,7 +44,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlutils.c			\
 	gmathmlparser.c
 
-bin_PROGRAMS = gmathmlsvg
+bin_PROGRAMS = gmathmlsvg gmathmltest
 
 gmathmlsvg_SOURCES = 			\
 	gmathmlsvg.c
@@ -52,8 +52,6 @@ gmathmlsvg_SOURCES = 			\
 gmathmlsvg_LDFLAGS =
 
 gmathmlsvg_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
-
-bin_PROGRAMS = gmathmltest
 
 gmathmltest_SOURCES = 			\
 	gmathmltest.c

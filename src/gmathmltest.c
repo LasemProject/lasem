@@ -40,6 +40,8 @@
 #include <gmathmldocument.h>
 #include <gmathmlparser.h>
 
+#include <libxml/parser.h>
+
 static const char *fail_face = "", *normal_face = "";
 FILE *gmathml_test_html_file = NULL;
 
@@ -55,8 +57,7 @@ gmathml_test_html (const char *fmt, ...)
 }
 
 #define TEST_WIDTH 480
-#define TEST_LIST_FILENAME  TEST_DATA_DIR"/gmathmltest.txt"
-#define HTML_FILENAME	    "gmathmltest.html"
+#define XML_FILENAME	    "gmathmltest.xml"
 
 void
 gmathml_test_render (char const *test_name)
@@ -65,13 +66,15 @@ gmathml_test_render (char const *test_name)
 	GMathmlView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
+	char *buffer;
+	size_t size;
 	char *png_filename;
 	char *xml_filename;
 	char *reference_png_filename;
 	double width, height;
 
 	png_filename = g_strdup_printf ("%s-out.png", test_name);
-	xml_filename = g_strdup_printf ("%s.xml", test_name);
+	xml_filename = g_strdup_printf ("%s.mml", test_name);
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
 
 	document = gmathml_document_from_file (xml_filename);
@@ -92,8 +95,15 @@ gmathml_test_render (char const *test_name)
 	g_object_unref (view);
 	g_object_unref (document);
 
-
 	gmathml_test_html ("<tr>");
+	gmathml_test_html ("<td>");
+
+	if (g_file_get_contents (xml_filename, &buffer, &size, NULL)) {
+		gmathml_test_html (buffer);
+		g_free (buffer);
+	}
+
+	gmathml_test_html ("</td>");
 	gmathml_test_html ("<td><img src=\"%s\"/></td>", png_filename);
 	gmathml_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
 	gmathml_test_html ("</tr>\n");
@@ -112,7 +122,7 @@ gmathml_test_process_dir (const char *name)
 	const char *entry;
 	char *filename;
 
-	regex = g_regex_new ("\\.xml$", 0, 0, &error);
+	regex = g_regex_new ("\\.mml$", 0, 0, &error);
 	assert (error == NULL);
 
 	directory = g_dir_open (name, 0, &error);
@@ -154,17 +164,18 @@ main (int argc, char **argv)
 	}
 #endif
 
-	gmathml_test_html_file = fopen (HTML_FILENAME, "w");
+	gmathml_test_html_file = fopen (XML_FILENAME, "w");
 
 	printf ("===============\n"
 		"Rendering tests\n"
 		"===============\n");
 
-	gmathml_test_html_file = fopen (HTML_FILENAME, "w");
+	gmathml_test_html_file = fopen (XML_FILENAME, "w");
 
-	gmathml_test_html ("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\""
-			   "\"http://www.w3.org/TR/html4/loose.dtd\"/>\n");
-	gmathml_test_html ("<html>\n");
+	gmathml_test_html ("<?xml version=\"1.0\"?>");
+	gmathml_test_html ("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">");
+	gmathml_test_html ("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+	gmathml_test_html ("<body>\n");
 	gmathml_test_html ("<table>\n");
 
 	g_type_init ();
@@ -172,6 +183,7 @@ main (int argc, char **argv)
 	gmathml_test_process_dir (".");
 
 	gmathml_test_html ("</table>\n");
+	gmathml_test_html ("</body>\n");
 	gmathml_test_html ("</html>\n");
 
 	if (gmathml_test_html_file != NULL)
