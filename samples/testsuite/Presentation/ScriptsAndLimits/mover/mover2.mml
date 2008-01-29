@@ -1,0 +1,26 @@
+    <math> 
+      <mrow> 
+        <mover accent="true"> 
+          <mrow> 
+            <mi> x </mi> 
+            <mo> + </mo> 
+            <mi> y </mi> 
+            <mo> + </mo> 
+            <mi> z </mi> 
+          </mrow> 
+          <mo> &#x000AF; </mo> 
+        </mover> 
+        <mtext> &#x02009;&amp;#x0200A;&amp;#x0200A; vs &amp;#x02009;&amp;#x0200A;&amp;#x0200A; 
+        </mtext> 
+        <mover accent="false"> 
+          <mrow> 
+            <mi> x </mi> 
+            <mo> + </mo> 
+            <mi> y </mi> 
+            <mo> + </mo> 
+            <mi> z </mi> 
+          </mrow> 
+          <mo> &#x000AF; </mo> 
+        </mover> 
+      </mrow> 
+    </math>

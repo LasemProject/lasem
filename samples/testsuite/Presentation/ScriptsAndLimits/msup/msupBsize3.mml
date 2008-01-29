@@ -1,0 +1,38 @@
+    <math> 
+      <msup> 
+        <mo>&#x0222B;</mo> 
+        <mn>1</mn> 
+      </msup> 
+      <mo>+</mo> 
+      <msup> 
+        <mstyle background='green'> 
+          <mfrac> 
+            <mi>x</mi> 
+            <mi>y</mi> 
+          </mfrac> 
+        </mstyle> 
+        <mi>a</mi> 
+      </msup> 
+      <mo>+</mo> 
+      <msup> 
+        <mstyle background='green'> 
+          <mfrac> 
+            <mi>x</mi> 
+            <mi>y</mi> 
+          </mfrac> 
+        </mstyle> 
+        <mn>1</mn> 
+      </msup> 
+      <mo>+</mo> 
+      <msup> 
+        <mo>&#x0222B;</mo> 
+        <mi>a</mi> 
+      </msup> 
+      <mo>+</mo> 
+      <mstyle displaystyle="true"> 
+        <msup> 
+          <mo>&#x0222B;</mo> 
+          <mi>a</mi> 
+        </msup> 
+      </mstyle> 
+    </math>

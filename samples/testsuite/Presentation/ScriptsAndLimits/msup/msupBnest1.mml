@@ -1,0 +1,14 @@
+    <math> 
+      <mrow> 
+        <mi>x</mi> 
+        <mo>+</mo> 
+        <msup> 
+          <mrow> 
+            <mi>y</mi> 
+          </mrow> 
+          <mrow> 
+            <mi>n</mi> 
+          </mrow> 
+        </msup> 
+      </mrow>
+    </math>
