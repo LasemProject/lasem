@@ -1,0 +1,28 @@
+    <math> 
+      <mrow> 
+        <mfrac linethickness='thin'> 
+          <mn>1</mn> 
+          <mrow> 
+            <mi>y</mi> 
+            <mo>+</mo> 
+            <mn>3</mn> 
+          </mrow> 
+        </mfrac> 
+        <mfrac linethickness='medium'> 
+          <mn>1</mn> 
+          <mrow> 
+            <mi>y</mi> 
+            <mo>+</mo> 
+            <mn>3</mn> 
+          </mrow> 
+        </mfrac> 
+        <mfrac linethickness='thick'> 
+          <mn>1</mn> 
+          <mrow> 
+            <mi>y</mi> 
+            <mo>+</mo> 
+            <mn>3</mn> 
+          </mrow> 
+        </mfrac> 
+      </mrow> 
+    </math>

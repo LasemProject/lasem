@@ -1,0 +1,1164 @@
+    <ol>
+      <li> Inline, auto, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mfrac> 
+                <mrow> 
+                  <mi mathcolor="gray">sin</mi> 
+                  <mo rspace="verythinmathspace">&#x02061;
+                  </mo> 
+                  <mi>&#x003B8;</mi> 
+                </mrow> 
+                <mi>&#x003C0;</mi> 
+              </mfrac> 
+            </mrow> 
+          </mstyle>
+        </math>, numerator and denominator should render script size.
+      </li>
+      <li> Inline, display style, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mstyle displaystyle="true" scriptlevel="0"> 
+                <mfrac> 
+                  <mrow> 
+                    <mi mathcolor="gray">ln</mi> 
+                    <mo rspace="verythinmathspace">&#x02061;
+                    </mo> 
+                    <mi>x</mi> 
+                  </mrow> 
+                  <mi>y</mi> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math>, numerator and denominator should render normal size.
+      </li> 
+      <li> Inline, text style, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mstyle displaystyle="false" scriptlevel="0"> 
+                <mfrac> 
+                  <mrow> 
+                    <mi mathcolor="gray">tan</mi> 
+                    <mo rspace="verythinmathspace">&#x02061;
+                    </mo> 
+                    <mi>&#x003B8;</mi> 
+                  </mrow> 
+                  <mn>67</mn> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math>, numerator and denominator should render script size.
+      </li>
+      <li> Inline, auto, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mfrac linethickness="1pt"> 
+                <mrow> 
+                  <msup> 
+                    <mi>x</mi> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <mo form="infix">+</mo> 
+                  <mn>1</mn> 
+                </mrow> 
+                <mi>x</mi> 
+              </mfrac> 
+            </mrow> 
+          </mstyle>
+        </math>, the superscripted 2 should be script-script size.
+      </li>
+      <li> Inline, display style, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mstyle displaystyle="true" scriptlevel="0"> 
+                <mfrac linethickness="1pt"> 
+                  <mrow> 
+                    <mi>x</mi> 
+                    <mo form="infix">-</mo> 
+                    <mn>1</mn> 
+                  </mrow> 
+                  <mrow> 
+                    <mrow> 
+                      <mn>0.98</mn> 
+                      <mo form="infix">&#x000D7;</mo> 
+                      <msup> 
+                        <mn>10</mn> 
+                        <mn>2</mn> 
+                      </msup> 
+                    </mrow> 
+                    <mo form="infix">+</mo> 
+                    <mi>y</mi> 
+                  </mrow> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math>, the superscripted 2 should be script size.
+      </li>
+      <li> Inline, text style, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mstyle displaystyle="true" scriptlevel="0"> 
+              <mfrac linethickness="1pt"> 
+                <mrow> 
+                  <msup> 
+                    <mi>x</mi> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <mo form="infix">+</mo> 
+                  <mn>1</mn> 
+                </mrow> 
+                <mi>x</mi> 
+              </mfrac> 
+            </mstyle> 
+            <mstyle displaystyle="false" scriptlevel="0"> 
+              <mfrac linethickness="1pt"> 
+                <mrow> 
+                  <msup> 
+                    <mi>x</mi> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <mo form="infix">+</mo> 
+                  <mn>1</mn> 
+                </mrow> 
+                <mi>x</mi> 
+              </mfrac> 
+            </mstyle> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline, auto, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mfrac linethickness="0"> 
+                <mrow> 
+                  <msup> 
+                    <mi>x</mi> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <mo form="infix">+</mo> 
+                  <mn>1</mn> 
+                </mrow> 
+                <mi>x</mi> 
+              </mfrac> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline, display style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mstyle displaystyle="true" scriptlevel="0"> 
+                <mfrac linethickness="0"> 
+                  <mn>1.234567</mn> 
+                  <mrow> 
+                    <mn>89</mn> 
+                    <mo form="infix">+</mo> 
+                    <mi>x</mi> 
+                  </mrow> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline, text style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mstyle displaystyle="false" scriptlevel="0"> 
+                <mfrac linethickness="0"> 
+                  <mrow> 
+                    <msup> 
+                      <mi>x</mi> 
+                      <mn>2</mn> 
+                    </msup> 
+                    <mo form="infix">+</mo> 
+                    <mn>1</mn> 
+                  </mrow> 
+                  <mi>x</mi> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline binomial, auto, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+              </mo> 
+              <mfrac linethickness="0"> 
+                <mn>5</mn> 
+                <mn>8</mn> 
+              </mfrac> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline binomial, display style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="true" scriptlevel="0"> 
+                  <mfrac linethickness="0"> 
+                    <mrow> 
+                      <mi>n</mi> 
+                      <mo form="infix">-</mo> 
+                      <mi>k</mi> 
+                    </mrow> 
+                    <mi>n</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline binomial, text style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="false" scriptlevel="0"> 
+                  <mfrac linethickness="0"> 
+                    <mrow> 
+                      <mi mathcolor="gray">log</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>x</mi> 
+                    </mrow> 
+                    <mi>y</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline built-in verts, auto, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">|
+              </mo> 
+              <mfrac linethickness="0"> 
+                <mrow> 
+                  <mi mathcolor="gray">sin</mi> 
+                  <mo rspace="verythinmathspace">&#x02061;
+                  </mo> 
+                  <mi>&#x003B8;</mi> 
+                </mrow> 
+                <mi>M</mi> 
+              </mfrac> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">|
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline up arrows, display style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02191;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="true" scriptlevel="0"> 
+                  <mfrac linethickness="0"> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02191;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline down arrows, text style, no line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02193;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="false" scriptlevel="0"> 
+                  <mfrac linethickness="0"> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02193;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline floor, auto, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x0230A;
+              </mo> 
+              <mfrac> 
+                <mrow> 
+                  <mi mathcolor="gray">sin</mi> 
+                  <mo rspace="verythinmathspace">&#x02061;
+                  </mo> 
+                  <mi>&#x003B8;</mi> 
+                </mrow> 
+                <mi>M</mi> 
+              </mfrac> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x0230B;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline ceiling, display style, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02308;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="true" scriptlevel="0"> 
+                  <mfrac> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02309;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline updown arrows, text style, normal line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02195;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="false" scriptlevel="0"> 
+                  <mfrac> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02195;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline double up arrows, auto, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D1;
+              </mo> 
+              <mfrac linethickness="1pt"> 
+                <mrow> 
+                  <mi mathcolor="gray">sin</mi> 
+                  <mo rspace="verythinmathspace">&#x02061;
+                  </mo> 
+                  <mi>&#x003B8;</mi> 
+                </mrow> 
+                <mi>M</mi> 
+              </mfrac> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D1;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline double down arrows, display style, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D3;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="true" scriptlevel="0"> 
+                  <mfrac linethickness="1pt"> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D3;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline double up down arrows, text style, thick line
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D5;
+              </mo> 
+              <mrow> 
+                <mstyle displaystyle="false" scriptlevel="0"> 
+                  <mfrac linethickness="1pt"> 
+                    <mrow> 
+                      <mi mathcolor="gray">sin</mi> 
+                      <mo rspace="verythinmathspace">&#x02061;
+                      </mo> 
+                      <mi>&#x003B8;</mi> 
+                    </mrow> 
+                    <mi>M</mi> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D5;
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> the end.
+      </li>
+      <li> Inline, styles auto, display and text
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mfrac> 
+                <mn>1</mn> 
+                <mn>2</mn> 
+              </mfrac> 
+              <mo form="infix">-</mo> 
+              <mrow> 
+                <mstyle displaystyle="true" scriptlevel="0"> 
+                  <mfrac> 
+                    <mn>1</mn> 
+                    <mn>2</mn> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+              <mo form="infix">+</mo> 
+              <mrow> 
+                <mstyle displaystyle="false" scriptlevel="0"> 
+                  <mfrac> 
+                    <mn>1.23456</mn> 
+                    <mn>7890</mn> 
+                  </mfrac> 
+                </mstyle> 
+              </mrow> 
+            </mrow> 
+          </mstyle>
+        </math>, the rendering should be script-size, normal-size and script-size in this example. Fraction lines should align vertically with the math axis.
+      </li>
+      <li> The same expression
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mfrac> 
+              <mn>1</mn> 
+              <mn>2</mn> 
+            </mfrac> 
+            <mo form="infix">-</mo> 
+            <mrow> 
+              <mstyle displaystyle="true" scriptlevel="0"> 
+                <mfrac> 
+                  <mn>1</mn> 
+                  <mn>2</mn> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+            <mo form="infix">+</mo> 
+            <mrow> 
+              <mstyle displaystyle="false" scriptlevel="0"> 
+                <mfrac> 
+                  <mn>1.23456</mn> 
+                  <mn>7890</mn> 
+                </mfrac> 
+              </mstyle> 
+            </mrow> 
+          </mstyle>
+        </math> in a display.
+      </li>
+      <li> Inline fenced nested fractions
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mrow> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">[
+                </mo> 
+                <mfrac> 
+                  <mrow> 
+                    <mrow> 
+                      <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                      </mo> 
+                      <mfrac> 
+                        <mrow> 
+                          <mrow> 
+                            <mi mathcolor="gray">sin</mi> 
+                            <mo rspace="verythinmathspace">&#x02061;
+                            </mo> 
+                            <mi>&#x003B8;</mi> 
+                          </mrow> 
+                          <mo form="infix">+</mo> 
+                          <mn>1</mn> 
+                        </mrow> 
+                        <mn>11</mn> 
+                      </mfrac> 
+                      <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                      </mo> 
+                    </mrow> 
+                    <mo form="infix">-</mo> 
+                    <mi>x</mi> 
+                  </mrow> 
+                  <mfrac> 
+                    <msup> 
+                      <mi>x</mi> 
+                      <mn>2</mn> 
+                    </msup> 
+                    <msub> 
+                      <mi>a</mi> 
+                      <mn>1</mn> 
+                    </msub> 
+                  </mfrac> 
+                </mfrac> 
+                <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">]
+                </mo> 
+              </mrow> 
+              <mo form="infix">+</mo> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="false">[
+                </mo> 
+                <mn>1.0</mn> 
+                <mo form="postfix" fence="true" stretchy="false">]
+                </mo> 
+              </mrow> 
+            </mrow> 
+          </mstyle>
+        </math> etc.
+      </li>
+      <li> The same expression
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">[
+              </mo> 
+              <mfrac> 
+                <mrow> 
+                  <mrow> 
+                    <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                    </mo> 
+                    <mfrac> 
+                      <mrow> 
+                        <mrow> 
+                          <mi mathcolor="gray">sin</mi> 
+                          <mo rspace="verythinmathspace">&#x02061;
+                          </mo> 
+                          <mi>&#x003B8;</mi> 
+                        </mrow> 
+                        <mo form="infix">+</mo> 
+                        <mn>1</mn> 
+                      </mrow> 
+                      <mn>11</mn> 
+                    </mfrac> 
+                    <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                    </mo> 
+                  </mrow> 
+                  <mo form="infix">-</mo> 
+                  <mi>x</mi> 
+                </mrow> 
+                <mfrac> 
+                  <msup> 
+                    <mi>x</mi> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <msub> 
+                    <mi>a</mi> 
+                    <mn>1</mn> 
+                  </msub> 
+                </mfrac> 
+              </mfrac> 
+              <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">]
+              </mo> 
+            </mrow> 
+            <mo form="infix">+</mo> 
+            <mrow> 
+              <mo form="prefix" fence="true" stretchy="false">[
+              </mo> 
+              <mn>1.0</mn> 
+              <mo form="postfix" fence="true" stretchy="false">]
+              </mo> 
+            </mrow> 
+          </mstyle>
+        </math> in a display.
+      </li>
+      <li> LaTeX renders continued fractions
+        <math> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mfrac> 
+              <mn>1</mn> 
+              <mrow> 
+                <msqrt> 
+                  <mn>2</mn> 
+                </msqrt> 
+                <mo form="infix">+</mo> 
+                <mrow> 
+                  <mstyle displaystyle="true" scriptlevel="0"> 
+                    <mfrac> 
+                      <mn>1</mn> 
+                      <mrow> 
+                        <msqrt> 
+                          <mn>3</mn> 
+                        </msqrt> 
+                        <mo form="infix">+</mo> 
+                        <mrow> 
+                          <mstyle displaystyle="true" scriptlevel="0"> 
+                            <mfrac> 
+                              <mn>1</mn> 
+                              <mrow> 
+                                <msqrt> 
+                                  <mn>4</mn> 
+                                </msqrt> 
+                                <mo form="infix">+</mo> 
+                                <mrow> 
+                                  <mstyle displaystyle="true" scriptlevel="0"> 
+                                    <mfrac> 
+                                      <mn>1</mn> 
+                                      <mrow> 
+                                        <msqrt> 
+                                          <mn>5</mn> 
+                                        </msqrt> 
+                                        <mo form="infix">+</mo> 
+                                        <mrow> 
+                                          <mstyle displaystyle="true" scriptlevel="0"> 
+                                            <mfrac> 
+                                              <mn>1</mn> 
+                                              <mrow> 
+                                                <msqrt> 
+                                                  <mn>6</mn> 
+                                                </msqrt> 
+                                                <mo form="infix">+</mo> 
+                                                <mi>&#x02026;</mi> 
+                                              </mrow> 
+                                            </mfrac> 
+                                          </mstyle> 
+                                        </mrow> 
+                                      </mrow> 
+                                    </mfrac> 
+                                  </mstyle> 
+                                </mrow> 
+                              </mrow> 
+                            </mfrac> 
+                          </mstyle> 
+                        </mrow> 
+                      </mrow> 
+                    </mfrac> 
+                  </mstyle> 
+                </mrow> 
+              </mrow> 
+            </mfrac> 
+          </mstyle>
+        </math> normal size at all levels in all contexts
+      </li>
+      <li>
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mfrac> 
+              <mn>1</mn> 
+              <mrow> 
+                <msqrt> 
+                  <mn>2</mn> 
+                </msqrt> 
+                <mo form="infix">+</mo> 
+                <mrow> 
+                  <mstyle displaystyle="true" scriptlevel="0"> 
+                    <mfrac> 
+                      <mn>1</mn> 
+                      <mrow> 
+                        <msqrt> 
+                          <mn>3</mn> 
+                        </msqrt> 
+                        <mo form="infix">+</mo> 
+                        <mrow> 
+                          <mstyle displaystyle="true" scriptlevel="0"> 
+                            <mfrac> 
+                              <mn>1</mn> 
+                              <mrow> 
+                                <msqrt> 
+                                  <mn>4</mn> 
+                                </msqrt> 
+                                <mo form="infix">+</mo> 
+                                <mrow> 
+                                  <mstyle displaystyle="true" scriptlevel="0"> 
+                                    <mfrac> 
+                                      <mn>1</mn> 
+                                      <mrow> 
+                                        <msqrt> 
+                                          <mn>5</mn> 
+                                        </msqrt> 
+                                        <mo form="infix">+</mo> 
+                                        <mrow> 
+                                          <mstyle displaystyle="true" scriptlevel="0"> 
+                                            <mfrac> 
+                                              <mn>1</mn> 
+                                              <mrow> 
+                                                <msqrt> 
+                                                  <mn>6</mn> 
+                                                </msqrt> 
+                                                <mo form="infix">+</mo> 
+                                                <mi>&#x02026;</mi> 
+                                              </mrow> 
+                                            </mfrac> 
+                                          </mstyle> 
+                                        </mrow> 
+                                      </mrow> 
+                                    </mfrac> 
+                                  </mstyle> 
+                                </mrow> 
+                              </mrow> 
+                            </mfrac> 
+                          </mstyle> 
+                        </mrow> 
+                      </mrow> 
+                    </mfrac> 
+                  </mstyle> 
+                </mrow> 
+              </mrow> 
+            </mfrac> 
+          </mstyle>
+        </math>
+      </li>
+      <li> Inline nested fracs
+        <math> 
+          <mstyle displaystyle="false" scriptlevel="0"> 
+            <mfrac> 
+              <msup> 
+                <mn>1</mn> 
+                <msqrt> 
+                  <mn>6</mn> 
+                </msqrt> 
+              </msup> 
+              <mrow> 
+                <msqrt> 
+                  <mn>2</mn> 
+                </msqrt> 
+                <mo form="infix">+</mo> 
+                <mfrac> 
+                  <mn>1</mn> 
+                  <mrow> 
+                    <msqrt> 
+                      <mn>3</mn> 
+                    </msqrt> 
+                    <mo form="infix">+</mo> 
+                    <mfrac> 
+                      <mn>1</mn> 
+                      <mrow> 
+                        <msqrt> 
+                          <mn>4</mn> 
+                        </msqrt> 
+                        <mo form="infix">+</mo> 
+                        <mfrac> 
+                          <mn>1</mn> 
+                          <mrow> 
+                            <msqrt> 
+                              <mn>5</mn> 
+                            </msqrt> 
+                            <mo form="infix">+</mo> 
+                            <mfrac> 
+                              <mn>1</mn> 
+                              <mrow> 
+                                <msqrt> 
+                                  <mn>6</mn> 
+                                </msqrt> 
+                                <mo form="infix">+</mo> 
+                                <mi>&#x02026;</mi> 
+                              </mrow> 
+                            </mfrac> 
+                          </mrow> 
+                        </mfrac> 
+                      </mrow> 
+                    </mfrac> 
+                  </mrow> 
+                </mfrac> 
+              </mrow> 
+            </mfrac> 
+          </mstyle>
+        </math> are script size at the first level and decrease to script script size for all more nested levels.
+      </li>
+      <li> Displayed nested fractions are normal size at the first level,
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mfrac> 
+              <msup> 
+                <mn>1</mn> 
+                <msqrt> 
+                  <mn>6</mn> 
+                </msqrt> 
+              </msup> 
+              <mrow> 
+                <msqrt> 
+                  <mn>2</mn> 
+                </msqrt> 
+                <mo form="infix">+</mo> 
+                <mfrac> 
+                  <mn>1</mn> 
+                  <mrow> 
+                    <msqrt> 
+                      <mn>3</mn> 
+                    </msqrt> 
+                    <mo form="infix">+</mo> 
+                    <mfrac> 
+                      <mn>1</mn> 
+                      <mrow> 
+                        <msqrt> 
+                          <mn>4</mn> 
+                        </msqrt> 
+                        <mo form="infix">+</mo> 
+                        <mfrac> 
+                          <mn>1</mn> 
+                          <mrow> 
+                            <msqrt> 
+                              <mn>5</mn> 
+                            </msqrt> 
+                            <mo form="infix">+</mo> 
+                            <mfrac> 
+                              <mn>1</mn> 
+                              <mrow> 
+                                <msqrt> 
+                                  <mn>6</mn> 
+                                </msqrt> 
+                                <mo form="infix">+</mo> 
+                                <mi>&#x02026;</mi> 
+                              </mrow> 
+                            </mfrac> 
+                          </mrow> 
+                        </mfrac> 
+                      </mrow> 
+                    </mfrac> 
+                  </mrow> 
+                </mfrac> 
+              </mrow> 
+            </mfrac> 
+          </mstyle>
+        </math>script size at second level, and script-script size at all more nested levels.
+      </li>
+      <li>
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mrow> 
+              <mi mathcolor="gray">HypergeomDist</mi> 
+              <mo>&#x02061;</mo> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                </mo> 
+                <mrow> 
+                  <mi>x</mi> 
+                  <mo form="infix">;</mo> 
+                  <mrow> 
+                    <mi>M</mi> 
+                    <mo form="infix">,</mo> 
+                    <mi>K</mi> 
+                    <mo form="infix">,</mo> 
+                    <mi>n</mi> 
+                  </mrow> 
+                </mrow> 
+                <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                </mo> 
+              </mrow> 
+            </mrow> 
+            <mo form="infix">=</mo> 
+            <mrow> 
+              <munderover> 
+                <mo form="prefix" movablelimits="false" largeop="false" stretchy="true" maxsize="1.4" minsize="1.4">&#x02211;
+                </mo> 
+                <mrow> 
+                  <mi>k</mi> 
+                  <mo form="infix">=</mo> 
+                  <mn>0</mn> 
+                </mrow> 
+                <mi>x</mi> 
+              </munderover> 
+              <mfrac> 
+                <mrow> 
+                  <mrow> 
+                    <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                    </mo> 
+                    <mfrac linethickness="0"> 
+                      <mi>K</mi> 
+                      <mi>k</mi> 
+                    </mfrac> 
+                    <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                    </mo> 
+                  </mrow> 
+                  <mo>&#x02062;</mo> 
+                  <mrow> 
+                    <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                    </mo> 
+                    <mfrac linethickness="0"> 
+                      <mrow> 
+                        <mi>M</mi> 
+                        <mo form="infix">-</mo> 
+                        <mi>K</mi> 
+                      </mrow> 
+                      <mrow> 
+                        <mi>n</mi> 
+                        <mo form="infix">-</mo> 
+                        <mi>k</mi> 
+                      </mrow> 
+                    </mfrac> 
+                    <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                    </mo> 
+                  </mrow> 
+                </mrow> 
+                <mrow> 
+                  <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                  </mo> 
+                  <mfrac linethickness="0"> 
+                    <mi>M</mi> 
+                    <mi>n</mi> 
+                  </mfrac> 
+                  <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                  </mo> 
+                </mrow> 
+              </mfrac> 
+            </mrow> 
+          </mstyle>
+        </math>
+      </li>
+      <li> Here's a display
+        <math display="block"> 
+          <mstyle displaystyle="true" scriptlevel="0"> 
+            <mrow> 
+              <mi>F</mi> 
+              <mo>&#x02061;</mo> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                </mo> 
+                <mrow> 
+                  <mi>t</mi> 
+                  <mo form="infix">,</mo> 
+                  <mi>y</mi> 
+                </mrow> 
+                <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                </mo> 
+              </mrow> 
+            </mrow> 
+            <mo form="infix">=</mo> 
+            <mfrac> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                </mo> 
+                <mrow> 
+                  <mn>1</mn> 
+                  <mo form="infix">,</mo> 
+                  <mfrac> 
+                    <mrow> 
+                      <mo form="prefix">&#x02146;</mo> 
+                      <mi>y</mi> 
+                    </mrow> 
+                    <mrow> 
+                      <mo form="prefix">&#x02146;</mo> 
+                      <mi>t</mi> 
+                    </mrow> 
+                  </mfrac> 
+                </mrow> 
+                <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                </mo> 
+              </mrow> 
+              <mrow> 
+                <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                </mo> 
+                <mrow> 
+                  <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
+                  </mo> 
+                  <mrow> 
+                    <mn>1</mn> 
+                    <mo form="infix">,</mo> 
+                    <mfrac> 
+                      <mrow> 
+                        <mo form="prefix">&#x02146;</mo> 
+                        <mi>y</mi> 
+                      </mrow> 
+                      <mrow> 
+                        <mo form="prefix">&#x02146;</mo> 
+                        <mi>t</mi> 
+                      </mrow> 
+                    </mfrac> 
+                  </mrow> 
+                  <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">)
+                  </mo> 
+                </mrow> 
+                <mo form="postfix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02225;
+                </mo> 
+              </mrow> 
+            </mfrac> 
+          </mstyle>
+        </math> with some real math in it.
+      </li>
+      <li> And this is an example where the bevelled attribute is set inside the radical
+        <math mode="display">
+          <!-- \frac{y^2-t^2}{\sqrt{1/(1-|y^2-t^2|)} -->
+          <mfrac> 
+            <mrow> 
+              <msup> 
+                <mi>y</mi> 
+                <mn>2</mn> 
+              </msup> 
+              <mo>-</mo> 
+              <msup> 
+                <mi>t</mi> 
+                <mn>2</mn> 
+              </msup> 
+            </mrow> 
+            <msqrt> 
+              <mfrac bevelled="true"> 
+                <mn>1</mn> 
+                <mrow> 
+                  <mo>(</mo> 
+                  <mn>1</mn> 
+                  <mo>+</mo> 
+                  <msup> 
+                    <mrow> 
+                      <mo>|</mo> 
+                      <mrow> 
+                        <msup> 
+                          <mi>y</mi> 
+                          <mn>2</mn> 
+                        </msup> 
+                        <mo>-</mo> 
+                        <msup> 
+                          <mi>t</mi> 
+                          <mn>2</mn> 
+                        </msup> 
+                      </mrow> 
+                      <mo>|</mo> 
+                    </mrow> 
+                    <mn>2</mn> 
+                  </msup> 
+                  <mo>)</mo> 
+                </mrow> 
+              </mfrac> 
+            </msqrt>
+          </mfrac>
+        </math>
+      </li> 
+      <li>And this shows a combination with a background image ata desired opacity
+        <math mode="display" class="background">
+          <mrow class="foreground"> 
+            <msub> 
+              <mi>Z</mi> 
+              <mi>&#x003B1;</mi> 
+            </msub> 
+            <mrow> 
+              <mo>(</mo> 
+              <mi>f</mi> 
+              <mo>)</mo> 
+            </mrow> 
+            <mo>=</mo> 
+            <mfrac> 
+              <mn>1</mn> 
+              <mrow> 
+                <mn>2</mn> 
+                <mi>i</mi> 
+                <mo>&#x02009;</mo> 
+                <mi>cos</mi> 
+                <mo>(</mo> 
+                <mfrac> 
+                  <mrow> 
+                    <mi>&#x003B1;</mi> 
+                    <mi>&#x003C0;</mi> 
+                  </mrow> 
+                  <mn>2</mn> 
+                </mfrac> 
+                <mo>)</mo> 
+              </mrow> 
+            </mfrac> 
+            <mrow> 
+              <msub> 
+                <mo>&#x0222B;</mo> 
+                <mi>C</mi> 
+              </msub> 
+              <mfrac> 
+                <mrow> 
+                  <mi>f</mi> 
+                  <mo stretchy='false'>(</mo> 
+                  <mi>i</mi> 
+                  <mi>z</mi> 
+                  <mo stretchy='false'>)</mo> 
+                  <msup> 
+                    <mrow> 
+                      <mo>(</mo> 
+                      <mo>-</mo> 
+                      <mi>z</mi> 
+                      <mo>)</mo> 
+                    </mrow> 
+                    <mi>&#x003B1;</mi> 
+                  </msup> 
+                </mrow> 
+                <mrow> 
+                  <msup> 
+                    <mi>e</mi> 
+                    <mrow> 
+                      <mn>2</mn> 
+                      <mi>&#x003C0;</mi> 
+                      <mi>z</mi> 
+                    </mrow> 
+                  </msup> 
+                  <mo>-</mo> 
+                  <mn>1</mn> 
+                </mrow> 
+              </mfrac> 
+            </mrow> 
+            <mi>&#x02146;z</mi>
+          </mrow>
+        </math>
+      </li>
+    </ol>

@@ -1,0 +1,12 @@
+    <math> 
+      <mfrac linethickness="2"> 
+        <mfrac> 
+          <mi> a </mi> 
+          <mi> b </mi> 
+        </mfrac> 
+        <mfrac> 
+          <mi> c </mi> 
+          <mi> d </mi> 
+        </mfrac> 
+      </mfrac> 
+    </math>

@@ -1,0 +1,20 @@
+    <math> 
+      <mrow> 
+        <mfrac linethickness='0.2cm'> 
+          <mn>1</mn> 
+          <mrow> 
+            <mi>y</mi> 
+            <mo>+</mo> 
+            <mn>3</mn> 
+          </mrow> 
+        </mfrac> 
+        <mfrac linethickness='0.3ex'> 
+          <mn>1</mn> 
+          <mrow> 
+            <mi>y</mi> 
+            <mo>+</mo> 
+            <mn>3</mn> 
+          </mrow> 
+        </mfrac> 
+      </mrow> 
+    </math>
