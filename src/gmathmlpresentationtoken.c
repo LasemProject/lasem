@@ -56,18 +56,6 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
-static void
-gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
-{
-	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
-
-	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
-	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
-	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
-}
-
 char *
 gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 {
@@ -88,6 +76,39 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 	g_string_free (string, TRUE);
 
 	return text;
+}
+
+static void
+gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+{
+	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
+	GMathmlVariant variant;
+	char *text;
+
+	text = gmathml_presentation_token_get_text (token);
+
+	switch (token->type) {
+		case GMATHML_PRESENTATION_TOKEN_TYPE_NUMBER:
+			variant = GMATHML_VARIANT_NORMAL;
+			break;
+		case GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER:
+			variant = g_utf8_strlen (text, -1) > 1 ? GMATHML_VARIANT_NORMAL : GMATHML_VARIANT_ITALIC;
+			break;
+		case GMATHML_PRESENTATION_TOKEN_TYPE_TEXT:
+		default:
+			variant = GMATHML_VARIANT_NORMAL;
+			break;
+	}
+
+	g_free (text);
+
+	gmathml_attribute_variant_parse (&token->math_variant, &variant);
+	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
+	gmathml_attribute_color_parse (&token->color, &style->math_color); /* deprecated */
+	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
+	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 
 static const GMathmlBbox *
@@ -180,6 +201,11 @@ gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class
 					     offsetof (GMathmlPresentationToken, math_color));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
 					     offsetof (GMathmlPresentationToken, math_background));
+
+	/* Deprecated attributes */
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
+					     offsetof (GMathmlPresentationToken, color));
 }
 
 static void

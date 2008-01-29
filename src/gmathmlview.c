@@ -95,7 +95,9 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	if (text == NULL)
 		return;
 
-	g_message ("View: show_text %s at %g, %g (size = %g)", text, x, y, token->math_size.value);
+	g_message ("View: show_text %s at %g, %g (size = %g) %s",
+		   text, x, y, token->math_size.value,
+		   gmathml_variant_to_string (token->math_variant.value));
 
 	cairo_set_source_rgba (view->priv->cairo,
 			       token->math_color.color.red,
@@ -105,6 +107,17 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	pango_font_description_set_size (view->priv->font_description,
 					 token->math_size.value * PANGO_SCALE);
+	switch (token->math_variant.value) {
+		case GMATHML_VARIANT_NORMAL:
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			break;
+		case GMATHML_VARIANT_ITALIC:
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
+			break;
+		default:
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			break;
+	}
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 
@@ -268,7 +281,7 @@ gmathml_view_init (GMathmlView *view)
 	view->priv->pango_context = pango_cairo_font_map_create_context (fontmap);
 	view->priv->pango_layout = pango_layout_new (view->priv->pango_context);
 	view->priv->font_description = pango_font_description_new ();
-	pango_font_description_set_family (view->priv->font_description, "Times new roman");
+	pango_font_description_set_family (view->priv->font_description, "Bitstream Vera");
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 }
 

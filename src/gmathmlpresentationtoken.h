@@ -52,6 +52,10 @@ struct _GMathmlPresentationToken {
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor math_color;
 	GMathmlAttributeColor math_background;
+
+	/* deprecated attributes */
+
+	GMathmlAttributeColor color;
 };
 
 struct _GMathmlPresentationTokenClass {

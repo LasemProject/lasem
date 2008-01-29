@@ -42,6 +42,9 @@
 
 #include <libxml/parser.h>
 
+#define TEST_WIDTH 	480
+#define XML_FILENAME	"gmathmltest.xml"
+
 static const char *fail_face = "", *normal_face = "";
 FILE *gmathml_test_html_file = NULL;
 
@@ -55,9 +58,6 @@ gmathml_test_html (const char *fmt, ...)
 	vfprintf (file, fmt, va);
 	va_end (va);
 }
-
-#define TEST_WIDTH 480
-#define XML_FILENAME	    "gmathmltest.xml"
 
 void
 gmathml_test_render (char const *test_name)
@@ -95,6 +95,7 @@ gmathml_test_render (char const *test_name)
 	g_object_unref (view);
 	g_object_unref (document);
 
+	gmathml_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
 	gmathml_test_html ("<tr>");
 	gmathml_test_html ("<td>");
 
@@ -119,9 +120,11 @@ gmathml_test_render (char const *test_name)
 	}
 
 	gmathml_test_html ("</td>");
-	gmathml_test_html ("<td><img src=\"%s\"/></td>", png_filename);
+	gmathml_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
+			   xml_filename, png_filename);
 	gmathml_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
 	gmathml_test_html ("</tr>\n");
+	gmathml_test_html ("</table>\n");
 
 	g_free (png_filename);
 	g_free (xml_filename);
@@ -150,14 +153,16 @@ gmathml_test_process_dir (const char *name)
 
 		filename = g_build_filename (name, entry, NULL);
 
-		if (g_file_test (filename, G_FILE_TEST_IS_DIR))
+		if (g_file_test (filename, G_FILE_TEST_IS_DIR) &&
+		    strstr (filename, "ignore-") != filename)
 			gmathml_test_process_dir (filename);
 		else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 			 g_regex_match (regex, filename, 0, NULL)) {
 			char *new_name;
 
 			new_name = g_regex_replace (regex, filename, -1, 0, "", 0, NULL);
-			gmathml_test_render (new_name);
+			if (strstr (new_name, "ignore-") != new_name)
+				gmathml_test_render (new_name);
 			g_free (new_name);
 		}
 
@@ -188,16 +193,16 @@ main (int argc, char **argv)
 	gmathml_test_html_file = fopen (XML_FILENAME, "w");
 
 	gmathml_test_html ("<?xml version=\"1.0\"?>");
-	gmathml_test_html ("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN\" \"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">");
+	gmathml_test_html ("<!DOCTYPE html PUBLIC "
+			   "\"-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN\" "
+			   "\"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">");
 	gmathml_test_html ("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 	gmathml_test_html ("<body>\n");
-	gmathml_test_html ("<table>\n");
 
 	g_type_init ();
 
 	gmathml_test_process_dir (".");
 
-	gmathml_test_html ("</table>\n");
 	gmathml_test_html ("</body>\n");
 	gmathml_test_html ("</html>\n");
 
