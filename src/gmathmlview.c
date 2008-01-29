@@ -281,7 +281,7 @@ gmathml_view_init (GMathmlView *view)
 	view->priv->pango_context = pango_cairo_font_map_create_context (fontmap);
 	view->priv->pango_layout = pango_layout_new (view->priv->pango_context);
 	view->priv->font_description = pango_font_description_new ();
-	pango_font_description_set_family (view->priv->font_description, "Bitstream Vera");
+	pango_font_description_set_family (view->priv->font_description, "Serif");
 	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 }
 

@@ -52,11 +52,11 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->font_size);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
-	fraction->offset = style->font_size * 0.45;
-	fraction->padding = style->font_size * 0.2 + style->line_thickness.value * 0.5;
-
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
+
+	fraction->offset = style->font_size * 0.35;
+	fraction->padding = style->font_size * 0.2 + style->line_thickness.value * 0.5;
 
 	node = GDOM_NODE (self)->first_child;
 	if (node == NULL)

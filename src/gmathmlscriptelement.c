@@ -175,12 +175,12 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 	}
 
 	if (superscript_bbox != NULL)
-		script->superscript_offset = base_bbox->height * 0.5;
+		script->superscript_offset = base_bbox->height * 0.6;
 	else
 		script->superscript_offset = 0.0;
 
 	if (subscript_bbox != NULL)
-		script->subscript_offset = base_bbox->depth;
+		script->subscript_offset = subscript_bbox->height;
 	else
 		script->subscript_offset = 0.0;
 
