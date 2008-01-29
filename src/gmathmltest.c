@@ -99,7 +99,22 @@ gmathml_test_render (char const *test_name)
 	gmathml_test_html ("<td>");
 
 	if (g_file_get_contents (xml_filename, &buffer, &size, NULL)) {
-		gmathml_test_html (buffer);
+		GRegex *regex;
+		GError *error = NULL;
+		char *filtered_buffer;
+
+		regex = g_regex_new ("<math>", 0, 0, &error);
+		assert (error == NULL);
+
+		filtered_buffer = g_regex_replace (regex, buffer,
+						   -1, 0,
+						   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
+						   0, NULL);
+		g_regex_unref (regex);
+
+		gmathml_test_html (filtered_buffer);
+
+		g_free (filtered_buffer);
 		g_free (buffer);
 	}
 
