@@ -21,3 +21,4 @@ stamp*
 autom4te*
 gmathml.svg
 tags
+*.lineno

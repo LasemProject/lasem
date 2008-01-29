@@ -53,3 +53,12 @@ gmathmlsvg_LDFLAGS =
 
 gmathmlsvg_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
 
+bin_PROGRAMS = gmathmltest
+
+gmathmltest_SOURCES = 			\
+	gmathmltest.c
+
+gmathmltest_LDFLAGS =
+
+gmathmltest_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
+
