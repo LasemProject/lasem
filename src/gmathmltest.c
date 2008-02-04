@@ -59,8 +59,10 @@ gmathml_test_html (const char *fmt, ...)
 	va_end (va);
 }
 
+static GRegex *regex_mml = NULL;
+
 void
-gmathml_test_render (char const *test_name)
+gmathml_test_render (char const *filename)
 {
 	GDomNode *document;
 	GMathmlView *view;
@@ -71,14 +73,24 @@ gmathml_test_render (char const *test_name)
 	char *png_filename;
 	char *xml_filename;
 	char *reference_png_filename;
+	char *test_name;
 	double width, height;
+
+	test_name = g_regex_replace (regex_mml, filename, -1, 0, "", 0, NULL);
 
 	png_filename = g_strdup_printf ("%s-out.png", test_name);
 	xml_filename = g_strdup_printf ("%s.mml", test_name);
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
 
 	document = gmathml_document_from_file (xml_filename);
-	view = gmathml_view_new (GMATHML_DOCUMENT (document));
+
+	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 1.0, 1.0);
+	cairo = cairo_create (surface);
+	cairo_surface_destroy (surface);
+
+	view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
+
+	cairo_destroy (cairo);
 
 	gmathml_view_measure (view, &width, &height);
 
@@ -86,11 +98,13 @@ gmathml_test_render (char const *test_name)
 	cairo = cairo_create (surface);
 	cairo_surface_destroy (surface);
 
-	gmathml_view_render (view, cairo);
-
-	cairo_surface_write_to_png (surface, png_filename);
+	gmathml_view_set_cairo (view, cairo);
 
 	cairo_destroy (cairo);
+
+	gmathml_view_render (view);
+
+	cairo_surface_write_to_png (surface, png_filename);
 
 	g_object_unref (view);
 	g_object_unref (document);
@@ -129,6 +143,8 @@ gmathml_test_render (char const *test_name)
 	g_free (png_filename);
 	g_free (xml_filename);
 	g_free (reference_png_filename);
+
+	g_free (test_name);
 }
 
 void
@@ -136,47 +152,39 @@ gmathml_test_process_dir (const char *name)
 {
 	GDir *directory;
 	GError *error = NULL;
-	GRegex *regex;
 	const char *entry;
 	char *filename;
-
-	regex = g_regex_new ("\\.mml$", 0, 0, &error);
-	assert (error == NULL);
 
 	directory = g_dir_open (name, 0, &error);
 	assert (error == NULL);
 
 	do {
 		entry = g_dir_read_name (directory);
-		if (entry == NULL)
+		if (entry == NULL ||
+		    strstr (entry, "ignore-") == entry)
 			break;
 
 		filename = g_build_filename (name, entry, NULL);
 
-		if (g_file_test (filename, G_FILE_TEST_IS_DIR) &&
-		    strstr (filename, "ignore-") != filename)
+		if (g_file_test (filename, G_FILE_TEST_IS_DIR))
 			gmathml_test_process_dir (filename);
 		else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
-			 g_regex_match (regex, filename, 0, NULL)) {
-			char *new_name;
-
-			new_name = g_regex_replace (regex, filename, -1, 0, "", 0, NULL);
-			if (strstr (new_name, "ignore-") != new_name)
-				gmathml_test_render (new_name);
-			g_free (new_name);
+			 g_regex_match (regex_mml, filename, 0, NULL)) {
+			gmathml_test_render (filename);
 		}
 
 		g_free (filename);
 	} while (entry != NULL);
 
 	g_dir_close (directory);
-
-	g_regex_unref (regex);
 }
 
 int
 main (int argc, char **argv)
 {
+	GError *error = NULL;
+	unsigned int i;
+
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
 		fail_face = "\033[41m\033[37m\033[1m";
@@ -201,13 +209,22 @@ main (int argc, char **argv)
 
 	g_type_init ();
 
-	gmathml_test_process_dir (".");
+	regex_mml = g_regex_new ("\\.mml$", 0, 0, &error);
+	assert (error == NULL);
+
+	if (argc >= 2)
+		for (i = 0; i < argc - 1; i++)
+			gmathml_test_render (argv[i + 1]);
+	else
+		gmathml_test_process_dir (".");
 
 	gmathml_test_html ("</body>\n");
 	gmathml_test_html ("</html>\n");
 
 	if (gmathml_test_html_file != NULL)
 		fclose (gmathml_test_html_file);
+
+	g_regex_unref (regex_mml);
 
 	return 0;
 }

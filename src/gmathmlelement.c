@@ -96,7 +96,9 @@ gmathml_element_update (GMathmlElement *self, GMathmlView *view, const GMathmlSt
 	new_style = gmathml_style_duplicate (style);
 	gmathml_view_push_element (view, self);
 
+#if 0
 	gmathml_style_dump (new_style);
+#endif
 
 	if (element_class->update)
 		element_class->update (self, view, new_style);

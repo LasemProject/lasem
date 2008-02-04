@@ -54,9 +54,11 @@ struct _GMathmlViewClass {
 
 GType gmathml_view_get_type (void);
 
-GMathmlView *	gmathml_view_new 		(GMathmlDocument *document);
-void 		gmathml_view_render 		(GMathmlView *view, cairo_t *cr);
+GMathmlView *	gmathml_view_new 		(GMathmlDocument *document, cairo_t *cr);
+void 		gmathml_view_render 		(GMathmlView *view);
 void 		gmathml_view_measure 		(GMathmlView *view, double *width, double *height);
+
+void		gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
@@ -72,8 +74,20 @@ void		gmathml_view_pop_element	(GMathmlView *view);
 double 		gmathml_view_get_ex_length 	(GMathmlView *view);
 double 		gmathml_view_get_em_length 	(GMathmlView *view);
 
-void 		gmathml_view_draw_line 		(GMathmlView *view, double x0, double y0,
-						 double x1, double y1, double thickness);
+void 		gmathml_view_draw_fraction_line 	(GMathmlView *view,
+							 double x, double y,
+							 double width, double thickness,
+							 GMathmlColor *color);
+
+void		gmathml_view_draw_root		(GMathmlView *view,
+						 double x, double y,
+						 double width, double height,
+						 double top_width,
+						 double thickness,
+						 GMathmlColor *color);
+
+double		gmathml_view_measure_space		(GMathmlView *view, double space);
+double		gmathml_view_measure_fraction_offset 	(GMathmlView *view, double font_size);
 
 void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
 

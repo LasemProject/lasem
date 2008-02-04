@@ -62,7 +62,13 @@ int main(int argc, char **argv)
 
 		gdom_node_dump (document);
 
-		view = gmathml_view_new (GMATHML_DOCUMENT (document));
+		surface = cairo_svg_surface_create ("gmathml.svg", 1, 1);
+		cairo = cairo_create (surface);
+		cairo_surface_destroy (surface);
+
+		view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
+
+		cairo_destroy (cairo);
 
 		gmathml_view_set_debug (view, debug);
 
@@ -72,9 +78,11 @@ int main(int argc, char **argv)
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		gmathml_view_render (view, cairo);
+		gmathml_view_set_cairo (view, cairo);
 
 		cairo_destroy (cairo);
+
+		gmathml_view_render (view);
 
 		g_object_unref (view);
 

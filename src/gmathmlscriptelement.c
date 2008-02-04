@@ -193,8 +193,10 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 		}
 	}
 
-	script->superscript_offset = MAX (script->superscript_offset, script->superscript_shift.value);
-	script->subscript_offset = MAX (script->subscript_offset, script->subscript_shift.value);
+	script->superscript_offset = gmathml_view_measure_space (view, MAX (script->superscript_offset,
+									    script->superscript_shift.value));
+	script->subscript_offset = gmathml_view_measure_space (view, MAX (script->subscript_offset,
+									  script->subscript_shift.value));
 
 	if (subscript_bbox != NULL)
 		gmathml_bbox_merge_vertically (&children_bbox, subscript_bbox, -script->subscript_offset);

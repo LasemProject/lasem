@@ -47,7 +47,6 @@ static void
 gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
-	GDomNode *node;
 
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->font_size);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
@@ -55,20 +54,13 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
 
-	fraction->offset = style->font_size * 0.35;
-	fraction->padding = style->font_size * 0.2 + style->line_thickness.value * 0.5;
+	fraction->font_size = style->font_size;
+	fraction->space = style->medium_math_space_value;
+	fraction->color = style->math_color;
 
-	node = GDOM_NODE (self)->first_child;
-	if (node == NULL)
-		return;
+	g_message ("space = %g", fraction->space);
 
-	gmathml_element_update (GMATHML_ELEMENT (node), view, style);
-
-	node = node->next_sibling;
-	if (node == NULL)
-		return;
-
-	gmathml_element_update (GMATHML_ELEMENT (node), view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
 
 static const GMathmlBbox *
@@ -78,9 +70,13 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 
+	self->bbox.depth = - gmathml_view_measure_fraction_offset (view, fraction->font_size) +
+		gmathml_view_measure_space (view, fraction->space) +
+		gmathml_view_measure_space (view, fraction->line_thickness.value / 2.0);
+
 	self->bbox.width = 0.0;
-	self->bbox.height = 0.0;
-	self->bbox.depth = 0.0;
+	self->bbox.height = - self->bbox.depth + 2 * gmathml_view_measure_space (view, fraction->space) +
+		gmathml_view_measure_space (view, fraction->line_thickness.value);
 
 	node = GDOM_NODE (self)->first_child;
 
@@ -100,9 +96,6 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	gmathml_bbox_add_under (&self->bbox, child_bbox);
 
-	self->bbox.height += fraction->padding + fraction->offset;
-	self->bbox.depth += fraction->padding - fraction->offset;
-
 	return &self->bbox;
 }
 
@@ -110,7 +103,7 @@ static void
 gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 				 double x, double y, const GMathmlBbox *bbox)
 {
-	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
+/*        GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);*/
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 
@@ -120,9 +113,8 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 		gmathml_element_layout (GMATHML_ELEMENT (node), view,
 					x + (bbox->width - child_bbox->width) / 2.0,
-					y - child_bbox->depth -
-					fraction->padding -
-					fraction->offset, child_bbox);
+					y - self->bbox.height + child_bbox->height,
+					child_bbox);
 
 		node = node->next_sibling;
 		if (node != NULL) {
@@ -133,9 +125,8 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + (bbox->width - child_bbox->width) / 2.0,
-						y + child_bbox->height +
-						fraction->padding -
-						fraction->offset, child_bbox);
+						y + self->bbox.depth - child_bbox->depth,
+						child_bbox);
 		}
 	}
 }
@@ -144,11 +135,14 @@ static void
 gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
-	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 
-	gmathml_view_draw_line (view, self->x, self->y - fraction->offset,
-				self->x + self->bbox.width, self->y - fraction->offset,
-				fraction->line_thickness.value);
+	gmathml_view_draw_fraction_line (view, self->x,
+					 self->y - gmathml_view_measure_fraction_offset (view, fraction->font_size),
+					 self->bbox.width,
+					 fraction->line_thickness.value,
+					 &fraction->color);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
 /* GMathmlFraction implementation */
@@ -162,8 +156,8 @@ gmathml_fraction_element_new (void)
 static void
 gmathml_fraction_element_init (GMathmlFractionElement *self)
 {
-	self->offset = 0.0;
-	self->padding = 0.0;
+	self->font_size = 0.0;
+	self->space = 0.0;
 }
 
 /* GMathmlFractionElement class */
