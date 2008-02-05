@@ -366,6 +366,9 @@ gmathml_view_set_debug (GMathmlView *view, gboolean debug)
 void
 gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 {
+	PangoContext *context;
+	cairo_font_options_t *font_options;
+
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (cairo != NULL);
 
@@ -378,6 +381,16 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	view->priv->cairo = cairo;
 	view->priv->pango_layout = pango_cairo_create_layout (cairo);
 	view->priv->font_description = pango_font_description_new();
+
+	context = pango_layout_get_context (view->priv->pango_layout);
+
+	font_options = cairo_font_options_create ();
+
+	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+
+	pango_cairo_context_set_font_options (context, font_options);
+
+	cairo_font_options_destroy (font_options);
 
 	pango_font_description_set_family (view->priv->font_description, "Serif");
 }
