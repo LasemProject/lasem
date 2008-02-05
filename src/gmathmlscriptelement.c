@@ -118,6 +118,8 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
 
+	script->space = style->thin_math_space_value;
+
 	gmathml_style_change_script_level (style, +1);
 	style->display_style = FALSE;
 
@@ -146,6 +148,8 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 	if (node != NULL) {
 		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 		gmathml_bbox_add_to_right (&element->bbox, base_bbox);
+
+		element->bbox.width += gmathml_view_measure_space (view, script->space);
 
 		node = node->next_sibling;
 
@@ -221,6 +225,9 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 	base_bbox = gmathml_element_measure (script->base, view);
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
+
+	x += gmathml_view_measure_space (view, script->space);
+
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,
 					x + base_bbox->width,
@@ -277,6 +284,7 @@ gmathml_sub_sup_element_new (void)
 static void
 gmathml_script_element_init (GMathmlScriptElement *self)
 {
+	self->space = 0.0;
 }
 
 /* GMathmlScriptElement class */

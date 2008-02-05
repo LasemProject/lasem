@@ -51,14 +51,14 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->font_size);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
-	if (!style->display_style)
-		gmathml_style_change_script_level (style, +1);
-
 	fraction->font_size = style->font_size;
 	fraction->space = style->medium_math_space_value;
 	fraction->color = style->math_color;
 
 	g_message ("space = %g", fraction->space);
+
+	if (!style->display_style)
+		gmathml_style_change_script_level (style, +1);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }
