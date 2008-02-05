@@ -67,7 +67,24 @@ gmathml_view_measure_space (GMathmlView *view, double space)
 double
 gmathml_view_measure_fraction_offset (GMathmlView *view, double font_size)
 {
-	return gmathml_view_measure_space (view, font_size * 0.5);
+	PangoRectangle rect, ink_rect;
+	PangoLayoutIter *iter;
+	int baseline;
+
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
+
+	pango_font_description_set_size (view->priv->font_description, font_size * PANGO_SCALE);
+	pango_layout_set_text (view->priv->pango_layout, "+", -1);
+	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_get_extents (view->priv->pango_layout, &ink_rect, &rect);
+
+	iter = pango_layout_get_iter (view->priv->pango_layout);
+	baseline = pango_layout_iter_get_baseline (iter);
+	pango_layout_iter_free (iter);
+
+	return gmathml_view_measure_space (view, pango_units_to_double (baseline -
+									ink_rect.y -
+									0.5 * ink_rect.height));
 }
 
 void
