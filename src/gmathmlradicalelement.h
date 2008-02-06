@@ -50,6 +50,9 @@ struct _GMathmlRadicalElement {
 	GMathmlColor color;
 	double font_size;
 	double top_padding;
+
+	double height;
+	double offset;
 };
 
 struct _GMathmlRadicalElementClass {
