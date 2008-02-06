@@ -158,6 +158,8 @@ gmathml_test_process_dir (const char *name)
 	directory = g_dir_open (name, 0, &error);
 	assert (error == NULL);
 
+	gmathml_test_html ("<h1>%s</h1>", name);
+
 	do {
 		entry = g_dir_read_name (directory);
 		if (entry == NULL ||
