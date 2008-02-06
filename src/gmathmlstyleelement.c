@@ -58,6 +58,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 	gmathml_attribute_color_parse (&style_element->color, &style->math_color); /* deprecated */
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
+	gmathml_attribute_variant_parse (&style_element->math_variant, &style->math_variant);
 
 	/* mstyle */
 

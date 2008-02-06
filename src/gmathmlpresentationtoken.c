@@ -82,29 +82,18 @@ static void
 gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
-	GMathmlVariant variant;
-	char *text;
 
-	text = gmathml_presentation_token_get_text (token);
-
-	switch (token->type) {
-		case GMATHML_PRESENTATION_TOKEN_TYPE_NUMBER:
-			variant = GMATHML_VARIANT_NORMAL;
-			break;
-		case GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER:
-			variant = g_utf8_strlen (text, -1) > 1 ? GMATHML_VARIANT_NORMAL : GMATHML_VARIANT_ITALIC;
-			break;
-		case GMATHML_PRESENTATION_TOKEN_TYPE_TEXT:
-		default:
-			variant = GMATHML_VARIANT_NORMAL;
-			break;
+	if (token->type == GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER) {
+		char *text;
+		text = gmathml_presentation_token_get_text (token);
+		style->math_variant = g_utf8_strlen (text, -1) > 1 ? GMATHML_VARIANT_NORMAL : GMATHML_VARIANT_ITALIC;
+		g_free (text);
 	}
 
-	g_free (text);
-
-	gmathml_attribute_variant_parse (&token->math_variant, &variant);
-	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
 	gmathml_attribute_color_parse (&token->color, &style->math_color); /* deprecated */
+
+	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
+	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
 

@@ -113,6 +113,7 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->math_background.green = 0;
 	style->math_background.blue = 0;
 	style->math_background.alpha = 1;
+	style->math_variant = GMATHML_VARIANT_NORMAL;
 
 	style->subscript_shift.value = 0;
 	style->subscript_shift.unit = GMATHML_UNIT_PT;
