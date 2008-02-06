@@ -93,9 +93,11 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMat
 	gmathml_attribute_color_parse (&token->color, &style->math_color); /* deprecated */
 
 	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
-	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->font_size);
+	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
+
+	style->math_size_value = token->math_size.value;
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
 }

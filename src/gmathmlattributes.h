@@ -49,13 +49,12 @@ typedef struct {
 double 	gmathml_length_compute 		(GMathmlLength *length, double default_value, double font_size);
 
 typedef struct {
-	double font_size;
+	double math_size_value;
 	/* mstyle */
 	int script_level;
 	gboolean display_style;
 	double script_size_multiplier;
 	GMathmlLength script_min_size;
-	GMathmlColor background;
 	GMathmlLength very_very_thin_math_space;
 	GMathmlLength very_thin_math_space;
 	GMathmlLength thin_math_space;

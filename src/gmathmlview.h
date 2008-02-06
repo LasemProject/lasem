@@ -63,6 +63,8 @@ void		gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
 
+void 		gmathml_view_show_background 	(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
+
 void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
 
 void		gmathml_view_push_style		(GMathmlView *view, const GMathmlStyleElement *style);
@@ -87,7 +89,7 @@ void		gmathml_view_draw_root		(GMathmlView *view,
 						 GMathmlColor *color);
 
 double		gmathml_view_measure_space		(GMathmlView *view, double space);
-double		gmathml_view_measure_fraction_offset 	(GMathmlView *view, double font_size);
+double		gmathml_view_measure_fraction_offset 	(GMathmlView *view);
 
 void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
 

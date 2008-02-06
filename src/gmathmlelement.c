@@ -80,31 +80,40 @@ _update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
 }
 
 void
-gmathml_element_update (GMathmlElement *self, GMathmlView *view, const GMathmlStyle *style)
+gmathml_element_update (GMathmlElement *self, GMathmlView *view, const GMathmlStyle *parent_style)
 {
 	GMathmlElementClass *element_class;
-	GMathmlStyle *new_style;
+	GMathmlStyle *style;
 
 	g_return_if_fail (GMATHML_IS_ELEMENT (self));
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (style != NULL);
+	g_return_if_fail (parent_style != NULL);
 
 	g_message ("Update %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
-	new_style = gmathml_style_duplicate (style);
+	style = gmathml_style_duplicate (parent_style);
 	gmathml_view_push_element (view, self);
 
 #if 0
-	gmathml_style_dump (new_style);
+	gmathml_style_dump (style);
 #endif
 
+	g_message ("style->math_size_value = %g", style->math_size_value);
+
 	if (element_class->update)
-		element_class->update (self, view, new_style);
+		element_class->update (self, view, style);
+
+	self->math_color = style->math_color;
+	self->math_background = style->math_background;
+	self->math_size = style->math_size_value;
+	self->math_variant = style->math_variant;
+
+	g_message ("Mathsize = %g", self->math_size);
 
 	gmathml_view_pop_element (view);
-	gmathml_style_free (new_style);
+	gmathml_style_free (style);
 }
 
 static const GMathmlBbox *
@@ -211,6 +220,8 @@ static void
 _render (GMathmlElement *element, GMathmlView *view)
 {
 	GDomNode *node;
+
+	gmathml_view_show_background (view, element->x, element->y, &element->bbox);
 
 	for (node = GDOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node))

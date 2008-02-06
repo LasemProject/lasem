@@ -47,6 +47,11 @@ struct _GMathmlElement {
 	GMathmlAttributeValue id;
 	GMathmlAttributeValue href;
 
+	double math_size;
+	GMathmlColor math_color;
+	GMathmlColor math_background;
+	GMathmlVariant math_variant;
+
 	/* View */
 
 	gboolean measure_done;

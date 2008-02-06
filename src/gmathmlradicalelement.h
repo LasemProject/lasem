@@ -47,8 +47,6 @@ struct _GMathmlRadicalElement {
 
 	GMathmlRadicalElementType type;
 
-	GMathmlColor color;
-	double font_size;
 	double top_padding;
 
 	double height;

@@ -73,7 +73,7 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
-	style->font_size = 12.0;
+	style->math_size_value = 12.0;
 
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
@@ -95,13 +95,13 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->very_very_thick_math_space.value = 0.388889;
 	style->very_very_thick_math_space.unit = GMATHML_UNIT_EM;
 
-	style->very_very_thin_math_space_value = 0.0555556 * style->font_size;
-	style->very_thin_math_space_value = 0.111111 * style->font_size;
-	style->thin_math_space_value = 0.166667 * style->font_size;
-	style->medium_math_space_value = 0.222222 * style->font_size;
-	style->thick_math_space_value = 0.277778 * style->font_size;
-	style->very_thick_math_space_value = 0.333333 * style->font_size;
-	style->very_very_thick_math_space_value = 0.388889 * style->font_size;
+	style->very_very_thin_math_space_value = 0.0555556 * style->math_size_value;
+	style->very_thin_math_space_value = 0.111111 * style->math_size_value;
+	style->thin_math_space_value = 0.166667 * style->math_size_value;
+	style->medium_math_space_value = 0.222222 * style->math_size_value;
+	style->thick_math_space_value = 0.277778 * style->math_size_value;
+	style->very_thick_math_space_value = 0.333333 * style->math_size_value;
+	style->very_very_thick_math_space_value = 0.388889 * style->math_size_value;
 
 	style->math_size.value = 12.0;
 	style->math_size.unit = GMATHML_UNIT_PT;
@@ -112,7 +112,7 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->math_background.red = 0;
 	style->math_background.green = 0;
 	style->math_background.blue = 0;
-	style->math_background.alpha = 1;
+	style->math_background.alpha = 0;
 	style->math_variant = GMATHML_VARIANT_NORMAL;
 
 	style->subscript_shift.value = 0;

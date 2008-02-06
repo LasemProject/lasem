@@ -90,20 +90,20 @@ gmathml_style_duplicate (const GMathmlStyle *from)
 void
 gmathml_style_change_script_level (GMathmlStyle *style, int increment)
 {
-	style->font_size = style->font_size * pow (style->script_size_multiplier, increment);
+	style->math_size_value = style->math_size_value * pow (style->script_size_multiplier, increment);
 	style->script_level += increment;
 
-	if (style->font_size < style->script_min_size.value)
-		style->font_size = style->script_min_size.value;
+	if (style->math_size_value < style->script_min_size.value)
+		style->math_size_value = style->script_min_size.value;
 
-	style->math_size.value = style->font_size;
+	style->math_size.value = style->math_size_value;
 	style->math_size.unit = GMATHML_UNIT_PT;
 }
 
 void
 gmathml_style_dump (const GMathmlStyle *style)
 {
-	printf ("font_size =              %g\n", style->font_size);
+	printf ("math_size =              %g\n", style->math_size_value);
 	printf ("script_level =           %d (%s)\n", style->script_level, style->display_style ? "TRUE" : "FALSE");
 	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
 }
@@ -495,42 +495,42 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 		case GMATHML_SPACE_NAME_VERY_VERY_THIN:
 			attribute->value = gmathml_length_compute (&style->very_very_thin_math_space,
 								   style->very_very_thin_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_VERY_THIN:
 			attribute->value = gmathml_length_compute (&style->very_thin_math_space,
 								   style->very_thin_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_THIN:
 			attribute->value = gmathml_length_compute (&style->thin_math_space,
 								   style->thin_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_MEDIUM:
 			attribute->value = gmathml_length_compute (&style->medium_math_space,
 								   style->medium_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_THICK:
 			attribute->value = gmathml_length_compute (&style->thick_math_space,
 								   style->thick_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_VERY_THICK:
 			attribute->value = gmathml_length_compute (&style->very_thick_math_space,
 								   style->very_thick_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_VERY_VERY_THICK:
 			attribute->value = gmathml_length_compute (&style->very_very_thick_math_space,
 								   style->very_very_thick_math_space_value,
-								   style->font_size);
+								   style->math_size_value);
 			break;
 		case GMATHML_SPACE_NAME_ERROR:
 		default:
 			attribute->value = gmathml_length_compute (&attribute->space.length,
 								   style_value->length.value,
-								   style->font_size);
+								   style->math_size_value);
 	}
 }

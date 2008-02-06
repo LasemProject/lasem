@@ -112,8 +112,8 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
-	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->font_size);
-	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->font_size);
+	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
+	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
 
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
