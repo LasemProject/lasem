@@ -1,0 +1,13 @@
+    <math> 
+      <mstyle maxsize="1"> 
+        <mrow> 
+          <!-- comment --> 
+          <mo> ( </mo> 
+          <mfrac> 
+            <mi> a </mi> 
+            <mi> b </mi> 
+          </mfrac> 
+          <mo> ) </mo> 
+        </mrow> 
+      </mstyle> 
+    </math>

@@ -1,0 +1,43 @@
+    <math> 
+      <mtable> 
+        <mtr> 
+          <mtd> 
+            <mi fontsize='14pt'>a</mi> 
+            <mo color='black'>+</mo> 
+            <mstyle fontsize='24pt' color='GREEN'> 
+              <mi>a</mi> 
+              <mo color='red'>+</mo> 
+              <mi color='red'>a</mi> 
+            </mstyle> 
+            <mo>+</mo> 
+            <mi>a</mi> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mi mathsize='14pt'>a</mi> 
+            <mo mathcolor='black'>+</mo> 
+            <mstyle mathsize='24pt' mathcolor='GREEN'> 
+              <mi>a</mi> 
+              <mo mathcolor='red'>+</mo> 
+              <mi mathcolor='red'>a</mi> 
+            </mstyle> 
+            <mo>+</mo> 
+            <mi>a</mi> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mi mathsize='14pt'>a</mi> 
+            <mo mathcolor='black'>+</mo> 
+            <mstyle mathsize='24pt' mathcolor='GREEN'> 
+              <mi>a</mi> 
+              <mo color='red'>+</mo> 
+              <mi fontsize='14pt'>a</mi> 
+            </mstyle> 
+            <mo>+</mo> 
+            <mi>a</mi> 
+          </mtd> 
+        </mtr> 
+      </mtable> 
+    </math>

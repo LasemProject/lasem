@@ -1,0 +1,30 @@
+    <math> 
+      <mrow> 
+        <mi> aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 
+        </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='auto'/> 
+        <mi> bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb 
+        </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='newline'/> 
+        <mi> cccccccccccccccccccccccccccccccccccccccccccccccccccccccccc 
+        </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='indentingnewline'/> 
+        <mi> dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd 
+        </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='nobreak'/> 
+        <mi> eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee 
+        </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='goodbreak'/> 
+        <mi> fffffffffffffffffffffffffff </mi> 
+        <mo> + </mo> 
+        <mspace linebreak='badbreak'/> 
+        <mi> gggggggggggggggggggggggggggggggggggggggggggggggggggggg 
+        </mi> 
+        <mo> + </mo> 
+      </mrow> 
+    </math>

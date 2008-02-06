@@ -1,0 +1,38 @@
+    <math> 
+      <mstyle> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle> 
+      <mstyle scriptlevel="2"> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle> 
+      <mstyle scriptlevel="9"> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle> 
+      <mstyle scriptlevel="0"> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle> 
+      <mstyle scriptlevel="+2"> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle> 
+      <mstyle scriptlevel="-4"> 
+        <mfrac> 
+          <mi>2</mi> 
+          <mo>4</mo> 
+        </mfrac> 
+      </mstyle>
+    </math>

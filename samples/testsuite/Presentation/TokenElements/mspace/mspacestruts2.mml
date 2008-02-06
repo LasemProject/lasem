@@ -1,0 +1,28 @@
+    <math> 
+      <mfrac> 
+        <mrow> 
+          <mi>x</mi> 
+          <mspace width="1cm"/> 
+          <mi>y</mi> 
+        </mrow> 
+        <mn>2</mn> 
+      </mfrac> 
+      <mo>+</mo> 
+      <mfrac> 
+        <mn>2</mn> 
+        <mrow> 
+          <mi>x</mi> 
+          <mspace height="1cm"/> 
+          <mi>y</mi> 
+        </mrow> 
+      </mfrac> 
+      <mo>+</mo> 
+      <mfrac> 
+        <mrow> 
+          <mi>x</mi> 
+          <mspace depth="1cm"/> 
+          <mi>y</mi> 
+        </mrow> 
+        <mn>2</mn> 
+      </mfrac> 
+    </math>

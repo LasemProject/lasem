@@ -1,0 +1,16 @@
+    <math> 
+      <mi mathcolor="blue">x</mi> 
+      <mo>+</mo> 
+      <mn mathcolor="#00ff33" color="purple">7
+      </mn> 
+      <mo>+</mo> 
+      <mn color="yellow">3</mn> 
+      <mo>+</mo> 
+      <mstyle color="red"> 
+        <mi>z</mi> 
+        <mo>+</mo> 
+        <mi mathcolor="blue">q</mi> 
+        <mo>+</mo> 
+        <mi>q</mi> 
+      </mstyle>
+    </math>

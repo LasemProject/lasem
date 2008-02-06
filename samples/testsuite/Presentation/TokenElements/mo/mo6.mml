@@ -1,0 +1,26 @@
+    <math> 
+      <mrow> 
+        <mo> there exists </mo> 
+        <mrow> 
+          <mrow> 
+            <mi> &#x003B4; </mi> 
+            <mo> &#x0003E; </mo> 
+            <mn> 0 </mn> 
+          </mrow> 
+          <mo> such that </mo> 
+          <mrow> 
+            <mrow> 
+              <mi> f </mi> 
+              <mo> &#x02061; </mo> 
+              <mrow> 
+                <mo> ( </mo> 
+                <mi> x </mi> 
+                <mo> ) </mo> 
+              </mrow> 
+            </mrow> 
+            <mo> &#x003c; </mo> 
+            <mn> 1 </mn> 
+          </mrow> 
+        </mrow> 
+      </mrow> 
+    </math>

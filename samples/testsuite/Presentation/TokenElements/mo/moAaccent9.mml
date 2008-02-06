@@ -1,0 +1,30 @@
+    <math> 
+      <mrow> 
+        <mover> 
+          <mrow> 
+            <mi>G</mi> 
+            <mo>-</mo> 
+            <mn>1</mn> 
+          </mrow> 
+          <mo>&#x000AF;</mo> 
+        </mover> 
+        <mo>+</mo> 
+        <mover accent='true'> 
+          <mrow> 
+            <mi>G</mi> 
+            <mo>-</mo> 
+            <mn>1</mn> 
+          </mrow> 
+          <mo>&#x000AF;</mo> 
+        </mover> 
+        <mo>+</mo> 
+        <mover accent='false'> 
+          <mrow> 
+            <mi>G</mi> 
+            <mo>-</mo> 
+            <mn>1</mn> 
+          </mrow> 
+          <mo>&#x000AF;</mo> 
+        </mover> 
+      </mrow> 
+    </math>

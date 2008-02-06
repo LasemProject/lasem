@@ -1,0 +1,31 @@
+    <math> 
+      <mstyle> 
+        <mfrac> 
+          <mi>x</mi> 
+          <mfrac> 
+            <mi>y</mi> 
+            <mn>2</mn> 
+          </mfrac> 
+        </mfrac> 
+      </mstyle>
+      <mo>=</mo> 
+      <mstyle> 
+        <mfrac linethickness="2"> 
+          <mi>x</mi> 
+          <mfrac> 
+            <mi>y</mi> 
+            <mn>2</mn> 
+          </mfrac> 
+        </mfrac> 
+      </mstyle>
+      <mo>=</mo> 
+      <mstyle linethickness="2"> 
+        <mfrac> 
+          <mi>x</mi> 
+          <mfrac> 
+            <mi>y</mi> 
+            <mn>2</mn> 
+          </mfrac> 
+        </mfrac> 
+      </mstyle> 
+    </math>

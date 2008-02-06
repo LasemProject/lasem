@@ -1,0 +1,45 @@
+    <math> 
+      <mrow> 
+        <munderover> 
+          <mo>&#x02211;</mo> 
+          <mi>x</mi> 
+          <mn>0</mn> 
+        </munderover> 
+        <mo>=</mo> 
+        <munderover> 
+          <mo movablelimits='true'>&#x02211; 
+          </mo> 
+          <mi>x</mi> 
+          <mn>0</mn> 
+        </munderover> 
+        <mo>=</mo> 
+        <munderover> 
+          <mo movablelimits='false'>&#x02211; 
+          </mo> 
+          <mi>x</mi> 
+          <mn>0</mn> 
+        </munderover> 
+        <mo>=</mo> 
+        <mstyle displaystyle='true'> 
+          <munderover> 
+            <mo>&#x02211;</mo> 
+            <mi>x</mi> 
+            <mn>0</mn> 
+          </munderover> 
+          <mo>=</mo> 
+          <munderover> 
+            <mo movablelimits='true'>&#x02211; 
+            </mo> 
+            <mi>x</mi> 
+            <mn>0</mn> 
+          </munderover> 
+          <mo>=</mo> 
+          <munderover> 
+            <mo movablelimits='false'>&#x02211; 
+            </mo> 
+            <mi>x</mi> 
+            <mn>0</mn> 
+          </munderover> 
+        </mstyle> 
+      </mrow> 
+    </math>

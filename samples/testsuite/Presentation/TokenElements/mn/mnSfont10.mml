@@ -1,0 +1,15 @@
+    <math> 
+      <mstyle fontweight='bold'> 
+        <mrow> 
+          <mn>5</mn> 
+          <mo>+</mo> 
+          <mn fontweight='bold'>5</mn> 
+          <mo>+</mo> 
+          <mn fontweight='normal'>5</mn> 
+          <mo>+</mo> 
+          <mn fontstyle='italic'>5</mn> 
+          <mo>+</mo> 
+          <mn fontfamily='Helvetica'>5</mn> 
+        </mrow> 
+      </mstyle> 
+    </math>

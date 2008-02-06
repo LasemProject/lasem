@@ -1,0 +1,54 @@
+    <math> 
+      <mtable> 
+        <mtr> 
+          <mtd> 
+            <mi>A</mi> 
+            <mo color='black'>+</mo> 
+            <mi color='GREEN'>B</mi> 
+            <mo color='Silver'>+</mo> 
+            <mi color='Lime'>C</mi> 
+            <mo color='Gray'>+</mo> 
+            <mstyle background='#fff'> 
+              <mrow> 
+                <mi color='OLIVE'>D</mi> 
+                <mo color='white'>+</mo> 
+                <mi color='Yellow'>E</mi> 
+              </mrow> 
+            </mstyle> 
+            <mo color='Maroon'>+</mo> 
+            <mi color='Navy'>F</mi> 
+            <mo color='Red'>+</mo> 
+            <mi color='Blue'>G</mi> 
+            <mo color='Purple'>+</mo> 
+            <mi color='Teal'>H</mi> 
+            <mo color='Fuchsia'>+</mo> 
+            <mi color='Aqua'>I</mi> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mi>A</mi> 
+            <mo mathcolor='black'>+</mo> 
+            <mi mathcolor='GREEN'>B</mi> 
+            <mo mathcolor='Silver'>+</mo> 
+            <mi mathcolor='Lime'>C</mi> 
+            <mo mathcolor='Gray'>+</mo> 
+            <mstyle mathbackground='#fff'> 
+              <mrow> 
+                <mi mathcolor='OLIVE'>D</mi> 
+                <mo mathcolor='white'>+</mo> 
+                <mi mathcolor='Yellow'>E</mi> 
+              </mrow> 
+            </mstyle> 
+            <mo mathcolor='Maroon'>+</mo> 
+            <mi mathcolor='Navy'>F</mi> 
+            <mo mathcolor='Red'>+</mo> 
+            <mi mathcolor='Blue'>G</mi> 
+            <mo mathcolor='Purple'>+</mo> 
+            <mi mathcolor='Teal'>H</mi> 
+            <mo mathcolor='Fuchsia'>+</mo> 
+            <mi mathcolor='Aqua'>I</mi> 
+          </mtd> 
+        </mtr> 
+      </mtable> 
+    </math>
