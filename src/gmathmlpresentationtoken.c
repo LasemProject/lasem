@@ -90,8 +90,6 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMat
 		g_free (text);
 	}
 
-	gmathml_attribute_color_parse (&token->color, &style->math_color); /* deprecated */
-
 	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
 	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
@@ -195,8 +193,10 @@ gmathml_element_class_add_token_attributes (GMathmlElementClass *m_element_class
 
 	/* Deprecated attributes */
 
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
+					     offsetof (GMathmlPresentationToken, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
-					     offsetof (GMathmlPresentationToken, color));
+					     offsetof (GMathmlPresentationToken, math_color));
 }
 
 static void

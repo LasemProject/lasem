@@ -54,13 +54,11 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 	/* token */
 
 	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->math_size_value);
-
-	style->math_size_value = style_element->math_size.value;
-
-	gmathml_attribute_color_parse (&style_element->color, &style->math_color); /* deprecated */
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
 	gmathml_attribute_variant_parse (&style_element->math_variant, &style->math_variant);
+
+	style->math_size_value = style_element->math_size.value;
 
 	/* mstyle */
 
@@ -164,8 +162,12 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
 					     offsetof (GMathmlStyleElement, line_thickness));
 
+	/* Deprecated attributes */
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
+					     offsetof (GMathmlStyleElement, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
-					     offsetof (GMathmlStyleElement, color));
+					     offsetof (GMathmlStyleElement, math_color));
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

@@ -65,10 +65,6 @@ struct _GMathmlStyleElement {
 	/* Fraction attributes */
 
 	GMathmlAttributeLength line_thickness;
-
-	/* deprecated attributes */
-
-	GMathmlAttributeColor color;
 };
 
 struct _GMathmlStyleElementClass {
