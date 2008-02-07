@@ -221,8 +221,6 @@ _render (GMathmlElement *element, GMathmlView *view)
 {
 	GDomNode *node;
 
-	gmathml_view_show_background (view, element->x, element->y, &element->bbox);
-
 	for (node = GDOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node))
 		    gmathml_element_render (GMATHML_ELEMENT (node), view);
@@ -237,6 +235,7 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 
 	if (element_class->render) {
 		gmathml_view_push_element (view, element);
+		gmathml_view_show_background (view, element->x, element->y, &element->bbox);
 		element_class->render (element, view);
 		gmathml_view_pop_element (view);
 	}

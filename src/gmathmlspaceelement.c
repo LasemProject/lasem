@@ -21,6 +21,7 @@
  */
 
 #include <gmathmlspaceelement.h>
+#include <gmathmlview.h>
 
 static GObjectClass *parent_class;
 
@@ -32,12 +33,47 @@ gmathml_space_get_node_name (GDomNode *node)
 	return "mspace";
 }
 
+static gboolean
+gmathml_space_element_can_append_child (GDomNode *self, GDomNode *child)
+{
+	return FALSE;
+}
+
 /* GMathmlElement implementation */
+
+static void
+gmathml_space_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+{
+	GMathmlSpaceElement *space_element = GMATHML_SPACE_ELEMENT (self);
+	GMathmlSpace space;
+	GMathmlLength length;
+
+
+	space.length.unit = GMATHML_UNIT_EM;
+	space.length.value = 0;
+	space.name = GMATHML_SPACE_NAME_ERROR;
+
+	gmathml_attribute_space_parse (&space_element->width, &space, style);
+
+	length.unit = GMATHML_UNIT_EM;
+	length.value = 0.0;
+
+	gmathml_attribute_length_parse (&space_element->height, &length, style->math_size_value);
+
+	length.unit = GMATHML_UNIT_EM;
+	length.value = 0.0;
+
+	gmathml_attribute_length_parse (&space_element->depth, &length, style->math_size_value);
+}
 
 static const GMathmlBbox *
 gmathml_space_element_measure (GMathmlElement *self, GMathmlView *view)
 {
-	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+	GMathmlSpaceElement *space_element = GMATHML_SPACE_ELEMENT (self);
+
+	self->bbox.width = gmathml_view_measure_space (view, space_element->width.value);
+	self->bbox.height = gmathml_view_measure_space (view, space_element->height.value);
+	self->bbox.depth = gmathml_view_measure_space (view, space_element->depth.value);
 
 	return &self->bbox;
 }
@@ -73,9 +109,22 @@ gmathml_space_element_class_init (GMathmlSpaceElementClass *space_class)
 	parent_class = g_type_class_peek_parent (space_class);
 
 	d_node_class->get_node_name = gmathml_space_get_node_name;
+	d_node_class->can_append_child = gmathml_space_element_can_append_child;
 
+	m_element_class->update = gmathml_space_element_update;
 	m_element_class->measure = gmathml_space_element_measure;
 	m_element_class->layout = gmathml_space_element_layout;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "width",
+					     offsetof (GMathmlSpaceElement, width));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "height",
+					     offsetof (GMathmlSpaceElement, height));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "depth",
+					     offsetof (GMathmlSpaceElement, depth));
 }
 
 G_DEFINE_TYPE (GMathmlSpaceElement, gmathml_space_element, GMATHML_TYPE_ELEMENT)

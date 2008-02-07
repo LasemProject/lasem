@@ -62,7 +62,7 @@ int main(int argc, char **argv)
 
 		gdom_node_dump (document);
 
-		surface = cairo_svg_surface_create ("gmathml.svg", 1, 1);
+		surface = cairo_svg_surface_create ("gmathml.svg", 100, 100);
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
