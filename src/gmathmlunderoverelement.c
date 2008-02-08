@@ -21,6 +21,7 @@
  */
 
 #include <gmathmlunderoverelement.h>
+#include <gmathmlview.h>
 
 static GObjectClass *parent_class;
 
@@ -42,12 +43,165 @@ gmathml_under_over_get_node_name (GDomNode *node)
 	}
 }
 
+static gboolean
+gmathml_under_over_element_can_append_child (GDomNode *self, GDomNode *child)
+{
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+
+	if (!GMATHML_ELEMENT (child))
+		return FALSE;
+
+	if (self->first_child == NULL ||
+	    self->first_child->next_sibling == NULL)
+		return TRUE;
+
+	if (under_over->type != GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER_OVER)
+		return FALSE;
+
+	return (self->first_child->next_sibling->next_sibling == NULL);
+}
+
+static void
+gmathml_under_over_element_update_child_pointers (GMathmlUnderOverElement *self)
+{
+	GDomNode *node;
+
+	node = GDOM_NODE (self)->first_child;
+	if (node == NULL) {
+		self->base = NULL;
+		self->underscript = NULL;
+		self->overscript = NULL;
+		return;
+	} else
+		self->base = GMATHML_ELEMENT (node);
+
+	node = node->next_sibling;
+	if (node != NULL)
+		switch (self->type) {
+			case GMATHML_UNDER_OVER_ELEMENT_TYPE_OVER:
+				self->underscript = NULL;
+				self->overscript = GMATHML_ELEMENT (node);
+				break;
+			case GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER:
+				self->underscript = GMATHML_ELEMENT (node);
+				self->overscript = NULL;
+				break;
+			default:
+				self->underscript = GMATHML_ELEMENT (node);
+				node = node->next_sibling;
+				if (node != NULL)
+					self->overscript = GMATHML_ELEMENT (node);
+		}
+	else {
+		self->underscript = NULL;
+		self->overscript = NULL;
+	}
+}
+
+static void
+gmathml_under_over_element_post_new_child (GDomNode *self, GDomNode *child)
+{
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+
+	gmathml_under_over_element_update_child_pointers (under_over);
+}
+
 /* GMathmlElement implementation */
+
+static void
+gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
+{
+	gboolean accent;
+	gboolean accent_under;
+
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+
+	accent = FALSE;
+	gmathml_attribute_boolean_parse (&under_over->accent, &accent);
+	accent_under = FALSE;
+	gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
+
+	under_over->under_space = accent_under ? style->very_thin_math_space_value : style->very_thick_math_space_value;
+	under_over->over_space  = accent       ? style->very_thin_math_space_value : style->very_thick_math_space_value;
+
+	g_message ("space under = %g, over = %g", under_over->under_space, under_over->over_space);
+
+	if (under_over->base != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (under_over->base), style);
+
+	style->display_style = FALSE;
+
+	if (!accent_under)
+		gmathml_style_change_script_level (style, +1);
+
+	if (under_over->underscript != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style);
+
+	if (!accent_under)
+		gmathml_style_change_script_level (style, -1);
+	if (!accent)
+		gmathml_style_change_script_level (style, +1);
+
+	if (under_over->overscript != NULL)
+		gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), style);
+}
 
 static const GMathmlBbox *
 gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view)
 {
-	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+	GDomNode *node;
+	GMathmlBbox const *base_bbox = NULL;
+	GMathmlBbox const *underscript_bbox = NULL;
+	GMathmlBbox const *overscript_bbox = NULL;
+	GMathmlBbox bbox;
+
+	self->bbox.width = 0.0;
+	self->bbox.height = 0.0;
+	self->bbox.depth = 0.0;
+
+	node = GDOM_NODE (self)->first_child;
+
+	if (node != NULL) {
+		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+		gmathml_bbox_add_to_right (&self->bbox, base_bbox);
+
+		node = node->next_sibling;
+
+		if (node != NULL) {
+			GMathmlBbox const *bbox;
+
+			bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+
+			switch (under_over->type) {
+				case GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER:
+					underscript_bbox = bbox;
+					break;
+				case GMATHML_UNDER_OVER_ELEMENT_TYPE_OVER:
+					overscript_bbox = bbox;
+					break;
+				case GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER_OVER:
+					underscript_bbox = bbox;
+
+					node = node->next_sibling;
+
+					if (node != NULL)
+						overscript_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
+											   view);
+			}
+		}
+	}
+
+	if (overscript_bbox) {
+		bbox = *overscript_bbox;
+		bbox.depth += gmathml_view_measure_space (view, under_over->over_space);
+		gmathml_bbox_add_over (&self->bbox, &bbox);
+	}
+	if (underscript_bbox) {
+		bbox = *underscript_bbox;
+		bbox.height += gmathml_view_measure_space (view, under_over->under_space);
+		gmathml_bbox_add_under (&self->bbox, &bbox);
+	}
 
 	return &self->bbox;
 }
@@ -56,7 +210,30 @@ static void
 gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 				double x, double y, const GMathmlBbox *bbox)
 {
-	GMATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x, y, bbox);
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+	const GMathmlBbox *child_bbox;
+
+	if (under_over->base == NULL)
+		return;
+
+	child_bbox = gmathml_element_measure (under_over->base, view);
+	gmathml_element_layout (under_over->base, view, x + (bbox->width - child_bbox->width) * 0.5, y,
+				child_bbox);
+
+	if (under_over->underscript) {
+		child_bbox = gmathml_element_measure (under_over->underscript, view);
+		gmathml_element_layout (under_over->underscript, view,
+					x + (bbox->width - child_bbox->width) * 0.5,
+					y + self->bbox.depth - child_bbox->depth,
+					child_bbox);
+	}
+	if (under_over->overscript) {
+		child_bbox = gmathml_element_measure (under_over->overscript, view);
+		gmathml_element_layout (under_over->overscript, view,
+					x + (bbox->width - child_bbox->width) * 0.5,
+					y - self->bbox.height + child_bbox->height,
+					child_bbox);
+	}
 }
 
 /* GMathmlUnderOverElement implementation */
@@ -116,9 +293,21 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	parent_class = g_type_class_peek_parent (under_over_class);
 
 	d_node_class->get_node_name = gmathml_under_over_get_node_name;
+	d_node_class->can_append_child = gmathml_under_over_element_can_append_child;
+	d_node_class->post_new_child = gmathml_under_over_element_post_new_child;
 
+	m_element_class->update = gmathml_under_over_element_update;
 	m_element_class->measure = gmathml_under_over_element_measure;
 	m_element_class->layout = gmathml_under_over_element_layout;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
+					     offsetof (GMathmlUnderOverElement, accent));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accentunder",
+					     offsetof (GMathmlUnderOverElement, accent_under));
 }
 
 G_DEFINE_TYPE (GMathmlUnderOverElement, gmathml_under_over_element, GMATHML_TYPE_ELEMENT)

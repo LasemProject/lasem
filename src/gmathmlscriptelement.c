@@ -133,7 +133,7 @@ static const GMathmlBbox *
 gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (element);
-	GDomNode *node = GDOM_NODE (element);
+	GDomNode *node;
 	GMathmlBbox const *base_bbox = NULL;
 	GMathmlBbox const *subscript_bbox = NULL;
 	GMathmlBbox const *superscript_bbox = NULL;
