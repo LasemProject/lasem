@@ -65,8 +65,7 @@ struct _GMathmlElementClass {
 
 	GMathmlAttributeMap *attributes;
 
-	void			(*update)		(GMathmlElement *element, GMathmlView *view,
-							 GMathmlStyle *style);
+	void			(*update)		(GMathmlElement *element, GMathmlStyle *style);
 	const GMathmlBbox * 	(*measure) 		(GMathmlElement *element, GMathmlView *view);
 	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);
@@ -75,8 +74,7 @@ struct _GMathmlElementClass {
 
 GType gmathml_element_get_type (void);
 
-void 			gmathml_element_update 			(GMathmlElement *element, GMathmlView *view,
-								 const GMathmlStyle *style);
+void 			gmathml_element_update 			(GMathmlElement *element, const GMathmlStyle *style);
 const GMathmlBbox *	gmathml_element_measure			(GMathmlElement *element, GMathmlView *view);
 void 			gmathml_element_layout 			(GMathmlElement *element, GMathmlView *view,
 								 double x, double y, const GMathmlBbox *bbox);

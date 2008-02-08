@@ -342,7 +342,7 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
 	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (root));
 
-	gmathml_element_update (GMATHML_ELEMENT (root), view,
+	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
@@ -372,7 +372,7 @@ gmathml_view_render (GMathmlView *view)
 	view->priv->current_element = NULL;
 	view->priv->elements = NULL;
 
-	gmathml_element_update (GMATHML_ELEMENT (root), view,
+	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);

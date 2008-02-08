@@ -44,7 +44,7 @@ gmathml_fraction_element_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 
@@ -56,7 +56,7 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

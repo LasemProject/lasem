@@ -42,7 +42,7 @@ gmathml_space_element_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_space_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_space_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlSpaceElement *space_element = GMATHML_SPACE_ELEMENT (self);
 	GMathmlSpace space;

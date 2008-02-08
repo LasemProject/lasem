@@ -37,7 +37,7 @@ gmathml_math_element_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static void
-gmathml_math_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (self);
 	GMathmlMode default_mode;
@@ -46,7 +46,7 @@ gmathml_math_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSty
 
 	style->display_style = (default_mode == GMATHML_MODE_DISPLAY);
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 /* GMathmlMathElement implementation */
 

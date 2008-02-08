@@ -35,7 +35,7 @@ gmathml_operator_element_get_node_name (GDomNode *node)
 }
 
 static void
-gmathml_operator_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	GDomNode *node = GDOM_NODE (self);
@@ -86,7 +86,7 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 
 	g_free (text);
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

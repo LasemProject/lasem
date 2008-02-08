@@ -79,7 +79,7 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 }
 
 static void
-gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 
@@ -97,7 +97,7 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlView *view, GMat
 
 	style->math_size_value = token->math_size.value;
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

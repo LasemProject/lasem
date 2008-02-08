@@ -37,7 +37,7 @@ gmathml_style_element_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static void
-gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
@@ -91,7 +91,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 					&style->line_thickness,
 					style->math_size_value);
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 /* GMathmlStyleElement implementation */

@@ -53,13 +53,13 @@ gmathml_radical_element_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_radical_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_radical_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 
 	radical->top_padding = style->medium_math_space_value;
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, view, style);
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

@@ -108,7 +108,7 @@ gmathml_script_element_post_new_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static void
-gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlStyle *style)
+gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
@@ -116,7 +116,7 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
 
 	if (script->base != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->base), view, style);
+		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
 
 	script->space = style->thin_math_space_value;
 
@@ -124,9 +124,9 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlView *view, GMathmlS
 	style->display_style = FALSE;
 
 	if (script->subscript != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->subscript), view, style);
+		gmathml_element_update (GMATHML_ELEMENT (script->subscript), style);
 	if (script->superscript != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->superscript), view, style);
+		gmathml_element_update (GMATHML_ELEMENT (script->superscript), style);
 }
 
 static const GMathmlBbox *
