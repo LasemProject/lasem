@@ -46,7 +46,6 @@ struct _GMathmlStyleElement {
 	GMathmlAttributeBoolean display_style;
 	GMathmlAttributeDouble script_size_multiplier;
 	GMathmlAttributeLength script_min_size;
-	GMathmlAttributeColor background;
 	GMathmlAttributeLength very_very_thin_math_space;
 	GMathmlAttributeLength very_thin_math_space;
 	GMathmlAttributeLength thin_math_space;

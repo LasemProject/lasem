@@ -52,9 +52,6 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlView *view, GMathm
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
 	fraction->space = style->medium_math_space_value;
-	fraction->offset = gmathml_view_measure_fraction_offset (view);
-
-	g_message ("space = %g, offset = %g", fraction->space, fraction->offset);
 
 	if (!style->display_style)
 		gmathml_style_change_script_level (style, +1);
@@ -68,6 +65,8 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
+
+	fraction->offset = gmathml_view_measure_fraction_offset (view);
 
 	self->bbox.depth = - gmathml_view_measure_space (view,
 							 fraction->offset -

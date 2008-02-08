@@ -44,7 +44,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlView *view, GMathmlSt
 	gmathml_attribute_boolean_parse (&style_element->display_style, &style->display_style);
 
 	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
-	gmathml_attribute_color_parse (&style_element->background, &style->math_background);
+	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
 	gmathml_attribute_length_parse (&style_element->script_min_size,
 					&style->script_min_size,
 					style->math_size_value);
@@ -134,7 +134,7 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
 					     offsetof (GMathmlStyleElement, script_min_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "background",
-					     offsetof (GMathmlStyleElement, background));
+					     offsetof (GMathmlStyleElement, math_background));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
 					     offsetof (GMathmlStyleElement, very_very_thin_math_space));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
