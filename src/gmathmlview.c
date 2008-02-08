@@ -158,28 +158,6 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 		   gmathml_variant_to_string (element->math_variant));
 
 	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
-#if 0
-	pango_font_description_set_size (view->priv->font_description,
-					 element->math_size * PANGO_SCALE);
-	switch (element->math_variant) {
-		case GMATHML_VARIANT_NORMAL:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			break;
-		case GMATHML_VARIANT_ITALIC:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
-			break;
-		default:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			break;
-	}
-	pango_layout_set_text (view->priv->pango_layout, text, -1);
-	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
-	pango_layout_get_extents (view->priv->pango_layout, &ink_rect, &rect);
-
-	iter = pango_layout_get_iter (view->priv->pango_layout);
-	baseline = pango_layout_iter_get_baseline (iter);
-	pango_layout_iter_free (iter);
-#endif
 
 	if (view->priv->debug) {
 		cairo_set_line_width (view->priv->cairo, 0.1);
