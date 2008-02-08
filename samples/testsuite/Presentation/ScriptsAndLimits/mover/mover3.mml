@@ -7,8 +7,7 @@
           </munder> 
           <mi> &#x0221E; </mi> 
         </mover> 
-        <mtext> &#x02009;&amp;#x0200A;&amp;#x0200A; vs &amp;#x02009;&amp;#x0200A;&amp;#x0200A; 
-        </mtext> 
+        <mtext> vs </mtext> 
         <munderover> 
           <mo> &#x0222B; </mo> 
           <mn> 0 </mn> 
