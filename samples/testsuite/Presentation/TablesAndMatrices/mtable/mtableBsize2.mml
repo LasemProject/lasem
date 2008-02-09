@@ -1,0 +1,37 @@
+    <math>
+      <mtable equalrows='false' equalcolumns='false'>
+        <mtr> 
+          <mtd>
+            <mi>H</mi>
+          </mtd> 
+          <mtd>
+            <mo>&#x02192;</mo>
+          </mtd> 
+          <mtd>
+            <mi>G</mi>
+          </mtd> 
+        </mtr>
+        <mtr> 
+          <mtd>
+            <mo>&#x02193;</mo>
+          </mtd> 
+          <mtd>
+            <mspace height='2em' width='3em'/>
+          </mtd> 
+          <mtd>
+            <mo>&#x02193;</mo>
+          </mtd> 
+        </mtr>
+        <mtr> 
+          <mtd>
+            <mi>K</mi>
+          </mtd> 
+          <mtd>
+            <mo>&#x02192;</mo>
+          </mtd> 
+          <mtd>
+            <mi>L</mi>
+          </mtd> 
+        </mtr>
+      </mtable>
+    </math>

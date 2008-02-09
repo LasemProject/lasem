@@ -1,0 +1,20 @@
+    <math>
+      <mtable frame="solid" width="auto">
+        <mtr>
+          <mtd>
+            <mi>a</mi>
+          </mtd>
+          <mtd>
+            <mi>b</mi>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd>
+            <mi>x</mi>
+          </mtd>
+          <mtd>
+            <mi>y</mi>
+          </mtd>
+        </mtr>
+      </mtable> 
+    </math>
