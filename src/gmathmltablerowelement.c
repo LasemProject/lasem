@@ -21,6 +21,7 @@
  */
 
 #include <gmathmltablerowelement.h>
+#include <gmathmltablecellelement.h>
 
 static GObjectClass *parent_class;
 
@@ -30,6 +31,12 @@ static const char *
 gmathml_table_row_get_node_name (GDomNode *node)
 {
 	return "mtr";
+}
+
+static gboolean
+gmathml_table_row_can_append_child (GDomNode *self, GDomNode *child)
+{
+	return GMATHML_IS_TABLE_CELL_ELEMENT (child);
 }
 
 /* GMathmlElement implementation */
@@ -73,6 +80,7 @@ gmathml_table_row_element_class_init (GMathmlTableRowElementClass *table_row_cla
 	parent_class = g_type_class_peek_parent (table_row_class);
 
 	d_node_class->get_node_name = gmathml_table_row_get_node_name;
+	d_node_class->can_append_child = gmathml_table_row_can_append_child;
 
 	m_element_class->measure = gmathml_table_row_element_measure;
 	m_element_class->layout = gmathml_table_row_element_layout;
