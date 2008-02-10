@@ -768,10 +768,11 @@ gmathml_attribute_named_list_parse (GMathmlAttributeNamedList *attribute,
 
 	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
 	if (string == NULL) {
-		if (style_value->n_values > 0)
+		if (style_value->n_values > 0) {
+			attribute->values = g_new (unsigned int, style_value->n_values);
 			memcpy (attribute->values, style_value->values,
 				sizeof (unsigned int) * style_value->n_values);
-		else
+		} else
 			attribute->values = NULL;
 		attribute->n_values = style_value->n_values;
 

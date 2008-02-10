@@ -46,6 +46,17 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
 	GMathmlSpaceList *space_list;
+	GMathmlNamedList named_list;
+	unsigned int named;
+
+	named_list.n_values = 1;
+	named_list.values = &named;
+
+	named = GMATHML_ROW_ALIGN_BASELINE;
+	gmathml_attribute_row_align_parse (&table->row_align, &named_list);
+
+	named = GMATHML_COLUMN_ALIGN_CENTER;
+	gmathml_attribute_column_align_parse (&table->column_align, &named_list);
 
 	space_list = gmathml_space_list_new (1);
 
@@ -174,6 +185,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 	unsigned int max_column;
 	unsigned int max_row;
 	unsigned int row, column;
+	double x_cell, y_cell;
 
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
@@ -193,8 +205,35 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 		     cell_node = cell_node->next_sibling) {
 			bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view);
 
+			switch (table->row_align.values[MIN (row, table->row_align.n_values - 1)]) {
+				case GMATHML_ROW_ALIGN_TOP:
+					y_cell = y + y_offset + bbox->height;
+					break;
+				case GMATHML_ROW_ALIGN_BOTTOM:
+					y_cell = y + y_offset + table->heights[row] + table->depths[row] -
+						bbox->depth;
+					break;
+				case GMATHML_ROW_ALIGN_CENTER:
+					y_cell = y + y_offset + (table->heights[row] + table->depths[row] +
+								 bbox->height + bbox->depth) * 0.5 +
+						bbox->height;
+				default:
+					y_cell = y + y_offset + table->heights[row];
+			}
+
+			switch (table->column_align.values[MIN (column, table->column_align.n_values - 1)]) {
+				case GMATHML_COLUMN_ALIGN_LEFT:
+					x_cell = x + x_offset;
+					break;
+				case GMATHML_COLUMN_ALIGN_RIGHT:
+					x_cell = x + x_offset + table->widths[column] - bbox->width;
+					break;
+				default:
+					x_cell = x + x_offset + (table->widths[column] - bbox->width) * 0.5;
+			}
+
 			gmathml_element_layout (GMATHML_ELEMENT (cell_node), view,
-						x + x_offset, y + y_offset + bbox->height, bbox);
+						x_cell, y_cell, bbox);
 
 			if (column < table->n_columns - 1) {
 				x_offset += table->widths[column];
