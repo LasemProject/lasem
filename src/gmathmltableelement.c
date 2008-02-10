@@ -214,9 +214,10 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 						bbox->depth;
 					break;
 				case GMATHML_ROW_ALIGN_CENTER:
-					y_cell = y + y_offset + (table->heights[row] + table->depths[row] +
-								 bbox->height + bbox->depth) * 0.5 +
+					y_cell = y + y_offset + (table->heights[row] + table->depths[row] -
+								 bbox->height - bbox->depth) * 0.5 +
 						bbox->height;
+					break;
 				default:
 					y_cell = y + y_offset + table->heights[row];
 			}
