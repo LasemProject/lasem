@@ -39,6 +39,19 @@ typedef struct _GMathmlTableElementClass GMathmlTableElementClass;
 
 struct _GMathmlTableElement {
 	GMathmlElement	element;
+
+	GMathmlAttributeNamedList row_align;
+	GMathmlAttributeNamedList column_align;
+	GMathmlAttributeSpaceList row_spacing;
+	GMathmlAttributeSpaceList column_spacing;
+
+	/* View data */
+
+	unsigned int n_columns;
+	unsigned int n_rows;
+	double *widths;
+	double *heights;
+	double *depths;
 };
 
 struct _GMathmlTableElementClass {

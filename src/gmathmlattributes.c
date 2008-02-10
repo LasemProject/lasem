@@ -29,7 +29,7 @@
 #include <math.h>
 
 double
-gmathml_length_compute (GMathmlLength *length, double default_value, double font_size)
+gmathml_length_compute (const GMathmlLength *length, double default_value, double font_size)
 {
 	switch (length->unit) {
 		case GMATHML_UNIT_PX:
@@ -110,6 +110,7 @@ gmathml_style_dump (const GMathmlStyle *style)
 
 typedef struct {
 	ptrdiff_t attr_offset;
+	void (*finalize) (void *);
 } GMathmlAttributeInfos;
 
 GMathmlAttributeMap *
@@ -135,9 +136,10 @@ gmathml_attribute_map_free (GMathmlAttributeMap *map)
 }
 
 void
-gmathml_attribute_map_add_attribute (GMathmlAttributeMap *map,
-				     const char *attr_name,
-				     ptrdiff_t attr_offset)
+gmathml_attribute_map_add_attribute_full (GMathmlAttributeMap *map,
+					  const char *attr_name,
+					  ptrdiff_t attr_offset,
+					  GMathmlAttributeFinalizeFunc finalize)
 {
 	GMathmlAttributeInfos *attr_infos;
 
@@ -152,8 +154,17 @@ gmathml_attribute_map_add_attribute (GMathmlAttributeMap *map,
 
 	attr_infos = g_new (GMathmlAttributeInfos, 1);
 	attr_infos->attr_offset = attr_offset;
+	attr_infos->finalize = finalize;
 
 	g_hash_table_insert (map->hash, (char *) attr_name, attr_infos);
+}
+
+void
+gmathml_attribute_map_add_attribute (GMathmlAttributeMap *map,
+				     const char *attr_name,
+				     ptrdiff_t attr_offset)
+{
+	gmathml_attribute_map_add_attribute_full (map, attr_name, attr_offset, NULL);
 }
 
 gboolean
@@ -232,6 +243,9 @@ gmathml_attribute_finalize_cb (gpointer key,
 	if (attribute != NULL) {
 		g_free (attribute->value);
 		g_free (attribute->css_value);
+
+		if (attr_infos->finalize != NULL)
+			attr_infos->finalize (attribute);
 	}
 }
 
@@ -270,7 +284,6 @@ gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
 		return;
 	}
 
-	g_message ("boolean = -%s-", string);
 	attribute->value = (strcmp (string, "true") == 0);
 	*style_value = attribute->value;
 }
@@ -456,7 +469,6 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 			       GMathmlStyle *style)
 {
 	const char *string;
-	char *unit_str;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style != NULL);
@@ -468,6 +480,7 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 		attribute->space.name = gmathml_space_name_from_string (string);
 		if (attribute->space.name == GMATHML_SPACE_NAME_ERROR) {
 			GMathmlUnit unit;
+			char *unit_str;
 			double value;
 
 			value = g_strtod (string, &unit_str);
@@ -533,4 +546,258 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 								   style_value->length.value,
 								   style->math_size_value);
 	}
+}
+
+GMathmlSpaceList *
+gmathml_space_list_new (unsigned int n_spaces)
+{
+	GMathmlSpaceList *space_list;
+
+	space_list = g_new (GMathmlSpaceList, 1);
+	if (space_list == NULL)
+		return NULL;
+
+	space_list->n_spaces = n_spaces;
+
+	if (n_spaces > 0) {
+		space_list->spaces = g_new (GMathmlSpace, n_spaces);
+
+		if (space_list->spaces == NULL) {
+			g_free (space_list);
+			return NULL;
+		}
+	} else
+		space_list->spaces = NULL;
+
+	return space_list;
+}
+
+void
+gmathml_space_list_free (GMathmlSpaceList *space_list)
+{
+	if (space_list == NULL)
+		return;
+
+	space_list->n_spaces = 0;
+
+	g_free (space_list->spaces);
+	g_free (space_list);
+}
+
+GMathmlSpaceList *
+gmathml_space_list_duplicate (const GMathmlSpaceList *space_list)
+{
+	GMathmlSpaceList *new_space_list;
+
+	g_return_val_if_fail (space_list != NULL, NULL);
+
+	new_space_list = gmathml_space_list_new (space_list->n_spaces);
+	memcpy (new_space_list->spaces, space_list->spaces,
+		sizeof (GMathmlSpace) * space_list->n_spaces);
+
+	return new_space_list;
+}
+
+void
+gmathml_attribute_space_list_finalize (void *abstract)
+{
+	GMathmlAttributeSpaceList *attribute = abstract;
+
+	g_return_if_fail (attribute != NULL);
+
+	gmathml_space_list_free (attribute->space_list);
+	g_free (attribute->values);
+	attribute->space_list = NULL;
+	attribute->values = NULL;
+}
+
+void
+gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
+				    GMathmlSpaceList *style_value,
+				    const GMathmlStyle *style)
+{
+	unsigned int i;
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
+	gmathml_attribute_space_list_finalize (attribute);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->space_list = gmathml_space_list_duplicate (style_value);
+	} else {
+		unsigned int n_items;
+		char *unit_str;
+		char **items;
+
+		items = g_strsplit_set (string, " ", -1);
+		n_items = g_strv_length (items);
+
+		attribute->space_list = gmathml_space_list_new (n_items);
+		for (i = 0; i < n_items; i++) {
+			GMathmlSpace *space;
+
+			space = &attribute->space_list->spaces[i];
+
+			space->name = gmathml_space_name_from_string (items[i]);
+			if (space->name == GMATHML_SPACE_NAME_ERROR) {
+				GMathmlUnit unit;
+				double value;
+
+				value = g_strtod (items[i], &unit_str);
+				unit = gmathml_unit_from_string (unit_str);
+
+				if (style_value->n_spaces > 0) {
+					unsigned int index;
+
+					index = MIN (i, style_value->n_spaces - 1);
+
+					if (unit == GMATHML_UNIT_NONE) {
+						unit = style_value->spaces[index].length.unit;
+						value *= style_value->spaces[index].length.value;
+					} else if (unit == GMATHML_UNIT_PERCENT) {
+						unit = style_value->spaces[index].length.unit;
+						value *= style_value->spaces[index].length.value / 100.0;
+					}
+				} else {
+					unit = GMATHML_UNIT_PX;
+					value = 0.0;
+				}
+
+				space->length.unit = unit;
+				space->length.value = value;
+			} else {
+				space->length.value = 0.0;
+				space->length.unit = GMATHML_UNIT_PX;
+			}
+
+			/* FIXME copy the new values to style */
+			if (i < style_value->n_spaces)
+				style_value->spaces[i] = *space;
+		}
+		g_strfreev (items);
+	}
+
+	attribute->values = g_new (double, attribute->space_list->n_spaces);
+
+	for (i = 0; i < attribute->space_list->n_spaces; i++) {
+		switch (attribute->space_list->spaces[i].name) {
+			case GMATHML_SPACE_NAME_VERY_VERY_THIN:
+				attribute->values[i] = gmathml_length_compute (&style->very_very_thin_math_space,
+									       style->very_very_thin_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_VERY_THIN:
+				attribute->values[i] = gmathml_length_compute (&style->very_thin_math_space,
+									       style->very_thin_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_THIN:
+				attribute->values[i] = gmathml_length_compute (&style->thin_math_space,
+									       style->thin_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_MEDIUM:
+				attribute->values[i] = gmathml_length_compute (&style->medium_math_space,
+									       style->medium_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_THICK:
+				attribute->values[i] = gmathml_length_compute (&style->thick_math_space,
+									       style->thick_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_VERY_THICK:
+				attribute->values[i] = gmathml_length_compute (&style->very_thick_math_space,
+									       style->very_thick_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_VERY_VERY_THICK:
+				attribute->values[i] = gmathml_length_compute (&style->very_very_thick_math_space,
+									       style->very_very_thick_math_space_value,
+									       style->math_size_value);
+				break;
+			case GMATHML_SPACE_NAME_ERROR:
+			default:
+				if (style_value->n_spaces > 0) {
+					unsigned int index;
+
+					index = MIN (i, style_value->n_spaces - 1);
+
+					attribute->values[i] = gmathml_length_compute
+						(&attribute->space_list->spaces[i].length,
+						 style_value->spaces[index].length.value,
+						 style->math_size_value);
+				} else
+					attribute->values[i] = gmathml_length_compute
+						(&attribute->space_list->spaces[i].length,
+						 0.0,
+						 style->math_size_value);
+		}
+	}
+}
+
+void
+gmathml_attribute_named_list_finalize (void *abstract)
+{
+	GMathmlAttributeNamedList *attribute = abstract;
+
+	g_return_if_fail (attribute != NULL);
+
+	g_free (attribute->values);
+	attribute->n_values = 0;
+	attribute->values = NULL;
+}
+
+static void
+gmathml_attribute_named_list_parse (GMathmlAttributeNamedList *attribute,
+				    GMathmlNamedList *style_value,
+				    GMathmlNamedConvert convert)
+{
+	const char *string;
+	char **items;
+	unsigned int i;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
+	g_free (attribute->values);
+	attribute->n_values = 0;
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		if (style_value->n_values > 0)
+			memcpy (attribute->values, style_value->values,
+				sizeof (unsigned int) * style_value->n_values);
+		else
+			attribute->values = NULL;
+		attribute->n_values = style_value->n_values;
+
+		return;
+	}
+
+	items = g_strsplit_set (string, " ", -1);
+	attribute->n_values = g_strv_length (items);
+
+	attribute->values = g_new (unsigned int, attribute->n_values);
+	for (i = 0; i < attribute->n_values; i++)
+		attribute->values[i] = convert (items[i]);
+
+	g_strfreev (items);
+}
+
+void
+gmathml_attribute_row_align_parse (GMathmlAttributeNamedList *attribute,
+				   GMathmlNamedList *style_value)
+{
+	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_row_align_from_string);
+}
+
+void
+gmathml_attribute_column_align_parse (GMathmlAttributeNamedList *attribute,
+				      GMathmlNamedList *style_value)
+{
+	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_column_align_from_string);
 }

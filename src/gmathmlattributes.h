@@ -46,7 +46,19 @@ typedef struct {
 	GMathmlLength length;
 } GMathmlSpace;
 
-double 	gmathml_length_compute 		(GMathmlLength *length, double default_value, double font_size);
+typedef struct {
+	unsigned int n_spaces;
+	GMathmlSpace *spaces;
+} GMathmlSpaceList;
+
+typedef struct {
+	unsigned int n_values;
+	unsigned int *values;
+} GMathmlNamedList;
+
+typedef unsigned int (*GMathmlNamedConvert) (const char *string);
+
+double 	gmathml_length_compute 		(const GMathmlLength *length, double default_value, double font_size);
 
 typedef struct {
 	double math_size_value;
@@ -107,9 +119,15 @@ typedef struct {
 	GArray *array;
 } GMathmlAttributeMap;
 
+typedef void (*GMathmlAttributeFinalizeFunc) (void *);
+
 GMathmlAttributeMap *	gmathml_attribute_map_new 		(void);
 void			gmathml_attribute_map_free 		(GMathmlAttributeMap *map);
 
+void			gmathml_attribute_map_add_attribute_full	(GMathmlAttributeMap *map,
+									 char const *name,
+									 ptrdiff_t offset,
+									 GMathmlAttributeFinalizeFunc finalize);
 void			gmathml_attribute_map_add_attribute 		(GMathmlAttributeMap *map,
 									 char const *name,
 									 ptrdiff_t offset);
@@ -183,6 +201,18 @@ typedef struct {
 	double value;
 } GMathmlAttributeSpace;
 
+typedef struct {
+	GMathmlAttributeValue attr;
+	GMathmlSpaceList *space_list;
+	double *values;
+} GMathmlAttributeSpaceList;
+
+typedef struct {
+	GMathmlAttributeValue attr;
+	unsigned int n_values;
+	unsigned int *values;
+} GMathmlAttributeNamedList;
+
 void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
 							 gboolean *default_value);
 void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
@@ -203,6 +233,21 @@ void 		gmathml_attribute_length_parse 		(GMathmlAttributeLength *attribute,
 void 		gmathml_attribute_space_parse 		(GMathmlAttributeSpace *attribute,
 							 GMathmlSpace *style_value,
 							 GMathmlStyle *style);
+
+GMathmlSpaceList *	gmathml_space_list_new  	(unsigned int n_spaces);
+void 			gmathml_space_list_free 	(GMathmlSpaceList *space_list);
+GMathmlSpaceList *	gmathml_space_list_duplicate	(const GMathmlSpaceList *space_list);
+
+void 		gmathml_attribute_space_list_finalize 	(void *attribute);
+void 		gmathml_attribute_space_list_parse 	(GMathmlAttributeSpaceList *attribute,
+							 GMathmlSpaceList *style_value,
+							 const GMathmlStyle *style);
+
+void 		gmathml_attribute_named_list_finalize 	(void *abstract);
+void 		gmathml_attribute_row_align_parse 	(GMathmlAttributeNamedList *attribute,
+							 GMathmlNamedList *style_value);
+void 		gmathml_attribute_column_align_parse 	(GMathmlAttributeNamedList *attribute,
+							 GMathmlNamedList *style_value);
 
 G_END_DECLS
 

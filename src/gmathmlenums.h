@@ -36,20 +36,21 @@ const char *		gmathml_mode_to_string			(GMathmlMode mode);
 GMathmlMode		gmathml_mode_from_string		(const char *string);
 
 typedef enum {
+	GMATHML_SPACE_NAME_ERROR,
 	GMATHML_SPACE_NAME_VERY_VERY_THIN,
 	GMATHML_SPACE_NAME_VERY_THIN,
 	GMATHML_SPACE_NAME_THIN,
 	GMATHML_SPACE_NAME_MEDIUM,
 	GMATHML_SPACE_NAME_THICK,
 	GMATHML_SPACE_NAME_VERY_THICK,
-	GMATHML_SPACE_NAME_VERY_VERY_THICK,
-	GMATHML_SPACE_NAME_ERROR
+	GMATHML_SPACE_NAME_VERY_VERY_THICK
 } GMathmlSpaceName;
 
 const char * 		gmathml_space_name_to_string 		(GMathmlSpaceName name);
 GMathmlSpaceName 	gmathml_space_name_from_string 		(const char *string);
 
 typedef enum {
+	GMATHML_UNIT_NONE,
 	GMATHML_UNIT_EM,
 	GMATHML_UNIT_EX,
 	GMATHML_UNIT_IN,
@@ -58,8 +59,7 @@ typedef enum {
 	GMATHML_UNIT_PT,
 	GMATHML_UNIT_PX,
 	GMATHML_UNIT_PC,
-	GMATHML_UNIT_PERCENT,
-	GMATHML_UNIT_NONE
+	GMATHML_UNIT_PERCENT
 } GMathmlUnit;
 
 const char * 		gmathml_unit_to_string 			(GMathmlUnit unit);
@@ -95,6 +95,27 @@ typedef enum {
 
 const char *		gmathml_form_to_string 			(GMathmlForm form);
 GMathmlForm 		gmathml_form_from_string 		(const char *string);
+
+typedef enum {
+	GMATHML_ROW_ALIGN_BASELINE,
+	GMATHML_ROW_ALIGN_TOP,
+	GMATHML_ROW_ALIGN_BOTTOM,
+	GMATHML_ROW_ALIGN_CENTER,
+	GMATHML_ROW_ALIGN_AXIS,
+	GMATHML_ROW_ALIGN_ERROR
+} GMathmlRowAlign;
+
+const char *		gmathml_row_align_to_string		(GMathmlRowAlign row_align);
+GMathmlRowAlign		gmathml_row_align_from_string		(const char *string);
+
+typedef enum {
+	GMATHML_COLUMN_ALIGN_CENTER,
+	GMATHML_COLUMN_ALIGN_LEFT,
+	GMATHML_COLUMN_ALIGN_RIGHT
+} GMathmlColumnAlign;
+
+const char *		gmathml_column_align_to_string		(GMathmlColumnAlign column_align);
+GMathmlColumnAlign	gmathml_column_align_from_string	(const char *string);
 
 G_END_DECLS
 

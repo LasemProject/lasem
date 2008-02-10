@@ -23,6 +23,21 @@
 #include <gmathmlenums.h>
 #include <string.h>
 
+static unsigned int
+gmathml_value_from_string (const char *string, const char **strings, unsigned int n_strings)
+{
+	int i;
+
+	if (string == NULL)
+		return 0;
+
+	for (i = 0; i < n_strings; i++)
+		if (strcmp (string, strings[i]) == 0)
+			return i;
+
+	return 0;
+}
+
 static const char *gmathml_mode_strings[] = {
 	"display",
 	"inline"
@@ -31,59 +46,42 @@ static const char *gmathml_mode_strings[] = {
 const char *
 gmathml_mode_to_string (GMathmlMode mode)
 {
-	return gmathml_mode_strings[CLAMP (mode, GMATHML_MODE_DISPLAY, GMATHML_MODE_INLINE)];
+	return gmathml_mode_strings[CLAMP (mode, 0, GMATHML_MODE_INLINE)];
 }
 
 GMathmlMode
 gmathml_mode_from_string (const char *string)
 {
-	int i;
-
-	if (string == NULL)
-		return GMATHML_MODE_DISPLAY;
-
-	for (i = 0; i < G_N_ELEMENTS (gmathml_mode_strings) - 1; i++)
-		if (strcmp (string, gmathml_mode_strings[i]) == 0)
-			return i;
-
-	return GMATHML_MODE_DISPLAY;
+	return gmathml_value_from_string (string, gmathml_mode_strings,
+					  G_N_ELEMENTS (gmathml_mode_strings));
 }
 
 static const char *gmathml_space_name_strings[] = {
+	"errormathspace",
 	"veryverythinmathspace",
 	"verythinmathspace",
 	"thinmathspace",
 	"mediummathspace",
 	"thickmathspace",
 	"verythickmathspace",
-	"veryverythickmathspace",
-	"mediummathspace",
+	"veryverythickmathspace"
 };
 
 const char *
 gmathml_space_name_to_string (GMathmlSpaceName space_name)
 {
-	return gmathml_space_name_strings[CLAMP (space_name,
-						 GMATHML_SPACE_NAME_VERY_VERY_THIN,
-						 GMATHML_SPACE_NAME_ERROR)];
+	return gmathml_space_name_strings[CLAMP (space_name, 0, GMATHML_SPACE_NAME_VERY_VERY_THICK)];
 }
 
 GMathmlSpaceName
 gmathml_space_name_from_string (const char *string)
 {
-	int i;
-
-	if (string == NULL)
-		return GMATHML_SPACE_NAME_ERROR;
-
-	for (i = 0; i < G_N_ELEMENTS (gmathml_space_name_strings) - 1; i++)
-		if (strcmp (string, gmathml_space_name_strings[i]) == 0)
-			return i;
-
-	return GMATHML_SPACE_NAME_ERROR;
+	return gmathml_value_from_string (string, gmathml_space_name_strings,
+					  G_N_ELEMENTS (gmathml_space_name_strings));
 }
 
 static const char *gmathml_unit_strings[] = {
+	"",
 	"em",
 	"ex",
 	"in",
@@ -92,31 +90,20 @@ static const char *gmathml_unit_strings[] = {
 	"pt",
 	"px",
 	"pc",
-	"%",
-	""
+	"%"
 };
 
 const char *
 gmathml_unit_to_string (GMathmlUnit unit)
 {
-	return gmathml_unit_strings[CLAMP (unit,
-					   GMATHML_UNIT_EM,
-					   GMATHML_UNIT_NONE)];
+	return gmathml_unit_strings[CLAMP (unit, 0, GMATHML_UNIT_PERCENT)];
 }
 
 GMathmlUnit
 gmathml_unit_from_string (const char *string)
 {
-	int i;
-
-	if (string == NULL)
-		return GMATHML_UNIT_NONE;
-
-	for (i = 0; i < G_N_ELEMENTS (gmathml_unit_strings) - 1; i++)
-		if (strcmp (string, gmathml_unit_strings[i]) == 0)
-			return i;
-
-	return GMATHML_UNIT_NONE;
+	return gmathml_value_from_string (string, gmathml_unit_strings,
+					  G_N_ELEMENTS (gmathml_unit_strings));
 }
 
 static const char *gmathml_variant_strings[] = {
@@ -133,59 +120,77 @@ static const char *gmathml_variant_strings[] = {
 	"bold-sans-serif",
 	"sans-serif-italic",
 	"sans-serif-bold-italic",
-	"monospace",
-	"normal"
+	"monospace"
 };
 
 const char *
 gmathml_variant_to_string (GMathmlVariant variant)
 {
-	return gmathml_variant_strings[CLAMP (variant,
-					      GMATHML_VARIANT_NORMAL,
-					      GMATHML_VARIANT_ERROR)];
+	return gmathml_variant_strings[CLAMP (variant, 0, GMATHML_VARIANT_MONOSPACE)];
 }
 
 GMathmlVariant
 gmathml_variant_from_string (const char *string)
 {
-	int i;
-
-	if (string == NULL)
-		return GMATHML_VARIANT_ERROR;
-
-	for (i = 0; i < G_N_ELEMENTS (gmathml_variant_strings) - 1; i++)
-		if (strcmp (string, gmathml_variant_strings[i]) == 0)
-			return i;
-
-	return GMATHML_VARIANT_ERROR;
+	return gmathml_value_from_string (string, gmathml_variant_strings,
+					  G_N_ELEMENTS (gmathml_variant_strings));
 }
 
 static const char *gmathml_form_strings[] = {
 	"prefix",
 	"postfix",
-	"infix",
-	"normal"
+	"infix"
 };
 
 const char *
 gmathml_form_to_string (GMathmlForm form)
 {
-	return gmathml_form_strings[CLAMP (form,
-					   GMATHML_FORM_PREFIX,
-					   GMATHML_FORM_ERROR)];
+	return gmathml_form_strings[CLAMP (form, 0, GMATHML_FORM_INFIX)];
 }
 
 GMathmlForm
 gmathml_form_from_string (const char *string)
 {
-	int i;
+	return gmathml_value_from_string (string, gmathml_form_strings,
+					  G_N_ELEMENTS (gmathml_form_strings));
+}
 
-	if (string == NULL)
-		return GMATHML_FORM_ERROR;
+static const char *gmathml_row_align_strings[] = {
+	"baseline",
+	"top",
+	"bottom",
+	"center",
+	"axis"
+};
 
-	for (i = 0; i < G_N_ELEMENTS (gmathml_form_strings) - 1; i++)
-		if (strcmp (string, gmathml_form_strings[i]) == 0)
-			return i;
+const char *
+gmathml_row_align_to_string (GMathmlRowAlign row_align)
+{
+	return gmathml_row_align_strings[CLAMP (row_align, 0, GMATHML_ROW_ALIGN_AXIS)];
+}
 
-	return GMATHML_FORM_ERROR;
+GMathmlRowAlign
+gmathml_row_align_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_row_align_strings,
+					  G_N_ELEMENTS (gmathml_row_align_strings));
+}
+
+static const char *gmathml_column_align_strings[] = {
+	"center",
+	"left",
+	"right"
+};
+
+const char *
+gmathml_column_align_to_string (GMathmlColumnAlign column_align)
+{
+	return gmathml_column_align_strings[CLAMP (column_align, 0, GMATHML_COLUMN_ALIGN_RIGHT)];
+}
+
+GMathmlColumnAlign
+gmathml_column_align_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_column_align_strings,
+					  G_N_ELEMENTS (gmathml_column_align_strings));
 }
