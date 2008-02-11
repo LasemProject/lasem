@@ -22,6 +22,7 @@
 
 #include <gmathmltableelement.h>
 #include <gmathmltablerowelement.h>
+#include <gmathmlview.h>
 
 static GObjectClass *parent_class;
 
@@ -48,15 +49,16 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlSpaceList *space_list;
 	GMathmlNamedList named_list;
 	unsigned int named;
+	gboolean flag;
 
 	named_list.n_values = 1;
 	named_list.values = &named;
 
 	named = GMATHML_ROW_ALIGN_BASELINE;
-	gmathml_attribute_row_align_parse (&table->row_align, &named_list);
+	gmathml_attribute_row_align_list_parse (&table->row_align, &named_list);
 
 	named = GMATHML_COLUMN_ALIGN_CENTER;
-	gmathml_attribute_column_align_parse (&table->column_align, &named_list);
+	gmathml_attribute_column_align_list_parse (&table->column_align, &named_list);
 
 	space_list = gmathml_space_list_new (1);
 
@@ -73,6 +75,37 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_space_list_parse (&table->column_spacing, space_list, style);
 
 	gmathml_space_list_free (space_list);
+
+	named = GMATHML_LINE_NONE;
+	gmathml_attribute_line_list_parse (&table->row_lines, &named_list);
+
+	named = GMATHML_LINE_NONE;
+	gmathml_attribute_line_list_parse (&table->column_lines, &named_list);
+
+	named = GMATHML_LINE_NONE;
+	gmathml_attribute_line_parse (&table->frame, &named);
+
+	space_list = gmathml_space_list_new (2);
+
+	space_list->spaces[0].length.value = 0.4;
+	space_list->spaces[0].length.unit = GMATHML_UNIT_EM;
+	space_list->spaces[0].name = GMATHML_SPACE_NAME_ERROR;
+	space_list->spaces[1].length.value = 0.5;
+	space_list->spaces[1].length.unit = GMATHML_UNIT_EX;
+	space_list->spaces[1].name = GMATHML_SPACE_NAME_ERROR;
+
+	gmathml_attribute_space_list_parse (&table->frame_spacing, space_list, style);
+
+	gmathml_space_list_free (space_list);
+
+	flag = FALSE;
+	gmathml_attribute_boolean_parse (&table->equal_rows, &flag);
+
+	flag = FALSE;
+	gmathml_attribute_boolean_parse (&table->equal_columns, &flag);
+
+	flag = FALSE;
+	gmathml_attribute_boolean_parse (&table->display_style, &flag);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
@@ -155,6 +188,16 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view)
 		row++;
 	}
 
+	if (table->equal_rows.value)
+		for (row = 0; row < table->n_rows; row++) {
+			table->heights[row] = max_height;
+			table->depths[row] = max_depth;
+		}
+
+	if (table->equal_columns.value)
+		for (column = 0; column < table->n_columns; column++)
+			table->widths[column] = max_width;
+
 	max_index = table->column_spacing.space_list->n_spaces -  1;
 	for (column = 0; column < table->n_columns; column++) {
 		self->bbox.width += table->widths[column];
@@ -171,6 +214,10 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	self->bbox.height *= 0.5;
 	self->bbox.depth = self->bbox.height;
+
+	self->bbox.width += 2 * table->frame_spacing.values[0];
+	self->bbox.height += table->frame_spacing.values[1];
+	self->bbox.depth  += table->frame_spacing.values[1];
 
 	return &self->bbox;
 }
@@ -192,14 +239,14 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	max_column = table->column_spacing.space_list->n_spaces -  1;
 	max_row = table->row_spacing.space_list->n_spaces -  1;
-	y_offset = -self->bbox.height;
+	y_offset = -self->bbox.height + table->frame_spacing.values[1];
 
 	row = 0;
 	for (row_node = GDOM_NODE (self)->first_child;
 	     row_node != NULL;
 	     row_node = row_node->next_sibling) {
 		column = 0;
-		x_offset = 0.0;
+		x_offset = table->frame_spacing.values[0];
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
@@ -249,6 +296,48 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 			row++;
 		}
 	}
+}
+
+static void
+gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
+{
+	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
+	double position;
+	double spacing;
+	unsigned int i;
+
+	if (table->n_rows < 1 || table->n_columns < 1)
+		return;
+
+	gmathml_view_show_rectangle (view, self->x, self->y - self->bbox.height, self->bbox.width,
+				     self->bbox.height + self->bbox.depth,
+				     table->frame.value);
+
+	position = self->y - self->bbox.height + table->frame_spacing.values[1];
+
+	for (i = 0; i < table->n_rows - 1; i++) {
+		position += table->heights[i] + table->depths[i];
+		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
+		gmathml_view_show_line (view,
+					self->x, position + 0.5 * spacing,
+					self->x + self->bbox.width, position + 0.5 * spacing,
+					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)]);
+		position += spacing;
+	}
+
+	position = self->x + table->frame_spacing.values[0];
+
+	for (i = 0; i < table->n_columns - 1; i++) {
+		position += table->widths[i];
+		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
+		gmathml_view_show_line (view,
+					position + 0.5 * spacing, self->y - self->bbox.height,
+					position + 0.5 * spacing, self->y + self->bbox.depth,
+					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)]);
+		position += spacing;
+	}
+
+	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
 /* GMathmlTableElement implementation */
@@ -301,6 +390,7 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 	m_element_class->update = gmathml_table_element_update;
 	m_element_class->measure = gmathml_table_element_measure;
 	m_element_class->layout = gmathml_table_element_layout;
+	m_element_class->render = gmathml_table_element_render;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 
@@ -318,6 +408,21 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "columnspacing",
 						  offsetof (GMathmlTableElement, column_spacing),
 						  gmathml_attribute_space_list_finalize);
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "rowlines",
+						  offsetof (GMathmlTableElement, row_lines),
+						  gmathml_attribute_named_list_finalize);
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "columnlines",
+						  offsetof (GMathmlTableElement, column_lines),
+						  gmathml_attribute_named_list_finalize);
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "frame",
+					     offsetof (GMathmlTableElement, frame));
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "framespacing",
+						  offsetof (GMathmlTableElement, frame_spacing),
+						  gmathml_attribute_space_list_finalize);
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
+					     offsetof (GMathmlTableElement, equal_rows));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
+					     offsetof (GMathmlTableElement, equal_columns));
 }
 
 G_DEFINE_TYPE (GMathmlTableElement, gmathml_table_element, GMATHML_TYPE_ELEMENT)

@@ -224,6 +224,65 @@ gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox
 	}
 }
 
+static gboolean
+_emit_stroke_attributes (GMathmlView *view, GMathmlLine line)
+{
+	const GMathmlElement *element;
+	double dashes[2] = {3.0, 2.0};
+
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element), FALSE);
+
+	element = view->priv->current_element;
+
+	switch (line) {
+		case GMATHML_LINE_DASHED:
+			cairo_set_dash (view->priv->cairo, dashes, 2, 0.0);
+			break;
+		case GMATHML_LINE_SOLID:
+			cairo_set_dash (view->priv->cairo, NULL, 0, 0.0);
+			break;
+		default:
+			return FALSE;
+	}
+
+	cairo_set_line_width (view->priv->cairo, 1.0);
+	cairo_set_source_rgba (view->priv->cairo,
+			       element->math_color.red,
+			       element->math_color.green,
+			       element->math_color.blue,
+			       element->math_color.alpha);
+
+	return TRUE;
+}
+
+void
+gmathml_view_show_rectangle (GMathmlView *view,
+			     double x, double y, double width, double height,
+			     GMathmlLine line)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	if (_emit_stroke_attributes (view, line)) {
+		cairo_rectangle (view->priv->cairo, 0.5 + (int) (x + 0.5) , 0.5 + (int) (y + 0.5),
+				 (int) (width - 1.0), (int) (height - 1.0));
+		cairo_stroke (view->priv->cairo);
+	}
+}
+
+void
+gmathml_view_show_line (GMathmlView *view,
+			double x0, double y0, double x1, double y1,
+			GMathmlLine line)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	if (_emit_stroke_attributes (view, line)) {
+		cairo_move_to (view->priv->cairo, 0.5 + (int) (x0 + 0.5) , 0.5 + (int) (y0 + 0.5));
+		cairo_line_to (view->priv->cairo, 0.5 + (int) (x1 + 0.5) , 0.5 + (int) (y1 + 0.5));
+		cairo_stroke (view->priv->cairo);
+	}
+}
+
 void
 gmathml_view_push_element (GMathmlView *view, const GMathmlElement *element)
 {

@@ -368,9 +368,10 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	*style_color = attribute->color;
 }
 
-void
-gmathml_attribute_mode_parse (GMathmlAttributeMode *attribute,
-			      GMathmlMode *style_value)
+static void
+gmathml_attribute_named_parse (GMathmlAttributeNamed *attribute,
+			       unsigned int *style_value,
+			       GMathmlNamedConvert convert)
 {
 	const char *string;
 
@@ -383,46 +384,36 @@ gmathml_attribute_mode_parse (GMathmlAttributeMode *attribute,
 		return;
 	}
 
-	attribute->value = gmathml_mode_from_string (string);
+	attribute->value = convert (string);
 	*style_value = attribute->value;
 }
 
 void
-gmathml_attribute_form_parse (GMathmlAttributeForm *attribute,
-			      GMathmlForm *style_value)
+gmathml_attribute_mode_parse (GMathmlAttributeNamed *attribute,
+			      unsigned int *style_value)
 {
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = gmathml_form_from_string (string);
-	*style_value = attribute->value;
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_mode_from_string);
 }
 
 void
-gmathml_attribute_variant_parse (GMathmlAttributeVariant *attribute,
-				 GMathmlVariant *style_value)
+gmathml_attribute_form_parse (GMathmlAttributeNamed *attribute,
+			      unsigned int *style_value)
 {
-	const char *string;
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_form_from_string);
+}
 
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
+void
+gmathml_attribute_variant_parse (GMathmlAttributeNamed *attribute,
+				 unsigned int *style_value)
+{
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_variant_from_string);
+}
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = gmathml_variant_from_string (string);
-	*style_value = attribute->value;
+void
+gmathml_attribute_line_parse (GMathmlAttributeNamed *attribute,
+			      unsigned int *style_value)
+{
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_line_from_string);
 }
 
 void
@@ -790,15 +781,22 @@ gmathml_attribute_named_list_parse (GMathmlAttributeNamedList *attribute,
 }
 
 void
-gmathml_attribute_row_align_parse (GMathmlAttributeNamedList *attribute,
-				   GMathmlNamedList *style_value)
+gmathml_attribute_row_align_list_parse (GMathmlAttributeNamedList *attribute,
+					GMathmlNamedList *style_value)
 {
 	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_row_align_from_string);
 }
 
 void
-gmathml_attribute_column_align_parse (GMathmlAttributeNamedList *attribute,
-				      GMathmlNamedList *style_value)
+gmathml_attribute_column_align_list_parse (GMathmlAttributeNamedList *attribute,
+					   GMathmlNamedList *style_value)
 {
 	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_column_align_from_string);
+}
+
+void
+gmathml_attribute_line_list_parse (GMathmlAttributeNamedList *attribute,
+				   GMathmlNamedList *style_value)
+{
+	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_line_from_string);
 }

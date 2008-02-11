@@ -63,12 +63,13 @@ void		gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
 
+void 		gmathml_view_show_rectangle 	(GMathmlView *view, double x, double y, double width, double height,
+						 GMathmlLine line);
+void 		gmathml_view_show_line 		(GMathmlView *view, double x0, double y0, double x1, double y1,
+						 GMathmlLine line);
 void 		gmathml_view_show_background 	(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
 
 void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
-
-void		gmathml_view_push_style		(GMathmlView *view, const GMathmlStyleElement *style);
-void		gmathml_view_pop_style		(GMathmlView *view);
 
 void		gmathml_view_push_element	(GMathmlView *view, const GMathmlElement *element);
 void		gmathml_view_pop_element	(GMathmlView *view);

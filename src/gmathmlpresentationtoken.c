@@ -179,6 +179,26 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 
 /* GMathmlPresentationToken class */
 
+void
+gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class)
+{
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
+					     offsetof (GMathmlPresentationToken, math_variant));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
+					     offsetof (GMathmlPresentationToken, math_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
+					     offsetof (GMathmlPresentationToken, math_color));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
+					     offsetof (GMathmlPresentationToken, math_background));
+
+	/* Deprecated attributes */
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
+					     offsetof (GMathmlPresentationToken, math_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
+					     offsetof (GMathmlPresentationToken, math_color));
+}
+
 static void
 gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_class)
 {
@@ -199,22 +219,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
-
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					     offsetof (GMathmlPresentationToken, math_variant));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					     offsetof (GMathmlPresentationToken, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
-					     offsetof (GMathmlPresentationToken, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
-					     offsetof (GMathmlPresentationToken, math_background));
-
-	/* Deprecated attributes */
-
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					     offsetof (GMathmlPresentationToken, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
-					     offsetof (GMathmlPresentationToken, math_color));
+	gmathml_element_class_add_presentation_token_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

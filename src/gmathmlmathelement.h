@@ -42,7 +42,7 @@ struct _GMathmlMathElement {
 
 	GMathmlStyle *default_style;
 
-	GMathmlAttributeMode mode;
+	GMathmlAttributeNamed mode;
 };
 
 struct _GMathmlMathElementClass {

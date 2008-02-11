@@ -117,6 +117,15 @@ typedef enum {
 const char *		gmathml_column_align_to_string		(GMathmlColumnAlign column_align);
 GMathmlColumnAlign	gmathml_column_align_from_string	(const char *string);
 
+typedef enum {
+	GMATHML_LINE_NONE,
+	GMATHML_LINE_SOLID,
+	GMATHML_LINE_DASHED
+} GMathmlLine;
+
+const char *		gmathml_line_to_string			(GMathmlLine line);
+GMathmlLine		gmathml_line_from_string		(const char *string);
+
 G_END_DECLS
 
 #endif

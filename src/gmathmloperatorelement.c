@@ -156,6 +156,7 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	m_element_class->attributes = gmathml_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
+	gmathml_element_class_add_presentation_token_attributes (m_element_class);
 
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "form",
 					     offsetof (GMathmlOperatorElement, form));

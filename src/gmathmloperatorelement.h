@@ -40,7 +40,7 @@ typedef struct _GMathmlOperatorElementClass GMathmlOperatorElementClass;
 struct _GMathmlOperatorElement {
 	GMathmlPresentationToken presentation_token;
 
-	GMathmlAttributeForm form;
+	GMathmlAttributeNamed form;
 	GMathmlAttributeBoolean fence;
 	GMathmlAttributeBoolean separator;
 	GMathmlAttributeSpace left_space;

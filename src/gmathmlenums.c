@@ -194,3 +194,22 @@ gmathml_column_align_from_string (const char *string)
 	return gmathml_value_from_string (string, gmathml_column_align_strings,
 					  G_N_ELEMENTS (gmathml_column_align_strings));
 }
+
+static const char *gmathml_line_strings[] = {
+	"none",
+	"solid",
+	"dashed"
+};
+
+const char *
+gmathml_line_to_string (GMathmlLine line)
+{
+	return gmathml_line_strings [CLAMP (line, 0, GMATHML_LINE_DASHED)];
+}
+
+GMathmlLine
+gmathml_line_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_line_strings,
+					  G_N_ELEMENTS (gmathml_line_strings));
+}

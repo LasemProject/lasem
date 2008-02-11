@@ -48,7 +48,7 @@ struct _GMathmlPresentationToken {
 
 	GMathmlPresentationTokenType type;
 
-	GMathmlAttributeVariant math_variant;
+	GMathmlAttributeNamed math_variant;
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor math_color;
 	GMathmlAttributeColor math_background;
@@ -65,6 +65,8 @@ GDomNode *	gmathml_identifier_element_new (void);
 GDomNode *	gmathml_text_element_new (void);
 
 /* Extra functions */
+
+void 		gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class);
 
 char *		gmathml_presentation_token_get_text 	(GMathmlPresentationToken *self);
 

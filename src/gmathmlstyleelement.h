@@ -56,7 +56,7 @@ struct _GMathmlStyleElement {
 
 	/* Presentation token attribute */
 
-	GMathmlAttributeVariant math_variant;
+	GMathmlAttributeNamed math_variant;
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor math_color;
 	GMathmlAttributeColor math_background;

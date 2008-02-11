@@ -44,6 +44,13 @@ struct _GMathmlTableElement {
 	GMathmlAttributeNamedList column_align;
 	GMathmlAttributeSpaceList row_spacing;
 	GMathmlAttributeSpaceList column_spacing;
+	GMathmlAttributeNamedList row_lines;
+	GMathmlAttributeNamedList column_lines;
+	GMathmlAttributeNamed frame;
+	GMathmlAttributeSpaceList frame_spacing;
+	GMathmlAttributeBoolean equal_rows;
+	GMathmlAttributeBoolean equal_columns;
+	GMathmlAttributeBoolean display_style;
 
 	/* View data */
 

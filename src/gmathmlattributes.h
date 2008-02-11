@@ -176,18 +176,8 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
-	GMathmlMode value;
-} GMathmlAttributeMode;
-
-typedef struct {
-	GMathmlAttributeValue attr;
-	GMathmlForm value;
-} GMathmlAttributeForm;
-
-typedef struct {
-	GMathmlAttributeValue attr;
-	GMathmlVariant value;
-} GMathmlAttributeVariant;
+	unsigned int value;
+} GMathmlAttributeNamed;
 
 typedef struct {
 	GMathmlAttributeValue attr;
@@ -219,12 +209,14 @@ void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
 							 double *default_value);
 void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
 							 int *default_value);
-void 		gmathml_attribute_mode_parse 		(GMathmlAttributeMode *attribute,
-							 GMathmlMode *style_value);
-void 		gmathml_attribute_form_parse	 	(GMathmlAttributeForm *attribute,
-							 GMathmlForm *style_value);
-void 		gmathml_attribute_variant_parse 	(GMathmlAttributeVariant *attribute,
-							 GMathmlVariant *style_value);
+void 		gmathml_attribute_mode_parse 		(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
+void 		gmathml_attribute_form_parse	 	(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
+void 		gmathml_attribute_variant_parse 	(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
+void		gmathml_attribute_line_parse		(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
 							 GMathmlColor *default_color);
 void 		gmathml_attribute_length_parse 		(GMathmlAttributeLength *attribute,
@@ -243,10 +235,12 @@ void 		gmathml_attribute_space_list_parse 	(GMathmlAttributeSpaceList *attribute
 							 GMathmlSpaceList *style_value,
 							 const GMathmlStyle *style);
 
-void 		gmathml_attribute_named_list_finalize 	(void *abstract);
-void 		gmathml_attribute_row_align_parse 	(GMathmlAttributeNamedList *attribute,
+void 	gmathml_attribute_named_list_finalize 		(void *abstract);
+void 	gmathml_attribute_row_align_list_parse 		(GMathmlAttributeNamedList *attribute,
 							 GMathmlNamedList *style_value);
-void 		gmathml_attribute_column_align_parse 	(GMathmlAttributeNamedList *attribute,
+void 	gmathml_attribute_column_align_list_parse 	(GMathmlAttributeNamedList *attribute,
+							 GMathmlNamedList *style_value);
+void 	gmathml_attribute_line_list_parse 		(GMathmlAttributeNamedList *attribute,
 							 GMathmlNamedList *style_value);
 
 G_END_DECLS
