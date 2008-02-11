@@ -1,0 +1,10 @@
+- merge space and space list attribute.
+- may be merge space and lentgh attribute.
+- check memory allocation in gmathmlattributes.
+- also check array access in update/measure/layout/render methods.
+- need_update flag.
+- need_layout flag.
+- stretching support.
+- mtr/mtd attribute support.
+
+And many many more things to do...
