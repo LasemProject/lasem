@@ -264,8 +264,7 @@ gmathml_view_show_rectangle (GMathmlView *view,
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
 	if (_emit_stroke_attributes (view, line)) {
-		cairo_rectangle (view->priv->cairo, 0.5 + (int) (x + 0.5) , 0.5 + (int) (y + 0.5),
-				 (int) (width - 1.0), (int) (height - 1.0));
+		cairo_rectangle (view->priv->cairo, x, y, width, height);
 		cairo_stroke (view->priv->cairo);
 	}
 }
@@ -278,8 +277,8 @@ gmathml_view_show_line (GMathmlView *view,
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
 	if (_emit_stroke_attributes (view, line)) {
-		cairo_move_to (view->priv->cairo, 0.5 + (int) (x0 + 0.5) , 0.5 + (int) (y0 + 0.5));
-		cairo_line_to (view->priv->cairo, 0.5 + (int) (x1 + 0.5) , 0.5 + (int) (y1 + 0.5));
+		cairo_move_to (view->priv->cairo, x0, y0);
+		cairo_line_to (view->priv->cairo, x1, y1);
 		cairo_stroke (view->priv->cairo);
 	}
 }
