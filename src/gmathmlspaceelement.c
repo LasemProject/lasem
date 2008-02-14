@@ -71,9 +71,9 @@ gmathml_space_element_measure (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlSpaceElement *space_element = GMATHML_SPACE_ELEMENT (self);
 
-	self->bbox.width = gmathml_view_measure_space (view, space_element->width.value);
-	self->bbox.height = gmathml_view_measure_space (view, space_element->height.value);
-	self->bbox.depth = gmathml_view_measure_space (view, space_element->depth.value);
+	self->bbox.width = gmathml_view_measure_length (view, space_element->width.value);
+	self->bbox.height = gmathml_view_measure_length (view, space_element->height.value);
+	self->bbox.depth = gmathml_view_measure_length (view, space_element->depth.value);
 
 	return &self->bbox;
 }

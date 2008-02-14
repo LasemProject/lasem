@@ -100,8 +100,8 @@ gmathml_operator_measure (GMathmlElement *self, GMathmlView *view)
 	gmathml_view_measure_text (view, text, &self->bbox);
 
 	self->bbox.width +=
-		gmathml_view_measure_space (view, operator_element->left_space.value) +
-		gmathml_view_measure_space (view, operator_element->right_space.value);
+		gmathml_view_measure_length (view, operator_element->left_space.value) +
+		gmathml_view_measure_length (view, operator_element->right_space.value);
 
 	g_free (text);
 
@@ -118,7 +118,7 @@ gmathml_operator_render (GMathmlElement *self, GMathmlView *view)
 
 	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
 	gmathml_view_show_text (view, self->x +
-				gmathml_view_measure_space (view, operator_element->left_space.value),
+				gmathml_view_measure_length (view, operator_element->left_space.value),
 				self->y, text);
 
 	g_free (text);

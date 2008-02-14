@@ -194,12 +194,12 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view)
 
 	if (overscript_bbox) {
 		bbox = *overscript_bbox;
-		bbox.depth += gmathml_view_measure_space (view, under_over->over_space);
+		bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
 		gmathml_bbox_add_over (&self->bbox, &bbox);
 	}
 	if (underscript_bbox) {
 		bbox = *underscript_bbox;
-		bbox.height += gmathml_view_measure_space (view, under_over->under_space);
+		bbox.height += gmathml_view_measure_length (view, under_over->under_space);
 		gmathml_bbox_add_under (&self->bbox, &bbox);
 	}
 

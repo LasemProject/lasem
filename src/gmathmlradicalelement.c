@@ -71,8 +71,8 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
 		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
 
-		self->bbox.width += gmathml_view_measure_space (view, self->math_size);
-		self->bbox.height += gmathml_view_measure_space (view, radical->top_padding);
+		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
+		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);
 
 		radical->height = self->bbox.height + self->bbox.depth;
 		radical->offset = 0.0;
@@ -90,9 +90,9 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 		if (node != NULL) {
 			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
 
-			self->bbox.width = child_bbox.width + gmathml_view_measure_space (view,
+			self->bbox.width = child_bbox.width + gmathml_view_measure_length (view,
 											  self->math_size);
-			self->bbox.height = child_bbox.height + gmathml_view_measure_space (view, radical->top_padding);
+			self->bbox.height = child_bbox.height + gmathml_view_measure_length (view, radical->top_padding);
 			self->bbox.depth = child_bbox.depth;
 
 			radical->height = self->bbox.height + self->bbox.depth;
@@ -105,7 +105,7 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
 
 				radical->offset = child_bbox.width -
-					gmathml_view_measure_space (view, self->math_size * 0.1);
+					gmathml_view_measure_length (view, self->math_size * 0.1);
 
 				self->bbox.width += radical->offset;
 
@@ -130,7 +130,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 	GDomNode *node;
 	double offset;
 
-	offset = gmathml_view_measure_space (view, self->math_size);
+	offset = gmathml_view_measure_length (view, self->math_size);
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT)
 		GMATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x + offset, y, bbox);
@@ -167,9 +167,9 @@ gmathml_radical_element_render (GMathmlElement *self, GMathmlView *view)
 	gmathml_view_draw_root (view,
 				self->x + radical->offset,
 				self->y + self->bbox.depth,
-				gmathml_view_measure_space (view, self->math_size),
+				gmathml_view_measure_length (view, self->math_size),
 				radical->height,
-				self->bbox.width - gmathml_view_measure_space (view, self->math_size) -
+				self->bbox.width - gmathml_view_measure_length (view, self->math_size) -
 				radical->offset,
 				self->math_size / 20.0,
 				&self->math_color);

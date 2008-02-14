@@ -149,7 +149,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
 		gmathml_bbox_add_to_right (&element->bbox, base_bbox);
 
-		element->bbox.width += gmathml_view_measure_space (view, script->space);
+		element->bbox.width += gmathml_view_measure_length (view, script->space);
 
 		node = node->next_sibling;
 
@@ -197,9 +197,9 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view)
 		}
 	}
 
-	script->superscript_offset = gmathml_view_measure_space (view, MAX (script->superscript_offset,
+	script->superscript_offset = gmathml_view_measure_length (view, MAX (script->superscript_offset,
 									    script->superscript_shift.value));
-	script->subscript_offset = gmathml_view_measure_space (view, MAX (script->subscript_offset,
+	script->subscript_offset = gmathml_view_measure_length (view, MAX (script->subscript_offset,
 									  script->subscript_shift.value));
 
 	if (subscript_bbox != NULL)
@@ -226,7 +226,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 
-	x += gmathml_view_measure_space (view, script->space);
+	x += gmathml_view_measure_length (view, script->space);
 
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,

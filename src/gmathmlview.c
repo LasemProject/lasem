@@ -49,19 +49,20 @@ struct _GMathmlViewPrivate {
 };
 
 double
-gmathml_view_measure_space (GMathmlView *view, double space)
+gmathml_view_measure_length (GMathmlView *view, double length)
 {
-	g_return_val_if_fail (GMATHML_IS_VIEW (view), 1.0);
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
 	if (view->priv->is_vector)
-		return space;
+		return length;
 
-	space = floor (space + 0.5);
+	return floor (length + 0.5);
+}
 
-	if (space > 1.0)
-		return space;
-
-	return 1.0;
+double
+gmathml_view_measure_hairline (GMathmlView *view)
+{
+	return gmathml_view_measure_length (view, 1.0);
 }
 
 static void
@@ -101,7 +102,7 @@ gmathml_view_update_layout (GMathmlView *view, char const *text,
 }
 
 double
-gmathml_view_measure_fraction_offset (GMathmlView *view)
+gmathml_view_measure_axis_offset (GMathmlView *view)
 {
 	PangoRectangle ink_rect;
 	int baseline;
