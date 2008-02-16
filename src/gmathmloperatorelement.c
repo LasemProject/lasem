@@ -92,16 +92,11 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 static const GMathmlBbox *
 gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view)
 {
-	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_measure_text (view, text, &self->bbox);
-
-	self->bbox.width +=
-		gmathml_view_measure_length (view, operator_element->left_space.value) +
-		gmathml_view_measure_length (view, operator_element->right_space.value);
 
 	g_free (text);
 
@@ -111,15 +106,12 @@ gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view)
 static void
 gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 {
-	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
-	gmathml_view_show_text (view, self->x +
-				gmathml_view_measure_length (view, operator_element->left_space.value),
-				self->y, text);
+	gmathml_view_show_text (view, self->x, self->y, text);
 
 	g_free (text);
 }

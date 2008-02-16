@@ -22,6 +22,7 @@
 
 #include <gmathmlelement.h>
 #include <gmathmlspaceelement.h>
+#include <gmathmloperatorelement.h>
 #include <gmathmlview.h>
 
 static GObjectClass *parent_class;
@@ -119,26 +120,25 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 static const GMathmlBbox *
 _measure (GMathmlElement *self, GMathmlView *view)
 {
+	const GMathmlOperatorElement *operator;
 	GDomNode *node;
-	const GMathmlBbox *child_bbox;
-	gboolean is_set = FALSE;
+	GMathmlBbox child_bbox;
+
+	self->bbox.width = 0.0;
+	self->bbox.height = 0.0;
+	self->bbox.depth = 0.0;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
-			if (is_set)
-				gmathml_bbox_add_to_right (&self->bbox, child_bbox);
-			else {
-				self->bbox = *child_bbox;
-					is_set = TRUE;
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+			if (operator != NULL) {
+				child_bbox.width +=
+					gmathml_view_measure_length (view, operator->left_space.value) +
+					gmathml_view_measure_length (view, operator->right_space.value);
 			}
+			gmathml_bbox_add_to_right (&self->bbox, &child_bbox);
 		}
-	}
-
-	if (!is_set) {
-		self->bbox.width = 0.0;
-		self->bbox.height = 0.0;
-		self->bbox.depth = 0.0;
 	}
 
 	return &self->bbox;
@@ -182,14 +182,24 @@ static void
 _layout (GMathmlElement *self, GMathmlView *view,
 	 double x, double y, const GMathmlBbox *bbox)
 {
+	const GMathmlOperatorElement *operator;
 	GDomNode *node;
-	const GMathmlBbox *child_bbox;
+	GMathmlBbox child_bbox;
+	double offset;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
-			gmathml_element_layout (GMATHML_ELEMENT (node), view, x, y, child_bbox);
-			x += child_bbox->width;
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+			if (operator != NULL)
+				offset = gmathml_view_measure_length (view, operator->left_space.value);
+			else
+				offset = 0.0;
+			gmathml_element_layout (GMATHML_ELEMENT (node), view, x + offset, y, &child_bbox);
+			if (operator != NULL)
+				child_bbox.width += offset +
+					gmathml_view_measure_length (view, operator->right_space.value);
+			x += child_bbox.width;
 		}
 }
 
