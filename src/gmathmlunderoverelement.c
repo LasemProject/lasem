@@ -236,6 +236,15 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 	}
 }
 
+static const GMathmlOperatorElement *
+gmathml_under_over_element_get_embellished_core (const GMathmlElement *self)
+{
+	if (GDOM_NODE (self)->first_child != NULL)
+		return gmathml_element_get_embellished_core (GMATHML_ELEMENT (GDOM_NODE (self)->first_child));
+
+	return NULL;
+}
+
 /* GMathmlUnderOverElement implementation */
 
 GDomNode *
@@ -299,6 +308,8 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	m_element_class->update = gmathml_under_over_element_update;
 	m_element_class->measure = gmathml_under_over_element_measure;
 	m_element_class->layout = gmathml_under_over_element_layout;
+
+	m_element_class->get_embellished_core = gmathml_under_over_element_get_embellished_core;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

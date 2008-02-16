@@ -90,7 +90,7 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_operator_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
@@ -109,7 +109,7 @@ gmathml_operator_measure (GMathmlElement *self, GMathmlView *view)
 }
 
 static void
-gmathml_operator_render (GMathmlElement *self, GMathmlView *view)
+gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
@@ -122,6 +122,12 @@ gmathml_operator_render (GMathmlElement *self, GMathmlView *view)
 				self->y, text);
 
 	g_free (text);
+}
+
+static const GMathmlOperatorElement *
+gmathml_operator_element_get_embellished_core (const GMathmlElement *self)
+{
+	return GMATHML_OPERATOR_ELEMENT (self);
 }
 
 /* GMathmlOperatorElement implementation */
@@ -150,8 +156,9 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	node_class->get_node_name = gmathml_operator_element_get_node_name;
 
 	m_element_class->update = gmathml_operator_element_update;
-	m_element_class->measure = gmathml_operator_measure;
-	m_element_class->render = gmathml_operator_render;
+	m_element_class->measure = gmathml_operator_element_measure;
+	m_element_class->render = gmathml_operator_element_render;
+	m_element_class->get_embellished_core = gmathml_operator_element_get_embellished_core;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

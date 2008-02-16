@@ -70,6 +70,8 @@ struct _GMathmlElementClass {
 	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);
 	void 			(*render)		(GMathmlElement *element, GMathmlView *view);
+
+	const GMathmlOperatorElement *	(*get_embellished_core)		(const GMathmlElement *element);
 };
 
 GType gmathml_element_get_type (void);
@@ -79,6 +81,8 @@ const GMathmlBbox *	gmathml_element_measure			(GMathmlElement *element, GMathmlV
 void 			gmathml_element_layout 			(GMathmlElement *element, GMathmlView *view,
 								 double x, double y, const GMathmlBbox *bbox);
 void 			gmathml_element_render 			(GMathmlElement *element, GMathmlView *view);
+
+const GMathmlOperatorElement *	gmathml_element_get_embellished_core 	(const GMathmlElement *self);
 
 void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
 

@@ -240,6 +240,15 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 					gmathml_element_measure (script->superscript, view));
 }
 
+static const GMathmlOperatorElement *
+gmathml_script_element_get_embellished_core (const GMathmlElement *self)
+{
+	if (GDOM_NODE (self)->first_child != NULL)
+		return gmathml_element_get_embellished_core (GMATHML_ELEMENT (GDOM_NODE (self)->first_child));
+
+	return NULL;
+}
+
 /* GMathmlScriptElement implementation */
 
 GDomNode *
@@ -302,6 +311,8 @@ gmathml_script_element_class_init (GMathmlScriptElementClass *script_class)
 	m_element_class->update = gmathml_script_element_update;
 	m_element_class->measure = gmathml_script_element_measure;
 	m_element_class->layout = gmathml_script_element_layout;
+
+	m_element_class->get_embellished_core = gmathml_script_element_get_embellished_core;
 }
 
 G_DEFINE_TYPE (GMathmlScriptElement, gmathml_script_element, GMATHML_TYPE_ELEMENT)

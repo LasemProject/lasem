@@ -21,6 +21,7 @@
  */
 
 #include <gmathmlelement.h>
+#include <gmathmlspaceelement.h>
 #include <gmathmlview.h>
 
 static GObjectClass *parent_class;
@@ -113,6 +114,8 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	gmathml_style_free (style);
 }
 
+/* Inferred mrow implementation */
+
 static const GMathmlBbox *
 _measure (GMathmlElement *self, GMathmlView *view)
 {
@@ -173,6 +176,8 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 	return &element->bbox;
 }
 
+/* Inferred mrow implementation */
+
 static void
 _layout (GMathmlElement *self, GMathmlView *view,
 	 double x, double y, const GMathmlBbox *bbox)
@@ -213,6 +218,8 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 	}
 }
 
+/* Inferred mrow implementation */
+
 static void
 _render (GMathmlElement *element, GMathmlView *view)
 {
@@ -236,6 +243,42 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 		element_class->render (element, view);
 		gmathml_view_pop_element (view);
 	}
+}
+
+/* Inferred mrow implementation */
+
+static const GMathmlOperatorElement *
+_get_embellished_core (const GMathmlElement *self)
+{
+	GDomNode *node;
+	const GMathmlOperatorElement *core = NULL;
+	const GMathmlOperatorElement *operator;
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+		operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+		if (!GMATHML_IS_SPACE_ELEMENT (node)) {
+			if (operator == NULL || operator != core)
+				return NULL;
+			core = operator;
+		}
+	}
+
+	return core;
+}
+
+const GMathmlOperatorElement *
+gmathml_element_get_embellished_core (const GMathmlElement *self)
+{
+	GMathmlElementClass *element_class;
+
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (self), NULL);
+
+	element_class = GMATHML_ELEMENT_GET_CLASS (self);
+
+	if (element_class->get_embellished_core != NULL)
+		return element_class->get_embellished_core (self);
+
+	return NULL;
 }
 
 static void
@@ -288,6 +331,10 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	m_element_class->measure = _measure;
 	m_element_class->layout = _layout;
 	m_element_class->render = _render;
+
+	m_element_class->get_embellished_core = _get_embellished_core;
+
+	m_element_class->get_embellished_core = NULL;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

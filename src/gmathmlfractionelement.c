@@ -145,6 +145,15 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
+static const GMathmlOperatorElement *
+gmathml_fraction_element_get_embellished_core (const GMathmlElement *self)
+{
+	if (GDOM_NODE (self)->first_child != NULL)
+		return gmathml_element_get_embellished_core (GMATHML_ELEMENT (GDOM_NODE (self)->first_child));
+
+	return NULL;
+}
+
 /* GMathmlFraction implementation */
 
 GDomNode *
@@ -181,11 +190,12 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	d_node_class->get_node_name = gmathml_fraction_element_get_node_name;
 	d_node_class->can_append_child = gmathml_fraction_element_can_append_child;
 
+	element_class->update = gmathml_fraction_element_update;
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
 
-	element_class->update = gmathml_fraction_element_update;
+	element_class->get_embellished_core = gmathml_fraction_element_get_embellished_core;
 
 	element_class->attributes = gmathml_attribute_map_new ();
 
