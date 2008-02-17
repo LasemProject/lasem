@@ -7,5 +7,6 @@
 - stretching support.
 - mtr/mtd attribute support.
 - get_embellished_core for mmultiscripts, semantics, maction, mrow (and infered rows) (Mathml 2.0 3.2.5.7.3)
+- is_inferred_row for merror, mpadded, menclose,
 
 And many many more things to do...

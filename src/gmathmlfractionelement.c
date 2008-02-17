@@ -119,10 +119,6 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 		node = node->next_sibling;
 		if (node != NULL) {
 			child_bbox = gmathml_element_get_bbox (GMATHML_ELEMENT (node));
-
-			g_message ("[GMathmlFractionElement::layout] numerator height  %g",
-				   child_bbox->height);
-
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + (bbox->width - child_bbox->width) / 2.0,
 						y + self->bbox.depth - child_bbox->depth,
@@ -194,8 +190,8 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
-
 	element_class->get_embellished_core = gmathml_fraction_element_get_embellished_core;
+	element_class->is_inferred_row = NULL;
 
 	element_class->attributes = gmathml_attribute_map_new ();
 

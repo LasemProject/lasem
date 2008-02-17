@@ -177,6 +177,12 @@ gmathml_radical_element_render (GMathmlElement *self, GMathmlView *view)
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
+static gboolean
+gmathml_radical_element_is_inferred_row (const GMathmlElement *self)
+{
+	return GMATHML_RADICAL_ELEMENT (self)->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT;
+}
+
 /* GMathmlRadicalElement implementation */
 
 GDomNode *
@@ -227,6 +233,8 @@ gmathml_radical_element_class_init (GMathmlRadicalElementClass *radical_class)
 	m_element_class->measure = gmathml_radical_element_measure;
 	m_element_class->layout = gmathml_radical_element_layout;
 	m_element_class->render = gmathml_radical_element_render;
+
+	m_element_class->is_inferred_row = gmathml_radical_element_is_inferred_row;
 }
 
 G_DEFINE_TYPE (GMathmlRadicalElement, gmathml_radical_element, GMATHML_TYPE_ELEMENT)

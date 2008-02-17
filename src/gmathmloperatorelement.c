@@ -45,21 +45,31 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	char *text;
 	gboolean flag;
 
+	for (node = GDOM_NODE (self);
+	     node->parent_node != NULL &&
+	     gmathml_element_get_embellished_core (GMATHML_ELEMENT (node->parent_node)) == operator_element;
+	     node = node->parent_node);
+
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
-	    (node->previous_sibling == NULL && node->next_sibling == NULL))
+	if (GMATHML_IS_ELEMENT (node->parent_node) &&
+	    gmathml_element_is_inferred_row (GMATHML_ELEMENT (node->parent_node))) {
+		if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
+		    (node->previous_sibling == NULL && node->next_sibling == NULL))
+			form = GMATHML_FORM_INFIX;
+		else if (node->previous_sibling == NULL)
+			form = GMATHML_FORM_PREFIX;
+		else
+			form = GMATHML_FORM_POSTFIX;
+	} else
 		form = GMATHML_FORM_INFIX;
-	else if (node->previous_sibling == NULL)
-		form = GMATHML_FORM_PREFIX;
-	else
-		form = GMATHML_FORM_POSTFIX;
 
 	gmathml_attribute_form_parse (&operator_element->form, &form);
 
 	operator = gmathml_operator_get_attributes (text, form);
 
-	g_message ("Find operator: %s", operator->name);
+	g_message ("[OperatorElement::update] found %s %s",
+		   gmathml_form_to_string (operator->form), operator->name);
 
 	space = operator->left_space;
 	gmathml_attribute_space_parse (&operator_element->left_space, &space, style);
@@ -92,11 +102,26 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 static const GMathmlBbox *
 gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
+	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_measure_text (view, text, &self->bbox);
+
+	if (operator_element->stretchy.value && bbox) {
+		if (self->bbox.height < bbox->height)
+			self->bbox.height = bbox->height;
+		if (self->bbox.depth < bbox->depth)
+			self->bbox.depth = bbox->depth;
+		if (self->bbox.width < bbox->width)
+			self->bbox.width = bbox->width;
+/*                if (operator_element->symmetric.value) {*/
+/*                        self->bbox.height = MAX (self->bbox.height, self->bbox.depth);*/
+/*                        self->bbox.depth = self->bbox.height;*/
+/*                }*/
+
+	}
 
 	g_free (text);
 
@@ -111,7 +136,8 @@ gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
-	gmathml_view_show_text (view, self->x, self->y, text);
+	gmathml_view_show_operator (view, self->x, self->y - self->bbox.height, text,
+				    self->bbox.width, self->bbox.height + self->bbox.depth);
 
 	g_free (text);
 }

@@ -22,6 +22,7 @@
 
 #include <gmathmlentitydictionary.h>
 #include <glib/ghash.h>
+#include <stdio.h>
 
 static const struct {
 	const char *name;

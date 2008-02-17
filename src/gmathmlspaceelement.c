@@ -114,6 +114,7 @@ gmathml_space_element_class_init (GMathmlSpaceElementClass *space_class)
 	m_element_class->update = gmathml_space_element_update;
 	m_element_class->measure = gmathml_space_element_measure;
 	m_element_class->layout = gmathml_space_element_layout;
+	m_element_class->is_inferred_row = NULL;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

@@ -22,7 +22,7 @@
 
 #include <gmathmloperatordictionary.h>
 #include <gmathmlentitydictionary.h>
-
+#include <stdio.h>
 
 /* Automatically generated using a slightly modified version of gnumerator parser */
 /* http://numerator.sourceforge.net/ */
@@ -1921,7 +1921,7 @@ static const GMathmlOperator gmathml_operators[] = {
 		TRUE
 	},
 	{
-		"-", GMATHML_FORM_INFIX,
+		"−", GMATHML_FORM_INFIX,
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
@@ -2299,7 +2299,7 @@ static const GMathmlOperator gmathml_operators[] = {
 		TRUE
 	},
 	{
-		"-", GMATHML_FORM_PREFIX,
+		"−", GMATHML_FORM_PREFIX,
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		{ GMATHML_SPACE_NAME_VERY_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
@@ -3150,7 +3150,7 @@ gmathml_get_operator_dictionary (void)
 		key = g_strconcat (prefix, utf8, NULL);
 
 		if (g_hash_table_lookup (operator_hash, key)) {
-/*                        g_warning ("[GMathmlOperatorDictionary::buil] can't insert %s", key);*/
+/*                        printf ("[GMathmlOperatorDictionary::buil] can't insert %s\n", key);*/
 		} else
 			g_hash_table_insert (operator_hash, key, (void *) &gmathml_operators[i]);
 	}
@@ -3188,14 +3188,40 @@ gmathml_operator_get_attributes (const char *utf8, GMathmlForm form)
 			prefix = "I*";
 			break;
 	}
+
 	key = g_strconcat (prefix, utf8, NULL);
-
 	op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
-
 	g_free (key);
 
-	if (op == NULL)
-		return &gmathml_operator_default;
+	if (op != NULL)
+		return op;
 
-	return op;
+	if (form != GMATHML_FORM_INFIX) {
+		key = g_strconcat ("I*", utf8, NULL);
+		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		g_free (key);
+
+		if (op != NULL)
+			return op;
+	}
+
+	if (form != GMATHML_FORM_POSTFIX) {
+		key = g_strconcat ("O*", utf8, NULL);
+		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		g_free (key);
+
+		if (op != NULL)
+			return op;
+	}
+
+	if (form != GMATHML_FORM_PREFIX) {
+		key = g_strconcat ("E*", utf8, NULL);
+		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		g_free (key);
+
+		if (op != NULL)
+			return op;
+	}
+
+	return &gmathml_operator_default;
 }

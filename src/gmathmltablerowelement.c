@@ -84,6 +84,7 @@ gmathml_table_row_element_class_init (GMathmlTableRowElementClass *table_row_cla
 
 	m_element_class->measure = gmathml_table_row_element_measure;
 	m_element_class->layout = gmathml_table_row_element_layout;
+	m_element_class->is_inferred_row = NULL;
 }
 
 G_DEFINE_TYPE (GMathmlTableRowElement, gmathml_table_row_element, GMATHML_TYPE_ELEMENT)

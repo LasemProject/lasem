@@ -25,7 +25,7 @@
 const GMathmlBbox gmathml_bbox_null = {0.0, 0.0, 0.0};
 
 void
-gmathml_bbox_add_to_right (GMathmlBbox *self, const GMathmlBbox *bbox)
+gmathml_bbox_add_horizontally (GMathmlBbox *self, const GMathmlBbox *bbox)
 {
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (bbox != NULL);

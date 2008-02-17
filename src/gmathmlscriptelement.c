@@ -147,7 +147,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view, cons
 
 	if (node != NULL) {
 		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-		gmathml_bbox_add_to_right (&element->bbox, base_bbox);
+		gmathml_bbox_add_horizontally (&element->bbox, base_bbox);
 
 		element->bbox.width += gmathml_view_measure_length (view, script->space);
 
@@ -206,7 +206,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view, cons
 	if (superscript_bbox != NULL)
 		gmathml_bbox_merge_vertically (&children_bbox, superscript_bbox, script->superscript_offset);
 
-	gmathml_bbox_add_to_right (&element->bbox, &children_bbox);
+	gmathml_bbox_add_horizontally (&element->bbox, &children_bbox);
 
 	return &element->bbox;
 }
@@ -310,8 +310,8 @@ gmathml_script_element_class_init (GMathmlScriptElementClass *script_class)
 	m_element_class->update = gmathml_script_element_update;
 	m_element_class->measure = gmathml_script_element_measure;
 	m_element_class->layout = gmathml_script_element_layout;
-
 	m_element_class->get_embellished_core = gmathml_script_element_get_embellished_core;
+	m_element_class->is_inferred_row = NULL;
 }
 
 G_DEFINE_TYPE (GMathmlScriptElement, gmathml_script_element, GMATHML_TYPE_ELEMENT)

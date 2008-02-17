@@ -101,6 +101,35 @@ gmathml_view_update_layout (GMathmlView *view, char const *text,
 	}
 }
 
+static void
+gmathml_view_show_layout (GMathmlView *view, double x, double y,
+			  int baseline,
+			  const PangoRectangle *ink_rect,
+			  const PangoRectangle * rect)
+{
+	if (view->priv->debug) {
+		cairo_set_line_width (view->priv->cairo, 0.1);
+		cairo_set_source_rgb (view->priv->cairo, 1,0,0);
+		cairo_rectangle (view->priv->cairo,
+				 x + pango_units_to_double (rect->x)
+				 - pango_units_to_double (ink_rect->x),
+				 y + pango_units_to_double (rect->y) -
+				 pango_units_to_double (baseline),
+				 pango_units_to_double (rect->width),
+				 pango_units_to_double (rect->height));
+		cairo_stroke (view->priv->cairo);
+		cairo_set_source_rgb (view->priv->cairo, 0,1,0);
+		cairo_rectangle (view->priv->cairo,
+				 x,
+				 y + pango_units_to_double (ink_rect->y) -
+				 pango_units_to_double (baseline),
+				 pango_units_to_double (ink_rect->width),
+				 pango_units_to_double (ink_rect->height));
+		cairo_stroke (view->priv->cairo);
+	}
+
+}
+
 double
 gmathml_view_measure_axis_offset (GMathmlView *view)
 {
@@ -154,32 +183,12 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	if (text == NULL)
 		return;
 
-	g_message ("View: show_text %s at %g, %g (size = %g) %s",
-		   text, x, y, element->math_size,
-		   gmathml_variant_to_string (element->math_variant));
+/*        g_message ("View: show_text %s at %g, %g (size = %g) %s",*/
+/*                   text, x, y, element->math_size,*/
+/*                   gmathml_variant_to_string (element->math_variant));*/
 
 	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
-
-	if (view->priv->debug) {
-		cairo_set_line_width (view->priv->cairo, 0.1);
-		cairo_set_source_rgb (view->priv->cairo, 1,0,0);
-		cairo_rectangle (view->priv->cairo,
-				 x + pango_units_to_double (rect.x)
-				 - pango_units_to_double (ink_rect.x),
-				 y + pango_units_to_double (rect.y) -
-				 pango_units_to_double (baseline),
-				 pango_units_to_double (rect.width),
-				 pango_units_to_double (rect.height));
-		cairo_stroke (view->priv->cairo);
-		cairo_set_source_rgb (view->priv->cairo, 0,1,0);
-		cairo_rectangle (view->priv->cairo,
-				 x,
-				 y + pango_units_to_double (ink_rect.y) -
-				 pango_units_to_double (baseline),
-				 pango_units_to_double (ink_rect.width),
-				 pango_units_to_double (ink_rect.height));
-		cairo_stroke (view->priv->cairo);
-	}
+	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
 	cairo_set_source_rgba (view->priv->cairo,
 			       element->math_color.red,
@@ -189,6 +198,52 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	cairo_move_to (view->priv->cairo, x - pango_units_to_double (ink_rect.x), y - pango_units_to_double (baseline));
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
+}
+
+void
+gmathml_view_show_operator (GMathmlView *view, double x, double y, char const *text, double width, double height)
+{
+	const GMathmlElement *element;
+	PangoRectangle rect, ink_rect;
+	double scale_x, scale_y;
+	int baseline;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+
+	element = view->priv->current_element;
+
+	if (text == NULL)
+		return;
+
+/*        g_message ("View: show_text %s at %g, %g (size = %g) %s",*/
+/*                   text, x, y, element->math_size,*/
+/*                   gmathml_variant_to_string (element->math_variant));*/
+
+	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
+	gmathml_view_show_layout (view, x, y + pango_units_to_double (baseline),
+				  baseline, &ink_rect, &rect);
+
+	cairo_set_source_rgba (view->priv->cairo,
+			       element->math_color.red,
+			       element->math_color.green,
+			       element->math_color.blue,
+			       element->math_color.alpha);
+
+	if (ink_rect.width <= 0 || ink_rect.height <= 0)
+		return;
+
+	scale_x = width / pango_units_to_double (ink_rect.width);
+	scale_y = height / pango_units_to_double (ink_rect.height);
+
+	cairo_save (view->priv->cairo);
+	cairo_move_to (view->priv->cairo, x , y);
+	cairo_scale (view->priv->cairo, scale_x, scale_y);
+	cairo_rel_move_to (view->priv->cairo,
+			   - pango_units_to_double (ink_rect.x),
+			   - pango_units_to_double (ink_rect.y));
+	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
+	cairo_restore (view->priv->cairo);
 }
 
 void
@@ -320,16 +375,20 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 
 	cairo = view->priv->cairo;
 
-	rounded_thickness = thickness + 0.5;
-	if ((rounded_thickness % 2) == 0) {
-		y = (int) (y + 0.5);
-		x = (int) (x + 0.5);
-	} else {
-		y = +0.5 + (int ) y;
-		x = +0.5 + (int ) x;
+	if (view->priv->is_vector)
+		rounded_thickness = thickness;
+	else {
+		rounded_thickness = thickness + 0.5;
+		if ((rounded_thickness % 2) == 0) {
+			y = (int) (y + 0.5);
+			x = (int) (x + 0.5);
+		} else {
+			y = +0.5 + (int ) y;
+			x = +0.5 + (int ) x;
+		}
 	}
 
-	g_message ("y = %g, thickness = %d", y, rounded_thickness);
+	g_message ("[View::draw_fraction_line] y = %g, thickness = %d", y, rounded_thickness);
 
 	cairo_set_line_width (cairo, rounded_thickness);
 	cairo_set_source_rgba (cairo, color->red, color->green, color->blue,
@@ -436,7 +495,7 @@ gmathml_view_render (GMathmlView *view)
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
-	g_message ("bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
+	g_message ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 
@@ -446,7 +505,7 @@ gmathml_view_render (GMathmlView *view)
 	cairo_restore (cairo);
 
 	if (view->priv->elements != NULL) {
-		g_warning ("[GMathmlView::render] dangling elements (check push/pop element calls)");
+		g_warning ("[View::render] dangling elements (check push/pop element calls)");
 		g_slist_free (view->priv->elements);
 		view->priv->elements = NULL;
 	}

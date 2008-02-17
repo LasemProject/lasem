@@ -169,7 +169,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
-			cell_bbox = gmathml_element_get_bbox (GMATHML_ELEMENT (cell_node));
+			cell_bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view, NULL);
 			max_width = MAX (max_width, cell_bbox->width);
 			max_height = MAX (max_height, cell_bbox->height);
 			max_depth = MAX (max_depth, cell_bbox->depth);
@@ -410,6 +410,7 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 	m_element_class->measure = gmathml_table_element_measure;
 	m_element_class->layout = gmathml_table_element_layout;
 	m_element_class->render = gmathml_table_element_render;
+	m_element_class->is_inferred_row = NULL;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

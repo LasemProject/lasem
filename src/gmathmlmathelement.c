@@ -48,6 +48,7 @@ gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
+
 /* GMathmlMathElement implementation */
 
 const GMathmlStyle *

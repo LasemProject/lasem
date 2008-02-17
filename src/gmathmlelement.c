@@ -90,7 +90,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	g_return_if_fail (GMATHML_IS_ELEMENT (self));
 	g_return_if_fail (parent_style != NULL);
 
-	g_message ("Update %s", gdom_node_get_node_name (GDOM_NODE (self)));
+	g_message ("[Element::update] %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
@@ -100,8 +100,6 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	gmathml_style_dump (style);
 #endif
 
-	g_message ("style->math_size_value = %g", style->math_size_value);
-
 	if (element_class->update)
 		element_class->update (self, style);
 
@@ -110,7 +108,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	self->math_size = style->math_size_value;
 	self->math_variant = style->math_variant;
 
-	g_message ("Mathsize = %g", self->math_size);
+	g_message ("[Element::update] Math size = %g", self->math_size);
 
 	gmathml_style_free (style);
 }
@@ -123,6 +121,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	const GMathmlOperatorElement *operator;
 	GDomNode *node;
 	GMathmlBbox child_bbox;
+	gboolean stretchy_found = FALSE;
 
 	self->bbox.width = 0.0;
 	self->bbox.height = 0.0;
@@ -130,14 +129,42 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, bbox);
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
-			if (operator != NULL) {
-				child_bbox.width +=
-					gmathml_view_measure_length (view, operator->left_space.value) +
-					gmathml_view_measure_length (view, operator->right_space.value);
+			if (operator != NULL && operator->stretchy.value) {
+				stretchy_found = TRUE;
+			} else {
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+				if (operator != NULL) {
+					child_bbox.width +=
+						gmathml_view_measure_length (view, operator->left_space.value) +
+						gmathml_view_measure_length (view, operator->right_space.value);
+				}
+				gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
 			}
-			gmathml_bbox_add_to_right (&self->bbox, &child_bbox);
+		}
+	}
+
+	if (stretchy_found) {
+		GMathmlBbox stretch_bbox;
+
+		stretch_bbox.width = 0;
+		stretch_bbox.height = self->bbox.height;
+		stretch_bbox.depth = self->bbox.depth;
+
+		g_message ("[Element::_measure] Stretchy found");
+
+		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+			if (GMATHML_IS_ELEMENT (node)) {
+				operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+				if (operator != NULL && operator->stretchy.value) {
+					child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view,
+									       &stretch_bbox);
+					child_bbox.width +=
+						gmathml_view_measure_length (view, operator->left_space.value) +
+						gmathml_view_measure_length (view, operator->right_space.value);
+					gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
+				}
+			}
 		}
 	}
 
@@ -161,10 +188,12 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 			element->bbox = *(element_class->measure (element, view, bbox));
 			gmathml_view_pop_element (view);
 
-			g_message ("BBox (%s) %g, %g, %g",
+			g_message ("[Element::measure] Bbox (%s) %g, %g, %g",
 				   gdom_node_get_node_name (GDOM_NODE (element)),
 				   element->bbox.width, element->bbox.height, element->bbox.depth);
 		} else {
+
+			g_message ("[Element::measure] method not defined");
 			element->bbox.width = 0.0;
 			element->bbox.height = 0.0;
 			element->bbox.depth = 0.0;
@@ -215,7 +244,7 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	g_return_if_fail (element_class != NULL);
 
-	g_message ("Assigned bbox for %s = %g, %g, %g",
+	g_message ("[Element::layout] assigned bbox for %s = %g, %g, %g",
 		   gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth);
 
 	self->x = x;
@@ -265,7 +294,11 @@ _get_embellished_core (const GMathmlElement *self)
 	const GMathmlOperatorElement *operator;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+		if (GMATHML_IS_ELEMENT (node))
+			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+		else
+			operator = NULL;
+
 		if (!GMATHML_IS_SPACE_ELEMENT (node)) {
 			if (operator == NULL || operator != core)
 				return NULL;
@@ -297,6 +330,27 @@ gmathml_element_get_bbox (const GMathmlElement *self)
 	g_return_val_if_fail (GMATHML_IS_ELEMENT (self), &gmathml_bbox_null);
 
 	return &self->bbox;
+}
+
+static gboolean
+_is_inferred_row (const GMathmlElement *self)
+{
+	return TRUE;
+}
+
+gboolean
+gmathml_element_is_inferred_row (const GMathmlElement *self)
+{
+	GMathmlElementClass *element_class;
+
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (self), FALSE);
+
+	element_class = GMATHML_ELEMENT_GET_CLASS (self);
+
+	if (element_class->is_inferred_row != NULL)
+		return element_class->is_inferred_row (self);
+
+	return FALSE;
 }
 
 static void
@@ -349,10 +403,8 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	m_element_class->measure = _measure;
 	m_element_class->layout = _layout;
 	m_element_class->render = _render;
-
 	m_element_class->get_embellished_core = _get_embellished_core;
-
-	m_element_class->get_embellished_core = NULL;
+	m_element_class->is_inferred_row = _is_inferred_row;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

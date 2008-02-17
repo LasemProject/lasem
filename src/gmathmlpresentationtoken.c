@@ -25,6 +25,7 @@
 #include <gdomtext.h>
 
 #include <math.h>
+#include <string.h>
 
 static GObjectClass *parent_class;
 
@@ -74,6 +75,12 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 	text = g_strdup (/* FIXME is it safe ? */g_strstrip (string->str));
 
 	g_string_free (string, TRUE);
+
+	/* FIXME a better way to do that ? */
+	if (strcmp (text, "-") == 0) {
+		g_free (text);
+		return g_strdup ("−");
+	}
 
 	return text;
 }
@@ -213,6 +220,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->layout = gmathml_presentation_token_layout;
 	m_element_class->measure = gmathml_presentation_token_measure;
 	m_element_class->render = gmathml_presentation_token_render;
+	m_element_class->is_inferred_row = NULL;
 
 	m_element_class->update = gmathml_presentation_token_update;
 
