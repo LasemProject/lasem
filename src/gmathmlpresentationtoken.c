@@ -101,7 +101,7 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	char *text;
 

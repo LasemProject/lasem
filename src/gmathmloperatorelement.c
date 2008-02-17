@@ -90,7 +90,7 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	char *text;
 

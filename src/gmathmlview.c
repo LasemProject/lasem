@@ -404,7 +404,7 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
-	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
+	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
 	if (bbox != NULL) {
 		if (width != NULL)
@@ -434,7 +434,7 @@ gmathml_view_render (GMathmlView *view)
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
-	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view);
+	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
 	g_message ("bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
 

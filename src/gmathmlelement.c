@@ -118,7 +118,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 /* Inferred mrow implementation */
 
 static const GMathmlBbox *
-_measure (GMathmlElement *self, GMathmlView *view)
+_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	const GMathmlOperatorElement *operator;
 	GDomNode *node;
@@ -130,7 +130,7 @@ _measure (GMathmlElement *self, GMathmlView *view)
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, bbox);
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL) {
 				child_bbox.width +=
@@ -145,7 +145,7 @@ _measure (GMathmlElement *self, GMathmlView *view)
 }
 
 const GMathmlBbox *
-gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
+gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlElementClass *element_class;
 
@@ -158,7 +158,7 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view)
 	if (!element->measure_done) {
 		if (element_class->measure) {
 			gmathml_view_push_element (view, element);
-			element->bbox = *(element_class->measure (element, view));
+			element->bbox = *(element_class->measure (element, view, bbox));
 			gmathml_view_pop_element (view);
 
 			g_message ("BBox (%s) %g, %g, %g",
@@ -189,7 +189,7 @@ _layout (GMathmlElement *self, GMathmlView *view,
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL)
 				offset = gmathml_view_measure_length (view, operator->left_space.value);

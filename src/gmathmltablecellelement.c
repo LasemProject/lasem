@@ -35,9 +35,9 @@ gmathml_table_cell_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static const GMathmlBbox *
-gmathml_table_cell_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_table_cell_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
-	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, bbox);
 
 	return &self->bbox;
 }

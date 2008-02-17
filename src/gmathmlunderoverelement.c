@@ -147,14 +147,14 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
 	GDomNode *node;
 	GMathmlBbox const *base_bbox = NULL;
 	GMathmlBbox const *underscript_bbox = NULL;
 	GMathmlBbox const *overscript_bbox = NULL;
-	GMathmlBbox bbox;
+	GMathmlBbox child_bbox;
 
 	self->bbox.width = 0.0;
 	self->bbox.height = 0.0;
@@ -163,44 +163,44 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view)
 	node = GDOM_NODE (self)->first_child;
 
 	if (node != NULL) {
-		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 		gmathml_bbox_add_to_right (&self->bbox, base_bbox);
 
 		node = node->next_sibling;
 
 		if (node != NULL) {
-			GMathmlBbox const *bbox;
+			GMathmlBbox const *node_bbox;
 
-			bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			node_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 			switch (under_over->type) {
 				case GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER:
-					underscript_bbox = bbox;
+					underscript_bbox = node_bbox;
 					break;
 				case GMATHML_UNDER_OVER_ELEMENT_TYPE_OVER:
-					overscript_bbox = bbox;
+					overscript_bbox = node_bbox;
 					break;
 				case GMATHML_UNDER_OVER_ELEMENT_TYPE_UNDER_OVER:
-					underscript_bbox = bbox;
+					underscript_bbox = node_bbox;
 
 					node = node->next_sibling;
 
 					if (node != NULL)
 						overscript_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
-											   view);
+											   view, NULL);
 			}
 		}
 	}
 
 	if (overscript_bbox) {
-		bbox = *overscript_bbox;
-		bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
-		gmathml_bbox_add_over (&self->bbox, &bbox);
+		child_bbox = *overscript_bbox;
+		child_bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
+		gmathml_bbox_add_over (&self->bbox, &child_bbox);
 	}
 	if (underscript_bbox) {
-		bbox = *underscript_bbox;
-		bbox.height += gmathml_view_measure_length (view, under_over->under_space);
-		gmathml_bbox_add_under (&self->bbox, &bbox);
+		child_bbox = *underscript_bbox;
+		child_bbox.height += gmathml_view_measure_length (view, under_over->under_space);
+		gmathml_bbox_add_under (&self->bbox, &child_bbox);
 	}
 
 	return &self->bbox;
@@ -216,19 +216,19 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 	if (under_over->base == NULL)
 		return;
 
-	child_bbox = gmathml_element_measure (under_over->base, view);
+	child_bbox = gmathml_element_measure (under_over->base, view, NULL);
 	gmathml_element_layout (under_over->base, view, x + (bbox->width - child_bbox->width) * 0.5, y,
 				child_bbox);
 
 	if (under_over->underscript) {
-		child_bbox = gmathml_element_measure (under_over->underscript, view);
+		child_bbox = gmathml_element_measure (under_over->underscript, view, NULL);
 		gmathml_element_layout (under_over->underscript, view,
 					x + (bbox->width - child_bbox->width) * 0.5,
 					y + self->bbox.depth - child_bbox->depth,
 					child_bbox);
 	}
 	if (under_over->overscript) {
-		child_bbox = gmathml_element_measure (under_over->overscript, view);
+		child_bbox = gmathml_element_measure (under_over->overscript, view, NULL);
 		gmathml_element_layout (under_over->overscript, view,
 					x + (bbox->width - child_bbox->width) * 0.5,
 					y - self->bbox.height + child_bbox->height,

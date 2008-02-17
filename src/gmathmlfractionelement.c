@@ -60,7 +60,7 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	GDomNode *node;
@@ -83,7 +83,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 	if (node == NULL)
 		return &self->bbox;
 
-	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 	gmathml_bbox_add_over (&self->bbox, child_bbox);
 
@@ -92,7 +92,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view)
 	if (node == NULL)
 		return &self->bbox;
 
-	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 	gmathml_bbox_add_under (&self->bbox, child_bbox);
 
@@ -110,7 +110,7 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 	node = GDOM_NODE (self)->first_child;
 
 	if (node != NULL) {
-		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+		child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 		gmathml_element_layout (GMATHML_ELEMENT (node), view,
 					x + (bbox->width - child_bbox->width) / 2.0,
 					y - self->bbox.height + child_bbox->height,
@@ -118,7 +118,7 @@ gmathml_fraction_element_layout (GMathmlElement *self, GMathmlView *view,
 
 		node = node->next_sibling;
 		if (node != NULL) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 			g_message ("[GMathmlFractionElement::layout] numerator height  %g",
 				   child_bbox->height);

@@ -111,12 +111,12 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
 	GDomNode *row_node;
 	GDomNode *cell_node;
-	const GMathmlBbox *bbox;
+	const GMathmlBbox *cell_bbox;
 	unsigned int row, column;
 	unsigned int max_index;
 	double max_height = 0.0;
@@ -169,20 +169,20 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view)
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
-			bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view);
-			max_width = MAX (max_width, bbox->width);
-			max_height = MAX (max_height, bbox->height);
-			max_depth = MAX (max_depth, bbox->depth);
+			cell_bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view, NULL);
+			max_width = MAX (max_width, cell_bbox->width);
+			max_height = MAX (max_height, cell_bbox->height);
+			max_depth = MAX (max_depth, cell_bbox->depth);
 			if (row == 0)
-				table->widths[column] = bbox->width;
+				table->widths[column] = cell_bbox->width;
 			else
-				table->widths[column] = MAX (table->widths[column], bbox->width);
+				table->widths[column] = MAX (table->widths[column], cell_bbox->width);
 			if (column == 0) {
-				table->heights[row] = bbox->height;
-				table->depths[row] = bbox->depth;
+				table->heights[row] = cell_bbox->height;
+				table->depths[row] = cell_bbox->depth;
 			} else {
-				table->heights[row] = MAX (table->heights[row], bbox->height);
-				table->depths[row]  = MAX (table->depths[row],  bbox->depth);
+				table->heights[row] = MAX (table->heights[row], cell_bbox->height);
+				table->depths[row]  = MAX (table->depths[row],  cell_bbox->depth);
 			}
 			column++;
 		}
@@ -255,7 +255,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
-			bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view);
+			bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view, NULL);
 
 			switch (table->row_align.values[MIN (row, table->row_align.n_values - 1)]) {
 				case GMATHML_ROW_ALIGN_TOP:

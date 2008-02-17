@@ -63,13 +63,13 @@ gmathml_radical_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 	GDomNode *node;
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
-		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, NULL);
 
 		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
 		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);
@@ -88,7 +88,7 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 		radical->height = 0.0;
 
 		if (node != NULL) {
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 			self->bbox.width = child_bbox.width + gmathml_view_measure_length (view,
 											  self->math_size);
@@ -102,7 +102,7 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view)
 			if (node != NULL) {
 				double height;
 
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 				radical->offset = child_bbox.width -
 					gmathml_view_measure_length (view, self->math_size * 0.1);
@@ -140,7 +140,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 		if (node != NULL) {
 			GMathmlBbox child_bbox;
 
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + offset + radical->offset, y, &child_bbox);
@@ -148,7 +148,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 			node = node->next_sibling;
 
 			if (node != NULL) {
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view);
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
 				gmathml_element_layout (GMATHML_ELEMENT (node), view, x,
 							y + self->bbox.depth - radical->height * 0.6 -

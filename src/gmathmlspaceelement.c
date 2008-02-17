@@ -67,7 +67,7 @@ gmathml_space_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_space_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_space_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlSpaceElement *space_element = GMATHML_SPACE_ELEMENT (self);
 

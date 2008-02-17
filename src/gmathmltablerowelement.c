@@ -42,9 +42,9 @@ gmathml_table_row_can_append_child (GDomNode *self, GDomNode *child)
 /* GMathmlElement implementation */
 
 static const GMathmlBbox *
-gmathml_table_row_element_measure (GMathmlElement *self, GMathmlView *view)
+gmathml_table_row_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
-	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view);
+	GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, bbox);
 
 	return &self->bbox;
 }
