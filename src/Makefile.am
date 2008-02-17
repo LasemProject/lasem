@@ -1,7 +1,8 @@
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(GMATHML_CFLAGS)
+	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(GMATHML_CFLAGS) \
+	-DG_LOG_DOMAIN=\"GMathml\"
 
 AM_CFLAGS =\
 	 -Wall\
