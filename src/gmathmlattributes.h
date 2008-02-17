@@ -29,6 +29,9 @@
 
 G_BEGIN_DECLS
 
+#define GMATHML_VERY_THIN_SPACE_EM	0.111111;
+#define GMATHML_MEDIUM_SPACE_EM 	0.222222;
+
 typedef struct {
 	double red;
 	double green;

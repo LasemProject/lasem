@@ -83,11 +83,11 @@ gmathml_math_element_init (GMathmlMathElement *self)
 
 	style->very_very_thin_math_space.value = 0.0555556;
 	style->very_very_thin_math_space.unit = GMATHML_UNIT_EM;
-	style->very_thin_math_space.value = 0.111111;
+	style->very_thin_math_space.value = GMATHML_VERY_THIN_SPACE_EM;
 	style->very_thin_math_space.unit = GMATHML_UNIT_EM;
 	style->thin_math_space.value = 0.166667;
 	style->thin_math_space.unit = GMATHML_UNIT_EM;
-	style->medium_math_space.value = 0.222222;
+	style->medium_math_space.value = GMATHML_MEDIUM_SPACE_EM;
 	style->medium_math_space.unit = GMATHML_UNIT_EM;
 	style->thick_math_space.value = 0.277778;
 	style->thick_math_space.unit = GMATHML_UNIT_EM;
