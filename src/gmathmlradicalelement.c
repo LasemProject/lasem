@@ -140,7 +140,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 		if (node != NULL) {
 			GMathmlBbox child_bbox;
 
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+			child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
 						x + offset + radical->offset, y, &child_bbox);
@@ -148,7 +148,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 			node = node->next_sibling;
 
 			if (node != NULL) {
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+				child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 
 				gmathml_element_layout (GMATHML_ELEMENT (node), view, x,
 							y + self->bbox.depth - radical->height * 0.6 -

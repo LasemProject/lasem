@@ -221,7 +221,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 	if (script->base == NULL)
 		return;
 
-	base_bbox = gmathml_element_measure (script->base, view, NULL);
+	base_bbox = gmathml_element_get_bbox (script->base);
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 
@@ -231,12 +231,12 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 		gmathml_element_layout (script->subscript, view,
 					x + base_bbox->width,
 					y + script->subscript_offset,
-					gmathml_element_measure (script->subscript, view, NULL));
+					gmathml_element_get_bbox (script->subscript));
 	if (script->superscript)
 		gmathml_element_layout (script->superscript, view,
 					x + base_bbox->width,
 					y - script->superscript_offset,
-					gmathml_element_measure (script->superscript, view, NULL));
+					gmathml_element_get_bbox (script->superscript));
 }
 
 static const GMathmlOperatorElement *

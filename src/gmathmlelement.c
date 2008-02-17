@@ -189,7 +189,7 @@ _layout (GMathmlElement *self, GMathmlView *view,
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node)) {
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+			child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL)
 				offset = gmathml_view_measure_length (view, operator->left_space.value);
@@ -289,6 +289,14 @@ gmathml_element_get_embellished_core (const GMathmlElement *self)
 		return element_class->get_embellished_core (self);
 
 	return NULL;
+}
+
+const GMathmlBbox *
+gmathml_element_get_bbox (const GMathmlElement *self)
+{
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (self), &gmathml_bbox_null);
+
+	return &self->bbox;
 }
 
 static void

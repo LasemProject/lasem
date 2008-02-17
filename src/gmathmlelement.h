@@ -85,6 +85,7 @@ void 			gmathml_element_layout 			(GMathmlElement *element, GMathmlView *view,
 void 			gmathml_element_render 			(GMathmlElement *element, GMathmlView *view);
 
 const GMathmlOperatorElement *	gmathml_element_get_embellished_core 	(const GMathmlElement *self);
+const GMathmlBbox * 		gmathml_element_get_bbox 		(const GMathmlElement *self);
 
 void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
 

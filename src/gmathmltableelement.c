@@ -169,7 +169,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
-			cell_bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view, NULL);
+			cell_bbox = gmathml_element_get_bbox (GMATHML_ELEMENT (cell_node));
 			max_width = MAX (max_width, cell_bbox->width);
 			max_height = MAX (max_height, cell_bbox->height);
 			max_depth = MAX (max_depth, cell_bbox->depth);
@@ -255,7 +255,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
-			bbox = gmathml_element_measure (GMATHML_ELEMENT (cell_node), view, NULL);
+			bbox = gmathml_element_get_bbox (GMATHML_ELEMENT (cell_node));
 
 			switch (table->row_align.values[MIN (row, table->row_align.n_values - 1)]) {
 				case GMATHML_ROW_ALIGN_TOP:

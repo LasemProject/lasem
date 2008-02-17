@@ -216,19 +216,19 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 	if (under_over->base == NULL)
 		return;
 
-	child_bbox = gmathml_element_measure (under_over->base, view, NULL);
+	child_bbox = gmathml_element_get_bbox (under_over->base);
 	gmathml_element_layout (under_over->base, view, x + (bbox->width - child_bbox->width) * 0.5, y,
 				child_bbox);
 
 	if (under_over->underscript) {
-		child_bbox = gmathml_element_measure (under_over->underscript, view, NULL);
+		child_bbox = gmathml_element_get_bbox (under_over->underscript);
 		gmathml_element_layout (under_over->underscript, view,
 					x + (bbox->width - child_bbox->width) * 0.5,
 					y + self->bbox.depth - child_bbox->depth,
 					child_bbox);
 	}
 	if (under_over->overscript) {
-		child_bbox = gmathml_element_measure (under_over->overscript, view, NULL);
+		child_bbox = gmathml_element_get_bbox (under_over->overscript);
 		gmathml_element_layout (under_over->overscript, view,
 					x + (bbox->width - child_bbox->width) * 0.5,
 					y - self->bbox.height + child_bbox->height,
