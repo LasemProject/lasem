@@ -3,7 +3,7 @@
 - check memory allocation in gmathmlattributes.
 - also check array access in update/measure/layout/render methods.
 - need_update flag.
-- need_layout flag.
+- need_layout flag (extend attribute to mark them as layout invalidator (FALSE for color attribute, for example)).
 - stretching support (done for under/over).
 - mtr/mtd attribute support.
 - get_embellished_core for mmultiscripts, semantics, maction, mrow (and infered rows) (Mathml 2.0 3.2.5.7.3)
