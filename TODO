@@ -1,12 +1,16 @@
 - merge space and space list attribute.
-- may be merge space and lentgh attribute.
+- may be merge space and lentgh attribute (for example by extending GMATHML_UNIT with the different GMATHML_NAMED_SPACE).
 - check memory allocation in gmathmlattributes.
 - also check array access in update/measure/layout/render methods.
 - need_update flag.
 - need_layout flag.
-- stretching support.
+- stretching support (done for under/over).
 - mtr/mtd attribute support.
 - get_embellished_core for mmultiscripts, semantics, maction, mrow (and infered rows) (Mathml 2.0 3.2.5.7.3)
 - is_inferred_row for merror, mpadded, menclose,
+- build a view tree for data specific to a given view.
+- support of different zoom value.
+- handle correctly PT and PX units.
+- handle table alignment. Correctly compute axis position in a row.
 
 And many many more things to do...
