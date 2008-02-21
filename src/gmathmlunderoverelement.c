@@ -159,11 +159,12 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 	GDomNode *node;
 	gboolean stretchy_found = FALSE;
 
-	self->bbox.width = 0.0;
-	self->bbox.height = 0.0;
-	self->bbox.depth = 0.0;
+	self->bbox = gmathml_bbox_null;
+	if (bbox != NULL)
+		stretch_bbox = *bbox;
+	else
+		stretch_bbox = gmathml_bbox_null;
 
-	stretch_bbox.width = 0.0;
 	stretch_bbox.height = -G_MAXDOUBLE;
 	stretch_bbox.depth = - G_MAXDOUBLE;
 

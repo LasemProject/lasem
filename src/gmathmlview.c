@@ -153,19 +153,21 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+	g_return_if_fail (bbox != NULL);
 
 	element = view->priv->current_element;
 
-	if (text == NULL)
+	if (text == NULL) {
+		*bbox = gmathml_bbox_null;
 		return;
-
-	g_return_if_fail (bbox != NULL);
+	}
 
 	gmathml_view_update_layout (view, text, &ink_rect, NULL, &baseline);
 
 	bbox->width = pango_units_to_double (ink_rect.width);
 	bbox->height = pango_units_to_double (baseline - ink_rect.y);
 	bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+	bbox->is_defined = TRUE;
 }
 
 void
@@ -495,7 +497,10 @@ gmathml_view_render (GMathmlView *view)
 
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
-	g_message ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
+	if (bbox->is_defined)
+		g_message ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
+	else
+		g_message ("[View::render] bbox not defined");
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 

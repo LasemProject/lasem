@@ -70,6 +70,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	fraction->offset = gmathml_view_measure_axis_offset (view);
 
+	self->bbox.is_defined = TRUE;
 	self->bbox.depth = - gmathml_view_measure_length (view,
 							 fraction->offset -
 							 fraction->v_space -

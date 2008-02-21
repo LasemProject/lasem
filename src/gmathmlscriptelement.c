@@ -137,43 +137,41 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view, cons
 	GMathmlBbox const *base_bbox = NULL;
 	GMathmlBbox const *subscript_bbox = NULL;
 	GMathmlBbox const *superscript_bbox = NULL;
-	GMathmlBbox children_bbox = {0.0, 0.0, 0.0};
+	GMathmlBbox children_bbox = gmathml_bbox_null;
 
-	element->bbox.width = 0.0;
-	element->bbox.height = 0.0;
-	element->bbox.depth = 0.0;
+	element->bbox = gmathml_bbox_null;
 
 	node = GDOM_NODE (element)->first_child;
+	if (node == NULL)
+		return &element->bbox;
+
+	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+	element->bbox = *base_bbox;
+
+	element->bbox.width += gmathml_view_measure_length (view, script->space);
+
+	node = node->next_sibling;
 
 	if (node != NULL) {
-		base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-		gmathml_bbox_add_horizontally (&element->bbox, base_bbox);
+		GMathmlBbox const *bbox;
 
-		element->bbox.width += gmathml_view_measure_length (view, script->space);
+		bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
-		node = node->next_sibling;
+		switch (script->type) {
+			case GMATHML_SCRIPT_ELEMENT_TYPE_SUP:
+				superscript_bbox = bbox;
+				break;
+			case GMATHML_SCRIPT_ELEMENT_TYPE_SUB:
+				subscript_bbox = bbox;
+				break;
+			case GMATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP:
+				subscript_bbox = bbox;
 
-		if (node != NULL) {
-			GMathmlBbox const *bbox;
+				node = node->next_sibling;
 
-			bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-
-			switch (script->type) {
-				case GMATHML_SCRIPT_ELEMENT_TYPE_SUP:
-					superscript_bbox = bbox;
-					break;
-				case GMATHML_SCRIPT_ELEMENT_TYPE_SUB:
-					subscript_bbox = bbox;
-					break;
-				case GMATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP:
-					subscript_bbox = bbox;
-
-					node = node->next_sibling;
-
-					if (node != NULL)
-						superscript_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
-											    view, NULL);
-			}
+				if (node != NULL)
+					superscript_bbox = gmathml_element_measure (GMATHML_ELEMENT (node),
+										    view, NULL);
 		}
 	}
 

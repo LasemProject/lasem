@@ -131,9 +131,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	table->n_columns = 0;
 	table->n_rows = 0;
 
-	self->bbox.width = 0;
-	self->bbox.height = 0;
-	self->bbox.depth = 0;
+	self->bbox = gmathml_bbox_null;
 
 	for (row_node = GDOM_NODE (self)->first_child;
 	     row_node != NULL;
@@ -154,6 +152,8 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		table->n_rows = 0;
 		return &self->bbox;
 	}
+
+	self->bbox.is_defined = TRUE;
 
 	table->widths = g_new (double, table->n_columns);
 	table->heights = g_new (double, table->n_rows);

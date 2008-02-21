@@ -31,6 +31,7 @@ typedef struct {
 	double width;
 	double height;
 	double depth;
+	gboolean is_defined;
 } GMathmlBbox;
 
 const GMathmlBbox gmathml_bbox_null;
@@ -39,6 +40,7 @@ void 		gmathml_bbox_add_horizontally 	(GMathmlBbox *bbox, const GMathmlBbox *new
 void 		gmathml_bbox_add_over 		(GMathmlBbox *self, const GMathmlBbox *bbox);
 void 		gmathml_bbox_add_under 		(GMathmlBbox *self, const GMathmlBbox *bbox);
 void 		gmathml_bbox_merge_vertically 	(GMathmlBbox *self, const GMathmlBbox *bbox, double offset);
+void 		gmathml_bbox_stretch_vertically	(GMathmlBbox *self, const GMathmlBbox *bbox);
 
 G_END_DECLS
 

@@ -80,40 +80,38 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 		GMathmlBbox child_bbox;
 
 		node = GDOM_NODE (self)->first_child;
+		if (node == NULL) {
+			self->bbox = gmathml_bbox_null;
+			return &self->bbox;
+		}
 
-		self->bbox.width = 0.0;
-		self->bbox.height = 0.0;
-		self->bbox.depth = 0.0;
 		radical->offset = 0.0;
 		radical->height = 0.0;
 
+		child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+		self->bbox = child_bbox;
+
+		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
+		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);
+
+		radical->height = self->bbox.height + self->bbox.depth;
+
+		node = node->next_sibling;
+
 		if (node != NULL) {
+			double height;
+
 			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
-			self->bbox.width = child_bbox.width + gmathml_view_measure_length (view,
-											  self->math_size);
-			self->bbox.height = child_bbox.height + gmathml_view_measure_length (view, radical->top_padding);
-			self->bbox.depth = child_bbox.depth;
+			radical->offset = child_bbox.width -
+				gmathml_view_measure_length (view, self->math_size * 0.1);
 
-			radical->height = self->bbox.height + self->bbox.depth;
+			self->bbox.width += radical->offset;
 
-			node = node->next_sibling;
-
-			if (node != NULL) {
-				double height;
-
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-
-				radical->offset = child_bbox.width -
-					gmathml_view_measure_length (view, self->math_size * 0.1);
-
-				self->bbox.width += radical->offset;
-
-				height = radical->height * 0.6 -
-					self->bbox.depth + child_bbox.height + child_bbox.depth;
-				if (height > self->bbox.height)
-					self->bbox.height = height;
-			}
+			height = radical->height * 0.6 -
+				self->bbox.depth + child_bbox.height + child_bbox.depth;
+			if (height > self->bbox.height)
+				self->bbox.height = height;
 		}
 	}
 

@@ -121,18 +121,26 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	const GMathmlOperatorElement *operator;
 	GDomNode *node;
 	GMathmlBbox child_bbox;
+	GMathmlBbox stretch_bbox;
 	gboolean stretchy_found = FALSE;
+	gboolean all_stretchy = TRUE;
 
-	self->bbox.width = 0.0;
-	self->bbox.height = 0.0;
-	self->bbox.depth = 0.0;
+	self->bbox = gmathml_bbox_null;
+
+	if (bbox != NULL)
+		stretch_bbox = *bbox;
+	else
+		stretch_bbox = gmathml_bbox_null;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GMATHML_IS_ELEMENT (node)) {
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL && operator->stretchy.value) {
 				stretchy_found = TRUE;
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (operator), view, NULL);
+				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			} else {
+				all_stretchy = FALSE;
 				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 				if (operator != NULL) {
 					child_bbox.width +=
@@ -145,13 +153,15 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	}
 
 	if (stretchy_found) {
-		GMathmlBbox stretch_bbox;
+		if (!all_stretchy) {
+			stretch_bbox.height = self->bbox.height;
+			stretch_bbox.depth = self->bbox.depth;
+			stretch_bbox.width = 0.0;
+			gmathml_bbox_stretch_vertically (&stretch_bbox, bbox);
+		}
 
-		stretch_bbox.width = 0;
-		stretch_bbox.height = self->bbox.height;
-		stretch_bbox.depth = self->bbox.depth;
-
-		g_message ("[Element::_measure] Stretchy found");
+		g_message ("[Element::_measure] Stretchy found (h = %g, d = %g)",
+			   stretch_bbox.height, stretch_bbox.depth);
 
 		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 			if (GMATHML_IS_ELEMENT (node)) {
@@ -172,7 +182,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 }
 
 const GMathmlBbox *
-gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMathmlBbox *bbox)
+gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMathmlBbox *stretch_bbox)
 {
 	GMathmlElementClass *element_class;
 
@@ -182,10 +192,10 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 
 	g_return_val_if_fail (element_class != NULL, &null_bbox);
 
-	if (!element->measure_done) {
+	if (!element->measure_done || stretch_bbox != NULL) {
 		if (element_class->measure) {
 			gmathml_view_push_element (view, element);
-			element->bbox = *(element_class->measure (element, view, bbox));
+			element->bbox = *(element_class->measure (element, view, stretch_bbox));
 			gmathml_view_pop_element (view);
 
 			g_message ("[Element::measure] Bbox (%s) %g, %g, %g",
