@@ -3,3 +3,12 @@ GMathml aims to be a C/Gobject based mathml renderer and editor, supporting CSS 
 It uses cairo and pango as it's rendering abstraction layer, and then support numerous output formats: xlib, PNG, SVG, PDF, PS, EPS...
 
 The API tries to follow the MathML DOM.
+
+It currently includes two simple applications:
+
+gmathmlsvg, which takes a filename as argument and generates an SVG output stored in gmathml.svg. There's a debug mode option (-d) that displays the bounding boxes of elements.
+
+gmathmltest, which, if launched without argument, renders recursively all mml files in a directory, and generate an html file which displays the browser rendering, gmathml rendering, and if present the reference output. The html filename is gmathmltest.xml. It's main use if the rendering of the sample files in the samples directory. For example:
+
+cd samples
+../src/gmathmltest
