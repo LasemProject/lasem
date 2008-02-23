@@ -30,13 +30,22 @@ static GObjectClass *parent_class;
 static const char *
 gmathml_table_row_get_node_name (GDomNode *node)
 {
-	return "mtr";
+	GMathmlTableRowElement *row = GMATHML_TABLE_ROW_ELEMENT (node);
+
+	switch (row->type) {
+		case GMATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW:
+			return "mtr";
+			break;
+		default:
+			return "mlabeledtr";
+			break;
+	}
 }
 
 static gboolean
 gmathml_table_row_can_append_child (GDomNode *self, GDomNode *child)
 {
-	return GMATHML_IS_TABLE_CELL_ELEMENT (child);
+	return GMATHML_IS_ELEMENT (child);
 }
 
 /* GMathmlElement implementation */
@@ -61,7 +70,27 @@ gmathml_table_row_element_layout (GMathmlElement *self, GMathmlView *view,
 GDomNode *
 gmathml_table_row_element_new (void)
 {
-	return g_object_new (GMATHML_TYPE_TABLE_ROW_ELEMENT, NULL);
+	GDomNode *node;
+
+	node = g_object_new (GMATHML_TYPE_TABLE_ROW_ELEMENT, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
+
+	GMATHML_TABLE_ROW_ELEMENT (node)->type = GMATHML_TABLE_ROW_ELEMENT_TYPE_ROW;
+
+	return node;
+}
+
+GDomNode *
+gmathml_labeled_table_row_element_new (void)
+{
+	GDomNode *node;
+
+	node = g_object_new (GMATHML_TYPE_TABLE_ROW_ELEMENT, NULL);
+	g_return_val_if_fail (node != NULL, NULL);
+
+	GMATHML_TABLE_ROW_ELEMENT (node)->type = GMATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW;
+
+	return node;
 }
 
 static void

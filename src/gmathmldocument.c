@@ -57,6 +57,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_table_element_new ();
 	else if (strcmp (tag_name, "mtr") == 0)
 		node = gmathml_table_row_element_new ();
+	else if (strcmp (tag_name, "mlabeledtr") == 0)
+		node = gmathml_labeled_table_row_element_new ();
 	else if (strcmp (tag_name, "mtd") == 0)
 		node = gmathml_table_cell_element_new ();
 	else if (strcmp (tag_name, "mspace") == 0)
