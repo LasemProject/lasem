@@ -1,0 +1,20 @@
+    <math>
+      <mstyle displaystyle="false">
+        <mo largeop="false">&#x02228;</mo>
+      </mstyle>
+      <mstyle displaystyle="false">
+        <mo largeop="true">&#x02228;</mo>
+      </mstyle>
+      <mstyle displaystyle="true">
+        <mo largeop="false">&#x02228;</mo>
+      </mstyle>
+      <mstyle displaystyle="true">
+        <mo largeop="true">&#x02228;</mo>
+      </mstyle>
+      <mstyle displaystyle="false">
+        <mo>&#x02228;</mo>
+      </mstyle>
+      <mstyle displaystyle="true">
+        <mo>&#x02228;</mo>
+      </mstyle>
+    </math>

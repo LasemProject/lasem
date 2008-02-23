@@ -1,0 +1,16 @@
+    <math>
+      <munderover>
+        <mo>&#x0222B;</mo>
+        <mn>0</mn>
+        <mn>1</mn>
+      </munderover>
+      <mi>f</mi>
+      <mrow> 
+        <mo>(</mo>
+        <mi>x</mi>
+        <mo>)</mo>
+      </mrow>
+      <mtext>&#x0200A;</mtext>
+      <mo>&#x02146;</mo>
+      <mi>x</mi>
+    </math>

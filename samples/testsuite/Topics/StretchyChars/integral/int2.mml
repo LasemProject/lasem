@@ -1,0 +1,15 @@
+    <math>
+      <mo>&#x0222B;</mo>
+      <mi>f</mi>
+      <mrow> 
+        <mo>(</mo>
+        <mfrac>
+          <mi>x</mi>
+          <mn>2</mn>
+        </mfrac>
+        <mo>)</mo>
+      </mrow>
+      <mtext>&#x0200A;</mtext>
+      <mo>&#x02146;</mo>
+      <mi>x</mi>
+    </math>

@@ -1,0 +1,20 @@
+    <math>
+      <mtable>
+        <mtr> 
+          <mtd>
+            <mo>&#x02190;</mo>
+          </mtd> 
+          <mtd>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr> 
+          <mtd>
+            <mtext>a long cell</mtext>
+          </mtd> 
+          <mtd>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+    </math>

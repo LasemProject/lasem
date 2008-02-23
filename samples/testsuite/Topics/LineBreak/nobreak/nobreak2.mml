@@ -1,0 +1,25 @@
+    <math> 
+      <mi>B</mi> 
+      <mo>-</mo> 
+      <mi>B</mi> 
+      <mo>-</mo> 
+      <mi>B</mi> 
+      <mo>-</mo> 
+      <msup> 
+        <mrow> 
+          <mo>(</mo> 
+          <mi>a</mi> 
+          <mo>-</mo> 
+          <mi>a</mi> 
+          <mo>-</mo> 
+          <mi>a</mi> 
+          <mspace linebreak="nobreak"/> 
+          <mo>-</mo> 
+          <mi>a</mi> 
+          <mo>)</mo> 
+        </mrow> 
+        <mn>22</mn> 
+      </msup> 
+      <mo>-</mo> 
+      <mi>c</mi> 
+    </math>

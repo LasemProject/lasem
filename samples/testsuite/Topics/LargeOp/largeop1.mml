@@ -1,0 +1,106 @@
+    <math> 
+      <mtable> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: false largeop: false 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="false"> 
+              <mo largeop="false">&#x02227;</mo> 
+              <mo largeop="false">&#x02228;</mo> 
+              <mo largeop="false">&#x0222B;</mo> 
+              <mo largeop="false">&#x02211;</mo> 
+              <mo largeop="false">&#x0220F;</mo> 
+              <mo largeop="false">&#x0222A;</mo> 
+              <mo largeop="false">&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: false largeop: true 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="false"> 
+              <mo largeop="true">&#x02227;</mo> 
+              <mo largeop="true">&#x02228;</mo> 
+              <mo largeop="true">&#x0222B;</mo> 
+              <mo largeop="true">&#x02211;</mo> 
+              <mo largeop="true">&#x0220F;</mo> 
+              <mo largeop="true">&#x0222A;</mo> 
+              <mo largeop="true">&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: true largeop: false 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="true"> 
+              <mo largeop="false">&#x02227;</mo> 
+              <mo largeop="false">&#x02228;</mo> 
+              <mo largeop="false">&#x0222B;</mo> 
+              <mo largeop="false">&#x02211;</mo> 
+              <mo largeop="false">&#x0220F;</mo> 
+              <mo largeop="false">&#x0222A;</mo> 
+              <mo largeop="false">&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: true largeop: true 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="true"> 
+              <mo largeop="true">&#x02227;</mo> 
+              <mo largeop="true">&#x02228;</mo> 
+              <mo largeop="true">&#x0222B;</mo> 
+              <mo largeop="true">&#x02211;</mo> 
+              <mo largeop="true">&#x0220F;</mo> 
+              <mo largeop="true">&#x0222A;</mo> 
+              <mo largeop="true">&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: false largeop: default 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="false"> 
+              <mo>&#x02227;</mo> 
+              <mo>&#x02228;</mo> 
+              <mo>&#x0222B;</mo> 
+              <mo>&#x02211;</mo> 
+              <mo>&#x0220F;</mo> 
+              <mo>&#x0222A;</mo> 
+              <mo>&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd> 
+            <mtext>displaystyle: true largeop: default 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle displaystyle="true"> 
+              <mo>&#x02227;</mo> 
+              <mo>&#x02228;</mo> 
+              <mo>&#x0222B;</mo> 
+              <mo>&#x02211;</mo> 
+              <mo>&#x0220F;</mo> 
+              <mo>&#x0222A;</mo> 
+              <mo>&#x02229;</mo> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+      </mtable> 
+    </math>

@@ -1,0 +1,11 @@
+    <math> 
+      <mover> 
+        <mi>xxx</mi> 
+        <mo>&#x000AF;</mo> 
+      </mover> 
+      <mo>=</mo> 
+      <mover> 
+        <mi mathvariant='italic'>xxx</mi> 
+        <mo>&#x000AF;</mo> 
+      </mover> 
+    </math>

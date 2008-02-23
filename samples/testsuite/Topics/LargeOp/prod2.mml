@@ -1,0 +1,17 @@
+    <math>
+      <mstyle displaystyle='true'>
+        <munderover>
+          <mo>&#x0220F;</mo>
+          <mrow>
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>0</mn>
+          </mrow>
+          <mi>&#x0221E;</mi>
+        </munderover>
+        <msub>
+          <mi>x</mi>
+          <mi>i</mi>
+        </msub>
+      </mstyle>
+    </math>

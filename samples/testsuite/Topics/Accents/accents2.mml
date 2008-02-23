@@ -1,0 +1,326 @@
+    <math> 
+      <mtable> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>reference:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mn>2</mn> 
+              <mn>&#x0005E;</mn> 
+              <mn>&#x02032;</mn> 
+              <mn>&#x002D9;</mn> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>operators:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover> 
+                <mi> x </mi> 
+                <mo> 2 </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo> &#x0005E; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo>&#x02032;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo>'&#x002D9;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo> &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo> &#x002D9; &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo>&#x002D9;&#x002D9;</mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>numbers:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover> 
+                <mi> x </mi> 
+                <mn> 2 </mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn> &#x0005E; </mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn>&#x02032;</mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn>'&#x002D9;</mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn> &#x002D9; </mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn> &#x002D9; &#x002D9; </mn> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mn>&#x002D9;&#x002D9;</mn> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>mover accent=false:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo> 2 </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo> &#x0005E; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo>&#x02032;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo>'&#x002D9;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo> &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo> &#x002D9; &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="false"> 
+                <mi> x </mi> 
+                <mo>&#x002D9;&#x002D9;</mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>mo accent=false:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false"> 2 </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false"> &#x0005E; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false">&#x02032;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false">'&#x002D9;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false"> &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false"> &#x002D9; &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="false">&#x002D9;&#x002D9;</mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>mover accent=true:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo> 2 </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo> &#x0005E; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo>&#x02032;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo>'&#x002D9;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo> &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo> &#x002D9; &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover accent="true"> 
+                <mi> x </mi> 
+                <mo>&#x002D9;&#x002D9;</mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>mo accent=true:</mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true"> 2 </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true"> &#x0005E; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true">&#x02032;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true">'&#x002D9;</mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true"> &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true"> &#x002D9; &#x002D9; </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true">&#x002D9;&#x002D9;</mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+        <mtr> 
+          <mtd columnalign="right"> 
+            <mtext>mo accent=true, stretchy = false: 
+            </mtext> 
+          </mtd> 
+          <mtd> 
+            <mstyle fontsize="150%"> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false"> 2 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false"> &#x0005E; 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false">&#x02032; 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false">'&#x002D9; 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false"> &#x002D9; 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false"> &#x002D9; &#x002D9; 
+                </mo> 
+              </mover> 
+              <mo> + </mo> 
+              <mover> 
+                <mi> x </mi> 
+                <mo accent="true" stretchy="false">&#x002D9;&#x002D9; 
+                </mo> 
+              </mover> 
+            </mstyle> 
+          </mtd> 
+        </mtr> 
+      </mtable> 
+    </math>

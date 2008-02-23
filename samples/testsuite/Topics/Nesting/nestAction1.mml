@@ -1,0 +1,13 @@
+    <math xmlns:dsi="http://www.dessci.com/mathml"> 
+      <maction actiontype="tooltip"> 
+        <maction actiontype="statusline"> 
+          <apply> 
+            <gt/> 
+            <ci>x</ci> 
+            <cn>4</cn> 
+          </apply> 
+          <mtext>X is less than 4</mtext> 
+        </maction> 
+        <mtext>X is less than 4</mtext> 
+      </maction> 
+    </math>
