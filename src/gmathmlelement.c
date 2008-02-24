@@ -288,6 +288,7 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 
 	if (element_class->render) {
 		gmathml_view_push_element (view, element);
+		gmathml_view_show_bbox (view, element->x, element->y, &element->bbox);
 		gmathml_view_show_background (view, element->x, element->y, &element->bbox);
 		element_class->render (element, view);
 		gmathml_view_pop_element (view);

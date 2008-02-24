@@ -168,8 +168,6 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 					     offsetof (GMathmlStyleElement, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					     offsetof (GMathmlStyleElement, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "background",
-					     offsetof (GMathmlStyleElement, math_background));
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

@@ -223,8 +223,6 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y, char const *t
 /*                   gmathml_variant_to_string (element->math_variant));*/
 
 	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
-	gmathml_view_show_layout (view, x, y + pango_units_to_double (baseline),
-				  baseline, &ink_rect, &rect);
 
 	cairo_set_source_rgba (view->priv->cairo,
 			       element->math_color.red,
@@ -274,11 +272,10 @@ gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox
 
 	if (view->priv->debug) {
 		cairo_move_to (view->priv->cairo, x, y);
-		cairo_set_line_width (view->priv->cairo, 0.1);
-		cairo_set_source_rgb (view->priv->cairo, 0,0,1);
+		cairo_set_source_rgba (view->priv->cairo, 0,0,1,0.1);
 		cairo_rectangle (view->priv->cairo, x, y, bbox->width, -bbox->height);
 		cairo_rectangle (view->priv->cairo, x, y, bbox->width, bbox->depth);
-		cairo_stroke (view->priv->cairo);
+		cairo_fill (view->priv->cairo);
 	}
 }
 
