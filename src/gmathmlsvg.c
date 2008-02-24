@@ -1,7 +1,7 @@
 /* -*- Mode: C; indent-tabs-mode: t; c-basic-offset: 4; tab-width: 4 -*- */
 /*
  * main.c
- * Copyright (C) Emmanuel Pacaud 2007 <emmanuel@gnome.org>
+ * Copyright © 2007-2008 Emmanuel Pacaud <emmanuel@gnome.org>
  * 
  * main.c is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
