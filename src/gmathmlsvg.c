@@ -86,6 +86,8 @@ int main(int argc, char **argv)
 
 		g_object_unref (view);
 
+		gdom_node_dump (document);
+
 		g_object_unref (document);
 	}
 

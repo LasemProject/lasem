@@ -285,10 +285,14 @@ static void
 gdom_node_finalize (GObject *object)
 {
 	GDomNode *node = GDOM_NODE (object);
-	GDomNode *child;
+	GDomNode *child, *next_child;
 
-	for (child = node->first_child; child != NULL; child = child->next_sibling)
+	child = node->first_child;
+	while (child != NULL) {
+		next_child = child->next_sibling;
 		g_object_unref (child);
+		child = next_child;
+	}
 
 	parent_class->finalize (object);
 }
