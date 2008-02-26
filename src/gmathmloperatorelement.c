@@ -135,7 +135,6 @@ gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_show_bbox (view, self->x, self->y, &self->bbox);
 	gmathml_view_show_operator (view, self->x, self->y - self->bbox.height, text,
 				    self->bbox.width, self->bbox.height + self->bbox.depth);
 
