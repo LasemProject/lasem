@@ -41,6 +41,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlstyleelement.c		\
 	gmathmlrowelement.c		\
 	gmathmlpaddedelement.c		\
+	gmathmlerrorelement.c		\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlutils.c			\
