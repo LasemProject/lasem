@@ -1,6 +1,6 @@
     <p>a + b - c 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <ci>a</ci> 
@@ -14,7 +14,7 @@
     </p> 
     <p>x + yz + z 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <ci>x</ci> 
@@ -29,7 +29,7 @@
     </p> 
     <p>x * (y + z) * z 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <times/> 
           <ci>x</ci> 
@@ -44,7 +44,7 @@
     </p> 
     <p>sin(a + b) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <sin/> 
           <apply> 
@@ -57,7 +57,7 @@
     </p> 
     <p>sin(x(y + z)z) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <sin/> 
           <apply> 
@@ -75,7 +75,7 @@
     </p> 
     <p>sin(xy)2b 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <times/> 
           <apply> 
@@ -96,7 +96,7 @@
     </p> 
     <p>(x + y) ^ (n - 3) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <power/> 
           <apply> 
@@ -114,7 +114,7 @@
     </p> 
     <p>limit as x goes to a of sin x using &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -136,7 +136,7 @@
     </p> 
     <p>limit as x goes to a of sin x using &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -158,7 +158,7 @@
     </p> 
     <p>limit as x goes to a of sin(x + y) using &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -184,7 +184,7 @@
     </p> 
     <p>limit as x goes to a of sin(x + y) using &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -210,7 +210,7 @@
     </p> 
     <p>limit as x goes to a of sin(x + y)2b using &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -244,7 +244,7 @@
     </p> 
     <p>limit as x goes to a of sin(x + y)2b using &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -278,7 +278,7 @@
     </p> 
     <p>quotient 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <quotient/> 
           <ci>a</ci> 
@@ -288,7 +288,7 @@
     </p> 
     <p>moment 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <moment/> 
           <degree> 
@@ -300,7 +300,7 @@
     </p> 
     <p>selector 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <selector/> 
           <matrix> 
@@ -319,7 +319,7 @@
     </p> 
     <p>factorial 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <factorial/> 
           <ci>n</ci> 
@@ -328,7 +328,7 @@
     </p> 
     <p>(a + b)! 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <factorial/> 
           <apply> 
@@ -345,7 +345,7 @@
     </p> 
     <p>inverse function 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <inverse/> 
           <ci>f</ci> 
@@ -354,7 +354,7 @@
     </p> 
     <p>inverse matrix 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <apply> 
             <inverse/> 
@@ -366,7 +366,7 @@
     </p> 
     <p>conjugate 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <mrow> 
           <apply> 
             <conjugate/> 
@@ -385,7 +385,7 @@
     </p> 
     <p>a + b + c 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <ci>a</ci> 
@@ -396,7 +396,7 @@
     </p> 
     <p>integral (a + x)dx 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <int/> 
           <bvar> 
@@ -418,7 +418,7 @@
     </p> 
     <p>-1 + 7 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <apply> 
@@ -431,7 +431,7 @@
     </p> 
     <p>7 + (-1) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <cn>7</cn> 
@@ -444,7 +444,7 @@
     </p> 
     <p>max 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <max/> 
           <bvar> 
@@ -478,7 +478,7 @@
     </p> 
     <p>lambda sin(x + 1) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <lambda> 
           <bvar> 
             <ci>x</ci> 
@@ -496,7 +496,7 @@
     </p> 
     <p>lambda integral f(x)dx 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <lambda> 
           <bvar> 
             <ci>b</ci> 
@@ -524,7 +524,7 @@
     </p> 
     <p>compose f and g 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <compose/> 
           <fn> 
@@ -538,7 +538,7 @@
     </p> 
     <p>compose f and g (x) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <apply> 
             <compose/> 
@@ -555,7 +555,7 @@
     </p> 
     <p>f(g(x)) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <fn> 
             <ci>f</ci> 
@@ -571,7 +571,7 @@
     </p> 
     <p>composition of f and inverse of f eq identity using &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <eq/> 
           <apply> 
@@ -592,7 +592,7 @@
     </p> 
     <p>composition of f and inverse of f eq identity using &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <eq/> 
           <apply> 
@@ -613,7 +613,7 @@
     </p> 
     <p>e^x 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <exp/> 
           <ci>x</ci> 
@@ -622,7 +622,7 @@
     </p> 
     <p>min(x, x not in B, x^2) using &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <min/> 
           <bvar> 
@@ -645,7 +645,7 @@
     </p> 
     <p>min(x, x not in B, x^2) using &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <min/> 
           <bvar> 
@@ -668,7 +668,7 @@
     </p> 
     <p>a mod (b) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <rem/> 
           <ci>a</ci> 
@@ -678,7 +678,7 @@
     </p> 
     <p>ab 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <times/> 
           <ci>a</ci> 
@@ -688,7 +688,7 @@
     </p> 
     <p>gcd(a b, c) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <gcd/> 
           <ci>a</ci> 
@@ -699,7 +699,7 @@
     </p> 
     <p>integral 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <int/> 
           <bvar> 
@@ -722,7 +722,7 @@
     </p> 
     <p>abs(x) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <abs/> 
           <ci>x</ci> 
@@ -731,7 +731,7 @@
     </p> 
     <p> tall abs(x) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <abs/> 
           <apply> 
@@ -744,7 +744,7 @@
     </p> 
     <p>abs(x + y + z) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <abs/> 
           <apply> 
@@ -758,7 +758,7 @@
     </p> 
     <p>x &#x0003E; 0 and z &amp;#x003c; 1 as &amp;#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <and/> 
           <reln> 
@@ -776,7 +776,7 @@
     </p> 
     <p>x &#x0003E; 0 and z &amp;#x003c; 1 as &amp;#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <and/> 
           <apply> 
@@ -794,7 +794,7 @@
     </p> 
     <p>a and b 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <and/> 
           <ci>a</ci> 
@@ -804,7 +804,7 @@
     </p> 
     <p>a or b 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <or/> 
           <ci>a</ci> 
@@ -814,7 +814,7 @@
     </p> 
     <p>a xor b 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <xor/> 
           <ci>a</ci> 
@@ -824,7 +824,7 @@
     </p> 
     <p>a eq b with &#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <eq/> 
           <ci>a</ci> 
@@ -834,7 +834,7 @@
     </p> 
     <p>a eq b with &#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <eq/> 
           <ci>a</ci> 
@@ -844,7 +844,7 @@
     </p> 
     <p>a neq b with &#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <neq/> 
           <ci>a</ci> 
@@ -854,7 +854,7 @@
     </p> 
     <p>a neq b with &#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <neq/> 
           <ci>a</ci> 
@@ -864,7 +864,7 @@
     </p> 
     <p>a &#x0003E; b with &amp;#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <gt/> 
           <ci>a</ci> 
@@ -874,7 +874,7 @@
     </p> 
     <p>a &#x0003E; b with &amp;#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <gt/> 
           <ci>a</ci> 
@@ -884,7 +884,7 @@
     </p> 
     <p>a &#x003c; b with &amp;#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <lt/> 
           <ci>a</ci> 
@@ -894,7 +894,7 @@
     </p> 
     <p>a &#x003c; b with &amp;#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <lt/> 
           <ci>a</ci> 
@@ -904,7 +904,7 @@
     </p> 
     <p>a &#x003c;= b with &amp;#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <geq/> 
           <ci>a</ci> 
@@ -914,7 +914,7 @@
     </p> 
     <p>a &#x0003E;= b with &amp;#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <geq/> 
           <ci>a</ci> 
@@ -924,7 +924,7 @@
     </p> 
     <p>a &#x003c;= b with &amp;#x003c;reln&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <leq/> 
           <ci>a</ci> 
@@ -934,7 +934,7 @@
     </p> 
     <p>a &#x003c;= b with &amp;#x003c;apply&amp;#x0003E; tag 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <leq/> 
           <ci>a</ci> 
@@ -944,7 +944,7 @@
     </p> 
     <p>set: {b, a, c} 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <set> 
           <ci>b</ci> 
           <ci>a</ci> 
@@ -954,7 +954,7 @@
     </p> 
     <p>set with condition 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <set> 
           <bvar> 
             <ci>x</ci> 
@@ -971,7 +971,7 @@
     </p> 
     <p>list: {b, a, c} 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <list> 
           <ci>b</ci> 
           <ci>a</ci> 
@@ -981,7 +981,7 @@
     </p> 
     <p>list: {x|x &#x003c; 5} 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <list order='numeric'> 
           <bvar> 
             <ci>x</ci> 
@@ -998,7 +998,7 @@
     </p> 
     <p>A union B 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <union/> 
           <ci>A</ci> 
@@ -1008,7 +1008,7 @@
     </p> 
     <p>A intersect B 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <intersect/> 
           <ci type='set'>A</ci> 
@@ -1018,7 +1018,7 @@
     </p> 
     <p>A intersect (B union C) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <intersect/> 
           <ci type='set'>A</ci> 
@@ -1032,7 +1032,7 @@
     </p> 
     <p>integralx in R as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <in/> 
           <ci>x</ci> 
@@ -1042,7 +1042,7 @@
     </p> 
     <p>x in R as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <in/> 
           <ci>x</ci> 
@@ -1052,7 +1052,7 @@
     </p> 
     <p>a in A 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <in/> 
           <ci>a</ci> 
@@ -1062,7 +1062,7 @@
     </p> 
     <p>a not in A as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <notin/> 
           <ci>a</ci> 
@@ -1072,7 +1072,7 @@
     </p> 
     <p>a not in A as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <notin/> 
           <ci>a</ci> 
@@ -1082,7 +1082,7 @@
     </p> 
     <p>not a 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <not/> 
           <ci>a</ci> 
@@ -1091,7 +1091,7 @@
     </p> 
     <p>not (a and b) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <not/> 
           <apply> 
@@ -1104,7 +1104,7 @@
     </p> 
     <p>A -&#x0003E; B (reln) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <implies/> 
           <ci>A</ci> 
@@ -1114,7 +1114,7 @@
     </p> 
     <p>A -&#x0003E; B (apply) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <implies/> 
           <ci>A</ci> 
@@ -1124,7 +1124,7 @@
     </p> 
     <p>forall 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <forall/> 
           <bvar> 
@@ -1144,7 +1144,7 @@
     </p> 
     <p>forall/and/lt/power 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <forall/> 
           <bvar> 
@@ -1187,7 +1187,7 @@
     </p> 
     <p>forall/exists/and/plus 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <forall/> 
           <bvar> 
@@ -1266,7 +1266,7 @@
     </p> 
     <p>exists 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <exists/> 
           <bvar> 
@@ -1287,7 +1287,7 @@
     </p> 
     <p>forall/exists/and/plus 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <forall/> 
           <bvar> 
@@ -1366,7 +1366,7 @@
     </p> 
     <p>ln a 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <ln/> 
           <ci>a</ci> 
@@ -1375,7 +1375,7 @@
     </p> 
     <p>log base 3 of x 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <log/> 
           <logbase> 
@@ -1387,7 +1387,7 @@
     </p> 
     <p>integer 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <int/> 
           <bvar> 
@@ -1411,7 +1411,7 @@
     </p> 
     <p>diff 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <diff/> 
           <bvar> 
@@ -1428,7 +1428,7 @@
     </p> 
     <p>partialdiff 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <partialdiff/> 
           <bvar> 
@@ -1452,7 +1452,7 @@
     </p> 
     <p>integral 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <int/> 
           <bvar> 
@@ -1475,7 +1475,7 @@
     </p> 
     <p>partialdiff 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <partialdiff/> 
           <bvar> 
@@ -1503,7 +1503,7 @@
     </p> 
     <p>divide 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <divide/> 
           <ci>a</ci> 
@@ -1513,7 +1513,7 @@
     </p> 
     <p>divide/plus/minus 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <divide/> 
           <apply> 
@@ -1531,7 +1531,7 @@
     </p> 
     <p>divide/plus/divide 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <divide/> 
           <apply> 
@@ -1549,7 +1549,7 @@
     </p> 
     <p>A is subset of B as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <subset/> 
           <ci>A</ci> 
@@ -1559,7 +1559,7 @@
     </p> 
     <p>A is subset of B as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <subset/> 
           <ci>A</ci> 
@@ -1569,7 +1569,7 @@
     </p> 
     <p>A is proper subset of B as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <prsubset/> 
           <ci>A</ci> 
@@ -1579,7 +1579,7 @@
     </p> 
     <p>A is proper subset of B as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <prsubset/> 
           <ci>A</ci> 
@@ -1589,7 +1589,7 @@
     </p> 
     <p>A is not subset of B as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <notsubset/> 
           <ci>A</ci> 
@@ -1599,7 +1599,7 @@
     </p> 
     <p>A is not subset of B as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <notsubset/> 
           <ci>A</ci> 
@@ -1609,7 +1609,7 @@
     </p> 
     <p>A is not proper subset of B as &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <notprsubset/> 
           <ci>A</ci> 
@@ -1619,7 +1619,7 @@
     </p> 
     <p>A is not proper subset of B as &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <notprsubset/> 
           <ci>A</ci> 
@@ -1629,7 +1629,7 @@
     </p> 
     <p>Set difference 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <setdiff/> 
           <ci>A</ci> 
@@ -1639,7 +1639,7 @@
     </p> 
     <p>Log base 3 of x + y 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <log/> 
           <logbase> 
@@ -1655,7 +1655,7 @@
     </p> 
     <p>Sum as x goes from a to b of f(x) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <sum/> 
           <bvar> 
@@ -1678,7 +1678,7 @@
     </p> 
     <p>sum 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <sum/> 
           <bvar> 
@@ -1702,7 +1702,7 @@
     </p> 
     <p>product 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <product/> 
           <bvar> 
@@ -1725,7 +1725,7 @@
     </p> 
     <p>product 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <product/> 
           <bvar> 
@@ -1749,7 +1749,7 @@
     </p> 
     <p>tendsto with &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <tendsto type='above'/> 
           <apply> 
@@ -1767,7 +1767,7 @@
     </p> 
     <p>tendsto with &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <tendsto type='above'/> 
           <apply> 
@@ -1785,7 +1785,7 @@
     </p> 
     <p>tendsto with &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <tendsto/> 
           <vector> 
@@ -1813,7 +1813,7 @@
     </p> 
     <p>tendsto with &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <tendsto/> 
           <vector> 
@@ -1841,7 +1841,7 @@
     </p> 
     <p>mean(X) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <mean/> 
           <ci>X</ci> 
@@ -1850,7 +1850,7 @@
     </p> 
     <p>root(a + b) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <root/> 
           <degree> 
@@ -1866,7 +1866,7 @@
     </p> 
     <p>standard deviation 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <sdev/> 
           <ci>X</ci> 
@@ -1875,7 +1875,7 @@
     </p> 
     <p>variance(X) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <variance/> 
           <ci>X</ci> 
@@ -1884,7 +1884,7 @@
     </p> 
     <p>median(X) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <median/> 
           <ci>X</ci> 
@@ -1893,7 +1893,7 @@
     </p> 
     <p>mode(X) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <mode/> 
           <ci>X</ci> 
@@ -1902,7 +1902,7 @@
     </p> 
     <p>degree 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <moment/> 
           <degree> 
@@ -1914,7 +1914,7 @@
     </p> 
     <p>vector 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <vector> 
           <cn>1</cn> 
           <cn>2</cn> 
@@ -1925,7 +1925,7 @@
     </p> 
     <p>matrix 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <matrix> 
           <matrixrow> 
             <cn>0</cn> 
@@ -1950,7 +1950,7 @@
     </p> 
     <p>determinant 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <determinant/> 
           <ci type='matrix'>A</ci> 
@@ -1959,7 +1959,7 @@
     </p> 
     <p>transpose 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <transpose/> 
           <ci type='matrix'>A</ci> 
@@ -1968,7 +1968,7 @@
     </p> 
     <p>semantics 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <semantics> 
           <apply> 
             <plus/> 
@@ -1985,7 +1985,7 @@
     </p> 
     <p>limit 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <limit/> 
           <bvar> 
@@ -2003,7 +2003,7 @@
     </p> 
     <p>symbol check 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <cn type='real'>4.56</cn> 
@@ -2030,7 +2030,7 @@
     </p> 
     <p>multiset 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <set type='multiset'> 
           <cn type='real'>4.56</cn> 
           <cn type='integer'>4.56</cn> 
@@ -2056,7 +2056,7 @@
     </p> 
     <p>tendsto type = "above" with &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <tendsto type='above'/> 
           <apply> 
@@ -2074,7 +2074,7 @@
     </p> 
     <p>tendsto type = "above" with &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <tendsto type='above'/> 
           <apply> 
@@ -2092,7 +2092,7 @@
     </p> 
     <p>tendsto type = "below" with &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <tendsto type='below'/> 
           <apply> 
@@ -2110,7 +2110,7 @@
     </p> 
     <p>tendsto type = "below" with &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <tendsto type='below'/> 
           <apply> 
@@ -2128,7 +2128,7 @@
     </p> 
     <p>tendsto type = "two-sided" with &#x003c;reln&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <reln> 
           <tendsto type='two-sided'/> 
           <apply> 
@@ -2146,7 +2146,7 @@
     </p> 
     <p>tendsto type = "two-sided" with &#x003c;apply&amp;#x0003E; 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <tendsto type='two-sided'/> 
           <apply> 
@@ -2164,7 +2164,7 @@
     </p> 
     <p>type check 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <ci type='real'>x</ci> 
@@ -2186,7 +2186,7 @@
     </p> 
     <p>sin + cos 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <plus/> 
           <apply> 
@@ -2202,7 +2202,7 @@
     </p> 
     <p>f(x) 
       <br /> 
-      <math> 
+      <math xmlns="http://www.w3.org/1998/Math/MathML"> 
         <apply> 
           <fn> 
             <ci>f</ci> 

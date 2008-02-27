@@ -1,4 +1,4 @@
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <mi mathcolor="blue">x</mi> 
       <mo>+</mo> 
       <mn mathcolor="#00ff33" color="purple">7

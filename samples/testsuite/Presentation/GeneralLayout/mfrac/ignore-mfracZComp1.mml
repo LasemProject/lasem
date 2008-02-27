@@ -1,6 +1,6 @@
     <ol>
       <li> Inline, auto, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mfrac> 
@@ -17,7 +17,7 @@
         </math>, numerator and denominator should render script size.
       </li>
       <li> Inline, display style, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mstyle displaystyle="true" scriptlevel="0"> 
@@ -36,7 +36,7 @@
         </math>, numerator and denominator should render normal size.
       </li> 
       <li> Inline, text style, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mstyle displaystyle="false" scriptlevel="0"> 
@@ -55,7 +55,7 @@
         </math>, numerator and denominator should render script size.
       </li>
       <li> Inline, auto, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mfrac linethickness="1pt"> 
@@ -74,7 +74,7 @@
         </math>, the superscripted 2 should be script-script size.
       </li>
       <li> Inline, display style, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mstyle displaystyle="true" scriptlevel="0"> 
@@ -103,7 +103,7 @@
         </math>, the superscripted 2 should be script size.
       </li>
       <li> Inline, text style, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mstyle displaystyle="true" scriptlevel="0"> 
               <mfrac linethickness="1pt"> 
@@ -135,7 +135,7 @@
         </math> the end.
       </li>
       <li> Inline, auto, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mfrac linethickness="0"> 
@@ -154,7 +154,7 @@
         </math> the end.
       </li>
       <li> Inline, display style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mstyle displaystyle="true" scriptlevel="0"> 
@@ -172,7 +172,7 @@
         </math> the end.
       </li>
       <li> Inline, text style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mstyle displaystyle="false" scriptlevel="0"> 
@@ -193,7 +193,7 @@
         </math> the end.
       </li>
       <li> Inline binomial, auto, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
@@ -209,7 +209,7 @@
         </math> the end.
       </li>
       <li> Inline binomial, display style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
@@ -233,7 +233,7 @@
         </math> the end.
       </li>
       <li> Inline binomial, text style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">(
@@ -258,7 +258,7 @@
         </math> the end.
       </li>
       <li> Inline built-in verts, auto, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">|
@@ -279,7 +279,7 @@
         </math> the end.
       </li>
       <li> Inline up arrows, display style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02191;
@@ -304,7 +304,7 @@
         </math> the end.
       </li>
       <li> Inline down arrows, text style, no line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02193;
@@ -329,7 +329,7 @@
         </math> the end.
       </li>
       <li> Inline floor, auto, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x0230A;
@@ -350,7 +350,7 @@
         </math> the end.
       </li>
       <li> Inline ceiling, display style, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02308;
@@ -375,7 +375,7 @@
         </math> the end.
       </li>
       <li> Inline updown arrows, text style, normal line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x02195;
@@ -400,7 +400,7 @@
         </math> the end.
       </li>
       <li> Inline double up arrows, auto, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D1;
@@ -421,7 +421,7 @@
         </math> the end.
       </li>
       <li> Inline double down arrows, display style, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D3;
@@ -446,7 +446,7 @@
         </math> the end.
       </li>
       <li> Inline double up down arrows, text style, thick line
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mo form="prefix" fence="true" stretchy="true" lspace="0em" rspace="0em">&#x021D5;
@@ -471,7 +471,7 @@
         </math> the end.
       </li>
       <li> Inline, styles auto, display and text
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mfrac> 
@@ -529,7 +529,7 @@
         </math> in a display.
       </li>
       <li> Inline fenced nested fractions
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mrow> 
               <mrow> 
@@ -641,7 +641,7 @@
         </math> in a display.
       </li>
       <li> LaTeX renders continued fractions
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="true" scriptlevel="0"> 
             <mfrac> 
               <mn>1</mn> 
@@ -777,7 +777,7 @@
         </math>
       </li>
       <li> Inline nested fracs
-        <math> 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"> 
           <mstyle displaystyle="false" scriptlevel="0"> 
             <mfrac> 
               <msup> 

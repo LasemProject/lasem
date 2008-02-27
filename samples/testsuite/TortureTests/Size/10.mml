@@ -1,4 +1,4 @@
-    <math>
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
       <msup>
         <mi>x</mi>
         <mn>0</mn>
@@ -9,7 +9,7 @@
       <mi>&#x003B1;</mi>
     </math><span>. 
     Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>1</mn>
@@ -19,7 +19,7 @@
         <mo>=</mo>
         <mi>&#x003B2;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>2</mn>
@@ -29,7 +29,7 @@
         <mo>=</mo>
         <mi>&#x003B3;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>3</mn>
@@ -39,7 +39,7 @@
         <mo>=</mo>
         <mi>&#x003B4;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>4</mn>
@@ -49,7 +49,7 @@
         <mo>=</mo>
         <mi>&#x003B1;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>5</mn>
@@ -59,7 +59,7 @@
         <mo>=</mo>
         <mi>&#x003B2;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>6</mn>
@@ -69,7 +69,7 @@
         <mo>=</mo>
         <mi>&#x003B3;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>7</mn>
@@ -79,7 +79,7 @@
         <mo>=</mo>
         <mi>&#x003B4;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>8</mn>
@@ -89,7 +89,7 @@
         <mo>=</mo>
         <mi>&#x003B1;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>9</mn>
@@ -99,7 +99,7 @@
         <mo>=</mo>
         <mi>&#x003B2;</mi>
       </math><span>. Consider the equation</span> 
-      <math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
         <msup>
           <mi>x</mi>
           <mn>10</mn>

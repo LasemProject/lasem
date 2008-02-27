@@ -1,4 +1,4 @@
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <mtable columnwidth='auto 9em fit' rowspacing='3ex' columnalign='left'> 
         <mtr> 
           <mtd> 

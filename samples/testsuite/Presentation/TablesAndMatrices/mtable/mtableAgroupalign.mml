@@ -1,4 +1,4 @@
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <mtable groupalign="{left, right} {right decimalpoint} ">
         <mtr groupalign="{left, right}">
           <mtd groupalign="left"> 

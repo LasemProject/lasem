@@ -1,5 +1,5 @@
     <span>Consider the equation</span>
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>0</mn> 
@@ -10,7 +10,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>1</mn> 
@@ -21,7 +21,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>2</mn> 
@@ -32,7 +32,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>3</mn> 
@@ -43,7 +43,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>4</mn> 
@@ -54,7 +54,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>5</mn> 
@@ -65,7 +65,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>6</mn> 
@@ -76,7 +76,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>7</mn> 
@@ -87,7 +87,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>8</mn> 
@@ -98,7 +98,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>9</mn> 
@@ -109,7 +109,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>10</mn> 
@@ -120,7 +120,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>11</mn> 
@@ -131,7 +131,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>12</mn> 
@@ -142,7 +142,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>13</mn> 
@@ -153,7 +153,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>14</mn> 
@@ -164,7 +164,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>15</mn> 
@@ -175,7 +175,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>16</mn> 
@@ -186,7 +186,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>17</mn> 
@@ -197,7 +197,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>18</mn> 
@@ -208,7 +208,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>19</mn> 
@@ -219,7 +219,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>20</mn> 
@@ -230,7 +230,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>21</mn> 
@@ -241,7 +241,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>22</mn> 
@@ -252,7 +252,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>23</mn> 
@@ -263,7 +263,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>24</mn> 
@@ -274,7 +274,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>25</mn> 
@@ -285,7 +285,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>26</mn> 
@@ -296,7 +296,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>27</mn> 
@@ -307,7 +307,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>28</mn> 
@@ -318,7 +318,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>29</mn> 
@@ -329,7 +329,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>30</mn> 
@@ -340,7 +340,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>31</mn> 
@@ -351,7 +351,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>32</mn> 
@@ -362,7 +362,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>33</mn> 
@@ -373,7 +373,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>34</mn> 
@@ -384,7 +384,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>35</mn> 
@@ -395,7 +395,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>36</mn> 
@@ -406,7 +406,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>37</mn> 
@@ -417,7 +417,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>38</mn> 
@@ -428,7 +428,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>39</mn> 
@@ -439,7 +439,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>40</mn> 
@@ -450,7 +450,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>41</mn> 
@@ -461,7 +461,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>42</mn> 
@@ -472,7 +472,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>43</mn> 
@@ -483,7 +483,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>44</mn> 
@@ -494,7 +494,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>45</mn> 
@@ -505,7 +505,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>46</mn> 
@@ -516,7 +516,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>47</mn> 
@@ -527,7 +527,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>48</mn> 
@@ -538,7 +538,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>49</mn> 
@@ -549,7 +549,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>50</mn> 
@@ -560,7 +560,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>51</mn> 
@@ -571,7 +571,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>52</mn> 
@@ -582,7 +582,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>53</mn> 
@@ -593,7 +593,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>54</mn> 
@@ -604,7 +604,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>55</mn> 
@@ -615,7 +615,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>56</mn> 
@@ -626,7 +626,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>57</mn> 
@@ -637,7 +637,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>58</mn> 
@@ -648,7 +648,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>59</mn> 
@@ -659,7 +659,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>60</mn> 
@@ -670,7 +670,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>61</mn> 
@@ -681,7 +681,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>62</mn> 
@@ -692,7 +692,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>63</mn> 
@@ -703,7 +703,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>64</mn> 
@@ -714,7 +714,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>65</mn> 
@@ -725,7 +725,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>66</mn> 
@@ -736,7 +736,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>67</mn> 
@@ -747,7 +747,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>68</mn> 
@@ -758,7 +758,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>69</mn> 
@@ -769,7 +769,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>70</mn> 
@@ -780,7 +780,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>71</mn> 
@@ -791,7 +791,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>72</mn> 
@@ -802,7 +802,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>73</mn> 
@@ -813,7 +813,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>74</mn> 
@@ -824,7 +824,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>75</mn> 
@@ -835,7 +835,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>76</mn> 
@@ -846,7 +846,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>77</mn> 
@@ -857,7 +857,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>78</mn> 
@@ -868,7 +868,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>79</mn> 
@@ -879,7 +879,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>80</mn> 
@@ -890,7 +890,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>81</mn> 
@@ -901,7 +901,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>82</mn> 
@@ -912,7 +912,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>83</mn> 
@@ -923,7 +923,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>84</mn> 
@@ -934,7 +934,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>85</mn> 
@@ -945,7 +945,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>86</mn> 
@@ -956,7 +956,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>87</mn> 
@@ -967,7 +967,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>88</mn> 
@@ -978,7 +978,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>89</mn> 
@@ -989,7 +989,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>90</mn> 
@@ -1000,7 +1000,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>91</mn> 
@@ -1011,7 +1011,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>92</mn> 
@@ -1022,7 +1022,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>93</mn> 
@@ -1033,7 +1033,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>94</mn> 
@@ -1044,7 +1044,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>95</mn> 
@@ -1055,7 +1055,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>96</mn> 
@@ -1066,7 +1066,7 @@
       <mi>&#x003B1;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>97</mn> 
@@ -1077,7 +1077,7 @@
       <mi>&#x003B2;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>98</mn> 
@@ -1088,7 +1088,7 @@
       <mi>&#x003B3;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>99</mn> 
@@ -1099,7 +1099,7 @@
       <mi>&#x003B4;</mi> 
     </math> 
     <span>. Consider the equation</span> 
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <msup> 
         <mi>x</mi> 
         <mn>100</mn> 

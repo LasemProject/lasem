@@ -1,4 +1,4 @@
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <mtable frame="solid" columnlines="solid" rowlines="solid" rowalign="top bottom center baseline" displaystyle="true"> 
         <mtr>
           <mtd>

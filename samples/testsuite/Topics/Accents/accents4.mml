@@ -1,4 +1,4 @@
-    <math> 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
       <mover> 
         <mi>x</mi> 
         <mo>&#x000A8;</mo> 
