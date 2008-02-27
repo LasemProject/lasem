@@ -1,0 +1,215 @@
+          <math> 
+            <mstyle displaystyle='true'> 
+              <mrow> 
+                <mn>1</mn> 
+                <mo>+</mo> 
+                    <mrow> 
+                      <munderover> 
+                        <mo>&#x02211;</mo> 
+                        <mrow> 
+                          <mi>k</mi> 
+                          <mo>=</mo> 
+                          <mn>1</mn> 
+                        </mrow> 
+                        <mi>&#x0221E;</mi> 
+                      </munderover> 
+                      <mfrac> 
+                        <msubsup> 
+                          <mi>q</mi> 
+                          <mrow></mrow> 
+                          <mrow> 
+                            <msubsup> 
+                              <mi>k</mi> 
+                              <mrow></mrow> 
+                              <mn>2</mn> 
+                            </msubsup> 
+                            <mo>+</mo> 
+                            <mi>k</mi> 
+                          </mrow> 
+                        </msubsup> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <mi>q</mi> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>2</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo>&#x022EF;</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mi>k</mi> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                    </mrow> 
+                    <mrow> 
+                      <mfrac> 
+                        <msubsup> 
+                          <mi>q</mi> 
+                          <mrow></mrow> 
+                          <mn>2</mn> 
+                        </msubsup> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <mi>q</mi> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                      <mo>+</mo> 
+                      <mfrac> 
+                        <msubsup> 
+                          <mi>q</mi> 
+                          <mrow></mrow> 
+                          <mn>6</mn> 
+                        </msubsup> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <mi>q</mi> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>2</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                      <mo>+</mo> 
+                      <mo>&#x022EF;</mo> 
+                    </mrow> 
+                <mo>=</mo> 
+                    <mrow> 
+                      <munderover> 
+                        <mo>&#x0220F;</mo> 
+                        <mrow> 
+                          <mi>j</mi> 
+                          <mo>=</mo> 
+                          <mn>0</mn> 
+                        </mrow> 
+                        <mi>&#x0221E;</mi> 
+                      </munderover> 
+                      <mfrac> 
+                        <mn>1</mn> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mrow> 
+                              <mn>5</mn> 
+                              <mi>j</mi> 
+                              <mo>+</mo> 
+                              <mn>2</mn> 
+                            </mrow> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mrow> 
+                              <mn>5</mn> 
+                              <mi>j</mi> 
+                              <mo>+</mo> 
+                              <mn>3</mn> 
+                            </mrow> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                    </mrow> 
+                    <mrow> 
+                      <mfrac> 
+                        <mn>1</mn> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>2</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>3</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                      <mo>&#x000D7;</mo> 
+                      <mfrac> 
+                        <mn>1</mn> 
+                        <mrow> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>7</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                          <mo stretchy='false'>(</mo> 
+                          <mn>1</mn> 
+                          <mo>-</mo> 
+                          <msubsup> 
+                            <mi>q</mi> 
+                            <mrow></mrow> 
+                            <mn>8</mn> 
+                          </msubsup> 
+                          <mo stretchy='false'>)</mo> 
+                        </mrow> 
+                      </mfrac> 
+                      <mo>&#x000D7;</mo> 
+                      <mo>&#x022EF;</mo> 
+                    </mrow> 
+                <mo>,</mo> 
+                <mtext>&#x02009;&amp;#x0200A;&amp;#x0200A;</mtext> 
+                <mtext>&#x02009;&amp;#x0200A;&amp;#x0200A;</mtext> 
+                <mstyle fontstyle='normal'> 
+                  <mrow> 
+                    <mi>f</mi> 
+                    <mi>o</mi> 
+                    <mi>r</mi> 
+                  </mrow> 
+                </mstyle> 
+                <mtext>&#x0205F;</mtext> 
+                <mo stretchy='false'>|</mo> 
+                <mi>q</mi> 
+                <mo stretchy='false'>|</mo> 
+                <mo>&#x003c;</mo> 
+                <mn>1</mn> 
+                <mi>.</mi> 
+              </mrow> 
+            </mstyle> 
+	    </math>
