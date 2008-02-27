@@ -1,0 +1,2213 @@
+    <p>a + b - c 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <ci>a</ci> 
+          <apply> 
+            <minus/> 
+            <ci>b</ci> 
+            <ci>c</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>x + yz + z 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <ci>x</ci> 
+          <apply> 
+            <times/> 
+            <ci>y</ci> 
+            <ci>z</ci> 
+          </apply> 
+          <ci>z</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>x * (y + z) * z 
+      <br /> 
+      <math> 
+        <apply> 
+          <times/> 
+          <ci>x</ci> 
+          <apply> 
+            <plus/> 
+            <ci>y</ci> 
+            <ci>z</ci> 
+          </apply> 
+          <ci>z</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>sin(a + b) 
+      <br /> 
+      <math> 
+        <apply> 
+          <sin/> 
+          <apply> 
+            <plus/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>sin(x(y + z)z) 
+      <br /> 
+      <math> 
+        <apply> 
+          <sin/> 
+          <apply> 
+            <times/> 
+            <ci>x</ci> 
+            <apply> 
+              <plus/> 
+              <ci>y</ci> 
+              <ci>z</ci> 
+            </apply> 
+            <ci>z</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>sin(xy)2b 
+      <br /> 
+      <math> 
+        <apply> 
+          <times/> 
+          <apply> 
+            <sin/> 
+            <apply> 
+              <times/> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </apply> 
+          <apply> 
+            <times/> 
+            <cn>2</cn> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>(x + y) ^ (n - 3) 
+      <br /> 
+      <math> 
+        <apply> 
+          <power/> 
+          <apply> 
+            <plus/> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+          </apply> 
+          <apply> 
+            <minus/> 
+            <cn>n</cn> 
+            <cn>3</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin x using &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <sin/> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin x using &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <sin/> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin(x + y) using &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <sin/> 
+            <apply> 
+              <plus/> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin(x + y) using &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <sin/> 
+            <apply> 
+              <plus/> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin(x + y)2b using &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <times/> 
+            <apply> 
+              <sin/> 
+              <apply> 
+                <times/> 
+                <ci>x</ci> 
+                <ci>y</ci> 
+              </apply> 
+            </apply> 
+            <apply> 
+              <times/> 
+              <cn>2</cn> 
+              <ci>b</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>limit as x goes to a of sin(x + y)2b using &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <tendsto type='above'/> 
+              <ci>x</ci> 
+              <ci>a</ci> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <times/> 
+            <apply> 
+              <sin/> 
+              <apply> 
+                <times/> 
+                <ci>x</ci> 
+                <ci>y</ci> 
+              </apply> 
+            </apply> 
+            <apply> 
+              <times/> 
+              <cn>2</cn> 
+              <ci>b</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>quotient 
+      <br /> 
+      <math> 
+        <apply> 
+          <quotient/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>moment 
+      <br /> 
+      <math> 
+        <apply> 
+          <moment/> 
+          <degree> 
+            <cn>3</cn> 
+          </degree> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>selector 
+      <br /> 
+      <math> 
+        <apply> 
+          <selector/> 
+          <matrix> 
+            <matrixrow> 
+              <cn>1</cn> 
+              <cn>2</cn> 
+            </matrixrow> 
+            <matrixrow> 
+              <cn>3</cn> 
+              <cn>4</cn> 
+            </matrixrow> 
+          </matrix> 
+          <cn>1</cn> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>factorial 
+      <br /> 
+      <math> 
+        <apply> 
+          <factorial/> 
+          <ci>n</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>(a + b)! 
+      <br /> 
+      <math> 
+        <apply> 
+          <factorial/> 
+          <apply> 
+            <plus/> 
+            <apply> 
+              <plus/> 
+              <ci>n</ci> 
+              <ci>m</ci> 
+            </apply> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>inverse function 
+      <br /> 
+      <math> 
+        <apply> 
+          <inverse/> 
+          <ci>f</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>inverse matrix 
+      <br /> 
+      <math> 
+        <apply> 
+          <apply> 
+            <inverse/> 
+            <ci type='matrix'>a</ci> 
+          </apply> 
+          <ci>A</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>conjugate 
+      <br /> 
+      <math> 
+        <mrow> 
+          <apply> 
+            <conjugate/> 
+            <apply> 
+              <plus/> 
+              <ci>x</ci> 
+              <apply> 
+                <times/> 
+                <cn>&#x02148;</cn> 
+                <ci>y</ci> 
+              </apply> 
+            </apply> 
+          </apply> 
+        </mrow> 
+      </math> 
+    </p> 
+    <p>a + b + c 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+          <ci>c</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>integral (a + x)dx 
+      <br /> 
+      <math> 
+        <apply> 
+          <int/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <cn>0</cn> 
+          </lowlimit> 
+          <uplimit> 
+            <ci>a</ci> 
+          </uplimit> 
+          <apply> 
+            <plus/> 
+            <ci>a</ci> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>-1 + 7 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <apply> 
+            <minus/> 
+            <cn>1</cn> 
+          </apply> 
+          <cn>7</cn> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>7 + (-1) 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <cn>7</cn> 
+          <apply> 
+            <minus/> 
+            <cn>1</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>max 
+      <br /> 
+      <math> 
+        <apply> 
+          <max/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <and/> 
+              <reln> 
+                <gt/> 
+                <ci>x</ci> 
+                <cn>0</cn> 
+              </reln> 
+              <reln> 
+                <lt/> 
+                <ci>x</ci> 
+                <cn>1</cn> 
+              </reln> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <minus/> 
+            <ci>x</ci> 
+            <apply> 
+              <sin/> 
+              <ci>x</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>lambda sin(x + 1) 
+      <br /> 
+      <math> 
+        <lambda> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <apply> 
+            <sin/> 
+            <apply> 
+              <plus/> 
+              <ci>x</ci> 
+              <cn>1</cn> 
+            </apply> 
+          </apply> 
+        </lambda> 
+      </math> 
+    </p> 
+    <p>lambda integral f(x)dx 
+      <br /> 
+      <math> 
+        <lambda> 
+          <bvar> 
+            <ci>b</ci> 
+          </bvar> 
+          <apply> 
+            <int/> 
+            <bvar> 
+              <ci>x</ci> 
+            </bvar> 
+            <lowlimit> 
+              <ci>a</ci> 
+            </lowlimit> 
+            <uplimit> 
+              <ci>b</ci> 
+            </uplimit> 
+            <apply> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+              <ci>x</ci> 
+            </apply> 
+          </apply> 
+        </lambda> 
+      </math> 
+    </p> 
+    <p>compose f and g 
+      <br /> 
+      <math> 
+        <apply> 
+          <compose/> 
+          <fn> 
+            <ci>f</ci> 
+          </fn> 
+          <fn> 
+            <ci>g</ci> 
+          </fn> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>compose f and g (x) 
+      <br /> 
+      <math> 
+        <apply> 
+          <apply> 
+            <compose/> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <fn> 
+              <ci>g</ci> 
+            </fn> 
+          </apply> 
+          <ci>x</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>f(g(x)) 
+      <br /> 
+      <math> 
+        <apply> 
+          <fn> 
+            <ci>f</ci> 
+          </fn> 
+          <apply> 
+            <fn> 
+              <ci>g</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>composition of f and inverse of f eq identity using &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <eq/> 
+          <apply> 
+            <compose/> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <apply> 
+              <inverse/> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+            </apply> 
+          </apply> 
+          <ident/> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>composition of f and inverse of f eq identity using &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <eq/> 
+          <apply> 
+            <compose/> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <apply> 
+              <inverse/> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+            </apply> 
+          </apply> 
+          <ident/> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>e^x 
+      <br /> 
+      <math> 
+        <apply> 
+          <exp/> 
+          <ci>x</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>min(x, x not in B, x^2) using &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <min/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <notin/> 
+              <ci>x</ci> 
+              <ci type='set'>B</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>min(x, x not in B, x^2) using &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <min/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <notin/> 
+              <ci>x</ci> 
+              <ci type='set'>B</ci> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a mod (b) 
+      <br /> 
+      <math> 
+        <apply> 
+          <rem/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>ab 
+      <br /> 
+      <math> 
+        <apply> 
+          <times/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>gcd(a b, c) 
+      <br /> 
+      <math> 
+        <apply> 
+          <gcd/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+          <ci>c</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>integral 
+      <br /> 
+      <math> 
+        <apply> 
+          <int/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <cn>0</cn> 
+          </lowlimit> 
+          <uplimit> 
+            <ci>a</ci> 
+          </uplimit> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>abs(x) 
+      <br /> 
+      <math> 
+        <apply> 
+          <abs/> 
+          <ci>x</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p> tall abs(x) 
+      <br /> 
+      <math> 
+        <apply> 
+          <abs/> 
+          <apply> 
+            <divide/> 
+            <ci>H</ci> 
+            <ci>K</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>abs(x + y + z) 
+      <br /> 
+      <math> 
+        <apply> 
+          <abs/> 
+          <apply> 
+            <plus/> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+            <ci>z</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>x &#x0003E; 0 and z &amp;#x003c; 1 as &amp;#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <and/> 
+          <reln> 
+            <gt/> 
+            <ci>x</ci> 
+            <cn>0</cn> 
+          </reln> 
+          <reln> 
+            <lt/> 
+            <ci>x</ci> 
+            <cn>1</cn> 
+          </reln> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>x &#x0003E; 0 and z &amp;#x003c; 1 as &amp;#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <and/> 
+          <apply> 
+            <gt/> 
+            <ci>x</ci> 
+            <cn>0</cn> 
+          </apply> 
+          <apply> 
+            <lt/> 
+            <ci>x</ci> 
+            <cn>1</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a and b 
+      <br /> 
+      <math> 
+        <apply> 
+          <and/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a or b 
+      <br /> 
+      <math> 
+        <apply> 
+          <or/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a xor b 
+      <br /> 
+      <math> 
+        <apply> 
+          <xor/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a eq b with &#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <eq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a eq b with &#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <eq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a neq b with &#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <neq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a neq b with &#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <neq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a &#x0003E; b with &amp;#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <gt/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a &#x0003E; b with &amp;#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <gt/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a &#x003c; b with &amp;#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <lt/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a &#x003c; b with &amp;#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <lt/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a &#x003c;= b with &amp;#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <geq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a &#x0003E;= b with &amp;#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <geq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a &#x003c;= b with &amp;#x003c;reln&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <reln> 
+          <leq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a &#x003c;= b with &amp;#x003c;apply&amp;#x0003E; tag 
+      <br /> 
+      <math> 
+        <apply> 
+          <leq/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>set: {b, a, c} 
+      <br /> 
+      <math> 
+        <set> 
+          <ci>b</ci> 
+          <ci>a</ci> 
+          <ci>c</ci> 
+        </set> 
+      </math> 
+    </p> 
+    <p>set with condition 
+      <br /> 
+      <math> 
+        <set> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <lt/> 
+              <ci>x</ci> 
+              <cn>5</cn> 
+            </reln> 
+          </condition> 
+        </set> 
+      </math> 
+    </p> 
+    <p>list: {b, a, c} 
+      <br /> 
+      <math> 
+        <list> 
+          <ci>b</ci> 
+          <ci>a</ci> 
+          <ci>c</ci> 
+        </list> 
+      </math> 
+    </p> 
+    <p>list: {x|x &#x003c; 5} 
+      <br /> 
+      <math> 
+        <list order='numeric'> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <lt/> 
+              <ci>x</ci> 
+              <cn>5</cn> 
+            </reln> 
+          </condition> 
+        </list> 
+      </math> 
+    </p> 
+    <p>A union B 
+      <br /> 
+      <math> 
+        <apply> 
+          <union/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A intersect B 
+      <br /> 
+      <math> 
+        <apply> 
+          <intersect/> 
+          <ci type='set'>A</ci> 
+          <ci type='set'>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A intersect (B union C) 
+      <br /> 
+      <math> 
+        <apply> 
+          <intersect/> 
+          <ci type='set'>A</ci> 
+          <apply> 
+            <union/> 
+            <ci type='set'>B</ci> 
+            <ci type='set'>C</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>integralx in R as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <in/> 
+          <ci>x</ci> 
+          <ci type='set'>R</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>x in R as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <in/> 
+          <ci>x</ci> 
+          <ci type='set'>R</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>a in A 
+      <br /> 
+      <math> 
+        <reln> 
+          <in/> 
+          <ci>a</ci> 
+          <ci type='set'>A</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a not in A as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <notin/> 
+          <ci>a</ci> 
+          <ci>A</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>a not in A as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <notin/> 
+          <ci>a</ci> 
+          <ci>A</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>not a 
+      <br /> 
+      <math> 
+        <apply> 
+          <not/> 
+          <ci>a</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>not (a and b) 
+      <br /> 
+      <math> 
+        <apply> 
+          <not/> 
+          <apply> 
+            <and/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A -&#x0003E; B (reln) 
+      <br /> 
+      <math> 
+        <reln> 
+          <implies/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>A -&#x0003E; B (apply) 
+      <br /> 
+      <math> 
+        <apply> 
+          <implies/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>forall 
+      <br /> 
+      <math> 
+        <apply> 
+          <forall/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <reln> 
+            <eq/> 
+            <apply> 
+              <minus/> 
+              <ci>x</ci> 
+              <ci>x</ci> 
+            </apply> 
+            <cn>0</cn> 
+          </reln> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>forall/and/lt/power 
+      <br /> 
+      <math> 
+        <apply> 
+          <forall/> 
+          <bvar> 
+            <ci>p</ci> 
+          </bvar> 
+          <bvar> 
+            <ci>q</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <and/> 
+              <reln> 
+                <in/> 
+                <ci>p</ci> 
+                <ci type='set'>Q</ci> 
+              </reln> 
+              <reln> 
+                <in/> 
+                <ci>q</ci> 
+                <ci type='set'>Q</ci> 
+              </reln> 
+              <reln> 
+                <lt/> 
+                <ci>p</ci> 
+                <ci>q</ci> 
+              </reln> 
+            </apply> 
+          </condition> 
+          <reln> 
+            <lt/> 
+            <ci>p</ci> 
+            <apply> 
+              <power/> 
+              <ci>q</ci> 
+              <cn>2</cn> 
+            </apply> 
+          </reln> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>forall/exists/and/plus 
+      <br /> 
+      <math> 
+        <apply> 
+          <forall/> 
+          <bvar> 
+            <ci>n</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <and/> 
+              <reln> 
+                <in/> 
+                <ci>n</ci> 
+                <ci type='set'>Z</ci> 
+              </reln> 
+              <reln> 
+                <gt/> 
+                <ci>n</ci> 
+                <cn>0</cn> 
+              </reln> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <exists/> 
+            <bvar> 
+              <ci>x</ci> 
+            </bvar> 
+            <bvar> 
+              <ci>y</ci> 
+            </bvar> 
+            <bvar> 
+              <ci>z</ci> 
+            </bvar> 
+            <condition> 
+              <apply> 
+                <and/> 
+                <reln> 
+                  <in/> 
+                  <ci>x</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+                <reln> 
+                  <in/> 
+                  <ci>y</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+                <reln> 
+                  <in/> 
+                  <ci>z</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+              </apply> 
+            </condition> 
+            <reln> 
+              <eq/> 
+              <apply> 
+                <plus/> 
+                <apply> 
+                  <power/> 
+                  <ci>x</ci> 
+                  <ci>n</ci> 
+                </apply> 
+                <apply> 
+                  <power/> 
+                  <ci>y</ci> 
+                  <ci>n</ci> 
+                </apply> 
+              </apply> 
+              <apply> 
+                <power/> 
+                <ci>z</ci> 
+                <ci>n</ci> 
+              </apply> 
+            </reln> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>exists 
+      <br /> 
+      <math> 
+        <apply> 
+          <exists/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <reln> 
+            <eq/> 
+            <apply> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+              <ci>x</ci> 
+            </apply> 
+            <cn>0</cn> 
+          </reln> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>forall/exists/and/plus 
+      <br /> 
+      <math> 
+        <apply> 
+          <forall/> 
+          <bvar> 
+            <ci>n</ci> 
+          </bvar> 
+          <condition> 
+            <apply> 
+              <and/> 
+              <reln> 
+                <in/> 
+                <ci>n</ci> 
+                <ci type='set'>Z</ci> 
+              </reln> 
+              <reln> 
+                <gt/> 
+                <ci>n</ci> 
+                <cn>0</cn> 
+              </reln> 
+            </apply> 
+          </condition> 
+          <apply> 
+            <exists/> 
+            <bvar> 
+              <ci>x</ci> 
+            </bvar> 
+            <bvar> 
+              <ci>y</ci> 
+            </bvar> 
+            <bvar> 
+              <ci>z</ci> 
+            </bvar> 
+            <condition> 
+              <apply> 
+                <and/> 
+                <reln> 
+                  <in/> 
+                  <ci>x</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+                <reln> 
+                  <in/> 
+                  <ci>y</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+                <reln> 
+                  <in/> 
+                  <ci>z</ci> 
+                  <ci type='set'>Z</ci> 
+                </reln> 
+              </apply> 
+            </condition> 
+            <reln> 
+              <eq/> 
+              <apply> 
+                <plus/> 
+                <apply> 
+                  <power/> 
+                  <ci>x</ci> 
+                  <ci>n</ci> 
+                </apply> 
+                <apply> 
+                  <power/> 
+                  <ci>y</ci> 
+                  <ci>n</ci> 
+                </apply> 
+              </apply> 
+              <apply> 
+                <power/> 
+                <ci>z</ci> 
+                <ci>n</ci> 
+              </apply> 
+            </reln> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>ln a 
+      <br /> 
+      <math> 
+        <apply> 
+          <ln/> 
+          <ci>a</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>log base 3 of x 
+      <br /> 
+      <math> 
+        <apply> 
+          <log/> 
+          <logbase> 
+            <cn>3</cn> 
+          </logbase> 
+          <ci>x</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>integer 
+      <br /> 
+      <math> 
+        <apply> 
+          <int/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <in/> 
+              <ci>x</ci> 
+              <ci type='set'>D</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>diff 
+      <br /> 
+      <math> 
+        <apply> 
+          <diff/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>partialdiff 
+      <br /> 
+      <math> 
+        <apply> 
+          <partialdiff/> 
+          <bvar> 
+            <ci>x</ci> 
+            <degree> 
+              <cn>2</cn> 
+            </degree> 
+          </bvar> 
+          <bvar> 
+            <ci>y</ci> 
+          </bvar> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>integral 
+      <br /> 
+      <math> 
+        <apply> 
+          <int/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <ci>a</ci> 
+          </lowlimit> 
+          <uplimit> 
+            <ci>b</ci> 
+          </uplimit> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>partialdiff 
+      <br /> 
+      <math> 
+        <apply> 
+          <partialdiff/> 
+          <bvar> 
+            <ci>x</ci> 
+            <degree> 
+              <ci>n</ci> 
+            </degree> 
+          </bvar> 
+          <bvar> 
+            <ci>y</ci> 
+            <degree> 
+              <ci>m</ci> 
+            </degree> 
+          </bvar> 
+          <apply> 
+            <sin/> 
+            <apply> 
+              <times/> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>divide 
+      <br /> 
+      <math> 
+        <apply> 
+          <divide/> 
+          <ci>a</ci> 
+          <ci>b</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>divide/plus/minus 
+      <br /> 
+      <math> 
+        <apply> 
+          <divide/> 
+          <apply> 
+            <plus/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+          <apply> 
+            <minus/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>divide/plus/divide 
+      <br /> 
+      <math> 
+        <apply> 
+          <divide/> 
+          <apply> 
+            <plus/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+          <apply> 
+            <divide/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A is subset of B as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <subset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>A is subset of B as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <subset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A is proper subset of B as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <prsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>A is proper subset of B as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <prsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A is not subset of B as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <notsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>A is not subset of B as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <notsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>A is not proper subset of B as &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <notprsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>A is not proper subset of B as &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <notprsubset/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>Set difference 
+      <br /> 
+      <math> 
+        <apply> 
+          <setdiff/> 
+          <ci>A</ci> 
+          <ci>B</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>Log base 3 of x + y 
+      <br /> 
+      <math> 
+        <apply> 
+          <log/> 
+          <logbase> 
+            <cn>3</cn> 
+          </logbase> 
+          <apply> 
+            <plus/> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>Sum as x goes from a to b of f(x) 
+      <br /> 
+      <math> 
+        <apply> 
+          <sum/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <ci>a</ci> 
+          </lowlimit> 
+          <uplimit> 
+            <ci>b</ci> 
+          </uplimit> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>sum 
+      <br /> 
+      <math> 
+        <apply> 
+          <sum/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <in/> 
+              <ci>x</ci> 
+              <ci type='set'>B</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>product 
+      <br /> 
+      <math> 
+        <apply> 
+          <product/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <ci>a</ci> 
+          </lowlimit> 
+          <uplimit> 
+            <ci>b</ci> 
+          </uplimit> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>product 
+      <br /> 
+      <math> 
+        <apply> 
+          <product/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <condition> 
+            <reln> 
+              <in/> 
+              <ci>x</ci> 
+              <ci type='set'>B</ci> 
+            </reln> 
+          </condition> 
+          <apply> 
+            <fn> 
+              <ci>f</ci> 
+            </fn> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>tendsto with &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <tendsto type='above'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>tendsto with &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <tendsto type='above'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>tendsto with &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <tendsto/> 
+          <vector> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+          </vector> 
+          <vector> 
+            <apply> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+            <apply> 
+              <fn> 
+                <ci>g</ci> 
+              </fn> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </vector> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>tendsto with &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <tendsto/> 
+          <vector> 
+            <ci>x</ci> 
+            <ci>y</ci> 
+          </vector> 
+          <vector> 
+            <apply> 
+              <fn> 
+                <ci>f</ci> 
+              </fn> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+            <apply> 
+              <fn> 
+                <ci>g</ci> 
+              </fn> 
+              <ci>x</ci> 
+              <ci>y</ci> 
+            </apply> 
+          </vector> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>mean(X) 
+      <br /> 
+      <math> 
+        <apply> 
+          <mean/> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>root(a + b) 
+      <br /> 
+      <math> 
+        <apply> 
+          <root/> 
+          <degree> 
+            <ci>n</ci> 
+          </degree> 
+          <apply> 
+            <plus/> 
+            <ci>a</ci> 
+            <ci>b</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>standard deviation 
+      <br /> 
+      <math> 
+        <apply> 
+          <sdev/> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>variance(X) 
+      <br /> 
+      <math> 
+        <apply> 
+          <variance/> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>median(X) 
+      <br /> 
+      <math> 
+        <apply> 
+          <median/> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>mode(X) 
+      <br /> 
+      <math> 
+        <apply> 
+          <mode/> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>degree 
+      <br /> 
+      <math> 
+        <apply> 
+          <moment/> 
+          <degree> 
+            <cn>3</cn> 
+          </degree> 
+          <ci>X</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>vector 
+      <br /> 
+      <math> 
+        <vector> 
+          <cn>1</cn> 
+          <cn>2</cn> 
+          <cn>3</cn> 
+          <ci>x</ci> 
+        </vector> 
+      </math> 
+    </p> 
+    <p>matrix 
+      <br /> 
+      <math> 
+        <matrix> 
+          <matrixrow> 
+            <cn>0</cn> 
+            <cn>1</cn> 
+            <cn>0</cn> 
+            <cn>0</cn> 
+          </matrixrow> 
+          <matrixrow> 
+            <cn>0</cn> 
+            <cn>0</cn> 
+            <cn>1</cn> 
+            <cn>0</cn> 
+          </matrixrow> 
+          <matrixrow> 
+            <cn>1</cn> 
+            <cn>0</cn> 
+            <cn>0</cn> 
+            <cn>0</cn> 
+          </matrixrow> 
+        </matrix> 
+      </math> 
+    </p> 
+    <p>determinant 
+      <br /> 
+      <math> 
+        <apply> 
+          <determinant/> 
+          <ci type='matrix'>A</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>transpose 
+      <br /> 
+      <math> 
+        <apply> 
+          <transpose/> 
+          <ci type='matrix'>A</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>semantics 
+      <br /> 
+      <math> 
+        <semantics> 
+          <apply> 
+            <plus/> 
+            <apply> 
+              <sin/> 
+              <ci>x</ci> 
+            </apply> 
+            <cn>5</cn> 
+          </apply> 
+          <annotation encoding='TeX'>\sin x + 5 
+          </annotation> 
+        </semantics> 
+      </math> 
+    </p> 
+    <p>limit 
+      <br /> 
+      <math> 
+        <apply> 
+          <limit/> 
+          <bvar> 
+            <ci>x</ci> 
+          </bvar> 
+          <lowlimit> 
+            <cn>0</cn> 
+          </lowlimit> 
+          <apply> 
+            <sin/> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>symbol check 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <cn type='real'>4.56</cn> 
+          <cn type='integer'>4.56</cn> 
+          <cn type='rational'>4 
+            <sep/>5 
+          </cn> 
+          <cn type='complex-cartesian'>4 
+            <sep/>5 
+          </cn> 
+          <cn type='complex-polar'>4.56 
+            <sep/>4.56 
+          </cn> 
+          <cn type='constant'>&#x003C0;</cn> 
+          <cn>&#x02147;</cn> 
+          <cn>&#x02147;</cn> 
+          <cn>&#x02148;</cn> 
+          <cn>&#x02148;</cn> 
+          <cn>&#x003B3;</cn> 
+          <cn>&#x0221E;</cn> 
+          <cn>&#x0221E;</cn> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>multiset 
+      <br /> 
+      <math> 
+        <set type='multiset'> 
+          <cn type='real'>4.56</cn> 
+          <cn type='integer'>4.56</cn> 
+          <cn type='rational'>4 
+            <sep/>5 
+          </cn> 
+          <cn type='complex-cartesian'>4 
+            <sep/>5 
+          </cn> 
+          <cn type='complex-polar'>4.56 
+            <sep/>4.56 
+          </cn> 
+          <cn type='constant'>&#x003C0;</cn> 
+          <cn>&#x02147;</cn> 
+          <cn>&#x02147;</cn> 
+          <cn>&#x02148;</cn> 
+          <cn>&#x02148;</cn> 
+          <cn>&#x003B3;</cn> 
+          <cn>&#x0221E;</cn> 
+          <cn>&#x0221E;</cn> 
+        </set> 
+      </math> 
+    </p> 
+    <p>tendsto type = "above" with &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <tendsto type='above'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>tendsto type = "above" with &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <tendsto type='above'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>tendsto type = "below" with &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <tendsto type='below'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>tendsto type = "below" with &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <tendsto type='below'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>tendsto type = "two-sided" with &#x003c;reln&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <reln> 
+          <tendsto type='two-sided'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </reln> 
+      </math> 
+    </p> 
+    <p>tendsto type = "two-sided" with &#x003c;apply&amp;#x0003E; 
+      <br /> 
+      <math> 
+        <apply> 
+          <tendsto type='two-sided'/> 
+          <apply> 
+            <power/> 
+            <ci>x</ci> 
+            <cn>2</cn> 
+          </apply> 
+          <apply> 
+            <power/> 
+            <ci>a</ci> 
+            <cn>2</cn> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>type check 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <ci type='real'>x</ci> 
+          <ci type='integer'>x</ci> 
+          <ci type='rational'>x</ci> 
+          <ci type='complex-cartesian'>y</ci> 
+          <ci type='complex-polar'>&#x003B8;</ci> 
+          <ci type='vector'>v</ci> 
+          <ci type='constant'>&#x003C0;</ci> 
+          <ci>&#x02147;</ci> 
+          <ci>&#x02147;</ci> 
+          <ci>&#x02148;</ci> 
+          <ci>&#x02148;</ci> 
+          <ci>&#x003B3;</ci> 
+          <ci>&#x0221E;</ci> 
+          <ci>&#x0221E;</ci> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>sin + cos 
+      <br /> 
+      <math> 
+        <apply> 
+          <plus/> 
+          <apply> 
+            <sin/> 
+            <ci>x</ci> 
+          </apply> 
+          <apply> 
+            <cos/> 
+            <ci>x</ci> 
+          </apply> 
+        </apply> 
+      </math> 
+    </p> 
+    <p>f(x) 
+      <br /> 
+      <math> 
+        <apply> 
+          <fn> 
+            <ci>f</ci> 
+          </fn> 
+          <ci>x</ci> 
+        </apply> 
+      </math> 
+    </p>
