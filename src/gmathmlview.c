@@ -28,6 +28,55 @@
 
 #include <math.h>
 
+typedef enum {
+	GMATHML_STRETCH_DIRECTION_VERTICAL,
+	GMATHML_STRETCH_DIRECTION_HORIZONTAL,
+	GMATHML_STRETCH_DIRECTION_BOTH
+} GMathmlStretchDirection;
+
+typedef struct {
+	const char *glyph;
+	const gboolean stretchy;
+} GMathmlSubGlyph;
+
+typedef struct {
+	const char *glyph;
+	GMathmlStretchDirection	direction;
+	const char *sized_glyphs[5];
+	const GMathmlSubGlyph sub_glyphs[6];
+} GMathmlStretchyGlyph;
+
+static const GMathmlStretchyGlyph cmex10_table[] = {
+	{"(", GMATHML_STRETCH_DIRECTION_VERTICAL,
+		{"\xc2\xa1", "\xc2\xb3", "\xc2\xb5", "\xc3\x83", NULL},
+		{{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {NULL, FALSE}}
+	},
+	{")", GMATHML_STRETCH_DIRECTION_VERTICAL,
+		{"\xc2\xa2", "\xc2\xb4", "\xc2\xb6", "!", NULL},
+		{{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {NULL, FALSE}}
+	},
+	{"{", GMATHML_STRETCH_DIRECTION_VERTICAL,
+		{"\xc2\xa9", "n", "\xc2\xbd", "(", NULL},
+		{{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {NULL, FALSE}}
+	},
+	{"}", GMATHML_STRETCH_DIRECTION_VERTICAL,
+		{"\xc2\xaa", "o", "\xc2\xbe", ")", NULL},
+		{{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {NULL, FALSE}}
+	},
+	{"^", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
+		{"b", "c", "d", NULL},
+		{{NULL, FALSE}}
+	},
+	{"~", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
+		{"e", "f", "g", NULL},
+		{{NULL, FALSE}}
+	},
+	{"\xe2\x88\x8f", GMATHML_STRETCH_DIRECTION_BOTH,
+		{"Q", "Y", NULL},
+		{{NULL, FALSE}}
+	}
+};
+
 static GObjectClass *parent_class;
 
 struct _GMathmlViewPrivate {
