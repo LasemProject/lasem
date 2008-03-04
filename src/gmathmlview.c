@@ -35,45 +35,45 @@ typedef enum {
 } GMathmlStretchDirection;
 
 typedef struct {
-	const char *glyph;
+	const char glyph[4];
 	const gboolean stretchy;
 } GMathmlSubGlyph;
 
 typedef struct {
-	const char *glyph;
+	const char glyph[4];
 	GMathmlStretchDirection	direction;
-	const char *sized_glyphs[5];
+	const char sized_glyphs[5][4];
 	const GMathmlSubGlyph sub_glyphs[6];
 } GMathmlStretchyGlyph;
 
 static const GMathmlStretchyGlyph cmex10_table[] = {
 	{"(", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa1", "\xc2\xb3", "\xc2\xb5", "\xc3\x83", NULL},
-		{{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {NULL, FALSE}}
+		{"\xc2\xa1", "\xc2\xb3", "\xc2\xb5", "\xc3\x83", ""},
+		{{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {"", FALSE}}
 	},
 	{")", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa2", "\xc2\xb4", "\xc2\xb6", "!", NULL},
-		{{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {NULL, FALSE}}
+		{"\xc2\xa2", "\xc2\xb4", "\xc2\xb6", "!", ""},
+		{{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {"", FALSE}}
 	},
 	{"{", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa9", "n", "\xc2\xbd", "(", NULL},
-		{{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {NULL, FALSE}}
+		{"\xc2\xa9", "n", "\xc2\xbd", "(", ""},
+		{{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {"", FALSE}}
 	},
 	{"}", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xaa", "o", "\xc2\xbe", ")", NULL},
-		{{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {NULL, FALSE}}
+		{"\xc2\xaa", "o", "\xc2\xbe", ")", ""},
+		{{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {"", FALSE}}
 	},
 	{"^", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
-		{"b", "c", "d", NULL},
-		{{NULL, FALSE}}
+		{"b", "c", "d", ""},
+		{{"", FALSE}}
 	},
 	{"~", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
-		{"e", "f", "g", NULL},
-		{{NULL, FALSE}}
+		{"e", "f", "g", ""},
+		{{"", FALSE}}
 	},
 	{"\xe2\x88\x8f", GMATHML_STRETCH_DIRECTION_BOTH,
-		{"Q", "Y", NULL},
-		{{NULL, FALSE}}
+		{"Q", "Y", ""},
+		{{"", FALSE}}
 	}
 };
 
