@@ -406,8 +406,13 @@ gmathml_view_measure_operator (GMathmlView *view,
 		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
 
 		bbox->width = pango_units_to_double (ink_rect.width);
-		bbox->height = pango_units_to_double (baseline - ink_rect.y);
-		bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+		if (!stretch_bbox->is_defined) {
+			bbox->height = pango_units_to_double (baseline - ink_rect.y);
+			bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+		} else {
+			bbox->height = stretch_bbox->height;
+			bbox->depth = stretch_bbox->depth;
+		}
 		bbox->is_defined = TRUE;
 	} else {
 		PangoLayoutIter *iter;
