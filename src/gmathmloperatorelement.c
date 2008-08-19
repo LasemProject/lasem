@@ -100,28 +100,18 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
+gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *stretch_bbox)
 {
 	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_measure_text (view, text, &self->bbox);
+	self->bbox = gmathml_bbox_null;
 
-	if (operator_element->stretchy.value && bbox) {
-		if (self->bbox.height < bbox->height)
-			self->bbox.height = bbox->height;
-		if (self->bbox.depth < bbox->depth)
-			self->bbox.depth = bbox->depth;
-		if (self->bbox.width < bbox->width)
-			self->bbox.width = bbox->width;
-/*                if (operator_element->symmetric.value) {*/
-/*                        self->bbox.height = MAX (self->bbox.height, self->bbox.depth);*/
-/*                        self->bbox.depth = self->bbox.height;*/
-/*                }*/
-
-	}
+	gmathml_view_measure_operator (view, text, operator_element->large_op.value,
+				       operator_element->stretchy.value ? stretch_bbox : &gmathml_bbox_null,
+				       &self->bbox);
 
 	g_free (text);
 
@@ -131,12 +121,13 @@ gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const
 static void
 gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 {
+	GMathmlOperatorElement *operator_element = GMATHML_OPERATOR_ELEMENT (self);
 	char *text;
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_show_operator (view, self->x, self->y - self->bbox.height, text,
-				    self->bbox.width, self->bbox.height + self->bbox.depth);
+				    operator_element->large_op.value, &self->bbox);
 
 	g_free (text);
 }

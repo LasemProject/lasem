@@ -160,30 +160,23 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 	gboolean stretchy_found = FALSE;
 
 	self->bbox = gmathml_bbox_null;
+
 	if (bbox != NULL)
 		stretch_bbox = *bbox;
 	else
 		stretch_bbox = gmathml_bbox_null;
 
 	stretch_bbox.height = -G_MAXDOUBLE;
-	stretch_bbox.depth = - G_MAXDOUBLE;
+	stretch_bbox.depth =  -G_MAXDOUBLE;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		operator_element = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 		if (operator_element == NULL || !operator_element->stretchy.value) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+							      &gmathml_bbox_null);
 			stretch_bbox.width = MAX (stretch_bbox.width, child_bbox->width);
 		} else
 			stretchy_found = TRUE;
-	}
-
-	if (stretchy_found) {
-		g_message ("[UnderOverElement::measure] Stretchy found");
-		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-			operator_element = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
-			if (operator_element != NULL && operator_element->stretchy.value)
-				child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, &stretch_bbox);
-		}
 	}
 
 	if (under_over->base != NULL) {

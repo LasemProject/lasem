@@ -137,11 +137,13 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL && operator->stretchy.value) {
 				stretchy_found = TRUE;
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (operator), view, NULL);
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (operator), view,
+								       &gmathml_bbox_null);
 				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			} else {
 				all_stretchy = FALSE;
-				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view,
+								       &gmathml_bbox_null);
 				if (operator != NULL) {
 					child_bbox.width +=
 						gmathml_view_measure_length (view, operator->left_space.value) +
@@ -157,11 +159,12 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 			stretch_bbox.height = self->bbox.height;
 			stretch_bbox.depth = self->bbox.depth;
 			stretch_bbox.width = 0.0;
-			gmathml_bbox_stretch_vertically (&stretch_bbox, bbox);
+			if (bbox != NULL)
+				gmathml_bbox_stretch_vertically (&stretch_bbox, bbox);
 		}
 
-		g_message ("[Element::_measure] Stretchy found (h = %g, d = %g)",
-			   stretch_bbox.height, stretch_bbox.depth);
+		g_message ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
+			   stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
 
 		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 			if (GMATHML_IS_ELEMENT (node)) {

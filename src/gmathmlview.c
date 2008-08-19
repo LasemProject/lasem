@@ -27,6 +27,9 @@
 #include <gmathmlstyleelement.h>
 
 #include <math.h>
+#include <string.h>
+
+#define GMATHML_LARGE_OP_SCALE	2.0
 
 typedef enum {
 	GMATHML_STRETCH_DIRECTION_VERTICAL,
@@ -35,34 +38,142 @@ typedef enum {
 } GMathmlStretchDirection;
 
 typedef struct {
-	const char glyph[4];
-	const gboolean stretchy;
-} GMathmlSubGlyph;
+	const char *font;
+	const char utf8[4];
+} GMathmlGlyph;
 
 typedef struct {
-	const char glyph[4];
+	const char *font;
+	struct {
+		const char utf8[4];
+		const gboolean is_stretchy;
+	} glyphs[6];
+} GMathmlCompoundGlyph;
+
+typedef struct {
+	const char utf8[4];
 	GMathmlStretchDirection	direction;
-	const char sized_glyphs[5][4];
-	const GMathmlSubGlyph sub_glyphs[6];
+	GMathmlGlyph glyphs[6];
+	GMathmlCompoundGlyph compound_glyph;
 } GMathmlStretchyGlyph;
 
-static const GMathmlStretchyGlyph cmex10_table[] = {
+static const GMathmlStretchyGlyph latex_table[] = {
 	{"(", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa1", "\xc2\xb3", "\xc2\xb5", "\xc3\x83", ""},
-		{{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {"", FALSE}}
+		{
+			{"cmr10", 	"("} ,
+			{"cmex10",	"\xc2\xa1"},
+			{"cmex10",	"\xc2\xb3"},
+			{"cmex10",	"\xc2\xb5"},
+			{"cmex10",	"\xc3\x83"},
+			{"",		""}
+		},
+		{"cmex10", {{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {"", FALSE}}}
 	},
 	{")", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa2", "\xc2\xb4", "\xc2\xb6", "!", ""},
-		{{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {"", FALSE}}
+		{
+			{"cmr10", 	")"},
+			{"cmex10",	"\xc2\xa2"},
+			{"cmex10",	"\xc2\xb4"},
+			{"cmex10",	"\xc2\xb6"},
+			{"cmex10",	"!"},
+			{"",		""}
+		},
+		{"cmex10", {{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {"", FALSE}}}
 	},
 	{"{", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xa9", "n", "\xc2\xbd", "(", ""},
-		{{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {"", FALSE}}
+		{
+			{"cmsy10", 	"f"},
+			{"cmex10",	"\xc2\xa9"},
+			{"cmex10",	"n"},
+			{"cmex10",	"\xc2\xbd"},
+			{"cmex10",	"("},
+			{"",		""}
+		},
+		{"cmex10", {{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {"", FALSE}}}
 	},
 	{"}", GMATHML_STRETCH_DIRECTION_VERTICAL,
-		{"\xc2\xaa", "o", "\xc2\xbe", ")", ""},
-		{{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {"", FALSE}}
+		{
+			{"cmsy10",	"g"},
+			{"cmex10",	"\xc2\xaa"},
+			{"cmex10",	"o"},
+			{"cmex10",	"\xc2\xbe"},
+			{"cmex10",	")"},
+			{"",		""}
+		},
+		{"cmex10", {{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {"", FALSE}}}
 	},
+
+	/* Sum ∑ */
+
+	{"\xe2\x88\x91", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmr10", 	"\xc2\xa7"},
+			{"cmex10",	"P"},
+			{"cmex10",	"X"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	},
+
+	/* Product ∏ */
+
+	{"\xe2\x88\x8f", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmr10",	"\xc2\xa6"},
+			{"cmex10",	"Q"},
+			{"cmex10",	"Y"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	},
+
+	/* Coproduct ∐ */
+
+	{"\xe2\x88\x90", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmsy10", 	"q"},
+			{"cmex10",	"`"},
+			{"cmex10",	"a"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	},
+
+	/* Integral ∫ */
+
+	{"\xe2\x88\xab", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmsy10", 	"s"},
+			{"cmex10",	"R"},
+			{"cmex10",	"Z"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	},
+
+	/* Contour integral ∮ */
+
+	{"\xe2\x88\xae", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmex10",	"H"},
+			{"cmex10",	"I"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	},
+
+	/* DifferentialD d */
+
+	{"\xe2\x85\x86", GMATHML_STRETCH_DIRECTION_BOTH,
+		{
+			{"cmmi10",	"d"},
+			{"",		""}
+		},
+		{"", {{"", FALSE}}}
+	}
+
+	/*
+	,
 	{"^", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
 		{"b", "c", "d", ""},
 		{{"", FALSE}}
@@ -75,6 +186,7 @@ static const GMathmlStretchyGlyph cmex10_table[] = {
 		{"Q", "Y", ""},
 		{{"", FALSE}}
 	}
+	*/
 };
 
 static GObjectClass *parent_class;
@@ -116,6 +228,7 @@ gmathml_view_measure_hairline (GMathmlView *view)
 
 static void
 gmathml_view_update_layout (GMathmlView *view, char const *text,
+			    gboolean large,
 			    PangoRectangle *ink_rect,
 			    PangoRectangle *rect,
 			    int *baseline)
@@ -124,8 +237,9 @@ gmathml_view_update_layout (GMathmlView *view, char const *text,
 
 	element = view->priv->current_element;
 
+	pango_font_description_set_family (view->priv->font_description, "Serif");
 	pango_font_description_set_size (view->priv->font_description,
-					 element->math_size * PANGO_SCALE);
+					 element->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 	switch (element->math_variant) {
 		case GMATHML_VARIANT_NORMAL:
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
@@ -188,7 +302,7 @@ gmathml_view_measure_axis_offset (GMathmlView *view)
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 	g_return_val_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element), 0.0);
 
-	gmathml_view_update_layout (view, "+", &ink_rect, NULL, &baseline);
+	gmathml_view_update_layout (view, "+", FALSE, &ink_rect, NULL, &baseline);
 
 	return pango_units_to_double (baseline - 0.5 * (ink_rect.y + ink_rect.height));
 }
@@ -211,7 +325,7 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 		return;
 	}
 
-	gmathml_view_update_layout (view, text, &ink_rect, NULL, &baseline);
+	gmathml_view_update_layout (view, text, FALSE, &ink_rect, NULL, &baseline);
 
 	bbox->width = pango_units_to_double (ink_rect.width);
 	bbox->height = pango_units_to_double (baseline - ink_rect.y);
@@ -238,7 +352,7 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 /*                   text, x, y, element->math_size,*/
 /*                   gmathml_variant_to_string (element->math_variant));*/
 
-	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
+	gmathml_view_update_layout (view, text, FALSE, &ink_rect, &rect, &baseline);
 	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
 	cairo_set_source_rgba (view->priv->cairo,
@@ -251,39 +365,203 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
+static const GMathmlStretchyGlyph *
+gmathml_view_find_strecthy_glyph (const char *text)
+{
+	unsigned int i;
+
+	for (i = 0; i < G_N_ELEMENTS (latex_table); i++)
+		if (strcmp (text, latex_table[i].utf8) == 0) {
+			g_message ("[GMathmlView::find_strecthy_glyph] found %s", text);
+			return &latex_table[i];
+		}
+
+	return NULL;
+}
+
 void
-gmathml_view_show_operator (GMathmlView *view, double x, double y, char const *text, double width, double height)
+gmathml_view_measure_operator (GMathmlView *view,
+			       char const *text, gboolean large,
+			       GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox)
 {
 	const GMathmlElement *element;
+	const GMathmlStretchyGlyph *glyph;
+	PangoRectangle ink_rect;
+	int baseline;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+	g_return_if_fail (bbox != NULL);
+	g_return_if_fail (stretch_bbox != NULL);
+
+	element = view->priv->current_element;
+
+	if (text == NULL) {
+		*bbox = gmathml_bbox_null;
+		return;
+	}
+
+	glyph = gmathml_view_find_strecthy_glyph (text);
+	if (glyph == NULL) {
+		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
+
+		bbox->width = pango_units_to_double (ink_rect.width);
+		bbox->height = pango_units_to_double (baseline - ink_rect.y);
+		bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+		bbox->is_defined = TRUE;
+	} else {
+		PangoLayoutIter *iter;
+		unsigned int i;
+		gboolean found = FALSE;
+
+		pango_font_description_set_size (view->priv->font_description,
+						 element->math_size * PANGO_SCALE *
+						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+
+		g_message ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
+			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
+
+		for (i = 0; glyph->glyphs[i].utf8[0] != '\x0' && !found; i++) {
+			pango_font_description_set_family (view->priv->font_description, glyph->glyphs[i].font);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_layout_set_text (view->priv->pango_layout, glyph->glyphs[i].utf8, -1);
+			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
+
+			g_message ("Glyph #%i -> width = %g, height = %g", i,
+				   pango_units_to_double (ink_rect.width),
+				   pango_units_to_double (ink_rect.height));
+
+			if (!stretch_bbox->is_defined)
+				found = TRUE;
+			else
+				switch (glyph->direction) {
+					case GMATHML_STRETCH_DIRECTION_VERTICAL:
+						if (pango_units_to_double (ink_rect.height) >
+						    (stretch_bbox->height + stretch_bbox->depth))
+							found = TRUE;
+						break;
+					case GMATHML_STRETCH_DIRECTION_HORIZONTAL:
+						if (pango_units_to_double (ink_rect.width) >
+						    stretch_bbox->width)
+							found = TRUE;
+						break;
+					default:
+						if (pango_units_to_double (ink_rect.height) >
+						    (stretch_bbox->height + stretch_bbox->depth) &&
+						    pango_units_to_double (ink_rect.width) >
+						    stretch_bbox->width)
+							found = TRUE;
+						break;
+				}
+		}
+
+		if (found)
+			g_message ("Found sized glyph #%i", i);
+
+		iter = pango_layout_get_iter (view->priv->pango_layout);
+		baseline = pango_layout_iter_get_baseline (iter);
+		pango_layout_iter_free (iter);
+
+		bbox->width = pango_units_to_double (ink_rect.width);
+		if (!stretch_bbox->is_defined) {
+			bbox->height = pango_units_to_double (baseline - ink_rect.y);
+			bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
+		} else {
+			bbox->height = stretch_bbox->height;
+			bbox->depth = stretch_bbox->depth;
+		}
+		bbox->is_defined = TRUE;
+	}
+}
+
+void
+gmathml_view_show_operator (GMathmlView *view, double x, double y,
+			    char const *text, gboolean large,
+			    GMathmlBbox const *stretch_bbox)
+{
+	const GMathmlElement *element;
+	const GMathmlStretchyGlyph *glyph;
 	PangoRectangle rect, ink_rect;
 	double scale_x, scale_y;
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+	g_return_if_fail (stretch_bbox != NULL);
 
 	element = view->priv->current_element;
 
-	if (text == NULL)
+	if (text == NULL || !stretch_bbox->is_defined)
 		return;
 
-/*        g_message ("View: show_text %s at %g, %g (size = %g) %s",*/
-/*                   text, x, y, element->math_size,*/
-/*                   gmathml_variant_to_string (element->math_variant));*/
+	glyph = gmathml_view_find_strecthy_glyph (text);
+	if (glyph == NULL) {
+		gmathml_view_update_layout (view, text, FALSE, &ink_rect, &rect, &baseline);
 
-	gmathml_view_update_layout (view, text, &ink_rect, &rect, &baseline);
+		cairo_set_source_rgba (view->priv->cairo,
+				       element->math_color.red,
+				       element->math_color.green,
+				       element->math_color.blue,
+				       element->math_color.alpha);
 
-	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_color.red,
-			       element->math_color.green,
-			       element->math_color.blue,
-			       element->math_color.alpha);
+	} else {
+		PangoLayoutIter *iter;
+		unsigned int i;
+		gboolean found = FALSE;
+
+		g_message ("[GMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
+			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
+
+		pango_font_description_set_size (view->priv->font_description,
+						 element->math_size * PANGO_SCALE *
+						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+
+		for (i = 0; glyph->glyphs[i].utf8[0] != '\x0' && !found; i++) {
+			pango_font_description_set_family (view->priv->font_description, glyph->glyphs[i].font);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_layout_set_text (view->priv->pango_layout, glyph->glyphs[i].utf8, -1);
+			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
+
+			g_message ("Glyph #%i -> width = %g, height = %g", i,
+				   pango_units_to_double (ink_rect.width),
+				   pango_units_to_double (ink_rect.height));
+
+			switch (glyph->direction) {
+				case GMATHML_STRETCH_DIRECTION_VERTICAL:
+					if (pango_units_to_double (ink_rect.height) >
+					    stretch_bbox->height + stretch_bbox->depth)
+						found = TRUE;
+					break;
+				case GMATHML_STRETCH_DIRECTION_HORIZONTAL:
+					if (pango_units_to_double (ink_rect.width) > stretch_bbox->width)
+						found = TRUE;
+					break;
+				default:
+					if (pango_units_to_double (ink_rect.height) >
+					    stretch_bbox->height + stretch_bbox->depth &&
+					    pango_units_to_double (ink_rect.width) > stretch_bbox->width)
+						found = TRUE;
+					break;
+			}
+		}
+
+		if (found)
+			g_message ("Found sized glyph #%i", i);
+
+		iter = pango_layout_get_iter (view->priv->pango_layout);
+		baseline = pango_layout_iter_get_baseline (iter);
+		pango_layout_iter_free (iter);
+
+		cairo_set_source_rgba (view->priv->cairo, 1.0, 0.0, 0.0, 1.0);
+	}
 
 	if (ink_rect.width <= 0 || ink_rect.height <= 0)
 		return;
 
-	scale_x = width / pango_units_to_double (ink_rect.width);
-	scale_y = height / pango_units_to_double (ink_rect.height);
+	scale_x = stretch_bbox->width / pango_units_to_double (ink_rect.width);
+	scale_y = (stretch_bbox->height + stretch_bbox->depth) / pango_units_to_double (ink_rect.height);
 
 	cairo_save (view->priv->cairo);
 	cairo_move_to (view->priv->cairo, x , y);
@@ -603,8 +881,6 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	pango_cairo_context_set_font_options (context, font_options);
 
 	cairo_font_options_destroy (font_options);
-
-	pango_font_description_set_family (view->priv->font_description, "Serif");
 }
 
 GMathmlView *
