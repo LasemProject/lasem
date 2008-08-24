@@ -27,7 +27,7 @@
 
 static GObjectClass *parent_class;
 
-static const GMathmlBbox null_bbox = {0.0,0.0,0.0};
+static const GMathmlBbox null_bbox = {0.0,0.0,0.0, FALSE};
 
 /* GDomNode implementation */
 
@@ -127,10 +127,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 
 	self->bbox = gmathml_bbox_null;
 
-	if (bbox != NULL)
-		stretch_bbox = *bbox;
-	else
-		stretch_bbox = gmathml_bbox_null;
+	stretch_bbox = *bbox;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GMATHML_IS_ELEMENT (node)) {
@@ -150,19 +147,12 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 						gmathml_view_measure_length (view, operator->right_space.value);
 				}
 				gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
+				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			}
 		}
 	}
 
 	if (stretchy_found) {
-		if (!all_stretchy) {
-			stretch_bbox.height = self->bbox.height;
-			stretch_bbox.depth = self->bbox.depth;
-			stretch_bbox.width = 0.0;
-			if (bbox != NULL)
-				gmathml_bbox_stretch_vertically (&stretch_bbox, bbox);
-		}
-
 		g_message ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
 			   stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
 
@@ -195,7 +185,10 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 
 	g_return_val_if_fail (element_class != NULL, &null_bbox);
 
-	if (!element->measure_done || stretch_bbox != NULL) {
+	if (stretch_bbox == NULL)
+		stretch_bbox = &gmathml_bbox_null;
+
+	if (!element->measure_done || stretch_bbox->is_defined) {
 		if (element_class->measure) {
 			gmathml_view_push_element (view, element);
 			element->bbox = *(element_class->measure (element, view, stretch_bbox));
@@ -257,8 +250,8 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	g_return_if_fail (element_class != NULL);
 
-	g_message ("[Element::layout] assigned bbox for %s = %g, %g, %g",
-		   gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth);
+	g_message ("[Element::layout] assigned bbox for %s = %g, %g, %g at %g, %g",
+		   gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth, x , y);
 
 	self->x = x;
 	self->y = y;

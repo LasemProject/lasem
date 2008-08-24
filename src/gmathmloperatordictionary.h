@@ -43,9 +43,9 @@ typedef struct {
 	GMathmlSpace	 min_size;
 	GMathmlSpace	 max_size;
 	gboolean	 symmetric;
-} GMathmlOperator;
+} GMathmlOperatorDictionaryEntry;
 
-const GMathmlOperator *		gmathml_operator_get_attributes (const char *utf8, GMathmlForm form);
+const GMathmlOperatorDictionaryEntry *	gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form);
 
 G_END_DECLS
 

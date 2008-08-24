@@ -69,7 +69,7 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 	GDomNode *node;
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
-		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, NULL);
+		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, &gmathml_bbox_null);
 
 		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
 		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);

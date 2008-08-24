@@ -130,7 +130,8 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view, const GMathmlBbox *bbox)
+gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
+				const GMathmlBbox *stretch_bbox)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (element);
 	GDomNode *node;
@@ -145,7 +146,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view, cons
 	if (node == NULL)
 		return &element->bbox;
 
-	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, stretch_bbox);
 	element->bbox = *base_bbox;
 
 	element->bbox.width += gmathml_view_measure_length (view, script->space);

@@ -76,12 +76,6 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 
 	g_string_free (string, TRUE);
 
-	/* FIXME a better way to do that ? */
-	if (strcmp (text, "-") == 0) {
-		g_free (text);
-		return g_strdup ("−");
-	}
-
 	return text;
 }
 

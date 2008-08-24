@@ -29,7 +29,7 @@
 
 #define GMATHML_INFINITY 1e64
 
-static const GMathmlOperator gmathml_operators[] = {
+static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 	{
 		"(", GMATHML_FORM_PREFIX,
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
@@ -3132,10 +3132,10 @@ gmathml_get_operator_dictionary (void)
 
 	operator_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	for (i = 0; i < G_N_ELEMENTS (gmathml_operators); i++) {
-		utf8 = gmathml_entity_get_utf8 (gmathml_operators[i].name);
+	for (i = 0; i < G_N_ELEMENTS (gmathml_operator_entries); i++) {
+		utf8 = gmathml_entity_get_utf8 (gmathml_operator_entries[i].name);
 
-		switch (gmathml_operators[i].form) {
+		switch (gmathml_operator_entries[i].form) {
 			case GMATHML_FORM_PREFIX:
 				prefix = "E*";
 				break;
@@ -3152,13 +3152,14 @@ gmathml_get_operator_dictionary (void)
 		if (g_hash_table_lookup (operator_hash, key)) {
 /*                        printf ("[GMathmlOperatorDictionary::buil] can't insert %s\n", key);*/
 		} else
-			g_hash_table_insert (operator_hash, key, (void *) &gmathml_operators[i]);
+			g_hash_table_insert (operator_hash, key,
+					     (void *) &gmathml_operator_entries[i]);
 	}
 
 	return operator_hash;
 }
 
-static const GMathmlOperator gmathml_operator_default =
+static const GMathmlOperatorDictionaryEntry gmathml_operator_dictionary_default_entry =
 {
 	"Default", GMATHML_FORM_INFIX,
 	{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
@@ -3169,10 +3170,10 @@ static const GMathmlOperator gmathml_operator_default =
 	TRUE
 };
 
-const GMathmlOperator *
-gmathml_operator_get_attributes (const char *utf8, GMathmlForm form)
+const GMathmlOperatorDictionaryEntry *
+gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form)
 {
-	const GMathmlOperator *op;
+	const GMathmlOperatorDictionaryEntry *entry;
 	const char *prefix;
 	char *key;
 
@@ -3190,38 +3191,38 @@ gmathml_operator_get_attributes (const char *utf8, GMathmlForm form)
 	}
 
 	key = g_strconcat (prefix, utf8, NULL);
-	op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+	entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
 	g_free (key);
 
-	if (op != NULL)
-		return op;
+	if (entry != NULL)
+		return entry;
 
 	if (form != GMATHML_FORM_INFIX) {
 		key = g_strconcat ("I*", utf8, NULL);
-		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (op != NULL)
-			return op;
+		if (entry != NULL)
+			return entry;
 	}
 
 	if (form != GMATHML_FORM_POSTFIX) {
 		key = g_strconcat ("O*", utf8, NULL);
-		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (op != NULL)
-			return op;
+		if (entry != NULL)
+			return entry;
 	}
 
 	if (form != GMATHML_FORM_PREFIX) {
 		key = g_strconcat ("E*", utf8, NULL);
-		op = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (op != NULL)
-			return op;
+		if (entry != NULL)
+			return entry;
 	}
 
-	return &gmathml_operator_default;
+	return &gmathml_operator_dictionary_default_entry;
 }

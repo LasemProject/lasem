@@ -224,6 +224,16 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 
 	self->bbox.width += 2 * gmathml_view_measure_length (view, table->frame_spacing.values[0]);
 
+	{
+		double axis_offset;
+		double length;
+
+		axis_offset = gmathml_view_measure_axis_offset (view, self->math_size);
+		length = (self->bbox.height + self->bbox.depth) * 0.5;
+		self->bbox.height = gmathml_view_measure_length (view, axis_offset + length);
+		self->bbox.depth = gmathml_view_measure_length (view, length - axis_offset);
+	}
+
 	return &self->bbox;
 }
 

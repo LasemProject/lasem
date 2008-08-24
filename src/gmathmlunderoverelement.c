@@ -117,9 +117,34 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
 
-	accent = FALSE;
+	if (under_over->overscript != NULL) {
+		const GMathmlOperatorElement *operator;
+
+		operator = gmathml_element_get_embellished_core (under_over->overscript);
+		if (operator != NULL) {
+			accent = operator->accent.value;
+			if (accent)
+				g_message ("[UnderOverElement::update] Overscript is%s accent (%s)",
+					   accent ? "" : " not",
+					   gdom_node_get_node_name (GDOM_NODE (operator)));
+		}
+	} else
+		accent = FALSE;
+
 	gmathml_attribute_boolean_parse (&under_over->accent, &accent);
-	accent_under = FALSE;
+
+	if (under_over->underscript != NULL) {
+		const GMathmlOperatorElement *operator;
+
+		operator = gmathml_element_get_embellished_core (under_over->underscript);
+		if (operator != NULL) {
+			accent_under = operator->accent.value;
+			g_message ("[UnderOverElement::update] Underscript is%s accent (%s)",
+				   accent_under ? "" : " not",
+				   gdom_node_get_node_name (GDOM_NODE (operator)));
+		}
+	} else
+		accent_under = FALSE;
 	gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
 
 	under_over->under_space = accent_under ? style->very_thin_math_space_value : style->very_thick_math_space_value;
@@ -149,52 +174,101 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 }
 
 static const GMathmlBbox *
-gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
+gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *stretch_bbox)
 {
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
-	const GMathmlOperatorElement *operator_element;
-	GMathmlBbox stretch_bbox;
-	GMathmlBbox script_box;
-	const GMathmlBbox *child_bbox;
+	const GMathmlOperatorElement *operator;
 	GDomNode *node;
+	const GMathmlBbox *child_bbox;
+	GMathmlBbox regular_stretch_bbox;
+	GMathmlBbox operator_stretch_bbox;
+	GMathmlBbox script_bbox;
 	gboolean stretchy_found = FALSE;
+	gboolean all_stretchy = TRUE;
+	unsigned int index;
 
 	self->bbox = gmathml_bbox_null;
 
-	if (bbox != NULL)
-		stretch_bbox = *bbox;
-	else
-		stretch_bbox = gmathml_bbox_null;
+	if (under_over->base == NULL)
+		return &self->bbox;
 
-	stretch_bbox.height = -G_MAXDOUBLE;
-	stretch_bbox.depth =  -G_MAXDOUBLE;
+	regular_stretch_bbox = gmathml_bbox_null;
+	operator_stretch_bbox = gmathml_bbox_null;
 
+	g_message ("[UnderOver::_measure] Begin");
+
+	index = 0;
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		operator_element = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
-		if (operator_element == NULL || !operator_element->stretchy.value) {
-			child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
-							      &gmathml_bbox_null);
-			stretch_bbox.width = MAX (stretch_bbox.width, child_bbox->width);
-		} else
-			stretchy_found = TRUE;
+		if (GMATHML_IS_ELEMENT (node)) {
+			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+			if (operator != NULL && operator->stretchy.value) {
+				stretchy_found = TRUE;
+
+				if (node == GDOM_NODE (under_over->base))
+					child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+									      stretch_bbox);
+				else
+					child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+									      &gmathml_bbox_null);
+				gmathml_bbox_stretch_horizontally (&operator_stretch_bbox, child_bbox);
+			} else {
+				all_stretchy = FALSE;
+
+				child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+								      &gmathml_bbox_null);
+				gmathml_bbox_stretch_horizontally (&regular_stretch_bbox, child_bbox);
+			}
+		}
+
+		index++;
 	}
 
-	if (under_over->base != NULL) {
-		child_bbox = gmathml_element_get_bbox (under_over->base);
-		gmathml_bbox_add_horizontally (&self->bbox, child_bbox);
+	if (stretchy_found) {
+		if (all_stretchy) {
+			g_message ("[UnderOver::_measure] All stretchy");
+			regular_stretch_bbox = operator_stretch_bbox;
+		}
+
+		g_message ("[UnderOver::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
+			   regular_stretch_bbox.width,
+			   regular_stretch_bbox.height,
+			   regular_stretch_bbox.depth);
+
+		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+			if (GMATHML_IS_ELEMENT (node)) {
+				operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+				if (operator != NULL && operator->stretchy.value) {
+					if (node == GDOM_NODE (under_over->base)) {
+						GMathmlBbox base_stretch_bbox;
+
+						base_stretch_bbox = regular_stretch_bbox;
+						gmathml_bbox_stretch (&base_stretch_bbox, stretch_bbox);
+
+						child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+										      &base_stretch_bbox);
+					} else
+						child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view,
+										      &regular_stretch_bbox);
+				}
+			}
+		}
 	}
+
+	self->bbox = *gmathml_element_get_bbox (under_over->base);
 
 	if (under_over->overscript != NULL) {
-		script_box = *gmathml_element_get_bbox (under_over->overscript);
-		script_box.depth += gmathml_view_measure_length (view, under_over->over_space);
-		gmathml_bbox_add_over (&self->bbox, &script_box);
+		script_bbox = *gmathml_element_get_bbox (under_over->overscript);
+		script_bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
+		gmathml_bbox_add_over (&self->bbox, &script_bbox);
 	}
 
 	if (under_over->underscript != NULL) {
-		script_box = *gmathml_element_get_bbox (under_over->underscript);
-		script_box.height += gmathml_view_measure_length (view, under_over->under_space);
-		gmathml_bbox_add_under (&self->bbox, &script_box);
+		script_bbox = *gmathml_element_get_bbox (under_over->underscript);
+		script_bbox.height += gmathml_view_measure_length (view, under_over->under_space);
+		gmathml_bbox_add_under (&self->bbox, &script_bbox);
 	}
+
+	g_message ("[UnderOver::_measure] End");
 
 	return &self->bbox;
 }

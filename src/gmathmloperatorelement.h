@@ -52,6 +52,8 @@ struct _GMathmlOperatorElement {
 	GMathmlAttributeBoolean large_op;
 	GMathmlAttributeBoolean movable_limits;
 	GMathmlAttributeBoolean accent;
+
+	gboolean is_large_op;
 };
 
 struct _GMathmlOperatorElementClass {

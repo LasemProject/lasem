@@ -105,6 +105,28 @@ gmathml_bbox_merge_vertically (GMathmlBbox *self, const GMathmlBbox *bbox, doubl
 }
 
 void
+gmathml_bbox_stretch (GMathmlBbox *self, const GMathmlBbox *bbox)
+{
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (bbox != NULL);
+
+	if (!bbox->is_defined)
+		return;
+
+	if (!self->is_defined) {
+		*self = *bbox;
+		return;
+	}
+
+	if (bbox->height > self->height)
+		self->height = bbox->height;
+	if (bbox->depth > self->depth)
+		self->depth = bbox->depth;
+	if (bbox->width > self->width)
+		self->width = bbox->width;
+}
+
+void
 gmathml_bbox_stretch_vertically (GMathmlBbox *self, const GMathmlBbox *bbox)
 {
 	g_return_if_fail (self != NULL);
@@ -115,7 +137,7 @@ gmathml_bbox_stretch_vertically (GMathmlBbox *self, const GMathmlBbox *bbox)
 
 	if (!self->is_defined) {
 		*self = *bbox;
-		self->width = 0.0;
+		self->width = 0;
 		return;
 	}
 
@@ -123,4 +145,25 @@ gmathml_bbox_stretch_vertically (GMathmlBbox *self, const GMathmlBbox *bbox)
 		self->height = bbox->height;
 	if (bbox->depth > self->depth)
 		self->depth = bbox->depth;
+}
+
+void
+gmathml_bbox_stretch_horizontally (GMathmlBbox *self, const GMathmlBbox *bbox)
+{
+	g_return_if_fail (self != NULL);
+	g_return_if_fail (bbox != NULL);
+
+	if (!bbox->is_defined)
+		return;
+
+	if (!self->is_defined) {
+		self->width = bbox->width;
+		self->height = -G_MAXDOUBLE;
+		self->depth = -G_MAXDOUBLE;
+		self->is_defined = TRUE;
+		return;
+	}
+
+	if (bbox->width > self->width)
+		self->width = bbox->width;
 }
