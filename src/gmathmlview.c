@@ -29,201 +29,244 @@
 #include <math.h>
 #include <string.h>
 
-#define GMATHML_LARGE_OP_SCALE	1.8
+#define GMATHML_LARGE_OP_SCALE	1.6
 
 typedef enum {
-	GMATHML_STRETCH_DIRECTION_NONE,
-	GMATHML_STRETCH_DIRECTION_VERTICAL,
-	GMATHML_STRETCH_DIRECTION_HORIZONTAL,
-	GMATHML_STRETCH_DIRECTION_BOTH
-} GMathmlStretchDirection;
+	GMATHML_GLYPH_FLAG_STRETCH_VERTICAL =	1 << 0,
+	GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL =	1 << 1,
+	GMATHML_GLYPH_FLAG_TYPE_SIZED =		1 << 2,
+	GMATHML_GLYPH_FLAG_ALIGN_AXIS =		1 << 3
+} GMathmlGlyphFlags;
+
+typedef enum {
+	GMATHML_FONT_ERROR,
+	GMATHML_FONT_DEFAULT,
+	GMATHML_FONT_CMR10,
+	GMATHML_FONT_CMI10,
+	GMATHML_FONT_CMEX10,
+	GMATHML_FONT_CMSY10,
+	GMATHML_FONT_SYMBOL
+} GMathmlFont;
+
+static const char *gmathml_font_names[] = {
+	"",
+	"Sans",
+	"cmr10",
+	"cmmi10",
+	"cmex10",
+	"cmsy10",
+	"symbol"
+};
 
 typedef struct {
-	const char *font;
-	const char utf8[4];
+	GMathmlFont 	font;
+	const char 	utf8[4];
 } GMathmlGlyph;
 
 typedef struct {
-	const char *font;
-	struct {
-		const char utf8[4];
-		const gboolean is_stretchy;
-	} glyphs[6];
-} GMathmlCompoundGlyph;
+	const char		*utf8;
+	GMathmlGlyphFlags	flags;
+	GMathmlGlyph		start_glyph;
+	GMathmlGlyph		middle_glyph;
+	GMathmlGlyph		stop_glyph;
+	GMathmlGlyph		glue_glyph;
+	unsigned int		n_sized_glyphs;
+	GMathmlGlyph		sized_glyphs[5];
+} GMathmlOperatorGlyph;
 
-typedef struct {
-	const char utf8[4];
-	GMathmlStretchDirection	direction;
-	GMathmlGlyph glyphs[6];
-	GMathmlCompoundGlyph compound_glyph;
-} GMathmlStretchyGlyph;
-
-static const GMathmlStretchyGlyph latex_table[] = {
-	{"(", GMATHML_STRETCH_DIRECTION_VERTICAL,
+static const GMathmlOperatorGlyph AMS_table[] = {
+	{
+		"(",
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_CMEX10,		"0"},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_CMEX10,		"@"},
+		{GMATHML_FONT_CMEX10,		"B"},
+		5,
 		{
-			{"cmr10", 	"("} ,
-			{"cmex10",	"\xc2\xa1"},
-			{"cmex10",	"\xc2\xb3"},
-			{"cmex10",	"\xc2\xb5"},
-			{"cmex10",	"\xc3\x83"},
-			{"",		""}
-		},
-		{"cmex10", {{"0", FALSE}, {"B", TRUE}, {"@", FALSE}, {"", FALSE}}}
+			{GMATHML_FONT_CMR10,		"("},
+			{GMATHML_FONT_CMEX10,		"\xc2\xa1"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xb3"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xb5"},
+			{GMATHML_FONT_CMEX10,		"\xc3\x83"}
+		}
 	},
-	{")", GMATHML_STRETCH_DIRECTION_VERTICAL,
+	{
+		")",
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_CMEX10, 		"1"},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_CMEX10,		"A"},
+		{GMATHML_FONT_CMEX10,		"C"},
+		5,
 		{
-			{"cmr10", 	")"},
-			{"cmex10",	"\xc2\xa2"},
-			{"cmex10",	"\xc2\xb4"},
-			{"cmex10",	"\xc2\xb6"},
-			{"cmex10",	"!"},
-			{"",		""}
-		},
-		{"cmex10", {{"1", FALSE}, {"C", TRUE}, {"A", FALSE}, {"", FALSE}}}
+			{GMATHML_FONT_CMR10, 		")"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xa2"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xb4"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xb6"},
+			{GMATHML_FONT_CMEX10,		"!"}
+		}
 	},
-	{"{", GMATHML_STRETCH_DIRECTION_VERTICAL,
+	{
+		"{",
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_CMEX10, 		"8"},
+		{GMATHML_FONT_CMEX10, 		"<"},
+		{GMATHML_FONT_CMEX10, 		":"},
+		{GMATHML_FONT_CMEX10, 		">"},
+		5,
 		{
-			{"cmsy10", 	"f"},
-			{"cmex10",	"\xc2\xa9"},
-			{"cmex10",	"n"},
-			{"cmex10",	"\xc2\xbd"},
-			{"cmex10",	"("},
-			{"",		""}
-		},
-		{"cmex10", {{"8", FALSE}, {">", TRUE}, {"<", FALSE}, {">", TRUE}, {":", FALSE}, {"", FALSE}}}
+			{GMATHML_FONT_CMSY10, 		"f"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xa9"},
+			{GMATHML_FONT_CMEX10,		"n"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xbd"},
+			{GMATHML_FONT_CMEX10,		"("}
+		}
 	},
-	{"}", GMATHML_STRETCH_DIRECTION_VERTICAL,
+	{
+		"}",
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_CMEX10, 		"9"},
+		{GMATHML_FONT_CMEX10, 		"="},
+		{GMATHML_FONT_CMEX10, 		";"},
+		{GMATHML_FONT_CMEX10, 		">"},
+		5,
 		{
-			{"cmsy10",	"g"},
-			{"cmex10",	"\xc2\xaa"},
-			{"cmex10",	"o"},
-			{"cmex10",	"\xc2\xbe"},
-			{"cmex10",	")"},
-			{"",		""}
-		},
-		{"cmex10", {{"9", FALSE}, {">", TRUE}, {"=", FALSE}, {">", TRUE}, {";", FALSE}, {"", FALSE}}}
+			{GMATHML_FONT_CMSY10,		"g"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xaa"},
+			{GMATHML_FONT_CMEX10,		"o"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xbe"},
+			{GMATHML_FONT_CMEX10,		")"}
+		}
 	},
-
-	/* Sum ∑ */
-
-	{"\xe2\x88\x91", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x88\x91" /* ∑ */,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmr10", 	"\xc2\xa7"},
-			{"cmex10",	"P"},
-			{"cmex10",	"X"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMEX10,	"P"}
+		}
 	},
-
-	/* Product ∏ */
-
-	{"\xe2\x88\x8f", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x88\x8f" /* ∏ */,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmr10",	"\xc2\xa6"},
-			{"cmex10",	"Q"},
-			{"cmex10",	"Y"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMEX10,	"Q"}
+		}
 	},
-
-	/* Coproduct ∐ */
-
-	{"\xe2\x88\x90", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x88\x90" /* ∐ */,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmsy10", 	"q"},
-			{"cmex10",	"`"},
-			{"cmex10",	"a"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMEX10,	"`"}
+		}
 	},
-
-	/* Integral ∫ */
-
-	{"\xe2\x88\xab", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x88\xab" /* ∫ */,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmsy10", 	"s"},
-			{"cmex10",	"R"},
-			{"cmex10",	"Z"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMEX10,	"R"}
+		}
 	},
-
-	/* Contour integral ∮ */
-
-	{"\xe2\x88\xae", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x88\xae" /* ∮ */,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmex10",	"H"},
-			{"cmex10",	"I"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMEX10,	"H"}
+		}
 	},
-
-	/* DifferentialD d */
-
-	{"\xe2\x85\x86", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"\xe2\x85\x86" /* d */,
+		0,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"cmmi10",	"d"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_CMI10,	"d"}
+		}
 	},
-
-	/* UnderBar */
-
-	{"\xcc\xb2", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
+	{
+		"\xcc\xb2" /* _ */,
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"Sans",	"\xcc\xb2"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_DEFAULT,	"\xcc\xb2"}
+		}
 	},
-
-	/* OverBar */
-
-	{"\xc2\xaf", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
+	{
+		"\xc2\xaf" /* hor */,
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"Sans",	"\xc2\xaf"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_DEFAULT,	"\xc2\xaf"}
+		}
 	},
-
-	{"-", GMATHML_STRETCH_DIRECTION_BOTH,
+	{
+		"-",
+		0,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"Sans",	"\xe2\x88\x92"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_DEFAULT,	"\xe2\x88\x92"}
+		}
 	},
-
-	{"|", GMATHML_STRETCH_DIRECTION_VERTICAL,
+	{
+		"|",
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
 		{
-			{"Sans",	"|"},
-			{"",		""}
-		},
-		{"", {{"", FALSE}}}
+			{GMATHML_FONT_DEFAULT,	"|"}
+		}
 	}
-
-	/*
-	,
-	{"^", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
-		{"b", "c", "d", ""},
-		{{"", FALSE}}
-	},
-	{"~", GMATHML_STRETCH_DIRECTION_HORIZONTAL,
-		{"e", "f", "g", ""},
-		{{"", FALSE}}
-	},
-	{"\xe2\x88\x8f", GMATHML_STRETCH_DIRECTION_BOTH,
-		{"Q", "Y", ""},
-		{{"", FALSE}}
-	}
-	*/
 };
 
 static GObjectClass *parent_class;
@@ -417,15 +460,15 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
-static const GMathmlStretchyGlyph *
-gmathml_view_find_strecthy_glyph (const char *text)
+static const GMathmlOperatorGlyph *
+gmathml_view_find_operator_glyph (const char *text)
 {
 	unsigned int i;
 
-	for (i = 0; i < G_N_ELEMENTS (latex_table); i++)
-		if (strcmp (text, latex_table[i].utf8) == 0) {
+	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
+		if (strcmp (text, AMS_table[i].utf8) == 0) {
 			g_message ("[GMathmlView::find_strecthy_glyph] found %s", text);
-			return &latex_table[i];
+			return &AMS_table[i];
 		}
 
 	return NULL;
@@ -440,8 +483,9 @@ gmathml_view_measure_operator (GMathmlView *view,
 			       GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox)
 {
 	const GMathmlElement *element;
-	const GMathmlStretchyGlyph *glyph;
-	GMathmlStretchDirection direction;
+	const GMathmlOperatorGlyph *glyph;
+	const char *font_name;
+	GMathmlGlyphFlags flags;
 	PangoRectangle ink_rect;
 	int baseline;
 
@@ -461,10 +505,10 @@ gmathml_view_measure_operator (GMathmlView *view,
 		g_message ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
-	glyph = gmathml_view_find_strecthy_glyph (text);
+	glyph = gmathml_view_find_operator_glyph (text);
 	if (glyph == NULL) {
 		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
-		direction = GMATHML_STRETCH_DIRECTION_BOTH;
+		flags = 0;
 
 		g_message ("[GMathmlView::measure_operator] operator = %s", text);
 
@@ -473,21 +517,15 @@ gmathml_view_measure_operator (GMathmlView *view,
 		unsigned int i;
 		gboolean found = FALSE;
 
-		if (glyph->glyphs[1].utf8[0] == '\x0') {
-			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE *
-							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
-			i = 0;
-		} else {
-			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE);
-			i = large ? 1 : 0;
-		}
+		pango_font_description_set_size (view->priv->font_description,
+						 element->math_size * PANGO_SCALE *
+						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 
-		for (; glyph->glyphs[i].utf8[0] != '\x0' && !found; i++) {
-			pango_font_description_set_family (view->priv->font_description, glyph->glyphs[i].font);
+		for (i = 0; i < glyph->n_sized_glyphs; i++) {
+			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
+			pango_font_description_set_family (view->priv->font_description, font_name);
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_layout_set_text (view->priv->pango_layout, glyph->glyphs[i].utf8, -1);
+			pango_layout_set_text (view->priv->pango_layout, glyph->sized_glyphs[i].utf8, -1);
 			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
@@ -495,28 +533,25 @@ gmathml_view_measure_operator (GMathmlView *view,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
-			if (!stretch_bbox->is_defined)
+			if (!stretch_bbox->is_defined) {
 				found = TRUE;
-			else
-				switch (glyph->direction) {
-					case GMATHML_STRETCH_DIRECTION_VERTICAL:
-						if (pango_units_to_double (ink_rect.height) >
-						    (stretch_bbox->height + stretch_bbox->depth))
-							found = TRUE;
-						break;
-					case GMATHML_STRETCH_DIRECTION_HORIZONTAL:
+				break;
+			}
+
+			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL) {
+				if (pango_units_to_double (ink_rect.height) >
+				    (stretch_bbox->height + stretch_bbox->depth))
+					found = TRUE;
+			}
+
+			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL) {
 						if (pango_units_to_double (ink_rect.width) >
 						    stretch_bbox->width)
 							found = TRUE;
-						break;
-					default:
-						if (pango_units_to_double (ink_rect.height) >
-						    (stretch_bbox->height + stretch_bbox->depth) &&
-						    pango_units_to_double (ink_rect.width) >
-						    stretch_bbox->width)
-							found = TRUE;
-						break;
-				}
+			}
+
+			if (found)
+				break;
 		}
 
 		if (found)
@@ -526,53 +561,31 @@ gmathml_view_measure_operator (GMathmlView *view,
 		baseline = pango_layout_iter_get_baseline (iter);
 		pango_layout_iter_free (iter);
 
-		direction = glyph->direction;
+		flags = glyph->flags;
 	}
 
-	if (direction == GMATHML_STRETCH_DIRECTION_BOTH &&
-	    stretch_bbox->is_defined &&
-	    pango_units_to_double (ink_rect.width) != 0.0 &&
-	    pango_units_to_double (ink_rect.height) != 0.0) {
-		double x_scale;
-		double y_scale;
-
-		x_scale = stretch_bbox->width / pango_units_to_double (ink_rect.width);
-		y_scale = (stretch_bbox->height + stretch_bbox->depth) / pango_units_to_double (ink_rect.height);
-
-		g_message ("x_scale = %g, y_scale = %g", x_scale, y_scale);
-
-		*bbox = *stretch_bbox;
-
-		if (x_scale > y_scale) {
-			bbox->depth = pango_units_to_double (ink_rect.y - baseline) * x_scale;
-			bbox->height = pango_units_to_double (ink_rect.height + ink_rect.y - baseline) * x_scale;
-
-			bbox->depth = gmathml_view_measure_length (view, bbox->depth);
-			bbox->height = gmathml_view_measure_length (view, bbox->height);
-		} else {
-			bbox->width = pango_units_to_double (ink_rect.width) * y_scale;
-
-			bbox->width = gmathml_view_measure_length (view, bbox->width);
-		}
-
-		return;
-	}
-
-	if (stretch_bbox->is_defined && direction != GMATHML_STRETCH_DIRECTION_HORIZONTAL) {
+	if (stretch_bbox->is_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL)) {
 		bbox->height = stretch_bbox->height;
 		bbox->depth = stretch_bbox->depth;
 	} else {
 		bbox->height = pango_units_to_double (baseline - ink_rect.y);
 		bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
 	}
-	if (stretch_bbox->is_defined && direction != GMATHML_STRETCH_DIRECTION_VERTICAL)
+	if (stretch_bbox->is_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL))
 		bbox->width = stretch_bbox->width;
 	else
 		bbox->width = pango_units_to_double (ink_rect.width);
 
+	if (!stretch_bbox->is_defined &&
+	    (flags & GMATHML_GLYPH_FLAG_ALIGN_AXIS)) {
+		double length = bbox->depth + bbox->height;
+
+		bbox->height = gmathml_view_measure_length (view, 0.5 * length + axis_offset);
+		bbox->depth =  gmathml_view_measure_length (view, 0.5 * length - axis_offset);
+	}
+
 	if (stretch_bbox->is_defined && symmetric &&
-	    (direction == GMATHML_STRETCH_DIRECTION_VERTICAL ||
-	     direction == GMATHML_STRETCH_DIRECTION_BOTH)) {
+	    (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL)) {
 		double length = MAX (axis_offset + bbox->depth, bbox->height - axis_offset);
 
 		bbox->height = gmathml_view_measure_length (view, length + axis_offset);
@@ -588,8 +601,9 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 			    GMathmlBbox const *stretch_bbox)
 {
 	const GMathmlElement *element;
-	const GMathmlStretchyGlyph *glyph;
+	const GMathmlOperatorGlyph *glyph;
 	PangoRectangle rect, ink_rect;
+	const char *font_name;
 	double scale_x, scale_y;
 	int baseline;
 
@@ -612,7 +626,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 			       element->math_color.blue,
 			       element->math_color.alpha);
 
-	glyph = gmathml_view_find_strecthy_glyph (text);
+	glyph = gmathml_view_find_operator_glyph (text);
 	if (glyph == NULL) {
 		gmathml_view_update_layout (view, text, large, &ink_rect, &rect, &baseline);
 	} else {
@@ -624,10 +638,11 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 						 element->math_size * PANGO_SCALE *
 						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 
-		for (i = 0; glyph->glyphs[i].utf8[0] != '\x0' && !found; i++) {
-			pango_font_description_set_family (view->priv->font_description, glyph->glyphs[i].font);
+		for (i = 0; i < glyph->n_sized_glyphs; i++) {
+			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
+			pango_font_description_set_family (view->priv->font_description, font_name);
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_layout_set_text (view->priv->pango_layout, glyph->glyphs[i].utf8, -1);
+			pango_layout_set_text (view->priv->pango_layout, glyph->sized_glyphs[i].utf8, -1);
 			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
@@ -635,23 +650,25 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
-			switch (glyph->direction) {
-				case GMATHML_STRETCH_DIRECTION_VERTICAL:
-					if (pango_units_to_double (ink_rect.height) >
-					    stretch_bbox->height + stretch_bbox->depth)
-						found = TRUE;
-					break;
-				case GMATHML_STRETCH_DIRECTION_HORIZONTAL:
-					if (pango_units_to_double (ink_rect.width) > stretch_bbox->width)
-						found = TRUE;
-					break;
-				default:
-					if (pango_units_to_double (ink_rect.height) >
-					    stretch_bbox->height + stretch_bbox->depth &&
-					    pango_units_to_double (ink_rect.width) > stretch_bbox->width)
-						found = TRUE;
-					break;
+			if (!stretch_bbox->is_defined) {
+				found = TRUE;
+				break;
 			}
+
+			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL) {
+				if (pango_units_to_double (ink_rect.height) >
+				    (stretch_bbox->height + stretch_bbox->depth))
+					found = TRUE;
+			}
+
+			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL) {
+						if (pango_units_to_double (ink_rect.width) >
+						    stretch_bbox->width)
+							found = TRUE;
+			}
+
+			if (found)
+				break;
 		}
 
 		if (found)
@@ -660,8 +677,6 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 		iter = pango_layout_get_iter (view->priv->pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
 		pango_layout_iter_free (iter);
-
-/*                cairo_set_source_rgba (view->priv->cairo, 1.0, 0.0, 0.0, 1.0);*/
 	}
 
 	if (ink_rect.width == 0 || ink_rect.height == 0)
