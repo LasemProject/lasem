@@ -231,9 +231,9 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
 					     offsetof (GMathmlOperatorElement, symmetric));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
-					     offsetof (GMathmlOperatorElement, large_op));
+					     offsetof (GMathmlOperatorElement, accent));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",
-					     offsetof (GMathmlOperatorElement, movable_limits));
+					     offsetof (GMathmlOperatorElement, large_op));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
 					     offsetof (GMathmlOperatorElement, movable_limits));
 }
