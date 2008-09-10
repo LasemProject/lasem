@@ -28,6 +28,8 @@
 
 G_BEGIN_DECLS
 
+#define GMATHML_RADICAL_UTF8 "\xe2\x88\x9a"
+
 extern const GMathmlOperatorGlyph AMS_table[];
 
 const GMathmlOperatorGlyph *gmathml_glyph_table_find_operator_glyph (const char *text);

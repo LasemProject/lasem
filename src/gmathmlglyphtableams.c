@@ -25,7 +25,7 @@
 
 const GMathmlOperatorGlyph AMS_table[] = {
 	{
-		"\xe2\x88\x9a", /* radical */
+		GMATHML_RADICAL_UTF8, /* radical */
 		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
 		GMATHML_GLYPH_FLAG_TYPE_SIZED,
 		{GMATHML_FONT_CMEX10,		"t"},
