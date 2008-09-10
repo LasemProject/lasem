@@ -44,6 +44,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlerrorelement.c		\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
+	gmathmlglyphtableams.c		\
 	gmathmlutils.c			\
 	gmathmlparser.c
 

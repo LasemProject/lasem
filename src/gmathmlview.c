@@ -25,28 +25,12 @@
 #include <gmathmlelement.h>
 #include <gmathmlmathelement.h>
 #include <gmathmlstyleelement.h>
+#include <gmathmlglyphtableams.h>
 
 #include <math.h>
 #include <string.h>
 
 #define GMATHML_LARGE_OP_SCALE	1.6
-
-typedef enum {
-	GMATHML_GLYPH_FLAG_STRETCH_VERTICAL =	1 << 0,
-	GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL =	1 << 1,
-	GMATHML_GLYPH_FLAG_TYPE_SIZED =		1 << 2,
-	GMATHML_GLYPH_FLAG_ALIGN_AXIS =		1 << 3
-} GMathmlGlyphFlags;
-
-typedef enum {
-	GMATHML_FONT_ERROR,
-	GMATHML_FONT_DEFAULT,
-	GMATHML_FONT_CMR10,
-	GMATHML_FONT_CMI10,
-	GMATHML_FONT_CMEX10,
-	GMATHML_FONT_CMSY10,
-	GMATHML_FONT_SYMBOL
-} GMathmlFont;
 
 static const char *gmathml_font_names[] = {
 	"",
@@ -56,217 +40,6 @@ static const char *gmathml_font_names[] = {
 	"cmex10",
 	"cmsy10",
 	"symbol"
-};
-
-typedef struct {
-	GMathmlFont 	font;
-	const char 	utf8[4];
-} GMathmlGlyph;
-
-typedef struct {
-	const char		*utf8;
-	GMathmlGlyphFlags	flags;
-	GMathmlGlyph		start_glyph;
-	GMathmlGlyph		middle_glyph;
-	GMathmlGlyph		stop_glyph;
-	GMathmlGlyph		glue_glyph;
-	unsigned int		n_sized_glyphs;
-	GMathmlGlyph		sized_glyphs[5];
-} GMathmlOperatorGlyph;
-
-static const GMathmlOperatorGlyph AMS_table[] = {
-	{
-		"(",
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
-		GMATHML_GLYPH_FLAG_TYPE_SIZED |
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_CMEX10,		"0"},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_CMEX10,		"@"},
-		{GMATHML_FONT_CMEX10,		"B"},
-		5,
-		{
-			{GMATHML_FONT_CMR10,		"("},
-			{GMATHML_FONT_CMEX10,		"\xc2\xa1"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xb3"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xb5"},
-			{GMATHML_FONT_CMEX10,		"\xc3\x83"}
-		}
-	},
-	{
-		")",
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
-		GMATHML_GLYPH_FLAG_TYPE_SIZED |
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_CMEX10, 		"1"},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_CMEX10,		"A"},
-		{GMATHML_FONT_CMEX10,		"C"},
-		5,
-		{
-			{GMATHML_FONT_CMR10, 		")"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xa2"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xb4"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xb6"},
-			{GMATHML_FONT_CMEX10,		"!"}
-		}
-	},
-	{
-		"{",
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
-		GMATHML_GLYPH_FLAG_TYPE_SIZED |
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_CMEX10, 		"8"},
-		{GMATHML_FONT_CMEX10, 		"<"},
-		{GMATHML_FONT_CMEX10, 		":"},
-		{GMATHML_FONT_CMEX10, 		">"},
-		5,
-		{
-			{GMATHML_FONT_CMSY10, 		"f"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xa9"},
-			{GMATHML_FONT_CMEX10,		"n"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xbd"},
-			{GMATHML_FONT_CMEX10,		"("}
-		}
-	},
-	{
-		"}",
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
-		GMATHML_GLYPH_FLAG_TYPE_SIZED |
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_CMEX10, 		"9"},
-		{GMATHML_FONT_CMEX10, 		"="},
-		{GMATHML_FONT_CMEX10, 		";"},
-		{GMATHML_FONT_CMEX10, 		">"},
-		5,
-		{
-			{GMATHML_FONT_CMSY10,		"g"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xaa"},
-			{GMATHML_FONT_CMEX10,		"o"},
-			{GMATHML_FONT_CMEX10,		"\xc2\xbe"},
-			{GMATHML_FONT_CMEX10,		")"}
-		}
-	},
-	{
-		"\xe2\x88\x91" /* ∑ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMEX10,	"P"}
-		}
-	},
-	{
-		"\xe2\x88\x8f" /* ∏ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMEX10,	"Q"}
-		}
-	},
-	{
-		"\xe2\x88\x90" /* ∐ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMEX10,	"`"}
-		}
-	},
-	{
-		"\xe2\x88\xab" /* ∫ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMEX10,	"R"}
-		}
-	},
-	{
-		"\xe2\x88\xae" /* ∮ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMEX10,	"H"}
-		}
-	},
-	{
-		"\xe2\x85\x86" /* d */,
-		0,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_CMI10,	"d"}
-		}
-	},
-	{
-		"\xcc\xb2" /* _ */,
-		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_DEFAULT,	"\xcc\xb2"}
-		}
-	},
-	{
-		"\xc2\xaf" /* hor */,
-		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_DEFAULT,	"\xc2\xaf"}
-		}
-	},
-	{
-		"-",
-		0,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_DEFAULT,	"\xe2\x88\x92"}
-		}
-	},
-	{
-		"|",
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL,
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		{GMATHML_FONT_ERROR,		""},
-		1,
-		{
-			{GMATHML_FONT_DEFAULT,	"|"}
-		}
-	}
 };
 
 static GObjectClass *parent_class;
@@ -460,20 +233,6 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 }
 
-static const GMathmlOperatorGlyph *
-gmathml_view_find_operator_glyph (const char *text)
-{
-	unsigned int i;
-
-	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
-		if (strcmp (text, AMS_table[i].utf8) == 0) {
-			g_message ("[GMathmlView::find_strecthy_glyph] found %s", text);
-			return &AMS_table[i];
-		}
-
-	return NULL;
-}
-
 void
 gmathml_view_measure_operator (GMathmlView *view,
 			       char const *text,
@@ -505,7 +264,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		g_message ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
-	glyph = gmathml_view_find_operator_glyph (text);
+	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
 		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
 		flags = 0;
@@ -517,11 +276,18 @@ gmathml_view_measure_operator (GMathmlView *view,
 		unsigned int i;
 		gboolean found = FALSE;
 
-		pango_font_description_set_size (view->priv->font_description,
-						 element->math_size * PANGO_SCALE *
-						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION)) {
+			pango_font_description_set_size (view->priv->font_description,
+							 element->math_size * PANGO_SCALE);
+			i = 1;
+		} else {
+			pango_font_description_set_size (view->priv->font_description,
+							 element->math_size * PANGO_SCALE *
+							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+			i = 0;
+		}
 
-		for (i = 0; i < glyph->n_sized_glyphs; i++) {
+		for (; i < glyph->n_sized_glyphs; i++) {
 			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
 			pango_font_description_set_family (view->priv->font_description, font_name);
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
@@ -626,7 +392,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 			       element->math_color.blue,
 			       element->math_color.alpha);
 
-	glyph = gmathml_view_find_operator_glyph (text);
+	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
 		gmathml_view_update_layout (view, text, large, &ink_rect, &rect, &baseline);
 	} else {
@@ -634,11 +400,18 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 		unsigned int i;
 		gboolean found = FALSE;
 
-		pango_font_description_set_size (view->priv->font_description,
-						 element->math_size * PANGO_SCALE *
-						 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION)) {
+			pango_font_description_set_size (view->priv->font_description,
+							 element->math_size * PANGO_SCALE);
+			i = 1;
+		} else {
+			pango_font_description_set_size (view->priv->font_description,
+							 element->math_size * PANGO_SCALE *
+							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+			i = 0;
+		}
 
-		for (i = 0; i < glyph->n_sized_glyphs; i++) {
+		for (; i < glyph->n_sized_glyphs; i++) {
 			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
 			pango_font_description_set_family (view->priv->font_description, font_name);
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
@@ -697,6 +470,52 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 	cairo_restore (view->priv->cairo);
 
 	g_message ("Show operator %s (cr status = %d)", text, cairo_status (view->priv->cairo));
+}
+
+void
+gmathml_view_draw_root (GMathmlView *view,
+			double x, double y,
+			double width, double height,
+			double top_width,
+			double thickness,
+			GMathmlColor *color)
+{
+	cairo_t *cairo;
+	int rounded_thickness;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	cairo = view->priv->cairo;
+
+	rounded_thickness = thickness + 0.5;
+	if (rounded_thickness <= 0)
+		rounded_thickness = 1;
+
+	cairo_save (cairo);
+	cairo_set_line_cap (cairo, CAIRO_LINE_CAP_ROUND);
+	cairo_set_line_width (cairo, 2.0 * thickness);
+
+	cairo_set_source_rgba (cairo, color->red, color->green, color->blue, color->alpha);
+	cairo_move_to (cairo, x, y - height * 0.5);
+	cairo_line_to (cairo, x + width * 0.3, y);
+	cairo_stroke (cairo);
+
+	cairo_set_line_width (cairo, thickness);
+	cairo_line_to (cairo, x + width * 0.3, y);
+	cairo_line_to (cairo, x + width, y - height);
+	cairo_stroke (cairo);
+
+	cairo_set_line_width (cairo, rounded_thickness);
+	if (rounded_thickness % 2 == 0) {
+		cairo_move_to (cairo, x + width, (int) (y - height - rounded_thickness * 0.5 + 0.5));
+		cairo_line_to (cairo, x + width + top_width, (int) (y - height -rounded_thickness * 0.5 + 0.5));
+	} else {
+		cairo_move_to (cairo, x + width, +0.5 + (int) (y - height - rounded_thickness * 0.5));
+		cairo_line_to (cairo, x + width + top_width, +0.5 + (int) (y - height -rounded_thickness * 0.5));
+	}
+	cairo_stroke (cairo);
+
+	cairo_restore (cairo);
 }
 
 void
@@ -848,52 +667,6 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 	cairo_move_to (cairo, x, y);
 	cairo_line_to (cairo, x + width, y);
 	cairo_stroke (cairo);
-}
-
-void
-gmathml_view_draw_root (GMathmlView *view,
-			double x, double y,
-			double width, double height,
-			double top_width,
-			double thickness,
-			GMathmlColor *color)
-{
-	cairo_t *cairo;
-	int rounded_thickness;
-
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-
-	cairo = view->priv->cairo;
-
-	rounded_thickness = thickness + 0.5;
-	if (rounded_thickness <= 0)
-		rounded_thickness = 1;
-
-	cairo_save (cairo);
-	cairo_set_line_cap (cairo, CAIRO_LINE_CAP_ROUND);
-	cairo_set_line_width (cairo, 2.0 * thickness);
-
-	cairo_set_source_rgba (cairo, color->red, color->green, color->blue, color->alpha);
-	cairo_move_to (cairo, x, y - height * 0.5);
-	cairo_line_to (cairo, x + width * 0.3, y);
-	cairo_stroke (cairo);
-
-	cairo_set_line_width (cairo, thickness);
-	cairo_line_to (cairo, x + width * 0.3, y);
-	cairo_line_to (cairo, x + width, y - height);
-	cairo_stroke (cairo);
-
-	cairo_set_line_width (cairo, rounded_thickness);
-	if (rounded_thickness % 2 == 0) {
-		cairo_move_to (cairo, x + width, (int) (y - height - rounded_thickness * 0.5 + 0.5));
-		cairo_line_to (cairo, x + width + top_width, (int) (y - height -rounded_thickness * 0.5 + 0.5));
-	} else {
-		cairo_move_to (cairo, x + width, +0.5 + (int) (y - height - rounded_thickness * 0.5));
-		cairo_line_to (cairo, x + width + top_width, +0.5 + (int) (y - height -rounded_thickness * 0.5));
-	}
-	cairo_stroke (cairo);
-
-	cairo_restore (cairo);
 }
 
 void

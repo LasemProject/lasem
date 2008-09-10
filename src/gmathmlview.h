@@ -32,6 +32,40 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	GMATHML_GLYPH_FLAG_STRETCH_VERTICAL =	1 << 0,
+	GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL =	1 << 1,
+	GMATHML_GLYPH_FLAG_TYPE_SIZED =		1 << 2,
+	GMATHML_GLYPH_FLAG_ALIGN_AXIS =		1 << 3,
+	GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION =	1 << 4
+} GMathmlGlyphFlags;
+
+typedef enum {
+	GMATHML_FONT_ERROR,
+	GMATHML_FONT_DEFAULT,
+	GMATHML_FONT_CMR10,
+	GMATHML_FONT_CMI10,
+	GMATHML_FONT_CMEX10,
+	GMATHML_FONT_CMSY10,
+	GMATHML_FONT_SYMBOL
+} GMathmlFont;
+
+typedef struct {
+	GMathmlFont 	font;
+	const char 	utf8[4];
+} GMathmlGlyph;
+
+typedef struct {
+	const char		*utf8;
+	GMathmlGlyphFlags	flags;
+	GMathmlGlyph		start_glyph;
+	GMathmlGlyph		middle_glyph;
+	GMathmlGlyph		stop_glyph;
+	GMathmlGlyph		glue_glyph;
+	unsigned int		n_sized_glyphs;
+	GMathmlGlyph		sized_glyphs[5];
+} GMathmlOperatorGlyph;
+
 #define GMATHML_TYPE_VIEW             (gmathml_view_get_type ())
 #define GMATHML_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GMATHML_TYPE_VIEW, GMathmlView))
 #define GMATHML_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GMATHML_TYPE_VIEW, GMathmlViewClass))
