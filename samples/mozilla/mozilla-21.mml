@@ -1,0 +1,37 @@
+<math mode="display" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <munder>
+      <mo>&Sum;</mo>
+      <mrow>
+        <mi>p</mi>
+        <mtext>prime</mtext>
+      </mrow>
+    </munder>
+    <mi>f</mi>
+    <mo stretchy="false">(</mo>
+    <mi>p</mi>
+    <mo stretchy="false">)</mo>
+    <mo>=</mo>
+    <msub>
+      <mo stretchy="false">&Integral;</mo>
+      <mrow>
+        <mi>t</mi>
+
+        <mo>&gt;</mo>
+
+        <mn>1</mn>
+      </mrow>
+    </msub>
+    <mi>f</mi>
+    <mo stretchy="false">(</mo>
+    <mi>t</mi>
+    <mo stretchy="false">)</mo>
+    <mo></mo>
+    <mi>d</mi>
+    <mi>&pi;</mi>
+    <mo stretchy="false">(</mo>
+    <mi>t</mi>
+    <mo stretchy="false">)</mo>
+  </mrow>
+</math>
+
