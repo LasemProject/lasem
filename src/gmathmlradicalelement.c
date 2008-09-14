@@ -118,27 +118,30 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 	g_message ("[GMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
 		   radical->bbox.width, radical->bbox.height, radical->bbox.depth);
 
-	node = node->next_sibling;
+	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_ROOT) {
 
-	if (node != NULL) {
-		GMathmlBbox child_bbox;
-		double height;
+		node = node->next_sibling;
 
-		child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+		if (node != NULL) {
+			GMathmlBbox child_bbox;
+			double height;
 
-		radical->radical_x_offset = child_bbox.width - x_offset;
-		self->bbox.width += radical->radical_x_offset;
+			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 
-		g_message ("[GMathmlRadicalElement::measure] y_offset = %g", y_offset);
+			radical->radical_x_offset = child_bbox.width - x_offset;
+			self->bbox.width += radical->radical_x_offset;
 
-		height = self->bbox.height - y_offset + child_bbox.height + child_bbox.depth;
-		if (height > self->bbox.height)
-			self->bbox.height = height;
+			g_message ("[GMathmlRadicalElement::measure] y_offset = %g", y_offset);
 
-		radical->order_y_offset = - self->bbox.height + child_bbox.height;
+			height = self->bbox.height - y_offset + child_bbox.height + child_bbox.depth;
+			if (height > self->bbox.height)
+				self->bbox.height = height;
 
-		g_message ("[GMathmlRadicalElement::measure] order_y_offset = %g",
-			   radical->order_y_offset);
+			radical->order_y_offset = - self->bbox.height + child_bbox.height;
+
+			g_message ("[GMathmlRadicalElement::measure] order_y_offset = %g",
+				   radical->order_y_offset);
+		}
 	}
 
 	return &self->bbox;
