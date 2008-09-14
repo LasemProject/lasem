@@ -30,6 +30,10 @@ G_BEGIN_DECLS
 
 #define GMATHML_RADICAL_UTF8 "\xe2\x88\x9a"
 
+#define GMATHML_RADICAL_ORDER_X_OFFSET	0.5
+#define GMATHML_RADICAL_ORDER_Y_OFFSET  0.5
+#define GMATHML_RADICAL_TOP_LINE_WIDTH	0.05
+
 extern const GMathmlOperatorGlyph AMS_table[];
 
 const GMathmlOperatorGlyph *gmathml_glyph_table_find_operator_glyph (const char *text);

@@ -109,6 +109,13 @@ void 		gmathml_view_show_operator 	(GMathmlView *view, double x, double y,
 						 char const *text, gboolean large,
 						 GMathmlBbox const *stretch_bbox);
 
+void 		gmathml_view_measure_radical 	(GMathmlView *view,
+						 GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox,
+						 double *x_offset, double *y_offset);
+void 		gmathml_view_show_radical	 (GMathmlView *view, double x, double y,
+						 double width,
+						 GMathmlBbox const *stretch_bbox);
+
 double 		gmathml_view_measure_axis_offset(GMathmlView *view, double math_size);
 
 void 		gmathml_view_show_rectangle 	(GMathmlView *view, double x, double y, double width, double height,

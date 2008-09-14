@@ -223,6 +223,14 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	gmathml_view_update_layout (view, text, FALSE, &ink_rect, &rect, &baseline);
 	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
+	if (view->priv->debug) {
+		cairo_save (view->priv->cairo);
+		cairo_set_source_rgba (view->priv->cairo, 1.0, 0.0, 0.0, 0.2);
+		cairo_arc (view->priv->cairo, x, y, 1.0, 0.0, 2.0 * M_PI);
+		cairo_fill (view->priv->cairo);
+		cairo_restore (view->priv->cairo);
+	}
+
 	cairo_set_source_rgba (view->priv->cairo,
 			       element->math_color.red,
 			       element->math_color.green,
@@ -386,12 +394,6 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 		g_message ("[GMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
-	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_color.red,
-			       element->math_color.green,
-			       element->math_color.blue,
-			       element->math_color.alpha);
-
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
 		gmathml_view_update_layout (view, text, large, &ink_rect, &rect, &baseline);
@@ -461,58 +463,112 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 	g_message ("x_scale = %g, y_scale = %g", scale_x, scale_y);
 
 	cairo_save (view->priv->cairo);
+
+	if (view->priv->debug) {
+		cairo_set_source_rgba (view->priv->cairo, 1.0, 0.0, 0.0, 0.1);
+		cairo_arc (view->priv->cairo, x, y, 1.0, 0.0, 2.0 * M_PI);
+		cairo_fill (view->priv->cairo);
+	}
+
 	cairo_move_to (view->priv->cairo, x , y);
+	cairo_move_to (view->priv->cairo, x , y - stretch_bbox->height);
 	cairo_scale (view->priv->cairo, scale_x, scale_y);
 	cairo_rel_move_to (view->priv->cairo,
 			   - pango_units_to_double (ink_rect.x),
 			   - pango_units_to_double (ink_rect.y));
+
+	cairo_set_source_rgba (view->priv->cairo,
+			       element->math_color.red,
+			       element->math_color.green,
+			       element->math_color.blue,
+			       element->math_color.alpha);
+
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 	cairo_restore (view->priv->cairo);
-
-	g_message ("Show operator %s (cr status = %d)", text, cairo_status (view->priv->cairo));
 }
 
 void
-gmathml_view_draw_root (GMathmlView *view,
-			double x, double y,
-			double width, double height,
-			double top_width,
-			double thickness,
-			GMathmlColor *color)
+gmathml_view_measure_radical (GMathmlView *view, GMathmlBbox const *stretch_bbox,
+			      GMathmlBbox *bbox, double *x_offset, double *y_offset)
 {
-	cairo_t *cairo;
-	int rounded_thickness;
+	GMathmlBbox radical_stretch_bbox;
+	double thickness;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+	g_return_if_fail (bbox != NULL);
+	g_return_if_fail (stretch_bbox != NULL);
+
+	radical_stretch_bbox = *stretch_bbox;
+
+	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
+						 GMATHML_RADICAL_TOP_LINE_WIDTH);
+	if (!view->priv->is_vector && thickness < 1)
+		thickness = 1;
+
+	radical_stretch_bbox.height +=
+		gmathml_view_measure_length (view, GMATHML_MEDIUM_SPACE_EM *
+					     view->priv->current_element->math_size) + thickness;
+
+	radical_stretch_bbox.depth +=
+		gmathml_view_measure_length (view,
+					     GMATHML_MEDIUM_SPACE_EM *
+					     view->priv->current_element->math_size);
+
+	gmathml_view_measure_operator (view, GMATHML_RADICAL_UTF8,
+				       FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
+
+	if (x_offset != NULL) {
+		*x_offset = gmathml_view_measure_length (view, bbox->width * GMATHML_RADICAL_ORDER_X_OFFSET);
+	}
+
+	if (y_offset != NULL) {
+		*y_offset = gmathml_view_measure_length (view, (bbox->height + bbox->depth) *
+							 GMATHML_RADICAL_ORDER_Y_OFFSET -
+							 GMATHML_MEDIUM_SPACE_EM *
+							 view->priv->current_element->math_size);
+	}
+}
+
+void
+gmathml_view_show_radical (GMathmlView *view, double x, double y,
+			   double width,
+			   GMathmlBbox const *stretch_bbox)
+{
+	cairo_t *cairo;
+	GMathmlBbox radical_stretch_bbox;
+	double thickness;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+	g_return_if_fail (stretch_bbox != NULL);
 
 	cairo = view->priv->cairo;
 
-	rounded_thickness = thickness + 0.5;
-	if (rounded_thickness <= 0)
-		rounded_thickness = 1;
+	radical_stretch_bbox = *stretch_bbox;
+
+	gmathml_view_show_operator (view, x, y, GMATHML_RADICAL_UTF8, FALSE, stretch_bbox);
+
+	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
+						 GMATHML_RADICAL_TOP_LINE_WIDTH);
+	if (!view->priv->is_vector && thickness < 1)
+		thickness = 1;
 
 	cairo_save (cairo);
 	cairo_set_line_cap (cairo, CAIRO_LINE_CAP_ROUND);
-	cairo_set_line_width (cairo, 2.0 * thickness);
-
-	cairo_set_source_rgba (cairo, color->red, color->green, color->blue, color->alpha);
-	cairo_move_to (cairo, x, y - height * 0.5);
-	cairo_line_to (cairo, x + width * 0.3, y);
-	cairo_stroke (cairo);
-
 	cairo_set_line_width (cairo, thickness);
-	cairo_line_to (cairo, x + width * 0.3, y);
-	cairo_line_to (cairo, x + width, y - height);
-	cairo_stroke (cairo);
 
-	cairo_set_line_width (cairo, rounded_thickness);
-	if (rounded_thickness % 2 == 0) {
-		cairo_move_to (cairo, x + width, (int) (y - height - rounded_thickness * 0.5 + 0.5));
-		cairo_line_to (cairo, x + width + top_width, (int) (y - height -rounded_thickness * 0.5 + 0.5));
-	} else {
-		cairo_move_to (cairo, x + width, +0.5 + (int) (y - height - rounded_thickness * 0.5));
-		cairo_line_to (cairo, x + width + top_width, +0.5 + (int) (y - height -rounded_thickness * 0.5));
-	}
+	cairo_set_source_rgba (view->priv->cairo,
+			       view->priv->current_element->math_color.red,
+			       view->priv->current_element->math_color.green,
+			       view->priv->current_element->math_color.blue,
+			       view->priv->current_element->math_color.alpha);
+
+	x += stretch_bbox->width;
+
+	cairo_move_to (cairo, x - thickness * 0.5, y + thickness * 0.5 - stretch_bbox->height);
+	cairo_line_to (cairo, x - thickness * 0.5 + width, y + thickness * 0.5 - stretch_bbox->height);
+
 	cairo_stroke (cairo);
 
 	cairo_restore (cairo);
@@ -663,7 +719,7 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 
 	cairo_set_line_width (cairo, rounded_thickness);
 	cairo_set_source_rgba (cairo, color->red, color->green, color->blue,
-			       thickness < 1.0 ? thickness : color->alpha);
+			       (thickness < 1.0 && !view->priv->is_vector) ? thickness : color->alpha);
 	cairo_move_to (cairo, x, y);
 	cairo_line_to (cairo, x + width, y);
 	cairo_stroke (cairo);

@@ -50,72 +50,96 @@ gmathml_radical_element_can_append_child (GDomNode *self, GDomNode *child)
 					      self->first_child->next_sibling == NULL);
 }
 
-/* GMathmlElement implementation */
-
 static void
 gmathml_radical_element_update (GMathmlElement *self, GMathmlStyle *style)
-{
-	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
-
-	radical->top_padding = style->medium_math_space_value;
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
-}
-
-static const GMathmlBbox *
-gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 	GDomNode *node;
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
-		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, &gmathml_bbox_null);
-
-		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
-		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);
-
-		radical->height = self->bbox.height + self->bbox.depth;
-		radical->offset = 0.0;
-	} else {
-		GMathmlBbox child_bbox;
-
-		node = GDOM_NODE (self)->first_child;
-		if (node == NULL) {
-			self->bbox = gmathml_bbox_null;
-			return &self->bbox;
-		}
-
-		radical->offset = 0.0;
-		radical->height = 0.0;
-
-		child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-		self->bbox = child_bbox;
-
-		self->bbox.width += gmathml_view_measure_length (view, self->math_size);
-		self->bbox.height += gmathml_view_measure_length (view, radical->top_padding);
-
-		radical->height = self->bbox.height + self->bbox.depth;
-
-		node = node->next_sibling;
-
-		if (node != NULL) {
-			double height;
-
-			child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
-
-			radical->offset = child_bbox.width -
-				gmathml_view_measure_length (view, self->math_size * 0.1);
-
-			self->bbox.width += radical->offset;
-
-			height = radical->height * 0.6 -
-				self->bbox.depth + child_bbox.height + child_bbox.depth;
-			if (height > self->bbox.height)
-				self->bbox.height = height;
-		}
+		GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
+		return;
 	}
 
-	g_message ("top_padding = %g", radical->top_padding);
+	node = GDOM_NODE (self)->first_child;
+	if (node != NULL) {
+		gmathml_element_update (GMATHML_ELEMENT (node), style);
+
+		node = node->next_sibling;
+		if (node != NULL) {
+			gmathml_style_change_script_level (style, +1);
+
+			gmathml_element_update (GMATHML_ELEMENT (node), style);
+		}
+	}
+}
+
+/* GMathmlElement implementation */
+
+static const GMathmlBbox *
+gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
+{
+	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
+	GMathmlBbox stretch_bbox;
+	GDomNode *node;
+	double x_offset = 0.0;
+	double y_offset = 0.0;
+
+	node = GDOM_NODE (self)->first_child;
+	if (node == NULL) {
+		stretch_bbox.width = 0;
+		stretch_bbox.height = self->math_size;
+		stretch_bbox.depth = 0;
+		stretch_bbox.is_defined = TRUE;
+
+		gmathml_view_measure_radical (view, &stretch_bbox, &radical->bbox, NULL, NULL);
+		self->bbox = radical->bbox;
+		return &self->bbox;
+	}
+
+	node = GDOM_NODE (self)->first_child;
+
+	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT)
+		GMATHML_ELEMENT_CLASS (parent_class)->measure (self, view, &gmathml_bbox_null);
+	else
+		self->bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+
+	stretch_bbox = self->bbox;
+
+	radical->width = self->bbox.width;
+	radical->radical_x_offset = 0.0;
+	radical->order_y_offset = 0.0;
+
+	gmathml_view_measure_radical (view, &stretch_bbox, &radical->bbox,
+				      &x_offset, &y_offset);
+
+	gmathml_bbox_add_horizontally (&self->bbox, &radical->bbox);
+
+	g_message ("[GMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
+		   radical->bbox.width, radical->bbox.height, radical->bbox.depth);
+
+	node = node->next_sibling;
+
+	if (node != NULL) {
+		GMathmlBbox child_bbox;
+		double height;
+
+		child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+
+		radical->radical_x_offset = child_bbox.width - x_offset;
+		self->bbox.width += radical->radical_x_offset;
+
+		g_message ("[GMathmlRadicalElement::measure] y_offset = %g", y_offset);
+
+		height = self->bbox.height - y_offset + child_bbox.height + child_bbox.depth;
+		if (height > self->bbox.height)
+			self->bbox.height = height;
+
+		radical->order_y_offset = - self->bbox.height + child_bbox.height;
+
+		g_message ("[GMathmlRadicalElement::measure] order_y_offset = %g",
+			   radical->order_y_offset);
+	}
 
 	return &self->bbox;
 }
@@ -126,12 +150,9 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 	GDomNode *node;
-	double offset;
-
-	offset = gmathml_view_measure_length (view, self->math_size);
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT)
-		GMATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x + offset, y, bbox);
+		GMATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x + radical->bbox.width, y, bbox);
 	else {
 		node = GDOM_NODE (self)->first_child;
 
@@ -141,7 +162,8 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 			child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 
 			gmathml_element_layout (GMATHML_ELEMENT (node), view,
-						x + offset + radical->offset, y, &child_bbox);
+						x + radical->bbox.width + radical->radical_x_offset,
+						y, &child_bbox);
 
 			node = node->next_sibling;
 
@@ -149,8 +171,7 @@ gmathml_radical_element_layout (GMathmlElement *self, GMathmlView *view,
 				child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 
 				gmathml_element_layout (GMATHML_ELEMENT (node), view, x,
-							y + self->bbox.depth - radical->height * 0.6 -
-							child_bbox.depth,
+							y + radical->order_y_offset,
 							&child_bbox);
 			}
 		}
@@ -162,15 +183,8 @@ gmathml_radical_element_render (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 
-	gmathml_view_draw_root (view,
-				self->x + radical->offset,
-				self->y + self->bbox.depth,
-				gmathml_view_measure_length (view, self->math_size),
-				radical->height,
-				self->bbox.width - gmathml_view_measure_length (view, self->math_size) -
-				radical->offset,
-				self->math_size / 20.0,
-				&self->math_color);
+	gmathml_view_show_radical (view, self->x + radical->radical_x_offset, self->y,
+				   radical->width, &radical->bbox);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }

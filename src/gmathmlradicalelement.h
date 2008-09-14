@@ -47,10 +47,12 @@ struct _GMathmlRadicalElement {
 
 	GMathmlRadicalElementType type;
 
-	double top_padding;
+	/* View properties */
 
-	double height;
-	double offset;
+	GMathmlBbox bbox;
+	double width;
+	double radical_x_offset;
+	double order_y_offset;
 };
 
 struct _GMathmlRadicalElementClass {
