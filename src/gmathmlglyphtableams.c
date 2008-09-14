@@ -316,7 +316,31 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		{GMATHML_FONT_ERROR,		""},
 		1,
 		{
-			{GMATHML_FONT_CMR10,	"d"}
+			{GMATHML_FONT_CMI10,	"d"}
+		}
+	},
+	{
+		"\xe2\x85\x88" /* i */,
+		0,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_CMI10,	"i"}
+		}
+	},
+	{
+		"\xf0\x9d\x95\x9b" /* j */,
+		0,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_CMI10,	"j"}
 		}
 	},
 	{
