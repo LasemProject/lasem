@@ -40,6 +40,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlpresentationcontainer.c	\
 	gmathmlstyleelement.c		\
 	gmathmlrowelement.c		\
+	gmathmlfencedelement.c		\
 	gmathmlpaddedelement.c		\
 	gmathmlerrorelement.c		\
 	gmathmlattributes.c		\

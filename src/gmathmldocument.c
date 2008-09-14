@@ -34,6 +34,7 @@
 #include <gmathmloperatorelement.h>
 #include <gmathmlrowelement.h>
 #include <gmathmlpaddedelement.h>
+#include <gmathmlfencedelement.h>
 #include <gmathmlerrorelement.h>
 #include <gmathmlstyleelement.h>
 #include <string.h>
@@ -99,6 +100,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_phantom_element_new ();
 	else if (strcmp (tag_name, "mpadded") == 0)
 		node = gmathml_padded_element_new ();
+	else if (strcmp (tag_name, "mfenced") == 0)
+		node = gmathml_fenced_element_new ();
 	else if (strcmp (tag_name, "merror") == 0)
 		node = gmathml_error_element_new ();
 
