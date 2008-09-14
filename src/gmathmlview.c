@@ -566,8 +566,12 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 
 	x += stretch_bbox->width;
 
-	cairo_move_to (cairo, x - thickness * 0.5, y + thickness * 0.5 - stretch_bbox->height);
-	cairo_line_to (cairo, x - thickness * 0.5 + width, y + thickness * 0.5 - stretch_bbox->height);
+	cairo_move_to (cairo,
+		       x - 0.5 * view->priv->current_element->math_size * GMATHML_RADICAL_TOP_LINE_WIDTH,
+		       y + thickness * 0.5 - stretch_bbox->height);
+	cairo_line_to (cairo,
+		       x - thickness * 0.5 + width,
+		       y + thickness * 0.5 - stretch_bbox->height);
 
 	cairo_stroke (cairo);
 
