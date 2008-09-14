@@ -48,7 +48,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlutils.c			\
 	gmathmlparser.c
 
-bin_PROGRAMS = gmathmlsvg gmathmltest gmathmlconvert
+bin_PROGRAMS = gmathmltest gmathmlconvert
 
 gmathmlconvert_SOURCES = 			\
 	gmathmlconvert.c
