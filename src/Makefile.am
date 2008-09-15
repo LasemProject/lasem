@@ -9,17 +9,15 @@ AM_CFLAGS =\
 	 -Werror \
 	 -g
 
-lib_LTLIBRARIES = libgdom.la libgmathml.la
+lib_LTLIBRARIES = libgmathml.la
 
-libgdom_la_SOURCES =			\
+libgmathml_la_SOURCES =			\
 	gdomnode.c			\
 	gdomnodelist.c			\
 	gdomdocument.c			\
 	gdomelement.c			\
 	gdomcharacterdata.c		\
-	gdomtext.c
-
-libgmathml_la_SOURCES =			\
+	gdomtext.c			\
 	gmathmlenums.c			\
 	gmathmlentitydictionary.c	\
 	gmathmloperatordictionary.c	\
@@ -51,6 +49,12 @@ libgmathml_la_SOURCES =			\
 
 libgmathml_ladir = $(includedir)/gmathml
 libgmathml_la_HEADERS = \
+	gdomnode.h			\
+	gdomnodelist.h			\
+	gdomdocument.h			\
+	gdomelement.h			\
+	gdomcharacterdata.h		\
+	gdomtext.h			\
 	gmathmlentitydictionary.h	\
 	gmathmloperatordictionary.h	\
 	gmathmldocument.h		\
@@ -82,17 +86,17 @@ libgmathml_la_HEADERS = \
 
 bin_PROGRAMS = gmathmltest gmathmlconvert
 
-gmathmlconvert_SOURCES = 			\
+gmathmlconvert_SOURCES = 		\
 	gmathmlconvert.c
 
 gmathmlconvert_LDFLAGS =
 
-gmathmlconvert_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
+gmathmlconvert_LDADD = $(GMATHML_LIBS) libgmathml.la
 
 gmathmltest_SOURCES = 			\
 	gmathmltest.c
 
 gmathmltest_LDFLAGS =
 
-gmathmltest_LDADD = $(GMATHML_LIBS) libgdom.la libgmathml.la
+gmathmltest_LDADD = $(GMATHML_LIBS) libgmathml.la
 

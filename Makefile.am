@@ -4,12 +4,12 @@
 SUBDIRS = src po
 
 gmathmldocdir = ${prefix}/doc/gmathml
-gmathmldoc_DATA = \
-	README\
-	COPYING\
-	AUTHORS\
-	ChangeLog\
-	INSTALL\
+gmathmldoc_DATA = 	\
+	README		\
+	COPYING		\
+	ChangeLog 	\
+	AUTHORS		\
+	INSTALL		\
 	NEWS
 
 EXTRA_DIST = $(gmathmldoc_DATA)
