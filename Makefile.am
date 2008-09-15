@@ -22,3 +22,5 @@ dist-hook:
 		fi \
 	done
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = gmathml.pc

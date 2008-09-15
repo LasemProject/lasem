@@ -49,6 +49,37 @@ libgmathml_la_SOURCES =			\
 	gmathmlutils.c			\
 	gmathmlparser.c
 
+libgmathml_ladir = $(includedir)/gmathml
+libgmathml_la_HEADERS = \
+	gmathmlentitydictionary.h	\
+	gmathmloperatordictionary.h	\
+	gmathmldocument.h		\
+	gmathmlelement.h		\
+	gmathmlphantomelement.h		\
+	gmathmlmathelement.h		\
+	gmathmltableelement.h		\
+	gmathmltablerowelement.h	\
+	gmathmltablecellelement.h	\
+	gmathmlspaceelement.h		\
+	gmathmlradicalelement.h		\
+	gmathmlscriptelement.h		\
+	gmathmlfractionelement.h	\
+	gmathmlunderoverelement.h	\
+	gmathmlpresentationtoken.h	\
+	gmathmloperatorelement.h	\
+	gmathmlpresentationcontainer.h	\
+	gmathmlstyleelement.h		\
+	gmathmlrowelement.h		\
+	gmathmlfencedelement.h		\
+	gmathmlpaddedelement.h		\
+	gmathmlerrorelement.h		\
+	gmathmlattributes.h		\
+	gmathmlview.h			\
+	gmathmlglyphtableams.h		\
+	gmathmlutils.h			\
+	gmathmlparser.h
+
+
 bin_PROGRAMS = gmathmltest gmathmlconvert
 
 gmathmlconvert_SOURCES = 			\
