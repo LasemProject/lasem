@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gmathmlelement.h>
 #include <gmathmlspaceelement.h>
 #include <gmathmloperatorelement.h>
@@ -90,7 +91,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	g_return_if_fail (GMATHML_IS_ELEMENT (self));
 	g_return_if_fail (parent_style != NULL);
 
-	g_message ("[Element::update] %s", gdom_node_get_node_name (GDOM_NODE (self)));
+	gdom_debug ("[Element::update] %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
@@ -108,7 +109,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	self->math_size = style->math_size_value;
 	self->math_variant = style->math_variant;
 
-	g_message ("[Element::update] Math size = %g", self->math_size);
+	gdom_debug ("[Element::update] Math size = %g", self->math_size);
 
 	gmathml_style_free (style);
 }
@@ -153,8 +154,8 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	}
 
 	if (stretchy_found) {
-		g_message ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
-			   stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
+		gdom_debug ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
+			    stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
 
 		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 			if (GMATHML_IS_ELEMENT (node)) {
@@ -194,12 +195,12 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 			element->bbox = *(element_class->measure (element, view, stretch_bbox));
 			gmathml_view_pop_element (view);
 
-			g_message ("[Element::measure] Bbox (%s) %g, %g, %g",
-				   gdom_node_get_node_name (GDOM_NODE (element)),
-				   element->bbox.width, element->bbox.height, element->bbox.depth);
+			gdom_debug ("[Element::measure] Bbox (%s) %g, %g, %g",
+				    gdom_node_get_node_name (GDOM_NODE (element)),
+				    element->bbox.width, element->bbox.height, element->bbox.depth);
 		} else {
 
-			g_message ("[Element::measure] method not defined");
+			gdom_debug ("[Element::measure] method not defined");
 			element->bbox.width = 0.0;
 			element->bbox.height = 0.0;
 			element->bbox.depth = 0.0;
@@ -250,8 +251,8 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	g_return_if_fail (element_class != NULL);
 
-	g_message ("[Element::layout] assigned bbox for %s = %g, %g, %g at %g, %g",
-		   gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth, x , y);
+	gdom_debug ("[Element::layout] assigned bbox for %s = %g, %g, %g at %g, %g",
+		    gdom_node_get_node_name (GDOM_NODE (self)), bbox->width, bbox->height, bbox->depth, x , y);
 
 	self->x = x;
 	self->y = y;

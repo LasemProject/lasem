@@ -12,6 +12,7 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libgmathml.la
 
 libgmathml_la_SOURCES =			\
+	gdomdebug.c			\
 	gdomnode.c			\
 	gdomnodelist.c			\
 	gdomdocument.c			\

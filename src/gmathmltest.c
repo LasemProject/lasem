@@ -36,6 +36,7 @@
 #endif
 
 #include <glib/gregex.h>
+#include <glib/gprintf.h>
 #include <gmathmlview.h>
 #include <gmathmldocument.h>
 #include <gmathmlparser.h>
@@ -81,6 +82,8 @@ gmathml_test_render (char const *filename)
 	png_filename = g_strdup_printf ("%s-out.png", test_name);
 	xml_filename = g_strdup_printf ("%s.mml", test_name);
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
+
+	g_printf ("\trender %s\n", xml_filename);
 
 	document = gmathml_document_from_file (xml_filename);
 
@@ -158,6 +161,8 @@ gmathml_test_process_dir (const char *name)
 	directory = g_dir_open (name, 0, &error);
 	assert (error == NULL);
 
+	g_printf ("In directory %s\n", name);
+
 	gmathml_test_html ("<h1>%s</h1>", name);
 
 	do {
@@ -195,10 +200,6 @@ main (int argc, char **argv)
 #endif
 
 	gmathml_test_html_file = fopen (XML_FILENAME, "w");
-
-	printf ("===============\n"
-		"Rendering tests\n"
-		"===============\n");
 
 	gmathml_test_html_file = fopen (XML_FILENAME, "w");
 

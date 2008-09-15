@@ -21,6 +21,7 @@
  */
 
 #include <stdio.h>
+#include <gdomdebug.h>
 #include <gdomtext.h>
 #include <gmathmloperatordictionary.h>
 #include <gmathmldocument.h>
@@ -91,6 +92,9 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	if (option_debug)
+		gdom_debug_enable ();
+
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
 		g_print ("One input file name is required\n");
 		return 1;
@@ -148,8 +152,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	gdom_node_dump (document);
-
 	switch (format) {
 		case FORMAT_PDF:
 			surface = cairo_pdf_surface_create (output_filename, 100, 100);
@@ -197,8 +199,6 @@ int main(int argc, char **argv)
 	gmathml_view_render (view);
 
 	g_object_unref (view);
-
-	gdom_node_dump (document);
 
 	g_object_unref (document);
 

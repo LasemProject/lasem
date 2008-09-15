@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gmathmlradicalelement.h>
 #include <gmathmlview.h>
 
@@ -115,8 +116,8 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 
 	gmathml_bbox_add_horizontally (&self->bbox, &radical->bbox);
 
-	g_message ("[GMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
-		   radical->bbox.width, radical->bbox.height, radical->bbox.depth);
+	gdom_debug ("[GMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
+		    radical->bbox.width, radical->bbox.height, radical->bbox.depth);
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_ROOT) {
 
@@ -131,7 +132,7 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 			radical->radical_x_offset = child_bbox.width - x_offset;
 			self->bbox.width += radical->radical_x_offset;
 
-			g_message ("[GMathmlRadicalElement::measure] y_offset = %g", y_offset);
+			gdom_debug ("[GMathmlRadicalElement::measure] y_offset = %g", y_offset);
 
 			height = self->bbox.height - y_offset + child_bbox.height + child_bbox.depth;
 			if (height > self->bbox.height)
@@ -139,8 +140,8 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 
 			radical->order_y_offset = - self->bbox.height + child_bbox.height;
 
-			g_message ("[GMathmlRadicalElement::measure] order_y_offset = %g",
-				   radical->order_y_offset);
+			gdom_debug ("[GMathmlRadicalElement::measure] order_y_offset = %g",
+				    radical->order_y_offset);
 		}
 	}
 

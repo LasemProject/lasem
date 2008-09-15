@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gmathmloperatorelement.h>
 #include <gmathmloperatordictionary.h>
 #include <gmathmlview.h>
@@ -79,8 +80,8 @@ gmathml_operator_element_post_new_child (GDomNode *self, GDomNode *child)
 
 	entry = gmathml_operator_element_dictionary_lookup (operator_element);
 
-	g_message ("[OperatorElement::post_new_child] found %s %s",
-		   gmathml_form_to_string (entry->form), entry->name);
+	gdom_debug ("[OperatorElement::post_new_child] found %s %s",
+		    gmathml_form_to_string (entry->form), entry->name);
 
 	flag = entry->stretchy;
 	gmathml_attribute_boolean_parse (&operator_element->stretchy, &flag);
@@ -102,8 +103,8 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	entry = gmathml_operator_element_dictionary_lookup (operator_element);
 
-	g_message ("[OperatorElement::update] found %s %s",
-		   gmathml_form_to_string (entry->form), entry->name);
+	gdom_debug ("[OperatorElement::update] found %s %s",
+		    gmathml_form_to_string (entry->form), entry->name);
 
 	space = entry->left_space;
 	gmathml_attribute_space_parse (&operator_element->left_space, &space, style);
@@ -117,7 +118,7 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_boolean_parse (&operator_element->accent, &flag);
 
 	if (operator_element->accent.value)
-		g_message ("[OperatorElement::update] Is accent");
+		gdom_debug ("[OperatorElement::update] Is accent");
 
 	flag = entry->large_op;
 	gmathml_attribute_boolean_parse (&operator_element->large_op, &flag);
@@ -134,7 +135,7 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	operator_element->is_large_op = operator_element->large_op.value && style->display_style;
 	if (operator_element->is_large_op)
-		g_message ("[OperatorElement::update] Large op");
+		gdom_debug ("[OperatorElement::update] Large op");
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }

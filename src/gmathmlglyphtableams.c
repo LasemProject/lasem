@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gmathmlglyphtableams.h>
 #include <string.h>
 
@@ -400,7 +401,7 @@ gmathml_glyph_table_find_operator_glyph (const char *text)
 
 	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
 		if (strcmp (text, AMS_table[i].utf8) == 0) {
-			g_message ("[GMathmlView::find_strecthy_glyph] found %s", text);
+			gdom_debug ("[GMathmlGlyphTableAMS::find_operator] found %s", text);
 			return &AMS_table[i];
 		}
 

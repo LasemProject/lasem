@@ -118,7 +118,6 @@ gmathml_parser_characters (void *user_data, const xmlChar *ch, int len)
 		text = g_strndup ((char *) ch, len);
 		node = GDOM_NODE (gdom_document_create_text_node (GDOM_DOCUMENT (state->document), text));
 		gdom_node_append_child (state->current_node, node);
-		g_message ("%s", text);
 		g_free (text);
 	}
 }

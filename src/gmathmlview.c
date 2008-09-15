@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gmathmlview.h>
 #include <gmathmldocument.h>
 #include <gmathmlelement.h>
@@ -169,7 +170,7 @@ gmathml_view_measure_axis_offset (GMathmlView *view, double math_size)
 
 	axis_offset = pango_units_to_double (- 0.5 * ink_rect.height - ink_rect.y + baseline);
 
-	g_message ("[GMathmlView::measure_axis_offset] offset = %g (%g %%)",
+	gdom_debug ("[GMathmlView::measure_axis_offset] offset = %g (%g %%)",
 		   axis_offset, axis_offset / view->priv->current_element->math_size);
 
 	return axis_offset;
@@ -216,7 +217,7 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	if (text == NULL)
 		return;
 
-/*        g_message ("View: show_text %s at %g, %g (size = %g) %s",*/
+/*        gdom_debug ("View: show_text %s at %g, %g (size = %g) %s",*/
 /*                   text, x, y, element->math_size,*/
 /*                   gmathml_variant_to_string (element->math_variant));*/
 
@@ -269,7 +270,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 	}
 
 	if (stretch_bbox->is_defined)
-		g_message ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
+		gdom_debug ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
@@ -277,7 +278,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
 		flags = 0;
 
-		g_message ("[GMathmlView::measure_operator] operator = %s", text);
+		gdom_debug ("[GMathmlView::measure_operator] operator = %s", text);
 
 	} else {
 		PangoLayoutIter *iter;
@@ -303,7 +304,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
-			g_message ("Glyph #%i -> width = %g, height = %g", i,
+			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
@@ -329,7 +330,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		}
 
 		if (found)
-			g_message ("Found sized glyph #%i", i);
+			gdom_debug ("Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (view->priv->pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
@@ -391,7 +392,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 		return;
 
 	if (stretch_bbox->is_defined)
-		g_message ("[GMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
+		gdom_debug ("[GMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
@@ -421,7 +422,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
-			g_message ("Glyph #%i -> width = %g, height = %g", i,
+			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
@@ -447,7 +448,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 		}
 
 		if (found)
-			g_message ("Found sized glyph #%i", i);
+			gdom_debug ("Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (view->priv->pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
@@ -460,7 +461,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 	scale_x = stretch_bbox->width / pango_units_to_double (ink_rect.width);
 	scale_y = (stretch_bbox->height + stretch_bbox->depth) / pango_units_to_double (ink_rect.height);
 
-	g_message ("x_scale = %g, y_scale = %g", scale_x, scale_y);
+	gdom_debug ("x_scale = %g, y_scale = %g", scale_x, scale_y);
 
 	cairo_save (view->priv->cairo);
 
@@ -719,7 +720,7 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 		}
 	}
 
-	g_message ("[View::draw_fraction_line] y = %g, thickness = %d", y, rounded_thickness);
+	gdom_debug ("[View::draw_fraction_line] y = %g, thickness = %d", y, rounded_thickness);
 
 	cairo_set_line_width (cairo, rounded_thickness);
 	cairo_set_source_rgba (cairo, color->red, color->green, color->blue,
@@ -781,9 +782,9 @@ gmathml_view_render (GMathmlView *view)
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
 	if (bbox->is_defined)
-		g_message ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
+		gdom_debug ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
 	else
-		g_message ("[View::render] bbox not defined");
+		gdom_debug ("[View::render] bbox not defined");
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 

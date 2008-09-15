@@ -20,6 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <glib/gprintf.h>
 #include <gdomnode.h>
 #include <gdomdocument.h>
 #include <stdio.h>
@@ -252,26 +253,26 @@ gdom_node_dump (GDomNode *self)
 
 	switch (type) {
 		case GDOM_NODE_TYPE_ELEMENT_NODE:
-			printf ("<%s>", gdom_node_get_node_name (self));
+			g_printf ("<%s>", gdom_node_get_node_name (self));
 			for (node = self->first_child;
 			     node != NULL;
 			     node = node->next_sibling)
 				gdom_node_dump (node);
-			printf ("</%s>", gdom_node_get_node_name (self));
+			g_printf ("</%s>", gdom_node_get_node_name (self));
 			break;
 		case GDOM_NODE_TYPE_TEXT_NODE:
 			text = gdom_node_get_node_value (self);
-			printf ("%s", text != NULL ? text : "null");
+			g_printf ("%s", text != NULL ? text : "null");
 			break;
 		case GDOM_NODE_TYPE_DOCUMENT_NODE:
-			printf ("Mathml Document\n");
+			g_printf ("Mathml Document\n");
 			if (self->first_child != NULL) {
 				gdom_node_dump (self->first_child);
-				printf ("\n");
+				g_printf ("\n");
 			}
 			break;
 		default:
-			printf ("Not supported\n");
+			g_printf ("Not supported\n");
 			break;
 	}
 }
