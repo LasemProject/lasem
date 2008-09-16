@@ -285,7 +285,8 @@ gmathml_view_measure_operator (GMathmlView *view,
 		unsigned int i;
 		gboolean found = FALSE;
 
-		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION)) {
+		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION) &&
+		    !stretch_bbox->is_defined) {
 			pango_font_description_set_size (view->priv->font_description,
 							 element->math_size * PANGO_SCALE);
 			i = 1;
