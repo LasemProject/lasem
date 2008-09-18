@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po
+SUBDIRS = itex2mml src po
 
 gmathmldocdir = ${prefix}/doc/gmathml
 gmathmldoc_DATA = 	\
