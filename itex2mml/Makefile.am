@@ -33,5 +33,3 @@ $(Y_TAB_C):	itex2MML.y
 
 $(LEX_YY_C):	itex2MML.l
 		$(LEX) -P$(YYPREFIX) -o$@ $<
-
-

@@ -92,12 +92,12 @@ gmathmlconvert_SOURCES = 		\
 
 gmathmlconvert_LDFLAGS =
 
-gmathmlconvert_LDADD = $(GMATHML_LIBS) libgmathml.la
+gmathmlconvert_LDADD = $(GMATHML_LIBS) libgmathml.la ../itex2mml/libitex2mml.la
 
 gmathmltest_SOURCES = 			\
 	gmathmltest.c
 
 gmathmltest_LDFLAGS =
 
-gmathmltest_LDADD = $(GMATHML_LIBS) libgmathml.la
+gmathmltest_LDADD = $(GMATHML_LIBS) libgmathml.la ../itex2mml/libitex2mml.la
 
