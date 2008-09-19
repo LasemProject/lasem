@@ -21,6 +21,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <gdomdebug.h>
 #include <gdomtext.h>
 #include <gmathmloperatordictionary.h>
@@ -32,9 +33,13 @@
 #include <gmathmlparser.h>
 #include <glib/gmessages.h>
 #include <glib/goption.h>
+#include <glib/gprintf.h>
+#include <gio/gio.h>
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
 #include <cairo-ps.h>
+
+#include <../itex2mml/itex2MML.h>
 
 static gboolean option_debug = FALSE;
 static char *option_output_file_format = NULL;
@@ -76,9 +81,13 @@ int main(int argc, char **argv)
 	cairo_surface_t *surface;
 	GError *error = NULL;
 	GOptionContext *context;
+	GFile *file;
 	FileFormat format;
 	char *output_filename;
 	char *input_filename;
+	char *mime;
+	char *buffer = NULL;
+	size_t size;
 	double height, width;
 
 	g_type_init ();
@@ -146,61 +155,82 @@ int main(int argc, char **argv)
 		g_free (directory);
 	}
 
-	document = gmathml_document_from_file (input_filename);
-	if (document == NULL) {
-		g_print ("Can't load %s\n", input_filename);
-		return 1;
+	mime = g_content_type_guess (input_filename, NULL, 0, NULL);
+	file = g_file_new_for_path (input_filename);
+
+	if (g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL)) {
+		char *mathml;
+
+		if (strcmp (mime, "text/mathml") == 0)
+			mathml = buffer;
+		else {
+			mathml = itex2MML_parse (buffer, size);
+			g_free (buffer);
+		}
+
+		if (mathml != NULL) {
+			document = gmathml_document_from_memory (mathml);
+			if (document != NULL) {
+				switch (format) {
+					case FORMAT_PDF:
+						surface = cairo_pdf_surface_create (output_filename, 100, 100);
+						break;
+					case FORMAT_PS:
+						surface = cairo_ps_surface_create (output_filename, 100, 100);
+						break;
+					case FORMAT_SVG:
+					default:
+						surface = cairo_svg_surface_create (output_filename, 100, 100);
+						break;
+				}
+
+				cairo = cairo_create (surface);
+				cairo_surface_destroy (surface);
+
+				view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
+
+				cairo_destroy (cairo);
+
+				gmathml_view_set_debug (view, option_debug);
+
+				gmathml_view_measure (view, &width, &height);
+
+				switch (format) {
+					case FORMAT_PDF:
+						surface = cairo_pdf_surface_create (output_filename, width, height);
+						break;
+					case FORMAT_PS:
+						surface = cairo_ps_surface_create (output_filename, width, height);
+						break;
+					case FORMAT_SVG:
+					default:
+						surface = cairo_svg_surface_create (output_filename, width, height);
+						break;
+				}
+
+				cairo = cairo_create (surface);
+				cairo_surface_destroy (surface);
+
+				gmathml_view_set_cairo (view, cairo);
+
+				cairo_destroy (cairo);
+
+				gmathml_view_render (view);
+
+				g_object_unref (view);
+
+				g_object_unref (document);
+			} else
+				g_warning ("Can't load %s", input_filename);
+		} else
+			g_warning ("Invalid document");
+
+		g_free (mathml);
+
+		g_object_unref (file);
 	}
 
-	switch (format) {
-		case FORMAT_PDF:
-			surface = cairo_pdf_surface_create (output_filename, 100, 100);
-			break;
-		case FORMAT_PS:
-			surface = cairo_ps_surface_create (output_filename, 100, 100);
-			break;
-		case FORMAT_SVG:
-		default:
-			surface = cairo_svg_surface_create (output_filename, 100, 100);
-			break;
-	}
-
-	cairo = cairo_create (surface);
-	cairo_surface_destroy (surface);
-
-	view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
-
-	cairo_destroy (cairo);
-
-	gmathml_view_set_debug (view, option_debug);
-
-	gmathml_view_measure (view, &width, &height);
-
-	switch (format) {
-		case FORMAT_PDF:
-			surface = cairo_pdf_surface_create (output_filename, width, height);
-			break;
-		case FORMAT_PS:
-			surface = cairo_ps_surface_create (output_filename, width, height);
-			break;
-		case FORMAT_SVG:
-		default:
-			surface = cairo_svg_surface_create (output_filename, width, height);
-			break;
-	}
-
-	cairo = cairo_create (surface);
-	cairo_surface_destroy (surface);
-
-	gmathml_view_set_cairo (view, cairo);
-
-	cairo_destroy (cairo);
-
-	gmathml_view_render (view);
-
-	g_object_unref (view);
-
-	g_object_unref (document);
+	g_free (mime);
 
 	return (0);
 }
