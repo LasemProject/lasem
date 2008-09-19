@@ -214,7 +214,7 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	element = view->priv->current_element;
 
-	if (text == NULL)
+	if (text == NULL || strlen (text) < 1)
 		return;
 
 /*        gdom_debug ("View: show_text %s at %g, %g (size = %g) %s",*/
@@ -224,12 +224,18 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	gmathml_view_update_layout (view, text, FALSE, &ink_rect, &rect, &baseline);
 	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
+	if (ink_rect.width <= 0 || ink_rect.height <= 0)
+		return;
+
+	gdom_debug ("[GMathmlView::show_text] cairo status before = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
+
+	cairo_save (view->priv->cairo);
+
 	if (view->priv->debug) {
-		cairo_save (view->priv->cairo);
 		cairo_set_source_rgba (view->priv->cairo, 1.0, 0.0, 0.0, 0.2);
 		cairo_arc (view->priv->cairo, x, y, 1.0, 0.0, 2.0 * M_PI);
 		cairo_fill (view->priv->cairo);
-		cairo_restore (view->priv->cairo);
 	}
 
 	cairo_set_source_rgba (view->priv->cairo,
@@ -240,6 +246,11 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 
 	cairo_move_to (view->priv->cairo, x - pango_units_to_double (ink_rect.x), y - pango_units_to_double (baseline));
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
+
+	cairo_restore (view->priv->cairo);
+
+	gdom_debug ("[GMathmlView::show_text] cairo status after = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
 }
 
 void
@@ -464,6 +475,9 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 
 	gdom_debug ("x_scale = %g, y_scale = %g", scale_x, scale_y);
 
+	gdom_debug ("[GMathmlView::show_operator] cairo status before = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
+
 	cairo_save (view->priv->cairo);
 
 	if (view->priv->debug) {
@@ -487,6 +501,9 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 	cairo_restore (view->priv->cairo);
+
+	gdom_debug ("[GMathmlView::show_operator] cairo status after = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
 }
 
 void
@@ -556,6 +573,9 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	if (!view->priv->is_vector && thickness < 1)
 		thickness = 1;
 
+	gdom_debug ("[GMathmlView::show_radical] cairo status before = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
+
 	cairo_save (cairo);
 	cairo_set_line_cap (cairo, CAIRO_LINE_CAP_ROUND);
 	cairo_set_line_width (cairo, thickness);
@@ -578,6 +598,9 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	cairo_stroke (cairo);
 
 	cairo_restore (cairo);
+
+	gdom_debug ("[GMathmlView::show_radical] cairo status after = %s",
+		    cairo_status_to_string (cairo_status (view->priv->cairo)));
 }
 
 void
@@ -792,6 +815,9 @@ gmathml_view_render (GMathmlView *view)
 	cairo_save (cairo);
 	cairo_translate (cairo, 0, bbox->height);
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
+
+	gdom_debug ("[GMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
+
 	cairo_restore (cairo);
 
 	if (view->priv->elements != NULL) {
