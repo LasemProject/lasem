@@ -85,14 +85,14 @@ libgmathml_la_HEADERS = \
 	gmathmlparser.h
 
 
-bin_PROGRAMS = gmathmltest gmathmlconvert
+bin_PROGRAMS = gmathmltest gmathmlrender
 
-gmathmlconvert_SOURCES = 		\
-	gmathmlconvert.c
+gmathmlrender_SOURCES = 		\
+	gmathmlrender.c
 
-gmathmlconvert_LDFLAGS =
+gmathmlrender_LDFLAGS =
 
-gmathmlconvert_LDADD = $(GMATHML_LIBS) libgmathml.la ../itex2mml/libitex2mml.la
+gmathmlrender_LDADD = $(GMATHML_LIBS) libgmathml.la ../itex2mml/libitex2mml.la
 
 gmathmltest_SOURCES = 			\
 	gmathmltest.c

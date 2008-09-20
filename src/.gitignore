@@ -3,6 +3,6 @@
 *.lo
 *.la
 .libs
-gmathmlconvert
+gmathmlrender
 gmathmltest
 *.swp
