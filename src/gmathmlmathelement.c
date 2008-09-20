@@ -76,6 +76,8 @@ gmathml_math_element_init (GMathmlMathElement *self)
 
 	style->math_size_value = 12.0;
 
+	style->display_style = FALSE;
+
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
 	style->script_min_size.value = 8.0;
