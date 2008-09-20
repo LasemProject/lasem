@@ -100,6 +100,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	g_option_context_free (context);
+
 	if (option_debug)
 		gdom_debug_enable ();
 
