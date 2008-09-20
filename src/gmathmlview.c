@@ -27,6 +27,7 @@
 #include <gmathmlmathelement.h>
 #include <gmathmlstyleelement.h>
 #include <gmathmlglyphtableams.h>
+#include <glib/gprintf.h>
 
 #include <math.h>
 #include <string.h>
@@ -725,7 +726,7 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 				 GMathmlColor *color)
 {
 	cairo_t *cairo;
-	int rounded_thickness;
+	double rounded_thickness;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
@@ -734,17 +735,19 @@ gmathml_view_draw_fraction_line (GMathmlView *view,
 	if (view->priv->is_vector)
 		rounded_thickness = thickness;
 	else {
-		rounded_thickness = thickness + 0.5;
-		if ((rounded_thickness % 2) == 0) {
+		int int_thickness;
+
+		int_thickness = thickness + 0.5;
+		if ((int_thickness % 2) == 0) {
 			y = (int) (y + 0.5);
 			x = (int) (x + 0.5);
 		} else {
 			y = +0.5 + (int ) y;
 			x = +0.5 + (int ) x;
 		}
-	}
 
-	gdom_debug ("[View::draw_fraction_line] y = %g, thickness = %d", y, rounded_thickness);
+		rounded_thickness = int_thickness;
+	}
 
 	cairo_set_line_width (cairo, rounded_thickness);
 	cairo_set_source_rgba (cairo, color->red, color->green, color->blue,
