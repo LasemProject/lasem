@@ -88,6 +88,7 @@ int main(int argc, char **argv)
 	char *buffer = NULL;
 	size_t size;
 	double height, width;
+	gboolean success;
 
 	g_type_init ();
 
@@ -159,7 +160,14 @@ int main(int argc, char **argv)
 	mime = g_content_type_guess (input_filename, NULL, 0, NULL);
 	file = g_file_new_for_path (input_filename);
 
-	if (g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL)) {
+	success = g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL);
+	if (!success) {
+		g_object_unref (file);
+		file = g_file_new_for_uri (input_filename);
+		success = g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL);
+	}
+
+	if (success) {
 		char *mathml;
 
 		if (strcmp (mime, "text/mathml") == 0)
@@ -229,7 +237,8 @@ int main(int argc, char **argv)
 		g_free (mathml);
 
 		g_object_unref (file);
-	}
+	} else
+		g_warning ("Can't load %s", input_filename);
 
 	g_free (mime);
 
