@@ -900,7 +900,6 @@ gmathml_view_finalize (GObject *object)
 
 	g_object_unref (view->priv->document);
 	g_object_unref (view->priv->pango_layout);
-/*        g_object_unref (view->priv->font_description);*/
 	cairo_destroy (view->priv->cairo);
 
 	parent_class->finalize (object);
