@@ -95,6 +95,10 @@ void 		gmathml_view_measure 		(GMathmlView *view, double *width, double *height)
 
 void		gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 
+void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
+
+/* Internal API */
+
 double 		gmathml_view_measure_length	(GMathmlView *view, double length);
 double 		gmathml_view_measure_hairline	(GMathmlView *view);
 
@@ -140,8 +144,6 @@ void		gmathml_view_draw_root		(GMathmlView *view,
 						 double top_width,
 						 double thickness,
 						 GMathmlColor *color);
-
-void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
 
 G_END_DECLS
 

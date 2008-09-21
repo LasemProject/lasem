@@ -844,6 +844,7 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	PangoContext *context;
 	cairo_font_options_t *font_options;
 	cairo_surface_t *surface;
+	cairo_surface_type_t type;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (cairo != NULL);
@@ -860,7 +861,11 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 
 	surface = cairo_get_target (cairo);
 
-	view->priv->is_vector = cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_SVG;
+	type = cairo_surface_get_type (surface);
+
+	view->priv->is_vector = (type == CAIRO_SURFACE_TYPE_SVG ||
+				 type == CAIRO_SURFACE_TYPE_PDF ||
+				 type == CAIRO_SURFACE_TYPE_PS);
 
 	context = pango_layout_get_context (view->priv->pango_layout);
 
