@@ -44,11 +44,13 @@ static gboolean option_debug = FALSE;
 static char *option_output_file_format = NULL;
 static char **option_input_filenames = NULL;
 static char *option_output_filename = NULL;
+double option_ppi = 72.0;
 
 typedef enum {
 	FORMAT_SVG,
 	FORMAT_PDF,
 	FORMAT_PS,
+	FORMAT_PNG,
 	FORMAT_UNKNOWN
 } FileFormat;
 
@@ -56,6 +58,7 @@ static char const *file_formats[] = {
 	"svg",
 	"pdf",
 	"ps",
+	"png",
 	"svg"
 };
 
@@ -67,8 +70,10 @@ static const GOptionEntry entries[] =
 		&option_output_filename,	"Output filename", NULL},
 	{ "format", 		'f', 0, G_OPTION_ARG_STRING,
 		&option_output_file_format, 	"Output format", NULL },
+	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
+		&option_ppi, 			"Pixel per inch", NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_NONE,
-		&option_debug, 		"Debug mode", NULL },
+		&option_debug, 			"Debug mode", NULL },
 	{ NULL }
 };
 
@@ -187,6 +192,9 @@ int main(int argc, char **argv)
 					case FORMAT_PS:
 						surface = cairo_ps_surface_create (output_filename, 100, 100);
 						break;
+					case FORMAT_PNG:
+						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 100, 100);
+						break;
 					case FORMAT_SVG:
 					default:
 						surface = cairo_svg_surface_create (output_filename, 100, 100);
@@ -197,6 +205,8 @@ int main(int argc, char **argv)
 				cairo_surface_destroy (surface);
 
 				view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
+
+				gmathml_view_set_ppi (view, option_ppi);
 
 				cairo_destroy (cairo);
 
@@ -211,6 +221,11 @@ int main(int argc, char **argv)
 					case FORMAT_PS:
 						surface = cairo_ps_surface_create (output_filename, width, height);
 						break;
+					case FORMAT_PNG:
+						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+										      width * option_ppi / 72.0,
+										      height * option_ppi / 72.0);
+						break;
 					case FORMAT_SVG:
 					default:
 						surface = cairo_svg_surface_create (output_filename, width, height);
@@ -222,9 +237,18 @@ int main(int argc, char **argv)
 
 				gmathml_view_set_cairo (view, cairo);
 
-				cairo_destroy (cairo);
-
 				gmathml_view_render (view);
+
+				switch (format) {
+					case FORMAT_PNG:
+						cairo_surface_write_to_png (cairo_get_target (cairo),
+									    output_filename);
+						break;
+					default:
+						break;
+				}
+
+				cairo_destroy (cairo);
 
 				g_object_unref (view);
 
