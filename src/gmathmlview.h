@@ -97,6 +97,8 @@ void		gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 
 void		gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
 
+void		gmathml_view_set_ppi 		(GMathmlView *view, double ppi);
+
 /* Internal API */
 
 double 		gmathml_view_measure_length	(GMathmlView *view, double length);

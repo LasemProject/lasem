@@ -57,6 +57,8 @@ struct _GMathmlViewPrivate {
 
 	gboolean is_vector;
 
+	double ppi;
+
 	/* rendering context */
 	cairo_t *cairo;
 
@@ -776,7 +778,14 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
+	cairo_save (view->priv->cairo);
+
+	if (!view->priv->is_vector)
+		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);
+
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
+
+	cairo_restore (view->priv->cairo);
 
 	if (bbox != NULL) {
 		if (width != NULL)
@@ -806,6 +815,11 @@ gmathml_view_render (GMathmlView *view)
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
+	cairo_save (view->priv->cairo);
+
+	if (!view->priv->is_vector)
+		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);
+
 	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
 
 	if (bbox->is_defined)
@@ -815,7 +829,6 @@ gmathml_view_render (GMathmlView *view)
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 
-	cairo_save (cairo);
 	cairo_translate (cairo, 0, bbox->height);
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
 
@@ -878,6 +891,15 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	cairo_font_options_destroy (font_options);
 }
 
+void
+gmathml_view_set_ppi (GMathmlView *view, double ppi)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (ppi > 0.0);
+
+	view->priv->ppi = ppi;
+}
+
 GMathmlView *
 gmathml_view_new (GMathmlDocument *document, cairo_t *cairo)
 {
@@ -899,6 +921,7 @@ static void
 gmathml_view_init (GMathmlView *view)
 {
 	view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view, GMATHML_TYPE_VIEW, GMathmlViewPrivate);
+	view->priv->ppi = 72.0;
 }
 
 static void
