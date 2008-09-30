@@ -71,6 +71,8 @@ gmathml_view_measure_length (GMathmlView *view, double length)
 {
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
+	return length;
+
 	if (view->priv->is_vector)
 		return length;
 
@@ -525,8 +527,6 @@ gmathml_view_measure_radical (GMathmlView *view, GMathmlBbox const *stretch_bbox
 
 	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
-	if (!view->priv->is_vector && thickness < 1)
-		thickness = 1;
 
 	radical_stretch_bbox.height +=
 		gmathml_view_measure_length (view, GMATHML_MEDIUM_SPACE_EM *
@@ -560,6 +560,9 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	cairo_t *cairo;
 	GMathmlBbox radical_stretch_bbox;
 	double thickness;
+	double y_line;
+	double dummy = 0.0;
+	double alpha;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
@@ -573,8 +576,20 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 
 	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
-	if (!view->priv->is_vector && thickness < 1)
-		thickness = 1;
+
+	alpha = view->priv->current_element->math_color.alpha;
+
+	if (!view->priv->is_vector) {
+		cairo_user_to_device_distance (view->priv->cairo, &dummy, &thickness);
+
+		if (thickness < 1.0) {
+			alpha *= thickness;
+			thickness = 1.0;
+		}
+
+		thickness = floor (thickness + 0.5);
+		cairo_device_to_user_distance (view->priv->cairo, &dummy, &thickness);
+	}
 
 	gdom_debug ("[GMathmlView::show_radical] cairo status before = %s",
 		    cairo_status_to_string (cairo_status (view->priv->cairo)));
@@ -587,16 +602,30 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 			       view->priv->current_element->math_color.red,
 			       view->priv->current_element->math_color.green,
 			       view->priv->current_element->math_color.blue,
-			       view->priv->current_element->math_color.alpha);
+			       alpha);
 
 	x += stretch_bbox->width;
 
+	y_line = y + thickness * 0.5 - stretch_bbox->height;
+
+	if (!view->priv->is_vector) {
+		cairo_user_to_device (cairo, &dummy, &y_line);
+
+		if (((int) thickness) % 2 == 0) {
+			y_line = floor (y_line);
+		} else {
+			y_line = 0.5 + floor (y_line - 0.5);
+		}
+
+		cairo_device_to_user (cairo, &dummy, &y_line);
+	}
+
 	cairo_move_to (cairo,
 		       x - 0.5 * view->priv->current_element->math_size * GMATHML_RADICAL_TOP_LINE_WIDTH,
-		       y + thickness * 0.5 - stretch_bbox->height);
+		       y_line);
 	cairo_line_to (cairo,
 		       x - thickness * 0.5 + width,
-		       y + thickness * 0.5 - stretch_bbox->height);
+		       y_line);
 
 	cairo_stroke (cairo);
 
@@ -639,15 +668,22 @@ gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox
 	}
 }
 
-static gboolean
-_emit_stroke_attributes (GMathmlView *view, GMathmlLine line)
+typedef enum {
+	_GMATHML_STROKE_WIDTH_EVEN,
+	_GMATHML_STROKE_WIDTH_ODD,
+	_GMATHML_STROKE_WIDTH_NULL,
+	_GMATHML_STROKE_WIDTH_VECTOR
+} _GMathmlStrokeWidth;
+
+static _GMathmlStrokeWidth
+_emit_stroke_attributes (GMathmlView *view, GMathmlLine line, double line_width,
+			 const GMathmlColor *color)
 {
-	const GMathmlElement *element;
+	_GMathmlStrokeWidth stroke_width;
 	double dashes[2] = {3.0, 2.0};
-
-	g_return_val_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element), FALSE);
-
-	element = view->priv->current_element;
+	double rounded_width = line_width;
+	double dummy = 0;
+	double alpha = color->alpha;
 
 	switch (line) {
 		case GMATHML_LINE_DASHED:
@@ -657,44 +693,165 @@ _emit_stroke_attributes (GMathmlView *view, GMathmlLine line)
 			cairo_set_dash (view->priv->cairo, NULL, 0, 0.0);
 			break;
 		default:
-			return FALSE;
+			return _GMATHML_STROKE_WIDTH_NULL;
 	}
 
-	cairo_set_line_width (view->priv->cairo, 1.0);
-	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_color.red,
-			       element->math_color.green,
-			       element->math_color.blue,
-			       element->math_color.alpha);
+	if (view->priv->is_vector) {
+		cairo_set_line_width (view->priv->cairo, line_width);
+		cairo_set_source_rgba (view->priv->cairo,
+				       color->red,
+				       color->green,
+				       color->blue,
+				       color->alpha);
+		return _GMATHML_STROKE_WIDTH_VECTOR;
+	}
 
-	return TRUE;
+	cairo_user_to_device_distance (view->priv->cairo, &dummy, &rounded_width);
+
+	if (rounded_width < 1.0) {
+		alpha *= rounded_width;
+		rounded_width = 1.0;
+	}
+
+	rounded_width = floor (rounded_width + 0.5);
+
+	if (((int) rounded_width) % 2 == 0)
+		stroke_width = _GMATHML_STROKE_WIDTH_EVEN;
+	else
+		stroke_width = _GMATHML_STROKE_WIDTH_ODD;
+
+	cairo_device_to_user_distance (view->priv->cairo, &dummy, &rounded_width);
+
+	cairo_set_line_width (view->priv->cairo, rounded_width);
+	cairo_set_source_rgba (view->priv->cairo,
+			       color->red,
+			       color->green,
+			       color->blue,
+			       alpha);
+
+	return stroke_width;
 }
 
 void
 gmathml_view_show_rectangle (GMathmlView *view,
-			     double x, double y, double width, double height,
-			     GMathmlLine line)
+			     double x0, double y0, double width, double height,
+			     GMathmlLine line, double line_width)
 {
-	g_return_if_fail (GMATHML_IS_VIEW (view));
+	_GMathmlStrokeWidth stroke_width;
+	double x1, y1;
 
-	if (_emit_stroke_attributes (view, line)) {
-		cairo_rectangle (view->priv->cairo, x, y, width, height);
-		cairo_stroke (view->priv->cairo);
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+
+	stroke_width = _emit_stroke_attributes (view, line, line_width,
+						&view->priv->current_element->math_color);
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
+		return;
+
+	x1 = x0 + width;
+	y1 = y0 + height;
+
+	if (stroke_width != _GMATHML_STROKE_WIDTH_VECTOR) {
+		cairo_user_to_device (view->priv->cairo, &x0, &y0);
+		cairo_user_to_device (view->priv->cairo, &x1, &y1);
+
+		if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN) {
+			x0 = floor (x0 + 0.5);
+			y0 = floor (y0 + 0.5);
+			x1 = floor (x1 + 0.5);
+			y1 = floor (y1 + 0.5);
+		} else {
+			x0 = 0.5 + floor (x0);
+			y0 = 0.5 + floor (y0);
+			x1 = 0.5 + floor (x1);
+			y1 = 0.5 + floor (y1);
+		}
+
+		cairo_device_to_user (view->priv->cairo, &x0, &y0);
+		cairo_device_to_user (view->priv->cairo, &x1, &y1);
 	}
+
+	cairo_rectangle (view->priv->cairo, x0, y0, x1 - x0, y1 - y0);
+	cairo_stroke (view->priv->cairo);
 }
 
 void
 gmathml_view_show_line (GMathmlView *view,
 			double x0, double y0, double x1, double y1,
-			GMathmlLine line)
+			GMathmlLine line, double line_width)
 {
+	_GMathmlStrokeWidth stroke_width;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
+
+	stroke_width = _emit_stroke_attributes (view, line, line_width,
+						&view->priv->current_element->math_color);
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
+		return;
+
+	if (stroke_width != _GMATHML_STROKE_WIDTH_VECTOR) {
+		cairo_user_to_device (view->priv->cairo, &x0, &y0);
+		cairo_user_to_device (view->priv->cairo, &x1, &y1);
+
+		if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN) {
+			x0 = floor (x0 + 0.5);
+			y0 = floor (y0 + 0.5);
+			x1 = floor (x1 + 0.5);
+			y1 = floor (y1 + 0.5);
+		} else {
+			x0 = 0.5 + floor (x0);
+			y0 = 0.5 + floor (y0);
+			x1 = 0.5 + floor (x1);
+			y1 = 0.5 + floor (y1);
+		}
+
+		cairo_device_to_user (view->priv->cairo, &x0, &y0);
+		cairo_device_to_user (view->priv->cairo, &x1, &y1);
+	}
+
+	cairo_move_to (view->priv->cairo, x0, y0);
+	cairo_line_to (view->priv->cairo, x1, y1);
+	cairo_stroke (view->priv->cairo);
+}
+
+void
+gmathml_view_show_fraction_line (GMathmlView *view,
+				 double x, double y,
+				 double width, double thickness,
+				 GMathmlColor *color)
+{
+	_GMathmlStrokeWidth stroke_width;
+	double dummy = 0;
+
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
-	if (_emit_stroke_attributes (view, line)) {
-		cairo_move_to (view->priv->cairo, x0, y0);
-		cairo_line_to (view->priv->cairo, x1, y1);
+	stroke_width = _emit_stroke_attributes (view, GMATHML_LINE_SOLID, thickness, color);
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
+		return;
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_VECTOR) {
+		cairo_move_to (view->priv->cairo, x, y);
+		cairo_line_to (view->priv->cairo, x + width, y);
 		cairo_stroke (view->priv->cairo);
+		return;
 	}
+
+	cairo_user_to_device (view->priv->cairo, &dummy, &y);
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN)
+		y = floor (y + 0.5);
+	else
+		y = 0.5 + floor (y);
+
+	cairo_device_to_user (view->priv->cairo, &dummy, &y);
+
+	cairo_move_to (view->priv->cairo, x, y);
+	cairo_line_to (view->priv->cairo, x + width, y);
+	cairo_stroke (view->priv->cairo);
 }
 
 void
@@ -721,42 +878,42 @@ gmathml_view_pop_element (GMathmlView *view)
 		view->priv->current_element = NULL;
 }
 
-void
-gmathml_view_draw_fraction_line (GMathmlView *view,
-				 double x, double y,
-				 double width, double thickness,
-				 GMathmlColor *color)
+static void
+gmathml_view_pango_setup_for_measure (GMathmlView *view)
 {
-	cairo_t *cairo;
-	double rounded_thickness;
+	PangoContext *context;
+	cairo_font_options_t *font_options;
 
-	g_return_if_fail (GMATHML_IS_VIEW (view));
+	context = pango_layout_get_context (view->priv->pango_layout);
 
-	cairo = view->priv->cairo;
+	font_options = cairo_font_options_create ();
 
-	if (view->priv->is_vector)
-		rounded_thickness = thickness;
-	else {
-		int int_thickness;
+	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
+	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_NONE);
 
-		int_thickness = thickness + 0.5;
-		if ((int_thickness % 2) == 0) {
-			y = (int) (y + 0.5);
-			x = (int) (x + 0.5);
-		} else {
-			y = +0.5 + (int ) y;
-			x = +0.5 + (int ) x;
-		}
+	pango_cairo_context_set_font_options (context, font_options);
 
-		rounded_thickness = int_thickness;
-	}
+	cairo_font_options_destroy (font_options);
+}
 
-	cairo_set_line_width (cairo, rounded_thickness);
-	cairo_set_source_rgba (cairo, color->red, color->green, color->blue,
-			       (thickness < 1.0 && !view->priv->is_vector) ? thickness : color->alpha);
-	cairo_move_to (cairo, x, y);
-	cairo_line_to (cairo, x + width, y);
-	cairo_stroke (cairo);
+static void
+gmathml_view_pango_setup_for_render (GMathmlView *view)
+{
+	PangoContext *context;
+	cairo_font_options_t *font_options;
+
+	context = pango_layout_get_context (view->priv->pango_layout);
+
+	font_options = cairo_font_options_create ();
+
+	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_DEFAULT);
+	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_DEFAULT);
+
+	pango_cairo_context_set_font_options (context, font_options);
+
+	cairo_font_options_destroy (font_options);
 }
 
 void
@@ -779,6 +936,8 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
 	cairo_save (view->priv->cairo);
+
+	gmathml_view_pango_setup_for_measure (view);
 
 	if (!view->priv->is_vector)
 		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);
@@ -817,6 +976,8 @@ gmathml_view_render (GMathmlView *view)
 
 	cairo_save (view->priv->cairo);
 
+	gmathml_view_pango_setup_for_measure (view);
+
 	if (!view->priv->is_vector)
 		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);
 
@@ -828,6 +989,8 @@ gmathml_view_render (GMathmlView *view)
 		gdom_debug ("[View::render] bbox not defined");
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
+
+	gmathml_view_pango_setup_for_render (view);
 
 	cairo_translate (cairo, 0, bbox->height);
 	gmathml_element_render (GMATHML_ELEMENT (root), view);
@@ -885,6 +1048,8 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	font_options = cairo_font_options_create ();
 
 	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
+	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_NONE);
 
 	pango_cairo_context_set_font_options (context, font_options);
 

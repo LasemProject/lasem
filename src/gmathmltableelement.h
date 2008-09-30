@@ -59,6 +59,7 @@ struct _GMathmlTableElement {
 	double *widths;
 	double *heights;
 	double *depths;
+	double line_width;
 };
 
 struct _GMathmlTableElementClass {

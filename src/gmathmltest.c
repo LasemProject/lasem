@@ -195,8 +195,6 @@ main (int argc, char **argv)
 
 	gmathml_test_html_file = fopen (XML_FILENAME, "w");
 
-	gmathml_test_html_file = fopen (XML_FILENAME, "w");
-
 	gmathml_test_html ("<?xml version=\"1.0\"?>");
 	gmathml_test_html ("<!DOCTYPE html PUBLIC "
 			   "\"-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN\" "

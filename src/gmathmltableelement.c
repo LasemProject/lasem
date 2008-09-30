@@ -24,6 +24,8 @@
 #include <gmathmltablerowelement.h>
 #include <gmathmlview.h>
 
+#define GMATHML_TABLE_ELEMENT_LINE_WIDTH 1 /* 1 pt */
+
 static GObjectClass *parent_class;
 
 /* GdomNode implementation */
@@ -124,6 +126,8 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	double max_depth = 0.0;
 	double height;
 
+	table->line_width = gmathml_view_measure_length (view, GMATHML_TABLE_ELEMENT_LINE_WIDTH);
+
 	g_free (table->widths);
 	g_free (table->heights);
 	g_free (table->depths);
@@ -132,6 +136,8 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	table->n_rows = 0;
 
 	self->bbox = gmathml_bbox_null;
+
+	/* Count the number of columns and rows */
 
 	for (row_node = GDOM_NODE (self)->first_child;
 	     row_node != NULL;
@@ -158,6 +164,8 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	table->widths = g_new (double, table->n_columns);
 	table->heights = g_new (double, table->n_rows);
 	table->depths = g_new (double, table->n_rows);
+
+	/* Calculate maximum height for each row and maximum width for each column */
 
 	row = 0;
 	for (row_node = GDOM_NODE (self)->first_child;
@@ -189,11 +197,15 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		row++;
 	}
 
+	/* All rows have the same height ? */
+
 	if (table->equal_rows.value)
 		for (row = 0; row < table->n_rows; row++) {
 			table->heights[row] = max_height;
 			table->depths[row] = max_depth;
 		}
+
+	/* All columns have the same width ? */
 
 	if (table->equal_columns.value)
 		for (column = 0; column < table->n_columns; column++)
@@ -218,6 +230,13 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	}
 
 	height += 2 * gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+
+	/* Add the line widths to the table bbox */
+
+	self->bbox.width += table->line_width * (1 + table->n_columns);
+	height += table->line_width * (1 + table->n_rows);
+
+	/* Center vertically */
 
 	self->bbox.height = gmathml_view_measure_length (view, 0.5 * height);
 	self->bbox.depth = height - self->bbox.height;
@@ -254,7 +273,10 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	max_column = table->column_spacing.space_list->n_spaces -  1;
 	max_row = table->row_spacing.space_list->n_spaces -  1;
-	y_offset = -self->bbox.height + gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+
+	y_offset = -self->bbox.height;
+        y_offset += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+	y_offset += table->line_width;
 
 	row = 0;
 	for (row_node = GDOM_NODE (self)->first_child;
@@ -262,6 +284,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 	     row_node = row_node->next_sibling) {
 		column = 0;
 		x_offset = gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+		x_offset += table->line_width;
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
@@ -309,6 +332,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 					gmathml_view_measure_length (view,
 								     table->column_spacing.values[MIN (column,
 												       max_column)]);
+				x_offset += table->line_width;
 				column++;
 			}
 		}
@@ -316,6 +340,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 		if (row < table->n_rows - 1) {
 			y_offset += table->heights[row] + table->depths[row];
 			y_offset += gmathml_view_measure_length (view, table->row_spacing.values[MIN (row, max_row)]);
+			y_offset += table->line_width;
 			row++;
 		}
 	}
@@ -329,41 +354,48 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 	double position;
 	double spacing;
 	unsigned int i;
-	double hairline;
 
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
 
-	hairline = gmathml_view_measure_hairline (view);
+	gmathml_view_show_rectangle (view, self->x + 0.5 * table->line_width,
+				     self->y - self->bbox.height + 0.5 * table->line_width,
+				     self->bbox.width - table->line_width,
+				     self->bbox.height + self->bbox.depth - table->line_width,
+				     table->frame.value, table->line_width);
 
-	gmathml_view_show_rectangle (view, self->x + 0.5 * hairline,
-				     self->y - self->bbox.height + 0.5 * hairline,
-				     self->bbox.width - hairline,
-				     self->bbox.height + self->bbox.depth - hairline,
-				     table->frame.value);
-
-	position = self->y - self->bbox.height + gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+	position  = self->y - self->bbox.height;
+        position += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+	position += table->line_width;
 
 	for (i = 0; i < table->n_rows - 1; i++) {
 		position += table->heights[i] + table->depths[i];
 		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
 		spacing = gmathml_view_measure_length (view, spacing);
-		y = position + gmathml_view_measure_length (view, 0.5 * spacing) + hairline * 0.5;
-		gmathml_view_show_line (view, self->x, y, self->x + self->bbox.width, y,
-					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)]);
-		position += spacing;
+		y = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
+		gmathml_view_show_line (view,
+					self->x, y,
+					self->x + self->bbox.width, y,
+					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
+					table->line_width);
+		position += spacing + table->line_width;
 	}
 
-	position = self->x + gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+	position  = self->x;
+        position += gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+	position += table->line_width;
 
 	for (i = 0; i < table->n_columns - 1; i++) {
 		position += table->widths[i];
 		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
 		spacing = gmathml_view_measure_length (view, spacing);
-		x = position + gmathml_view_measure_length (view, 0.5 * spacing) + hairline * 0.5;
-		gmathml_view_show_line (view, x, self->y - self->bbox.height, x, self->y + self->bbox.depth,
-					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)]);
-		position += spacing;
+		x = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
+		gmathml_view_show_line (view,
+					x, self->y - self->bbox.height,
+					x, self->y + self->bbox.depth,
+					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
+					table->line_width);
+		position += spacing + table->line_width;
 	}
 
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
@@ -385,6 +417,7 @@ gmathml_table_element_init (GMathmlTableElement *table)
 	table->depths = NULL;
 	table->n_columns = 0;
 	table->n_rows = 0;
+	table->line_width = 0;
 }
 
 static void

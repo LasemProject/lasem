@@ -223,8 +223,8 @@ int main(int argc, char **argv)
 						break;
 					case FORMAT_PNG:
 						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-										      width * option_ppi / 72.0,
-										      height * option_ppi / 72.0);
+										      width * option_ppi / 72.0 + 0.5,
+										      height * option_ppi / 72.0 + 0.5);
 						break;
 					case FORMAT_SVG:
 					default:
@@ -253,6 +253,8 @@ int main(int argc, char **argv)
 				g_object_unref (view);
 
 				g_object_unref (document);
+
+				gdom_debug ("width = %g pt, height = %g pt",  width, height);
 			} else
 				g_warning ("Can't load %s", input_filename);
 		} else

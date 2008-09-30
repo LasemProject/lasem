@@ -125,9 +125,9 @@ void 		gmathml_view_show_radical	 (GMathmlView *view, double x, double y,
 double 		gmathml_view_measure_axis_offset(GMathmlView *view, double math_size);
 
 void 		gmathml_view_show_rectangle 	(GMathmlView *view, double x, double y, double width, double height,
-						 GMathmlLine line);
+						 GMathmlLine line, double line_width);
 void 		gmathml_view_show_line 		(GMathmlView *view, double x0, double y0, double x1, double y1,
-						 GMathmlLine line);
+						 GMathmlLine line, double line_width);
 void 		gmathml_view_show_background 	(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
 
 void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
@@ -135,7 +135,7 @@ void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GM
 void		gmathml_view_push_element	(GMathmlView *view, const GMathmlElement *element);
 void		gmathml_view_pop_element	(GMathmlView *view);
 
-void 		gmathml_view_draw_fraction_line 	(GMathmlView *view,
+void 		gmathml_view_show_fraction_line 	(GMathmlView *view,
 							 double x, double y,
 							 double width, double thickness,
 							 GMathmlColor *color);
