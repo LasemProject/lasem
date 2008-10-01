@@ -478,8 +478,6 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 	scale_x = stretch_bbox->width / pango_units_to_double (ink_rect.width);
 	scale_y = (stretch_bbox->height + stretch_bbox->depth) / pango_units_to_double (ink_rect.height);
 
-	gdom_debug ("x_scale = %g, y_scale = %g", scale_x, scale_y);
-
 	gdom_debug ("[GMathmlView::show_operator] cairo status before = %s",
 		    cairo_status_to_string (cairo_status (view->priv->cairo)));
 
@@ -606,19 +604,17 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 
 	x += stretch_bbox->width;
 
-	y_line = y + thickness * 0.5 - stretch_bbox->height;
+	y_line = y - stretch_bbox->height;
 
 	if (!view->priv->is_vector) {
 		cairo_user_to_device (cairo, &dummy, &y_line);
 
-		if (((int) thickness) % 2 == 0) {
-			y_line = floor (y_line);
-		} else {
-			y_line = 0.5 + floor (y_line - 0.5);
-		}
+		y_line = floor (y_line);
 
 		cairo_device_to_user (cairo, &dummy, &y_line);
 	}
+
+	y_line += 0.5 * thickness;
 
 	cairo_move_to (cairo,
 		       x - 0.5 * view->priv->current_element->math_size * GMATHML_RADICAL_TOP_LINE_WIDTH,
@@ -908,8 +904,8 @@ gmathml_view_pango_setup_for_render (GMathmlView *view)
 	font_options = cairo_font_options_create ();
 
 	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
-	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_DEFAULT);
-	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_DEFAULT);
+	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
+	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_NONE);
 
 	pango_cairo_context_set_font_options (context, font_options);
 
