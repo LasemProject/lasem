@@ -108,7 +108,7 @@ gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view, con
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_measure_text (view, text, self->math_size, self->math_variant, &self->bbox);
+	gmathml_view_measure_text (view, text, self->style.math_size, self->style.math_variant, &self->bbox);
 
 	g_free (text);
 
@@ -128,8 +128,8 @@ gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_show_text (view, self->x, self->y, text, self->math_size, self->math_variant,
-				&self->math_color);
+	gmathml_view_show_text (view, self->x, self->y, text, self->style.math_size, self->style.math_variant,
+				&self->style.math_color);
 
 	g_free (text);
 }

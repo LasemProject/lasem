@@ -104,12 +104,12 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	if (element_class->update)
 		element_class->update (self, style);
 
-	self->math_color = style->math_color;
-	self->math_background = style->math_background;
-	self->math_size = style->math_size_value;
-	self->math_variant = style->math_variant;
+	self->style.math_color = style->math_color;
+	self->style.math_background = style->math_background;
+	self->style.math_size = style->math_size_value;
+	self->style.math_variant = style->math_variant;
 
-	gdom_debug ("[Element::update] Math size = %g", self->math_size);
+	gdom_debug ("[Element::update] Math size = %g", self->style.math_size);
 
 	gmathml_style_free (style);
 }
@@ -281,7 +281,7 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 	if (element_class->render) {
 		gmathml_view_show_bbox (view, element->x, element->y, &element->bbox);
 		gmathml_view_show_background (view, element->x, element->y,
-					      &element->math_background,
+					      &element->style.math_background,
 					      &element->bbox);
 		element_class->render (element, view);
 	}

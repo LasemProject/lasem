@@ -31,6 +31,13 @@
 
 G_BEGIN_DECLS
 
+typedef struct {
+	double math_size;
+	GMathmlVariant math_variant;
+	GMathmlColor math_color;
+	GMathmlColor math_background;
+} GMathmlElementStyle;
+
 #define GMATHML_TYPE_ELEMENT             (gmathml_element_get_type ())
 #define GMATHML_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GMATHML_TYPE_ELEMENT, GMathmlElement))
 #define GMATHML_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GMATHML_TYPE_ELEMENT, GMathmlElementClass))
@@ -47,10 +54,7 @@ struct _GMathmlElement {
 	GMathmlAttributeValue id;
 	GMathmlAttributeValue href;
 
-	double math_size;
-	GMathmlVariant math_variant;
-	GMathmlColor math_color;
-	GMathmlColor math_background;
+	GMathmlElementStyle style;
 
 	/* View */
 

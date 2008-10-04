@@ -247,7 +247,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		double axis_offset;
 		double length;
 
-		axis_offset = gmathml_view_measure_axis_offset (view, self->math_size);
+		axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 		length = (self->bbox.height + self->bbox.depth) * 0.5;
 		self->bbox.height = gmathml_view_measure_length (view, axis_offset + length);
 		self->bbox.depth = gmathml_view_measure_length (view, length - axis_offset);
@@ -363,7 +363,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 				     self->bbox.width - table->line_width,
 				     self->bbox.height + self->bbox.depth - table->line_width,
 				     table->frame.value, table->line_width,
-				     &self->math_color);
+				     &self->style.math_color);
 
 	position  = self->y - self->bbox.height;
         position += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
@@ -379,7 +379,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 					self->x + self->bbox.width, y,
 					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
 					table->line_width,
-					&self->math_color);
+					&self->style.math_color);
 		position += spacing + table->line_width;
 	}
 
@@ -397,7 +397,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 					x, self->y + self->bbox.depth,
 					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
 					table->line_width,
-					&self->math_color);
+					&self->style.math_color);
 		position += spacing + table->line_width;
 	}
 
