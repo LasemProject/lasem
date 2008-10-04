@@ -191,9 +191,7 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 
 	if (!element->measure_done || stretch_bbox->is_defined) {
 		if (element_class->measure) {
-			gmathml_view_push_element (view, element);
 			element->bbox = *(element_class->measure (element, view, stretch_bbox));
-			gmathml_view_pop_element (view);
 
 			gdom_debug ("[Element::measure] Bbox (%s) %g, %g, %g",
 				    gdom_node_get_node_name (GDOM_NODE (element)),
@@ -257,11 +255,8 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 	self->x = x;
 	self->y = y;
 
-	if (element_class->layout) {
-		gmathml_view_push_element (view, self);
+	if (element_class->layout)
 		element_class->layout (self, view, x, y, bbox);
-		gmathml_view_pop_element (view);
-	}
 }
 
 /* Inferred mrow implementation */
@@ -284,11 +279,11 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 	g_return_if_fail (element_class != NULL);
 
 	if (element_class->render) {
-		gmathml_view_push_element (view, element);
 		gmathml_view_show_bbox (view, element->x, element->y, &element->bbox);
-		gmathml_view_show_background (view, element->x, element->y, &element->bbox);
+		gmathml_view_show_background (view, element->x, element->y,
+					      &element->math_background,
+					      &element->bbox);
 		element_class->render (element, view);
-		gmathml_view_pop_element (view);
 	}
 }
 

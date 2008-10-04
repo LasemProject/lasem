@@ -150,7 +150,10 @@ gmathml_operator_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	self->bbox = gmathml_bbox_null;
 
-	gmathml_view_measure_operator (view, text, operator_element->is_large_op,
+	gmathml_view_measure_operator (view, text,
+				       self->math_size,
+				       self->math_variant,
+				       operator_element->is_large_op,
 				       operator_element->symmetric.value,
 				       gmathml_view_measure_axis_offset (view, self->math_size),
 				       operator_element->stretchy.value ? stretch_bbox : &gmathml_bbox_null,
@@ -170,6 +173,9 @@ gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
 	gmathml_view_show_operator (view, self->x, self->y, text,
+				    self->math_size,
+				    self->math_variant,
+				    &self->math_color,
 				    operator_element->is_large_op, &self->bbox);
 
 	g_free (text);

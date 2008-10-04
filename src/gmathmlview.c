@@ -61,9 +61,6 @@ struct _GMathmlViewPrivate {
 
 	/* rendering context */
 	cairo_t *cairo;
-
-	const GMathmlElement *current_element;
-	GSList *elements;
 };
 
 double
@@ -80,20 +77,19 @@ gmathml_view_measure_length (GMathmlView *view, double length)
 }
 
 static void
-gmathml_view_update_layout (GMathmlView *view, char const *text,
+gmathml_view_update_layout (GMathmlView *view,
+			    const char *text,
+			    double math_size,
+			    GMathmlVariant math_variant,
 			    gboolean large,
 			    PangoRectangle *ink_rect,
 			    PangoRectangle *rect,
 			    int *baseline)
 {
-	const GMathmlElement *element;
-
-	element = view->priv->current_element;
-
 	pango_font_description_set_family (view->priv->font_description, "Serif");
 	pango_font_description_set_size (view->priv->font_description,
-					 element->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
-	switch (element->math_variant) {
+					 math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+	switch (math_variant) {
 		case GMATHML_VARIANT_NORMAL:
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
 			break;
@@ -147,7 +143,8 @@ gmathml_view_show_layout (GMathmlView *view, double x, double y,
 }
 
 double
-gmathml_view_measure_axis_offset (GMathmlView *view, double math_size)
+gmathml_view_measure_axis_offset (GMathmlView *view,
+				  double math_size)
 {
 	PangoRectangle ink_rect;
 	PangoLayoutIter *iter;
@@ -170,30 +167,30 @@ gmathml_view_measure_axis_offset (GMathmlView *view, double math_size)
 	axis_offset = pango_units_to_double (- 0.5 * ink_rect.height - ink_rect.y + baseline);
 
 	gdom_debug ("[GMathmlView::measure_axis_offset] offset = %g (%g %%)",
-		   axis_offset, axis_offset / view->priv->current_element->math_size);
+		   axis_offset, axis_offset / math_size);
 
 	return axis_offset;
 }
 
 void
-gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbox)
+gmathml_view_measure_text (GMathmlView *view,
+			   char const *text,
+			   double math_size,
+			   GMathmlVariant math_variant,
+			   GMathmlBbox *bbox)
 {
-	const GMathmlElement *element;
 	PangoRectangle ink_rect;
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 	g_return_if_fail (bbox != NULL);
-
-	element = view->priv->current_element;
 
 	if (text == NULL) {
 		*bbox = gmathml_bbox_null;
 		return;
 	}
 
-	gmathml_view_update_layout (view, text, FALSE, &ink_rect, NULL, &baseline);
+	gmathml_view_update_layout (view, text, math_size, math_variant, FALSE, &ink_rect, NULL, &baseline);
 
 	bbox->width = pango_units_to_double (ink_rect.width);
 	bbox->height = pango_units_to_double (baseline - ink_rect.y);
@@ -202,25 +199,22 @@ gmathml_view_measure_text (GMathmlView *view, char const *text, GMathmlBbox *bbo
 }
 
 void
-gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
+gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text,
+			double math_size, GMathmlVariant math_variant, const GMathmlColor *math_color)
 {
-	const GMathmlElement *element;
 	PangoRectangle rect, ink_rect;
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
-
-	element = view->priv->current_element;
 
 	if (text == NULL || strlen (text) < 1)
 		return;
 
 /*        gdom_debug ("View: show_text %s at %g, %g (size = %g) %s",*/
-/*                   text, x, y, element->math_size,*/
-/*                   gmathml_variant_to_string (element->math_variant));*/
+/*                   text, x, y, math_size,*/
+/*                   gmathml_variant_to_string (math_variant));*/
 
-	gmathml_view_update_layout (view, text, FALSE, &ink_rect, &rect, &baseline);
+	gmathml_view_update_layout (view, text, math_size, math_variant, FALSE, &ink_rect, &rect, &baseline);
 	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
 	if (ink_rect.width <= 0 || ink_rect.height <= 0)
@@ -238,10 +232,10 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 	}
 
 	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_color.red,
-			       element->math_color.green,
-			       element->math_color.blue,
-			       element->math_color.alpha);
+			       math_color->red,
+			       math_color->green,
+			       math_color->blue,
+			       math_color->alpha);
 
 	cairo_move_to (view->priv->cairo, x - pango_units_to_double (ink_rect.x), y - pango_units_to_double (baseline));
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
@@ -255,12 +249,13 @@ gmathml_view_show_text (GMathmlView *view, double x, double y, char const *text)
 void
 gmathml_view_measure_operator (GMathmlView *view,
 			       char const *text,
+			       double math_size,
+			       GMathmlVariant math_variant,
 			       gboolean large,
 			       gboolean symmetric,
 			       double axis_offset,
 			       GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox)
 {
-	const GMathmlElement *element;
 	const GMathmlOperatorGlyph *glyph;
 	const char *font_name;
 	GMathmlGlyphFlags flags;
@@ -268,11 +263,8 @@ gmathml_view_measure_operator (GMathmlView *view,
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 	g_return_if_fail (bbox != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
-
-	element = view->priv->current_element;
 
 	if (text == NULL) {
 		*bbox = gmathml_bbox_null;
@@ -285,7 +277,8 @@ gmathml_view_measure_operator (GMathmlView *view,
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
-		gmathml_view_update_layout (view, text, large, &ink_rect, NULL, &baseline);
+		gmathml_view_update_layout (view, text, math_size, math_variant,
+					    large, &ink_rect, NULL, &baseline);
 		flags = 0;
 
 		gdom_debug ("[GMathmlView::measure_operator] operator = %s", text);
@@ -298,11 +291,11 @@ gmathml_view_measure_operator (GMathmlView *view,
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION) &&
 		    !stretch_bbox->is_defined) {
 			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE);
+							 math_size * PANGO_SCALE);
 			i = 1;
 		} else {
 			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE *
+							 math_size * PANGO_SCALE *
 							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 			i = 0;
 		}
@@ -382,11 +375,12 @@ gmathml_view_measure_operator (GMathmlView *view,
 }
 
 void
-gmathml_view_show_operator (GMathmlView *view, double x, double y,
-			    char const *text, gboolean large,
+gmathml_view_show_operator (GMathmlView *view, double x, double y, char const *text,
+			    double math_size, GMathmlVariant math_variant,
+			    const GMathmlColor *math_color,
+			    gboolean large,
 			    GMathmlBbox const *stretch_bbox)
 {
-	const GMathmlElement *element;
 	const GMathmlOperatorGlyph *glyph;
 	PangoRectangle rect, ink_rect;
 	const char *font_name;
@@ -394,10 +388,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 	g_return_if_fail (stretch_bbox != NULL);
-
-	element = view->priv->current_element;
 
 	if (text == NULL || !stretch_bbox->is_defined)
 		return;
@@ -408,7 +399,7 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
-		gmathml_view_update_layout (view, text, large, &ink_rect, &rect, &baseline);
+		gmathml_view_update_layout (view, text, math_size, math_variant, large, &ink_rect, &rect, &baseline);
 	} else {
 		PangoLayoutIter *iter;
 		unsigned int i;
@@ -416,11 +407,11 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION)) {
 			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE);
+							 math_size * PANGO_SCALE);
 			i = 1;
 		} else {
 			pango_font_description_set_size (view->priv->font_description,
-							 element->math_size * PANGO_SCALE *
+							 math_size * PANGO_SCALE *
 							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 			i = 0;
 		}
@@ -491,10 +482,10 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 			   - pango_units_to_double (ink_rect.y));
 
 	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_color.red,
-			       element->math_color.green,
-			       element->math_color.blue,
-			       element->math_color.alpha);
+			       math_color->red,
+			       math_color->green,
+			       math_color->blue,
+			       math_color->alpha);
 
 	pango_cairo_show_layout (view->priv->cairo, view->priv->pango_layout);
 	cairo_restore (view->priv->cairo);
@@ -504,32 +495,32 @@ gmathml_view_show_operator (GMathmlView *view, double x, double y,
 }
 
 void
-gmathml_view_measure_radical (GMathmlView *view, GMathmlBbox const *stretch_bbox,
+gmathml_view_measure_radical (GMathmlView *view, double math_size,
+			      GMathmlBbox const *stretch_bbox,
 			      GMathmlBbox *bbox, double *x_offset, double *y_offset)
 {
 	GMathmlBbox radical_stretch_bbox;
 	double thickness;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 	g_return_if_fail (bbox != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
 
 	radical_stretch_bbox = *stretch_bbox;
 
-	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
+	thickness = gmathml_view_measure_length (view, math_size *
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
 
 	radical_stretch_bbox.height +=
 		gmathml_view_measure_length (view, GMATHML_MEDIUM_SPACE_EM *
-					     view->priv->current_element->math_size) + thickness;
+					     math_size) + thickness;
 
 	radical_stretch_bbox.depth +=
 		gmathml_view_measure_length (view,
 					     GMATHML_MEDIUM_SPACE_EM *
-					     view->priv->current_element->math_size);
+					     math_size);
 
-	gmathml_view_measure_operator (view, GMATHML_RADICAL_UTF8,
+	gmathml_view_measure_operator (view, GMATHML_RADICAL_UTF8, math_size, GMATHML_VARIANT_NORMAL,
 				       FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
 
 	if (x_offset != NULL) {
@@ -540,13 +531,13 @@ gmathml_view_measure_radical (GMathmlView *view, GMathmlBbox const *stretch_bbox
 		*y_offset = gmathml_view_measure_length (view, (bbox->height + bbox->depth) *
 							 GMATHML_RADICAL_ORDER_Y_OFFSET -
 							 GMATHML_MEDIUM_SPACE_EM *
-							 view->priv->current_element->math_size);
+							 math_size);
 	}
 }
 
 void
-gmathml_view_show_radical (GMathmlView *view, double x, double y,
-			   double width,
+gmathml_view_show_radical (GMathmlView *view, double x, double y, double width,
+			   double math_size, const GMathmlColor *math_color,
 			   GMathmlBbox const *stretch_bbox)
 {
 	cairo_t *cairo;
@@ -557,19 +548,19 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	double alpha;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 	g_return_if_fail (stretch_bbox != NULL);
 
 	cairo = view->priv->cairo;
 
 	radical_stretch_bbox = *stretch_bbox;
 
-	gmathml_view_show_operator (view, x, y, GMATHML_RADICAL_UTF8, FALSE, stretch_bbox);
+	gmathml_view_show_operator (view, x, y, GMATHML_RADICAL_UTF8, math_size, GMATHML_VARIANT_NORMAL,
+				    math_color, FALSE, stretch_bbox);
 
-	thickness = gmathml_view_measure_length (view, view->priv->current_element->math_size *
+	thickness = gmathml_view_measure_length (view, math_size *
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
 
-	alpha = view->priv->current_element->math_color.alpha;
+	alpha = math_color->alpha;
 
 	if (!view->priv->is_vector) {
 		cairo_user_to_device_distance (view->priv->cairo, &dummy, &thickness);
@@ -591,9 +582,9 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	cairo_set_line_width (cairo, thickness);
 
 	cairo_set_source_rgba (view->priv->cairo,
-			       view->priv->current_element->math_color.red,
-			       view->priv->current_element->math_color.green,
-			       view->priv->current_element->math_color.blue,
+			       math_color->red,
+			       math_color->green,
+			       math_color->blue,
 			       alpha);
 
 	x += stretch_bbox->width;
@@ -611,7 +602,7 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 	y_line += 0.5 * thickness;
 
 	cairo_move_to (cairo,
-		       x - 0.5 * view->priv->current_element->math_size * GMATHML_RADICAL_TOP_LINE_WIDTH,
+		       x - 0.5 * math_size * GMATHML_RADICAL_TOP_LINE_WIDTH,
 		       y_line);
 	cairo_line_to (cairo,
 		       x - thickness * 0.5 + width,
@@ -626,20 +617,17 @@ gmathml_view_show_radical (GMathmlView *view, double x, double y,
 }
 
 void
-gmathml_view_show_background (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
+gmathml_view_show_background (GMathmlView *view, double x, double y,
+			      const GMathmlColor *math_background,
+			      const GMathmlBbox *bbox)
 {
-	const GMathmlElement *element;
-
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
-
-	element = view->priv->current_element;
 
 	cairo_set_source_rgba (view->priv->cairo,
-			       element->math_background.red,
-			       element->math_background.green,
-			       element->math_background.blue,
-			       element->math_background.alpha);
+			       math_background->red,
+			       math_background->green,
+			       math_background->blue,
+			       math_background->alpha);
 	cairo_rectangle (view->priv->cairo, x, y - bbox->height, bbox->width, bbox->depth + bbox->height);
 	cairo_fill (view->priv->cairo);
 }
@@ -725,16 +713,15 @@ _emit_stroke_attributes (GMathmlView *view, GMathmlLine line, double line_width,
 void
 gmathml_view_show_rectangle (GMathmlView *view,
 			     double x0, double y0, double width, double height,
-			     GMathmlLine line, double line_width)
+			     GMathmlLine line, double line_width,
+			     const GMathmlColor *color)
 {
 	_GMathmlStrokeWidth stroke_width;
 	double x1, y1;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 
-	stroke_width = _emit_stroke_attributes (view, line, line_width,
-						&view->priv->current_element->math_color);
+	stroke_width = _emit_stroke_attributes (view, line, line_width, color);
 
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
@@ -769,15 +756,14 @@ gmathml_view_show_rectangle (GMathmlView *view,
 void
 gmathml_view_show_line (GMathmlView *view,
 			double x0, double y0, double x1, double y1,
-			GMathmlLine line, double line_width)
+			GMathmlLine line, double line_width,
+			const GMathmlColor *color)
 {
 	_GMathmlStrokeWidth stroke_width;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (view->priv->current_element));
 
-	stroke_width = _emit_stroke_attributes (view, line, line_width,
-						&view->priv->current_element->math_color);
+	stroke_width = _emit_stroke_attributes (view, line, line_width, color);
 
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
@@ -811,7 +797,7 @@ void
 gmathml_view_show_fraction_line (GMathmlView *view,
 				 double x, double y,
 				 double width, double thickness,
-				 GMathmlColor *color)
+				 const GMathmlColor *color)
 {
 	_GMathmlStrokeWidth stroke_width;
 	double dummy = 0;
@@ -842,30 +828,6 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 	cairo_move_to (view->priv->cairo, x, y);
 	cairo_line_to (view->priv->cairo, x + width, y);
 	cairo_stroke (view->priv->cairo);
-}
-
-void
-gmathml_view_push_element (GMathmlView *view, const GMathmlElement *element)
-{
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (GMATHML_IS_ELEMENT (element));
-
-	view->priv->elements = g_slist_prepend (view->priv->elements, (void *) element);
-	view->priv->current_element = element;
-}
-
-void
-gmathml_view_pop_element (GMathmlView *view)
-{
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (view->priv->elements != NULL);
-
-	view->priv->elements = g_slist_remove (view->priv->elements, view->priv->elements->data);
-
-	if (view->priv->elements != NULL)
-		view->priv->current_element = view->priv->elements->data;
-	else
-		view->priv->current_element = NULL;
 }
 
 static void
@@ -958,9 +920,6 @@ gmathml_view_render (GMathmlView *view)
 
 	cairo = view->priv->cairo;
 
-	view->priv->current_element = NULL;
-	view->priv->elements = NULL;
-
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
 
@@ -988,12 +947,6 @@ gmathml_view_render (GMathmlView *view)
 	gdom_debug ("[GMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
 
 	cairo_restore (cairo);
-
-	if (view->priv->elements != NULL) {
-		g_warning ("[View::render] dangling elements (check push/pop element calls)");
-		g_slist_free (view->priv->elements);
-		view->priv->elements = NULL;
-	}
 }
 
 void

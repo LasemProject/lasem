@@ -48,9 +48,9 @@ struct _GMathmlElement {
 	GMathmlAttributeValue href;
 
 	double math_size;
+	GMathmlVariant math_variant;
 	GMathmlColor math_color;
 	GMathmlColor math_background;
-	GMathmlVariant math_variant;
 
 	/* View */
 

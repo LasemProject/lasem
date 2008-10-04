@@ -362,7 +362,8 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 				     self->y - self->bbox.height + 0.5 * table->line_width,
 				     self->bbox.width - table->line_width,
 				     self->bbox.height + self->bbox.depth - table->line_width,
-				     table->frame.value, table->line_width);
+				     table->frame.value, table->line_width,
+				     &self->math_color);
 
 	position  = self->y - self->bbox.height;
         position += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
@@ -377,7 +378,8 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 					self->x, y,
 					self->x + self->bbox.width, y,
 					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
-					table->line_width);
+					table->line_width,
+					&self->math_color);
 		position += spacing + table->line_width;
 	}
 
@@ -394,7 +396,8 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 					x, self->y - self->bbox.height,
 					x, self->y + self->bbox.depth,
 					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
-					table->line_width);
+					table->line_width,
+					&self->math_color);
 		position += spacing + table->line_width;
 	}
 
