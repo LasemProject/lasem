@@ -93,7 +93,8 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 		stretch_bbox.depth = 0;
 		stretch_bbox.is_defined = TRUE;
 
-		gmathml_view_measure_radical (view, self->style.math_size, &stretch_bbox, &radical->bbox, NULL, NULL);
+		gmathml_view_measure_radical (view, &self->style,
+					      &stretch_bbox, &radical->bbox, NULL, NULL);
 		self->bbox = radical->bbox;
 		return &self->bbox;
 	}
@@ -111,7 +112,8 @@ gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const 
 	radical->radical_x_offset = 0.0;
 	radical->order_y_offset = 0.0;
 
-	gmathml_view_measure_radical (view, self->style.math_size, &stretch_bbox, &radical->bbox,
+	gmathml_view_measure_radical (view, &self->style,
+				      &stretch_bbox, &radical->bbox,
 				      &x_offset, &y_offset);
 
 	gmathml_bbox_add_horizontally (&self->bbox, &radical->bbox);
@@ -187,8 +189,9 @@ gmathml_radical_element_render (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 
-	gmathml_view_show_radical (view, self->x + radical->radical_x_offset, self->y,
-				   radical->width, self->style.math_size, &self->style.math_color, &radical->bbox);
+	gmathml_view_show_radical (view, &self->style,
+				   self->x + radical->radical_x_offset, self->y,
+				   radical->width, &radical->bbox);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }

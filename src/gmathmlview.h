@@ -102,48 +102,53 @@ void		gmathml_view_set_ppi 		(GMathmlView *view, double ppi);
 /* Internal API */
 
 double 		gmathml_view_measure_length	(GMathmlView *view, double length);
+double 		gmathml_view_measure_axis_offset(GMathmlView *view, double math_size);
 
-void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text,
-						 double math_size, GMathmlVariant math_variant,
+void 		gmathml_view_measure_text 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 char const *text,
 						 GMathmlBbox *bbox);
-void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text,
-						 double math_size, GMathmlVariant math_variant,
-						 const GMathmlColor *math_color);
+void 		gmathml_view_show_text 		(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x, double y, const char *text);
 
-void 		gmathml_view_measure_operator 	(GMathmlView *view, char const *text,
-						 double math_size, GMathmlVariant math_variant,
+void 		gmathml_view_measure_operator 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 char const *text,
 						 gboolean large, gboolean symmetric,
 						 double axis_offset,
 						 GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox);
-void 		gmathml_view_show_operator 	(GMathmlView *view, double x, double y, char const *text,
-						 double math_size, GMathmlVariant math_variant,
-						 const GMathmlColor *math_color,
+void 		gmathml_view_show_operator 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x, double y, char const *text,
 						 gboolean large,
 						 GMathmlBbox const *stretch_bbox);
 
-void 		gmathml_view_measure_radical 	(GMathmlView *view, double math_size,
+void 		gmathml_view_measure_radical 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
 						 GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox,
 						 double *x_offset, double *y_offset);
-void 		gmathml_view_show_radical	 (GMathmlView *view, double x, double y, double width,
-						 double math_size, const GMathmlColor *math_color,
+void 		gmathml_view_show_radical	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x, double y, double width,
 						 GMathmlBbox const *stretch_bbox);
 
-double 		gmathml_view_measure_axis_offset(GMathmlView *view, double math_size);
-
-void 		gmathml_view_show_background 	(GMathmlView *view, double x, double y,
-						 const GMathmlColor *math_background,
-						 const GMathmlBbox *bbox);
-void 		gmathml_view_show_rectangle 	(GMathmlView *view, double x, double y, double width, double height,
-						 GMathmlLine line, double line_width,
-						 const GMathmlColor *color);
-void 		gmathml_view_show_line 		(GMathmlView *view, double x0, double y0, double x1, double y1,
-						 GMathmlLine line, double line_width,
-						 const GMathmlColor *color);
-void 		gmathml_view_show_fraction_line	(GMathmlView *view,
+void 		gmathml_view_show_background 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
 						 double x, double y,
-						 double width, double thickness,
-						 const GMathmlColor *color);
-
+						 const GMathmlBbox *bbox);
+void 		gmathml_view_show_rectangle 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x, double y, double width, double height,
+						 GMathmlLine line, double line_width);
+void 		gmathml_view_show_line 		(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x0, double y0, double x1, double y1,
+						 GMathmlLine line, double line_width);
+void 		gmathml_view_show_fraction_line	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double x, double y,
+						 double width, double thickness);
 
 void 		gmathml_view_show_bbox 		(GMathmlView *view, double x, double y, const GMathmlBbox *bbox);
 

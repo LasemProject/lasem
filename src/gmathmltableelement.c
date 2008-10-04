@@ -358,12 +358,12 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
 
-	gmathml_view_show_rectangle (view, self->x + 0.5 * table->line_width,
+	gmathml_view_show_rectangle (view, &self->style,
+				     self->x + 0.5 * table->line_width,
 				     self->y - self->bbox.height + 0.5 * table->line_width,
 				     self->bbox.width - table->line_width,
 				     self->bbox.height + self->bbox.depth - table->line_width,
-				     table->frame.value, table->line_width,
-				     &self->style.math_color);
+				     table->frame.value, table->line_width);
 
 	position  = self->y - self->bbox.height;
         position += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
@@ -374,12 +374,11 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
 		spacing = gmathml_view_measure_length (view, spacing);
 		y = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
-		gmathml_view_show_line (view,
+		gmathml_view_show_line (view, &self->style,
 					self->x, y,
 					self->x + self->bbox.width, y,
 					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
-					table->line_width,
-					&self->style.math_color);
+					table->line_width);
 		position += spacing + table->line_width;
 	}
 
@@ -392,12 +391,11 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
 		spacing = gmathml_view_measure_length (view, spacing);
 		x = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
-		gmathml_view_show_line (view,
+		gmathml_view_show_line (view, &self->style,
 					x, self->y - self->bbox.height,
 					x, self->y + self->bbox.depth,
 					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
-					table->line_width,
-					&self->style.math_color);
+					table->line_width);
 		position += spacing + table->line_width;
 	}
 

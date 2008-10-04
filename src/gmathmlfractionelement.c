@@ -143,11 +143,11 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 
 	h_space = gmathml_view_measure_length (view, fraction->h_space);
 
-	gmathml_view_show_fraction_line (view, self->x + h_space,
+	gmathml_view_show_fraction_line (view, &self->style,
+					 self->x + h_space,
 					 self->y - gmathml_view_measure_length (view, fraction->axis_offset),
 					 self->bbox.width - 2.0 * h_space,
-					 fraction->line_thickness.value,
-					 &self->style.math_color);
+					 fraction->line_thickness.value);
 
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }

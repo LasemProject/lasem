@@ -280,8 +280,8 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 
 	if (element_class->render) {
 		gmathml_view_show_bbox (view, element->x, element->y, &element->bbox);
-		gmathml_view_show_background (view, element->x, element->y,
-					      &element->style.math_background,
+		gmathml_view_show_background (view, &element->style,
+					      element->x, element->y,
 					      &element->bbox);
 		element_class->render (element, view);
 	}
