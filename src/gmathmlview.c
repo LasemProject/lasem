@@ -79,12 +79,6 @@ gmathml_view_measure_length (GMathmlView *view, double length)
 	return floor (length + 0.5);
 }
 
-double
-gmathml_view_measure_hairline (GMathmlView *view)
-{
-	return gmathml_view_measure_length (view, 1.0);
-}
-
 static void
 gmathml_view_update_layout (GMathmlView *view, char const *text,
 			    gboolean large,

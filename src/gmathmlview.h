@@ -102,7 +102,6 @@ void		gmathml_view_set_ppi 		(GMathmlView *view, double ppi);
 /* Internal API */
 
 double 		gmathml_view_measure_length	(GMathmlView *view, double length);
-double 		gmathml_view_measure_hairline	(GMathmlView *view);
 
 void 		gmathml_view_measure_text 	(GMathmlView *view, char const *text, GMathmlBbox *bbox);
 void 		gmathml_view_show_text 		(GMathmlView *view, double x, double y, const char *text);
