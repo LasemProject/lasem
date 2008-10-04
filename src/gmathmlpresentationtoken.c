@@ -91,6 +91,7 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 		g_free (text);
 	}
 
+	gmathml_attribute_string_parse (&token->math_family, &style->math_family);
 	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
 	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
@@ -182,6 +183,9 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 void
 gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class)
 {
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
+						  offsetof (GMathmlPresentationToken, math_family),
+						  gmathml_attribute_string_finalize);
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					     offsetof (GMathmlPresentationToken, math_variant));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -193,6 +197,9 @@ gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_
 
 	/* Deprecated attributes */
 
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
+						  offsetof (GMathmlPresentationToken, math_family),
+						  gmathml_attribute_string_finalize);
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					     offsetof (GMathmlPresentationToken, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",

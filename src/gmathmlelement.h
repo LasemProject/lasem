@@ -32,10 +32,11 @@
 G_BEGIN_DECLS
 
 typedef struct {
-	double math_size;
-	GMathmlVariant math_variant;
-	GMathmlColor math_color;
-	GMathmlColor math_background;
+	char *		math_family;
+	GMathmlVariant 	math_variant;
+	double 		math_size;
+	GMathmlColor 	math_color;
+	GMathmlColor 	math_background;
 } GMathmlElementStyle;
 
 #define GMATHML_TYPE_ELEMENT             (gmathml_element_get_type ())

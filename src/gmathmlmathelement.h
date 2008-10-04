@@ -28,6 +28,13 @@
 
 G_BEGIN_DECLS
 
+#define GMATHML_FONT_SERIF		"Serif"
+#define GMATHML_FONT_SANS		"Sans"
+#define GMATHML_FONT_MONOSPACE		"Monospace"
+#define GMATHML_FONT_FRAKTUR		"Serif"
+#define GMATHML_FONT_SCRIPT		"cmsy10"
+#define GMATHML_FONT_DOUBLE_STRUCK	"msbm10"
+
 #define GMATHML_TYPE_MATH_ELEMENT             (gmathml_math_element_get_type ())
 #define GMATHML_MATH_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GMATHML_TYPE_MATH_ELEMENT, GMathmlMathElement))
 #define GMATHML_MATH_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GMATHML_TYPE_MATH_ELEMENT, GMathmlMathElementClass))

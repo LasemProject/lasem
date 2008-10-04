@@ -104,10 +104,12 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	if (element_class->update)
 		element_class->update (self, style);
 
+	g_free (self->style.math_family);
+	self->style.math_family = g_strdup (style->math_family);
+	self->style.math_variant = style->math_variant;
+	self->style.math_size = style->math_size_value;
 	self->style.math_color = style->math_color;
 	self->style.math_background = style->math_background;
-	self->style.math_size = style->math_size_value;
-	self->style.math_variant = style->math_variant;
 
 	gdom_debug ("[Element::update] Math size = %g", self->style.math_size);
 
@@ -365,8 +367,11 @@ static void
 gmathml_element_finalize (GObject *object)
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS (object);
+	GMathmlElement *m_element = GMATHML_ELEMENT (object);
 
 	gmathml_attribute_map_free_attributes (m_element_class->attributes, object);
+
+	g_free (m_element->style.math_family);
 
 	parent_class->finalize (object);
 }

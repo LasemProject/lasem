@@ -106,6 +106,8 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->very_thick_math_space_value = 0.333333 * style->math_size_value;
 	style->very_very_thick_math_space_value = 0.388889 * style->math_size_value;
 
+	style->math_family = g_strdup ("Serif");
+	style->math_variant = GMATHML_VARIANT_NORMAL;
 	style->math_size.value = 12.0;
 	style->math_size.unit = GMATHML_UNIT_PT;
 	style->math_color.red = 0;
@@ -116,7 +118,6 @@ gmathml_math_element_init (GMathmlMathElement *self)
 	style->math_background.green = 0;
 	style->math_background.blue = 0;
 	style->math_background.alpha = 0;
-	style->math_variant = GMATHML_VARIANT_NORMAL;
 
 	style->subscript_shift.value = 0;
 	style->subscript_shift.unit = GMATHML_UNIT_PT;

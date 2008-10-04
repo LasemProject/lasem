@@ -69,6 +69,7 @@ gmathml_style_free (GMathmlStyle *style)
 {
 	g_return_if_fail (style != NULL);
 
+	g_free (style->math_family);
 	g_free (style);
 }
 
@@ -83,6 +84,8 @@ gmathml_style_duplicate (const GMathmlStyle *from)
 	g_return_val_if_fail (style != NULL, NULL);
 
 	memcpy (style, from, sizeof (GMathmlStyle));
+
+	style->math_family = g_strdup (from->math_family);
 
 	return style;
 }
@@ -414,6 +417,37 @@ gmathml_attribute_line_parse (GMathmlAttributeNamed *attribute,
 			      unsigned int *style_value)
 {
 	return gmathml_attribute_named_parse (attribute, style_value, gmathml_line_from_string);
+}
+
+void
+gmathml_attribute_string_parse (GMathmlAttributeString *attribute,
+				char **style_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+	g_return_if_fail (*style_value != NULL);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		g_free (attribute->value);
+		attribute->value = g_strdup (*style_value);
+	} else {
+		g_free (*style_value);
+		*style_value = g_strdup (string);
+	}
+}
+
+void
+gmathml_attribute_string_finalize (void *abstract)
+{
+	GMathmlAttributeString *attribute = abstract;
+
+	g_return_if_fail (attribute != NULL);
+
+	g_free (attribute->value);
+	attribute->value = NULL;
 }
 
 void

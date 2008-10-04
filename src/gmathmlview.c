@@ -77,26 +77,70 @@ gmathml_view_measure_length (GMathmlView *view, double length)
 }
 
 static void
-gmathml_view_update_layout (GMathmlView *view,
-			    const GMathmlElementStyle *style,
-			    const char *text,
-			    gboolean large,
-			    PangoRectangle *ink_rect,
-			    PangoRectangle *rect,
-			    int *baseline)
+gmathml_view_update_layout_for_text (GMathmlView *view,
+				     const GMathmlElementStyle *style,
+				     const char *text,
+				     PangoRectangle *ink_rect,
+				     PangoRectangle *rect,
+				     int *baseline)
 {
-	pango_font_description_set_family (view->priv->font_description, "Serif");
-	pango_font_description_set_size (view->priv->font_description,
-					 style->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+	pango_font_description_set_family (view->priv->font_description, style->math_family);
+	pango_font_description_set_size (view->priv->font_description, style->math_size * PANGO_SCALE);
 	switch (style->math_variant) {
 		case GMATHML_VARIANT_NORMAL:
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_ITALIC:
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			break;
+		case GMATHML_VARIANT_BOLD:
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			break;
+		case GMATHML_VARIANT_BOLD_ITALIC:
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			break;
+		case GMATHML_VARIANT_DOUBLE_STRUCK:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_DOUBLE_STRUCK);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			break;
+		case GMATHML_VARIANT_SCRIPT:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SCRIPT);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			break;
+		case GMATHML_VARIANT_BOLD_SCRIPT:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SCRIPT);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			break;
+		case GMATHML_VARIANT_SANS_SERIF:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			break;
+		case GMATHML_VARIANT_SANS_SERIF_ITALIC:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			break;
+		case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			break;
+		case GMATHML_VARIANT_MONOSPACE:
+			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_MONOSPACE);
+			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		default:
 			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
 			break;
 	}
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
@@ -189,7 +233,7 @@ gmathml_view_measure_text (GMathmlView *view,
 		return;
 	}
 
-	gmathml_view_update_layout (view, style, text, FALSE, &ink_rect, NULL, &baseline);
+	gmathml_view_update_layout_for_text (view, style, text, &ink_rect, NULL, &baseline);
 
 	bbox->width = pango_units_to_double (ink_rect.width);
 	bbox->height = pango_units_to_double (baseline - ink_rect.y);
@@ -215,7 +259,7 @@ gmathml_view_show_text (GMathmlView *view,
 /*                   text, x, y, math_size,*/
 /*                   gmathml_variant_to_string (math_variant));*/
 
-	gmathml_view_update_layout (view, style, text, FALSE, &ink_rect, &rect, &baseline);
+	gmathml_view_update_layout_for_text (view, style, text, &ink_rect, &rect, &baseline);
 	gmathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
 
 	if (ink_rect.width <= 0 || ink_rect.height <= 0)
@@ -245,6 +289,31 @@ gmathml_view_show_text (GMathmlView *view,
 
 	gdom_debug ("[GMathmlView::show_text] cairo status after = %s",
 		    cairo_status_to_string (cairo_status (view->priv->cairo)));
+}
+
+static void
+gmathml_view_update_layout_for_operator (GMathmlView *view,
+					 const GMathmlElementStyle *style,
+					 const char *text,
+					 gboolean large,
+					 PangoRectangle *ink_rect,
+					 PangoRectangle *rect,
+					 int *baseline)
+{
+	pango_font_description_set_family (view->priv->font_description, "Serif");
+	pango_font_description_set_size (view->priv->font_description,
+					 style->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
+	pango_layout_set_text (view->priv->pango_layout, text, -1);
+	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_get_extents (view->priv->pango_layout, ink_rect, rect);
+
+	if (baseline != NULL) {
+		PangoLayoutIter *iter;
+
+		iter = pango_layout_get_iter (view->priv->pango_layout);
+		*baseline = pango_layout_iter_get_baseline (iter);
+		pango_layout_iter_free (iter);
+	}
 }
 
 void
@@ -278,7 +347,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
-		gmathml_view_update_layout (view, style, text, large, &ink_rect, NULL, &baseline);
+		gmathml_view_update_layout_for_operator (view, style, text, large, &ink_rect, NULL, &baseline);
 		flags = 0;
 
 		gdom_debug ("[GMathmlView::measure_operator] operator = %s", text);
@@ -400,7 +469,7 @@ gmathml_view_show_operator (GMathmlView *view,
 
 	glyph = gmathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
-		gmathml_view_update_layout (view, style, text, large, &ink_rect, &rect, &baseline);
+		gmathml_view_update_layout_for_operator (view, style, text, large, &ink_rect, &rect, &baseline);
 	} else {
 		PangoLayoutIter *iter;
 		unsigned int i;

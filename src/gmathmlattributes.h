@@ -85,6 +85,7 @@ typedef struct {
 	double very_thick_math_space_value;
 	double very_very_thick_math_space_value;
 	/* tokens */
+	char *math_family;
 	GMathmlVariant math_variant;
 	GMathmlLength math_size;
 	GMathmlColor math_color;
@@ -184,6 +185,11 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
+	char *value;
+} GMathmlAttributeString;
+
+typedef struct {
+	GMathmlAttributeValue attr;
 	GMathmlLength length;
 	double value;
 } GMathmlAttributeLength;
@@ -220,6 +226,8 @@ void 		gmathml_attribute_variant_parse 	(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
 void		gmathml_attribute_line_parse		(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
+void		gmathml_attribute_string_parse		(GMathmlAttributeString *attribute,
+							 char **style_value);
 void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
 							 GMathmlColor *default_color);
 void 		gmathml_attribute_length_parse 		(GMathmlAttributeLength *attribute,
@@ -245,6 +253,8 @@ void 	gmathml_attribute_column_align_list_parse 	(GMathmlAttributeNamedList *att
 							 GMathmlNamedList *style_value);
 void 	gmathml_attribute_line_list_parse 		(GMathmlAttributeNamedList *attribute,
 							 GMathmlNamedList *style_value);
+
+void	gmathml_attribute_string_finalize		(void *abstract);
 
 G_END_DECLS
 
