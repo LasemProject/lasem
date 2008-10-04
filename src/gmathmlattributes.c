@@ -473,6 +473,15 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 
 		if (unit == GMATHML_UNIT_NONE) {
 			unit = style_value->unit;
+			if (unit_str[0] != '\0') {
+				if (strcmp (unit_str, "big") == 0) {
+					value = 1.5;
+				} else if (strcmp (unit_str, "small") == 0) {
+					value = 0.75;
+				} else if (strcmp (unit_str, "normal") == 0) {
+					value = 1.0;
+				}
+			}
 			value *= style_value->value;
 		} else if (unit == GMATHML_UNIT_PERCENT) {
 			unit = style_value->unit;
