@@ -196,7 +196,7 @@ gmathml_view_measure_axis_offset (GMathmlView *view,
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
-	pango_font_description_set_family (view->priv->font_description, "Serif");
+	pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SERIF);
 	pango_font_description_set_size (view->priv->font_description, math_size * PANGO_SCALE);
 	pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
 	pango_layout_set_text (view->priv->pango_layout, "\xe2\x88\x92", -1);
@@ -300,7 +300,7 @@ gmathml_view_update_layout_for_operator (GMathmlView *view,
 					 PangoRectangle *rect,
 					 int *baseline)
 {
-	pango_font_description_set_family (view->priv->font_description, "Serif");
+	pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SERIF);
 	pango_font_description_set_size (view->priv->font_description,
 					 style->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
