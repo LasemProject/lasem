@@ -950,7 +950,7 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 	cairo_stroke (cairo);
 }
 
-void
+const GMathmlBbox *
 gmathml_view_measure (GMathmlView *view, double *width, double *height)
 {
 	GDomElement *root;
@@ -961,10 +961,10 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 	if (height != NULL)
 		*height = 0.0;
 
-	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_val_if_fail (GMATHML_IS_VIEW (view), NULL);
 
 	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
-	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (root));
+	g_return_val_if_fail (GMATHML_IS_MATH_ELEMENT (root), NULL);
 
 	gmathml_element_update (GMATHML_ELEMENT (root),
 				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
@@ -977,6 +977,8 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 		if (height != NULL)
 			*height = bbox->height + bbox->depth;
 	}
+
+	return bbox;
 }
 
 void
@@ -992,15 +994,7 @@ gmathml_view_render (GMathmlView *view)
 	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
 	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (root));
 
-	gmathml_element_update (GMATHML_ELEMENT (root),
-				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
-
-	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
-
-	if (bbox->is_defined)
-		gdom_debug ("[View::render] bbox = %g, %g, %g", bbox->width, bbox->height, bbox->depth);
-	else
-		gdom_debug ("[View::render] bbox not defined");
+	bbox = gmathml_view_measure (view, NULL, NULL);
 
 	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
 
