@@ -138,13 +138,14 @@ gmathml_test_render (char const *filename)
 	g_free (test_name);
 }
 
-void
+unsigned int
 gmathml_test_process_dir (const char *name)
 {
 	GDir *directory;
 	GError *error = NULL;
 	const char *entry;
 	char *filename;
+	unsigned int n_files = 0;
 
 	directory = g_dir_open (name, 0, &error);
 	assert (error == NULL);
@@ -162,23 +163,28 @@ gmathml_test_process_dir (const char *name)
 		filename = g_build_filename (name, entry, NULL);
 
 		if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-			gmathml_test_process_dir (filename);
+			n_files += gmathml_test_process_dir (filename);
 		else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 			 g_regex_match (regex_mml, filename, 0, NULL)) {
 			gmathml_test_render (filename);
+			n_files++;
 		}
 
 		g_free (filename);
 	} while (entry != NULL);
 
 	g_dir_close (directory);
+
+	return n_files;
 }
 
 int
 main (int argc, char **argv)
 {
+	GTimer *timer;
 	GError *error = NULL;
 	unsigned int i;
+	unsigned int n_files = 0;
 
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
@@ -198,6 +204,8 @@ main (int argc, char **argv)
 
 	g_type_init ();
 
+	timer = g_timer_new ();
+
 	regex_mml = g_regex_new ("\\.mml$", 0, 0, &error);
 	assert (error == NULL);
 
@@ -205,7 +213,7 @@ main (int argc, char **argv)
 		for (i = 0; i < argc - 1; i++)
 			gmathml_test_render (argv[i + 1]);
 	else
-		gmathml_test_process_dir (".");
+		n_files = gmathml_test_process_dir (".");
 
 	gmathml_test_html ("</body>\n");
 	gmathml_test_html ("</html>\n");
@@ -214,6 +222,10 @@ main (int argc, char **argv)
 		fclose (gmathml_test_html_file);
 
 	g_regex_unref (regex_mml);
+
+	g_printf ("%d files processed in %g seconds.\n", n_files, g_timer_elapsed (timer, NULL));
+
+	g_timer_destroy (timer);
 
 	return 0;
 }
