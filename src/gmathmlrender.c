@@ -185,30 +185,9 @@ int main(int argc, char **argv)
 		if (mathml != NULL) {
 			document = gmathml_document_from_memory (mathml);
 			if (document != NULL) {
-				switch (format) {
-					case FORMAT_PDF:
-						surface = cairo_pdf_surface_create (output_filename, 100, 100);
-						break;
-					case FORMAT_PS:
-						surface = cairo_ps_surface_create (output_filename, 100, 100);
-						break;
-					case FORMAT_PNG:
-						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 100, 100);
-						break;
-					case FORMAT_SVG:
-					default:
-						surface = cairo_svg_surface_create (output_filename, 100, 100);
-						break;
-				}
-
-				cairo = cairo_create (surface);
-				cairo_surface_destroy (surface);
-
-				view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
+				view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
 
 				gmathml_view_set_ppi (view, option_ppi);
-
-				cairo_destroy (cairo);
 
 				gmathml_view_set_debug (view, option_debug);
 

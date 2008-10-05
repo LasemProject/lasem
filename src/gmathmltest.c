@@ -81,13 +81,7 @@ gmathml_test_render (char const *filename)
 
 	document = gmathml_document_from_file (xml_filename);
 
-	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 1.0, 1.0);
-	cairo = cairo_create (surface);
-	cairo_surface_destroy (surface);
-
-	view = gmathml_view_new (GMATHML_DOCUMENT (document), cairo);
-
-	cairo_destroy (cairo);
+	view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
 
 	gmathml_view_measure (view, &width, &height);
 
