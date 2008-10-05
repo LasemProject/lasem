@@ -48,19 +48,18 @@ static GObjectClass *parent_class;
 
 struct _GMathmlViewPrivate {
 
-	gboolean debug;
-
 	GMathmlDocument *document;
-
-	PangoLayout *pango_layout;
-	PangoFontDescription *font_description;
-
-	gboolean is_vector;
 
 	double ppi;
 
+	PangoFontDescription *font_description;
+
 	/* rendering context */
-	cairo_t *cairo;
+	cairo_t *	cairo;
+	PangoLayout *	pango_layout;
+	gboolean 	is_vector;
+
+	gboolean debug;
 };
 
 double
@@ -84,67 +83,71 @@ gmathml_view_update_layout_for_text (GMathmlView *view,
 				     PangoRectangle *rect,
 				     int *baseline)
 {
-	pango_font_description_set_family (view->priv->font_description, style->math_family);
-	pango_font_description_set_size (view->priv->font_description, style->math_size * PANGO_SCALE);
+	PangoFontDescription *font_description;
+
+	font_description = view->priv->font_description;
+
+	pango_font_description_set_family (font_description, style->math_family);
+	pango_font_description_set_size (font_description, style->math_size * PANGO_SCALE);
 	switch (style->math_variant) {
 		case GMATHML_VARIANT_NORMAL:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_ITALIC:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_BOLD:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
 			break;
 		case GMATHML_VARIANT_BOLD_ITALIC:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
 			break;
 		case GMATHML_VARIANT_DOUBLE_STRUCK:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_DOUBLE_STRUCK);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_family (font_description, GMATHML_FONT_DOUBLE_STRUCK);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_SCRIPT:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SCRIPT);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_family (font_description, GMATHML_FONT_SCRIPT);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_BOLD_SCRIPT:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SCRIPT);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			pango_font_description_set_family (font_description, GMATHML_FONT_SCRIPT);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
 			break;
 		case GMATHML_VARIANT_SANS_SERIF:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_SANS_SERIF_ITALIC:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_BOLD);
+			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
+			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
 			break;
 		case GMATHML_VARIANT_MONOSPACE:
-			pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_MONOSPACE);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_family (font_description, GMATHML_FONT_MONOSPACE);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 		default:
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (view->priv->font_description, PANGO_WEIGHT_NORMAL);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			break;
 	}
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
-	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_set_font_description (view->priv->pango_layout, font_description);
 	pango_layout_get_extents (view->priv->pango_layout, ink_rect, rect);
 
 	if (baseline != NULL) {
@@ -191,16 +194,19 @@ gmathml_view_measure_axis_offset (GMathmlView *view,
 {
 	PangoRectangle ink_rect;
 	PangoLayoutIter *iter;
+	PangoFontDescription *font_description;
 	double axis_offset;
 	int baseline;
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
 
-	pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SERIF);
-	pango_font_description_set_size (view->priv->font_description, math_size * PANGO_SCALE);
-	pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+	font_description = view->priv->font_description;
+
+	pango_font_description_set_family (font_description, GMATHML_FONT_SERIF);
+	pango_font_description_set_size (font_description, math_size * PANGO_SCALE);
+	pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 	pango_layout_set_text (view->priv->pango_layout, "\xe2\x88\x92", -1);
-	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_set_font_description (view->priv->pango_layout, font_description);
 	pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
 	iter = pango_layout_get_iter (view->priv->pango_layout);
@@ -300,11 +306,15 @@ gmathml_view_update_layout_for_operator (GMathmlView *view,
 					 PangoRectangle *rect,
 					 int *baseline)
 {
-	pango_font_description_set_family (view->priv->font_description, GMATHML_FONT_SERIF);
-	pango_font_description_set_size (view->priv->font_description,
+	PangoFontDescription *font_description;
+
+	font_description = view->priv->font_description;
+
+	pango_font_description_set_family (font_description, GMATHML_FONT_SERIF);
+	pango_font_description_set_size (font_description,
 					 style->math_size * PANGO_SCALE * (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 	pango_layout_set_text (view->priv->pango_layout, text, -1);
-	pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+	pango_layout_set_font_description (view->priv->pango_layout, font_description);
 	pango_layout_get_extents (view->priv->pango_layout, ink_rect, rect);
 
 	if (baseline != NULL) {
@@ -325,10 +335,11 @@ gmathml_view_measure_operator (GMathmlView *view,
 			       double axis_offset,
 			       GMathmlBbox const *stretch_bbox, GMathmlBbox *bbox)
 {
+	PangoFontDescription *font_description;
+	PangoRectangle ink_rect;
+	GMathmlGlyphFlags flags;
 	const GMathmlOperatorGlyph *glyph;
 	const char *font_name;
-	GMathmlGlyphFlags flags;
-	PangoRectangle ink_rect;
 	int baseline;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
@@ -340,6 +351,8 @@ gmathml_view_measure_operator (GMathmlView *view,
 		*bbox = gmathml_bbox_null;
 		return;
 	}
+
+	font_description = view->priv->font_description;
 
 	if (stretch_bbox->is_defined)
 		gdom_debug ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
@@ -359,11 +372,11 @@ gmathml_view_measure_operator (GMathmlView *view,
 
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION) &&
 		    !stretch_bbox->is_defined) {
-			pango_font_description_set_size (view->priv->font_description,
+			pango_font_description_set_size (font_description,
 							 style->math_size * PANGO_SCALE);
 			i = 1;
 		} else {
-			pango_font_description_set_size (view->priv->font_description,
+			pango_font_description_set_size (font_description,
 							 style->math_size * PANGO_SCALE *
 							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 			i = 0;
@@ -371,10 +384,10 @@ gmathml_view_measure_operator (GMathmlView *view,
 
 		for (; i < glyph->n_sized_glyphs; i++) {
 			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
-			pango_font_description_set_family (view->priv->font_description, font_name);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_family (font_description, font_name);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 			pango_layout_set_text (view->priv->pango_layout, glyph->sized_glyphs[i].utf8, -1);
-			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+			pango_layout_set_font_description (view->priv->pango_layout, font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
 			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
@@ -450,8 +463,9 @@ gmathml_view_show_operator (GMathmlView *view,
 			    gboolean large,
 			    GMathmlBbox const *stretch_bbox)
 {
-	const GMathmlOperatorGlyph *glyph;
+	PangoFontDescription *font_description;
 	PangoRectangle rect, ink_rect;
+	const GMathmlOperatorGlyph *glyph;
 	const char *font_name;
 	double scale_x, scale_y;
 	int baseline;
@@ -462,6 +476,8 @@ gmathml_view_show_operator (GMathmlView *view,
 
 	if (text == NULL || !stretch_bbox->is_defined)
 		return;
+
+	font_description = view->priv->font_description;
 
 	if (stretch_bbox->is_defined)
 		gdom_debug ("[GMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
@@ -476,11 +492,11 @@ gmathml_view_show_operator (GMathmlView *view,
 		gboolean found = FALSE;
 
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION)) {
-			pango_font_description_set_size (view->priv->font_description,
+			pango_font_description_set_size (font_description,
 							 style->math_size * PANGO_SCALE);
 			i = 1;
 		} else {
-			pango_font_description_set_size (view->priv->font_description,
+			pango_font_description_set_size (font_description,
 							 style->math_size * PANGO_SCALE *
 							 (large ? GMATHML_LARGE_OP_SCALE : 1.0));
 			i = 0;
@@ -488,10 +504,10 @@ gmathml_view_show_operator (GMathmlView *view,
 
 		for (; i < glyph->n_sized_glyphs; i++) {
 			font_name = gmathml_font_names [glyph->sized_glyphs[i].font];
-			pango_font_description_set_family (view->priv->font_description, font_name);
-			pango_font_description_set_style (view->priv->font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_family (font_description, font_name);
+			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 			pango_layout_set_text (view->priv->pango_layout, glyph->sized_glyphs[i].utf8, -1);
-			pango_layout_set_font_description (view->priv->pango_layout, view->priv->font_description);
+			pango_layout_set_font_description (view->priv->pango_layout, font_description);
 			pango_layout_get_extents (view->priv->pango_layout, &ink_rect, NULL);
 
 			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
@@ -1038,12 +1054,15 @@ void
 gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 {
 	PangoContext *context;
+	PangoFontDescription *font_description;
 	cairo_font_options_t *font_options;
 	cairo_surface_t *surface;
 	cairo_surface_type_t type;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (cairo != NULL);
+
+	font_description = view->priv->font_description;
 
 	if (view->priv->cairo != NULL) {
 		cairo_destroy (view->priv->cairo);
@@ -1053,7 +1072,6 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	cairo_reference (cairo);
 	view->priv->cairo = cairo;
 	view->priv->pango_layout = pango_cairo_create_layout (cairo);
-	view->priv->font_description = pango_font_description_new();
 
 	surface = cairo_get_target (cairo);
 
@@ -1107,6 +1125,7 @@ gmathml_view_init (GMathmlView *view)
 {
 	view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view, GMATHML_TYPE_VIEW, GMathmlViewPrivate);
 	view->priv->ppi = 72.0;
+	view->priv->font_description = pango_font_description_new ();
 }
 
 static void
@@ -1117,6 +1136,8 @@ gmathml_view_finalize (GObject *object)
 	g_object_unref (view->priv->document);
 	g_object_unref (view->priv->pango_layout);
 	cairo_destroy (view->priv->cairo);
+
+	pango_font_description_free (view->priv->font_description);
 
 	parent_class->finalize (object);
 }
