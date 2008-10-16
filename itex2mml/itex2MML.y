@@ -41,8 +41,9 @@
    {
      if (buffer)
        {
+         size_t count;
 	 if (length)
-	   fwrite (buffer, 1, length, stdout);
+	   count = fwrite (buffer, 1, length, stdout);
 	 else
 	   fputs (buffer, stdout);
        }
