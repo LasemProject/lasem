@@ -104,6 +104,11 @@ void			gmathml_view_set_ppi 		(GMathmlView *view, double ppi);
 double 		gmathml_view_measure_length	(GMathmlView *view, double length);
 double 		gmathml_view_measure_axis_offset(GMathmlView *view, double math_size);
 
+void 		gmathml_view_get_font_metrics 	(GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 double *ascent,
+						 double *descent);
+
 void 		gmathml_view_measure_text 	(GMathmlView *view,
 						 const GMathmlElementStyle *style,
 						 char const *text,
