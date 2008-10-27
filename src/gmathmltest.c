@@ -156,21 +156,21 @@ gmathml_test_process_dir (const char *name)
 
 	do {
 		entry = g_dir_read_name (directory);
-		if (entry == NULL ||
-		    strstr (entry, "ignore-") == entry)
-			break;
+		if (entry != NULL &&
+		    strstr (entry, "ignore-") != entry)
+		{
+			filename = g_build_filename (name, entry, NULL);
 
-		filename = g_build_filename (name, entry, NULL);
+			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
+				n_files += gmathml_test_process_dir (filename);
+			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
+				 g_regex_match (regex_mml, filename, 0, NULL)) {
+				gmathml_test_render (filename);
+				n_files++;
+			}
 
-		if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-			n_files += gmathml_test_process_dir (filename);
-		else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
-			 g_regex_match (regex_mml, filename, 0, NULL)) {
-			gmathml_test_render (filename);
-			n_files++;
+			g_free (filename);
 		}
-
-		g_free (filename);
 	} while (entry != NULL);
 
 	g_dir_close (directory);
