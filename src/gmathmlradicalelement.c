@@ -51,14 +51,16 @@ gmathml_radical_element_can_append_child (GDomNode *self, GDomNode *child)
 					      self->first_child->next_sibling == NULL);
 }
 
+/* GMathmlElement implementation */
+
 static void
-gmathml_radical_element_update (GMathmlElement *self, GMathmlStyle *style)
+gmathml_radical_element_update_child (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 	GDomNode *node;
 
 	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
-		GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
+		GMATHML_ELEMENT_CLASS (parent_class)->update_child (self, style);
 		return;
 	}
 
@@ -74,8 +76,6 @@ gmathml_radical_element_update (GMathmlElement *self, GMathmlStyle *style)
 		}
 	}
 }
-
-/* GMathmlElement implementation */
 
 static const GMathmlBbox *
 gmathml_radical_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
@@ -248,7 +248,7 @@ gmathml_radical_element_class_init (GMathmlRadicalElementClass *radical_class)
 	d_node_class->get_node_name = gmathml_radical_get_node_name;
 	d_node_class->can_append_child = gmathml_radical_element_can_append_child;
 
-	m_element_class->update = gmathml_radical_element_update;
+	m_element_class->update_child = gmathml_radical_element_update_child;
 	m_element_class->measure = gmathml_radical_element_measure;
 	m_element_class->layout = gmathml_radical_element_layout;
 	m_element_class->render = gmathml_radical_element_render;

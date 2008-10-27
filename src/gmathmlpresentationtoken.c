@@ -98,8 +98,6 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
 
 	style->math_size_value = token->math_size.value;
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

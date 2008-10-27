@@ -45,8 +45,6 @@ gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_mode_parse (&math_element->mode, &default_mode);
 
 	style->display_style = (default_mode == GMATHML_MODE_DISPLAY);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 /* GMathmlMathElement implementation */

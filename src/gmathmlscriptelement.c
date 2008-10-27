@@ -114,6 +114,12 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
 	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
+}
+
+static void
+gmathml_script_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+{
+	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
@@ -307,6 +313,7 @@ gmathml_script_element_class_init (GMathmlScriptElementClass *script_class)
 	d_node_class->post_new_child = gmathml_script_element_post_new_child;
 
 	m_element_class->update = gmathml_script_element_update;
+	m_element_class->update_child = gmathml_script_element_update_child;
 	m_element_class->measure = gmathml_script_element_measure;
 	m_element_class->layout = gmathml_script_element_layout;
 	m_element_class->get_embellished_core = gmathml_script_element_get_embellished_core;

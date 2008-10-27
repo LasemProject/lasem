@@ -108,8 +108,6 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	flag = FALSE;
 	gmathml_attribute_boolean_parse (&table->display_style, &flag);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

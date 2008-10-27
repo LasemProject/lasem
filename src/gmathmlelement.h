@@ -71,6 +71,7 @@ struct _GMathmlElementClass {
 	GMathmlAttributeMap *attributes;
 
 	void			(*update)		(GMathmlElement *element, GMathmlStyle *style);
+	void			(*update_child)		(GMathmlElement *element, GMathmlStyle *style);
 	const GMathmlBbox * 	(*measure) 		(GMathmlElement *element, GMathmlView *view,
 							 const GMathmlBbox *bbox);
 	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,

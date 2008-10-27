@@ -72,7 +72,7 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 /* GMathmlElement implementation */
 
 static void
-_update (GMathmlElement *self, GMathmlStyle *style)
+_update_child (GMathmlElement *self, GMathmlStyle *style)
 {
 	GDomNode *node;
 
@@ -97,11 +97,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 
 	style = gmathml_style_duplicate (parent_style);
 
-#if 0
-	gmathml_style_dump (style);
-#endif
-
-	if (element_class->update)
+	if (element_class->update != NULL)
 		element_class->update (self, style);
 
 	g_free (self->style.math_family);
@@ -111,7 +107,8 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	self->style.math_color = style->math_color;
 	self->style.math_background = style->math_background;
 
-	gdom_debug ("[Element::update] Math size = %g", self->style.math_size);
+	if (element_class->update_child != NULL)
+		element_class->update_child (self, style);
 
 	gmathml_style_free (style);
 }
@@ -407,7 +404,8 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	d_element_class->get_attribute = gmathml_element_get_attribute;
 	d_element_class->set_attribute = gmathml_element_set_attribute;
 
-	m_element_class->update = _update;
+	m_element_class->update = NULL;
+	m_element_class->update_child = _update_child;
 	m_element_class->measure = _measure;
 	m_element_class->layout = _layout;
 	m_element_class->render = _render;

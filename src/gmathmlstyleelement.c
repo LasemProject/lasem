@@ -90,8 +90,6 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_length_parse (&style_element->line_thickness,
 					&style->line_thickness,
 					style->math_size_value);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 /* GMathmlStyleElement implementation */

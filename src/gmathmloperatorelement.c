@@ -136,8 +136,6 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	operator_element->is_large_op = operator_element->large_op.value && style->display_style;
 	if (operator_element->is_large_op)
 		gdom_debug ("[OperatorElement::update] Large op");
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *

@@ -48,18 +48,20 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 
-	fraction->axis_math_size = style->math_size_value;
-
-	if (!style->display_style)
-		gmathml_style_change_script_level (style, +1);
-
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
 	fraction->v_space = style->math_size_value * GMATHML_MEDIUM_SPACE_EM;
 	fraction->h_space = style->math_size_value * GMATHML_VERY_THIN_SPACE_EM;
+}
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
+static void
+gmathml_fraction_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+{
+	if (!style->display_style)
+		gmathml_style_change_script_level (style, +1);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update_child (self, style);
 }
 
 static const GMathmlBbox *
@@ -70,7 +72,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 	const GMathmlBbox *child_bbox;
 	double h_space;
 
-	fraction->axis_offset = gmathml_view_measure_axis_offset (view, fraction->axis_math_size);
+	fraction->axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 
 	self->bbox.is_defined = TRUE;
 	self->bbox.depth = - gmathml_view_measure_length (view,
@@ -200,6 +202,7 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	d_node_class->can_append_child = gmathml_fraction_element_can_append_child;
 
 	element_class->update = gmathml_fraction_element_update;
+	element_class->update_child = gmathml_fraction_element_update_child;
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;
