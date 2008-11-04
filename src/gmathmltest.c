@@ -31,11 +31,14 @@
 
 #include <glib/gregex.h>
 #include <glib/gprintf.h>
+#include <gio/gio.h>
 #include <gmathmlview.h>
 #include <gmathmldocument.h>
 #include <gmathmlparser.h>
 
 #include <libxml/parser.h>
+
+#include <../itex2mml/itex2MML.h>
 
 #define TEST_WIDTH 	480
 #define XML_FILENAME	"gmathmltest.xml"
@@ -63,56 +66,67 @@ gmathml_test_render (char const *filename)
 	GMathmlView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
-	char *buffer;
+	char *buffer = NULL;
 	size_t size;
 	char *png_filename;
-	char *xml_filename;
 	char *reference_png_filename;
 	char *test_name;
+	char *mime;
 	double width, height;
+	gboolean is_mml, success;
+	GRegex *regex;
+	GError *error = NULL;
+	char *filtered_buffer;
 
 	test_name = g_regex_replace (regex_mml, filename, -1, 0, "", 0, NULL);
 
 	png_filename = g_strdup_printf ("%s-out.png", test_name);
-	xml_filename = g_strdup_printf ("%s.mml", test_name);
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
 
-	g_printf ("\trender %s\n", xml_filename);
+	mime = g_content_type_guess (filename, NULL, 0, NULL);
+	is_mml = strcmp (mime, "text/mathml") == 0;
+	g_free (mime);
 
-	document = gmathml_document_from_file (xml_filename);
+	g_printf ("\trender %s (%s)\n", filename, is_mml ? "MathML" : "Tex");
 
-	view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
+	success = g_file_get_contents (filename, &buffer, &size, NULL);
+	if (success) {
+		char *mathml = NULL;
 
-	gmathml_view_measure (view, &width, &height);
+		if (is_mml)
+			mathml = buffer;
+		else
+			mathml = itex2MML_parse (buffer, size);
 
-	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + .5, height + .5);
-	cairo = cairo_create (surface);
-	cairo_surface_destroy (surface);
+		document = gmathml_document_from_memory (mathml);
 
-	gmathml_view_set_cairo (view, cairo);
+		view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
 
-	cairo_destroy (cairo);
+		gmathml_view_measure (view, &width, &height);
 
-	gmathml_view_render (view);
+		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + .5, height + .5);
+		cairo = cairo_create (surface);
+		cairo_surface_destroy (surface);
 
-	cairo_surface_write_to_png (surface, png_filename);
+		gmathml_view_set_cairo (view, cairo);
 
-	g_object_unref (view);
-	g_object_unref (document);
+		cairo_destroy (cairo);
 
-	gmathml_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
-	gmathml_test_html ("<tr>");
-	gmathml_test_html ("<td>");
+		gmathml_view_render (view);
 
-	if (g_file_get_contents (xml_filename, &buffer, &size, NULL)) {
-		GRegex *regex;
-		GError *error = NULL;
-		char *filtered_buffer;
+		cairo_surface_write_to_png (surface, png_filename);
+
+		g_object_unref (view);
+		g_object_unref (document);
+
+		gmathml_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
+		gmathml_test_html ("<tr>");
+		gmathml_test_html ("<td>");
 
 		regex = g_regex_new ("<math>", 0, 0, &error);
 		assert (error == NULL);
 
-		filtered_buffer = g_regex_replace (regex, buffer,
+		filtered_buffer = g_regex_replace (regex, mathml,
 						   -1, 0,
 						   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
 						   0, NULL);
@@ -121,18 +135,52 @@ gmathml_test_render (char const *filename)
 		gmathml_test_html (filtered_buffer);
 
 		g_free (filtered_buffer);
-		g_free (buffer);
+
+		gmathml_test_html ("</td>");
+		gmathml_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
+				   filename, png_filename);
+		gmathml_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
+		gmathml_test_html ("</tr>\n");
+		gmathml_test_html ("</table>\n");
+
+		if (!is_mml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
+			FILE *file;
+			int result;
+			char *cmd;
+
+			file = fopen ("gmathmltest.tmp", "w");
+			fprintf (file, "\\documentclass[10pt]{article}\n");
+			fprintf (file, "\\usepackage{amsmath}\n");
+			fprintf (file, "\\usepackage{amsfonts}\n");
+			fprintf (file, "\\usepackage{amssymb}\n");
+			fprintf (file, "\\usepackage{pst-plot}\n");
+			fprintf (file, "\\usepackage{color}\n");
+			fprintf (file, "\\pagestyle{empty}\n");
+			fprintf (file, "\\begin{document}\n");
+			fprintf (file, "%s\n", buffer);
+			fprintf (file, "\\end{document}\n");
+			fclose (file);
+
+			result = system ("latex --interaction=nonstopmode gmathmltest.tmp");
+			result = system ("dvips -E gmathmltest.dvi -o gmathmltest.ps");
+
+			cmd = g_strdup_printf ("convert -density 120 gmathmltest.ps %s", reference_png_filename);
+			result = system (cmd);
+			g_free (cmd);
+
+			result = system ("rm gmathmltest.tmp");
+			result = system ("rm gmathmltest.dvi");
+			result = system ("rm gmathmltest.log");
+			result = system ("rm gmathmltest.aux");
+			result = system ("rm gmathmltest.ps");
+		}
+
+		if (mathml != buffer)
+			g_free (buffer);
+		g_free (mathml);
 	}
 
-	gmathml_test_html ("</td>");
-	gmathml_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
-			   xml_filename, png_filename);
-	gmathml_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
-	gmathml_test_html ("</tr>\n");
-	gmathml_test_html ("</table>\n");
-
 	g_free (png_filename);
-	g_free (xml_filename);
 	g_free (reference_png_filename);
 
 	g_free (test_name);
@@ -206,7 +254,7 @@ main (int argc, char **argv)
 
 	timer = g_timer_new ();
 
-	regex_mml = g_regex_new ("\\.mml$", 0, 0, &error);
+	regex_mml = g_regex_new ("\\.(mml|tex)$", 0, 0, &error);
 	assert (error == NULL);
 
 	if (argc >= 2)
