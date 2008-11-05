@@ -36,6 +36,14 @@ const char *		gmathml_mode_to_string			(GMathmlMode mode);
 GMathmlMode		gmathml_mode_from_string		(const char *string);
 
 typedef enum {
+	GMATHML_DISPLAY_BLOCK,
+	GMATHML_DISPLAY_INLINE
+} GMathmlDisplay;
+
+const char *		gmathml_display_to_string		(GMathmlDisplay display);
+GMathmlDisplay		gmathml_display_from_string		(const char *string);
+
+typedef enum {
 	GMATHML_SPACE_NAME_ERROR,
 	GMATHML_SPACE_NAME_VERY_VERY_THIN,
 	GMATHML_SPACE_NAME_VERY_THIN,

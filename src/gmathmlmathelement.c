@@ -40,11 +40,17 @@ static void
 gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (self);
-	GMathmlMode default_mode;
+	GMathmlMode default_mode = FALSE;
+	GMathmlMode default_display;
 
 	gmathml_attribute_mode_parse (&math_element->mode, &default_mode);
 
-	style->display_style = (default_mode == GMATHML_MODE_DISPLAY);
+	if (default_mode == GMATHML_MODE_DISPLAY)
+		default_display = GMATHML_DISPLAY_BLOCK;
+
+	gmathml_attribute_display_parse (&math_element->display, &default_display);
+
+	style->display_style = (default_display == GMATHML_DISPLAY_BLOCK);
 }
 
 /* GMathmlMathElement implementation */
@@ -157,6 +163,8 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mode",
 					     offsetof (GMathmlMathElement, mode));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
+					     offsetof (GMathmlMathElement, display));
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)

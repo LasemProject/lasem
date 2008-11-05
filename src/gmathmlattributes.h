@@ -220,6 +220,8 @@ void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attrib
 							 int *default_value);
 void 		gmathml_attribute_mode_parse 		(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
+void 		gmathml_attribute_display_parse 	(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
 void 		gmathml_attribute_form_parse	 	(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
 void 		gmathml_attribute_variant_parse 	(GMathmlAttributeNamed *attribute,

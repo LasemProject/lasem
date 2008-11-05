@@ -399,6 +399,13 @@ gmathml_attribute_mode_parse (GMathmlAttributeNamed *attribute,
 }
 
 void
+gmathml_attribute_display_parse (GMathmlAttributeNamed *attribute,
+				 unsigned int *style_value)
+{
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_display_from_string);
+}
+
+void
 gmathml_attribute_form_parse (GMathmlAttributeNamed *attribute,
 			      unsigned int *style_value)
 {

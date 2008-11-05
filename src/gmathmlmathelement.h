@@ -50,6 +50,7 @@ struct _GMathmlMathElement {
 	GMathmlStyle *default_style;
 
 	GMathmlAttributeNamed mode;
+	GMathmlAttributeNamed display;
 };
 
 struct _GMathmlMathElementClass {

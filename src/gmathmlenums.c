@@ -56,6 +56,24 @@ gmathml_mode_from_string (const char *string)
 					  G_N_ELEMENTS (gmathml_mode_strings));
 }
 
+static const char *gmathml_display_strings[] = {
+	"block",
+	"inline"
+};
+
+const char *
+gmathml_display_to_string (GMathmlDisplay display)
+{
+	return gmathml_display_strings[CLAMP (display, 0, GMATHML_DISPLAY_INLINE)];
+}
+
+GMathmlDisplay
+gmathml_display_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_display_strings,
+					  G_N_ELEMENTS (gmathml_display_strings));
+}
+
 static const char *gmathml_space_name_strings[] = {
 	"errormathspace",
 	"veryverythinmathspace",
