@@ -124,7 +124,8 @@ gmathml_script_element_update_child (GMathmlElement *self, GMathmlStyle *style)
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
 
-	script->space = style->thin_math_space_value;
+	script->h_space = style->very_thin_math_space_value;
+	script->v_space = style->thin_math_space_value;
 
 	gmathml_style_change_script_level (style, +1);
 	style->display_style = FALSE;
@@ -145,6 +146,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	GMathmlBbox const *subscript_bbox = NULL;
 	GMathmlBbox const *superscript_bbox = NULL;
 	GMathmlBbox children_bbox = gmathml_bbox_null;
+	double axis_offset, ascent, descent;
 
 	element->bbox = gmathml_bbox_null;
 
@@ -152,10 +154,13 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	if (node == NULL)
 		return &element->bbox;
 
+	axis_offset = gmathml_view_measure_axis_offset (view, element->style.math_size);
+	gmathml_view_get_font_metrics (view, &script->base->style, &ascent, &descent);
+
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, stretch_bbox);
 	element->bbox = *base_bbox;
 
-	element->bbox.width += gmathml_view_measure_length (view, script->space);
+	element->bbox.width += gmathml_view_measure_length (view, script->h_space);
 
 	node = node->next_sibling;
 
@@ -182,22 +187,35 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 		}
 	}
 
-	if (superscript_bbox != NULL)
-		script->superscript_offset = base_bbox->height * 0.6;
-	else
+	if (superscript_bbox != NULL) {
+		double superscript_descent;
+
+		gmathml_view_get_font_metrics (view, &script->superscript->style, NULL, &superscript_descent);
+		script->superscript_offset = axis_offset + superscript_descent;
+
+		if (base_bbox->height > ascent)
+			script->superscript_offset += base_bbox->height - ascent;
+		if (script->superscript_offset - superscript_bbox->depth < axis_offset)
+			script->superscript_offset = axis_offset + superscript_bbox->depth;
+	} else
 		script->superscript_offset = 0.0;
 
-	if (subscript_bbox != NULL)
-		script->subscript_offset = subscript_bbox->height;
-	else
+	if (subscript_bbox != NULL) {
+		script->subscript_offset = descent;
+
+		if (base_bbox->depth > descent)
+			script->subscript_offset += base_bbox->depth - descent;
+		if (subscript_bbox->height - script->subscript_offset > axis_offset)
+			script->subscript_offset = subscript_bbox->height - axis_offset;
+	} else
 		script->subscript_offset = 0.0;
 
 	if (superscript_bbox != NULL && subscript_bbox != NULL) {
 		double delta = (script->superscript_offset + script->subscript_offset) -
 			(superscript_bbox->depth + subscript_bbox->height);
-		if (delta < 0.0) {
-			script->superscript_offset += fabs (delta) * 0.5;
-			script->subscript_offset += fabs (delta) * 0.5;
+		if (delta < script->v_space) {
+			script->superscript_offset += fabs (delta - script->v_space) * 0.5;
+			script->subscript_offset   += fabs (delta - script->v_space) * 0.5;
 		}
 	}
 
@@ -230,7 +248,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 
-	x += gmathml_view_measure_length (view, script->space);
+	x += gmathml_view_measure_length (view, script->h_space);
 
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,
@@ -297,7 +315,8 @@ gmathml_sub_sup_element_new (void)
 static void
 gmathml_script_element_init (GMathmlScriptElement *self)
 {
-	self->space = 0.0;
+	self->h_space = 0.0;
+	self->v_space = 0.0;
 }
 
 /* GMathmlScriptElement class */
