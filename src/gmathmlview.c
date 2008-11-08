@@ -235,30 +235,14 @@ gmathml_view_get_font_metrics (GMathmlView *view,
 			       double *ascent,
 			       double *descent)
 {
-	PangoFontMetrics *font_metrics;
-	PangoFontDescription *font_description;
-	PangoContext *context;
-	PangoFont *font;
+	GMathmlBbox bbox;
 
-	font_description = view->priv->font_description;
-
-	pango_font_description_set_family (font_description, style->math_family);
-	pango_font_description_set_size (font_description, style->math_size * PANGO_SCALE);
-	pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-	pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-
-	context = pango_layout_get_context (view->priv->measure_pango_layout);
-	font = pango_context_load_font (context, font_description);
-
-	font_metrics = pango_font_get_metrics (font, NULL);
+	gmathml_view_measure_text (view, style, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", &bbox);
 
 	if (ascent != NULL)
-		*ascent = pango_units_to_double (pango_font_metrics_get_ascent (font_metrics));
+		*ascent = bbox.height;
 	if (descent != NULL)
-		*descent = pango_units_to_double (pango_font_metrics_get_descent (font_metrics));
-
-	pango_font_metrics_unref (font_metrics);
-	g_object_unref (font);
+		*descent = bbox.depth;
 }
 
 void
