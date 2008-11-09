@@ -124,7 +124,7 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 		if (operator != NULL) {
 			accent = operator->accent.value;
 			if (accent)
-				gdom_debug ("[UnderOverElement::update] Overscript is%s accent (%s)",
+				gdom_debug ("[UnderOver::update] Overscript is%s accent (%s)",
 					    accent ? "" : " not",
 					    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
@@ -138,7 +138,7 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 		operator = gmathml_element_get_embellished_core (under_over->underscript);
 		if (operator != NULL) {
 			accent_under = operator->accent.value;
-			gdom_debug ("[UnderOverElement::update] Underscript is%s accent (%s)",
+			gdom_debug ("[UnderOver::update] Underscript is%s accent (%s)",
 				    accent_under ? "" : " not",
 				    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
@@ -149,7 +149,7 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 	under_over->under_space = accent_under ? style->very_thin_math_space_value : style->very_thick_math_space_value;
 	under_over->over_space  = accent       ? style->very_thin_math_space_value : style->very_thick_math_space_value;
 
-	gdom_debug ("[UnderOverElement::update] space under = %g, over = %g",
+	gdom_debug ("[UnderOver::update] space under = %g, over = %g",
 		    under_over->under_space, under_over->over_space);
 }
 
@@ -205,7 +205,7 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 	regular_stretch_bbox = gmathml_bbox_null;
 	operator_stretch_bbox = gmathml_bbox_null;
 
-	gdom_debug ("[UnderOver::_measure] Begin");
+	gdom_debug ("[UnderOver::measure] Begin");
 
 	index = 0;
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
@@ -235,11 +235,11 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 
 	if (stretchy_found) {
 		if (all_stretchy) {
-			gdom_debug ("[UnderOver::_measure] All stretchy");
+			gdom_debug ("[UnderOver::measure] All stretchy");
 			regular_stretch_bbox = operator_stretch_bbox;
 		}
 
-		gdom_debug ("[UnderOver::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
+		gdom_debug ("[UnderOver::measure] Stretchy found (width = %g, height = %g, depth = %g)",
 			    regular_stretch_bbox.width,
 			    regular_stretch_bbox.height,
 			    regular_stretch_bbox.depth);
@@ -278,7 +278,7 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 		gmathml_bbox_add_under (&self->bbox, &script_bbox);
 	}
 
-	gdom_debug ("[UnderOver::_measure] End");
+	gdom_debug ("[UnderOver::measure] End");
 
 	return &self->bbox;
 }
