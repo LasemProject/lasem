@@ -114,6 +114,8 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
 	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
+
+	script->display = style->display;
 }
 
 static void
@@ -157,6 +159,9 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	v_space = element->style.math_size * GMATHML_SPACE_EM_THIN;
 	gmathml_view_get_font_metrics (view, &script->base->style, &ascent, &descent);
 
+	if (script->display == GMATHML_DISPLAY_INLINE)
+		descent /= 2.0;
+
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, stretch_bbox);
 	element->bbox = *base_bbox;
 
@@ -188,10 +193,15 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	}
 
 	if (superscript_bbox != NULL) {
-		double superscript_descent;
+		if (script->display == GMATHML_DISPLAY_INLINE)
+			script->superscript_offset = axis_offset;
+		else {
+			double superscript_descent;
 
-		gmathml_view_get_font_metrics (view, &script->superscript->style, NULL, &superscript_descent);
-		script->superscript_offset = axis_offset + superscript_descent;
+			gmathml_view_get_font_metrics (view, &script->superscript->style,
+						       NULL, &superscript_descent);
+			script->superscript_offset = axis_offset + superscript_descent;
+		}
 
 		if (base_bbox->height > ascent)
 			script->superscript_offset += base_bbox->height - ascent;
