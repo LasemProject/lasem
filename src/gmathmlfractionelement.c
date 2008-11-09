@@ -59,6 +59,8 @@ gmathml_fraction_element_update_child (GMathmlElement *self, GMathmlStyle *style
 {
 	if (style->display == GMATHML_DISPLAY_INLINE)
 		gmathml_style_change_script_level (style, +1);
+	else
+		style->display = GMATHML_DISPLAY_INLINE;
 
 	GMATHML_ELEMENT_CLASS (parent_class)->update_child (self, style);
 }
@@ -75,7 +77,10 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	fraction->axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 
-	v_space = self->style.math_size * GMATHML_SPACE_EM_MEDIUM;
+	if (fraction->display == GMATHML_DISPLAY_INLINE)
+		v_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
+	else
+		v_space = self->style.math_size * GMATHML_SPACE_EM_MEDIUM;
 	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 
 	self->bbox.is_defined = TRUE;
@@ -94,8 +99,9 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 	gmathml_view_get_font_metrics (view, &GMATHML_ELEMENT (node)->style, NULL, &length);
-	if (fraction->display == GMATHML_DISPLAY_BLOCK &&
-	    child_bbox->depth < length)
+	if (fraction->display == GMATHML_DISPLAY_INLINE)
+		length /= 2.0;
+	if (child_bbox->depth < length)
 		dividend_offset = length - child_bbox->depth;
 	else
 		dividend_offset = 0.0;
@@ -109,8 +115,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
 	gmathml_view_get_font_metrics (view, &GMATHML_ELEMENT (node)->style, &length, NULL);
-	if (fraction->display == GMATHML_DISPLAY_BLOCK &&
-	    child_bbox->height < length)
+	if (child_bbox->height < length)
 		divisor_offset = length - child_bbox->height;
 	else
 		divisor_offset = 0.0;
