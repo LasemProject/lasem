@@ -50,9 +50,6 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
 	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
-
-	fraction->v_space = style->math_size_value * GMATHML_MEDIUM_SPACE_EM;
-	fraction->h_space = style->math_size_value * GMATHML_VERY_THIN_SPACE_EM;
 }
 
 static void
@@ -71,21 +68,21 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 	GDomNode *node;
 	const GMathmlBbox *child_bbox;
 	double h_space;
+	double v_space;
 
 	fraction->axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
+
+	v_space = self->style.math_size * GMATHML_MEDIUM_SPACE_EM;
+	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
 
 	self->bbox.is_defined = TRUE;
 	self->bbox.depth = - gmathml_view_measure_length (view,
 							  fraction->axis_offset -
-							  fraction->v_space -
-							  0.5 * fraction->line_thickness.value);
+							  v_space - 0.5 * fraction->line_thickness.value);
 
 	self->bbox.width = 0.0;
 	self->bbox.height = gmathml_view_measure_length (view, fraction->axis_offset +
-							 fraction->v_space +
-							 0.5 * fraction->line_thickness.value);
-
-	h_space = gmathml_view_measure_length (view, fraction->h_space);
+							 v_space + 0.5 * fraction->line_thickness.value);
 
 	node = GDOM_NODE (self)->first_child;
 
@@ -143,7 +140,7 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	double h_space;
 
-	h_space = gmathml_view_measure_length (view, fraction->h_space);
+	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
 
 	gmathml_view_show_fraction_line (view, &self->style,
 					 self->x + h_space,
@@ -174,8 +171,6 @@ gmathml_fraction_element_new (void)
 static void
 gmathml_fraction_element_init (GMathmlFractionElement *self)
 {
-	self->v_space = 0.0;
-	self->h_space = 0.0;
 	self->axis_offset = 0.0;
 }
 
