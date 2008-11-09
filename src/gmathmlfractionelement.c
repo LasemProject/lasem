@@ -69,6 +69,7 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 	const GMathmlBbox *child_bbox;
 	double h_space;
 	double v_space;
+	double length, dividend_offset, divisor_offset;
 
 	fraction->axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 
@@ -90,6 +91,11 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 		return &self->bbox;
 
 	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+	gmathml_view_get_font_metrics (view, &GMATHML_ELEMENT (node)->style, NULL, &length);
+	if (child_bbox->depth < length)
+		dividend_offset = length - child_bbox->depth;
+	else
+		dividend_offset = 0.0;
 
 	gmathml_bbox_add_over (&self->bbox, child_bbox);
 
@@ -99,9 +105,16 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 		return &self->bbox;
 
 	child_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, NULL);
+	gmathml_view_get_font_metrics (view, &GMATHML_ELEMENT (node)->style, &length, NULL);
+	if (child_bbox->height < length)
+		divisor_offset = length - child_bbox->height;
+	else
+		divisor_offset = 0.0;
 
 	gmathml_bbox_add_under (&self->bbox, child_bbox);
 
+	self->bbox.height += dividend_offset;
+	self->bbox.depth += divisor_offset;
 	self->bbox.width += 2.0 * h_space;
 
 	return &self->bbox;
