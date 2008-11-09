@@ -113,10 +113,9 @@ gmathml_under_over_element_post_new_child (GDomNode *self, GDomNode *child)
 static void
 gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
-	gboolean accent;
-	gboolean accent_under;
-
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+	gboolean accent = FALSE;
+	gboolean accent_under = FALSE;
 
 	if (under_over->overscript != NULL) {
 		const GMathmlOperatorElement *operator;
@@ -129,8 +128,7 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 					    accent ? "" : " not",
 					    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
-	} else
-		accent = FALSE;
+	}
 
 	gmathml_attribute_boolean_parse (&under_over->accent, &accent);
 
@@ -144,8 +142,8 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 				    accent_under ? "" : " not",
 				    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
-	} else
-		accent_under = FALSE;
+	}
+
 	gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
 
 	under_over->under_space = accent_under ? style->very_thin_math_space_value : style->very_thick_math_space_value;
@@ -153,25 +151,36 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	gdom_debug ("[UnderOverElement::update] space under = %g, over = %g",
 		    under_over->under_space, under_over->over_space);
+}
+
+static void
+gmathml_under_over_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+{
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+	GMathmlStyle *overscript_style;
 
 	if (under_over->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (under_over->base), style);
 
 	style->display = GMATHML_DISPLAY_INLINE;
 
-	if (!accent_under)
-		gmathml_style_change_script_level (style, +1);
+	overscript_style = gmathml_style_duplicate (style);
 
-	if (under_over->underscript != NULL)
+	if (under_over->underscript != NULL) {
+		if (!under_over->accent_under.value)
+			gmathml_style_change_script_level (style, +1);
+
 		gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style);
+	}
 
-	if (!accent_under)
-		gmathml_style_change_script_level (style, -1);
-	if (!accent)
-		gmathml_style_change_script_level (style, +1);
+	if (under_over->overscript != NULL) {
+		if (!under_over->accent.value)
+			gmathml_style_change_script_level (overscript_style, +1);
 
-	if (under_over->overscript != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), style);
+		gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), overscript_style);
+	}
+
+	gmathml_style_free (overscript_style);
 }
 
 static const GMathmlBbox *
@@ -374,6 +383,7 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	d_node_class->post_new_child = gmathml_under_over_element_post_new_child;
 
 	m_element_class->update = gmathml_under_over_element_update;
+	m_element_class->update_child = gmathml_under_over_element_update_child;
 	m_element_class->measure = gmathml_under_over_element_measure;
 	m_element_class->layout = gmathml_under_over_element_layout;
 	m_element_class->get_embellished_core = gmathml_under_over_element_get_embellished_core;
