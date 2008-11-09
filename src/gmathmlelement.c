@@ -149,6 +149,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 				gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
 				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			}
+			self->bbox.width += self->style.math_size * GMATHML_SPACE_EM_THIN;
 		}
 	}
 
@@ -232,7 +233,7 @@ _layout (GMathmlElement *self, GMathmlView *view,
 			if (operator != NULL)
 				child_bbox.width += offset +
 					gmathml_view_measure_length (view, operator->right_space.value);
-			x += child_bbox.width;
+			x += child_bbox.width + self->style.math_size * GMATHML_SPACE_EM_THIN;
 		}
 }
 
