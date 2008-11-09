@@ -72,8 +72,8 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 
 	fraction->axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 
-	v_space = self->style.math_size * GMATHML_MEDIUM_SPACE_EM;
-	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
+	v_space = self->style.math_size * GMATHML_SPACE_EM_MEDIUM;
+	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 
 	self->bbox.is_defined = TRUE;
 	self->bbox.depth = - gmathml_view_measure_length (view,
@@ -140,7 +140,7 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 	double h_space;
 
-	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
+	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 
 	gmathml_view_show_fraction_line (view, &self->style,
 					 self->x + h_space,

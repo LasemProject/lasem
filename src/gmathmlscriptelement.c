@@ -153,8 +153,8 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 		return &element->bbox;
 
 	axis_offset = gmathml_view_measure_axis_offset (view, element->style.math_size);
-	h_space = element->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
-	v_space = element->style.math_size * GMATHML_THIN_SPACE_EM;
+	h_space = element->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
+	v_space = element->style.math_size * GMATHML_SPACE_EM_THIN;
 	gmathml_view_get_font_metrics (view, &script->base->style, &ascent, &descent);
 
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, stretch_bbox);
@@ -249,7 +249,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 
-	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
+	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 	x += gmathml_view_measure_length (view, h_space);
 
 	if (script->subscript)

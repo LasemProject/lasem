@@ -629,12 +629,12 @@ gmathml_view_measure_radical (GMathmlView *view,
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
 
 	radical_stretch_bbox.height +=
-		gmathml_view_measure_length (view, GMATHML_MEDIUM_SPACE_EM *
+		gmathml_view_measure_length (view, GMATHML_SPACE_EM_MEDIUM *
 					     style->math_size) + thickness;
 
 	radical_stretch_bbox.depth +=
 		gmathml_view_measure_length (view,
-					     GMATHML_MEDIUM_SPACE_EM *
+					     GMATHML_SPACE_EM_MEDIUM *
 					     style->math_size);
 
 	gmathml_view_measure_operator (view, style, GMATHML_RADICAL_UTF8,
@@ -647,7 +647,7 @@ gmathml_view_measure_radical (GMathmlView *view,
 	if (y_offset != NULL) {
 		*y_offset = gmathml_view_measure_length (view, (bbox->height + bbox->depth) *
 							 GMATHML_RADICAL_ORDER_Y_OFFSET -
-							 GMATHML_MEDIUM_SPACE_EM *
+							 GMATHML_SPACE_EM_MEDIUM *
 							 style->math_size);
 	}
 }
