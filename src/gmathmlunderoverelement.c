@@ -157,7 +157,7 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 	if (under_over->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (under_over->base), style);
 
-	style->display_style = FALSE;
+	style->display = GMATHML_DISPLAY_INLINE;
 
 	if (!accent_under)
 		gmathml_style_change_script_level (style, +1);

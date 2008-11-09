@@ -40,17 +40,15 @@ static void
 gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (self);
-	GMathmlMode default_mode = FALSE;
-	GMathmlMode default_display;
+	GMathmlMode default_mode = (style->display == GMATHML_DISPLAY_INLINE) ?
+		GMATHML_MODE_INLINE : GMATHML_MODE_DISPLAY;
 
 	gmathml_attribute_mode_parse (&math_element->mode, &default_mode);
 
-	if (default_mode == GMATHML_MODE_DISPLAY)
-		default_display = GMATHML_DISPLAY_BLOCK;
+	style->display = (default_mode == GMATHML_MODE_INLINE) ?
+		GMATHML_DISPLAY_INLINE : GMATHML_DISPLAY_BLOCK;
 
-	gmathml_attribute_display_parse (&math_element->display, &default_display);
-
-	style->display_style = (default_display == GMATHML_DISPLAY_BLOCK);
+	gmathml_attribute_display_parse (&math_element->display, &style->display);
 }
 
 /* GMathmlMathElement implementation */
@@ -80,11 +78,11 @@ gmathml_math_element_init (GMathmlMathElement *self)
 
 	style->math_size_value = 12.0;
 
-	style->display_style = FALSE;
+	style->display = GMATHML_DISPLAY_INLINE;
 
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
-	style->script_min_size.value = 8.0;
+	style->script_min_size.value = 4.0;
 	style->script_min_size.unit = GMATHML_UNIT_PT;
 
 	style->very_very_thin_math_space.value = 	GMATHML_SPACE_EM_VERY_VERY_THIN;

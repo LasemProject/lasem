@@ -43,6 +43,7 @@ struct _GMathmlFractionElement {
 	GMathmlAttributeLength line_thickness;
 	GMathmlAttributeBoolean bevelled;
 
+	GMathmlDisplay display;
 	double axis_offset;
 };
 

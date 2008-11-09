@@ -133,7 +133,8 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	flag = entry->symmetric;
 	gmathml_attribute_boolean_parse (&operator_element->symmetric, &flag);
 
-	operator_element->is_large_op = operator_element->large_op.value && style->display_style;
+	operator_element->is_large_op = operator_element->large_op.value &&
+		(style->display == GMATHML_DISPLAY_BLOCK);
 	if (operator_element->is_large_op)
 		gdom_debug ("[OperatorElement::update] Large op");
 }

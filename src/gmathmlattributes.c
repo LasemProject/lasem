@@ -107,7 +107,8 @@ void
 gmathml_style_dump (const GMathmlStyle *style)
 {
 	printf ("math_size =              %g\n", style->math_size_value);
-	printf ("script_level =           %d (%s)\n", style->script_level, style->display_style ? "TRUE" : "FALSE");
+	printf ("script_level =           %d (%s)\n", style->script_level,
+		gmathml_display_to_string (style->display));
 	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
 }
 

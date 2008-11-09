@@ -125,7 +125,7 @@ gmathml_script_element_update_child (GMathmlElement *self, GMathmlStyle *style)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
 
 	gmathml_style_change_script_level (style, +1);
-	style->display_style = FALSE;
+	style->display = GMATHML_DISPLAY_INLINE;
 
 	if (script->subscript != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->subscript), style);

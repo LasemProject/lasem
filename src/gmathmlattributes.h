@@ -71,10 +71,12 @@ double 	gmathml_length_compute 		(const GMathmlLength *length, double default_va
 typedef struct {
 	double math_size_value;
 	/* mstyle */
+	GMathmlDisplay display;
+
 	int script_level;
-	gboolean display_style;
 	double script_size_multiplier;
 	GMathmlLength script_min_size;
+
 	GMathmlLength very_very_thin_math_space;
 	GMathmlLength very_thin_math_space;
 	GMathmlLength thin_math_space;
@@ -82,6 +84,7 @@ typedef struct {
 	GMathmlLength thick_math_space;
 	GMathmlLength very_thick_math_space;
 	GMathmlLength very_very_thick_math_space;
+
 	double very_very_thin_math_space_value;
 	double very_thin_math_space_value;
 	double thin_math_space_value;

@@ -42,8 +42,8 @@ struct _GMathmlStyleElement {
 
 	/* Style attributes */
 
-	GMathmlAttributeScriptLevel script_level;
 	GMathmlAttributeBoolean display_style;
+	GMathmlAttributeScriptLevel script_level;
 	GMathmlAttributeDouble script_size_multiplier;
 	GMathmlAttributeLength script_min_size;
 	GMathmlAttributeLength very_very_thin_math_space;

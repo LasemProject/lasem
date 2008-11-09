@@ -39,9 +39,13 @@ gmathml_style_element_get_node_name (GDomNode *node)
 static void
 gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
+	gboolean display_style;
+
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
-	gmathml_attribute_boolean_parse (&style_element->display_style, &style->display_style);
+	display_style = style->display == GMATHML_DISPLAY_BLOCK;
+	gmathml_attribute_boolean_parse (&style_element->display_style, &display_style);
+	style->display = display_style ? GMATHML_DISPLAY_BLOCK : GMATHML_DISPLAY_INLINE;
 
 	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
