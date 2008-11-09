@@ -124,9 +124,6 @@ gmathml_script_element_update_child (GMathmlElement *self, GMathmlStyle *style)
 	if (script->base != NULL)
 		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
 
-	script->h_space = style->very_thin_math_space_value;
-	script->v_space = style->thin_math_space_value;
-
 	gmathml_style_change_script_level (style, +1);
 	style->display_style = FALSE;
 
@@ -147,6 +144,7 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	GMathmlBbox const *superscript_bbox = NULL;
 	GMathmlBbox children_bbox = gmathml_bbox_null;
 	double axis_offset, ascent, descent;
+	double v_space, h_space;
 
 	element->bbox = gmathml_bbox_null;
 
@@ -155,12 +153,14 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 		return &element->bbox;
 
 	axis_offset = gmathml_view_measure_axis_offset (view, element->style.math_size);
+	h_space = element->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
+	v_space = element->style.math_size * GMATHML_THIN_SPACE_EM;
 	gmathml_view_get_font_metrics (view, &script->base->style, &ascent, &descent);
 
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (node), view, stretch_bbox);
 	element->bbox = *base_bbox;
 
-	element->bbox.width += gmathml_view_measure_length (view, script->h_space);
+	element->bbox.width += gmathml_view_measure_length (view, h_space);
 
 	node = node->next_sibling;
 
@@ -213,9 +213,9 @@ gmathml_script_element_measure (GMathmlElement *element, GMathmlView *view,
 	if (superscript_bbox != NULL && subscript_bbox != NULL) {
 		double delta = (script->superscript_offset + script->subscript_offset) -
 			(superscript_bbox->depth + subscript_bbox->height);
-		if (delta < script->v_space) {
-			script->superscript_offset += fabs (delta - script->v_space) * 0.5;
-			script->subscript_offset   += fabs (delta - script->v_space) * 0.5;
+		if (delta < v_space) {
+			script->superscript_offset += fabs (delta - v_space) * 0.5;
+			script->subscript_offset   += fabs (delta - v_space) * 0.5;
 		}
 	}
 
@@ -240,6 +240,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 	const GMathmlBbox *base_bbox;
+	double h_space;
 
 	if (script->base == NULL)
 		return;
@@ -248,7 +249,8 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	gmathml_element_layout (script->base, view, x, y, base_bbox);
 
-	x += gmathml_view_measure_length (view, script->h_space);
+	h_space = self->style.math_size * GMATHML_VERY_THIN_SPACE_EM;
+	x += gmathml_view_measure_length (view, h_space);
 
 	if (script->subscript)
 		gmathml_element_layout (script->subscript, view,
@@ -315,8 +317,6 @@ gmathml_sub_sup_element_new (void)
 static void
 gmathml_script_element_init (GMathmlScriptElement *self)
 {
-	self->h_space = 0.0;
-	self->v_space = 0.0;
 }
 
 /* GMathmlScriptElement class */
