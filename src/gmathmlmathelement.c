@@ -37,7 +37,7 @@ gmathml_math_element_get_node_name (GDomNode *node)
 /* GMathmlElement implementation */
 
 static void
-gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
+_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlMathElement *math_element = GMATHML_MATH_ELEMENT (self);
 	GMathmlMode default_mode = (style->display == GMATHML_DISPLAY_INLINE) ?
@@ -53,12 +53,40 @@ gmathml_math_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 /* GMathmlMathElement implementation */
 
-const GMathmlStyle *
+static const GMathmlStyle *
 gmathml_math_element_get_default_style (GMathmlMathElement *math_element)
 {
 	g_return_val_if_fail (GMATHML_IS_MATH_ELEMENT (math_element), NULL);
 
 	return math_element->default_style;
+}
+
+void
+gmathml_math_element_update (GMathmlMathElement *math_element)
+{
+	gmathml_element_update (GMATHML_ELEMENT (math_element),
+				gmathml_math_element_get_default_style (math_element));
+}
+
+const GMathmlBbox *
+gmathml_math_element_measure (GMathmlMathElement *math_element,
+			      GMathmlView *view)
+{
+	return gmathml_element_measure (GMATHML_ELEMENT (math_element), view, NULL);
+}
+
+void
+gmathml_math_element_layout (GMathmlMathElement *math_element,
+			     GMathmlView *view,
+			     const GMathmlBbox *bbox)
+{
+	gmathml_element_layout (GMATHML_ELEMENT (math_element), view, 0, 0, bbox);
+}
+
+void
+gmathml_math_element_render (GMathmlMathElement *math_element, GMathmlView *view)
+{
+	gmathml_element_render (GMATHML_ELEMENT (math_element), view);
 }
 
 GDomNode *
@@ -153,7 +181,7 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 
 	d_node_class->get_node_name = gmathml_math_element_get_node_name;
 
-	m_element_class->update = gmathml_math_element_update;
+	m_element_class->update = _update;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

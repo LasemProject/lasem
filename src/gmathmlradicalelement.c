@@ -53,28 +53,33 @@ gmathml_radical_element_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
-static void
-gmathml_radical_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+static gboolean
+gmathml_radical_element_update_children (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlRadicalElement *radical = GMATHML_RADICAL_ELEMENT (self);
 	GDomNode *node;
 
-	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT) {
-		GMATHML_ELEMENT_CLASS (parent_class)->update_child (self, style);
-		return;
-	}
+	if (radical->type == GMATHML_RADICAL_ELEMENT_TYPE_SQRT)
+		return GMATHML_ELEMENT_CLASS (parent_class)->update_children (self, style);
 
 	node = GDOM_NODE (self)->first_child;
 	if (node != NULL) {
-		gmathml_element_update (GMATHML_ELEMENT (node), style);
+		gboolean need_measure;
+
+		need_measure = gmathml_element_update (GMATHML_ELEMENT (node), style);
 
 		node = node->next_sibling;
 		if (node != NULL) {
 			gmathml_style_change_script_level (style, +1);
 
-			gmathml_element_update (GMATHML_ELEMENT (node), style);
+			if (gmathml_element_update (GMATHML_ELEMENT (node), style))
+				need_measure = TRUE;
 		}
+
+		return need_measure;
 	}
+
+	return FALSE;
 }
 
 static const GMathmlBbox *
@@ -248,7 +253,7 @@ gmathml_radical_element_class_init (GMathmlRadicalElementClass *radical_class)
 	d_node_class->get_node_name = gmathml_radical_get_node_name;
 	d_node_class->can_append_child = gmathml_radical_element_can_append_child;
 
-	m_element_class->update_child = gmathml_radical_element_update_child;
+	m_element_class->update_children = gmathml_radical_element_update_children;
 	m_element_class->measure = gmathml_radical_element_measure;
 	m_element_class->layout = gmathml_radical_element_layout;
 	m_element_class->render = gmathml_radical_element_render;

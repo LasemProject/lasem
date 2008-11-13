@@ -43,6 +43,18 @@ gmathml_element_can_append_child (GDomNode *self, GDomNode *child)
 static void
 gmathml_element_post_new_child (GDomNode *parent, GDomNode *child)
 {
+	GDomNode *iter;
+
+	if (GMATHML_IS_ELEMENT (child)) {
+		GMATHML_ELEMENT (child)->need_update = TRUE;
+		GMATHML_ELEMENT (child)->need_measure = TRUE;
+	}
+	for (iter = parent; iter != NULL && GMATHML_IS_ELEMENT (iter); iter = iter->parent_node) {
+		if (GMATHML_ELEMENT (iter)->need_children_update)
+			break;
+		GMATHML_ELEMENT (iter)->need_children_update = TRUE;
+		GMATHML_ELEMENT (iter)->need_measure = TRUE;
+	}
 }
 
 static void
@@ -71,27 +83,37 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 
 /* GMathmlElement implementation */
 
-static void
-_update_child (GMathmlElement *self, GMathmlStyle *style)
+static gboolean
+_update_children (GMathmlElement *self, GMathmlStyle *style)
 {
 	GDomNode *node;
+	gboolean need_measure = FALSE;
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GMATHML_IS_ELEMENT (node))
-			gmathml_element_update (GMATHML_ELEMENT (node), style);
+			if (gmathml_element_update (GMATHML_ELEMENT (node), style))
+				need_measure = TRUE;
 
+	return need_measure;
 }
 
-void
+gboolean
 gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 {
 	GMathmlElementClass *element_class;
 	GMathmlStyle *style;
+	gboolean need_measure;
 
-	g_return_if_fail (GMATHML_IS_ELEMENT (self));
-	g_return_if_fail (parent_style != NULL);
+	g_return_val_if_fail (GMATHML_IS_ELEMENT (self), FALSE);
+	g_return_val_if_fail (parent_style != NULL, FALSE);
 
-	gdom_debug ("[Element::update] %s", gdom_node_get_node_name (GDOM_NODE (self)));
+	if (!self->need_update && !self->need_children_update) {
+		gdom_debug ("[Element::update] %s already up to date",
+			    gdom_node_get_node_name (GDOM_NODE (self)));
+		return FALSE;
+	}
+
+	gdom_debug ("[Element::update] update %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
@@ -107,10 +129,27 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	self->style.math_color = style->math_color;
 	self->style.math_background = style->math_background;
 
-	if (element_class->update_child != NULL)
-		element_class->update_child (self, style);
+	if (self->need_update) {
+		GDomNode *node;
+
+		for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+			if (GMATHML_IS_ELEMENT (node))
+				GMATHML_ELEMENT (node)->need_update = TRUE;
+	}
+
+	if (element_class->update_children != NULL)
+		need_measure = element_class->update_children (self, style);
+	else
+		need_measure = FALSE;
 
 	gmathml_style_free (style);
+
+	self->need_measure = need_measure || self->need_update;
+
+	self->need_update = FALSE;
+	self->need_children_update = FALSE;
+
+	return self->need_measure;
 }
 
 /* Inferred mrow implementation */
@@ -189,7 +228,7 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 	if (stretch_bbox == NULL)
 		stretch_bbox = &gmathml_bbox_null;
 
-	if (!element->measure_done || stretch_bbox->is_defined) {
+	if (element->need_measure || stretch_bbox->is_defined) {
 		if (element_class->measure) {
 			element->bbox = *(element_class->measure (element, view, stretch_bbox));
 
@@ -204,8 +243,11 @@ gmathml_element_measure (GMathmlElement *element, GMathmlView *view, const GMath
 			element->bbox.depth = 0.0;
 		}
 
-		element->measure_done = TRUE;
-	}
+		element->need_measure = FALSE;
+		element->need_layout = TRUE;
+	} else
+		gdom_debug ("[Element::measure] %s already up to date",
+			    gdom_node_get_node_name (GDOM_NODE (element)));
 
 	return &element->bbox;
 }
@@ -257,6 +299,8 @@ gmathml_element_layout (GMathmlElement *self, GMathmlView *view,
 
 	if (element_class->layout)
 		element_class->layout (self, view, x, y, bbox);
+
+	self->need_layout = FALSE;
 }
 
 /* Inferred mrow implementation */
@@ -406,7 +450,7 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	d_element_class->set_attribute = gmathml_element_set_attribute;
 
 	m_element_class->update = NULL;
-	m_element_class->update_child = _update_child;
+	m_element_class->update_children = _update_children;
 	m_element_class->measure = _measure;
 	m_element_class->layout = _layout;
 	m_element_class->render = _render;

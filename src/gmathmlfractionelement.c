@@ -54,15 +54,15 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 	fraction->display = style->display;
 }
 
-static void
-gmathml_fraction_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+static gboolean
+gmathml_fraction_element_update_children (GMathmlElement *self, GMathmlStyle *style)
 {
 	if (style->display == GMATHML_DISPLAY_INLINE)
 		gmathml_style_change_script_level (style, +1);
 	else
 		style->display = GMATHML_DISPLAY_INLINE;
 
-	GMATHML_ELEMENT_CLASS (parent_class)->update_child (self, style);
+	return GMATHML_ELEMENT_CLASS (parent_class)->update_children (self, style);
 }
 
 static const GMathmlBbox *
@@ -219,7 +219,7 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	d_node_class->can_append_child = gmathml_fraction_element_can_append_child;
 
 	element_class->update = gmathml_fraction_element_update;
-	element_class->update_child = gmathml_fraction_element_update_child;
+	element_class->update_children = gmathml_fraction_element_update_children;
 	element_class->measure = gmathml_fraction_element_measure;
 	element_class->layout = gmathml_fraction_element_layout;
 	element_class->render = gmathml_fraction_element_render;

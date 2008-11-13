@@ -966,10 +966,20 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 	cairo_stroke (cairo);
 }
 
+GMathmlMathElement *
+_get_math_element (GMathmlView *view)
+{
+	GDomElement *root;
+
+	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
+
+	return GMATHML_MATH_ELEMENT (root);
+}
+
 const GMathmlBbox *
 gmathml_view_measure (GMathmlView *view, double *width, double *height)
 {
-	GDomElement *root;
+	GMathmlMathElement *math_element;
 	const GMathmlBbox *bbox;
 
 	if (width != NULL)
@@ -979,13 +989,11 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), NULL);
 
-	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
-	g_return_val_if_fail (GMATHML_IS_MATH_ELEMENT (root), NULL);
+	math_element = _get_math_element (view);
 
-	gmathml_element_update (GMATHML_ELEMENT (root),
-				gmathml_math_element_get_default_style (GMATHML_MATH_ELEMENT (root)));
+	gmathml_math_element_update (math_element);
 
-	bbox = gmathml_element_measure (GMATHML_ELEMENT (root), view, NULL);
+	bbox = gmathml_math_element_measure (math_element, view);
 
 	if (bbox != NULL) {
 		if (width != NULL)
@@ -1000,19 +1008,18 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 void
 gmathml_view_render (GMathmlView *view)
 {
-	GDomElement *root;
+	GMathmlMathElement *math_element;
 	cairo_t *cairo;
 	const GMathmlBbox *bbox;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (view->priv->cairo != NULL);
 
-	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
-	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (root));
+	math_element = _get_math_element (view);
 
 	bbox = gmathml_view_measure (view, NULL, NULL);
 
-	gmathml_element_layout (GMATHML_ELEMENT (root), view, 0, 0, bbox);
+	gmathml_math_element_layout (math_element, view, bbox);
 
 	cairo = view->priv->cairo;
 
@@ -1023,7 +1030,7 @@ gmathml_view_render (GMathmlView *view)
 
 	cairo_translate (cairo, 0, bbox->height);
 
-	gmathml_element_render (GMATHML_ELEMENT (root), view);
+	gmathml_math_element_render (math_element, view);
 
 	gdom_debug ("[GMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
 

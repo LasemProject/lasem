@@ -118,21 +118,27 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 	script->display = style->display;
 }
 
-static void
-gmathml_script_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+static gboolean
+gmathml_script_element_update_children (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
+	gboolean need_measure = FALSE;
 
 	if (script->base != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->base), style);
+		if (gmathml_element_update (GMATHML_ELEMENT (script->base), style))
+			need_measure = TRUE;
 
 	gmathml_style_change_script_level (style, +1);
 	style->display = GMATHML_DISPLAY_INLINE;
 
 	if (script->subscript != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->subscript), style);
+		if (gmathml_element_update (GMATHML_ELEMENT (script->subscript), style))
+			need_measure = TRUE;
 	if (script->superscript != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (script->superscript), style);
+		if  (gmathml_element_update (GMATHML_ELEMENT (script->superscript), style))
+			need_measure = TRUE;
+
+	return need_measure;
 }
 
 static const GMathmlBbox *
@@ -342,7 +348,7 @@ gmathml_script_element_class_init (GMathmlScriptElementClass *script_class)
 	d_node_class->post_new_child = gmathml_script_element_post_new_child;
 
 	m_element_class->update = gmathml_script_element_update;
-	m_element_class->update_child = gmathml_script_element_update_child;
+	m_element_class->update_children = gmathml_script_element_update_children;
 	m_element_class->measure = gmathml_script_element_measure;
 	m_element_class->layout = gmathml_script_element_layout;
 	m_element_class->get_embellished_core = gmathml_script_element_get_embellished_core;

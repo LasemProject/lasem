@@ -59,7 +59,10 @@ struct _GMathmlElement {
 
 	/* View */
 
-	gboolean measure_done;
+	gboolean need_update;
+	gboolean need_children_update;
+	gboolean need_measure;
+	gboolean need_layout;
 
 	double x, y;
 	GMathmlBbox bbox;
@@ -71,7 +74,7 @@ struct _GMathmlElementClass {
 	GMathmlAttributeMap *attributes;
 
 	void			(*update)		(GMathmlElement *element, GMathmlStyle *style);
-	void			(*update_child)		(GMathmlElement *element, GMathmlStyle *style);
+	gboolean		(*update_children)	(GMathmlElement *element, GMathmlStyle *style);
 	const GMathmlBbox * 	(*measure) 		(GMathmlElement *element, GMathmlView *view,
 							 const GMathmlBbox *bbox);
 	void 			(*layout) 		(GMathmlElement *element, GMathmlView *view,
@@ -85,12 +88,12 @@ struct _GMathmlElementClass {
 
 GType gmathml_element_get_type (void);
 
-void 			gmathml_element_update 			(GMathmlElement *element, const GMathmlStyle *style);
-const GMathmlBbox *	gmathml_element_measure			(GMathmlElement *element, GMathmlView *view,
-								 const GMathmlBbox *stretch_bbox);
-void 			gmathml_element_layout 			(GMathmlElement *element, GMathmlView *view,
-								 double x, double y, const GMathmlBbox *bbox);
-void 			gmathml_element_render 			(GMathmlElement *element, GMathmlView *view);
+gboolean		gmathml_element_update 		(GMathmlElement *element, const GMathmlStyle *style);
+const GMathmlBbox *	gmathml_element_measure		(GMathmlElement *element, GMathmlView *view,
+							 const GMathmlBbox *stretch_bbox);
+void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
+							 double x, double y, const GMathmlBbox *bbox);
+void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
 const GMathmlOperatorElement *	gmathml_element_get_embellished_core 	(const GMathmlElement *self);
 const GMathmlBbox * 		gmathml_element_get_bbox 		(const GMathmlElement *self);

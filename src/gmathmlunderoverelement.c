@@ -153,14 +153,16 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 		    under_over->under_space, under_over->over_space);
 }
 
-static void
-gmathml_under_over_element_update_child (GMathmlElement *self, GMathmlStyle *style)
+static gboolean
+gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
 	GMathmlStyle *overscript_style;
+	gboolean need_measure = FALSE;
 
 	if (under_over->base != NULL)
-		gmathml_element_update (GMATHML_ELEMENT (under_over->base), style);
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->base), style))
+			need_measure = TRUE;
 
 	style->display = GMATHML_DISPLAY_INLINE;
 
@@ -170,17 +172,21 @@ gmathml_under_over_element_update_child (GMathmlElement *self, GMathmlStyle *sty
 		if (!under_over->accent_under.value)
 			gmathml_style_change_script_level (style, +1);
 
-		gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style);
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style))
+			need_measure = TRUE;
 	}
 
 	if (under_over->overscript != NULL) {
 		if (!under_over->accent.value)
 			gmathml_style_change_script_level (overscript_style, +1);
 
-		gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), overscript_style);
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), overscript_style))
+			need_measure = TRUE;
 	}
 
 	gmathml_style_free (overscript_style);
+
+	return need_measure;
 }
 
 static const GMathmlBbox *
@@ -383,7 +389,7 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	d_node_class->post_new_child = gmathml_under_over_element_post_new_child;
 
 	m_element_class->update = gmathml_under_over_element_update;
-	m_element_class->update_child = gmathml_under_over_element_update_child;
+	m_element_class->update_children = gmathml_under_over_element_update_children;
 	m_element_class->measure = gmathml_under_over_element_measure;
 	m_element_class->layout = gmathml_under_over_element_layout;
 	m_element_class->get_embellished_core = gmathml_under_over_element_get_embellished_core;

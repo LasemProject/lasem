@@ -61,7 +61,15 @@ GType gmathml_math_element_get_type (void);
 
 GDomNode *gmathml_math_element_new (void);
 
-const GMathmlStyle *gmathml_math_element_get_default_style (GMathmlMathElement *math_element);
+void 			gmathml_math_element_update 		(GMathmlMathElement *math_element);
+const GMathmlBbox * 	gmathml_math_element_measure 		(GMathmlMathElement *math_element,
+								 GMathmlView *view);
+void 			gmathml_math_element_layout 		(GMathmlMathElement *math_element,
+								 GMathmlView *view,
+								 const GMathmlBbox *bbox);
+void 			gmathml_math_element_render 		(GMathmlMathElement *math_element,
+								 GMathmlView *view);
+
 
 G_END_DECLS
 
