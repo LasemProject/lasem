@@ -163,6 +163,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	GMathmlBbox stretch_bbox;
 	gboolean stretchy_found = FALSE;
 	gboolean all_stretchy = TRUE;
+	unsigned int n_elements = 0;
 
 	self->bbox = gmathml_bbox_null;
 
@@ -188,9 +189,12 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 				gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
 				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			}
-			self->bbox.width += self->style.math_size * GMATHML_SPACE_EM_THIN;
+			n_elements++;
 		}
 	}
+
+	if (n_elements > 0)
+		self->bbox.width += (n_elements - 1) * self->style.math_size * GMATHML_SPACE_EM_THIN;
 
 	if (stretchy_found) {
 		gdom_debug ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
