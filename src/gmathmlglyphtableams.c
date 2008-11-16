@@ -23,6 +23,7 @@
 #include <gdomdebug.h>
 #include <gmathmlglyphtableams.h>
 #include <string.h>
+#include <math.h>
 
 const GMathmlOperatorGlyph AMS_table[] = {
 	{
@@ -295,7 +296,8 @@ const GMathmlOperatorGlyph AMS_table[] = {
 	{
 		"\xe2\x88\xab" /* ∫ */,
 		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION |
-		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_INTEGRAL_SLANT,
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
@@ -308,7 +310,8 @@ const GMathmlOperatorGlyph AMS_table[] = {
 	},
 	{
 		"\xe2\x88\xac" /* ∬ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION |
+		GMATHML_GLYPH_FLAG_INTEGRAL_SLANT,
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
@@ -321,7 +324,8 @@ const GMathmlOperatorGlyph AMS_table[] = {
 	},
 	{
 		"\xe2\x88\xad" /* ∭ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION |
+		GMATHML_GLYPH_FLAG_INTEGRAL_SLANT,
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
@@ -334,7 +338,8 @@ const GMathmlOperatorGlyph AMS_table[] = {
 	},
 	{
 		"\xe2\x88\xae" /* ∮ */,
-		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION |
+		GMATHML_GLYPH_FLAG_INTEGRAL_SLANT,
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
 		{GMATHML_FONT_ERROR,		""},
@@ -431,16 +436,39 @@ const GMathmlOperatorGlyph AMS_table[] = {
 	}
 };
 
+static GHashTable *
+_get_glyph_table (void)
+{
+	static GHashTable *glyph_table = NULL;
+	unsigned int i;
+
+	if (glyph_table != NULL)
+		return glyph_table;
+
+	glyph_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+
+	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
+		g_hash_table_insert (glyph_table, (void *) AMS_table[i].utf8, (void *) &AMS_table[i]);
+
+	return glyph_table;
+}
+
 const GMathmlOperatorGlyph *
 gmathml_glyph_table_find_operator_glyph (const char *text)
 {
-	unsigned int i;
+	return g_hash_table_lookup (_get_glyph_table (), text);
+}
 
-	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
-		if (strcmp (text, AMS_table[i].utf8) == 0) {
-			gdom_debug ("[GMathmlGlyphTableAMS::find_operator] found %s", text);
-			return &AMS_table[i];
-		}
+double
+gmathml_glyph_table_get_operator_slant (const char *text)
+{
+	const GMathmlOperatorGlyph *glyph;
 
-	return NULL;
+	glyph = g_hash_table_lookup (_get_glyph_table (), text);
+
+	if (glyph != NULL)
+		if (glyph->flags && GMATHML_GLYPH_FLAG_INTEGRAL_SLANT)
+			return -12.0 / 180.0 * M_PI;
+
+	return 0.0;
 }

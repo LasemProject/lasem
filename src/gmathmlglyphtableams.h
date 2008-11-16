@@ -36,7 +36,8 @@ G_BEGIN_DECLS
 
 extern const GMathmlOperatorGlyph AMS_table[];
 
-const GMathmlOperatorGlyph *gmathml_glyph_table_find_operator_glyph (const char *text);
+const GMathmlOperatorGlyph *	gmathml_glyph_table_find_operator_glyph (const char *text);
+double 				gmathml_glyph_table_get_operator_slant 	(const char *text);
 
 G_END_DECLS
 

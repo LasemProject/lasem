@@ -609,6 +609,14 @@ gmathml_view_show_operator (GMathmlView *view,
 	cairo_restore (cairo);
 }
 
+double
+gmathml_view_get_operator_slant (GMathmlView *view,
+				 const GMathmlElementStyle *style,
+				 const char *text)
+{
+	return gmathml_glyph_table_get_operator_slant (text);
+}
+
 void
 gmathml_view_measure_radical (GMathmlView *view,
 			      const GMathmlElementStyle *style,

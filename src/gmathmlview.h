@@ -37,7 +37,8 @@ typedef enum {
 	GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL =	1 << 1,
 	GMATHML_GLYPH_FLAG_TYPE_SIZED =		1 << 2,
 	GMATHML_GLYPH_FLAG_ALIGN_AXIS =		1 << 3,
-	GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION =	1 << 4
+	GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION =	1 << 4,
+	GMATHML_GLYPH_FLAG_INTEGRAL_SLANT =	1 << 5
 } GMathmlGlyphFlags;
 
 typedef enum {
@@ -128,6 +129,9 @@ void 		gmathml_view_show_operator 	(GMathmlView *view,
 						 double x, double y, char const *text,
 						 gboolean large,
 						 GMathmlBbox const *stretch_bbox);
+double 		gmathml_view_get_operator_slant (GMathmlView *view,
+						 const GMathmlElementStyle *style,
+						 const char *text);
 
 void 		gmathml_view_measure_radical 	(GMathmlView *view,
 						 const GMathmlElementStyle *style,

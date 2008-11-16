@@ -185,6 +185,18 @@ gmathml_operator_element_get_embellished_core (const GMathmlElement *self)
 
 /* GMathmlOperatorElement implementation */
 
+double
+gmathml_operator_get_slant (const GMathmlOperatorElement *operator_element, GMathmlView *view)
+{
+	char *text;
+
+	g_return_val_if_fail (GMATHML_IS_OPERATOR_ELEMENT (operator_element), 0.0);
+
+	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (operator_element));
+
+	return gmathml_view_get_operator_slant (view, &GMATHML_ELEMENT (operator_element)->style, text);
+}
+
 GDomNode *
 gmathml_operator_element_new (void)
 {
