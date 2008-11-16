@@ -46,6 +46,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlview.c			\
 	gmathmlglyphtableams.c		\
 	gmathmlutils.c			\
+	gmathmllayoututils.c		\
 	gmathmlparser.c
 
 libgmathml_ladir = $(includedir)/gmathml
@@ -82,6 +83,7 @@ libgmathml_la_HEADERS = \
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\
 	gmathmlutils.h			\
+	gmathmllayoututils.h		\
 	gmathmlparser.h
 
 
