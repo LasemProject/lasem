@@ -23,6 +23,7 @@
 #include <gdomdebug.h>
 #include <gmathmlunderoverelement.h>
 #include <gmathmloperatorelement.h>
+#include <gmathmllayoututils.h>
 #include <gmathmlview.h>
 
 static GObjectClass *parent_class;
@@ -113,9 +114,60 @@ gmathml_under_over_element_post_new_child (GDomNode *self, GDomNode *child)
 static void
 gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
+}
+
+static gboolean
+gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *style)
+{
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+	GMathmlStyle *overscript_style;
+	GMathmlDisplay display;
 	gboolean accent = FALSE;
 	gboolean accent_under = FALSE;
+	gboolean movable_limits = FALSE;
+	double very_thick_math_space_value;
+	double very_thin_math_space_value;
+	gboolean need_measure = FALSE;
+
+	very_thin_math_space_value = style->very_thin_math_space_value;
+	very_thick_math_space_value = style->very_thick_math_space_value;
+	display = style->display;
+
+	if (under_over->base != NULL)
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->base), style))
+			need_measure = TRUE;
+
+	style->display = GMATHML_DISPLAY_INLINE;
+
+	overscript_style = gmathml_style_duplicate (style);
+
+	if (under_over->underscript != NULL) {
+		if (!under_over->accent_under.value)
+			gmathml_style_change_script_level (style, +1);
+
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style))
+			need_measure = TRUE;
+	}
+
+	if (under_over->overscript != NULL) {
+		if (!under_over->accent.value)
+			gmathml_style_change_script_level (overscript_style, +1);
+
+		if (gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), overscript_style))
+			need_measure = TRUE;
+	}
+
+	gmathml_style_free (overscript_style);
+
+	if (under_over->base != NULL) {
+		const GMathmlOperatorElement *operator;
+
+		operator = gmathml_element_get_embellished_core (under_over->base);
+		if (operator != NULL) {
+			movable_limits = operator->movable_limits.value;
+			gdom_debug ("[UnderOver::update] movable_limits found");
+		}
+	}
 
 	if (under_over->overscript != NULL) {
 		const GMathmlOperatorElement *operator;
@@ -146,45 +198,13 @@ gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
 
-	under_over->under_space = accent_under ? style->very_thin_math_space_value : style->very_thick_math_space_value;
-	under_over->over_space  = accent       ? style->very_thin_math_space_value : style->very_thick_math_space_value;
+	under_over->under_space = accent_under ? very_thin_math_space_value : very_thick_math_space_value;
+	under_over->over_space  = accent       ? very_thin_math_space_value : very_thick_math_space_value;
+
+	under_over->as_script = display == GMATHML_DISPLAY_INLINE && movable_limits;
 
 	gdom_debug ("[UnderOver::update] space under = %g, over = %g",
 		    under_over->under_space, under_over->over_space);
-}
-
-static gboolean
-gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *style)
-{
-	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
-	GMathmlStyle *overscript_style;
-	gboolean need_measure = FALSE;
-
-	if (under_over->base != NULL)
-		if (gmathml_element_update (GMATHML_ELEMENT (under_over->base), style))
-			need_measure = TRUE;
-
-	style->display = GMATHML_DISPLAY_INLINE;
-
-	overscript_style = gmathml_style_duplicate (style);
-
-	if (under_over->underscript != NULL) {
-		if (!under_over->accent_under.value)
-			gmathml_style_change_script_level (style, +1);
-
-		if (gmathml_element_update (GMATHML_ELEMENT (under_over->underscript), style))
-			need_measure = TRUE;
-	}
-
-	if (under_over->overscript != NULL) {
-		if (!under_over->accent.value)
-			gmathml_style_change_script_level (overscript_style, +1);
-
-		if (gmathml_element_update (GMATHML_ELEMENT (under_over->overscript), overscript_style))
-			need_measure = TRUE;
-	}
-
-	gmathml_style_free (overscript_style);
 
 	return need_measure;
 }
@@ -202,6 +222,20 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 	gboolean stretchy_found = FALSE;
 	gboolean all_stretchy = TRUE;
 	unsigned int index;
+
+	if (under_over->as_script) {
+		gmathml_measure_sub_sup (self, view,
+					 under_over->base,
+					 under_over->underscript,
+					 under_over->overscript,
+					 0.0, 0.0,
+					 GMATHML_DISPLAY_INLINE,
+					 stretch_bbox, &self->bbox,
+					 &under_over->subscript_offset,
+					 &under_over->superscript_offset);
+
+		return &self->bbox;
+	}
 
 	self->bbox = gmathml_bbox_null;
 
@@ -295,6 +329,18 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 {
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
 	const GMathmlBbox *child_bbox;
+
+	if (under_over->as_script) {
+		gmathml_layout_sub_sup (self, view,
+					x, y,
+					under_over->base,
+					under_over->underscript,
+					under_over->overscript,
+					under_over->subscript_offset,
+					under_over->superscript_offset);
+
+		return;
+	}
 
 	if (under_over->base == NULL)
 		return;

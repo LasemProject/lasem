@@ -57,6 +57,10 @@ struct _GMathmlUnderOverElement {
 
 	double under_space;
 	double over_space;
+
+	gboolean as_script;
+	double subscript_offset;
+	double superscript_offset;
 };
 
 struct _GMathmlUnderOverElementClass {
