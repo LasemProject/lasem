@@ -170,38 +170,6 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 				script->subscript_offset, script->superscript_offset);
 }
 
-#if 0
-static void
-gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
-			       double x, double y, const GMathmlBbox *bbox)
-{
-	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
-	const GMathmlBbox *base_bbox;
-	double h_space;
-
-	if (script->base == NULL)
-		return;
-
-	base_bbox = gmathml_element_get_bbox (script->base);
-
-	gmathml_element_layout (script->base, view, x, y, base_bbox);
-
-	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
-	x += gmathml_view_measure_length (view, h_space);
-
-	if (script->subscript)
-		gmathml_element_layout (script->subscript, view,
-					x + base_bbox->width,
-					y + script->subscript_offset,
-					gmathml_element_get_bbox (script->subscript));
-	if (script->superscript)
-		gmathml_element_layout (script->superscript, view,
-					x + base_bbox->width,
-					y - script->superscript_offset,
-					gmathml_element_get_bbox (script->superscript));
-}
-#endif
-
 static const GMathmlOperatorElement *
 gmathml_script_element_get_embellished_core (const GMathmlElement *self)
 {
