@@ -3177,7 +3177,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 };
 
 static GHashTable *
-gmathml_get_operator_dictionary (void)
+_get_operator_dictionary (void)
 {
 	static GHashTable *operator_hash = NULL;
 	const char *utf8, *prefix;
@@ -3206,9 +3206,7 @@ gmathml_get_operator_dictionary (void)
 		}
 		key = g_strconcat (prefix, utf8, NULL);
 
-		if (g_hash_table_lookup (operator_hash, key)) {
-/*                        printf ("[GMathmlOperatorDictionary::buil] can't insert %s\n", key);*/
-		} else
+		if (g_hash_table_lookup (operator_hash, key) == NULL)
 			g_hash_table_insert (operator_hash, key,
 					     (void *) &gmathml_operator_entries[i]);
 	}
@@ -3248,7 +3246,7 @@ gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form)
 	}
 
 	key = g_strconcat (prefix, utf8, NULL);
-	entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+	entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 	g_free (key);
 
 	if (entry != NULL)
@@ -3256,7 +3254,7 @@ gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form)
 
 	if (form != GMATHML_FORM_INFIX) {
 		key = g_strconcat ("I*", utf8, NULL);
-		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
 		if (entry != NULL)
@@ -3265,7 +3263,7 @@ gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form)
 
 	if (form != GMATHML_FORM_POSTFIX) {
 		key = g_strconcat ("O*", utf8, NULL);
-		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
 		if (entry != NULL)
@@ -3274,7 +3272,7 @@ gmathml_operator_dictionary_lookup (const char *utf8, GMathmlForm form)
 
 	if (form != GMATHML_FORM_PREFIX) {
 		key = g_strconcat ("E*", utf8, NULL);
-		entry = g_hash_table_lookup (gmathml_get_operator_dictionary (), key);
+		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
 		if (entry != NULL)
