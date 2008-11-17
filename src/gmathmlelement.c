@@ -342,19 +342,19 @@ _get_embellished_core (const GMathmlElement *self)
 {
 	GDomNode *node;
 	const GMathmlOperatorElement *core = NULL;
-	const GMathmlOperatorElement *operator;
+
+	g_assert (GMATHML_IS_ELEMENT (self));
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (GMATHML_IS_ELEMENT (node))
-			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
-		else
-			operator = NULL;
-
-		if (!GMATHML_IS_SPACE_ELEMENT (node)) {
-			if (operator == NULL || operator != core)
+		if (GMATHML_IS_ELEMENT (node)) {
+			if (!GMATHML_IS_SPACE_ELEMENT (node)) {
+				if (core != NULL)
+					return NULL;
+				core = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
+			}
+		} else
+			if (core != NULL)
 				return NULL;
-			core = operator;
-		}
 	}
 
 	return core;

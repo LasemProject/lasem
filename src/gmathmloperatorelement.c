@@ -45,6 +45,7 @@ gmathml_operator_element_dictionary_lookup (GMathmlOperatorElement *operator)
 
 	for (node = GDOM_NODE (operator);
 	     node->parent_node != NULL &&
+	     GMATHML_IS_ELEMENT (node->parent_node) &&
 	     gmathml_element_get_embellished_core (GMATHML_ELEMENT (node->parent_node)) == operator;
 	     node = node->parent_node);
 
