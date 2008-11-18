@@ -42,11 +42,14 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	GMathmlBbox children_bbox = gmathml_bbox_null;
 	double axis_offset, ascent, descent;
 	double v_space, h_space;
+	gboolean is_operator;
 
 	*bbox = gmathml_bbox_null;
 
 	if (base == NULL)
 		return;
+
+	is_operator = gmathml_element_get_embellished_core (base) != NULL;
 
 	axis_offset = gmathml_view_measure_axis_offset (view, parent->style.math_size);
 	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
@@ -65,30 +68,40 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	superscript_bbox = superscript != NULL ? gmathml_element_measure (superscript, view, NULL) : NULL;
 
 	if (subscript_bbox != NULL) {
-		*subscript_offset = descent;
+		if (is_operator) {
+			*subscript_offset = base_bbox->depth +
+				0.5 * gmathml_view_measure_axis_offset (view, subscript->style.math_size);
+		} else {
+			*subscript_offset = descent;
 
-		if (base_bbox->depth > descent)
-			*subscript_offset += base_bbox->depth - descent;
-		if (subscript_bbox->height - *subscript_offset > axis_offset)
-			*subscript_offset = subscript_bbox->height - axis_offset;
+			if (base_bbox->depth > descent)
+				*subscript_offset += base_bbox->depth - descent;
+			if (subscript_bbox->height - *subscript_offset > axis_offset)
+				*subscript_offset = subscript_bbox->height - axis_offset;
+		}
 	} else
 		*subscript_offset = 0.0;
 
 	if (superscript_bbox != NULL) {
-		if (display == GMATHML_DISPLAY_INLINE)
-			*superscript_offset = axis_offset;
-		else {
-			double superscript_descent;
+		if (is_operator) {
+			*superscript_offset = base_bbox->height -
+				1.5 * gmathml_view_measure_axis_offset (view, superscript->style.math_size);
+		} else {
+			if (display == GMATHML_DISPLAY_INLINE)
+				*superscript_offset = axis_offset;
+			else {
+				double superscript_descent;
 
-			gmathml_view_get_font_metrics (view, &superscript->style,
-						       NULL, &superscript_descent);
-			*superscript_offset = axis_offset + superscript_descent;
+				gmathml_view_get_font_metrics (view, &superscript->style,
+							       NULL, &superscript_descent);
+				*superscript_offset = axis_offset + superscript_descent;
+			}
+
+			if (base_bbox->height > ascent)
+				*superscript_offset += base_bbox->height - ascent;
+			if (*superscript_offset - superscript_bbox->depth < axis_offset)
+				*superscript_offset = axis_offset + superscript_bbox->depth;
 		}
-
-		if (base_bbox->height > ascent)
-			*superscript_offset += base_bbox->height - ascent;
-		if (*superscript_offset - superscript_bbox->depth < axis_offset)
-			*superscript_offset = axis_offset + superscript_bbox->depth;
 	} else
 		*superscript_offset = 0.0;
 
