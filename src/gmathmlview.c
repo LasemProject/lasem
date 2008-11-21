@@ -637,12 +637,12 @@ gmathml_view_measure_radical (GMathmlView *view,
 						 GMATHML_RADICAL_TOP_LINE_WIDTH);
 
 	radical_stretch_bbox.height +=
-		gmathml_view_measure_length (view, GMATHML_SPACE_EM_MEDIUM *
+		gmathml_view_measure_length (view, GMATHML_SPACE_EM_THICK *
 					     style->math_size) + thickness;
 
 	radical_stretch_bbox.depth +=
 		gmathml_view_measure_length (view,
-					     GMATHML_SPACE_EM_MEDIUM *
+					     GMATHML_SPACE_EM_THICK *
 					     style->math_size);
 
 	gmathml_view_measure_operator (view, style, GMATHML_RADICAL_UTF8,
