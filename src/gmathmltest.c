@@ -175,8 +175,17 @@ gmathml_test_render (char const *filename)
 			result = system ("rm gmathmltest.ps");
 		}
 
-		if (mathml != buffer)
+		if (mathml != buffer) {
+			char *xml_filename;
+
+			xml_filename = g_strdup_printf ("%s.xml", test_name);
+
+			g_file_set_contents (xml_filename, mathml, -1, NULL);
+
+			g_free (xml_filename);
 			g_free (buffer);
+		}
+
 		g_free (mathml);
 	}
 
