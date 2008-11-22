@@ -114,6 +114,10 @@ gmathml_under_over_element_post_new_child (GDomNode *self, GDomNode *child)
 static void
 gmathml_under_over_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
+	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
+
+	under_over->display = style->display;
+
 }
 
 static gboolean
@@ -121,7 +125,6 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 {
 	GMathmlUnderOverElement *under_over = GMATHML_UNDER_OVER_ELEMENT (self);
 	GMathmlStyle *overscript_style;
-	GMathmlDisplay display;
 	gboolean accent = FALSE;
 	gboolean accent_under = FALSE;
 	gboolean movable_limits = FALSE;
@@ -131,7 +134,6 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 
 	very_thin_math_space_value = style->very_thin_math_space_value;
 	very_thick_math_space_value = style->very_thick_math_space_value;
-	display = style->display;
 
 	if (under_over->base != NULL)
 		if (gmathml_element_update (GMATHML_ELEMENT (under_over->base), style))
@@ -201,7 +203,7 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 	under_over->under_space = accent_under ? very_thin_math_space_value : very_thick_math_space_value;
 	under_over->over_space  = accent       ? very_thin_math_space_value : very_thick_math_space_value;
 
-	under_over->as_script = display == GMATHML_DISPLAY_INLINE && movable_limits;
+	under_over->as_script = under_over->display == GMATHML_DISPLAY_INLINE && movable_limits;
 
 	gdom_debug ("[UnderOver::update] space under = %g, over = %g",
 		    under_over->under_space, under_over->over_space);
@@ -231,8 +233,8 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 					 0.0, 0.0,
 					 GMATHML_DISPLAY_INLINE,
 					 stretch_bbox, &self->bbox,
-					 &under_over->subscript_offset,
-					 &under_over->superscript_offset);
+					 &under_over->underscript_offset,
+					 &under_over->overscript_offset);
 
 		return &self->bbox;
 	}
@@ -336,8 +338,8 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 					under_over->base,
 					under_over->underscript,
 					under_over->overscript,
-					under_over->subscript_offset,
-					under_over->superscript_offset);
+					under_over->underscript_offset,
+					under_over->overscript_offset);
 
 		return;
 	}
