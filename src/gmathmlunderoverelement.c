@@ -128,12 +128,14 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 	gboolean accent = FALSE;
 	gboolean accent_under = FALSE;
 	gboolean movable_limits = FALSE;
-	double very_thick_math_space_value;
-	double very_thin_math_space_value;
+	double accent_v_space;
+	double v_space;
 	gboolean need_measure = FALSE;
 
-	very_thin_math_space_value = style->very_thin_math_space_value;
-	very_thick_math_space_value = style->very_thick_math_space_value;
+	accent_v_space = self->style.math_size * GMATHML_SPACE_EM_THIN;
+	v_space = under_over->display == GMATHML_DISPLAY_INLINE ?
+		self->style.math_size * GMATHML_SPACE_EM_VERY_VERY_THIN :
+		self->style.math_size * GMATHML_SPACE_EM_MEDIUM;
 
 	if (under_over->base != NULL)
 		if (gmathml_element_update (GMATHML_ELEMENT (under_over->base), style))
@@ -144,6 +146,18 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 	overscript_style = gmathml_style_duplicate (style);
 
 	if (under_over->underscript != NULL) {
+		const GMathmlOperatorElement *operator;
+
+		operator = gmathml_element_get_embellished_core (under_over->underscript);
+		if (operator != NULL) {
+			accent_under = operator->accent.value;
+			gdom_debug ("[UnderOver::update] Underscript is%s accent (%s)",
+				    accent_under ? "" : " not",
+				    gdom_node_get_node_name (GDOM_NODE (operator)));
+		}
+
+		gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
+
 		if (!under_over->accent_under.value)
 			gmathml_style_change_script_level (style, +1);
 
@@ -152,6 +166,19 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 	}
 
 	if (under_over->overscript != NULL) {
+		const GMathmlOperatorElement *operator;
+
+		operator = gmathml_element_get_embellished_core (under_over->overscript);
+		if (operator != NULL) {
+			accent = operator->accent.value;
+			if (accent)
+				gdom_debug ("[UnderOver::update] Overscript is%s accent (%s)",
+					    accent ? "" : " not",
+					    gdom_node_get_node_name (GDOM_NODE (operator)));
+		}
+
+		gmathml_attribute_boolean_parse (&under_over->accent, &accent);
+
 		if (!under_over->accent.value)
 			gmathml_style_change_script_level (overscript_style, +1);
 
@@ -171,37 +198,8 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 		}
 	}
 
-	if (under_over->overscript != NULL) {
-		const GMathmlOperatorElement *operator;
-
-		operator = gmathml_element_get_embellished_core (under_over->overscript);
-		if (operator != NULL) {
-			accent = operator->accent.value;
-			if (accent)
-				gdom_debug ("[UnderOver::update] Overscript is%s accent (%s)",
-					    accent ? "" : " not",
-					    gdom_node_get_node_name (GDOM_NODE (operator)));
-		}
-	}
-
-	gmathml_attribute_boolean_parse (&under_over->accent, &accent);
-
-	if (under_over->underscript != NULL) {
-		const GMathmlOperatorElement *operator;
-
-		operator = gmathml_element_get_embellished_core (under_over->underscript);
-		if (operator != NULL) {
-			accent_under = operator->accent.value;
-			gdom_debug ("[UnderOver::update] Underscript is%s accent (%s)",
-				    accent_under ? "" : " not",
-				    gdom_node_get_node_name (GDOM_NODE (operator)));
-		}
-	}
-
-	gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
-
-	under_over->under_space = accent_under ? very_thin_math_space_value : very_thick_math_space_value;
-	under_over->over_space  = accent       ? very_thin_math_space_value : very_thick_math_space_value;
+	under_over->under_space = accent_under ? accent_v_space : v_space;
+	under_over->over_space  = accent       ? accent_v_space : v_space;
 
 	under_over->as_script = under_over->display == GMATHML_DISPLAY_INLINE && movable_limits;
 
@@ -221,6 +219,7 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 	GMathmlBbox regular_stretch_bbox;
 	GMathmlBbox operator_stretch_bbox;
 	GMathmlBbox script_bbox;
+	double length;
 	gboolean stretchy_found = FALSE;
 	gboolean all_stretchy = TRUE;
 	unsigned int index;
@@ -310,14 +309,35 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 
 	if (under_over->overscript != NULL) {
 		script_bbox = *gmathml_element_get_bbox (under_over->overscript);
+		gmathml_view_get_font_metrics (view, &under_over->overscript->style, NULL, &length);
+
+		if (under_over->display == GMATHML_DISPLAY_INLINE)
+			length *= 0.5;
+
+		if (script_bbox.depth < length && !under_over->accent.value)
+			under_over->overscript_offset = length - script_bbox.depth;
+		else
+			under_over->overscript_offset = 0.0;
+
 		script_bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
 		gmathml_bbox_add_over (&self->bbox, &script_bbox);
+
+		self->bbox.height += under_over->overscript_offset;
 	}
 
 	if (under_over->underscript != NULL) {
 		script_bbox = *gmathml_element_get_bbox (under_over->underscript);
+		gmathml_view_get_font_metrics (view, &under_over->underscript->style, &length, NULL);
+
+		if (script_bbox.height < length && !under_over->accent_under.value)
+			under_over->underscript_offset = length - script_bbox.height;
+		else
+			under_over->underscript_offset = 0.0;
+
 		script_bbox.height += gmathml_view_measure_length (view, under_over->under_space);
 		gmathml_bbox_add_under (&self->bbox, &script_bbox);
+
+		self->bbox.depth += under_over->underscript_offset;
 	}
 
 	gdom_debug ("[UnderOver::measure] End");
