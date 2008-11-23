@@ -411,6 +411,44 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
+		"\xef\xb8\xb8" /* ︸ */,
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_DEFAULT,	"\xef\xb8\xb8"}
+		}
+	},
+	{
+		"\xef\xb8\xb7" /* ︷ */,
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_DEFAULT,	"\xef\xb8\xb7"}
+		}
+	},
+	{
+		"\xcd\x9c" /* ˜ */,
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		3,
+		{
+			{GMATHML_FONT_CMEX10,	"e"},
+			{GMATHML_FONT_CMEX10,	"f"},
+			{GMATHML_FONT_CMEX10,	"g"}
+		}
+	},
+	{
 		"-",
 		0,
 		{GMATHML_FONT_ERROR,		""},
