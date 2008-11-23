@@ -178,7 +178,7 @@ gmathml_operator_element_render (GMathmlElement *self, GMathmlView *view)
 	g_free (text);
 }
 
-static const GMathmlOperatorElement *
+static GMathmlOperatorElement *
 gmathml_operator_element_get_embellished_core (const GMathmlElement *self)
 {
 	return GMATHML_OPERATOR_ELEMENT (self);

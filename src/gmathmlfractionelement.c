@@ -175,7 +175,7 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 	GMATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
-static const GMathmlOperatorElement *
+static GMathmlOperatorElement *
 gmathml_fraction_element_get_embellished_core (const GMathmlElement *self)
 {
 	if (GDOM_NODE (self)->first_child != NULL)

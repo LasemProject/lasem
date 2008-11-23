@@ -387,7 +387,7 @@ gmathml_under_over_element_layout (GMathmlElement *self, GMathmlView *view,
 	}
 }
 
-static const GMathmlOperatorElement *
+static GMathmlOperatorElement *
 gmathml_under_over_element_get_embellished_core (const GMathmlElement *self)
 {
 	if (GDOM_NODE (self)->first_child != NULL)

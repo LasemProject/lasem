@@ -337,11 +337,11 @@ gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 
 /* Inferred mrow implementation */
 
-static const GMathmlOperatorElement *
+static GMathmlOperatorElement *
 _get_embellished_core (const GMathmlElement *self)
 {
 	GDomNode *node;
-	const GMathmlOperatorElement *core = NULL;
+	GMathmlOperatorElement *core = NULL;
 
 	g_assert (GMATHML_IS_ELEMENT (self));
 
@@ -360,7 +360,7 @@ _get_embellished_core (const GMathmlElement *self)
 	return core;
 }
 
-const GMathmlOperatorElement *
+GMathmlOperatorElement *
 gmathml_element_get_embellished_core (const GMathmlElement *self)
 {
 	GMathmlElementClass *element_class;

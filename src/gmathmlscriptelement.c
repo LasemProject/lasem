@@ -170,7 +170,7 @@ gmathml_script_element_layout (GMathmlElement *self, GMathmlView *view,
 				script->subscript_offset, script->superscript_offset);
 }
 
-static const GMathmlOperatorElement *
+static GMathmlOperatorElement *
 gmathml_script_element_get_embellished_core (const GMathmlElement *self)
 {
 	if (GDOM_NODE (self)->first_child != NULL)

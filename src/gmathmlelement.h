@@ -81,7 +81,7 @@ struct _GMathmlElementClass {
 							 double x, double y, const GMathmlBbox *bbox);
 	void 			(*render)		(GMathmlElement *element, GMathmlView *view);
 
-	const GMathmlOperatorElement *	(*get_embellished_core)		(const GMathmlElement *self);
+	GMathmlOperatorElement *(*get_embellished_core)	(const GMathmlElement *self);
 
 	gboolean		(*is_inferred_row)	(const GMathmlElement *self);
 };
@@ -95,9 +95,9 @@ void 			gmathml_element_layout 		(GMathmlElement *element, GMathmlView *view,
 							 double x, double y, const GMathmlBbox *bbox);
 void 			gmathml_element_render 		(GMathmlElement *element, GMathmlView *view);
 
-const GMathmlOperatorElement *	gmathml_element_get_embellished_core 	(const GMathmlElement *self);
-const GMathmlBbox * 		gmathml_element_get_bbox 		(const GMathmlElement *self);
-gboolean 			gmathml_element_is_inferred_row 	(const GMathmlElement *self);
+GMathmlOperatorElement *gmathml_element_get_embellished_core 	(const GMathmlElement *self);
+const GMathmlBbox * 	gmathml_element_get_bbox 		(const GMathmlElement *self);
+gboolean 		gmathml_element_is_inferred_row 	(const GMathmlElement *self);
 
 void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
 
