@@ -20,6 +20,7 @@
  */
 
 #include <gmathmllayoututils.h>
+#include <gmathmloperatorelement.h>
 #include <math.h>
 
 void
@@ -40,8 +41,10 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	GMathmlBbox const *subscript_bbox = NULL;
 	GMathmlBbox const *superscript_bbox = NULL;
 	GMathmlBbox children_bbox = gmathml_bbox_null;
+	GMathmlOperatorElement *embellished_core;
 	double axis_offset, ascent, descent;
 	double v_space, h_space;
+	double slant;
 	gboolean is_operator;
 
 	*bbox = gmathml_bbox_null;
@@ -49,7 +52,10 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	if (base == NULL)
 		return;
 
-	is_operator = gmathml_element_get_embellished_core (base) != NULL;
+	embellished_core = gmathml_element_get_embellished_core (base);
+	is_operator = embellished_core != NULL;
+
+	slant = is_operator ? gmathml_operator_element_get_slant (embellished_core, view) : 0.0;
 
 	axis_offset = gmathml_view_measure_axis_offset (view, parent->style.math_size);
 	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
@@ -139,10 +145,19 @@ gmathml_layout_sub_sup (GMathmlElement *parent,
 			double superscript_offset)
 {
 	const GMathmlBbox *base_bbox;
+	const GMathmlOperatorElement *embellished_core;
 	double h_space;
+	double slant;
+	double slant_offset;
+	gboolean is_operator;
 
 	if (base == NULL)
 		return;
+
+	embellished_core = gmathml_element_get_embellished_core (base);
+	is_operator = embellished_core != NULL;
+
+	slant = is_operator ? gmathml_operator_element_get_slant (embellished_core, view) : 0.0;
 
 	base_bbox = gmathml_element_get_bbox (base);
 
@@ -151,14 +166,30 @@ gmathml_layout_sub_sup (GMathmlElement *parent,
 	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 	x += gmathml_view_measure_length (view, h_space);
 
-	if (subscript)
+	if (subscript) {
+		const GMathmlBbox *subscript_bbox;
+
+		subscript_bbox = gmathml_element_get_bbox (subscript);
+
+		slant_offset = slant < 0.0 ? (base_bbox->height + subscript_offset -
+					      subscript_bbox->height) * sin (slant) : 0.0;
+
 		gmathml_element_layout (subscript, view,
-					x + base_bbox->width,
+					x + base_bbox->width + slant_offset,
 					y + subscript_offset,
 					gmathml_element_get_bbox (subscript));
-	if (superscript)
+	}
+	if (superscript) {
+		const GMathmlBbox *superscript_bbox;
+
+		superscript_bbox = gmathml_element_get_bbox (superscript);
+
+		slant_offset = slant > 0.0 ? (base_bbox->depth + superscript_offset -
+					      superscript_bbox->depth) * sin (-slant) : 0.0;
+
 		gmathml_element_layout (superscript, view,
 					x + base_bbox->width,
 					y - superscript_offset,
 					gmathml_element_get_bbox (superscript));
+	}
 }

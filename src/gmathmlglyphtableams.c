@@ -517,7 +517,7 @@ gmathml_glyph_table_get_operator_slant (const char *text)
 	glyph = g_hash_table_lookup (_get_glyph_table (), text);
 
 	if (glyph != NULL)
-		if (glyph->flags && GMATHML_GLYPH_FLAG_INTEGRAL_SLANT)
+		if (glyph->flags & GMATHML_GLYPH_FLAG_INTEGRAL_SLANT)
 			return -12.0 / 180.0 * M_PI;
 
 	return 0.0;

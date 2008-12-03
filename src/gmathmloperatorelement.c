@@ -187,7 +187,7 @@ gmathml_operator_element_get_embellished_core (const GMathmlElement *self)
 /* GMathmlOperatorElement implementation */
 
 double
-gmathml_operator_get_slant (const GMathmlOperatorElement *operator_element, GMathmlView *view)
+gmathml_operator_element_get_slant (const GMathmlOperatorElement *operator_element, GMathmlView *view)
 {
 	char *text;
 

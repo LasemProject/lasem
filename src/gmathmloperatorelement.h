@@ -64,8 +64,8 @@ GType gmathml_operator_element_get_type (void);
 
 GDomNode *	gmathml_operator_element_new 	(void);
 
-double 		gmathml_operator_get_slant 	(const GMathmlOperatorElement *operator_element,
-						 GMathmlView *view);
+double 		gmathml_operator_element_get_slant 	(const GMathmlOperatorElement *operator_element,
+							 GMathmlView *view);
 
 G_END_DECLS
 
