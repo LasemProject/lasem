@@ -51,12 +51,14 @@ libgmathml_la_SOURCES =			\
 
 libgmathml_ladir = $(includedir)/gmathml
 libgmathml_la_HEADERS = \
+	gdom.h				\
 	gdomnode.h			\
 	gdomnodelist.h			\
 	gdomdocument.h			\
 	gdomelement.h			\
 	gdomcharacterdata.h		\
 	gdomtext.h			\
+	gmathml.h			\
 	gmathmlentitydictionary.h	\
 	gmathmloperatordictionary.h	\
 	gmathmldocument.h		\
@@ -82,6 +84,7 @@ libgmathml_la_HEADERS = \
 	gmathmlattributes.h		\
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\
+	gmathmlenums.h			\
 	gmathmlutils.h			\
 	gmathmllayoututils.h		\
 	gmathmlparser.h
