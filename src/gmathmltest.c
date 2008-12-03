@@ -62,7 +62,7 @@ static GRegex *regex_mml = NULL;
 void
 gmathml_test_render (char const *filename)
 {
-	GDomNode *document;
+	GMathmlDocument *document;
 	GMathmlView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
@@ -98,9 +98,9 @@ gmathml_test_render (char const *filename)
 		else
 			mathml = itex2MML_parse (buffer, size);
 
-		document = gmathml_document_from_memory (mathml);
+		document = gmathml_document_new_from_memory (mathml);
 
-		view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
+		view = gmathml_view_new (document, NULL);
 
 		gmathml_view_measure (view, &width, &height);
 

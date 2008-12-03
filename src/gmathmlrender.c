@@ -79,7 +79,7 @@ static const GOptionEntry entries[] =
 
 int main(int argc, char **argv)
 {
-	GDomNode *document;
+	GMathmlDocument *document;
 	GMathmlView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
@@ -183,9 +183,9 @@ int main(int argc, char **argv)
 		}
 
 		if (mathml != NULL) {
-			document = gmathml_document_from_memory (mathml);
+			document = gmathml_document_new_from_memory (mathml);
 			if (document != NULL) {
-				view = gmathml_view_new (GMATHML_DOCUMENT (document), NULL);
+				view = gmathml_view_new (document, NULL);
 
 				gmathml_view_set_ppi (view, option_ppi);
 

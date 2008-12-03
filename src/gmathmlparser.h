@@ -23,12 +23,13 @@
 #ifndef GMATHML_PARSER_H
 #define GMATHML_PARSER_H
 
-#include <gdom.h>
+#include <gmathmldocument.h>
 
 G_BEGIN_DECLS
 
-GDomNode * 	gmathml_document_from_file 	(const char *filename);
-GDomNode * 	gmathml_document_from_memory 	(const char *buffer);
+GMathmlDocument * 	gmathml_document_new_from_file 		(const char *filename);
+GMathmlDocument * 	gmathml_document_new_from_memory 	(const char *buffer);
+GMathmlDocument * 	gmathml_document_new_from_itex		(const char *itex);
 
 G_END_DECLS
 

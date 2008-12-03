@@ -29,6 +29,8 @@
 #include <libxml/parser.h>
 #include <string.h>
 
+#include <../itex2mml/itex2MML.h>
+
 typedef enum {
 	STATE
 } GMathmlSaxParserStateEnum;
@@ -154,8 +156,8 @@ static xmlSAXHandler sax_handler = {
 	.getEntity = gmathml_parser_get_entity
 };
 
-GDomNode *
-gmathml_document_from_file (const char *filename)
+GMathmlDocument *
+gmathml_document_new_from_file (const char *filename)
 {
 	static GMathmlSaxParserState state;
 
@@ -166,11 +168,11 @@ gmathml_document_from_file (const char *filename)
 		return NULL;
 	}
 
-	return state.document;
+	return GMATHML_DOCUMENT (state.document);
 }
 
-GDomNode *
-gmathml_document_from_memory (const char *buffer)
+GMathmlDocument *
+gmathml_document_new_from_memory (const char *buffer)
 {
 	static GMathmlSaxParserState state;
 
@@ -183,5 +185,20 @@ gmathml_document_from_memory (const char *buffer)
 		return NULL;
 	}
 
-	return state.document;
+	return GMATHML_DOCUMENT (state.document);
+}
+
+GMathmlDocument *
+gmathml_document_new_from_itex (const char *itex)
+{
+	GMathmlDocument *document;
+	char *mathml;
+
+	g_return_val_if_fail (itex != NULL, NULL);
+
+	mathml = itex2MML_parse (itex, strlen (itex));
+	document = gmathml_document_new_from_memory (mathml);
+	g_free (mathml);
+
+	return document;
 }
