@@ -1064,6 +1064,9 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 
+	if (view->priv->cairo == cairo)
+		return;
+
 	if (view->priv->cairo != NULL) {
 		cairo_destroy (view->priv->cairo);
 		g_object_unref (view->priv->render_pango_layout);
@@ -1104,6 +1107,24 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 }
 
 void
+gmathml_view_set_document (GMathmlView *view, GMathmlDocument *document)
+{
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (document != NULL && GMATHML_IS_DOCUMENT (document));
+
+	if (view->priv->document == document)
+		return;
+
+	if (view->priv->document != NULL)
+		g_object_unref (view->priv->document);
+
+	if (document != NULL)
+	    g_object_ref (document);
+
+	view->priv->document = document;
+}
+
+void
 gmathml_view_set_ppi (GMathmlView *view, double ppi)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
@@ -1117,13 +1138,9 @@ gmathml_view_new (GMathmlDocument *document, cairo_t *cairo)
 {
 	GMathmlView *view;
 
-	g_return_val_if_fail (GMATHML_IS_DOCUMENT (document), NULL);
-
 	view = g_object_new (GMATHML_TYPE_VIEW, NULL);
 
-	g_object_ref (document);
-	view->priv->document = document;
-
+	gmathml_view_set_document (view, document);
 	gmathml_view_set_cairo (view, cairo);
 
 	return view;

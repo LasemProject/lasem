@@ -94,6 +94,7 @@ GMathmlView *		gmathml_view_new 		(GMathmlDocument *document, cairo_t *cr);
 void 			gmathml_view_render 		(GMathmlView *view);
 const GMathmlBbox *	gmathml_view_measure 		(GMathmlView *view, double *width, double *height);
 
+void 			gmathml_view_set_document 	(GMathmlView *view, GMathmlDocument *document);
 void			gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
 
 void			gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
