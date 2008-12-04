@@ -322,8 +322,10 @@ _render (GMathmlElement *element, GMathmlView *view)
 void
 gmathml_element_render (GMathmlElement *element, GMathmlView *view)
 {
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_GET_CLASS (element);
+	GMathmlElementClass *element_class;
 
+	g_return_if_fail (GMATHML_IS_ELEMENT (element));
+	element_class = GMATHML_ELEMENT_GET_CLASS (element);
 	g_return_if_fail (element_class != NULL);
 
 	if (element_class->render) {

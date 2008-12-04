@@ -998,6 +998,8 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), NULL);
 
 	math_element = _get_math_element (view);
+	if (math_element == NULL)
+		return NULL;
 
 	gmathml_math_element_update (math_element);
 
@@ -1024,6 +1026,8 @@ gmathml_view_render (GMathmlView *view, double x, double y)
 	g_return_if_fail (view->priv->cairo != NULL);
 
 	math_element = _get_math_element (view);
+	if (math_element == NULL)
+		return;
 
 	bbox = gmathml_view_measure (view, NULL, NULL);
 

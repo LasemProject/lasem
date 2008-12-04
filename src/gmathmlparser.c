@@ -176,6 +176,9 @@ gmathml_document_new_from_memory (const char *buffer)
 {
 	static GMathmlSaxParserState state;
 
+	if (buffer == NULL)
+		return GMATHML_DOCUMENT (gmathml_document_new ());
+
 	state.document = NULL;
 
 	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, strlen (buffer) - 10) < 0) {
