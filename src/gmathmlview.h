@@ -91,7 +91,7 @@ GType gmathml_view_get_type (void);
 
 GMathmlView *		gmathml_view_new 		(GMathmlDocument *document, cairo_t *cr);
 
-void 			gmathml_view_render 		(GMathmlView *view);
+void 			gmathml_view_render 		(GMathmlView *view, double x, double y);
 const GMathmlBbox *	gmathml_view_measure 		(GMathmlView *view, double *width, double *height);
 
 void 			gmathml_view_set_document 	(GMathmlView *view, GMathmlDocument *document);

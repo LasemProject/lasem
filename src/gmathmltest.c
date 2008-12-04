@@ -112,7 +112,7 @@ gmathml_test_render (char const *filename)
 
 		cairo_destroy (cairo);
 
-		gmathml_view_render (view);
+		gmathml_view_render (view, 0, 0);
 
 		cairo_surface_write_to_png (surface, png_filename);
 

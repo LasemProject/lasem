@@ -1014,7 +1014,7 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 }
 
 void
-gmathml_view_render (GMathmlView *view)
+gmathml_view_render (GMathmlView *view, double x, double y)
 {
 	GMathmlMathElement *math_element;
 	cairo_t *cairo;
@@ -1032,6 +1032,8 @@ gmathml_view_render (GMathmlView *view)
 	cairo = view->priv->cairo;
 
 	cairo_save (view->priv->cairo);
+
+	cairo_translate (cairo, x, y);
 
 	if (!view->priv->is_vector)
 		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);

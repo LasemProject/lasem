@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 
 				gmathml_view_set_cairo (view, cairo);
 
-				gmathml_view_render (view);
+				gmathml_view_render (view, 0, 0);
 
 				switch (format) {
 					case FORMAT_PNG:
