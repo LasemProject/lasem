@@ -11,6 +11,10 @@ AM_CFLAGS =\
 
 lib_LTLIBRARIES = libgmathml.la
 
+libgmathml_la_LIBADD = 			\
+	../itex2mml/libitex2mml.la	\
+	$(GMATHML_LIBS)
+
 libgmathml_la_SOURCES =			\
 	gdomdebug.c			\
 	gdomnode.c			\
@@ -88,7 +92,6 @@ libgmathml_la_HEADERS = \
 	gmathmlutils.h			\
 	gmathmllayoututils.h		\
 	gmathmlparser.h
-
 
 bin_PROGRAMS = gmathmltest gmathmlrender
 
