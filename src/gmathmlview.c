@@ -974,16 +974,6 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 	cairo_stroke (cairo);
 }
 
-GMathmlMathElement *
-_get_math_element (GMathmlView *view)
-{
-	GDomElement *root;
-
-	root = gdom_document_get_document_element (GDOM_DOCUMENT (view->priv->document));
-
-	return GMATHML_MATH_ELEMENT (root);
-}
-
 const GMathmlBbox *
 gmathml_view_measure (GMathmlView *view, double *width, double *height)
 {
@@ -997,7 +987,7 @@ gmathml_view_measure (GMathmlView *view, double *width, double *height)
 
 	g_return_val_if_fail (GMATHML_IS_VIEW (view), NULL);
 
-	math_element = _get_math_element (view);
+	math_element = gmathml_document_get_math_element (view->priv->document);
 	if (math_element == NULL)
 		return NULL;
 
@@ -1025,7 +1015,7 @@ gmathml_view_render (GMathmlView *view, double x, double y)
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (view->priv->cairo != NULL);
 
-	math_element = _get_math_element (view);
+	math_element = gmathml_document_get_math_element (view->priv->document);
 	if (math_element == NULL)
 		return;
 

@@ -47,7 +47,8 @@ struct _GMathmlDocumentClass {
 
 GType gmathml_document_get_type (void);
 
-GDomNode *gmathml_document_new (void);
+GDomNode *		gmathml_document_new 			(void);
+GMathmlMathElement * 	gmathml_document_get_math_element 	(const GMathmlDocument *document);
 
 G_END_DECLS
 

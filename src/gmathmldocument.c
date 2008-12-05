@@ -121,6 +121,14 @@ gmathml_document_init (GMathmlDocument *document)
 {
 }
 
+/* Additional methods */
+
+GMathmlMathElement *
+gmathml_document_get_math_element (const GMathmlDocument *document)
+{
+	return GMATHML_MATH_ELEMENT (gdom_document_get_document_element (GDOM_DOCUMENT (document)));
+}
+
 /* GMathmlDocument class */
 
 static void
