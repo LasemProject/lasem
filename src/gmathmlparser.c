@@ -201,7 +201,7 @@ gmathml_document_new_from_itex (const char *itex)
 
 	mathml = itex2MML_parse (itex, strlen (itex));
 	document = gmathml_document_new_from_memory (mathml);
-	g_free (mathml);
+	itex2MML_free_string (mathml);
 
 	return document;
 }

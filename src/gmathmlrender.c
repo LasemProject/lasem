@@ -180,6 +180,7 @@ int main(int argc, char **argv)
 		else {
 			mathml = itex2MML_parse (buffer, size);
 			g_free (buffer);
+			buffer = NULL;
 		}
 
 		if (mathml != NULL) {
@@ -239,7 +240,10 @@ int main(int argc, char **argv)
 		} else
 			g_warning ("Invalid document");
 
-		g_free (mathml);
+		if (mathml == buffer)
+			g_free (mathml);
+		else
+			itex2MML_free (mathml);
 
 		g_object_unref (file);
 	} else

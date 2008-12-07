@@ -184,9 +184,9 @@ gmathml_test_render (char const *filename)
 
 			g_free (xml_filename);
 			g_free (buffer);
-		}
-
-		g_free (mathml);
+			itex2MML_free_string (mathml);
+		} else
+			g_free (mathml);
 	}
 
 	g_free (png_filename);
