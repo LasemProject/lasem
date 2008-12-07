@@ -243,7 +243,7 @@ int main(int argc, char **argv)
 		if (mathml == buffer)
 			g_free (mathml);
 		else
-			itex2MML_free (mathml);
+			itex2MML_free_string (mathml);
 
 		g_object_unref (file);
 	} else
