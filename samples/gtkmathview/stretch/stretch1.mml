@@ -1,0 +1,32 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mfenced><mspace height="1ex"/></mfenced>
+  <mfenced><mspace height="2ex"/></mfenced>
+  <mfenced><mspace height="3ex"/></mfenced>
+  <mfenced><mspace height="4ex"/></mfenced>
+  <mfenced><mspace height="5ex"/></mfenced>
+  <mfenced><mspace height="6ex"/></mfenced>
+  <mfenced><mspace height="7ex"/></mfenced>
+  <mfenced><mspace height="8ex"/></mfenced>
+  <mfenced><mspace height="9ex"/></mfenced>
+  <mfenced><mspace height="10ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="1ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="2ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="3ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="4ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="5ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="6ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="7ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="8ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="9ex"/></mfenced>
+  <mfenced open="{" close="}"><mspace height="10ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="1ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="2ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="3ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="4ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="5ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="6ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="7ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="8ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="9ex"/></mfenced>
+  <mfenced open="[" close="]"><mspace height="10ex"/></mfenced>
+</math>

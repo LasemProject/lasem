@@ -1,0 +1,17 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnwidth="fit" frame="solid" columnlines="solid" rowlines="solid">
+	<mtr>
+      <mtd>
+	    <mi>ciao da Luca, questa e' una prova per vedere come reagisce</mi>
+	  </mtd>
+	  <mtd>
+	    <mi> il discorso del ritorno a capo dentro una tabella...</mi>
+	  </mtd>
+	</mtr>
+	<mtr>
+	  <mtd columnspan="2">
+	    <mi>questa cella e' spannata, chissa'...</mi>
+	  </mtd>
+	</mtr>
+  </mtable>
+</math>

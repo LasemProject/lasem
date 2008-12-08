@@ -1,0 +1,34 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable frame="solid" columnlines="solid" rowlines="solid"
+  equalcolumns="false" rowalign="center"
+  >
+    <mtr>
+      <mtd columnspan="2">
+        <mi>spanning cell</mi>
+      </mtd>
+      <mtd rowspan="2">
+        <mstyle background="#a0a0ff" fontfamily="helvetica">
+          <mtable frame="solid" columnwidth="auto">
+	    <mtr>
+              <mstyle fontsize="10pt" background="#ffa0a0">
+                <mtable equalcolumns="false" frame="dashed" columnlines="solid">
+	          <mtr>
+		    <mi>una</mi>
+		    <mi fontweight="bold">tabella</mi>
+		    <mi>annidata</mi>
+		  </mtr>
+	        </mtable>
+	      </mstyle>
+	    </mtr>
+	  </mtable>
+        </mstyle>	
+      </mtd>
+    </mtr>
+    <mtr>
+      <mstyle background="#c0c0c0" fontfamily="times">
+        <mi>x</mi>
+      </mstyle>
+      <mi>y</mi>
+    </mtr>
+  </mtable>
+</math>

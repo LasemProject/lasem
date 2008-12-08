@@ -1,0 +1,152 @@
+<!--
+
+-->
+
+<!--
+  The correspondent Tex file .....
+-->
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mtable>
+  <mtr>
+   <mtd> <mtext>&#x3B4;&#x300;</mtext> </mtd>
+   <mtd> <mtext>&#x3C3;&#x300;</mtext> </mtd>
+   <mtd> <mtext>&#x3C9;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x300;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x301;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x0131;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x302;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x303;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x304;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x307;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x308;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x30a;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x30b;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x3B4;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C3;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3C9;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x394;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A3;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">&#x3A9;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3B4;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C3;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3C9;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x394;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A3;&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x3A9;&#x30c;</mtext> </mtd>
+  </mtr>
+ </mtable>
+</math>
