@@ -151,6 +151,42 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
+		"\xe2\x8c\xa9", /* 〈 */
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		3,
+		{
+			{GMATHML_FONT_CMEX10,		"D"},
+			{GMATHML_FONT_CMEX10,		"\xc2\xbf"},
+			{GMATHML_FONT_CMEX10,		"*"},
+			{GMATHML_FONT_ERROR,		""},
+			{GMATHML_FONT_ERROR,		""}
+		}
+	},
+	{
+		"\xe2\x8c\xaa", /* 〉 */
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL |
+		GMATHML_GLYPH_FLAG_TYPE_SIZED |
+		GMATHML_GLYPH_FLAG_ALIGN_AXIS,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		3,
+		{
+			{GMATHML_FONT_CMEX10,		"E"},
+			{GMATHML_FONT_CMEX10,		"\xc3\x80"},
+			{GMATHML_FONT_CMEX10,		"+"},
+			{GMATHML_FONT_ERROR,		""},
+			{GMATHML_FONT_ERROR,		""}
+		}
+	},
+	{
 		"\xe2\x88\x91" /* ∑ */,
 		GMATHML_GLYPH_FLAG_ALIGN_AXIS | GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{GMATHML_FONT_ERROR,		""},
@@ -458,6 +494,18 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		1,
 		{
 			{GMATHML_FONT_DEFAULT,	"\xe2\x86\x92"}
+		}
+	},
+	{
+		"\xe2\x86\x90", /* ← */
+		GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_DEFAULT,	"\xe2\x86\x90"}
 		}
 	},
 	{
