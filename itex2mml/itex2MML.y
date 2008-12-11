@@ -281,7 +281,7 @@ xmlmmlTermList:
 | xmlmmlTermList char {/* all proc. in body*/}
 | xmlmmlTermList expression {/* all proc. in body*/};
 
-char: CHAR {printf("%s", $1);};
+char: CHAR {};
 
 expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}

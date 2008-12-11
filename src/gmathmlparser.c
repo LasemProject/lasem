@@ -191,6 +191,11 @@ gmathml_document_new_from_memory (const char *buffer)
 	return GMATHML_DOCUMENT (state.document);
 }
 
+static void
+_dummy_error (const char *msg)
+{
+}
+
 GMathmlDocument *
 gmathml_document_new_from_itex (const char *itex)
 {
@@ -198,6 +203,8 @@ gmathml_document_new_from_itex (const char *itex)
 	char *mathml;
 
 	g_return_val_if_fail (itex != NULL, NULL);
+
+	itex2MML_error = _dummy_error;
 
 	mathml = itex2MML_parse (itex, strlen (itex));
 	document = gmathml_document_new_from_memory (mathml);

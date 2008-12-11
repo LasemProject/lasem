@@ -1,6 +1,10 @@
 itex2MML[1] transforms itex (a dialect of latex) into MathML.
 
-Currently, we include itex2MML 1.3.5, without any modifications.
+Currently, we include itex2MML 1.3.5, without the following modifications:
+
+  - a return value wasn't used, leading to a compilation warning in itex2MML.y ;
+  - printf use is removed from itex2MML.y.
+
 Some documentation can be found here [4].
 
 [1] http://pear.math.pitt.edu/mathzilla/itex2mml.html
