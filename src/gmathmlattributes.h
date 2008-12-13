@@ -111,6 +111,11 @@ GMathmlStyle *	gmathml_style_new 			(void);
 void		gmathml_style_free 			(GMathmlStyle *style);
 GMathmlStyle *	gmathml_style_duplicate 		(const GMathmlStyle *from);
 void 		gmathml_style_change_script_level 	(GMathmlStyle *style, int increment);
+void 		gmathml_style_set_math_size_pt 		(GMathmlStyle *style, double math_size);
+void 		gmathml_style_set_math_family 		(GMathmlStyle *style, const char *math_family);
+void 		gmathml_style_set_math_variant		(GMathmlStyle *style, GMathmlVariant math_variant);
+void 		gmathml_style_set_math_color 		(GMathmlStyle *style,
+							 double red, double green, double blue, double alpha);
 void 		gmathml_style_dump 			(const GMathmlStyle *style);
 
 typedef enum {

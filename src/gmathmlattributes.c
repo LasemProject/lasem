@@ -31,6 +31,8 @@
 double
 gmathml_length_compute (const GMathmlLength *length, double default_value, double font_size)
 {
+	g_return_val_if_fail (length != NULL, 0.0);
+
 	switch (length->unit) {
 		case GMATHML_UNIT_PX:
 		case GMATHML_UNIT_PT:
@@ -93,6 +95,8 @@ gmathml_style_duplicate (const GMathmlStyle *from)
 void
 gmathml_style_change_script_level (GMathmlStyle *style, int increment)
 {
+	g_return_if_fail (style != NULL);
+
 	style->math_size_value = style->math_size_value * pow (style->script_size_multiplier, increment);
 	style->script_level += increment;
 
@@ -101,6 +105,45 @@ gmathml_style_change_script_level (GMathmlStyle *style, int increment)
 
 	style->math_size.value = style->math_size_value;
 	style->math_size.unit = GMATHML_UNIT_PT;
+}
+
+void
+gmathml_style_set_math_size_pt (GMathmlStyle *style, double math_size)
+{
+	g_return_if_fail (style != NULL);
+
+	style->math_size_value = math_size;
+	style->math_size.value = math_size;
+	style->math_size.unit = GMATHML_UNIT_PT;
+}
+
+void
+gmathml_style_set_math_family (GMathmlStyle *style, const char *math_family)
+{
+	g_return_if_fail (style != NULL);
+	g_return_if_fail (math_family != NULL);
+
+	g_free (style->math_family);
+	style->math_family = g_strdup (math_family);
+}
+
+void
+gmathml_style_set_math_variant (GMathmlStyle *style, GMathmlVariant math_variant)
+{
+	g_return_if_fail (style != NULL);
+
+	style->math_variant = math_variant;
+}
+
+void
+gmathml_style_set_math_color (GMathmlStyle *style, double red, double green, double blue, double alpha)
+{
+	g_return_if_fail (style != NULL);
+
+	style->math_color.red = red;
+	style->math_color.green = green;
+	style->math_color.blue = blue;
+	style->math_color.alpha = alpha;
 }
 
 void
