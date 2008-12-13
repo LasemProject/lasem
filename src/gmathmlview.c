@@ -288,9 +288,9 @@ gmathml_view_show_text (GMathmlView *view,
 	if (text == NULL || strlen (text) < 1)
 		return;
 
-/*        gdom_debug ("View: show_text %s at %g, %g (size = %g) %s",*/
-/*                   text, x, y, math_size,*/
-/*                   gmathml_variant_to_string (math_variant));*/
+	gdom_debug ("[GMathmlView::show_text] '%s' at %g, %g (size = %g) %s",
+		   text, x, y, style->math_size,
+		   gmathml_variant_to_string (style->math_variant));
 
 	gmathml_view_update_layout_for_text (view, style, text,
 					     view->priv->render_pango_layout, &ink_rect, &rect, &baseline);
@@ -419,7 +419,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
 
-			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
+			gdom_debug ("[GMathmlView::measure_operator] Glyph #%i -> width = %g, height = %g", i,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
@@ -445,7 +445,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		}
 
 		if (found)
-			gdom_debug ("Found sized glyph #%i", i);
+			gdom_debug ("[GMathmlView::measure_operator] Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
@@ -543,7 +543,7 @@ gmathml_view_show_operator (GMathmlView *view,
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
 
-			gdom_debug ("Glyph #%i -> width = %g, height = %g", i,
+			gdom_debug ("[GMathmlView::show_operator] Glyph #%i -> width = %g, height = %g", i,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
@@ -569,12 +569,16 @@ gmathml_view_show_operator (GMathmlView *view,
 		}
 
 		if (found)
-			gdom_debug ("Found sized glyph #%i", i);
+			gdom_debug ("[GMathmlView::show_operator] Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
 		pango_layout_iter_free (iter);
 	}
+
+	gdom_debug ("[GMathmlView::show_operator] '%s' at %g, %g (size = %g) %s",
+		    text, x, y, style->math_size,
+		    gmathml_variant_to_string (style->math_variant));
 
 	if (ink_rect.width == 0 || ink_rect.height == 0)
 		return;
