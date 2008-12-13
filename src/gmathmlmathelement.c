@@ -53,12 +53,29 @@ _update (GMathmlElement *self, GMathmlStyle *style)
 
 /* GMathmlMathElement implementation */
 
-static const GMathmlStyle *
+GMathmlStyle *
 gmathml_math_element_get_default_style (GMathmlMathElement *math_element)
 {
 	g_return_val_if_fail (GMATHML_IS_MATH_ELEMENT (math_element), NULL);
 
 	return math_element->default_style;
+}
+
+void
+gmathml_math_element_set_default_style (GMathmlMathElement *math_element, GMathmlStyle *style)
+{
+	g_return_if_fail (GMATHML_IS_MATH_ELEMENT (math_element));
+	g_return_if_fail (style != NULL);
+
+	if (style == math_element->default_style) {
+		gdom_node_changed (GDOM_NODE (math_element));
+		return;
+	}
+
+	gmathml_style_free (math_element->default_style);
+	math_element->default_style = style;
+
+	gdom_node_changed (GDOM_NODE (math_element));
 }
 
 void

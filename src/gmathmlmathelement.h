@@ -59,7 +59,10 @@ struct _GMathmlMathElementClass {
 
 GType gmathml_math_element_get_type (void);
 
-GDomNode *gmathml_math_element_new (void);
+GDomNode *		gmathml_math_element_new 		(void);
+GMathmlStyle * 		gmathml_math_element_get_default_style 	(GMathmlMathElement *math_element);
+void 			gmathml_math_element_set_default_style 	(GMathmlMathElement *math_element,
+								 GMathmlStyle *style);
 
 void 			gmathml_math_element_update 		(GMathmlMathElement *math_element);
 const GMathmlBbox * 	gmathml_math_element_measure 		(GMathmlMathElement *math_element,
