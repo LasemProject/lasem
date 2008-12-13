@@ -42,6 +42,8 @@ gdom_character_data_set_data (GDomCharacterData* self, const char* value)
 
 	g_free (self->data);
 	self->data = g_strdup (value);
+
+	gdom_node_changed (GDOM_NODE (self));
 }
 
 static void

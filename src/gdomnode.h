@@ -83,6 +83,8 @@ struct _GDomNodeClass {
 
 	void			(*post_new_child) 	(GDomNode *parent, GDomNode *child);
 	void			(*pre_remove_child) 	(GDomNode *parent, GDomNode *child);
+	void			(*changed)		(GDomNode *self);
+	gboolean		(*child_changed)	(GDomNode *self, GDomNode *child);
 };
 
 GType gdom_node_get_type (void);
@@ -107,6 +109,8 @@ GDomNode* 		gdom_node_replace_child 	(GDomNode* self, GDomNode* new_child, GDomN
 GDomNode* 		gdom_node_append_child 		(GDomNode* self, GDomNode* new_child);
 GDomNode* 		gdom_node_remove_child 		(GDomNode* self, GDomNode* old_child);
 gboolean 		gdom_node_has_child_nodes 	(GDomNode* self);
+
+void 			gdom_node_changed 		(GDomNode *self);
 
 GDomDocument* 		gdom_node_get_owner_document 	(GDomNode* self);
 

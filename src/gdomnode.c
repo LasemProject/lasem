@@ -196,6 +196,8 @@ gdom_node_remove_child (GDomNode* self, GDomNode* old_child)
 	old_child->next_sibling = NULL;
 	old_child->previous_sibling = NULL;
 
+	gdom_node_changed (self);
+
 	return old_child;
 }
 
@@ -223,6 +225,8 @@ gdom_node_append_child (GDomNode* self, GDomNode* new_child)
 	if (node_class->post_new_child)
 		node_class->post_new_child (self, new_child);
 
+	gdom_node_changed (self);
+
 	return new_child;
 }
 
@@ -230,6 +234,32 @@ static gboolean
 gdom_node_can_append_child (GDomNode *self, GDomNode* new_child)
 {
 	return FALSE;
+}
+
+void
+gdom_node_changed (GDomNode *self)
+{
+	GDomNode *parent_node;
+	GDomNode *child_node;
+	GDomNodeClass *node_class;
+
+	g_return_if_fail (GDOM_IS_NODE (self));
+
+	node_class = GDOM_NODE_GET_CLASS (self);
+
+	if (node_class->changed)
+		node_class->changed (self);
+
+	child_node = self;
+	for (parent_node = self->parent_node;
+	       parent_node != NULL;
+	       parent_node = parent_node->parent_node) {
+		node_class = GDOM_NODE_GET_CLASS (parent_node);
+		if (node_class->child_changed == NULL ||
+		    !node_class->child_changed (parent_node, child_node))
+			break;
+		child_node = parent_node;
+	}
 }
 
 gboolean

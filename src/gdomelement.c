@@ -55,6 +55,8 @@ gdom_element_set_attribute (GDomElement* self, const char* name, const char* att
 	g_return_if_fail (attribute_value != NULL);
 
 	GDOM_ELEMENT_GET_CLASS (self)->set_attribute (self, name, attribute_value);
+
+	gdom_node_changed (GDOM_NODE (self));
 }
 
 static void
