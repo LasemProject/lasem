@@ -35,31 +35,30 @@ static const GMathmlBbox null_bbox = {0.0,0.0,0.0, FALSE};
 static gboolean
 gmathml_element_can_append_child (GDomNode *self, GDomNode *child)
 {
-	/* Math element has only one element child */
-
 	return (GMATHML_IS_ELEMENT (child));
 }
 
 static void
-gmathml_element_post_new_child (GDomNode *parent, GDomNode *child)
+gmathml_element_changed (GDomNode *self)
 {
-	GDomNode *iter;
+	GMathmlElement *element = GMATHML_ELEMENT (self);
 
-	if (GMATHML_IS_ELEMENT (child)) {
-		GMATHML_ELEMENT (child)->need_update = TRUE;
-		GMATHML_ELEMENT (child)->need_measure = TRUE;
-	}
-	for (iter = parent; iter != NULL && GMATHML_IS_ELEMENT (iter); iter = iter->parent_node) {
-		if (GMATHML_ELEMENT (iter)->need_children_update)
-			break;
-		GMATHML_ELEMENT (iter)->need_children_update = TRUE;
-		GMATHML_ELEMENT (iter)->need_measure = TRUE;
-	}
+	element->need_update = TRUE;
+	element->need_measure = TRUE;
 }
 
-static void
-gmathml_element_pre_remove_child (GDomNode *parent, GDomNode *child)
+static gboolean
+gmathml_element_child_changed (GDomNode *parent, GDomNode *child)
 {
+	GMathmlElement *element = GMATHML_ELEMENT (parent);
+
+	if (element->need_children_update)
+		return FALSE;
+
+	element->need_children_update = TRUE;
+	element->need_measure = TRUE;
+
+	return TRUE;
 }
 
 /* GDomElement implementation */
@@ -409,6 +408,8 @@ gmathml_element_is_inferred_row (const GMathmlElement *self)
 static void
 gmathml_element_init (GMathmlElement *element)
 {
+	element->need_update = TRUE;
+	element->need_measure = TRUE;
 }
 
 static void
@@ -449,8 +450,8 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	object_class->finalize = gmathml_element_finalize;
 
 	d_node_class->can_append_child = gmathml_element_can_append_child;
-	d_node_class->post_new_child = gmathml_element_post_new_child;
-	d_node_class->pre_remove_child = gmathml_element_pre_remove_child;
+	d_node_class->changed = gmathml_element_changed;
+	d_node_class->child_changed = gmathml_element_child_changed;
 
 	d_element_class->get_attribute = gmathml_element_get_attribute;
 	d_element_class->set_attribute = gmathml_element_set_attribute;
