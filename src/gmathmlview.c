@@ -1106,7 +1106,7 @@ void
 gmathml_view_set_document (GMathmlView *view, GMathmlDocument *document)
 {
 	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (document != NULL && GMATHML_IS_DOCUMENT (document));
+	g_return_if_fail (document == NULL || GMATHML_IS_DOCUMENT (document));
 
 	if (view->priv->document == document)
 		return;
