@@ -112,14 +112,17 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 		return FALSE;
 	}
 
-	gdom_debug ("[Element::update] update %s", gdom_node_get_node_name (GDOM_NODE (self)));
-
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
 	style = gmathml_style_duplicate (parent_style);
 
 	if (element_class->update != NULL)
 		element_class->update (self, style);
+
+	gdom_debug ("[Element::update] update %s (%s-%g)",
+		    gdom_node_get_node_name (GDOM_NODE (self)),
+		    style->math_family != NULL ? style->math_family : "undefined" ,
+		    style->math_size_value);
 
 	g_free (self->style.math_family);
 	self->style.math_family = g_strdup (style->math_family);
