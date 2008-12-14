@@ -40,6 +40,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlunderoverelement.c	\
 	gmathmlpresentationtoken.c	\
 	gmathmloperatorelement.c	\
+	gmathmlstringelement.c		\
 	gmathmlpresentationcontainer.c	\
 	gmathmlstyleelement.c		\
 	gmathmlrowelement.c		\
@@ -79,6 +80,7 @@ libgmathml_la_HEADERS = \
 	gmathmlunderoverelement.h	\
 	gmathmlpresentationtoken.h	\
 	gmathmloperatorelement.h	\
+	gmathmlstringelement.h		\
 	gmathmlpresentationcontainer.h	\
 	gmathmlstyleelement.h		\
 	gmathmlrowelement.h		\

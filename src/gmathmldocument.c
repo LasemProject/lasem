@@ -32,6 +32,7 @@
 #include <gmathmlfractionelement.h>
 #include <gmathmlunderoverelement.h>
 #include <gmathmloperatorelement.h>
+#include <gmathmlstringelement.h>
 #include <gmathmlrowelement.h>
 #include <gmathmlpaddedelement.h>
 #include <gmathmlfencedelement.h>
@@ -94,6 +95,8 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_identifier_element_new ();
 	else if (strcmp (tag_name, "mtext") == 0)
 		node = gmathml_text_element_new ();
+	else if (strcmp (tag_name, "ms") == 0)
+		node = gmathml_string_element_new ();
 	else if (strcmp (tag_name, "mstyle") == 0)
 		node = gmathml_style_element_new ();
 	else if (strcmp (tag_name, "mphantom") == 0)

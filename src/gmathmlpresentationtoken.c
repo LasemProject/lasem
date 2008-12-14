@@ -57,14 +57,12 @@ gmathml_presentation_token_can_append_child (GDomNode *self, GDomNode *child)
 
 /* GMathmlElement implementation */
 
-char *
-gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
+static char *
+_get_text (GMathmlPresentationToken *self)
 {
 	GDomNode *node;
 	GString *string = g_string_new ("");
 	char *text;
-
-	g_return_val_if_fail (GMATHML_IS_PRESENTATION_TOKEN (self), NULL);
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GDOM_IS_TEXT (node)) {
@@ -77,6 +75,18 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 	g_string_free (string, TRUE);
 
 	return text;
+}
+
+char *
+gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
+{
+	GMathmlPresentationTokenClass *token_class;
+
+	g_return_val_if_fail (GMATHML_IS_PRESENTATION_TOKEN (self), NULL);
+
+	token_class = GMATHML_PRESENTATION_TOKEN_GET_CLASS (self);
+
+	return token_class->get_text (self);
 }
 
 static void
@@ -205,12 +215,12 @@ gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_
 }
 
 static void
-gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_class)
+gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *m_token_class)
 {
-	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (token_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (token_class);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (m_token_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (m_token_class);
 
-	parent_class = g_type_class_peek_parent (token_class);
+	parent_class = g_type_class_peek_parent (m_token_class);
 
 	d_node_class->get_node_name = gmathml_presentation_token_get_node_name;
 	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;
@@ -221,6 +231,8 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *token_clas
 	m_element_class->is_inferred_row = NULL;
 
 	m_element_class->update = gmathml_presentation_token_update;
+
+	m_token_class->get_text = _get_text;
 
 	m_element_class->attributes = gmathml_attribute_map_new ();
 

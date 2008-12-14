@@ -57,6 +57,8 @@ struct _GMathmlPresentationToken {
 
 struct _GMathmlPresentationTokenClass {
 	GMathmlElementClass  parent_class;
+
+	char * (*get_text)	(GMathmlPresentationToken *self);
 };
 
 GType gmathml_presentation_token_get_type (void);
