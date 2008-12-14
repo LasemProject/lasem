@@ -1,0 +1,15 @@
+    <math> 
+      <mrow> 
+        <mi>A</mi> 
+        <mphantom> 
+          <mi>A</mi> 
+        </mphantom> 
+        <mi>A</mi> 
+        <mphantom> 
+          <mi>A</mi> 
+          <mo>+</mo> 
+          <mi>A</mi> 
+        </mphantom> 
+        <mi>A</mi> 
+      </mrow> 
+    </math>

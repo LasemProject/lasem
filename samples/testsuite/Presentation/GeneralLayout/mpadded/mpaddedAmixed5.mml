@@ -1,0 +1,41 @@
+    <math> 
+      <mrow> 
+        <mi>A</mi> 
+        <mfrac> 
+          <mpadded lspace ='2em' width='2em'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mpadded height='1 width'> 
+            <mi>A</mi> 
+          </mpadded> 
+        </mfrac> 
+        <mfrac> 
+          <mpadded width='1 height' depth='-1ex'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mpadded height='3'> 
+            <mi>A</mi> 
+          </mpadded> 
+        </mfrac> 
+        <mfrac> 
+          <mpadded width='200% width'> 
+            <mi>A</mi> 
+            <mpadded width='1em'> 
+              <msqrt> 
+                <mn>5</mn> 
+              </msqrt> 
+            </mpadded> 
+          </mpadded> 
+          <mpadded height='300% width'> 
+            <mi>A</mi> 
+          </mpadded> 
+        </mfrac> 
+        <mi>A</mi> 
+        <mpadded width='1em'> 
+          <msqrt> 
+            <mn>5</mn> 
+          </msqrt> 
+        </mpadded> 
+        <mi>A</mi> 
+      </mrow> 
+    </math>
