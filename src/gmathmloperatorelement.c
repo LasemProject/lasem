@@ -102,6 +102,8 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlSpace space;
 	gboolean flag;
 
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
+
 	entry = gmathml_operator_element_dictionary_lookup (operator_element);
 
 	gdom_debug ("[OperatorElement::update] found %s %s",
