@@ -47,6 +47,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlfencedelement.c		\
 	gmathmlpaddedelement.c		\
 	gmathmlerrorelement.c		\
+	gmathmlactionelement.c		\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlglyphtableams.c		\
@@ -87,6 +88,7 @@ libgmathml_la_HEADERS = \
 	gmathmlfencedelement.h		\
 	gmathmlpaddedelement.h		\
 	gmathmlerrorelement.h		\
+	gmathmlactionelement.h		\
 	gmathmlattributes.h		\
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\

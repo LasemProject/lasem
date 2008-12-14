@@ -49,6 +49,7 @@ typedef struct _GMathmlRowElement GMathmlRowElement;
 typedef struct _GMathmlFencedElement GMathmlFencedElement;
 typedef struct _GMathmlPaddedElement GMathmlPaddedElement;
 typedef struct _GMathmlErrorElement GMathmlErrorElement;
+typedef struct _GMathmlActionElement GMathmlActionElement;
 
 typedef struct _GMathmlView GMathmlView;
 
