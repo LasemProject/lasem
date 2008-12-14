@@ -39,6 +39,15 @@ typedef struct _GMathmlFencedElementClass GMathmlFencedElementClass;
 
 struct _GMathmlFencedElement {
 	GMathmlPresentationContainer presentation_container;
+
+	GMathmlAttributeString open;
+	GMathmlAttributeString close;
+	GMathmlAttributeString separators;
+
+	/* View properties */
+
+	GMathmlBbox open_bbox;
+	GMathmlBbox close_bbox;
 };
 
 struct _GMathmlFencedElementClass {
