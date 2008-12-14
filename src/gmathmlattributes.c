@@ -487,6 +487,7 @@ gmathml_attribute_string_parse (GMathmlAttributeString *attribute,
 	} else {
 		g_free (*style_value);
 		*style_value = g_strdup (string);
+		attribute->value = g_strdup (string);
 	}
 }
 
