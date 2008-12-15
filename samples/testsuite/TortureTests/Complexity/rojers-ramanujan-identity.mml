@@ -194,8 +194,8 @@
                       <mo>&#x022EF;</mo> 
                     </mrow> 
                 <mo>,</mo> 
-                <mtext>&#x02009;&amp;#x0200A;&amp;#x0200A;</mtext> 
-                <mtext>&#x02009;&amp;#x0200A;&amp;#x0200A;</mtext> 
+                <mtext>&#x02009;&#x0200A;&#x0200A;</mtext> 
+                <mtext>&#x02009;&#x0200A;&#x0200A;</mtext> 
                 <mstyle fontstyle='normal'> 
                   <mrow> 
                     <mi>f</mi> 
