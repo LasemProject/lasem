@@ -1159,8 +1159,11 @@ gmathml_view_init (GMathmlView *view)
 
 	font_map = pango_cairo_font_map_get_default ();
 
-	pango_context = pango_context_new ();
-	pango_context_set_font_map (pango_context, font_map);
+#if PANGO_VERSION_CHECK(1,22,0)
+	pango_context = pango_font_map_create_context (font_map);
+#else
+	pango_context = pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (font_map));
+#endif
 
 	view->priv->measure_pango_layout = pango_layout_new (pango_context);
 
