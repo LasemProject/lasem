@@ -58,6 +58,7 @@ libgmathml_la_SOURCES =			\
 libgmathml_ladir = $(includedir)/gmathml
 libgmathml_la_HEADERS = \
 	gdom.h				\
+	gdomdebug.h			\
 	gdomnode.h			\
 	gdomnodelist.h			\
 	gdomdocument.h			\
