@@ -39,6 +39,8 @@
 #include <gmathmlerrorelement.h>
 #include <gmathmlactionelement.h>
 #include <gmathmlstyleelement.h>
+#include <gmathmlalignmarkelement.h>
+#include <gmathmlaligngroupelement.h>
 #include <string.h>
 
 /* GDomNode implementation */
@@ -110,6 +112,10 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gmathml_error_element_new ();
 	else if (strcmp (tag_name, "maction") == 0)
 		node = gmathml_action_element_new ();
+	else if (strcmp (tag_name, "malignmark") == 0)
+		node = gmathml_align_mark_element_new ();
+	else if (strcmp (tag_name, "maligngroup") == 0)
+		node = gmathml_align_group_element_new ();
 
 	return GDOM_ELEMENT (node);
 }

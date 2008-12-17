@@ -51,6 +51,8 @@ libgmathml_la_SOURCES =			\
 	gmathmlattributes.c		\
 	gmathmlview.c			\
 	gmathmlglyphtableams.c		\
+	gmathmlalignmarkelement.c	\
+	gmathmlaligngroupelement.c	\
 	gmathmlutils.c			\
 	gmathmllayoututils.c		\
 	gmathmlparser.c
@@ -93,6 +95,8 @@ libgmathml_la_HEADERS = \
 	gmathmlattributes.h		\
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\
+	gmathmlalignmarkelement.h	\
+	gmathmlaligngroupelement.h	\
 	gmathmlenums.h			\
 	gmathmlutils.h			\
 	gmathmllayoututils.h		\
