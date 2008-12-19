@@ -39,6 +39,9 @@ typedef struct _GMathmlTableCellElementClass GMathmlTableCellElementClass;
 
 struct _GMathmlTableCellElement {
 	GMathmlElement	element;
+
+	GMathmlAttributeUnsigned row_span;
+	GMathmlAttributeUnsigned column_span;
 };
 
 struct _GMathmlTableCellElementClass {
@@ -47,7 +50,10 @@ struct _GMathmlTableCellElementClass {
 
 GType gmathml_table_cell_element_get_type (void);
 
-GDomNode * 	gmathml_table_cell_element_new 	(void);
+GDomNode * 	gmathml_table_cell_element_new 		(void);
+void 		gmathml_table_cell_element_get_spans 	(const GMathmlTableCellElement *self,
+							 unsigned int *row_span,
+							 unsigned int *column_span);
 
 G_END_DECLS
 

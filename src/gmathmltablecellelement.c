@@ -34,6 +34,21 @@ gmathml_table_cell_get_node_name (GDomNode *node)
 
 /* GMathmlElement implementation */
 
+static void
+gmathml_table_cell_element_update (GMathmlElement *self, GMathmlStyle *style)
+{
+	GMathmlTableCellElement *cell = GMATHML_TABLE_CELL_ELEMENT (self);
+	unsigned int span;
+
+	span = 1;
+	gmathml_attribute_unsigned_parse (&cell->row_span, &span);
+
+	span = 1;
+	gmathml_attribute_unsigned_parse (&cell->column_span, &span);
+
+	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
+}
+
 static const GMathmlBbox *
 gmathml_table_cell_element_measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 {
@@ -50,6 +65,24 @@ gmathml_table_cell_element_layout (GMathmlElement *self, GMathmlView *view,
 }
 
 /* GMathmlTableCellElement implementation */
+
+void
+gmathml_table_cell_element_get_spans (const GMathmlTableCellElement *self,
+				      unsigned int *row_span,
+				      unsigned int *column_span)
+{
+	if (row_span != NULL)
+		*row_span = 0;
+	if (column_span != NULL)
+		*column_span = 0;
+
+	g_return_if_fail (GMATHML_IS_TABLE_CELL_ELEMENT (self));
+
+	if (row_span != NULL)
+		*row_span = self->row_span.value;
+	if (column_span != NULL)
+		*column_span = self->column_span.value;
+}
 
 GDomNode *
 gmathml_table_cell_element_new (void)
@@ -74,8 +107,18 @@ gmathml_table_cell_element_class_init (GMathmlTableCellElementClass *table_cell_
 
 	d_node_class->get_node_name = gmathml_table_cell_get_node_name;
 
+	m_element_class->update = gmathml_table_cell_element_update;
 	m_element_class->measure = gmathml_table_cell_element_measure;
 	m_element_class->layout = gmathml_table_cell_element_layout;
+
+	m_element_class->attributes = gmathml_attribute_map_new ();
+
+	gmathml_element_class_add_element_attributes (m_element_class);
+
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
+					     offsetof (GMathmlTableCellElement, row_span));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "columnspan",
+					     offsetof (GMathmlTableCellElement, column_span));
 }
 
 G_DEFINE_TYPE (GMathmlTableCellElement, gmathml_table_cell_element, GMATHML_TYPE_ELEMENT)
