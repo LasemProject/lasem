@@ -178,6 +178,11 @@ typedef struct {
 
 typedef struct {
 	GMathmlAttributeValue attr;
+	unsigned int value;
+} GMathmlAttributeUnsigned;
+
+typedef struct {
+	GMathmlAttributeValue attr;
 	double value;
 } GMathmlAttributeDouble;
 
@@ -227,6 +232,8 @@ typedef struct {
 
 void 		gmathml_attribute_boolean_parse		(GMathmlAttributeBoolean *attribute,
 							 gboolean *default_value);
+void 		gmathml_attribute_unsigned_parse	(GMathmlAttributeUnsigned *attribute,
+							 unsigned *default_value);
 void 		gmathml_attribute_double_parse		(GMathmlAttributeDouble *attribute,
 							 double *default_value);
 void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,

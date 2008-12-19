@@ -336,6 +336,25 @@ gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
 }
 
 void
+gmathml_attribute_unsigned_parse (GMathmlAttributeUnsigned *attribute,
+				  unsigned int *style_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (style_value != NULL);
+
+	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	if (string == NULL) {
+		attribute->value = *style_value;
+		return;
+	}
+
+	attribute->value = atoi (string);
+	*style_value = attribute->value;
+}
+
+void
 gmathml_attribute_double_parse (GMathmlAttributeDouble *attribute,
 				double *style_value)
 {
