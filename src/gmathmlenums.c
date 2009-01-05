@@ -124,6 +124,30 @@ gmathml_unit_from_string (const char *string)
 					  G_N_ELEMENTS (gmathml_unit_strings));
 }
 
+static const char *gmathml_font_style_strings[] = {
+	"normal",
+	"italic",
+};
+
+GMathmlFontStyle
+gmathml_font_style_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_font_style_strings,
+					  G_N_ELEMENTS (gmathml_font_style_strings));
+}
+
+static const char *gmathml_font_weight_strings[] = {
+	"normal",
+	"bold",
+};
+
+GMathmlFontWeight
+gmathml_font_weight_from_string (const char *string)
+{
+	return gmathml_value_from_string (string, gmathml_font_weight_strings,
+					  G_N_ELEMENTS (gmathml_font_weight_strings));
+}
+
 static const char *gmathml_variant_strings[] = {
 	"normal",
 	"bold",
@@ -152,6 +176,146 @@ gmathml_variant_from_string (const char *string)
 {
 	return gmathml_value_from_string (string, gmathml_variant_strings,
 					  G_N_ELEMENTS (gmathml_variant_strings));
+}
+
+void
+gmathml_variant_set_font_style (GMathmlVariant *variant, GMathmlFontStyle style)
+{
+	if (variant == NULL)
+		return;
+
+	switch (style) {
+		case GMATHML_FONT_STYLE_ITALIC:
+			switch (*variant) {
+				case GMATHML_VARIANT_NORMAL:
+					*variant = GMATHML_VARIANT_ITALIC;
+					return;
+				case GMATHML_VARIANT_BOLD:
+					*variant = GMATHML_VARIANT_BOLD_ITALIC;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF:
+					*variant = GMATHML_VARIANT_SANS_SERIF_ITALIC;
+					return;
+				case GMATHML_VARIANT_BOLD_SANS_SERIF:
+					*variant = GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC;
+					return;
+				case GMATHML_VARIANT_ITALIC:
+				case GMATHML_VARIANT_BOLD_ITALIC:
+				case GMATHML_VARIANT_DOUBLE_STRUCK:
+				case GMATHML_VARIANT_BOLD_FRAKTUR:
+				case GMATHML_VARIANT_SCRIPT:
+				case GMATHML_VARIANT_BOLD_SCRIPT:
+				case GMATHML_VARIANT_FRAKTUR:
+				case GMATHML_VARIANT_SANS_SERIF_ITALIC:
+				case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
+				case GMATHML_VARIANT_MONOSPACE:
+				case GMATHML_VARIANT_ERROR:
+					return;
+			}
+		case GMATHML_FONT_WEIGHT_NORMAL:
+			switch (*variant) {
+				case GMATHML_VARIANT_ITALIC:
+					*variant = GMATHML_VARIANT_NORMAL;
+					return;
+				case GMATHML_VARIANT_BOLD_ITALIC:
+					*variant = GMATHML_VARIANT_BOLD;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF_ITALIC:
+					*variant = GMATHML_VARIANT_SANS_SERIF;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
+					*variant = GMATHML_VARIANT_BOLD_SANS_SERIF;
+					return;
+				case GMATHML_VARIANT_BOLD:
+				case GMATHML_VARIANT_NORMAL:
+				case GMATHML_VARIANT_SANS_SERIF:
+				case GMATHML_VARIANT_BOLD_SANS_SERIF:
+				case GMATHML_VARIANT_DOUBLE_STRUCK:
+				case GMATHML_VARIANT_BOLD_FRAKTUR:
+				case GMATHML_VARIANT_SCRIPT:
+				case GMATHML_VARIANT_BOLD_SCRIPT:
+				case GMATHML_VARIANT_FRAKTUR:
+				case GMATHML_VARIANT_MONOSPACE:
+				case GMATHML_VARIANT_ERROR:
+					return;
+			}
+		default:
+			return;
+	}
+}
+
+void
+gmathml_variant_set_font_weight (GMathmlVariant *variant, GMathmlFontWeight weight)
+{
+	if (variant == NULL)
+		return;
+
+	switch (weight) {
+		case GMATHML_FONT_WEIGHT_BOLD:
+			switch (*variant) {
+				case GMATHML_VARIANT_NORMAL:
+					*variant = GMATHML_VARIANT_BOLD;
+					return;
+				case GMATHML_VARIANT_ITALIC:
+					*variant = GMATHML_VARIANT_BOLD_ITALIC;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF:
+					*variant = GMATHML_VARIANT_BOLD_SANS_SERIF;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF_ITALIC:
+					*variant = GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC;
+					return;
+				case GMATHML_VARIANT_SCRIPT:
+					*variant = GMATHML_VARIANT_BOLD_SCRIPT;
+					return;
+				case GMATHML_VARIANT_FRAKTUR:
+					*variant = GMATHML_VARIANT_BOLD_FRAKTUR;
+					return;
+				case GMATHML_VARIANT_BOLD:
+				case GMATHML_VARIANT_BOLD_ITALIC:
+				case GMATHML_VARIANT_DOUBLE_STRUCK:
+				case GMATHML_VARIANT_BOLD_FRAKTUR:
+				case GMATHML_VARIANT_BOLD_SCRIPT:
+				case GMATHML_VARIANT_BOLD_SANS_SERIF:
+				case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
+				case GMATHML_VARIANT_MONOSPACE:
+				case GMATHML_VARIANT_ERROR:
+					return;
+			}
+		case GMATHML_FONT_WEIGHT_NORMAL:
+			switch (*variant) {
+				case GMATHML_VARIANT_BOLD:
+					*variant = GMATHML_VARIANT_NORMAL;
+					return;
+				case GMATHML_VARIANT_BOLD_ITALIC:
+					*variant = GMATHML_VARIANT_ITALIC;
+					return;
+				case GMATHML_VARIANT_BOLD_SANS_SERIF:
+					*variant = GMATHML_VARIANT_SANS_SERIF;
+					return;
+				case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
+					*variant = GMATHML_VARIANT_SANS_SERIF_ITALIC;
+					return;
+				case GMATHML_VARIANT_BOLD_FRAKTUR:
+					*variant = GMATHML_VARIANT_FRAKTUR;
+					return;
+				case GMATHML_VARIANT_BOLD_SCRIPT:
+					*variant = GMATHML_VARIANT_SCRIPT;
+					return;
+				case GMATHML_VARIANT_ITALIC:
+				case GMATHML_VARIANT_NORMAL:
+				case GMATHML_VARIANT_SANS_SERIF:
+				case GMATHML_VARIANT_SANS_SERIF_ITALIC:
+				case GMATHML_VARIANT_DOUBLE_STRUCK:
+				case GMATHML_VARIANT_SCRIPT:
+				case GMATHML_VARIANT_FRAKTUR:
+				case GMATHML_VARIANT_MONOSPACE:
+				case GMATHML_VARIANT_ERROR:
+					return;
+			}
+		default:
+			return;
+	}
 }
 
 static const char *gmathml_form_strings[] = {

@@ -476,6 +476,20 @@ gmathml_attribute_form_parse (GMathmlAttributeNamed *attribute,
 }
 
 void
+gmathml_attribute_font_style_parse (GMathmlAttributeNamed *attribute,
+				    unsigned int *style_value)
+{
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_font_style_from_string);
+}
+
+void
+gmathml_attribute_font_weight_parse (GMathmlAttributeNamed *attribute,
+				     unsigned int *style_value)
+{
+	return gmathml_attribute_named_parse (attribute, style_value, gmathml_font_weight_from_string);
+}
+
+void
 gmathml_attribute_variant_parse (GMathmlAttributeNamed *attribute,
 				 unsigned int *style_value)
 {

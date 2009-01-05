@@ -39,6 +39,8 @@ gmathml_style_element_get_node_name (GDomNode *node)
 static void
 gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
+	GMathmlFontStyle font_style;
+	GMathmlFontWeight font_weight;
 	gboolean display_style;
 
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
@@ -56,6 +58,15 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
 
 	/* token */
+
+	font_style = GMATHML_FONT_STYLE_ERROR;
+	gmathml_attribute_font_style_parse (&style_element->font_style, &font_style);
+
+	font_weight = GMATHML_FONT_WEIGHT_ERROR;
+	gmathml_attribute_font_weight_parse (&style_element->font_weight, &font_weight);
+
+	gmathml_variant_set_font_style (&style->math_variant, font_style);
+	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
 	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
@@ -170,6 +181,10 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 					     offsetof (GMathmlStyleElement, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					     offsetof (GMathmlStyleElement, math_color));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
+					     offsetof (GMathmlStyleElement, font_weight));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
+					     offsetof (GMathmlStyleElement, font_style));
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

@@ -244,6 +244,10 @@ void 		gmathml_attribute_display_parse 	(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
 void 		gmathml_attribute_form_parse	 	(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
+void 		gmathml_attribute_font_style_parse 	(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
+void 		gmathml_attribute_font_weight_parse 	(GMathmlAttributeNamed *attribute,
+							 unsigned int *style_value);
 void 		gmathml_attribute_variant_parse 	(GMathmlAttributeNamed *attribute,
 							 unsigned int *style_value);
 void		gmathml_attribute_line_parse		(GMathmlAttributeNamed *attribute,

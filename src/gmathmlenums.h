@@ -74,6 +74,22 @@ const char * 		gmathml_unit_to_string 			(GMathmlUnit unit);
 GMathmlUnit 		gmathml_unit_from_string 		(const char *string);
 
 typedef enum {
+	GMATHML_FONT_STYLE_NORMAL,
+	GMATHML_FONT_STYLE_ITALIC,
+	GMATHML_FONT_STYLE_ERROR
+} GMathmlFontStyle;
+
+GMathmlFontStyle 	gmathml_font_style_from_string 		(const char *string);
+
+typedef enum {
+	GMATHML_FONT_WEIGHT_NORMAL,
+	GMATHML_FONT_WEIGHT_BOLD,
+	GMATHML_FONT_WEIGHT_ERROR
+} GMathmlFontWeight;
+
+GMathmlFontWeight 	gmathml_font_weight_from_string 	(const char *string);
+
+typedef enum {
 	GMATHML_VARIANT_NORMAL,
 	GMATHML_VARIANT_BOLD,
 	GMATHML_VARIANT_ITALIC,
@@ -93,6 +109,8 @@ typedef enum {
 
 const char * 		gmathml_variant_to_string 	(GMathmlVariant variant);
 GMathmlVariant 		gmathml_variant_from_string 	(const char *string);
+void	 		gmathml_variant_set_font_style	(GMathmlVariant *variant, GMathmlFontStyle style);
+void 			gmathml_variant_set_font_weight	(GMathmlVariant *variant, GMathmlFontWeight weight);
 
 typedef enum {
 	GMATHML_FORM_PREFIX,

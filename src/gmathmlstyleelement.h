@@ -54,6 +54,11 @@ struct _GMathmlStyleElement {
 	GMathmlAttributeLength very_thick_math_space;
 	GMathmlAttributeLength very_very_thick_math_space;
 
+	/* Deprecated style attributes */
+
+	GMathmlAttributeNamed font_weight;
+	GMathmlAttributeNamed font_style;
+
 	/* Presentation token attribute */
 
 	GMathmlAttributeNamed math_variant;
