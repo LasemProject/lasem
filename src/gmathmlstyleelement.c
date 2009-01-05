@@ -68,6 +68,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_variant_set_font_style (&style->math_variant, font_style);
 	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
+	gmathml_attribute_string_parse (&style_element->math_family, &style->math_family);
 	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
@@ -163,6 +164,9 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
 					     offsetof (GMathmlStyleElement, very_very_thick_math_space));
 
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
+						  offsetof (GMathmlStyleElement, math_family),
+						  gmathml_attribute_string_finalize);
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					     offsetof (GMathmlStyleElement, math_variant));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -177,6 +181,9 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 
 	/* Deprecated attributes */
 
+	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
+						  offsetof (GMathmlStyleElement, math_family),
+						  gmathml_attribute_string_finalize);
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					     offsetof (GMathmlStyleElement, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",

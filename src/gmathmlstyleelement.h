@@ -61,10 +61,11 @@ struct _GMathmlStyleElement {
 
 	/* Presentation token attribute */
 
-	GMathmlAttributeNamed math_variant;
+	GMathmlAttributeString math_family;
+	GMathmlAttributeNamed  math_variant;
 	GMathmlAttributeLength math_size;
-	GMathmlAttributeColor math_color;
-	GMathmlAttributeColor math_background;
+	GMathmlAttributeColor  math_color;
+	GMathmlAttributeColor  math_background;
 
 	/* Fraction attributes */
 
