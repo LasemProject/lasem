@@ -92,6 +92,8 @@ gmathml_presentation_token_get_text (GMathmlPresentationToken *self)
 static void
 gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 {
+	GMathmlFontStyle font_style;
+	GMathmlFontWeight font_weight;
 	GMathmlPresentationToken *token = GMATHML_PRESENTATION_TOKEN (self);
 
 	if (token->type == GMATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER) {
@@ -100,6 +102,15 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 		style->math_variant = g_utf8_strlen (text, -1) > 1 ? GMATHML_VARIANT_NORMAL : GMATHML_VARIANT_ITALIC;
 		g_free (text);
 	}
+
+	font_style = GMATHML_FONT_STYLE_ERROR;
+	gmathml_attribute_font_style_parse (&token->font_style, &font_style);
+
+	font_weight = GMATHML_FONT_WEIGHT_ERROR;
+	gmathml_attribute_font_weight_parse (&token->font_weight, &font_weight);
+
+	gmathml_variant_set_font_style (&style->math_variant, font_style);
+	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
 	gmathml_attribute_string_parse (&token->math_family, &style->math_family);
 	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
@@ -212,6 +223,10 @@ gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_
 					     offsetof (GMathmlPresentationToken, math_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					     offsetof (GMathmlPresentationToken, math_color));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
+					     offsetof (GMathmlPresentationToken, font_weight));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
+					     offsetof (GMathmlPresentationToken, font_style));
 }
 
 static void
