@@ -45,8 +45,6 @@ gmathml_table_cell_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	span = 1;
 	gmathml_attribute_unsigned_parse (&cell->column_span, &span);
-
-	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 }
 
 static const GMathmlBbox *
