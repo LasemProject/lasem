@@ -50,8 +50,6 @@ struct _GMathmlViewPrivate {
 
 	GMathmlDocument *document;
 
-	double ppi;
-
 	PangoFontDescription *	font_description;
 	PangoLayout *		measure_pango_layout;
 
@@ -1031,12 +1029,7 @@ gmathml_view_render (GMathmlView *view, double x, double y)
 
 	cairo_save (view->priv->cairo);
 
-	cairo_translate (cairo, x, y);
-
-	if (!view->priv->is_vector)
-		cairo_scale (view->priv->cairo, view->priv->ppi / 72.0, view->priv->ppi / 72.0);
-
-	cairo_translate (cairo, 0, bbox->height);
+	cairo_translate (cairo, x, y + bbox->height);
 
 	gmathml_math_element_render (math_element, view);
 
@@ -1094,6 +1087,7 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 				 type == CAIRO_SURFACE_TYPE_PS);
 
 	context = pango_layout_get_context (view->priv->render_pango_layout);
+	pango_cairo_context_set_resolution (context, 72);
 
 	font_options = cairo_font_options_create ();
 
@@ -1124,15 +1118,6 @@ gmathml_view_set_document (GMathmlView *view, GMathmlDocument *document)
 	view->priv->document = document;
 }
 
-void
-gmathml_view_set_ppi (GMathmlView *view, double ppi)
-{
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (ppi > 0.0);
-
-	view->priv->ppi = ppi;
-}
-
 GMathmlView *
 gmathml_view_new (GMathmlDocument *document, cairo_t *cairo)
 {
@@ -1154,7 +1139,6 @@ gmathml_view_init (GMathmlView *view)
 	cairo_font_options_t *font_options;
 
 	view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view, GMATHML_TYPE_VIEW, GMathmlViewPrivate);
-	view->priv->ppi = 72.0;
 	view->priv->font_description = pango_font_description_new ();
 
 	font_map = pango_cairo_font_map_get_default ();
@@ -1164,6 +1148,7 @@ gmathml_view_init (GMathmlView *view)
 #else
 	pango_context = pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (font_map));
 #endif
+	pango_cairo_context_set_resolution (pango_context, 72.0);
 
 	view->priv->measure_pango_layout = pango_layout_new (pango_context);
 

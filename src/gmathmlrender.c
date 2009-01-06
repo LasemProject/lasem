@@ -188,8 +188,6 @@ int main(int argc, char **argv)
 			if (document != NULL) {
 				view = gmathml_view_new (document, NULL);
 
-				gmathml_view_set_ppi (view, option_ppi);
-
 				gmathml_view_set_debug (view, option_debug);
 
 				gmathml_view_measure (view, &width, &height);
@@ -216,6 +214,9 @@ int main(int argc, char **argv)
 				cairo_surface_destroy (surface);
 
 				gmathml_view_set_cairo (view, cairo);
+
+				if (format == FORMAT_PNG)
+					cairo_scale (cairo, option_ppi / 72.0, option_ppi / 72.0);
 
 				gmathml_view_render (view, 0, 0);
 
