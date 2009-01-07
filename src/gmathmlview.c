@@ -395,6 +395,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 	} else {
 		PangoLayoutIter *iter;
 		unsigned int i;
+		double width, height;
 		gboolean found = FALSE;
 
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION) &&
@@ -417,9 +418,11 @@ gmathml_view_measure_operator (GMathmlView *view,
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
 
+			height = pango_units_to_double (ink_rect.height);
+			width = pango_units_to_double (ink_rect.width);
+
 			gdom_debug ("[GMathmlView::measure_operator] Glyph #%i -> width = %g, height = %g", i,
-				   pango_units_to_double (ink_rect.width),
-				   pango_units_to_double (ink_rect.height));
+				    width, height);
 
 			if (!stretch_bbox->is_defined) {
 				found = TRUE;
@@ -427,15 +430,13 @@ gmathml_view_measure_operator (GMathmlView *view,
 			}
 
 			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL) {
-				if (pango_units_to_double (ink_rect.height) >
-				    (stretch_bbox->height + stretch_bbox->depth))
+				if (height > (stretch_bbox->height + stretch_bbox->depth))
 					found = TRUE;
 			}
 
 			if (glyph->flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL) {
-						if (pango_units_to_double (ink_rect.width) >
-						    stretch_bbox->width)
-							found = TRUE;
+				if (width > stretch_bbox->width)
+					found = TRUE;
 			}
 
 			if (found)
@@ -459,6 +460,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		bbox->height = pango_units_to_double (baseline - ink_rect.y);
 		bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
 	}
+
 	if (stretch_bbox->is_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL))
 		bbox->width = stretch_bbox->width;
 	else
