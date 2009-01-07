@@ -1052,6 +1052,7 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	PangoContext *context;
 	PangoFontDescription *font_description;
 	cairo_font_options_t *font_options;
+	const cairo_font_options_t *current_font_options;
 	cairo_surface_t *surface;
 	cairo_surface_type_t type;
 
@@ -1089,14 +1090,13 @@ gmathml_view_set_cairo (GMathmlView *view, cairo_t *cairo)
 	context = pango_layout_get_context (view->priv->render_pango_layout);
 	pango_cairo_context_set_resolution (context, 72);
 
-	font_options = cairo_font_options_create ();
-
-	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
+	current_font_options = pango_cairo_context_get_font_options (context);
+	if (current_font_options == NULL)
+		font_options = cairo_font_options_create ();
+	else
+		font_options = cairo_font_options_copy (current_font_options);
 	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
-	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_NONE);
-
 	pango_cairo_context_set_font_options (context, font_options);
-
 	cairo_font_options_destroy (font_options);
 }
 
@@ -1154,9 +1154,7 @@ gmathml_view_init (GMathmlView *view)
 
 	font_options = cairo_font_options_create ();
 
-	cairo_font_options_set_antialias (font_options, CAIRO_ANTIALIAS_GRAY);
 	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
-	cairo_font_options_set_hint_style (font_options, CAIRO_HINT_STYLE_NONE);
 
 	pango_cairo_context_set_font_options (pango_context, font_options);
 
