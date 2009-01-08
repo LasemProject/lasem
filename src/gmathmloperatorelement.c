@@ -250,6 +250,10 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 					     offsetof (GMathmlOperatorElement, symmetric));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
 					     offsetof (GMathmlOperatorElement, accent));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "minsize",
+					     offsetof (GMathmlOperatorElement, min_size));
+	gmathml_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
+					     offsetof (GMathmlOperatorElement, max_size));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",
 					     offsetof (GMathmlOperatorElement, large_op));
 	gmathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
