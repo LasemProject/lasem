@@ -70,7 +70,8 @@ gmathml_radical_element_update_children (GMathmlElement *self, GMathmlStyle *sty
 
 		node = node->next_sibling;
 		if (node != NULL) {
-			gmathml_style_change_script_level (style, +1);
+			gmathml_style_change_script_level (style, +2);
+			style->display = GMATHML_DISPLAY_INLINE;
 
 			if (gmathml_element_update (GMATHML_ELEMENT (node), style))
 				need_measure = TRUE;
