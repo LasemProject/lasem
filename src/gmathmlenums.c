@@ -82,13 +82,14 @@ static const char *gmathml_space_name_strings[] = {
 	"mediummathspace",
 	"thickmathspace",
 	"verythickmathspace",
-	"veryverythickmathspace"
+	"veryverythickmathspace",
+	"infinity"
 };
 
 const char *
 gmathml_space_name_to_string (GMathmlSpaceName space_name)
 {
-	return gmathml_space_name_strings[CLAMP (space_name, 0, GMATHML_SPACE_NAME_VERY_VERY_THICK)];
+	return gmathml_space_name_strings[CLAMP (space_name, 0, GMATHML_SPACE_NAME_INFINITY)];
 }
 
 GMathmlSpaceName

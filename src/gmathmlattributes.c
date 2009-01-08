@@ -659,6 +659,9 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 								   style->very_very_thick_math_space_value,
 								   style->math_size_value);
 			break;
+		case GMATHML_SPACE_NAME_INFINITY:
+			attribute->value = G_MAXDOUBLE;
+			break;
 		case GMATHML_SPACE_NAME_ERROR:
 		default:
 			attribute->value = gmathml_length_compute (&attribute->space.length,

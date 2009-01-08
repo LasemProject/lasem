@@ -27,8 +27,6 @@
 /* Automatically generated using a slightly modified version of gnumerator parser */
 /* http://numerator.sourceforge.net/ */
 
-#define GMATHML_INFINITY 1e64
-
 static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 	{
 		"(", GMATHML_FORM_PREFIX,
@@ -36,7 +34,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -45,7 +43,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -54,7 +52,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -63,7 +61,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -72,7 +70,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -81,7 +79,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -90,7 +88,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -99,7 +97,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -108,7 +106,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -117,7 +115,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -126,7 +124,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -135,7 +133,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -144,7 +142,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -153,7 +151,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -162,7 +160,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -171,7 +169,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -180,7 +178,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -189,7 +187,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, TRUE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -198,7 +196,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -207,7 +205,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -216,7 +214,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 0, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -225,7 +223,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 0, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -234,7 +232,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -243,7 +241,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, TRUE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -252,7 +250,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -261,7 +259,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -270,7 +268,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -279,7 +277,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -288,7 +286,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -297,7 +295,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -306,7 +304,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -315,7 +313,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -324,7 +322,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -333,7 +331,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -342,7 +340,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -351,7 +349,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -360,7 +358,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -369,7 +367,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -378,7 +376,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -387,7 +385,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -396,7 +394,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -405,7 +403,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -414,7 +412,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -423,7 +421,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -432,7 +430,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -441,7 +439,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -450,7 +448,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -459,7 +457,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -468,7 +466,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -477,7 +475,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -486,7 +484,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -495,7 +493,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -504,7 +502,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -513,7 +511,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -522,7 +520,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -531,7 +529,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -540,7 +538,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -549,7 +547,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -558,7 +556,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -567,7 +565,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -576,7 +574,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -585,7 +583,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -594,7 +592,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -603,7 +601,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -612,7 +610,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -621,7 +619,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -630,7 +628,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -639,7 +637,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -648,7 +646,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -657,7 +655,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -666,7 +664,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -675,7 +673,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -684,7 +682,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -693,7 +691,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -702,7 +700,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -711,7 +709,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -720,7 +718,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -729,7 +727,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -738,7 +736,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -747,7 +745,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -756,7 +754,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -765,7 +763,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -774,7 +772,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -783,7 +781,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -792,7 +790,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -801,7 +799,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -810,7 +808,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -819,7 +817,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -828,7 +826,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -837,7 +835,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -846,7 +844,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -855,7 +853,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -864,7 +862,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -873,7 +871,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -882,7 +880,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -891,7 +889,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -900,7 +898,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -909,7 +907,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -918,7 +916,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -927,7 +925,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -936,7 +934,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -945,7 +943,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -954,7 +952,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -963,7 +961,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -972,7 +970,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -981,7 +979,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -990,7 +988,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -999,7 +997,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1008,7 +1006,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1017,7 +1015,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1026,7 +1024,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1035,7 +1033,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1044,7 +1042,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1053,7 +1051,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1062,7 +1060,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1071,7 +1069,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1080,7 +1078,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1089,7 +1087,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1098,7 +1096,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1107,7 +1105,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1116,7 +1114,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1125,7 +1123,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1134,7 +1132,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1143,7 +1141,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1152,7 +1150,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1161,7 +1159,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1170,7 +1168,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1179,7 +1177,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1188,7 +1186,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1197,7 +1195,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1206,7 +1204,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1215,7 +1213,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1224,7 +1222,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1233,7 +1231,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1242,7 +1240,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1251,7 +1249,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1260,7 +1258,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1269,7 +1267,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1278,7 +1276,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1287,7 +1285,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1296,7 +1294,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1305,7 +1303,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1314,7 +1312,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1323,7 +1321,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1332,7 +1330,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1341,7 +1339,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1350,7 +1348,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1359,7 +1357,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1368,7 +1366,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1377,7 +1375,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1386,7 +1384,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1395,7 +1393,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1404,7 +1402,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1413,7 +1411,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1422,7 +1420,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1431,7 +1429,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1440,7 +1438,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1449,7 +1447,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1458,7 +1456,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1467,7 +1465,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1476,7 +1474,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1485,7 +1483,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1494,7 +1492,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1503,7 +1501,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1512,7 +1510,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1521,7 +1519,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1530,7 +1528,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1539,7 +1537,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1548,7 +1546,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1557,7 +1555,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1566,7 +1564,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1575,7 +1573,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1584,7 +1582,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1593,7 +1591,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1602,7 +1600,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1611,7 +1609,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1620,7 +1618,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1629,7 +1627,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1638,7 +1636,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1647,7 +1645,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1656,7 +1654,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1665,7 +1663,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1674,7 +1672,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1683,7 +1681,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1692,7 +1690,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1701,7 +1699,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1710,7 +1708,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1719,7 +1717,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1728,7 +1726,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1737,7 +1735,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1746,7 +1744,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1755,7 +1753,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1764,7 +1762,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1773,7 +1771,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1782,7 +1780,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1791,7 +1789,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1800,7 +1798,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1809,7 +1807,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1818,7 +1816,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1827,7 +1825,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1836,7 +1834,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1845,7 +1843,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1854,7 +1852,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1863,7 +1861,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1872,7 +1870,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1881,7 +1879,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1890,7 +1888,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1899,7 +1897,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1908,7 +1906,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1917,7 +1915,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1926,7 +1924,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1935,7 +1933,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1944,7 +1942,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1953,7 +1951,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1962,7 +1960,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1971,7 +1969,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_MEDIUM, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1980,7 +1978,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1989,7 +1987,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -1998,7 +1996,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2007,7 +2005,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2016,7 +2014,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2025,7 +2023,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2034,7 +2032,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2043,7 +2041,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2052,7 +2050,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2061,7 +2059,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2070,7 +2068,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2079,7 +2077,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2088,7 +2086,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2097,7 +2095,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2106,7 +2104,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2115,7 +2113,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2124,7 +2122,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE /* FALSE */, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2133,7 +2131,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE /* FALSE */, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2142,7 +2140,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2151,7 +2149,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2160,7 +2158,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2169,7 +2167,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2178,7 +2176,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2187,7 +2185,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	/*
@@ -2197,7 +2195,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	*/
@@ -2207,7 +2205,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2216,7 +2214,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, TRUE, TRUE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2225,7 +2223,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2234,7 +2232,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2243,7 +2241,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2252,7 +2250,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2261,7 +2259,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2270,7 +2268,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2279,7 +2277,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2288,7 +2286,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2297,7 +2295,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2306,7 +2304,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2315,7 +2313,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2324,7 +2322,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2333,7 +2331,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2342,7 +2340,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2351,7 +2349,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2360,7 +2358,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2369,7 +2367,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2378,7 +2376,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2387,7 +2385,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2396,7 +2394,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2405,7 +2403,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2414,7 +2412,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2423,7 +2421,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2432,7 +2430,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2441,7 +2439,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2450,7 +2448,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2459,7 +2457,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2468,7 +2466,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2477,7 +2475,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2486,7 +2484,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2495,7 +2493,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2504,7 +2502,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2513,7 +2511,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2522,7 +2520,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2531,7 +2529,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2540,7 +2538,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2549,7 +2547,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2558,7 +2556,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2567,7 +2565,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2576,7 +2574,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2585,7 +2583,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2594,7 +2592,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2603,7 +2601,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2612,7 +2610,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2621,7 +2619,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2630,7 +2628,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2639,7 +2637,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2648,7 +2646,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2657,7 +2655,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2666,7 +2664,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2675,7 +2673,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2684,7 +2682,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2693,7 +2691,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2702,7 +2700,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2711,7 +2709,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2720,7 +2718,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2729,7 +2727,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2738,7 +2736,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2747,7 +2745,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2756,7 +2754,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2765,7 +2763,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2774,7 +2772,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2783,7 +2781,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2792,7 +2790,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2801,7 +2799,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2810,7 +2808,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2819,7 +2817,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2828,7 +2826,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2837,7 +2835,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2846,7 +2844,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2855,7 +2853,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2864,7 +2862,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2873,7 +2871,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2882,7 +2880,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2891,7 +2889,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2900,7 +2898,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2909,7 +2907,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2918,7 +2916,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2927,7 +2925,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2936,7 +2934,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2945,7 +2943,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2954,7 +2952,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2963,7 +2961,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2972,7 +2970,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2981,7 +2979,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2990,7 +2988,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -2999,7 +2997,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3008,7 +3006,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3017,7 +3015,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3026,7 +3024,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3035,7 +3033,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3044,7 +3042,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3053,7 +3051,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3062,7 +3060,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3071,7 +3069,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3080,7 +3078,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3089,7 +3087,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3098,7 +3096,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3107,7 +3105,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3116,7 +3114,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	/* gmathml additions */
@@ -3126,7 +3124,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3135,7 +3133,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_ERROR, { 0.0, GMATHML_UNIT_EM}},
 		FALSE /*TRUE*/, FALSE, FALSE, TRUE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3144,7 +3142,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3153,7 +3151,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3162,7 +3160,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE /* FALSE */, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	},
 	{
@@ -3171,7 +3169,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		{ GMATHML_SPACE_NAME_THIN, { 0.0, 0}},
 		FALSE, FALSE, FALSE, FALSE, TRUE /* FALSE */, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-		{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 		TRUE
 	}
 };
@@ -3221,7 +3219,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_dictionary_default_
 	{ GMATHML_SPACE_NAME_THICK, { 0.0, 0}},
 	FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 	{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
-	{ GMATHML_SPACE_NAME_ERROR, { GMATHML_INFINITY, GMATHML_UNIT_PT}},
+	{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
 	TRUE
 };
 
