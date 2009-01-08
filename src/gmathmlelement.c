@@ -183,11 +183,8 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 				all_stretchy = FALSE;
 				child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view,
 								       &gmathml_bbox_null);
-				if (operator != NULL) {
-					child_bbox.width +=
-						gmathml_view_measure_length (view, operator->left_space.value) +
-						gmathml_view_measure_length (view, operator->right_space.value);
-				}
+				if (operator != NULL)
+					child_bbox.width += operator->left_space.value + operator->right_space.value;
 				gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
 				gmathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			}
@@ -208,9 +205,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 				if (operator != NULL && operator->stretchy.value) {
 					child_bbox = *gmathml_element_measure (GMATHML_ELEMENT (node), view,
 									       &stretch_bbox);
-					child_bbox.width +=
-						gmathml_view_measure_length (view, operator->left_space.value) +
-						gmathml_view_measure_length (view, operator->right_space.value);
+					child_bbox.width += operator->left_space.value + operator->right_space.value;
 					gmathml_bbox_add_horizontally (&self->bbox, &child_bbox);
 				}
 			}
@@ -274,13 +269,12 @@ _layout (GMathmlElement *self, GMathmlView *view,
 			child_bbox = *gmathml_element_get_bbox (GMATHML_ELEMENT (node));
 			operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (node));
 			if (operator != NULL)
-				offset = gmathml_view_measure_length (view, operator->left_space.value);
+				offset = operator->left_space.value;
 			else
 				offset = 0.0;
 			gmathml_element_layout (GMATHML_ELEMENT (node), view, x + offset, y, &child_bbox);
 			if (operator != NULL)
-				child_bbox.width += offset +
-					gmathml_view_measure_length (view, operator->right_space.value);
+				child_bbox.width += offset + operator->right_space.value;
 			x += child_bbox.width + self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 		}
 }

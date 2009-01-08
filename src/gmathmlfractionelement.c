@@ -84,13 +84,10 @@ gmathml_fraction_element_measure (GMathmlElement *self, GMathmlView *view, const
 	h_space = self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 
 	self->bbox.is_defined = TRUE;
-	self->bbox.depth = - gmathml_view_measure_length (view,
-							  fraction->axis_offset -
-							  v_space - 0.5 * fraction->line_thickness.value);
+	self->bbox.depth = - (fraction->axis_offset - v_space - 0.5 * fraction->line_thickness.value);
 
 	self->bbox.width = 0.0;
-	self->bbox.height = gmathml_view_measure_length (view, fraction->axis_offset +
-							 v_space + 0.5 * fraction->line_thickness.value);
+	self->bbox.height = fraction->axis_offset + v_space + 0.5 * fraction->line_thickness.value;
 
 	node = GDOM_NODE (self)->first_child;
 
@@ -168,7 +165,7 @@ gmathml_fraction_element_render (GMathmlElement *self, GMathmlView *view)
 
 	gmathml_view_show_fraction_line (view, &self->style,
 					 self->x + h_space,
-					 self->y - gmathml_view_measure_length (view, fraction->axis_offset),
+					 self->y - fraction->axis_offset,
 					 self->bbox.width - 2.0 * h_space,
 					 fraction->line_thickness.value);
 

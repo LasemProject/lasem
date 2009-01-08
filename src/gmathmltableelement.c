@@ -124,7 +124,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	double max_depth = 0.0;
 	double height;
 
-	table->line_width = gmathml_view_measure_length (view, GMATHML_TABLE_ELEMENT_LINE_WIDTH);
+	table->line_width = GMATHML_TABLE_ELEMENT_LINE_WIDTH;
 
 	g_free (table->widths);
 	g_free (table->heights);
@@ -213,9 +213,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	for (column = 0; column < table->n_columns; column++) {
 		self->bbox.width += table->widths[column];
 		if (column < table->n_columns - 1)
-			self->bbox.width +=
-				gmathml_view_measure_length (view,
-							     table->column_spacing.values[MIN (column, max_index)]);
+			self->bbox.width += table->column_spacing.values[MIN (column, max_index)];
 	}
 
 	height = 0.0;
@@ -227,7 +225,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 			height += table->row_spacing.values[MIN (row, max_index)];
 	}
 
-	height += 2 * gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+	height += 2 * table->frame_spacing.values[1];
 
 	/* Add the line widths to the table bbox */
 
@@ -236,10 +234,10 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 
 	/* Center vertically */
 
-	self->bbox.height = gmathml_view_measure_length (view, 0.5 * height);
+	self->bbox.height = 0.5 * height;
 	self->bbox.depth = height - self->bbox.height;
 
-	self->bbox.width += 2 * gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+	self->bbox.width += 2 * table->frame_spacing.values[0];
 
 	{
 		double axis_offset;
@@ -247,8 +245,8 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 
 		axis_offset = gmathml_view_measure_axis_offset (view, self->style.math_size);
 		length = (self->bbox.height + self->bbox.depth) * 0.5;
-		self->bbox.height = gmathml_view_measure_length (view, axis_offset + length);
-		self->bbox.depth = gmathml_view_measure_length (view, length - axis_offset);
+		self->bbox.height = axis_offset + length;
+		self->bbox.depth = length - axis_offset;
 	}
 
 	return &self->bbox;
@@ -273,7 +271,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 	max_row = table->row_spacing.space_list->n_spaces -  1;
 
 	y_offset = -self->bbox.height;
-        y_offset += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+        y_offset += table->frame_spacing.values[1];
 	y_offset += table->line_width;
 
 	row = 0;
@@ -281,7 +279,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 	     row_node != NULL;
 	     row_node = row_node->next_sibling) {
 		column = 0;
-		x_offset = gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+		x_offset = table->frame_spacing.values[0];
 		x_offset += table->line_width;
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
@@ -297,12 +295,10 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 						bbox->depth;
 					break;
 				case GMATHML_ROW_ALIGN_CENTER:
-					y_cell = y + y_offset +
-					       gmathml_view_measure_length (view,
-									    (table->heights[row] +
-									     table->depths[row] -
-									     bbox->height - bbox->depth) * 0.5) +
-					       bbox->height;
+					y_cell = y + y_offset + (table->heights[row] +
+								 table->depths[row] -
+								 bbox->height - bbox->depth) * 0.5 +
+						bbox->height;
 					break;
 				default:
 					y_cell = y + y_offset + table->heights[row];
@@ -316,9 +312,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 					x_cell = x + x_offset + table->widths[column] - bbox->width;
 					break;
 				default:
-					x_cell = x + x_offset + gmathml_view_measure_length (view,
-											     (table->widths[column] -
-											      bbox->width) * 0.5);
+					x_cell = x + x_offset + (table->widths[column] - bbox->width) * 0.5;
 			}
 
 			gmathml_element_layout (GMATHML_ELEMENT (cell_node), view,
@@ -326,10 +320,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 
 			if (column < table->n_columns - 1) {
 				x_offset += table->widths[column];
-				x_offset +=
-					gmathml_view_measure_length (view,
-								     table->column_spacing.values[MIN (column,
-												       max_column)]);
+				x_offset += table->column_spacing.values[MIN (column, max_column)];
 				x_offset += table->line_width;
 				column++;
 			}
@@ -337,7 +328,7 @@ gmathml_table_element_layout (GMathmlElement *self, GMathmlView *view,
 
 		if (row < table->n_rows - 1) {
 			y_offset += table->heights[row] + table->depths[row];
-			y_offset += gmathml_view_measure_length (view, table->row_spacing.values[MIN (row, max_row)]);
+			y_offset += table->row_spacing.values[MIN (row, max_row)];
 			y_offset += table->line_width;
 			row++;
 		}
@@ -364,14 +355,13 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 				     table->frame.value, table->line_width);
 
 	position  = self->y - self->bbox.height;
-        position += gmathml_view_measure_length (view, table->frame_spacing.values[1]);
+        position += table->frame_spacing.values[1];
 	position += table->line_width;
 
 	for (i = 0; i < table->n_rows - 1; i++) {
 		position += table->heights[i] + table->depths[i];
 		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
-		spacing = gmathml_view_measure_length (view, spacing);
-		y = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
+		y = position + (0.5 * spacing) + table->line_width * 0.5;
 		gmathml_view_show_line (view, &self->style,
 					self->x, y,
 					self->x + self->bbox.width, y,
@@ -381,14 +371,13 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 	}
 
 	position  = self->x;
-        position += gmathml_view_measure_length (view, table->frame_spacing.values[0]);
+        position += table->frame_spacing.values[0];
 	position += table->line_width;
 
 	for (i = 0; i < table->n_columns - 1; i++) {
 		position += table->widths[i];
 		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
-		spacing = gmathml_view_measure_length (view, spacing);
-		x = position + gmathml_view_measure_length (view, 0.5 * spacing) + table->line_width * 0.5;
+		x = position + 0.5 * (spacing + table->line_width);
 		gmathml_view_show_line (view, &self->style,
 					x, self->y - self->bbox.height,
 					x, self->y + self->bbox.depth,

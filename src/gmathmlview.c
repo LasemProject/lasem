@@ -60,19 +60,6 @@ struct _GMathmlViewPrivate {
 	gboolean debug;
 };
 
-double
-gmathml_view_measure_length (GMathmlView *view, double length)
-{
-	g_return_val_if_fail (GMATHML_IS_VIEW (view), 0.0);
-
-	return length;
-
-	if (view->priv->is_vector)
-		return length;
-
-	return floor (length + 0.5);
-}
-
 static void
 gmathml_view_update_layout_for_text (GMathmlView *view,
 				     const GMathmlElementStyle *style,
@@ -475,16 +462,16 @@ gmathml_view_measure_operator (GMathmlView *view,
 	    (flags & GMATHML_GLYPH_FLAG_ALIGN_AXIS)) {
 		double length = bbox->depth + bbox->height;
 
-		bbox->height = gmathml_view_measure_length (view, 0.5 * length + axis_offset);
-		bbox->depth =  gmathml_view_measure_length (view, 0.5 * length - axis_offset);
+		bbox->height = 0.5 * length + axis_offset;
+		bbox->depth =  0.5 * length - axis_offset;
 	}
 
 	if (is_stretch_bbox_defined && symmetric &&
 	    (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL)) {
 		double length = MAX (axis_offset + bbox->depth, bbox->height - axis_offset);
 
-		bbox->height = gmathml_view_measure_length (view, length + axis_offset);
-		bbox->depth =  gmathml_view_measure_length (view, length - axis_offset);
+		bbox->height = length + axis_offset;
+		bbox->depth =  length - axis_offset;
 	}
 
 	bbox->is_defined = TRUE;
@@ -642,30 +629,22 @@ gmathml_view_measure_radical (GMathmlView *view,
 
 	radical_stretch_bbox = *stretch_bbox;
 
-	thickness = gmathml_view_measure_length (view, style->math_size *
-						 GMATHML_RADICAL_TOP_LINE_WIDTH);
+	thickness = style->math_size * GMATHML_RADICAL_TOP_LINE_WIDTH;
 
-	radical_stretch_bbox.height +=
-		gmathml_view_measure_length (view, GMATHML_SPACE_EM_THICK *
-					     style->math_size) + thickness;
+	radical_stretch_bbox.height += GMATHML_SPACE_EM_THICK * style->math_size + thickness;
 
-	radical_stretch_bbox.depth +=
-		gmathml_view_measure_length (view,
-					     GMATHML_SPACE_EM_THICK *
-					     style->math_size);
+	radical_stretch_bbox.depth += GMATHML_SPACE_EM_THICK * style->math_size;
 
 	gmathml_view_measure_operator (view, style, GMATHML_RADICAL_UTF8,
 				       FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
 
 	if (x_offset != NULL) {
-		*x_offset = gmathml_view_measure_length (view, bbox->width * GMATHML_RADICAL_ORDER_X_OFFSET);
+		*x_offset = bbox->width * GMATHML_RADICAL_ORDER_X_OFFSET;
 	}
 
 	if (y_offset != NULL) {
-		*y_offset = gmathml_view_measure_length (view, (bbox->height + bbox->depth) *
-							 GMATHML_RADICAL_ORDER_Y_OFFSET -
-							 GMATHML_SPACE_EM_MEDIUM *
-							 style->math_size);
+		*y_offset = (bbox->height + bbox->depth) * GMATHML_RADICAL_ORDER_Y_OFFSET -
+			GMATHML_SPACE_EM_MEDIUM * style->math_size;
 	}
 }
 

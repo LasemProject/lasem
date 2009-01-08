@@ -68,7 +68,7 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (base), view, stretch_bbox);
 
 	*bbox = *base_bbox;
-	bbox->width += gmathml_view_measure_length (view, h_space);
+	bbox->width += h_space;
 
 	subscript_bbox = subscript != NULL ? gmathml_element_measure (subscript, view, NULL) : NULL;
 	superscript_bbox = superscript != NULL ? gmathml_element_measure (superscript, view, NULL) : NULL;
@@ -120,10 +120,8 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 		}
 	}
 
-	*superscript_offset = gmathml_view_measure_length (view, MAX (*superscript_offset,
-								      superscript_offset_min));
-	*subscript_offset = gmathml_view_measure_length (view, MAX (*subscript_offset,
-								    subscript_offset_min));
+	*superscript_offset = MAX (*superscript_offset, superscript_offset_min);
+	*subscript_offset = MAX (*subscript_offset, subscript_offset_min);
 
 	if (subscript_bbox != NULL)
 		gmathml_bbox_merge_vertically (&children_bbox, subscript_bbox, -*subscript_offset);
@@ -164,7 +162,7 @@ gmathml_layout_sub_sup (GMathmlElement *parent,
 	gmathml_element_layout (base, view, x, y, base_bbox);
 
 	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
-	x += gmathml_view_measure_length (view, h_space);
+	x += h_space;
 
 	if (subscript) {
 		const GMathmlBbox *subscript_bbox;

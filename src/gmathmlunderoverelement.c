@@ -319,7 +319,7 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 		else
 			under_over->overscript_offset = 0.0;
 
-		script_bbox.depth += gmathml_view_measure_length (view, under_over->over_space);
+		script_bbox.depth += under_over->over_space;
 		gmathml_bbox_add_over (&self->bbox, &script_bbox);
 
 		self->bbox.height += under_over->overscript_offset;
@@ -334,7 +334,7 @@ gmathml_under_over_element_measure (GMathmlElement *self, GMathmlView *view, con
 		else
 			under_over->underscript_offset = 0.0;
 
-		script_bbox.height += gmathml_view_measure_length (view, under_over->under_space);
+		script_bbox.height += under_over->under_space;
 		gmathml_bbox_add_under (&self->bbox, &script_bbox);
 
 		self->bbox.depth += under_over->underscript_offset;
