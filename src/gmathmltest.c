@@ -104,7 +104,7 @@ gmathml_test_render (char const *filename)
 
 		gmathml_view_measure (view, &width, &height);
 
-		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + .5, height + .5);
+		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2.5, height + 2.5);
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
@@ -112,7 +112,7 @@ gmathml_test_render (char const *filename)
 
 		cairo_destroy (cairo);
 
-		gmathml_view_render (view, 0, 0);
+		gmathml_view_render (view, 1, 1);
 
 		cairo_surface_write_to_png (surface, png_filename);
 
