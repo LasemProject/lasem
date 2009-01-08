@@ -730,18 +730,37 @@ gmathml_view_show_background (GMathmlView *view,
 			      const GMathmlBbox *bbox)
 {
 	cairo_t *cairo;
+	double x0, y0, x1, y1;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	cairo = view->priv->cairo;
 
+	x0 = x;
+	y0 = y - bbox->height;
+	x1 = x + bbox->width;
+	y1 = y + bbox->depth;
+
+	if (!view->priv->is_vector) {
+		cairo_user_to_device (cairo, &x0, &y0);
+		cairo_user_to_device (cairo, &x1, &y1);
+
+		x0 = (int) ((double) 0.5 + x0);
+		y0 = (int) ((double) 0.5 + y0);
+		x1 = (int) ((double) 0.5 + x1);
+		y1 = (int) ((double) 0.5 + y1);
+
+		cairo_device_to_user (cairo, &x0, &y0);
+		cairo_device_to_user (cairo, &x1, &y1);
+	}
+
 	cairo_set_source_rgba (cairo,
 			       style->math_background.red,
 			       style->math_background.green,
 			       style->math_background.blue,
 			       style->math_background.alpha);
-	cairo_rectangle (cairo, x, y - bbox->height, bbox->width, bbox->depth + bbox->height);
+	cairo_rectangle (cairo, x0, y0, x1 - x0, y1 - y0);
 	cairo_fill (cairo);
 }
 
