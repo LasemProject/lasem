@@ -196,7 +196,7 @@ _measure (GMathmlElement *self, GMathmlView *view, const GMathmlBbox *bbox)
 	}
 
 	if (n_elements > 0)
-		self->bbox.width += (n_elements - 1) * self->style.math_size * GMATHML_SPACE_EM_THIN;
+		self->bbox.width += (n_elements - 1) * self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 
 	if (stretchy_found) {
 		gdom_debug ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
@@ -281,7 +281,7 @@ _layout (GMathmlElement *self, GMathmlView *view,
 			if (operator != NULL)
 				child_bbox.width += offset +
 					gmathml_view_measure_length (view, operator->right_space.value);
-			x += child_bbox.width + self->style.math_size * GMATHML_SPACE_EM_THIN;
+			x += child_bbox.width + self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 		}
 }
 
