@@ -366,6 +366,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 	const GMathmlOperatorGlyph *glyph;
 	const char *font_name;
 	int baseline;
+	gboolean is_stretch_bbox_defined;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (style != NULL);
@@ -377,10 +378,12 @@ gmathml_view_measure_operator (GMathmlView *view,
 		return;
 	}
 
+	is_stretch_bbox_defined = stretch_bbox->is_defined;
+
 	font_description = view->priv->font_description;
 	pango_layout = view->priv->measure_pango_layout;
 
-	if (stretch_bbox->is_defined)
+	if (is_stretch_bbox_defined)
 		gdom_debug ("[GMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
@@ -399,7 +402,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		gboolean found = FALSE;
 
 		if (large && (glyph->flags & GMATHML_GLYPH_FLAG_HAS_LARGE_VERSION) &&
-		    !stretch_bbox->is_defined) {
+		    !is_stretch_bbox_defined) {
 			pango_font_description_set_size (font_description,
 							 style->math_size * PANGO_SCALE);
 			i = 1;
@@ -424,7 +427,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 			gdom_debug ("[GMathmlView::measure_operator] Glyph #%i -> width = %g, height = %g", i,
 				    width, height);
 
-			if (!stretch_bbox->is_defined) {
+			if (!is_stretch_bbox_defined) {
 				found = TRUE;
 				break;
 			}
@@ -453,7 +456,8 @@ gmathml_view_measure_operator (GMathmlView *view,
 		flags = glyph->flags;
 	}
 
-	if (stretch_bbox->is_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL)) {
+	if (is_stretch_bbox_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL) &&
+	    (stretch_bbox->height + stretch_bbox->depth) >= 0) {
 		bbox->height = stretch_bbox->height;
 		bbox->depth = stretch_bbox->depth;
 	} else {
@@ -461,12 +465,13 @@ gmathml_view_measure_operator (GMathmlView *view,
 		bbox->depth = pango_units_to_double (ink_rect.height + ink_rect.y - baseline);
 	}
 
-	if (stretch_bbox->is_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL))
+	if (is_stretch_bbox_defined && (flags & GMATHML_GLYPH_FLAG_STRETCH_HORIZONTAL) &&
+	    stretch_bbox->width >= 0.0)
 		bbox->width = stretch_bbox->width;
 	else
 		bbox->width = pango_units_to_double (ink_rect.width);
 
-	if (!stretch_bbox->is_defined &&
+	if (!is_stretch_bbox_defined &&
 	    (flags & GMATHML_GLYPH_FLAG_ALIGN_AXIS)) {
 		double length = bbox->depth + bbox->height;
 
@@ -474,7 +479,7 @@ gmathml_view_measure_operator (GMathmlView *view,
 		bbox->depth =  gmathml_view_measure_length (view, 0.5 * length - axis_offset);
 	}
 
-	if (stretch_bbox->is_defined && symmetric &&
+	if (is_stretch_bbox_defined && symmetric &&
 	    (flags & GMATHML_GLYPH_FLAG_STRETCH_VERTICAL)) {
 		double length = MAX (axis_offset + bbox->depth, bbox->height - axis_offset);
 

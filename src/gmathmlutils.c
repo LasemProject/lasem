@@ -137,7 +137,7 @@ gmathml_bbox_stretch_vertically (GMathmlBbox *self, const GMathmlBbox *bbox)
 
 	if (!self->is_defined) {
 		*self = *bbox;
-		self->width = 0;
+		self->width = -1.0;
 		return;
 	}
 
@@ -158,8 +158,8 @@ gmathml_bbox_stretch_horizontally (GMathmlBbox *self, const GMathmlBbox *bbox)
 
 	if (!self->is_defined) {
 		self->width = bbox->width;
-		self->height = -G_MAXDOUBLE;
-		self->depth = -G_MAXDOUBLE;
+		self->height = -1.0;
+		self->depth = -1.0;
 		self->is_defined = TRUE;
 		return;
 	}
