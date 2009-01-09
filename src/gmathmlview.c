@@ -588,7 +588,6 @@ gmathml_view_show_operator (GMathmlView *view,
 		cairo_fill (cairo);
 	}
 
-	cairo_move_to (cairo, x , y);
 	cairo_move_to (cairo, x , y - stretch_bbox->height);
 	cairo_scale (cairo, scale_x, scale_y);
 	cairo_rel_move_to (cairo,
