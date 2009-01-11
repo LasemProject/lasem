@@ -132,6 +132,8 @@ gmathml_presentation_token_measure (GMathmlElement *self, GMathmlView *view, con
 
 	g_free (text);
 
+	self->bbox.width += self->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
+
 	return &self->bbox;
 }
 
@@ -148,7 +150,9 @@ gmathml_presentation_token_render (GMathmlElement *self, GMathmlView *view)
 
 	text = gmathml_presentation_token_get_text (GMATHML_PRESENTATION_TOKEN (self));
 
-	gmathml_view_show_text (view, &self->style, self->x, self->y, text);
+	gmathml_view_show_text (view, &self->style,
+				self->x + 0.5 * self->style.math_size * GMATHML_SPACE_EM_VERY_THIN,
+				self->y, text);
 
 	g_free (text);
 }

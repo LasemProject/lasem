@@ -43,7 +43,7 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	GMathmlBbox children_bbox = gmathml_bbox_null;
 	GMathmlOperatorElement *embellished_core;
 	double axis_offset, ascent, descent;
-	double v_space, h_space;
+	double v_space;
 	double slant;
 	gboolean is_operator;
 
@@ -58,7 +58,6 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	slant = is_operator ? gmathml_operator_element_get_slant (embellished_core, view) : 0.0;
 
 	axis_offset = gmathml_view_measure_axis_offset (view, parent->style.math_size);
-	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
 	v_space = parent->style.math_size * GMATHML_SPACE_EM_THIN;
 	gmathml_view_get_font_metrics (view, &parent->style, &ascent, &descent);
 
@@ -68,7 +67,6 @@ gmathml_measure_sub_sup (GMathmlElement *parent,
 	base_bbox = gmathml_element_measure (GMATHML_ELEMENT (base), view, stretch_bbox);
 
 	*bbox = *base_bbox;
-	bbox->width += h_space;
 
 	subscript_bbox = subscript != NULL ? gmathml_element_measure (subscript, view, NULL) : NULL;
 	superscript_bbox = superscript != NULL ? gmathml_element_measure (superscript, view, NULL) : NULL;
@@ -144,7 +142,6 @@ gmathml_layout_sub_sup (GMathmlElement *parent,
 {
 	const GMathmlBbox *base_bbox;
 	const GMathmlOperatorElement *embellished_core;
-	double h_space;
 	double slant;
 	double slant_offset;
 	gboolean is_operator;
@@ -160,9 +157,6 @@ gmathml_layout_sub_sup (GMathmlElement *parent,
 	base_bbox = gmathml_element_get_bbox (base);
 
 	gmathml_element_layout (base, view, x, y, base_bbox);
-
-	h_space = parent->style.math_size * GMATHML_SPACE_EM_VERY_THIN;
-	x += h_space;
 
 	if (subscript) {
 		const GMathmlBbox *subscript_bbox;
