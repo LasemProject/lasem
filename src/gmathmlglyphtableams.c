@@ -395,7 +395,7 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		{GMATHML_FONT_ERROR,		""},
 		1,
 		{
-			{GMATHML_FONT_CMI10,	"d"}
+			{GMATHML_FONT_CMMI10,	"d"}
 		}
 	},
 	{
@@ -407,7 +407,7 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		{GMATHML_FONT_ERROR,		""},
 		1,
 		{
-			{GMATHML_FONT_CMI10,	"i"}
+			{GMATHML_FONT_CMMI10,	"i"}
 		}
 	},
 	{
@@ -419,7 +419,7 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		{GMATHML_FONT_ERROR,		""},
 		1,
 		{
-			{GMATHML_FONT_CMI10,	"j"}
+			{GMATHML_FONT_CMMI10,	"j"}
 		}
 	},
 	{

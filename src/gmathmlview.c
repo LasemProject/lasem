@@ -44,6 +44,27 @@ static const char *gmathml_font_names[] = {
 	"symbol"
 };
 
+static const struct {
+	const char *font;
+	PangoStyle style;
+	PangoWeight weight;
+} gmathml_pango_options[GMATHML_VARIANT_MONOSPACE + 1] = {
+	{NULL,				PANGO_STYLE_NORMAL, 	PANGO_WEIGHT_NORMAL},
+	{NULL,  			PANGO_STYLE_NORMAL, 	PANGO_WEIGHT_BOLD},
+	{NULL,				PANGO_STYLE_ITALIC, 	PANGO_WEIGHT_NORMAL},
+	{NULL,				PANGO_STYLE_ITALIC,	PANGO_WEIGHT_BOLD},
+	{GMATHML_FONT_DOUBLE_STRUCK,	PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL},
+	{NULL,				PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL},
+	{GMATHML_FONT_SCRIPT,		PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL},
+	{GMATHML_FONT_SCRIPT,		PANGO_STYLE_NORMAL,	PANGO_WEIGHT_BOLD},
+	{NULL,				PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL},
+	{GMATHML_FONT_SANS,		PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL},
+	{GMATHML_FONT_SANS,		PANGO_STYLE_NORMAL,	PANGO_WEIGHT_BOLD},
+	{GMATHML_FONT_SANS,		PANGO_STYLE_ITALIC,	PANGO_WEIGHT_NORMAL},
+	{GMATHML_FONT_SANS,		PANGO_STYLE_ITALIC,	PANGO_WEIGHT_BOLD},
+	{GMATHML_FONT_MONOSPACE,	PANGO_STYLE_NORMAL,	PANGO_WEIGHT_NORMAL}
+};
+
 static GObjectClass *parent_class;
 
 struct _GMathmlViewPrivate {
@@ -73,64 +94,34 @@ gmathml_view_update_layout_for_text (GMathmlView *view,
 
 	font_description = view->priv->font_description;
 
-	pango_font_description_set_family (font_description, style->math_family);
 	pango_font_description_set_size (font_description, style->math_size * PANGO_SCALE);
-	switch (style->math_variant) {
-		case GMATHML_VARIANT_NORMAL:
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_ITALIC:
-			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_BOLD:
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+
+	/* Kludge for a nicer latex like rendering */
+	if (strcmp (style->math_family, "cmr10") == 0 &&
+	    (style->math_variant == GMATHML_VARIANT_ITALIC ||
+	     style->math_variant == GMATHML_VARIANT_BOLD_ITALIC)) {
+		pango_font_description_set_family (font_description, "cmmi10");
+		pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+		if (style->math_variant == GMATHML_VARIANT_BOLD_ITALIC)
 			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
-			break;
-		case GMATHML_VARIANT_BOLD_ITALIC:
-			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
-			break;
-		case GMATHML_VARIANT_DOUBLE_STRUCK:
-			pango_font_description_set_family (font_description, GMATHML_FONT_DOUBLE_STRUCK);
+		else
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
+	} else {
+		if (style->math_variant < G_N_ELEMENTS (gmathml_pango_options)) {
+			if (gmathml_pango_options[style->math_variant].font == NULL)
+				pango_font_description_set_family (font_description, style->math_family);
+			else
+				pango_font_description_set_family (font_description,
+								   gmathml_pango_options[style->math_variant].font);
+			pango_font_description_set_style (font_description,
+							  gmathml_pango_options[style->math_variant].style);
+			pango_font_description_set_weight (font_description,
+							   gmathml_pango_options[style->math_variant].weight);
+		} else {
+			pango_font_description_set_family (font_description, style->math_family);
 			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_SCRIPT:
-			pango_font_description_set_family (font_description, GMATHML_FONT_SCRIPT);
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_BOLD_SCRIPT:
-			pango_font_description_set_family (font_description, GMATHML_FONT_SCRIPT);
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
-			break;
-		case GMATHML_VARIANT_SANS_SERIF:
-			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_SANS_SERIF_ITALIC:
-			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		case GMATHML_VARIANT_SANS_SERIF_BOLD_ITALIC:
-			pango_font_description_set_family (font_description, GMATHML_FONT_SANS);
-			pango_font_description_set_style (font_description, PANGO_STYLE_ITALIC);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_BOLD);
-			break;
-		case GMATHML_VARIANT_MONOSPACE:
-			pango_font_description_set_family (font_description, GMATHML_FONT_MONOSPACE);
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
-		default:
-			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
-			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
-			break;
+		}
 	}
 	pango_layout_set_text (pango_layout, text, -1);
 	pango_layout_set_font_description (pango_layout, font_description);
