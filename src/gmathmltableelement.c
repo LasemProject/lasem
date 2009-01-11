@@ -340,6 +340,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 {
 	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
 	double x, y;
+	double x0, y0, x1, y1;
 	double position;
 	double spacing;
 	unsigned int i;
@@ -347,11 +348,13 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
 
+	x0 = self->x + 0.5 * table->line_width;
+	y0 = self->y - self->bbox.height + 0.5 * table->line_width;
+	x1 = x0 + self->bbox.width - table->line_width;
+	y1 = y0 + self->bbox.height + self->bbox.depth - table->line_width;
+
 	gmathml_view_show_rectangle (view, &self->style,
-				     self->x + 0.5 * table->line_width,
-				     self->y - self->bbox.height + 0.5 * table->line_width,
-				     self->bbox.width - table->line_width,
-				     self->bbox.height + self->bbox.depth - table->line_width,
+				     x0, y0, x1 - x0, y1 - y0,
 				     table->frame.value, table->line_width);
 
 	position  = self->y - self->bbox.height;
@@ -363,8 +366,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
 		y = position + (0.5 * spacing) + table->line_width * 0.5;
 		gmathml_view_show_line (view, &self->style,
-					self->x, y,
-					self->x + self->bbox.width, y,
+					x0, y, x1, y,
 					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
 					table->line_width);
 		position += spacing + table->line_width;
@@ -379,8 +381,7 @@ gmathml_table_element_render (GMathmlElement *self, GMathmlView *view)
 		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
 		x = position + 0.5 * (spacing + table->line_width);
 		gmathml_view_show_line (view, &self->style,
-					x, self->y - self->bbox.height,
-					x, self->y + self->bbox.depth,
+					x, y0, x, y1,
 					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
 					table->line_width);
 		position += spacing + table->line_width;
