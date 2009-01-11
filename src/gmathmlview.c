@@ -713,71 +713,39 @@ gmathml_view_show_radical (GMathmlView *view,
 	cairo_restore (cairo);
 }
 
-void
-gmathml_view_show_background (GMathmlView *view,
-			      const GMathmlElementStyle *style,
-			      double x, double y,
-			      const GMathmlBbox *bbox)
-{
-	cairo_t *cairo;
-	double x0, y0, x1, y1;
-
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-	g_return_if_fail (style != NULL);
-
-	cairo = view->priv->cairo;
-
-	x0 = x;
-	y0 = y - bbox->height;
-	x1 = x + bbox->width;
-	y1 = y + bbox->depth;
-
-	if (!view->priv->is_vector) {
-		cairo_user_to_device (cairo, &x0, &y0);
-		cairo_user_to_device (cairo, &x1, &y1);
-
-		x0 = (int) ((double) 0.5 + x0);
-		y0 = (int) ((double) 0.5 + y0);
-		x1 = (int) ((double) 0.5 + x1);
-		y1 = (int) ((double) 0.5 + y1);
-
-		cairo_device_to_user (cairo, &x0, &y0);
-		cairo_device_to_user (cairo, &x1, &y1);
-	}
-
-	cairo_set_source_rgba (cairo,
-			       style->math_background.red,
-			       style->math_background.green,
-			       style->math_background.blue,
-			       style->math_background.alpha);
-	cairo_rectangle (cairo, x0, y0, x1 - x0, y1 - y0);
-	cairo_fill (cairo);
-}
-
-void
-gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
-{
-	cairo_t *cairo;
-
-	g_return_if_fail (GMATHML_IS_VIEW (view));
-
-	cairo = view->priv->cairo;
-
-	if (view->priv->debug) {
-		cairo_move_to (cairo, x, y);
-		cairo_set_source_rgba (cairo, 0,0,1,0.1);
-		cairo_rectangle (cairo, x, y, bbox->width, -bbox->height);
-		cairo_rectangle (cairo, x, y, bbox->width, bbox->depth);
-		cairo_fill (cairo);
-	}
-}
-
 typedef enum {
 	_GMATHML_STROKE_WIDTH_EVEN,
 	_GMATHML_STROKE_WIDTH_ODD,
 	_GMATHML_STROKE_WIDTH_NULL,
 	_GMATHML_STROKE_WIDTH_VECTOR
 } _GMathmlStrokeWidth;
+
+static void
+_round_rectangle_coordinates (cairo_t *cairo,
+			      _GMathmlStrokeWidth stroke_width,
+			      double *x0, double *y0,
+			      double *x1, double *y1)
+{
+	if (stroke_width != _GMATHML_STROKE_WIDTH_VECTOR) {
+		cairo_user_to_device (cairo, x0, y0);
+		cairo_user_to_device (cairo, x1, y1);
+
+		if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN) {
+			*x0 = floor (*x0 + 0.5);
+			*y0 = floor (*y0 + 0.5);
+			*x1 = floor (*x1 + 0.5);
+			*y1 = floor (*y1 + 0.5);
+		} else {
+			*x0 = 0.5 + floor (*x0);
+			*y0 = 0.5 + floor (*y0);
+			*x1 = 0.5 + floor (*x1);
+			*y1 = 0.5 + floor (*y1);
+		}
+
+		cairo_device_to_user (cairo, x0, y0);
+		cairo_device_to_user (cairo, x1, y1);
+	}
+}
 
 static _GMathmlStrokeWidth
 _emit_stroke_attributes (GMathmlView *view, GMathmlLine line, double line_width,
@@ -840,6 +808,55 @@ _emit_stroke_attributes (GMathmlView *view, GMathmlLine line, double line_width,
 }
 
 void
+gmathml_view_show_background (GMathmlView *view,
+			      const GMathmlElementStyle *style,
+			      double x, double y,
+			      const GMathmlBbox *bbox)
+{
+	cairo_t *cairo;
+	double x0, y0, x1, y1;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+	g_return_if_fail (style != NULL);
+
+	cairo = view->priv->cairo;
+
+	x0 = x;
+	y0 = y - bbox->height;
+	x1 = x + bbox->width;
+	y1 = y + bbox->depth;
+
+	if (!view->priv->is_vector)
+		_round_rectangle_coordinates (cairo, _GMATHML_STROKE_WIDTH_EVEN, &x0, &y0, &x1, &y1);
+
+	cairo_set_source_rgba (cairo,
+			       style->math_background.red,
+			       style->math_background.green,
+			       style->math_background.blue,
+			       style->math_background.alpha);
+	cairo_rectangle (cairo, x0, y0, x1 - x0, y1 - y0);
+	cairo_fill (cairo);
+}
+
+void
+gmathml_view_show_bbox (GMathmlView *view, double x, double y, const GMathmlBbox *bbox)
+{
+	cairo_t *cairo;
+
+	g_return_if_fail (GMATHML_IS_VIEW (view));
+
+	cairo = view->priv->cairo;
+
+	if (view->priv->debug) {
+		cairo_move_to (cairo, x, y);
+		cairo_set_source_rgba (cairo, 0,0,1,0.1);
+		cairo_rectangle (cairo, x, y, bbox->width, -bbox->height);
+		cairo_rectangle (cairo, x, y, bbox->width, bbox->depth);
+		cairo_fill (cairo);
+	}
+}
+
+void
 gmathml_view_show_rectangle (GMathmlView *view,
 			     const GMathmlElementStyle *style,
 			     double x0, double y0, double width, double height,
@@ -862,25 +879,7 @@ gmathml_view_show_rectangle (GMathmlView *view,
 
 	cairo = view->priv->cairo;
 
-	if (stroke_width != _GMATHML_STROKE_WIDTH_VECTOR) {
-		cairo_user_to_device (cairo, &x0, &y0);
-		cairo_user_to_device (cairo, &x1, &y1);
-
-		if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN) {
-			x0 = floor (x0 + 0.5);
-			y0 = floor (y0 + 0.5);
-			x1 = floor (x1 + 0.5);
-			y1 = floor (y1 + 0.5);
-		} else {
-			x0 = 0.5 + floor (x0);
-			y0 = 0.5 + floor (y0);
-			x1 = 0.5 + floor (x1);
-			y1 = 0.5 + floor (y1);
-		}
-
-		cairo_device_to_user (cairo, &x0, &y0);
-		cairo_device_to_user (cairo, &x1, &y1);
-	}
+	_round_rectangle_coordinates (cairo, stroke_width, &x0, &y0, &x1, &y1);
 
 	cairo_rectangle (cairo, x0, y0, x1 - x0, y1 - y0);
 	cairo_stroke (cairo);
@@ -905,25 +904,7 @@ gmathml_view_show_line (GMathmlView *view,
 
 	cairo = view->priv->cairo;
 
-	if (stroke_width != _GMATHML_STROKE_WIDTH_VECTOR) {
-		cairo_user_to_device (cairo, &x0, &y0);
-		cairo_user_to_device (cairo, &x1, &y1);
-
-		if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN) {
-			x0 = floor (x0 + 0.5);
-			y0 = floor (y0 + 0.5);
-			x1 = floor (x1 + 0.5);
-			y1 = floor (y1 + 0.5);
-		} else {
-			x0 = 0.5 + floor (x0);
-			y0 = 0.5 + floor (y0);
-			x1 = 0.5 + floor (x1);
-			y1 = 0.5 + floor (y1);
-		}
-
-		cairo_device_to_user (cairo, &x0, &y0);
-		cairo_device_to_user (cairo, &x1, &y1);
-	}
+	_round_rectangle_coordinates (cairo, stroke_width, &x0, &y0, &x1, &y1);
 
 	cairo_move_to (cairo, x0, y0);
 	cairo_line_to (cairo, x1, y1);
@@ -938,7 +919,7 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 {
 	_GMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
-	double dummy = 0;
+	double x0, y0, x1, y1;
 
 	g_return_if_fail (GMATHML_IS_VIEW (view));
 	g_return_if_fail (style != NULL);
@@ -948,26 +929,17 @@ gmathml_view_show_fraction_line (GMathmlView *view,
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
 
+	x0 = x;
+	y0 = y;
+	x1 = x + width;
+	y1 = y;
+
 	cairo = view->priv->cairo;
 
-	if (stroke_width == _GMATHML_STROKE_WIDTH_VECTOR) {
-		cairo_move_to (cairo, x, y);
-		cairo_line_to (cairo, x + width, y);
-		cairo_stroke (cairo);
-		return;
-	}
+	_round_rectangle_coordinates (cairo, stroke_width, &x0, &y0, &x1, &y1);
 
-	cairo_user_to_device (cairo, &dummy, &y);
-
-	if (stroke_width == _GMATHML_STROKE_WIDTH_EVEN)
-		y = floor (y + 0.5);
-	else
-		y = 0.5 + floor (y);
-
-	cairo_device_to_user (cairo, &dummy, &y);
-
-	cairo_move_to (cairo, x, y);
-	cairo_line_to (cairo, x + width, y);
+	cairo_move_to (cairo, x0, y0);
+	cairo_line_to (cairo, x1, y1);
 	cairo_stroke (cairo);
 }
 
