@@ -509,6 +509,30 @@ const GMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
+		"\xe2\x86\x91", /* ↑ */
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_DEFAULT,	"\xe2\x86\x91"}
+		}
+	},
+	{
+		"\xe2\x86\x93", /* ↓ */
+		GMATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		{GMATHML_FONT_ERROR,		""},
+		1,
+		{
+			{GMATHML_FONT_DEFAULT,	"\xe2\x86\x93"}
+		}
+	},
+	{
 		"-",
 		0,
 		{GMATHML_FONT_ERROR,		""},

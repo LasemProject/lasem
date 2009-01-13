@@ -22,6 +22,7 @@
 
 #include <gmathmltableelement.h>
 #include <gmathmltablerowelement.h>
+#include <gmathmloperatorelement.h>
 #include <gmathmlview.h>
 
 #define GMATHML_TABLE_ELEMENT_LINE_WIDTH 1 /* 1 pt */
@@ -123,6 +124,7 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 	double max_width = 0.0;
 	double max_depth = 0.0;
 	double height;
+	gboolean stretchy_found = FALSE;
 
 	table->line_width = GMATHML_TABLE_ELEMENT_LINE_WIDTH;
 
@@ -190,6 +192,15 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 				table->heights[row] = MAX (table->heights[row], cell_bbox->height);
 				table->depths[row]  = MAX (table->depths[row],  cell_bbox->depth);
 			}
+
+			if (!stretchy_found) {
+				const GMathmlOperatorElement *operator;
+
+				operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (cell_node));
+				if (operator != NULL && operator->stretchy.value)
+					stretchy_found = TRUE;
+			}
+
 			column++;
 		}
 		row++;
@@ -247,6 +258,32 @@ gmathml_table_element_measure (GMathmlElement *self, GMathmlView *view, const GM
 		length = (self->bbox.height + self->bbox.depth) * 0.5;
 		self->bbox.height = axis_offset + length;
 		self->bbox.depth = length - axis_offset;
+	}
+
+	if (stretchy_found) {
+		const GMathmlOperatorElement *operator;
+		GMathmlBbox stretch_bbox;
+
+		row = 0;
+		for (row_node = GDOM_NODE (self)->first_child;
+		     row_node != NULL;
+		     row_node = row_node->next_sibling) {
+			column = 0;
+			for (cell_node = row_node->first_child;
+			     cell_node != NULL;
+			     cell_node = cell_node->next_sibling) {
+				operator = gmathml_element_get_embellished_core (GMATHML_ELEMENT (cell_node));
+				if (operator != NULL && operator->stretchy.value) {
+					stretch_bbox.width = table->widths[column];
+					stretch_bbox.height = table->heights[row];
+					stretch_bbox.depth = table->depths[row];
+					gmathml_element_measure (GMATHML_ELEMENT (cell_node), view,
+								 &stretch_bbox);
+				}
+				column++;
+			}
+			row++;
+		}
 	}
 
 	return &self->bbox;

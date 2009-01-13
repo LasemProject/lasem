@@ -477,10 +477,12 @@ static const struct {
 	{"Scirc",                 "\xc5\x9c"                }, /* Ŝ [LATIN CAPITAL LETTER S WITH CIRCUMFLEX]*/
 	{"Scy",                   "\xd0\xa1"                }, /* С [CYRILLIC CAPITAL LETTER ES]*/
 	{"Sfr",                   "\xf0\x9d\x94\x96"        }, /* 𝔖 [MATHEMATICAL FRAKTUR CAPITAL S]*/
+#if 0	
 	{"ShortDownArrow",        "\xe2\x86\x93"            }, /* ↓ [DOWNWARDS ARROW]*/
 	{"ShortLeftArrow",        "\xe2\x86\x90"            }, /* ← [LEFTWARDS ARROW]*/
 	{"ShortRightArrow",       "\xe2\x86\x92"            }, /* → [RIGHTWARDS ARROW]*/
 	{"ShortUpArrow",          "\xe2\x86\x91"            }, /* ↑ [UPWARDS ARROW]*/
+#endif
 	{"Sigma",                 "\xce\xa3"                }, /* Σ [GREEK CAPITAL LETTER SIGMA]*/
 	{"SmallCircle",           "\xe2\x88\x98"            }, /* ∘ [RING OPERATOR]*/
 	{"Sopf",                  "\xf0\x9d\x95\x8a"        }, /* 𝕊 [MATHEMATICAL DOUBLE-STRUCK CAPITAL S]*/

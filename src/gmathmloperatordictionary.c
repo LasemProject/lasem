@@ -2440,7 +2440,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DoubleLongLeftArrow", GMATHML_FORM_INFIX,
@@ -2476,7 +2476,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DoubleUpDownArrow", GMATHML_FORM_INFIX,
@@ -2485,7 +2485,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DownArrow", GMATHML_FORM_INFIX,
@@ -2494,7 +2494,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DownArrowBar", GMATHML_FORM_INFIX,
@@ -2503,7 +2503,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DownArrowUpArrow", GMATHML_FORM_INFIX,
@@ -2512,7 +2512,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"DownTeeArrow", GMATHML_FORM_INFIX,
@@ -2692,7 +2692,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"ShortUpArrow", GMATHML_FORM_INFIX,
@@ -2701,7 +2701,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		FALSE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"UpArrow", GMATHML_FORM_INFIX,
@@ -2710,7 +2710,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"UpArrowBar", GMATHML_FORM_INFIX,
@@ -2719,7 +2719,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"UpArrowDownArrow", GMATHML_FORM_INFIX,
@@ -2728,7 +2728,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"UpDownArrow", GMATHML_FORM_INFIX,
@@ -2737,7 +2737,7 @@ static const GMathmlOperatorDictionaryEntry gmathml_operator_entries[] = {
 		TRUE, FALSE, FALSE, FALSE, FALSE, FALSE,
 		{ GMATHML_SPACE_NAME_ERROR, { 1, GMATHML_UNIT_PX}},
 		{ GMATHML_SPACE_NAME_INFINITY, {0.0, 0}},
-		TRUE
+		FALSE /* TRUE */
 	},
 	{
 		"UpEquilibrium", GMATHML_FORM_INFIX,
