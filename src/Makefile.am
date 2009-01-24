@@ -55,7 +55,11 @@ libgmathml_la_SOURCES =			\
 	gmathmlaligngroupelement.c	\
 	gmathmlutils.c			\
 	gmathmllayoututils.c		\
-	gmathmlparser.c
+	gmathmlparser.c			\
+	gsvgdocument.c			\
+	gsvgelement.c			\
+	gsvgsvgelement.c		\
+	gsvgview.c
 
 libgmathml_ladir = $(includedir)/gmathml
 libgmathml_la_HEADERS = \
@@ -100,7 +104,11 @@ libgmathml_la_HEADERS = \
 	gmathmlenums.h			\
 	gmathmlutils.h			\
 	gmathmllayoututils.h		\
-	gmathmlparser.h
+	gmathmlparser.h			\
+	gsvgdocument.h			\
+	gsvgelement.h			\
+	gsvgsvgelement.h		\
+	gsvgview.h
 
 bin_PROGRAMS = gmathmltest gmathmlrender
 
