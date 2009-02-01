@@ -44,6 +44,16 @@ typedef struct {
 	GArray *array;
 } GDomAttributeMap;
 
+typedef struct {
+	void (*init) 		(void **attribute_bag);
+	void (*inherit) 	(void *to, const void *from);
+	void (*finalize) 	(void **attribute_bag);
+} GDomAttributeBagClass;
+
+typedef struct {
+	void (*finalize) (void *);
+} GDomAttributeClass;
+
 typedef void (*GDomAttributeFinalizeFunc) (void *);
 
 GDomAttributeMap *	gdom_attribute_map_new 		(void);
@@ -52,7 +62,7 @@ void			gdom_attribute_map_free		(GDomAttributeMap *map);
 void			gdom_attribute_map_add_attribute_full	(GDomAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset,
-								 GDomAttributeFinalizeFunc finalize);
+								 const GDomAttributeClass *attribute_class);
 void			gdom_attribute_map_add_attribute 	(GDomAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset);
@@ -136,6 +146,13 @@ void 	gdom_attribute_named_list_parse 	(GDomAttributeNamedList *attribute,
 void	gdom_attribute_string_finalize		(void *abstract);
 void 	gdom_attribute_named_list_finalize 	(void *abstract);
 
+
+void 	gdom_attribute_map_add_string 		(GDomAttributeMap *map,
+						 char const *name,
+						 ptrdiff_t offset);
+void 	gdom_attribute_map_add_named_list 	(GDomAttributeMap *map,
+						 char const *name,
+						 ptrdiff_t offset);
 G_END_DECLS
 
 #endif

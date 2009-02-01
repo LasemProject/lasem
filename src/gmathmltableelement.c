@@ -485,29 +485,22 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowalign",
-					       offsetof (GMathmlTableElement, row_align),
-					       gdom_attribute_named_list_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnalign",
-					       offsetof (GMathmlTableElement, column_align),
-					       gdom_attribute_named_list_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowspacing",
-					       offsetof (GMathmlTableElement, row_spacing),
-					       gmathml_attribute_space_list_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnspacing",
-					       offsetof (GMathmlTableElement, column_spacing),
-					       gmathml_attribute_space_list_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowlines",
-					       offsetof (GMathmlTableElement, row_lines),
-					       gdom_attribute_named_list_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnlines",
-					       offsetof (GMathmlTableElement, column_lines),
-					       gdom_attribute_named_list_finalize);
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowalign",
+					   offsetof (GMathmlTableElement, row_align));
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnalign",
+					   offsetof (GMathmlTableElement, column_align));
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowspacing",
+					   offsetof (GMathmlTableElement, row_spacing));
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnspacing",
+					   offsetof (GMathmlTableElement, column_spacing));
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowlines",
+					   offsetof (GMathmlTableElement, row_lines));
+	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnlines",
+					   offsetof (GMathmlTableElement, column_lines));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "frame",
 					  offsetof (GMathmlTableElement, frame));
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "framespacing",
-					       offsetof (GMathmlTableElement, frame_spacing),
-					       gmathml_attribute_space_list_finalize);
+	gdom_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
+					   offsetof (GMathmlTableElement, frame_spacing));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
 					  offsetof (GMathmlTableElement, equal_rows));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",

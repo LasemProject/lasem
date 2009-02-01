@@ -163,15 +163,12 @@ gmathml_fenced_element_class_init (GMathmlFencedElementClass *m_fenced_element_c
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "open",
-					       offsetof (GMathmlFencedElement, open),
-					       gdom_attribute_string_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "close",
-					       offsetof (GMathmlFencedElement, close),
-					       gdom_attribute_string_finalize);
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "separators",
-					       offsetof (GMathmlFencedElement, separators),
-					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_string (m_element_class->attributes, "open",
+				       offsetof (GMathmlFencedElement, open));
+	gdom_attribute_map_add_string (m_element_class->attributes, "close",
+				       offsetof (GMathmlFencedElement, close));
+	gdom_attribute_map_add_string (m_element_class->attributes, "separators",
+				       offsetof (GMathmlFencedElement, separators));
 }
 
 G_DEFINE_TYPE (GMathmlFencedElement, gmathml_fenced_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

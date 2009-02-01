@@ -354,7 +354,7 @@ gmathml_space_list_duplicate (const GMathmlSpaceList *space_list)
 	return new_space_list;
 }
 
-void
+static void
 gmathml_attribute_space_list_finalize (void *abstract)
 {
 	GMathmlAttributeSpaceList *attribute = abstract;
@@ -515,3 +515,16 @@ gmathml_attribute_line_list_parse (GDomAttributeNamedList *attribute,
 {
 	gdom_attribute_named_list_parse (attribute, style_value, gmathml_line_from_string);
 }
+
+static const GDomAttributeClass attribute_space_list_class = {
+	.finalize = gmathml_attribute_space_list_finalize
+};
+
+void
+gdom_attribute_map_add_space_list (GDomAttributeMap *map,
+				   char const *name,
+				   ptrdiff_t offset)
+{
+	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_space_list_class);
+}
+

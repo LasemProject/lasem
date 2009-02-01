@@ -24,9 +24,14 @@
 #include <stdlib.h>
 #include <math.h>
 
+static const GDomAttributeClass attribute_class_null = {
+	.finalize = NULL
+};
+
 typedef struct {
 	ptrdiff_t offset;
-	void (*finalize) (void *);
+	const GDomAttributeClass *attribute_class;
+	const GDomAttributeBagClass *bag_class;
 } GDomAttributeInfos;
 
 GDomAttributeMap *
@@ -55,7 +60,7 @@ void
 gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
 				       const char *name,
 				       ptrdiff_t offset,
-				       GDomAttributeFinalizeFunc finalize)
+				       const GDomAttributeClass *attribute_class)
 {
 	GDomAttributeInfos *attribute_infos;
 
@@ -70,7 +75,10 @@ gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
 
 	attribute_infos = g_new (GDomAttributeInfos, 1);
 	attribute_infos->offset = offset;
-	attribute_infos->finalize = finalize;
+	if (attribute_class != NULL)
+		attribute_infos->attribute_class = attribute_class;
+	else
+		attribute_infos->attribute_class = &attribute_class_null;
 
 	g_hash_table_insert (map->hash, (char *) name, attribute_infos);
 }
@@ -160,8 +168,8 @@ gdom_attribute_finalize_cb (gpointer key,
 		g_free (attribute->value);
 		g_free (attribute->css_value);
 
-		if (attribute_infos->finalize != NULL)
-			attribute_infos->finalize (attribute);
+		if (attribute_infos->attribute_class->finalize != NULL)
+			attribute_infos->attribute_class->finalize (attribute);
 	}
 }
 
@@ -342,5 +350,29 @@ gdom_attribute_named_list_finalize (void *abstract)
 	g_free (attribute->values);
 	attribute->n_values = 0;
 	attribute->values = NULL;
+}
+
+static const GDomAttributeClass attribute_string_class = {
+	.finalize = gdom_attribute_string_finalize
+};
+
+void
+gdom_attribute_map_add_string (GDomAttributeMap *map,
+			       char const *name,
+			       ptrdiff_t offset)
+{
+	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_string_class);
+}
+
+static const GDomAttributeClass attribute_named_list_class = {
+	.finalize = gdom_attribute_named_list_finalize
+};
+
+void
+gdom_attribute_map_add_named_list (GDomAttributeMap *map,
+				   char const *name,
+				   ptrdiff_t offset)
+{
+	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_named_list_class);
 }
 

@@ -118,7 +118,6 @@ GMathmlSpaceList *	gmathml_space_list_new  	(unsigned int n_spaces);
 void 			gmathml_space_list_free 	(GMathmlSpaceList *space_list);
 GMathmlSpaceList *	gmathml_space_list_duplicate	(const GMathmlSpaceList *space_list);
 
-void 		gmathml_attribute_space_list_finalize 	(void *attribute);
 void 		gmathml_attribute_space_list_parse 	(GMathmlAttributeSpaceList *attribute,
 							 GMathmlSpaceList *style_value,
 							 const GMathmlStyle *style);
@@ -130,6 +129,9 @@ void 	gmathml_attribute_column_align_list_parse 	(GDomAttributeNamedList *attrib
 void 	gmathml_attribute_line_list_parse 		(GDomAttributeNamedList *attribute,
 							 GDomNamedList *style_value);
 
+void 	gdom_attribute_map_add_space_list 		(GDomAttributeMap *map,
+							 char const *name,
+							 ptrdiff_t offset);
 G_END_DECLS
 
 #endif

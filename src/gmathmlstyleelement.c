@@ -164,9 +164,8 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
 					  offsetof (GMathmlStyleElement, very_very_thick_math_space));
 
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
-					       offsetof (GMathmlStyleElement, math_family),
-					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_string (m_element_class->attributes, "mathfamily",
+				       offsetof (GMathmlStyleElement, math_family));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					  offsetof (GMathmlStyleElement, math_variant));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -181,9 +180,8 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 
 	/* Deprecated attributes */
 
-	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
-					       offsetof (GMathmlStyleElement, math_family),
-					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_string (m_element_class->attributes, "fontfamily",
+				       offsetof (GMathmlStyleElement, math_family));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					  offsetof (GMathmlStyleElement, math_size));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "color",
