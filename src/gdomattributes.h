@@ -64,8 +64,8 @@ void			gdom_attribute_map_free_css_values	(GDomAttributeMap *map,
 
 gboolean		gdom_attribute_map_set_attribute	(GDomAttributeMap *map,
 								 void *instance,
-								 char const *attr_name,
-								 char const *attr_value);
+								 char const *name,
+								 char const *value);
 char const *		gdom_attribute_map_get_attribute	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name);

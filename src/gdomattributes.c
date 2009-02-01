@@ -25,7 +25,7 @@
 #include <math.h>
 
 typedef struct {
-	ptrdiff_t attr_offset;
+	ptrdiff_t offset;
 	void (*finalize) (void *);
 } GDomAttributeInfos;
 
@@ -53,56 +53,56 @@ gdom_attribute_map_free (GDomAttributeMap *map)
 
 void
 gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
-				       const char *attr_name,
-				       ptrdiff_t attr_offset,
+				       const char *name,
+				       ptrdiff_t offset,
 				       GDomAttributeFinalizeFunc finalize)
 {
-	GDomAttributeInfos *attr_infos;
+	GDomAttributeInfos *attribute_infos;
 
 	g_return_if_fail (map != NULL);
-	g_return_if_fail (attr_name != NULL);
-	g_return_if_fail (attr_offset >= 0);
+	g_return_if_fail (name != NULL);
+	g_return_if_fail (offset >= 0);
 
-	if (g_hash_table_lookup (map->hash, attr_name) != NULL) {
-		g_warning ("[GDomAttributes::add_attribute] %s already defined", attr_name);
+	if (g_hash_table_lookup (map->hash, name) != NULL) {
+		g_warning ("[GDomAttributeMap::add_attribute] %s already defined", name);
 		return;
 	}
 
-	attr_infos = g_new (GDomAttributeInfos, 1);
-	attr_infos->attr_offset = attr_offset;
-	attr_infos->finalize = finalize;
+	attribute_infos = g_new (GDomAttributeInfos, 1);
+	attribute_infos->offset = offset;
+	attribute_infos->finalize = finalize;
 
-	g_hash_table_insert (map->hash, (char *) attr_name, attr_infos);
+	g_hash_table_insert (map->hash, (char *) name, attribute_infos);
 }
 
 void
 gdom_attribute_map_add_attribute (GDomAttributeMap *map,
-				  const char *attr_name,
-				  ptrdiff_t attr_offset)
+				  const char *name,
+				  ptrdiff_t offset)
 {
-	gdom_attribute_map_add_attribute_full (map, attr_name, attr_offset, NULL);
+	gdom_attribute_map_add_attribute_full (map, name, offset, NULL);
 }
 
 gboolean
 gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 				  void *instance,
-				  const char *attr_name,
-				  const char *attr_value)
+				  const char *name,
+				  const char *value)
 {
-	GDomAttributeInfos *attr_infos;
+	GDomAttributeInfos *attribute_infos;
 	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
+	attribute_infos = g_hash_table_lookup (map->hash, name);
+	if (attribute_infos == NULL)
 		return FALSE;
 
-	attribute = (void *)(instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attribute_infos->offset);
 	g_return_val_if_fail (attribute != NULL, FALSE);
 
 	g_free (attribute->value);
-	attribute->value = attr_value != NULL ? g_strdup (attr_value) : NULL;
+	attribute->value = value != NULL ? g_strdup (value) : NULL;
 
 	return TRUE;
 }
@@ -110,18 +110,18 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 char const *
 gdom_attribute_map_get_attribute (GDomAttributeMap *map,
 				  void *instance,
-				  const char *attr_name)
+				  const char *name)
 {
-	GDomAttributeInfos *attr_infos;
+	GDomAttributeInfos *attribute_infos;
 	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, NULL);
 
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
+	attribute_infos = g_hash_table_lookup (map->hash, name);
+	if (attribute_infos == NULL)
 		return NULL;
 
-	attribute = (void *)(instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attribute_infos->offset);
 	g_return_val_if_fail (attribute != NULL, NULL);
 
 	return attribute->value;
@@ -130,18 +130,18 @@ gdom_attribute_map_get_attribute (GDomAttributeMap *map,
 gboolean
 gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
 					 void *instance,
-					 const char *attr_name)
+					 const char *name)
 {
-	GDomAttributeInfos *attr_infos;
+	GDomAttributeInfos *attribute_infos;
 	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
+	attribute_infos = g_hash_table_lookup (map->hash, name);
+	if (attribute_infos == NULL)
 		return FALSE;
 
-	attribute = (void *)(instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attribute_infos->offset);
 	g_return_val_if_fail (attribute != NULL, FALSE);
 
 	return attribute->value != NULL;
@@ -152,16 +152,16 @@ gdom_attribute_finalize_cb (gpointer key,
 			    gpointer value,
 			    gpointer instance)
 {
-	GDomAttributeInfos *attr_infos = value;
+	GDomAttributeInfos *attribute_infos = value;
 	GDomAttribute *attribute;
 
-	attribute = (void *)(instance + attr_infos->attr_offset);
+	attribute = (void *)(instance + attribute_infos->offset);
 	if (attribute != NULL) {
 		g_free (attribute->value);
 		g_free (attribute->css_value);
 
-		if (attr_infos->finalize != NULL)
-			attr_infos->finalize (attribute);
+		if (attribute_infos->finalize != NULL)
+			attribute_infos->finalize (attribute);
 	}
 }
 
