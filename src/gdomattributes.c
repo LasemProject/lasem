@@ -28,9 +28,16 @@ static const GDomAttributeClass attribute_class_null = {
 	.finalize = NULL
 };
 
+static const GDomAttributeBagClass bag_class_null = {
+	.init = NULL,
+	.inherit = NULL,
+	.finalize = NULL
+};
+
 typedef struct {
-	ptrdiff_t offset;
+	ptrdiff_t attribute_offset;
 	const GDomAttributeClass *attribute_class;
+	ptrdiff_t bag_offset;
 	const GDomAttributeBagClass *bag_class;
 } GDomAttributeInfos;
 
@@ -57,16 +64,18 @@ gdom_attribute_map_free (GDomAttributeMap *map)
 }
 
 void
-gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
-				       const char *name,
-				       ptrdiff_t offset,
-				       const GDomAttributeClass *attribute_class)
+gdom_attribute_map_add_bag_attribute (GDomAttributeMap *map,
+				      const char *name,
+				      ptrdiff_t attribute_offset,
+				      const GDomAttributeClass *attribute_class,
+				      ptrdiff_t bag_offset,
+				      const GDomAttributeBagClass *bag_class)
 {
 	GDomAttributeInfos *attribute_infos;
 
 	g_return_if_fail (map != NULL);
 	g_return_if_fail (name != NULL);
-	g_return_if_fail (offset >= 0);
+	g_return_if_fail (attribute_offset >= 0);
 
 	if (g_hash_table_lookup (map->hash, name) != NULL) {
 		g_warning ("[GDomAttributeMap::add_attribute] %s already defined", name);
@@ -74,13 +83,27 @@ gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
 	}
 
 	attribute_infos = g_new (GDomAttributeInfos, 1);
-	attribute_infos->offset = offset;
+	attribute_infos->attribute_offset = attribute_offset;
 	if (attribute_class != NULL)
 		attribute_infos->attribute_class = attribute_class;
 	else
 		attribute_infos->attribute_class = &attribute_class_null;
+	attribute_infos->bag_offset = bag_offset;
+	if (bag_class != NULL)
+		attribute_infos->bag_class = bag_class;
+	else
+		attribute_infos->bag_class = &bag_class_null;
 
 	g_hash_table_insert (map->hash, (char *) name, attribute_infos);
+}
+
+void
+gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
+				       const char *name,
+				       ptrdiff_t offset,
+				       const GDomAttributeClass *attribute_class)
+{
+	gdom_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
 }
 
 void
@@ -88,7 +111,7 @@ gdom_attribute_map_add_attribute (GDomAttributeMap *map,
 				  const char *name,
 				  ptrdiff_t offset)
 {
-	gdom_attribute_map_add_attribute_full (map, name, offset, NULL);
+	gdom_attribute_map_add_bag_attribute (map, name, offset, NULL, 0, NULL);
 }
 
 gboolean
@@ -106,7 +129,7 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 	if (attribute_infos == NULL)
 		return FALSE;
 
-	attribute = (void *)(instance + attribute_infos->offset);
+	attribute = (void *)(instance + attribute_infos->attribute_offset);
 	g_return_val_if_fail (attribute != NULL, FALSE);
 
 	g_free (attribute->value);
@@ -129,7 +152,7 @@ gdom_attribute_map_get_attribute (GDomAttributeMap *map,
 	if (attribute_infos == NULL)
 		return NULL;
 
-	attribute = (void *)(instance + attribute_infos->offset);
+	attribute = (void *)(instance + attribute_infos->attribute_offset);
 	g_return_val_if_fail (attribute != NULL, NULL);
 
 	return attribute->value;
@@ -149,7 +172,7 @@ gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
 	if (attribute_infos == NULL)
 		return FALSE;
 
-	attribute = (void *)(instance + attribute_infos->offset);
+	attribute = (void *)(instance + attribute_infos->attribute_offset);
 	g_return_val_if_fail (attribute != NULL, FALSE);
 
 	return attribute->value != NULL;
@@ -163,7 +186,7 @@ gdom_attribute_finalize_cb (gpointer key,
 	GDomAttributeInfos *attribute_infos = value;
 	GDomAttribute *attribute;
 
-	attribute = (void *)(instance + attribute_infos->offset);
+	attribute = (void *)(instance + attribute_infos->attribute_offset);
 	if (attribute != NULL) {
 		g_free (attribute->value);
 		g_free (attribute->css_value);
