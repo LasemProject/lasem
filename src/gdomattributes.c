@@ -53,9 +53,9 @@ gdom_attribute_map_free (GDomAttributeMap *map)
 
 void
 gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
-					  const char *attr_name,
-					  ptrdiff_t attr_offset,
-					  GDomAttributeFinalizeFunc finalize)
+				       const char *attr_name,
+				       ptrdiff_t attr_offset,
+				       GDomAttributeFinalizeFunc finalize)
 {
 	GDomAttributeInfos *attr_infos;
 
@@ -77,17 +77,17 @@ gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
 
 void
 gdom_attribute_map_add_attribute (GDomAttributeMap *map,
-				     const char *attr_name,
-				     ptrdiff_t attr_offset)
+				  const char *attr_name,
+				  ptrdiff_t attr_offset)
 {
 	gdom_attribute_map_add_attribute_full (map, attr_name, attr_offset, NULL);
 }
 
 gboolean
 gdom_attribute_map_set_attribute (GDomAttributeMap *map,
-				     void *instance,
-				     const char *attr_name,
-				     const char *attr_value)
+				  void *instance,
+				  const char *attr_name,
+				  const char *attr_value)
 {
 	GDomAttributeInfos *attr_infos;
 	GDomAttributeValue *attribute;
@@ -109,8 +109,8 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 
 char const *
 gdom_attribute_map_get_attribute (GDomAttributeMap *map,
-				     void *instance,
-				     const char *attr_name)
+				  void *instance,
+				  const char *attr_name)
 {
 	GDomAttributeInfos *attr_infos;
 	GDomAttributeValue *attribute;
@@ -129,8 +129,8 @@ gdom_attribute_map_get_attribute (GDomAttributeMap *map,
 
 gboolean
 gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
-					    void *instance,
-					    const char *attr_name)
+					 void *instance,
+					 const char *attr_name)
 {
 	GDomAttributeInfos *attr_infos;
 	GDomAttributeValue *attribute;
@@ -149,8 +149,8 @@ gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
 
 static void
 gdom_attribute_finalize_cb (gpointer key,
-			       gpointer value,
-			       gpointer instance)
+			    gpointer value,
+			    gpointer instance)
 {
 	GDomAttributeInfos *attr_infos = value;
 	GDomAttributeValue *attribute;
