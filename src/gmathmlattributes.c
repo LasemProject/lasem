@@ -69,7 +69,7 @@ gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -94,7 +94,7 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_color != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->color.red = style_color->red;
 		attribute->color.green = style_color->green;
@@ -180,7 +180,7 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->length = *style_value;
 	} else {
@@ -226,7 +226,7 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->space = *style_value;
 	} else {
@@ -380,7 +380,7 @@ gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
 
 	gmathml_attribute_space_list_finalize (attribute);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->space_list = gmathml_space_list_duplicate (style_value);
 	} else {

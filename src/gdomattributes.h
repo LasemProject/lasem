@@ -31,13 +31,13 @@ typedef enum {
 	GDOM_CSS_TYPE_AUTHOR,
 	GDOM_CSS_TYPE_AUTHOR_IMPORTANT,
 	GDOM_CSS_TYPE_USER_IMPORTANT
-} GDomCssType;
+} GDomAttributeCssType;
 
 typedef struct {
 	char *value;
 	char *css_value;
-	GDomCssType css_type;
-} GDomAttributeValue;
+	GDomAttributeCssType css_type;
+} GDomAttribute;
 
 typedef struct {
 	GHashTable *hash;
@@ -73,35 +73,35 @@ void			gdom_attribute_map_set_css_attribute	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value,
-								 GDomCssType css_type);
+								 GDomAttributeCssType css_type);
 gboolean		gdom_attribute_map_is_attribute_defined	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name);
 
-char const * 		gdom_attribute_value_get_actual_value 	(const GDomAttributeValue *attribute);
+char const * 		gdom_attribute_get_value 		(const GDomAttribute *attribute);
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	gboolean value;
 } GDomAttributeBoolean;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	unsigned int value;
 } GDomAttributeUnsigned;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	double value;
 } GDomAttributeDouble;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	char *value;
 } GDomAttributeString;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	unsigned int value;
 } GDomAttributeNamed;
 
@@ -111,7 +111,7 @@ typedef struct {
 } GDomNamedList;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	unsigned int n_values;
 	unsigned int *values;
 } GDomAttributeNamedList;

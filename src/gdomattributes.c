@@ -90,7 +90,7 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 				  const char *attr_value)
 {
 	GDomAttributeInfos *attr_infos;
-	GDomAttributeValue *attribute;
+	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
@@ -113,7 +113,7 @@ gdom_attribute_map_get_attribute (GDomAttributeMap *map,
 				  const char *attr_name)
 {
 	GDomAttributeInfos *attr_infos;
-	GDomAttributeValue *attribute;
+	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, NULL);
 
@@ -133,7 +133,7 @@ gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
 					 const char *attr_name)
 {
 	GDomAttributeInfos *attr_infos;
-	GDomAttributeValue *attribute;
+	GDomAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
@@ -153,7 +153,7 @@ gdom_attribute_finalize_cb (gpointer key,
 			    gpointer instance)
 {
 	GDomAttributeInfos *attr_infos = value;
-	GDomAttributeValue *attribute;
+	GDomAttribute *attribute;
 
 	attribute = (void *)(instance + attr_infos->attr_offset);
 	if (attribute != NULL) {
@@ -174,7 +174,7 @@ gdom_attribute_map_free_attributes (GDomAttributeMap *map, void *instance)
 }
 
 char const *
-gdom_attribute_value_get_actual_value (const GDomAttributeValue *attribute)
+gdom_attribute_get_value (const GDomAttribute *attribute)
 {
 	g_return_val_if_fail (attribute != NULL, NULL);
 
@@ -194,7 +194,7 @@ gdom_attribute_boolean_parse (GDomAttributeBoolean *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -213,7 +213,7 @@ gdom_attribute_unsigned_parse (GDomAttributeUnsigned *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -232,7 +232,7 @@ gdom_attribute_double_parse (GDomAttributeDouble *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -252,7 +252,7 @@ gdom_attribute_string_parse (GDomAttributeString *attribute,
 	g_return_if_fail (style_value != NULL);
 	g_return_if_fail (*style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		g_free (attribute->value);
 		attribute->value = g_strdup (*style_value);
@@ -273,7 +273,7 @@ gdom_attribute_named_parse (GDomAttributeNamed *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -298,7 +298,7 @@ gdom_attribute_named_list_parse (GDomAttributeNamedList *attribute,
 	g_free (attribute->values);
 	attribute->n_values = 0;
 
-	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		if (style_value->n_values > 0) {
 			attribute->values = g_new (unsigned int, style_value->n_values);

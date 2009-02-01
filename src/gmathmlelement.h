@@ -51,9 +51,9 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 struct _GMathmlElement {
 	GDomElement	element;
 
-	GDomAttributeValue class_name;
-	GDomAttributeValue id;
-	GDomAttributeValue href;
+	GDomAttribute class_name;
+	GDomAttribute id;
+	GDomAttribute href;
 
 	GMathmlElementStyle style;
 

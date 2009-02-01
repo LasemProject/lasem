@@ -62,29 +62,29 @@ typedef struct {
 double 	gmathml_length_compute 		(const GMathmlLength *length, double default_value, double font_size);
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	int value;
 } GMathmlAttributeScriptLevel;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	GMathmlColor color;
 } GMathmlAttributeColor;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	GMathmlLength length;
 	double value;
 } GMathmlAttributeLength;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	GMathmlSpace space;
 	double value;
 } GMathmlAttributeSpace;
 
 typedef struct {
-	GDomAttributeValue attr;
+	GDomAttribute attr;
 	GMathmlSpaceList *space_list;
 	double *values;
 } GMathmlAttributeSpaceList;
