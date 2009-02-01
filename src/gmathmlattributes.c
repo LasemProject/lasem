@@ -1,6 +1,5 @@
-/* gmathmlattributes.c
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009  Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +20,7 @@
  */
 
 #include <gmathmlattributes.h>
+#include <gmathmlstyle.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -58,320 +58,6 @@ gmathml_length_compute (const GMathmlLength *length, double default_value, doubl
 	return 0.0;
 }
 
-GMathmlStyle *
-gmathml_style_new (void)
-{
-	GMathmlStyle *style = g_new0 (GMathmlStyle, 1);
-
-	return style;
-}
-
-void
-gmathml_style_free (GMathmlStyle *style)
-{
-	g_return_if_fail (style != NULL);
-
-	g_free (style->math_family);
-	g_free (style);
-}
-
-GMathmlStyle *
-gmathml_style_duplicate (const GMathmlStyle *from)
-{
-	GMathmlStyle *style;
-
-	g_return_val_if_fail (from != NULL, NULL);
-
-	style = g_new (GMathmlStyle, 1);
-	g_return_val_if_fail (style != NULL, NULL);
-
-	memcpy (style, from, sizeof (GMathmlStyle));
-
-	style->math_family = g_strdup (from->math_family);
-
-	return style;
-}
-
-void
-gmathml_style_change_script_level (GMathmlStyle *style, int increment)
-{
-	g_return_if_fail (style != NULL);
-
-	style->math_size_value = style->math_size_value * pow (style->script_size_multiplier, increment);
-	style->script_level += increment;
-
-	if (style->math_size_value < style->script_min_size.value)
-		style->math_size_value = style->script_min_size.value;
-
-	style->math_size.value = style->math_size_value;
-	style->math_size.unit = GMATHML_UNIT_PT;
-}
-
-void
-gmathml_style_set_math_size_pt (GMathmlStyle *style, double math_size)
-{
-	g_return_if_fail (style != NULL);
-
-	style->math_size_value = math_size;
-	style->math_size.value = math_size;
-	style->math_size.unit = GMATHML_UNIT_PT;
-}
-
-void
-gmathml_style_set_math_family (GMathmlStyle *style, const char *math_family)
-{
-	g_return_if_fail (style != NULL);
-	g_return_if_fail (math_family != NULL);
-
-	g_free (style->math_family);
-	style->math_family = g_strdup (math_family);
-}
-
-void
-gmathml_style_set_math_variant (GMathmlStyle *style, GMathmlVariant math_variant)
-{
-	g_return_if_fail (style != NULL);
-
-	style->math_variant = math_variant;
-}
-
-void
-gmathml_style_set_math_color (GMathmlStyle *style, double red, double green, double blue, double alpha)
-{
-	g_return_if_fail (style != NULL);
-
-	style->math_color.red = red;
-	style->math_color.green = green;
-	style->math_color.blue = blue;
-	style->math_color.alpha = alpha;
-}
-
-void
-gmathml_style_dump (const GMathmlStyle *style)
-{
-	printf ("math_size =              %g\n", style->math_size_value);
-	printf ("script_level =           %d (%s)\n", style->script_level,
-		gmathml_display_to_string (style->display));
-	printf ("script_size_multiplier = %g\n", style->script_size_multiplier);
-}
-
-typedef struct {
-	ptrdiff_t attr_offset;
-	void (*finalize) (void *);
-} GMathmlAttributeInfos;
-
-GMathmlAttributeMap *
-gmathml_attribute_map_new (void)
-{
-	GMathmlAttributeMap *map;
-
-	map = g_new0 (GMathmlAttributeMap, 1);
-	g_return_val_if_fail (map != NULL,  NULL);
-
-	map->hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
-
-	return map;
-}
-
-void
-gmathml_attribute_map_free (GMathmlAttributeMap *map)
-{
-	g_return_if_fail (map != NULL);
-
-	g_hash_table_unref (map->hash);
-	g_free (map);
-}
-
-void
-gmathml_attribute_map_add_attribute_full (GMathmlAttributeMap *map,
-					  const char *attr_name,
-					  ptrdiff_t attr_offset,
-					  GMathmlAttributeFinalizeFunc finalize)
-{
-	GMathmlAttributeInfos *attr_infos;
-
-	g_return_if_fail (map != NULL);
-	g_return_if_fail (attr_name != NULL);
-	g_return_if_fail (attr_offset >= 0);
-
-	if (g_hash_table_lookup (map->hash, attr_name) != NULL) {
-		g_warning ("[GMathmlAttributes::add_attribute] %s already defined", attr_name);
-		return;
-	}
-
-	attr_infos = g_new (GMathmlAttributeInfos, 1);
-	attr_infos->attr_offset = attr_offset;
-	attr_infos->finalize = finalize;
-
-	g_hash_table_insert (map->hash, (char *) attr_name, attr_infos);
-}
-
-void
-gmathml_attribute_map_add_attribute (GMathmlAttributeMap *map,
-				     const char *attr_name,
-				     ptrdiff_t attr_offset)
-{
-	gmathml_attribute_map_add_attribute_full (map, attr_name, attr_offset, NULL);
-}
-
-gboolean
-gmathml_attribute_map_set_attribute (GMathmlAttributeMap *map,
-				     void *instance,
-				     const char *attr_name,
-				     const char *attr_value)
-{
-	GMathmlAttributeInfos *attr_infos;
-	GMathmlAttributeValue *attribute;
-
-	g_return_val_if_fail (map != NULL, FALSE);
-
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
-		return FALSE;
-
-	attribute = (void *)(instance + attr_infos->attr_offset);
-	g_return_val_if_fail (attribute != NULL, FALSE);
-
-	g_free (attribute->value);
-	attribute->value = attr_value != NULL ? g_strdup (attr_value) : NULL;
-
-	return TRUE;
-}
-
-char const *
-gmathml_attribute_map_get_attribute (GMathmlAttributeMap *map,
-				     void *instance,
-				     const char *attr_name)
-{
-	GMathmlAttributeInfos *attr_infos;
-	GMathmlAttributeValue *attribute;
-
-	g_return_val_if_fail (map != NULL, NULL);
-
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
-		return NULL;
-
-	attribute = (void *)(instance + attr_infos->attr_offset);
-	g_return_val_if_fail (attribute != NULL, NULL);
-
-	return attribute->value;
-}
-
-gboolean
-gmathml_attribute_map_is_attribute_defined (GMathmlAttributeMap *map,
-					    void *instance,
-					    const char *attr_name)
-{
-	GMathmlAttributeInfos *attr_infos;
-	GMathmlAttributeValue *attribute;
-
-	g_return_val_if_fail (map != NULL, FALSE);
-
-	attr_infos = g_hash_table_lookup (map->hash, attr_name);
-	if (attr_infos == NULL)
-		return FALSE;
-
-	attribute = (void *)(instance + attr_infos->attr_offset);
-	g_return_val_if_fail (attribute != NULL, FALSE);
-
-	return attribute->value != NULL;
-}
-
-static void
-gmathml_attribute_finalize_cb (gpointer key,
-			       gpointer value,
-			       gpointer instance)
-{
-	GMathmlAttributeInfos *attr_infos = value;
-	GMathmlAttributeValue *attribute;
-
-	attribute = (void *)(instance + attr_infos->attr_offset);
-	if (attribute != NULL) {
-		g_free (attribute->value);
-		g_free (attribute->css_value);
-
-		if (attr_infos->finalize != NULL)
-			attr_infos->finalize (attribute);
-	}
-}
-
-void
-gmathml_attribute_map_free_attributes (GMathmlAttributeMap *map, void *instance)
-{
-	g_return_if_fail (map != NULL);
-
-	g_hash_table_foreach (map->hash, gmathml_attribute_finalize_cb, instance);
-}
-
-char const *
-gmathml_attribute_value_get_actual_value (const GMathmlAttributeValue *attribute)
-{
-	g_return_val_if_fail (attribute != NULL, NULL);
-
-	if (attribute->css_value != NULL &&
-	    attribute->css_type >= GMATHML_CSS_TYPE_AUTHOR)
-		return attribute->css_value;
-
-	return attribute->value;
-}
-
-void
-gmathml_attribute_boolean_parse (GMathmlAttributeBoolean *attribute,
-				 gboolean *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = (strcmp (string, "true") == 0);
-	*style_value = attribute->value;
-}
-
-void
-gmathml_attribute_unsigned_parse (GMathmlAttributeUnsigned *attribute,
-				  unsigned int *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = atoi (string);
-	*style_value = attribute->value;
-}
-
-void
-gmathml_attribute_double_parse (GMathmlAttributeDouble *attribute,
-				double *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = atof (string);
-	*style_value = attribute->value;
-}
 
 void
 gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
@@ -383,7 +69,7 @@ gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -408,7 +94,7 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_color != NULL);
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
 	if (string == NULL) {
 		attribute->color.red = style_color->red;
 		attribute->color.green = style_color->green;
@@ -434,105 +120,53 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 	*style_color = attribute->color;
 }
 
-static void
-gmathml_attribute_named_parse (GMathmlAttributeNamed *attribute,
-			       unsigned int *style_value,
-			       GMathmlNamedConvert convert)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = convert (string);
-	*style_value = attribute->value;
-}
-
 void
-gmathml_attribute_mode_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_mode_parse (GDomAttributeNamed *attribute,
 			      unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_mode_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_mode_from_string);
 }
 
 void
-gmathml_attribute_display_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_display_parse (GDomAttributeNamed *attribute,
 				 unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_display_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_display_from_string);
 }
 
 void
-gmathml_attribute_form_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_form_parse (GDomAttributeNamed *attribute,
 			      unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_form_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_form_from_string);
 }
 
 void
-gmathml_attribute_font_style_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_font_style_parse (GDomAttributeNamed *attribute,
 				    unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_font_style_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_font_style_from_string);
 }
 
 void
-gmathml_attribute_font_weight_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_font_weight_parse (GDomAttributeNamed *attribute,
 				     unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_font_weight_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_font_weight_from_string);
 }
 
 void
-gmathml_attribute_variant_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_variant_parse (GDomAttributeNamed *attribute,
 				 unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_variant_from_string);
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_variant_from_string);
 }
 
 void
-gmathml_attribute_line_parse (GMathmlAttributeNamed *attribute,
+gmathml_attribute_line_parse (GDomAttributeNamed *attribute,
 			      unsigned int *style_value)
 {
-	return gmathml_attribute_named_parse (attribute, style_value, gmathml_line_from_string);
-}
-
-void
-gmathml_attribute_string_parse (GMathmlAttributeString *attribute,
-				char **style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-	g_return_if_fail (*style_value != NULL);
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		g_free (attribute->value);
-		attribute->value = g_strdup (*style_value);
-	} else {
-		g_free (*style_value);
-		*style_value = g_strdup (string);
-		attribute->value = g_strdup (string);
-	}
-}
-
-void
-gmathml_attribute_string_finalize (void *abstract)
-{
-	GMathmlAttributeString *attribute = abstract;
-
-	g_return_if_fail (attribute != NULL);
-
-	g_free (attribute->value);
-	attribute->value = NULL;
+	return gdom_attribute_named_parse (attribute, style_value, gmathml_line_from_string);
 }
 
 void
@@ -546,7 +180,7 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
 	if (string == NULL) {
 		attribute->length = *style_value;
 	} else {
@@ -592,7 +226,7 @@ gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style != NULL);
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
 	if (string == NULL) {
 		attribute->space = *style_value;
 	} else {
@@ -746,7 +380,7 @@ gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
 
 	gmathml_attribute_space_list_finalize (attribute);
 
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
+	string = gdom_attribute_value_get_actual_value ((GDomAttributeValue *) attribute);
 	if (string == NULL) {
 		attribute->space_list = gmathml_space_list_duplicate (style_value);
 	} else {
@@ -862,72 +496,22 @@ gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
 }
 
 void
-gmathml_attribute_named_list_finalize (void *abstract)
+gmathml_attribute_row_align_list_parse (GDomAttributeNamedList *attribute,
+					GDomNamedList *style_value)
 {
-	GMathmlAttributeNamedList *attribute = abstract;
-
-	g_return_if_fail (attribute != NULL);
-
-	g_free (attribute->values);
-	attribute->n_values = 0;
-	attribute->values = NULL;
-}
-
-static void
-gmathml_attribute_named_list_parse (GMathmlAttributeNamedList *attribute,
-				    GMathmlNamedList *style_value,
-				    GMathmlNamedConvert convert)
-{
-	const char *string;
-	char **items;
-	unsigned int i;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	g_free (attribute->values);
-	attribute->n_values = 0;
-
-	string = gmathml_attribute_value_get_actual_value ((GMathmlAttributeValue *) attribute);
-	if (string == NULL) {
-		if (style_value->n_values > 0) {
-			attribute->values = g_new (unsigned int, style_value->n_values);
-			memcpy (attribute->values, style_value->values,
-				sizeof (unsigned int) * style_value->n_values);
-		} else
-			attribute->values = NULL;
-		attribute->n_values = style_value->n_values;
-
-		return;
-	}
-
-	items = g_strsplit_set (string, " ", -1);
-	attribute->n_values = g_strv_length (items);
-
-	attribute->values = g_new (unsigned int, attribute->n_values);
-	for (i = 0; i < attribute->n_values; i++)
-		attribute->values[i] = convert (items[i]);
-
-	g_strfreev (items);
+	gdom_attribute_named_list_parse (attribute, style_value, gmathml_row_align_from_string);
 }
 
 void
-gmathml_attribute_row_align_list_parse (GMathmlAttributeNamedList *attribute,
-					GMathmlNamedList *style_value)
+gmathml_attribute_column_align_list_parse (GDomAttributeNamedList *attribute,
+					   GDomNamedList *style_value)
 {
-	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_row_align_from_string);
+	gdom_attribute_named_list_parse (attribute, style_value, gmathml_column_align_from_string);
 }
 
 void
-gmathml_attribute_column_align_list_parse (GMathmlAttributeNamedList *attribute,
-					   GMathmlNamedList *style_value)
+gmathml_attribute_line_list_parse (GDomAttributeNamedList *attribute,
+				   GDomNamedList *style_value)
 {
-	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_column_align_from_string);
-}
-
-void
-gmathml_attribute_line_list_parse (GMathmlAttributeNamedList *attribute,
-				   GMathmlNamedList *style_value)
-{
-	gmathml_attribute_named_list_parse (attribute, style_value, gmathml_line_from_string);
+	gdom_attribute_named_list_parse (attribute, style_value, gmathml_line_from_string);
 }

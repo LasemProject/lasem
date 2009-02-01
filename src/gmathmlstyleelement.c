@@ -46,10 +46,10 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
 	display_style = style->display == GMATHML_DISPLAY_BLOCK;
-	gmathml_attribute_boolean_parse (&style_element->display_style, &display_style);
+	gdom_attribute_boolean_parse (&style_element->display_style, &display_style);
 	style->display = display_style ? GMATHML_DISPLAY_BLOCK : GMATHML_DISPLAY_INLINE;
 
-	gmathml_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
+	gdom_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
 	gmathml_attribute_length_parse (&style_element->script_min_size,
 					&style->script_min_size,
@@ -68,7 +68,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_variant_set_font_style (&style->math_variant, font_style);
 	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	gmathml_attribute_string_parse (&style_element->math_family, &style->math_family);
+	gdom_attribute_string_parse (&style_element->math_family, &style->math_family);
 	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
 	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
@@ -135,63 +135,63 @@ gmathml_style_element_class_init (GMathmlStyleElementClass *style_class)
 
 	m_element_class->update = gmathml_style_element_update;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
-					     offsetof (GMathmlStyleElement, script_level));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",
-					     offsetof (GMathmlStyleElement, display_style));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
-					     offsetof (GMathmlStyleElement, script_size_multiplier));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
-					     offsetof (GMathmlStyleElement, script_min_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "background",
-					     offsetof (GMathmlStyleElement, math_background));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
-					     offsetof (GMathmlStyleElement, very_very_thin_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
-					     offsetof (GMathmlStyleElement, very_thin_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thinmathspace",
-					     offsetof (GMathmlStyleElement, thin_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mediummathspace",
-					     offsetof (GMathmlStyleElement, medium_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "thickmathspace",
-					     offsetof (GMathmlStyleElement, thick_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "verythickmathspace",
-					     offsetof (GMathmlStyleElement, very_thick_math_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
-					     offsetof (GMathmlStyleElement, very_very_thick_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
+					  offsetof (GMathmlStyleElement, script_level));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",
+					  offsetof (GMathmlStyleElement, display_style));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
+					  offsetof (GMathmlStyleElement, script_size_multiplier));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
+					  offsetof (GMathmlStyleElement, script_min_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "background",
+					  offsetof (GMathmlStyleElement, math_background));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
+					  offsetof (GMathmlStyleElement, very_very_thin_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
+					  offsetof (GMathmlStyleElement, very_thin_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "thinmathspace",
+					  offsetof (GMathmlStyleElement, thin_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mediummathspace",
+					  offsetof (GMathmlStyleElement, medium_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "thickmathspace",
+					  offsetof (GMathmlStyleElement, thick_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "verythickmathspace",
+					  offsetof (GMathmlStyleElement, very_thick_math_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
+					  offsetof (GMathmlStyleElement, very_very_thick_math_space));
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
-						  offsetof (GMathmlStyleElement, math_family),
-						  gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					     offsetof (GMathmlStyleElement, math_variant));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					     offsetof (GMathmlStyleElement, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
-					     offsetof (GMathmlStyleElement, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
-					     offsetof (GMathmlStyleElement, math_background));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
+					       offsetof (GMathmlStyleElement, math_family),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
+					  offsetof (GMathmlStyleElement, math_variant));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
+					  offsetof (GMathmlStyleElement, math_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
+					  offsetof (GMathmlStyleElement, math_color));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
+					  offsetof (GMathmlStyleElement, math_background));
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
-					     offsetof (GMathmlStyleElement, line_thickness));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+					  offsetof (GMathmlStyleElement, line_thickness));
 
 	/* Deprecated attributes */
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
-						  offsetof (GMathmlStyleElement, math_family),
-						  gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					     offsetof (GMathmlStyleElement, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
-					     offsetof (GMathmlStyleElement, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
-					     offsetof (GMathmlStyleElement, font_weight));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
-					     offsetof (GMathmlStyleElement, font_style));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
+					       offsetof (GMathmlStyleElement, math_family),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
+					  offsetof (GMathmlStyleElement, math_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "color",
+					  offsetof (GMathmlStyleElement, math_color));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
+					  offsetof (GMathmlStyleElement, font_weight));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
+					  offsetof (GMathmlStyleElement, font_style));
 }
 
 G_DEFINE_TYPE (GMathmlStyleElement, gmathml_style_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

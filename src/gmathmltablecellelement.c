@@ -41,10 +41,10 @@ gmathml_table_cell_element_update (GMathmlElement *self, GMathmlStyle *style)
 	unsigned int span;
 
 	span = 1;
-	gmathml_attribute_unsigned_parse (&cell->row_span, &span);
+	gdom_attribute_unsigned_parse (&cell->row_span, &span);
 
 	span = 1;
-	gmathml_attribute_unsigned_parse (&cell->column_span, &span);
+	gdom_attribute_unsigned_parse (&cell->column_span, &span);
 }
 
 static const GMathmlBbox *
@@ -109,14 +109,14 @@ gmathml_table_cell_element_class_init (GMathmlTableCellElementClass *table_cell_
 	m_element_class->measure = gmathml_table_cell_element_measure;
 	m_element_class->layout = gmathml_table_cell_element_layout;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
-					     offsetof (GMathmlTableCellElement, row_span));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "columnspan",
-					     offsetof (GMathmlTableCellElement, column_span));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
+					  offsetof (GMathmlTableCellElement, row_span));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "columnspan",
+					  offsetof (GMathmlTableCellElement, column_span));
 }
 
 G_DEFINE_TYPE (GMathmlTableCellElement, gmathml_table_cell_element, GMATHML_TYPE_ELEMENT)

@@ -42,15 +42,15 @@ gmathml_fenced_element_update (GMathmlElement *self, GMathmlStyle *style)
 	char *default_string;
 
 	default_string = g_strdup ("(");
-	gmathml_attribute_string_parse (&fenced->open, &default_string);
+	gdom_attribute_string_parse (&fenced->open, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (")");
-	gmathml_attribute_string_parse (&fenced->close, &default_string);
+	gdom_attribute_string_parse (&fenced->close, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (",");
-	gmathml_attribute_string_parse (&fenced->separators, &default_string);
+	gdom_attribute_string_parse (&fenced->separators, &default_string);
 	g_free (default_string);
 }
 
@@ -159,19 +159,19 @@ gmathml_fenced_element_class_init (GMathmlFencedElementClass *m_fenced_element_c
 	m_element_class->layout =  gmathml_fenced_element_layout;
 	m_element_class->render =  gmathml_fenced_element_render;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "open",
-					     offsetof (GMathmlFencedElement, open),
-					     gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "close",
-					     offsetof (GMathmlFencedElement, close),
-					     gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "separators",
-					     offsetof (GMathmlFencedElement, separators),
-					     gmathml_attribute_string_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "open",
+					       offsetof (GMathmlFencedElement, open),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "close",
+					       offsetof (GMathmlFencedElement, close),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "separators",
+					       offsetof (GMathmlFencedElement, separators),
+					       gdom_attribute_string_finalize);
 }
 
 G_DEFINE_TYPE (GMathmlFencedElement, gmathml_fenced_element, GMATHML_TYPE_PRESENTATION_CONTAINER)

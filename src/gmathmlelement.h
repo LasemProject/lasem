@@ -25,7 +25,7 @@
 
 #include <gmathml.h>
 #include <gmathmlutils.h>
-#include <gmathmlattributes.h>
+#include <gmathmlstyle.h>
 #include <gdomelement.h>
 #include <cairo.h>
 
@@ -51,9 +51,9 @@ typedef struct _GMathmlElementClass GMathmlElementClass;
 struct _GMathmlElement {
 	GDomElement	element;
 
-	GMathmlAttributeValue class_name;
-	GMathmlAttributeValue id;
-	GMathmlAttributeValue href;
+	GDomAttributeValue class_name;
+	GDomAttributeValue id;
+	GDomAttributeValue href;
 
 	GMathmlElementStyle style;
 
@@ -71,7 +71,7 @@ struct _GMathmlElement {
 struct _GMathmlElementClass {
 	GDomElementClass  parent_class;
 
-	GMathmlAttributeMap *attributes;
+	GDomAttributeMap *attributes;
 
 	void			(*update)		(GMathmlElement *element, GMathmlStyle *style);
 	gboolean		(*update_children)	(GMathmlElement *element, GMathmlStyle *style);

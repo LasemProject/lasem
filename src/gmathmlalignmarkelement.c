@@ -96,7 +96,7 @@ gmathml_align_mark_element_class_init (GMathmlAlignMarkElementClass *align_mark_
 	m_element_class->render = gmathml_align_mark_element_render;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 }

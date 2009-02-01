@@ -200,14 +200,14 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 
 	m_element_class->update = _update;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mode",
-					     offsetof (GMathmlMathElement, mode));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "display",
-					     offsetof (GMathmlMathElement, display));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mode",
+					  offsetof (GMathmlMathElement, mode));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "display",
+					  offsetof (GMathmlMathElement, display));
 }
 
 G_DEFINE_TYPE (GMathmlMathElement, gmathml_math_element, GMATHML_TYPE_ELEMENT)

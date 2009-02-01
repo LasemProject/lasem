@@ -50,7 +50,7 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
 	GMathmlSpaceList *space_list;
-	GMathmlNamedList named_list;
+	GDomNamedList named_list;
 	unsigned int named;
 	gboolean flag;
 
@@ -102,13 +102,13 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_space_list_free (space_list);
 
 	flag = FALSE;
-	gmathml_attribute_boolean_parse (&table->equal_rows, &flag);
+	gdom_attribute_boolean_parse (&table->equal_rows, &flag);
 
 	flag = FALSE;
-	gmathml_attribute_boolean_parse (&table->equal_columns, &flag);
+	gdom_attribute_boolean_parse (&table->equal_columns, &flag);
 
 	flag = FALSE;
-	gmathml_attribute_boolean_parse (&table->display_style, &flag);
+	gdom_attribute_boolean_parse (&table->display_style, &flag);
 }
 
 static const GMathmlBbox *
@@ -481,37 +481,37 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 	m_element_class->render = gmathml_table_element_render;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "rowalign",
-						  offsetof (GMathmlTableElement, row_align),
-						  gmathml_attribute_named_list_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "columnalign",
-						  offsetof (GMathmlTableElement, column_align),
-						  gmathml_attribute_named_list_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "rowspacing",
-						  offsetof (GMathmlTableElement, row_spacing),
-						  gmathml_attribute_space_list_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "columnspacing",
-						  offsetof (GMathmlTableElement, column_spacing),
-						  gmathml_attribute_space_list_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "rowlines",
-						  offsetof (GMathmlTableElement, row_lines),
-						  gmathml_attribute_named_list_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "columnlines",
-						  offsetof (GMathmlTableElement, column_lines),
-						  gmathml_attribute_named_list_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "frame",
-					     offsetof (GMathmlTableElement, frame));
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "framespacing",
-						  offsetof (GMathmlTableElement, frame_spacing),
-						  gmathml_attribute_space_list_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
-					     offsetof (GMathmlTableElement, equal_rows));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
-					     offsetof (GMathmlTableElement, equal_columns));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowalign",
+					       offsetof (GMathmlTableElement, row_align),
+					       gdom_attribute_named_list_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnalign",
+					       offsetof (GMathmlTableElement, column_align),
+					       gdom_attribute_named_list_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowspacing",
+					       offsetof (GMathmlTableElement, row_spacing),
+					       gmathml_attribute_space_list_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnspacing",
+					       offsetof (GMathmlTableElement, column_spacing),
+					       gmathml_attribute_space_list_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rowlines",
+					       offsetof (GMathmlTableElement, row_lines),
+					       gdom_attribute_named_list_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "columnlines",
+					       offsetof (GMathmlTableElement, column_lines),
+					       gdom_attribute_named_list_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "frame",
+					  offsetof (GMathmlTableElement, frame));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "framespacing",
+					       offsetof (GMathmlTableElement, frame_spacing),
+					       gmathml_attribute_space_list_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
+					  offsetof (GMathmlTableElement, equal_rows));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
+					  offsetof (GMathmlTableElement, equal_columns));
 }
 
 G_DEFINE_TYPE (GMathmlTableElement, gmathml_table_element, GMATHML_TYPE_ELEMENT)

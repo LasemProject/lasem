@@ -156,7 +156,7 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 				    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
 
-		gmathml_attribute_boolean_parse (&under_over->accent_under, &accent_under);
+		gdom_attribute_boolean_parse (&under_over->accent_under, &accent_under);
 
 		if (!under_over->accent_under.value)
 			gmathml_style_change_script_level (style, +1);
@@ -177,7 +177,7 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 					    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
 
-		gmathml_attribute_boolean_parse (&under_over->accent, &accent);
+		gdom_attribute_boolean_parse (&under_over->accent, &accent);
 
 		if (!under_over->accent.value)
 			gmathml_style_change_script_level (overscript_style, +1);
@@ -463,14 +463,14 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	m_element_class->get_embellished_core = gmathml_under_over_element_get_embellished_core;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
-					     offsetof (GMathmlUnderOverElement, accent));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accentunder",
-					     offsetof (GMathmlUnderOverElement, accent_under));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "accent",
+					  offsetof (GMathmlUnderOverElement, accent));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "accentunder",
+					  offsetof (GMathmlUnderOverElement, accent_under));
 }
 
 G_DEFINE_TYPE (GMathmlUnderOverElement, gmathml_under_over_element, GMATHML_TYPE_ELEMENT)

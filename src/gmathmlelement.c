@@ -68,7 +68,7 @@ gmathml_element_set_attribute (GDomElement *self, const char* name, const char *
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
 
-	gmathml_attribute_map_set_attribute (m_element_class->attributes, self,
+	gdom_attribute_map_set_attribute (m_element_class->attributes, self,
 					     name, value);
 }
 
@@ -77,7 +77,7 @@ gmathml_element_get_attribute (GDomElement *self, const char *name)
 {
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS(self);
 
-	return gmathml_attribute_map_get_attribute (m_element_class->attributes, self, name);
+	return gdom_attribute_map_get_attribute (m_element_class->attributes, self, name);
 }
 
 /* GMathmlElement implementation */
@@ -412,7 +412,7 @@ gmathml_element_finalize (GObject *object)
 	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_GET_CLASS (object);
 	GMathmlElement *m_element = GMATHML_ELEMENT (object);
 
-	gmathml_attribute_map_free_attributes (m_element_class->attributes, object);
+	gdom_attribute_map_free_attributes (m_element_class->attributes, object);
 
 	g_free (m_element->style.math_family);
 
@@ -424,12 +424,12 @@ gmathml_element_finalize (GObject *object)
 void
 gmathml_element_class_add_element_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "class",
-					     offsetof (GMathmlElement, class_name));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "id",
-					     offsetof (GMathmlElement, id));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "href",
-					     offsetof (GMathmlElement, href));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "class",
+					  offsetof (GMathmlElement, class_name));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "id",
+					  offsetof (GMathmlElement, id));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "href",
+					  offsetof (GMathmlElement, href));
 }
 
 static void
@@ -458,7 +458,7 @@ gmathml_element_class_init (GMathmlElementClass *m_element_class)
 	m_element_class->get_embellished_core = _get_embellished_core;
 	m_element_class->is_inferred_row = _is_inferred_row;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 }

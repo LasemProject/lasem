@@ -112,7 +112,7 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 	gmathml_variant_set_font_style (&style->math_variant, font_style);
 	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	gmathml_attribute_string_parse (&token->math_family, &style->math_family);
+	gdom_attribute_string_parse (&token->math_family, &style->math_family);
 	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
 	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size_value);
 	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
@@ -206,31 +206,31 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 void
 gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
-						  offsetof (GMathmlPresentationToken, math_family),
-						  gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					     offsetof (GMathmlPresentationToken, math_variant));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					     offsetof (GMathmlPresentationToken, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
-					     offsetof (GMathmlPresentationToken, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
-					     offsetof (GMathmlPresentationToken, math_background));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "mathfamily",
+					       offsetof (GMathmlPresentationToken, math_family),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
+					  offsetof (GMathmlPresentationToken, math_variant));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
+					  offsetof (GMathmlPresentationToken, math_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
+					  offsetof (GMathmlPresentationToken, math_color));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
+					  offsetof (GMathmlPresentationToken, math_background));
 
 	/* Deprecated attributes */
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
-						  offsetof (GMathmlPresentationToken, math_family),
-						  gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					     offsetof (GMathmlPresentationToken, math_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "color",
-					     offsetof (GMathmlPresentationToken, math_color));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
-					     offsetof (GMathmlPresentationToken, font_weight));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
-					     offsetof (GMathmlPresentationToken, font_style));
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "fontfamily",
+					       offsetof (GMathmlPresentationToken, math_family),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
+					  offsetof (GMathmlPresentationToken, math_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "color",
+					  offsetof (GMathmlPresentationToken, math_color));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
+					  offsetof (GMathmlPresentationToken, font_weight));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
+					  offsetof (GMathmlPresentationToken, font_style));
 }
 
 static void
@@ -253,7 +253,7 @@ gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *m_token_cl
 
 	m_token_class->get_text = _get_text;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 	gmathml_element_class_add_presentation_token_attributes (m_element_class);

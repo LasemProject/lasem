@@ -49,7 +49,7 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 
 	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
-	gmathml_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
+	gdom_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
 
 	fraction->display = style->display;
 }
@@ -200,10 +200,10 @@ gmathml_fraction_element_init (GMathmlFractionElement *self)
 void
 gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)
 {
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
-					     offsetof (GMathmlFractionElement, line_thickness));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
-					     offsetof (GMathmlFractionElement, bevelled));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+					  offsetof (GMathmlFractionElement, line_thickness));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
+					  offsetof (GMathmlFractionElement, bevelled));
 }
 
 static void
@@ -225,7 +225,7 @@ gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class
 	element_class->get_embellished_core = gmathml_fraction_element_get_embellished_core;
 	element_class->is_inferred_row = NULL;
 
-	element_class->attributes = gmathml_attribute_map_new ();
+	element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (element_class);
 	gmathml_element_class_add_fraction_attributes (element_class);

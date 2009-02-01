@@ -55,6 +55,8 @@ typedef struct _GMathmlAlignGroupElement GMathmlAlignGroupElement;
 
 typedef struct _GMathmlView GMathmlView;
 
+typedef struct _GMathmlStyle GMathmlStyle;
+
 G_END_DECLS
 
 #endif

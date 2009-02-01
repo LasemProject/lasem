@@ -48,16 +48,16 @@ struct _GMathmlPresentationToken {
 
 	GMathmlPresentationTokenType type;
 
-	GMathmlAttributeString	math_family;
-	GMathmlAttributeNamed	math_variant;
+	GDomAttributeString	math_family;
+	GDomAttributeNamed	math_variant;
 	GMathmlAttributeLength	math_size;
 	GMathmlAttributeColor	math_color;
 	GMathmlAttributeColor	math_background;
 
 	/* Deprecated style attributes */
 
-	GMathmlAttributeNamed font_weight;
-	GMathmlAttributeNamed font_style;
+	GDomAttributeNamed font_weight;
+	GDomAttributeNamed font_style;
 };
 
 struct _GMathmlPresentationTokenClass {

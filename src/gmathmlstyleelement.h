@@ -42,9 +42,9 @@ struct _GMathmlStyleElement {
 
 	/* Style attributes */
 
-	GMathmlAttributeBoolean display_style;
+	GDomAttributeBoolean display_style;
 	GMathmlAttributeScriptLevel script_level;
-	GMathmlAttributeDouble script_size_multiplier;
+	GDomAttributeDouble script_size_multiplier;
 	GMathmlAttributeLength script_min_size;
 	GMathmlAttributeLength very_very_thin_math_space;
 	GMathmlAttributeLength very_thin_math_space;
@@ -56,13 +56,13 @@ struct _GMathmlStyleElement {
 
 	/* Deprecated style attributes */
 
-	GMathmlAttributeNamed font_weight;
-	GMathmlAttributeNamed font_style;
+	GDomAttributeNamed font_weight;
+	GDomAttributeNamed font_style;
 
 	/* Presentation token attribute */
 
-	GMathmlAttributeString math_family;
-	GMathmlAttributeNamed  math_variant;
+	GDomAttributeString math_family;
+	GDomAttributeNamed  math_variant;
 	GMathmlAttributeLength math_size;
 	GMathmlAttributeColor  math_color;
 	GMathmlAttributeColor  math_background;

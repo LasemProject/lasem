@@ -44,11 +44,11 @@ gmathml_string_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 
 	default_quote = g_strdup ("\"");
-	gmathml_attribute_string_parse (&string_element->left_quote, &default_quote);
+	gdom_attribute_string_parse (&string_element->left_quote, &default_quote);
 	g_free (default_quote);
 
 	default_quote = g_strdup ("\"");
-	gmathml_attribute_string_parse (&string_element->right_quote, &default_quote);
+	gdom_attribute_string_parse (&string_element->right_quote, &default_quote);
 	g_free (default_quote);
 }
 
@@ -103,17 +103,17 @@ gmathml_string_element_class_init (GMathmlStringElementClass *string_class)
 
 	m_token_class->get_text = gmathml_string_element_get_text;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 	gmathml_element_class_add_presentation_token_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "lquote",
-					     offsetof (GMathmlStringElement, left_quote),
-					     gmathml_attribute_string_finalize);
-	gmathml_attribute_map_add_attribute_full (m_element_class->attributes, "rquote",
-					     offsetof (GMathmlStringElement, right_quote),
-					     gmathml_attribute_string_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "lquote",
+					       offsetof (GMathmlStringElement, left_quote),
+					       gdom_attribute_string_finalize);
+	gdom_attribute_map_add_attribute_full (m_element_class->attributes, "rquote",
+					       offsetof (GMathmlStringElement, right_quote),
+					       gdom_attribute_string_finalize);
 }
 
 G_DEFINE_TYPE (GMathmlStringElement, gmathml_string_element, GMATHML_TYPE_PRESENTATION_TOKEN)

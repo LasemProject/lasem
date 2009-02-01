@@ -23,6 +23,7 @@ libgmathml_la_SOURCES =			\
 	gdomelement.c			\
 	gdomcharacterdata.c		\
 	gdomtext.c			\
+	gdomattributes.c		\
 	gmathmlenums.c			\
 	gmathmlentitydictionary.c	\
 	gmathmloperatordictionary.c	\
@@ -49,6 +50,7 @@ libgmathml_la_SOURCES =			\
 	gmathmlerrorelement.c		\
 	gmathmlactionelement.c		\
 	gmathmlattributes.c		\
+	gmathmlstyle.c			\
 	gmathmlview.c			\
 	gmathmlglyphtableams.c		\
 	gmathmlalignmarkelement.c	\
@@ -71,6 +73,7 @@ libgmathml_la_HEADERS = \
 	gdomelement.h			\
 	gdomcharacterdata.h		\
 	gdomtext.h			\
+	gdomattributes.h		\
 	gmathml.h			\
 	gmathmlentitydictionary.h	\
 	gmathmloperatordictionary.h	\
@@ -97,6 +100,7 @@ libgmathml_la_HEADERS = \
 	gmathmlerrorelement.h		\
 	gmathmlactionelement.h		\
 	gmathmlattributes.h		\
+	gmathmlstyle.h		\
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\
 	gmathmlalignmarkelement.h	\

@@ -85,11 +85,11 @@ gmathml_operator_element_post_new_child (GDomNode *self, GDomNode *child)
 		    gmathml_form_to_string (entry->form), entry->name);
 
 	flag = entry->stretchy;
-	gmathml_attribute_boolean_parse (&operator_element->stretchy, &flag);
+	gdom_attribute_boolean_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	gmathml_attribute_boolean_parse (&operator_element->fence, &flag);
+	gdom_attribute_boolean_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	gmathml_attribute_boolean_parse (&operator_element->accent, &flag);
+	gdom_attribute_boolean_parse (&operator_element->accent, &flag);
 }
 
 /* GMathmlElement implementation */
@@ -114,27 +114,27 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 	space = entry->right_space;
 	gmathml_attribute_space_parse (&operator_element->right_space, &space, style);
 	flag = entry->stretchy;
-	gmathml_attribute_boolean_parse (&operator_element->stretchy, &flag);
+	gdom_attribute_boolean_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	gmathml_attribute_boolean_parse (&operator_element->fence, &flag);
+	gdom_attribute_boolean_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	gmathml_attribute_boolean_parse (&operator_element->accent, &flag);
+	gdom_attribute_boolean_parse (&operator_element->accent, &flag);
 
 	if (operator_element->accent.value)
 		gdom_debug ("[OperatorElement::update] Is accent");
 
 	flag = entry->large_op;
-	gmathml_attribute_boolean_parse (&operator_element->large_op, &flag);
+	gdom_attribute_boolean_parse (&operator_element->large_op, &flag);
 	flag = entry->movable_limits;
-	gmathml_attribute_boolean_parse (&operator_element->movable_limits, &flag);
+	gdom_attribute_boolean_parse (&operator_element->movable_limits, &flag);
 	flag = entry->separator;
-	gmathml_attribute_boolean_parse (&operator_element->separator, &flag);
+	gdom_attribute_boolean_parse (&operator_element->separator, &flag);
 	space = entry->min_size;
 	gmathml_attribute_space_parse (&operator_element->min_size, &space, style);
 	space = entry->max_size;
 	gmathml_attribute_space_parse (&operator_element->max_size, &space, style);
 	flag = entry->symmetric;
-	gmathml_attribute_boolean_parse (&operator_element->symmetric, &flag);
+	gdom_attribute_boolean_parse (&operator_element->symmetric, &flag);
 
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == GMATHML_DISPLAY_BLOCK);
@@ -236,35 +236,35 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	m_element_class->render = gmathml_operator_element_render;
 	m_element_class->get_embellished_core = gmathml_operator_element_get_embellished_core;
 
-	m_element_class->attributes = gmathml_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_new ();
 
 	gmathml_element_class_add_element_attributes (m_element_class);
 	gmathml_element_class_add_presentation_token_attributes (m_element_class);
 
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "form",
-					     offsetof (GMathmlOperatorElement, form));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "fence",
-					     offsetof (GMathmlOperatorElement, fence));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "separator",
-					     offsetof (GMathmlOperatorElement, separator));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "lspace",
-					     offsetof (GMathmlOperatorElement, left_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "rspace",
-					     offsetof (GMathmlOperatorElement, right_space));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
-					     offsetof (GMathmlOperatorElement, stretchy));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
-					     offsetof (GMathmlOperatorElement, symmetric));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
-					     offsetof (GMathmlOperatorElement, accent));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "minsize",
-					     offsetof (GMathmlOperatorElement, min_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
-					     offsetof (GMathmlOperatorElement, max_size));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",
-					     offsetof (GMathmlOperatorElement, large_op));
-	gmathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
-					     offsetof (GMathmlOperatorElement, movable_limits));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "form",
+					  offsetof (GMathmlOperatorElement, form));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "fence",
+					  offsetof (GMathmlOperatorElement, fence));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "separator",
+					  offsetof (GMathmlOperatorElement, separator));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "lspace",
+					  offsetof (GMathmlOperatorElement, left_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "rspace",
+					  offsetof (GMathmlOperatorElement, right_space));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
+					  offsetof (GMathmlOperatorElement, stretchy));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
+					  offsetof (GMathmlOperatorElement, symmetric));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "accent",
+					  offsetof (GMathmlOperatorElement, accent));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "minsize",
+					  offsetof (GMathmlOperatorElement, min_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
+					  offsetof (GMathmlOperatorElement, max_size));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "largeop",
+					  offsetof (GMathmlOperatorElement, large_op));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
+					  offsetof (GMathmlOperatorElement, movable_limits));
 }
 
 G_DEFINE_TYPE (GMathmlOperatorElement, gmathml_operator_element, GMATHML_TYPE_PRESENTATION_TOKEN)
