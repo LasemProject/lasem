@@ -40,14 +40,17 @@ typedef struct {
 } GDomAttribute;
 
 typedef struct {
-	GHashTable *hash;
-	GArray *array;
+	GHashTable *attribute_hash;
+	GHashTable *bag_hash;
 } GDomAttributeMap;
 
 typedef struct {
-	void (*init) 		(void **attribute_bag);
-	void (*inherit) 	(void *to, const void *from);
-	void (*finalize) 	(void **attribute_bag);
+} GDomAttributeBag;
+
+typedef struct {
+	GDomAttributeBag * 	(*init) 	(void);
+	void 			(*inherit) 	(GDomAttributeBag *to, const GDomAttributeBag *from);
+	void 			(*finalize) 	(GDomAttributeBag *attribute_bag);
 } GDomAttributeBagClass;
 
 typedef struct {
@@ -56,8 +59,9 @@ typedef struct {
 
 typedef void (*GDomAttributeFinalizeFunc) (void *);
 
-GDomAttributeMap *	gdom_attribute_map_new 		(void);
-void			gdom_attribute_map_free		(GDomAttributeMap *map);
+GDomAttributeMap *	gdom_attribute_map_new 			(void);
+GDomAttributeMap *	gdom_attribute_map_duplicate		(const GDomAttributeMap *from);
+void			gdom_attribute_map_free			(GDomAttributeMap *map);
 
 void			gdom_attribute_map_add_attribute_full	(GDomAttributeMap *map,
 								 char const *name,
