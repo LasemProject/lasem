@@ -159,9 +159,7 @@ gmathml_fenced_element_class_init (GMathmlFencedElementClass *m_fenced_element_c
 	m_element_class->layout =  gmathml_fenced_element_layout;
 	m_element_class->render =  gmathml_fenced_element_render;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_string (m_element_class->attributes, "open",
 				       offsetof (GMathmlFencedElement, open));

@@ -103,10 +103,7 @@ gmathml_string_element_class_init (GMathmlStringElementClass *string_class)
 
 	m_token_class->get_text = gmathml_string_element_get_text;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_presentation_token_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_string (m_element_class->attributes, "lquote",
 				       offsetof (GMathmlStringElement, left_quote));

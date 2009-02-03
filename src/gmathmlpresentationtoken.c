@@ -203,9 +203,28 @@ gmathml_presentation_token_init (GMathmlPresentationToken *token)
 
 /* GMathmlPresentationToken class */
 
-void
-gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class)
+static void
+gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *m_token_class)
 {
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (m_token_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (m_token_class);
+
+	parent_class = g_type_class_peek_parent (m_token_class);
+
+	d_node_class->get_node_name = gmathml_presentation_token_get_node_name;
+	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;
+
+	m_element_class->layout = gmathml_presentation_token_layout;
+	m_element_class->measure = gmathml_presentation_token_measure;
+	m_element_class->render = gmathml_presentation_token_render;
+	m_element_class->is_inferred_row = NULL;
+
+	m_element_class->update = gmathml_presentation_token_update;
+
+	m_token_class->get_text = _get_text;
+
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
+
 	gdom_attribute_map_add_string (m_element_class->attributes, "mathfamily",
 				       offsetof (GMathmlPresentationToken, math_family));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
@@ -229,32 +248,6 @@ gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_
 					  offsetof (GMathmlPresentationToken, font_weight));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
 					  offsetof (GMathmlPresentationToken, font_style));
-}
-
-static void
-gmathml_presentation_token_class_init (GMathmlPresentationTokenClass *m_token_class)
-{
-	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (m_token_class);
-	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (m_token_class);
-
-	parent_class = g_type_class_peek_parent (m_token_class);
-
-	d_node_class->get_node_name = gmathml_presentation_token_get_node_name;
-	d_node_class->can_append_child = gmathml_presentation_token_can_append_child;
-
-	m_element_class->layout = gmathml_presentation_token_layout;
-	m_element_class->measure = gmathml_presentation_token_measure;
-	m_element_class->render = gmathml_presentation_token_render;
-	m_element_class->is_inferred_row = NULL;
-
-	m_element_class->update = gmathml_presentation_token_update;
-
-	m_token_class->get_text = _get_text;
-
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_presentation_token_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlPresentationToken, gmathml_presentation_token, GMATHML_TYPE_ELEMENT)

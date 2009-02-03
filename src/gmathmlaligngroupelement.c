@@ -95,10 +95,6 @@ gmathml_align_group_element_class_init (GMathmlAlignGroupElementClass *align_gro
 	m_element_class->layout = gmathml_align_group_element_layout;
 	m_element_class->render = gmathml_align_group_element_render;
 	m_element_class->is_inferred_row = NULL;
-
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
 }
 
 G_DEFINE_TYPE (GMathmlAlignGroupElement, gmathml_align_group_element, GMATHML_TYPE_ELEMENT)

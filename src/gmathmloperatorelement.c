@@ -236,10 +236,7 @@ gmathml_operator_element_class_init (GMathmlOperatorElementClass *operator_class
 	m_element_class->render = gmathml_operator_element_render;
 	m_element_class->get_embellished_core = gmathml_operator_element_get_embellished_core;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
-	gmathml_element_class_add_presentation_token_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "form",
 					  offsetof (GMathmlOperatorElement, form));

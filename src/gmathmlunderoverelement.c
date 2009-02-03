@@ -463,9 +463,7 @@ gmathml_under_over_element_class_init (GMathmlUnderOverElementClass *under_over_
 	m_element_class->get_embellished_core = gmathml_under_over_element_get_embellished_core;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "accent",
 					  offsetof (GMathmlUnderOverElement, accent));

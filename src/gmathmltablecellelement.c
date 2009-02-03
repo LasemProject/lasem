@@ -109,9 +109,7 @@ gmathml_table_cell_element_class_init (GMathmlTableCellElementClass *table_cell_
 	m_element_class->measure = gmathml_table_cell_element_measure;
 	m_element_class->layout = gmathml_table_cell_element_layout;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
 					  offsetof (GMathmlTableCellElement, row_span));

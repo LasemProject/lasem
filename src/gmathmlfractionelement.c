@@ -197,38 +197,31 @@ gmathml_fraction_element_init (GMathmlFractionElement *self)
 
 /* GMathmlFractionElement class */
 
-void
-gmathml_element_class_add_fraction_attributes (GMathmlElementClass *m_element_class)
-{
-	gdom_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
-					  offsetof (GMathmlFractionElement, line_thickness));
-	gdom_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
-					  offsetof (GMathmlFractionElement, bevelled));
-}
-
 static void
 gmathml_fraction_element_class_init (GMathmlFractionElementClass *fraction_class)
 {
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (fraction_class);
-	GMathmlElementClass *element_class = GMATHML_ELEMENT_CLASS (fraction_class);
+	GMathmlElementClass *m_element_class = GMATHML_ELEMENT_CLASS (fraction_class);
 
 	parent_class = g_type_class_peek_parent (fraction_class);
 
 	d_node_class->get_node_name = gmathml_fraction_element_get_node_name;
 	d_node_class->can_append_child = gmathml_fraction_element_can_append_child;
 
-	element_class->update = gmathml_fraction_element_update;
-	element_class->update_children = gmathml_fraction_element_update_children;
-	element_class->measure = gmathml_fraction_element_measure;
-	element_class->layout = gmathml_fraction_element_layout;
-	element_class->render = gmathml_fraction_element_render;
-	element_class->get_embellished_core = gmathml_fraction_element_get_embellished_core;
-	element_class->is_inferred_row = NULL;
+	m_element_class->update = gmathml_fraction_element_update;
+	m_element_class->update_children = gmathml_fraction_element_update_children;
+	m_element_class->measure = gmathml_fraction_element_measure;
+	m_element_class->layout = gmathml_fraction_element_layout;
+	m_element_class->render = gmathml_fraction_element_render;
+	m_element_class->get_embellished_core = gmathml_fraction_element_get_embellished_core;
+	m_element_class->is_inferred_row = NULL;
 
-	element_class->attributes = gdom_attribute_map_new ();
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
-	gmathml_element_class_add_element_attributes (element_class);
-	gmathml_element_class_add_fraction_attributes (element_class);
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+					  offsetof (GMathmlFractionElement, line_thickness));
+	gdom_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
+					  offsetof (GMathmlFractionElement, bevelled));
 }
 
 G_DEFINE_TYPE (GMathmlFractionElement, gmathml_fraction_element, GMATHML_TYPE_ELEMENT)

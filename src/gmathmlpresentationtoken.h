@@ -74,8 +74,6 @@ GDomNode *	gmathml_text_element_new (void);
 
 /* Extra functions */
 
-void 		gmathml_element_class_add_presentation_token_attributes (GMathmlElementClass *m_element_class);
-
 char *		gmathml_presentation_token_get_text 	(GMathmlPresentationToken *self);
 
 G_END_DECLS

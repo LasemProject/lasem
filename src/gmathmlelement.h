@@ -99,8 +99,6 @@ GMathmlOperatorElement *gmathml_element_get_embellished_core 	(const GMathmlElem
 const GMathmlBbox * 	gmathml_element_get_bbox 		(const GMathmlElement *self);
 gboolean 		gmathml_element_is_inferred_row 	(const GMathmlElement *self);
 
-void 			gmathml_element_class_add_element_attributes 	(GMathmlElementClass *m_element_class);
-
 G_END_DECLS
 
 #endif

@@ -117,9 +117,7 @@ gmathml_space_element_class_init (GMathmlSpaceElementClass *space_class)
 	m_element_class->layout = gmathml_space_element_layout;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = gdom_attribute_map_new ();
-
-	gmathml_element_class_add_element_attributes (m_element_class);
+	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "width",
 					  offsetof (GMathmlSpaceElement, width));
