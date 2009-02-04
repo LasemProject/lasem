@@ -19,39 +19,41 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_SVG_ELEMENT_H
-#define GSVG_SVG_ELEMENT_H
+#ifndef GSVG_RECT_ELEMENT_H
+#define GSVG_RECT_ELEMENT_H
 
 #include <gsvg.h>
 #include <gsvggraphic.h>
 
 G_BEGIN_DECLS
 
-#define GSVG_TYPE_SVG_ELEMENT             (gsvg_svg_element_get_type ())
-#define GSVG_SVG_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_SVG_ELEMENT, GSvgSvgElement))
-#define GSVG_SVG_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GSVG_TYPE_SVG_ELEMENT, GSvgSvgElementClass))
+#define GSVG_TYPE_SVG_ELEMENT             (gsvg_rect_element_get_type ())
+#define GSVG_SVG_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_SVG_ELEMENT, GSvgRectElement))
+#define GSVG_SVG_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GSVG_TYPE_SVG_ELEMENT, GSvgRectElementClass))
 #define GSVG_IS_SVG_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSVG_TYPE_SVG_ELEMENT))
 #define GSVG_IS_SVG_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GSVG_TYPE_SVG_ELEMENT))
-#define GSVG_SVG_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GSVG_TYPE_SVG_ELEMENT, GSvgSvgElementClass))
+#define GSVG_SVG_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GSVG_TYPE_SVG_ELEMENT, GSvgRectElementClass))
 
-typedef struct _GSvgSvgElementClass GSvgSvgElementClass;
+typedef struct _GSvgRectElementClass GSvgRectElementClass;
 
-struct _GSvgSvgElement {
+struct _GSvgRectElement {
 	GSvgGraphic graphic;
 
-	GSvgAttributeLength	x;
-	GSvgAttributeLength	y;
-	GSvgAttributeLength	width;
-	GSvgAttributeLength	height;
+	GSvgAttributeAnimatedLength	x;
+	GSvgAttributeAnimatedLength	y;
+	GSvgAttributeAnimatedLength	width;
+	GSvgAttributeAnimatedLength	height;
+	GSvgAttributeAnimatedLength	rx;
+	GSvgAttributeAnimatedLength	ry;
 };
 
-struct _GSvgSvgElementClass {
+struct _GSvgRectElementClass {
 	GSvgGraphicClass  parent_class;
 };
 
-GType gsvg_svg_element_get_type (void);
+GType gsvg_rect_element_get_type (void);
 
-GDomNode *		gsvg_svg_element_new 		(void);
+GDomNode *		gsvg_rect_element_new 		(void);
 
 G_END_DECLS
 

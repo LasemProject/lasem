@@ -31,6 +31,7 @@ typedef struct {
 
 typedef struct {
 	ptrdiff_t attribute_offset;
+	void *default_value;
 	const GDomAttributeClass *attribute_class;
 	GDomAttributeBagInfos *bag_infos;
 } GDomAttributeInfos;
@@ -85,6 +86,7 @@ void
 gdom_attribute_map_add_bag_attribute  (GDomAttributeMap *map,
 				       const char *name,
 				       ptrdiff_t attribute_offset,
+				       void *default_value,
 				       const GDomAttributeClass *attribute_class,
 				       ptrdiff_t bag_offset,
 				       const GDomAttributeBagClass *bag_class)
@@ -128,7 +130,17 @@ gdom_attribute_map_add_attribute_full (GDomAttributeMap *map,
 				       ptrdiff_t offset,
 				       const GDomAttributeClass *attribute_class)
 {
-	gdom_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
+	gdom_attribute_map_add_bag_attribute (map, name, offset, 0, attribute_class, 0, NULL);
+}
+
+void
+gdom_attribute_map_add_attribute_full_width_default (GDomAttributeMap *map,
+						     const char *name,
+						     ptrdiff_t offset,
+						     void *default_value,
+						     const GDomAttributeClass *attribute_class)
+{
+	gdom_attribute_map_add_bag_attribute (map, name, offset, 0, attribute_class, 0, NULL);
 }
 
 void
@@ -136,7 +148,7 @@ gdom_attribute_map_add_attribute (GDomAttributeMap *map,
 				  const char *name,
 				  ptrdiff_t offset)
 {
-	gdom_attribute_map_add_bag_attribute (map, name, offset, NULL, 0, NULL);
+	gdom_attribute_map_add_bag_attribute (map, name, offset, 0, NULL, 0, NULL);
 }
 
 gboolean

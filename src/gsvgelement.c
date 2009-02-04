@@ -106,13 +106,13 @@ gsvg_element_finalize (GObject *object)
 /* GSvgElement class */
 
 static void
-gsvg_element_class_init (GSvgElementClass *svg_element_class)
+gsvg_element_class_init (GSvgElementClass *s_element_class)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (svg_element_class);
-	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (svg_element_class);
-	GDomElementClass *d_element_class = GDOM_ELEMENT_CLASS (svg_element_class);
+	GObjectClass *object_class = G_OBJECT_CLASS (s_element_class);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_element_class);
+	GDomElementClass *d_element_class = GDOM_ELEMENT_CLASS (s_element_class);
 
-	parent_class = g_type_class_peek_parent (svg_element_class);
+	parent_class = g_type_class_peek_parent (s_element_class);
 
 	object_class->finalize = gsvg_element_finalize;
 
@@ -123,8 +123,13 @@ gsvg_element_class_init (GSvgElementClass *svg_element_class)
 	d_element_class->get_attribute = gsvg_element_get_attribute;
 	d_element_class->set_attribute = gsvg_element_set_attribute;
 
-	svg_element_class->update = NULL;
-	svg_element_class->render = _render;
+	s_element_class->update = NULL;
+	s_element_class->render = _render;
+
+	s_element_class->attributes = gdom_attribute_map_new ();
+
+	gdom_attribute_map_add_attribute (s_element_class->attributes, "id",
+					  offsetof (GSvgElement, id));
 }
 
 G_DEFINE_ABSTRACT_TYPE (GSvgElement, gsvg_element, GDOM_TYPE_ELEMENT)

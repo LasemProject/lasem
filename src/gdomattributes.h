@@ -54,7 +54,7 @@ typedef struct {
 } GDomAttributeBagClass;
 
 typedef struct {
-	void (*finalize) (void *);
+	void (*finalize) (void *attribute);
 } GDomAttributeClass;
 
 typedef void (*GDomAttributeFinalizeFunc) (void *);

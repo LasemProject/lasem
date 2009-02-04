@@ -25,6 +25,7 @@
 
 #include <gsvg.h>
 #include <gsvgview.h>
+#include <gsvgattributes.h>
 #include <gdomelement.h>
 #include <cairo.h>
 
@@ -46,6 +47,8 @@ typedef struct _GSvgElementClass GSvgElementClass;
 struct _GSvgElement {
 	GDomElement	element;
 
+	GDomAttribute	*id;
+
 	/* View */
 
 	gboolean need_update;
@@ -53,6 +56,8 @@ struct _GSvgElement {
 
 struct _GSvgElementClass {
 	GDomElementClass  parent_class;
+
+	GDomAttributeMap *attributes;
 
 	void			(*update)		(GSvgElement *element, GSvgStyle *style);
 	void 			(*render)		(GSvgElement *element, GSvgView *view);

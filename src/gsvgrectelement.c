@@ -19,63 +19,67 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <gsvgsvgelement.h>
+#include <gsvgrectelement.h>
 
 static GObjectClass *parent_class;
 
 /* GdomNode implementation */
 
 static const char *
-gsvg_svg_element_get_node_name (GDomNode *node)
+gsvg_rect_element_get_node_name (GDomNode *node)
 {
-	return "svg";
+	return "rect";
 }
 
 /* GSvgElement implementation */
 
-/* GSvgSvgElement implementation */
+/* GSvgRectElement implementation */
 
 GDomNode *
-gsvg_svg_element_new (void)
+gsvg_rect_element_new (void)
 {
 	return g_object_new (GSVG_TYPE_SVG_ELEMENT, NULL);
 }
 
 static void
-gsvg_svg_element_init (GSvgSvgElement *self)
+gsvg_rect_element_init (GSvgRectElement *self)
 {
 }
 
 static void
-gsvg_svg_element_finalize (GObject *object)
+gsvg_rect_element_finalize (GObject *object)
 {
 }
 
-/* GSvgSvgElement class */
+/* GSvgRectElement class */
 
 static void
-gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
+gsvg_rect_element_class_init (GSvgRectElementClass *s_rect_class)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (s_svg_class);
-	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_svg_class);
-	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_svg_class);
+	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_rect_class);
+	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_rect_class);
 
-	parent_class = g_type_class_peek_parent (s_svg_class);
+	parent_class = g_type_class_peek_parent (s_rect_class);
 
-	object_class->finalize = gsvg_svg_element_finalize;
+	object_class->finalize = gsvg_rect_element_finalize;
 
-	d_node_class->get_node_name = gsvg_svg_element_get_node_name;
+	d_node_class->get_node_name = gsvg_rect_element_get_node_name;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "x",
-					  offsetof (GSvgSvgElement, x));
+					  offsetof (GSvgRectElement, x));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "y",
-					  offsetof (GSvgSvgElement, y));
+					  offsetof (GSvgRectElement, y));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "width",
-					  offsetof (GSvgSvgElement, width));
+					  offsetof (GSvgRectElement, width));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "height",
-					  offsetof (GSvgSvgElement, height));
+					  offsetof (GSvgRectElement, height));
+	gdom_attribute_map_add_attribute (s_element_class->attributes, "rx",
+					  offsetof (GSvgRectElement, rx));
+	gdom_attribute_map_add_attribute (s_element_class->attributes, "ry",
+					  offsetof (GSvgRectElement, ry));
 }
 
-G_DEFINE_TYPE (GSvgSvgElement, gsvg_svg_element, GSVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (GSvgRectElement, gsvg_rect_element, GSVG_TYPE_GRAPHIC)
