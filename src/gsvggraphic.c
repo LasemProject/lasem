@@ -19,52 +19,33 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <gsvgsvgelement.h>
+#include <gsvggraphic.h>
 
 static GObjectClass *parent_class;
 
-/* GdomNode implementation */
-
-static const char *
-gsvg_svg_element_get_node_name (GDomNode *node)
-{
-	return "svg";
-}
-
-/* GSvgElement implementation */
-
-/* GSvgSvgElement implementation */
-
-GDomNode *
-gsvg_svg_element_new (void)
-{
-	return g_object_new (GSVG_TYPE_SVG_ELEMENT, NULL);
-}
+/* GSvgGraphic implementation */
 
 static void
-gsvg_svg_element_init (GSvgSvgElement *self)
+gsvg_graphic_element_init (GSvgGraphic *self)
 {
 }
 
 static void
-gsvg_svg_element_finalize (GObject *object)
+gsvg_graphic_element_finalize (GObject *object)
 {
 }
 
-/* GSvgSvgElement class */
+/* GSvgGraphic class */
 
 static void
-gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
+gsvg_graphic_element_class_init (GSvgGraphicClass *s_graphic_class)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (s_svg_class);
-	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_svg_class);
+	GObjectClass *object_class = G_OBJECT_CLASS (s_graphic_class);
 
-	parent_class = g_type_class_peek_parent (s_svg_class);
+	parent_class = g_type_class_peek_parent (s_graphic_class);
 
-	object_class->finalize = gsvg_svg_element_finalize;
-
-	d_node_class->get_node_name = gsvg_svg_element_get_node_name;
-
+	object_class->finalize = gsvg_graphic_element_finalize;
 }
 
-G_DEFINE_TYPE (GSvgSvgElement, gsvg_svg_element, GSVG_TYPE_GRAPHIC)
+G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic_element, GSVG_TYPE_ELEMENT)
+

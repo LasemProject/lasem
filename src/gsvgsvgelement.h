@@ -23,7 +23,7 @@
 #define GSVG_SVG_ELEMENT_H
 
 #include <gsvg.h>
-#include <gsvgelement.h>
+#include <gsvggraphic.h>
 
 G_BEGIN_DECLS
 
@@ -37,11 +37,11 @@ G_BEGIN_DECLS
 typedef struct _GSvgSvgElementClass GSvgSvgElementClass;
 
 struct _GSvgSvgElement {
-	GSvgElement	element;
+	GSvgGraphic graphic;
 };
 
 struct _GSvgSvgElementClass {
-	GSvgElementClass  parent_class;
+	GSvgGraphicClass  parent_class;
 };
 
 GType gsvg_svg_element_get_type (void);
