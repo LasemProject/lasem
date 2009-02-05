@@ -51,6 +51,8 @@ typedef struct {
 
 void		gsvg_attribute_length_parse 		(GSvgAttributeLength *attribute,
 							 GSvgLength *default_value);
+void 		gsvg_attribute_animated_length_parse 	(GSvgAttributeAnimatedLength *attribute,
+							 GSvgLength *default_value);
 
 G_END_DECLS
 

@@ -35,11 +35,35 @@ gsvg_attribute_length_parse (GSvgAttributeLength *attribute,
 	if (string == NULL) {
 		g_return_if_fail (default_value != NULL);
 
-		attribute->length = * ((GSvgLength *) default_value);
+		attribute->length = *default_value;
 	} else {
 		attribute->length.value = g_strtod (string, &length_type_str);
 		attribute->length.type = gsvg_length_type_from_string (length_type_str);
 
 		*default_value = attribute->length;
+	}
+}
+
+void
+gsvg_attribute_animated_length_parse (GSvgAttributeAnimatedLength *attribute,
+				      GSvgLength *default_value)
+{
+	const char *string;
+	char *length_type_str;
+
+	g_return_if_fail (attribute != NULL);
+
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	if (string == NULL) {
+		g_return_if_fail (default_value != NULL);
+
+		attribute->length.base = *default_value;
+		attribute->length.animated = *default_value;
+	} else {
+		attribute->length.base.value = g_strtod (string, &length_type_str);
+		attribute->length.base.type = gsvg_length_type_from_string (length_type_str);
+		attribute->length.animated = attribute->length.base;
+
+		*default_value = attribute->length.base;
 	}
 }
