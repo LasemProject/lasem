@@ -42,15 +42,15 @@ gmathml_fenced_element_update (GMathmlElement *self, GMathmlStyle *style)
 	char *default_string;
 
 	default_string = g_strdup ("(");
-	gdom_attribute_string_parse (&fenced->open, &default_string);
+	gdom_string_attribute_parse (&fenced->open, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (")");
-	gdom_attribute_string_parse (&fenced->close, &default_string);
+	gdom_string_attribute_parse (&fenced->close, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (",");
-	gdom_attribute_string_parse (&fenced->separators, &default_string);
+	gdom_string_attribute_parse (&fenced->separators, &default_string);
 	g_free (default_string);
 }
 

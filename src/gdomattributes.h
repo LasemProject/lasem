@@ -97,64 +97,64 @@ char const * 		gdom_attribute_get_value 		(const GDomAttribute *attribute);
 typedef struct {
 	GDomAttribute attr;
 	gboolean value;
-} GDomAttributeBoolean;
+} GDomBooleanAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	unsigned int value;
-} GDomAttributeUnsigned;
+} GDomUnsignedAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	double value;
-} GDomAttributeDouble;
+} GDomDoubleAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	char *value;
-} GDomAttributeString;
+} GDomStringAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	unsigned int value;
-} GDomAttributeNamed;
+} GDomEnumAttribute;
 
 typedef struct {
 	unsigned int n_values;
 	unsigned int *values;
-} GDomNamedList;
+} GDomEnumList;
 
 typedef struct {
 	GDomAttribute attr;
 	unsigned int n_values;
 	unsigned int *values;
-} GDomAttributeNamedList;
+} GDomEnumListAttribute;
 
 typedef unsigned int (*GDomNamedConvert) (const char *string);
 
-void 	gdom_attribute_boolean_parse		(GDomAttributeBoolean *attribute,
+void 	gdom_boolean_attribute_parse		(GDomBooleanAttribute *attribute,
 						 gboolean *default_value);
-void 	gdom_attribute_unsigned_parse		(GDomAttributeUnsigned *attribute,
+void 	gdom_unsigned_attribute_parse		(GDomUnsignedAttribute *attribute,
 						 unsigned *default_value);
-void 	gdom_attribute_double_parse		(GDomAttributeDouble *attribute,
+void 	gdom_double_attribute_parse		(GDomDoubleAttribute *attribute,
 						 double *default_value);
-void	gdom_attribute_string_parse		(GDomAttributeString *attribute,
+void	gdom_string_attribute_parse		(GDomStringAttribute *attribute,
 						 char **default_value);
-void 	gdom_attribute_named_parse 		(GDomAttributeNamed *attribute,
+void 	gdom_enum_attribute_parse 		(GDomEnumAttribute *attribute,
 						 unsigned int *default_value,
 						 GDomNamedConvert convert);
-void 	gdom_attribute_named_list_parse 	(GDomAttributeNamedList *attribute,
-						 GDomNamedList *style_value,
+void 	gdom_enum_list_attribute_parse 	(GDomEnumListAttribute *attribute,
+						 GDomEnumList *style_value,
 						 GDomNamedConvert convert);
 
-void	gdom_attribute_string_finalize		(void *abstract);
-void 	gdom_attribute_named_list_finalize 	(void *abstract);
+void	gdom_string_attribute_finalize		(void *abstract);
+void 	gdom_enum_list_attribute_finalize 	(void *abstract);
 
 
 void 	gdom_attribute_map_add_string 		(GDomAttributeMap *map,
 						 char const *name,
 						 ptrdiff_t offset);
-void 	gdom_attribute_map_add_named_list 	(GDomAttributeMap *map,
+void 	gdom_attribute_map_add_enum_list 	(GDomAttributeMap *map,
 						 char const *name,
 						 ptrdiff_t offset);
 G_END_DECLS

@@ -46,8 +46,8 @@ typedef struct _GMathmlUnderOverElementClass GMathmlUnderOverElementClass;
 struct _GMathmlUnderOverElement {
 	GMathmlElement	element;
 
-	GDomAttributeBoolean accent;
-	GDomAttributeBoolean accent_under;
+	GDomBooleanAttribute accent;
+	GDomBooleanAttribute accent_under;
 
 	GMathmlUnderOverElementType type;
 

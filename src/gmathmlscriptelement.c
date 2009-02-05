@@ -113,8 +113,8 @@ gmathml_script_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlScriptElement *script = GMATHML_SCRIPT_ELEMENT (self);
 
-	gmathml_attribute_length_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
-	gmathml_attribute_length_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
+	gmathml_length_attribute_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
+	gmathml_length_attribute_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
 
 	script->display = style->display;
 }

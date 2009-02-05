@@ -156,7 +156,7 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 				    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
 
-		gdom_attribute_boolean_parse (&under_over->accent_under, &accent_under);
+		gdom_boolean_attribute_parse (&under_over->accent_under, &accent_under);
 
 		if (!under_over->accent_under.value)
 			gmathml_style_change_script_level (style, +1);
@@ -177,7 +177,7 @@ gmathml_under_over_element_update_children (GMathmlElement *self, GMathmlStyle *
 					    gdom_node_get_node_name (GDOM_NODE (operator)));
 		}
 
-		gdom_attribute_boolean_parse (&under_over->accent, &accent);
+		gdom_boolean_attribute_parse (&under_over->accent, &accent);
 
 		if (!under_over->accent.value)
 			gmathml_style_change_script_level (overscript_style, +1);

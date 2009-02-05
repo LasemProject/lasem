@@ -49,8 +49,8 @@ struct _GMathmlMathElement {
 
 	GMathmlStyle *default_style;
 
-	GDomAttributeNamed mode;
-	GDomAttributeNamed display;
+	GDomEnumAttribute mode;
+	GDomEnumAttribute display;
 };
 
 struct _GMathmlMathElementClass {

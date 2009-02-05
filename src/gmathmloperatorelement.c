@@ -63,7 +63,7 @@ gmathml_operator_element_dictionary_lookup (GMathmlOperatorElement *operator)
 	} else
 		form = GMATHML_FORM_INFIX;
 
-	gmathml_attribute_form_parse (&operator->form, &form);
+	gmathml_form_attribute_parse (&operator->form, &form);
 
 	entry = gmathml_operator_dictionary_lookup (text, form);
 
@@ -85,11 +85,11 @@ gmathml_operator_element_post_new_child (GDomNode *self, GDomNode *child)
 		    gmathml_form_to_string (entry->form), entry->name);
 
 	flag = entry->stretchy;
-	gdom_attribute_boolean_parse (&operator_element->stretchy, &flag);
+	gdom_boolean_attribute_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	gdom_attribute_boolean_parse (&operator_element->fence, &flag);
+	gdom_boolean_attribute_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	gdom_attribute_boolean_parse (&operator_element->accent, &flag);
+	gdom_boolean_attribute_parse (&operator_element->accent, &flag);
 }
 
 /* GMathmlElement implementation */
@@ -110,31 +110,31 @@ gmathml_operator_element_update (GMathmlElement *self, GMathmlStyle *style)
 		    gmathml_form_to_string (entry->form), entry->name);
 
 	space = entry->left_space;
-	gmathml_attribute_space_parse (&operator_element->left_space, &space, style);
+	gmathml_space_attribute_parse (&operator_element->left_space, &space, style);
 	space = entry->right_space;
-	gmathml_attribute_space_parse (&operator_element->right_space, &space, style);
+	gmathml_space_attribute_parse (&operator_element->right_space, &space, style);
 	flag = entry->stretchy;
-	gdom_attribute_boolean_parse (&operator_element->stretchy, &flag);
+	gdom_boolean_attribute_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	gdom_attribute_boolean_parse (&operator_element->fence, &flag);
+	gdom_boolean_attribute_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	gdom_attribute_boolean_parse (&operator_element->accent, &flag);
+	gdom_boolean_attribute_parse (&operator_element->accent, &flag);
 
 	if (operator_element->accent.value)
 		gdom_debug ("[OperatorElement::update] Is accent");
 
 	flag = entry->large_op;
-	gdom_attribute_boolean_parse (&operator_element->large_op, &flag);
+	gdom_boolean_attribute_parse (&operator_element->large_op, &flag);
 	flag = entry->movable_limits;
-	gdom_attribute_boolean_parse (&operator_element->movable_limits, &flag);
+	gdom_boolean_attribute_parse (&operator_element->movable_limits, &flag);
 	flag = entry->separator;
-	gdom_attribute_boolean_parse (&operator_element->separator, &flag);
+	gdom_boolean_attribute_parse (&operator_element->separator, &flag);
 	space = entry->min_size;
-	gmathml_attribute_space_parse (&operator_element->min_size, &space, style);
+	gmathml_space_attribute_parse (&operator_element->min_size, &space, style);
 	space = entry->max_size;
-	gmathml_attribute_space_parse (&operator_element->max_size, &space, style);
+	gmathml_space_attribute_parse (&operator_element->max_size, &space, style);
 	flag = entry->symmetric;
-	gdom_attribute_boolean_parse (&operator_element->symmetric, &flag);
+	gdom_boolean_attribute_parse (&operator_element->symmetric, &flag);
 
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == GMATHML_DISPLAY_BLOCK);

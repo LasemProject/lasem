@@ -39,8 +39,8 @@ typedef struct _GMathmlStringElementClass GMathmlStringElementClass;
 struct _GMathmlStringElement {
 	GMathmlPresentationToken presentation_token;
 
-	GDomAttributeString left_quote;
-	GDomAttributeString right_quote;
+	GDomStringAttribute left_quote;
+	GDomStringAttribute right_quote;
 };
 
 struct _GMathmlStringElementClass {

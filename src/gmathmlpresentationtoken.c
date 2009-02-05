@@ -104,19 +104,19 @@ gmathml_presentation_token_update (GMathmlElement *self, GMathmlStyle *style)
 	}
 
 	font_style = GMATHML_FONT_STYLE_ERROR;
-	gmathml_attribute_font_style_parse (&token->font_style, &font_style);
+	gmathml_font_style_attribute_parse (&token->font_style, &font_style);
 
 	font_weight = GMATHML_FONT_WEIGHT_ERROR;
-	gmathml_attribute_font_weight_parse (&token->font_weight, &font_weight);
+	gmathml_font_weight_attribute_parse (&token->font_weight, &font_weight);
 
 	gmathml_variant_set_font_style (&style->math_variant, font_style);
 	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	gdom_attribute_string_parse (&token->math_family, &style->math_family);
-	gmathml_attribute_variant_parse (&token->math_variant, &style->math_variant);
-	gmathml_attribute_length_parse (&token->math_size, &style->math_size, style->math_size_value);
-	gmathml_attribute_color_parse (&token->math_color, &style->math_color);
-	gmathml_attribute_color_parse (&token->math_background, &style->math_background);
+	gdom_string_attribute_parse (&token->math_family, &style->math_family);
+	gmathml_variant_attribute_parse (&token->math_variant, &style->math_variant);
+	gmathml_length_attribute_parse (&token->math_size, &style->math_size, style->math_size_value);
+	gmathml_color_attribute_parse (&token->math_color, &style->math_color);
+	gmathml_color_attribute_parse (&token->math_background, &style->math_background);
 
 	style->math_size_value = token->math_size.value;
 }

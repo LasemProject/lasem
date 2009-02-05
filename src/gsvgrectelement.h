@@ -39,12 +39,12 @@ typedef struct _GSvgRectElementClass GSvgRectElementClass;
 struct _GSvgRectElement {
 	GSvgGraphic graphic;
 
-	GSvgAttributeAnimatedLength	x;
-	GSvgAttributeAnimatedLength	y;
-	GSvgAttributeAnimatedLength	width;
-	GSvgAttributeAnimatedLength	height;
-	GSvgAttributeAnimatedLength	rx;
-	GSvgAttributeAnimatedLength	ry;
+	GSvgAnimatedLengthAttribute	x;
+	GSvgAnimatedLengthAttribute	y;
+	GSvgAnimatedLengthAttribute	width;
+	GSvgAnimatedLengthAttribute	height;
+	GSvgAnimatedLengthAttribute	rx;
+	GSvgAnimatedLengthAttribute	ry;
 };
 
 struct _GSvgRectElementClass {

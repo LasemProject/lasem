@@ -60,7 +60,7 @@ gmathml_length_compute (const GMathmlLength *length, double default_value, doubl
 
 
 void
-gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
+gmathml_script_level_attribute_parse (GMathmlScriptLevelAttribute *attribute,
 				      int *style_value)
 {
 	const char *string;
@@ -86,7 +86,7 @@ gmathml_attribute_script_level_parse (GMathmlAttributeScriptLevel *attribute,
 }
 
 void
-gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
+gmathml_color_attribute_parse (GMathmlColorAttribute *attribute,
 			       GMathmlColor *style_color)
 {
 	const char *string;
@@ -121,56 +121,56 @@ gmathml_attribute_color_parse (GMathmlAttributeColor *attribute,
 }
 
 void
-gmathml_attribute_mode_parse (GDomAttributeNamed *attribute,
+gmathml_mode_attribute_parse (GDomEnumAttribute *attribute,
 			      unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_mode_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_mode_from_string);
 }
 
 void
-gmathml_attribute_display_parse (GDomAttributeNamed *attribute,
+gmathml_display_attribute_parse (GDomEnumAttribute *attribute,
 				 unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_display_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_display_from_string);
 }
 
 void
-gmathml_attribute_form_parse (GDomAttributeNamed *attribute,
+gmathml_form_attribute_parse (GDomEnumAttribute *attribute,
 			      unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_form_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_form_from_string);
 }
 
 void
-gmathml_attribute_font_style_parse (GDomAttributeNamed *attribute,
+gmathml_font_style_attribute_parse (GDomEnumAttribute *attribute,
 				    unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_font_style_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_font_style_from_string);
 }
 
 void
-gmathml_attribute_font_weight_parse (GDomAttributeNamed *attribute,
+gmathml_font_weight_attribute_parse (GDomEnumAttribute *attribute,
 				     unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_font_weight_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_font_weight_from_string);
 }
 
 void
-gmathml_attribute_variant_parse (GDomAttributeNamed *attribute,
+gmathml_variant_attribute_parse (GDomEnumAttribute *attribute,
 				 unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_variant_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_variant_from_string);
 }
 
 void
-gmathml_attribute_line_parse (GDomAttributeNamed *attribute,
+gmathml_line_attribute_parse (GDomEnumAttribute *attribute,
 			      unsigned int *style_value)
 {
-	return gdom_attribute_named_parse (attribute, style_value, gmathml_line_from_string);
+	return gdom_enum_attribute_parse (attribute, style_value, gmathml_line_from_string);
 }
 
 void
-gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
+gmathml_length_attribute_parse (GMathmlLengthAttribute *attribute,
 				GMathmlLength *style_value,
 				double font_size)
 {
@@ -217,7 +217,7 @@ gmathml_attribute_length_parse (GMathmlAttributeLength *attribute,
 }
 
 void
-gmathml_attribute_space_parse (GMathmlAttributeSpace *attribute,
+gmathml_space_attribute_parse (GMathmlSpaceAttribute *attribute,
 			       GMathmlSpace *style_value,
 			       GMathmlStyle *style)
 {
@@ -355,9 +355,9 @@ gmathml_space_list_duplicate (const GMathmlSpaceList *space_list)
 }
 
 static void
-gmathml_attribute_space_list_finalize (void *abstract)
+gmathml_space_list_attribute_finalize (void *abstract)
 {
-	GMathmlAttributeSpaceList *attribute = abstract;
+	GMathmlSpaceListAttribute *attribute = abstract;
 
 	g_return_if_fail (attribute != NULL);
 
@@ -368,7 +368,7 @@ gmathml_attribute_space_list_finalize (void *abstract)
 }
 
 void
-gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
+gmathml_space_list_attribute_parse (GMathmlSpaceListAttribute *attribute,
 				    GMathmlSpaceList *style_value,
 				    const GMathmlStyle *style)
 {
@@ -378,7 +378,7 @@ gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	gmathml_attribute_space_list_finalize (attribute);
+	gmathml_space_list_attribute_finalize (attribute);
 
 	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
@@ -496,28 +496,28 @@ gmathml_attribute_space_list_parse (GMathmlAttributeSpaceList *attribute,
 }
 
 void
-gmathml_attribute_row_align_list_parse (GDomAttributeNamedList *attribute,
-					GDomNamedList *style_value)
+gmathml_row_align_list_attribute_parse (GDomEnumListAttribute *attribute,
+					GDomEnumList *style_value)
 {
-	gdom_attribute_named_list_parse (attribute, style_value, gmathml_row_align_from_string);
+	gdom_enum_list_attribute_parse (attribute, style_value, gmathml_row_align_from_string);
 }
 
 void
-gmathml_attribute_column_align_list_parse (GDomAttributeNamedList *attribute,
-					   GDomNamedList *style_value)
+gmathml_column_align_list_attribute_parse (GDomEnumListAttribute *attribute,
+					   GDomEnumList *style_value)
 {
-	gdom_attribute_named_list_parse (attribute, style_value, gmathml_column_align_from_string);
+	gdom_enum_list_attribute_parse (attribute, style_value, gmathml_column_align_from_string);
 }
 
 void
-gmathml_attribute_line_list_parse (GDomAttributeNamedList *attribute,
-				   GDomNamedList *style_value)
+gmathml_line_list_attribute_parse (GDomEnumListAttribute *attribute,
+				   GDomEnumList *style_value)
 {
-	gdom_attribute_named_list_parse (attribute, style_value, gmathml_line_from_string);
+	gdom_enum_list_attribute_parse (attribute, style_value, gmathml_line_from_string);
 }
 
-static const GDomAttributeClass attribute_space_list_class = {
-	.finalize = gmathml_attribute_space_list_finalize
+static const GDomAttributeClass space_list_attribute_class = {
+	.finalize = gmathml_space_list_attribute_finalize
 };
 
 void
@@ -525,6 +525,6 @@ gdom_attribute_map_add_space_list (GDomAttributeMap *map,
 				   char const *name,
 				   ptrdiff_t offset)
 {
-	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_space_list_class);
+	gdom_attribute_map_add_attribute_full (map, name, offset, &space_list_attribute_class);
 }
 

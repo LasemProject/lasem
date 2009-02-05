@@ -40,18 +40,18 @@ typedef struct _GMathmlOperatorElementClass GMathmlOperatorElementClass;
 struct _GMathmlOperatorElement {
 	GMathmlPresentationToken presentation_token;
 
-	GDomAttributeNamed form;
-	GDomAttributeBoolean fence;
-	GDomAttributeBoolean separator;
-	GMathmlAttributeSpace left_space;
-	GMathmlAttributeSpace right_space;
-	GDomAttributeBoolean stretchy;
-	GDomAttributeBoolean symmetric;
-	GMathmlAttributeSpace max_size;
-	GMathmlAttributeSpace min_size;
-	GDomAttributeBoolean large_op;
-	GDomAttributeBoolean movable_limits;
-	GDomAttributeBoolean accent;
+	GDomEnumAttribute form;
+	GDomBooleanAttribute fence;
+	GDomBooleanAttribute separator;
+	GMathmlSpaceAttribute left_space;
+	GMathmlSpaceAttribute right_space;
+	GDomBooleanAttribute stretchy;
+	GDomBooleanAttribute symmetric;
+	GMathmlSpaceAttribute max_size;
+	GMathmlSpaceAttribute min_size;
+	GDomBooleanAttribute large_op;
+	GDomBooleanAttribute movable_limits;
+	GDomBooleanAttribute accent;
 
 	gboolean is_large_op;
 };

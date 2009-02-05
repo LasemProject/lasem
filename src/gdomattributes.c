@@ -295,7 +295,7 @@ gdom_attribute_get_value (const GDomAttribute *attribute)
 }
 
 void
-gdom_attribute_boolean_parse (GDomAttributeBoolean *attribute,
+gdom_boolean_attribute_parse (GDomBooleanAttribute *attribute,
 			      gboolean *style_value)
 {
 	const char *string;
@@ -314,7 +314,7 @@ gdom_attribute_boolean_parse (GDomAttributeBoolean *attribute,
 }
 
 void
-gdom_attribute_unsigned_parse (GDomAttributeUnsigned *attribute,
+gdom_unsigned_attribute_parse (GDomUnsignedAttribute *attribute,
 			       unsigned int *style_value)
 {
 	const char *string;
@@ -333,7 +333,7 @@ gdom_attribute_unsigned_parse (GDomAttributeUnsigned *attribute,
 }
 
 void
-gdom_attribute_double_parse (GDomAttributeDouble *attribute,
+gdom_double_attribute_parse (GDomDoubleAttribute *attribute,
 			     double *style_value)
 {
 	const char *string;
@@ -352,7 +352,7 @@ gdom_attribute_double_parse (GDomAttributeDouble *attribute,
 }
 
 void
-gdom_attribute_string_parse (GDomAttributeString *attribute,
+gdom_string_attribute_parse (GDomStringAttribute *attribute,
 			     char **style_value)
 {
 	const char *string;
@@ -373,7 +373,7 @@ gdom_attribute_string_parse (GDomAttributeString *attribute,
 }
 
 void
-gdom_attribute_named_parse (GDomAttributeNamed *attribute,
+gdom_enum_attribute_parse (GDomEnumAttribute *attribute,
 			    unsigned int *style_value,
 			    GDomNamedConvert convert)
 {
@@ -393,8 +393,8 @@ gdom_attribute_named_parse (GDomAttributeNamed *attribute,
 }
 
 void
-gdom_attribute_named_list_parse (GDomAttributeNamedList *attribute,
-				 GDomNamedList *style_value,
+gdom_enum_list_attribute_parse (GDomEnumListAttribute *attribute,
+				 GDomEnumList *style_value,
 				 GDomNamedConvert convert)
 {
 	const char *string;
@@ -431,9 +431,9 @@ gdom_attribute_named_list_parse (GDomAttributeNamedList *attribute,
 }
 
 void
-gdom_attribute_string_finalize (void *abstract)
+gdom_string_attribute_finalize (void *abstract)
 {
-	GDomAttributeString *attribute = abstract;
+	GDomStringAttribute *attribute = abstract;
 
 	g_return_if_fail (attribute != NULL);
 
@@ -442,9 +442,9 @@ gdom_attribute_string_finalize (void *abstract)
 }
 
 void
-gdom_attribute_named_list_finalize (void *abstract)
+gdom_enum_list_attribute_finalize (void *abstract)
 {
-	GDomAttributeNamedList *attribute = abstract;
+	GDomEnumListAttribute *attribute = abstract;
 
 	g_return_if_fail (attribute != NULL);
 
@@ -453,8 +453,8 @@ gdom_attribute_named_list_finalize (void *abstract)
 	attribute->values = NULL;
 }
 
-static const GDomAttributeClass attribute_string_class = {
-	.finalize = gdom_attribute_string_finalize
+static const GDomAttributeClass string_attribute_class = {
+	.finalize = gdom_string_attribute_finalize
 };
 
 void
@@ -462,18 +462,18 @@ gdom_attribute_map_add_string (GDomAttributeMap *map,
 			       char const *name,
 			       ptrdiff_t offset)
 {
-	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_string_class);
+	gdom_attribute_map_add_attribute_full (map, name, offset, &string_attribute_class);
 }
 
-static const GDomAttributeClass attribute_named_list_class = {
-	.finalize = gdom_attribute_named_list_finalize
+static const GDomAttributeClass enum_list_attribute_class = {
+	.finalize = gdom_enum_list_attribute_finalize
 };
 
 void
-gdom_attribute_map_add_named_list (GDomAttributeMap *map,
+gdom_attribute_map_add_enum_list (GDomAttributeMap *map,
 				   char const *name,
 				   ptrdiff_t offset)
 {
-	gdom_attribute_map_add_attribute_full (map, name, offset, &attribute_named_list_class);
+	gdom_attribute_map_add_attribute_full (map, name, offset, &enum_list_attribute_class);
 }
 

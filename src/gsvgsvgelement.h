@@ -39,10 +39,10 @@ typedef struct _GSvgSvgElementClass GSvgSvgElementClass;
 struct _GSvgSvgElement {
 	GSvgGraphic graphic;
 
-	GSvgAttributeLength	x;
-	GSvgAttributeLength	y;
-	GSvgAttributeLength	width;
-	GSvgAttributeLength	height;
+	GSvgLengthAttribute	x;
+	GSvgLengthAttribute	y;
+	GSvgLengthAttribute	width;
+	GSvgLengthAttribute	height;
 };
 
 struct _GSvgSvgElementClass {

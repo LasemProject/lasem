@@ -40,9 +40,9 @@ typedef struct _GMathmlFencedElementClass GMathmlFencedElementClass;
 struct _GMathmlFencedElement {
 	GMathmlPresentationContainer presentation_container;
 
-	GDomAttributeString open;
-	GDomAttributeString close;
-	GDomAttributeString separators;
+	GDomStringAttribute open;
+	GDomStringAttribute close;
+	GDomStringAttribute separators;
 
 	/* View properties */
 

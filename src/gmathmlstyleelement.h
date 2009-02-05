@@ -42,34 +42,34 @@ struct _GMathmlStyleElement {
 
 	/* Style attributes */
 
-	GDomAttributeBoolean display_style;
-	GMathmlAttributeScriptLevel script_level;
-	GDomAttributeDouble script_size_multiplier;
-	GMathmlAttributeLength script_min_size;
-	GMathmlAttributeLength very_very_thin_math_space;
-	GMathmlAttributeLength very_thin_math_space;
-	GMathmlAttributeLength thin_math_space;
-	GMathmlAttributeLength medium_math_space;
-	GMathmlAttributeLength thick_math_space;
-	GMathmlAttributeLength very_thick_math_space;
-	GMathmlAttributeLength very_very_thick_math_space;
+	GDomBooleanAttribute display_style;
+	GMathmlScriptLevelAttribute script_level;
+	GDomDoubleAttribute script_size_multiplier;
+	GMathmlLengthAttribute script_min_size;
+	GMathmlLengthAttribute very_very_thin_math_space;
+	GMathmlLengthAttribute very_thin_math_space;
+	GMathmlLengthAttribute thin_math_space;
+	GMathmlLengthAttribute medium_math_space;
+	GMathmlLengthAttribute thick_math_space;
+	GMathmlLengthAttribute very_thick_math_space;
+	GMathmlLengthAttribute very_very_thick_math_space;
 
 	/* Deprecated style attributes */
 
-	GDomAttributeNamed font_weight;
-	GDomAttributeNamed font_style;
+	GDomEnumAttribute font_weight;
+	GDomEnumAttribute font_style;
 
 	/* Presentation token attribute */
 
-	GDomAttributeString math_family;
-	GDomAttributeNamed  math_variant;
-	GMathmlAttributeLength math_size;
-	GMathmlAttributeColor  math_color;
-	GMathmlAttributeColor  math_background;
+	GDomStringAttribute math_family;
+	GDomEnumAttribute  math_variant;
+	GMathmlLengthAttribute math_size;
+	GMathmlColorAttribute  math_color;
+	GMathmlColorAttribute  math_background;
 
 	/* Fraction attributes */
 
-	GMathmlAttributeLength line_thickness;
+	GMathmlLengthAttribute line_thickness;
 };
 
 struct _GMathmlStyleElementClass {

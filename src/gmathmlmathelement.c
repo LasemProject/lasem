@@ -43,12 +43,12 @@ _update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlMode default_mode = (style->display == GMATHML_DISPLAY_INLINE) ?
 		GMATHML_MODE_INLINE : GMATHML_MODE_DISPLAY;
 
-	gmathml_attribute_mode_parse (&math_element->mode, &default_mode);
+	gmathml_mode_attribute_parse (&math_element->mode, &default_mode);
 
 	style->display = (default_mode == GMATHML_MODE_INLINE) ?
 		GMATHML_DISPLAY_INLINE : GMATHML_DISPLAY_BLOCK;
 
-	gmathml_attribute_display_parse (&math_element->display, &style->display);
+	gmathml_display_attribute_parse (&math_element->display, &style->display);
 }
 
 /* GMathmlMathElement implementation */

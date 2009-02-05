@@ -40,17 +40,17 @@ typedef struct _GMathmlTableElementClass GMathmlTableElementClass;
 struct _GMathmlTableElement {
 	GMathmlElement	element;
 
-	GDomAttributeNamedList row_align;
-	GDomAttributeNamedList column_align;
-	GMathmlAttributeSpaceList row_spacing;
-	GMathmlAttributeSpaceList column_spacing;
-	GDomAttributeNamedList row_lines;
-	GDomAttributeNamedList column_lines;
-	GDomAttributeNamed frame;
-	GMathmlAttributeSpaceList frame_spacing;
-	GDomAttributeBoolean equal_rows;
-	GDomAttributeBoolean equal_columns;
-	GDomAttributeBoolean display_style;
+	GDomEnumListAttribute row_align;
+	GDomEnumListAttribute column_align;
+	GMathmlSpaceListAttribute row_spacing;
+	GMathmlSpaceListAttribute column_spacing;
+	GDomEnumListAttribute row_lines;
+	GDomEnumListAttribute column_lines;
+	GDomEnumAttribute frame;
+	GMathmlSpaceListAttribute frame_spacing;
+	GDomBooleanAttribute equal_rows;
+	GDomBooleanAttribute equal_columns;
+	GDomBooleanAttribute display_style;
 
 	/* View data */
 

@@ -64,53 +64,53 @@ double 	gmathml_length_compute 		(const GMathmlLength *length, double default_va
 typedef struct {
 	GDomAttribute attr;
 	int value;
-} GMathmlAttributeScriptLevel;
+} GMathmlScriptLevelAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GMathmlColor color;
-} GMathmlAttributeColor;
+} GMathmlColorAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GMathmlLength length;
 	double value;
-} GMathmlAttributeLength;
+} GMathmlLengthAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GMathmlSpace space;
 	double value;
-} GMathmlAttributeSpace;
+} GMathmlSpaceAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GMathmlSpaceList *space_list;
 	double *values;
-} GMathmlAttributeSpaceList;
+} GMathmlSpaceListAttribute;
 
-void 		gmathml_attribute_script_level_parse	(GMathmlAttributeScriptLevel *attribute,
+void 		gmathml_script_level_attribute_parse	(GMathmlScriptLevelAttribute *attribute,
 							 int *default_value);
-void 		gmathml_attribute_mode_parse 		(GDomAttributeNamed *attribute,
+void 		gmathml_mode_attribute_parse 		(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		gmathml_attribute_display_parse 	(GDomAttributeNamed *attribute,
+void 		gmathml_display_attribute_parse 	(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		gmathml_attribute_form_parse	 	(GDomAttributeNamed *attribute,
+void 		gmathml_form_attribute_parse	 	(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		gmathml_attribute_font_style_parse 	(GDomAttributeNamed *attribute,
+void 		gmathml_font_style_attribute_parse 	(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		gmathml_attribute_font_weight_parse 	(GDomAttributeNamed *attribute,
+void 		gmathml_font_weight_attribute_parse 	(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		gmathml_attribute_variant_parse 	(GDomAttributeNamed *attribute,
+void 		gmathml_variant_attribute_parse 	(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void		gmathml_attribute_line_parse		(GDomAttributeNamed *attribute,
+void		gmathml_line_attribute_parse		(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void		gmathml_attribute_color_parse		(GMathmlAttributeColor *attribute,
+void		gmathml_color_attribute_parse		(GMathmlColorAttribute *attribute,
 							 GMathmlColor *default_color);
-void 		gmathml_attribute_length_parse 		(GMathmlAttributeLength *attribute,
+void 		gmathml_length_attribute_parse 		(GMathmlLengthAttribute *attribute,
 							 GMathmlLength *style_value,
 							 double font_size);
-void 		gmathml_attribute_space_parse 		(GMathmlAttributeSpace *attribute,
+void 		gmathml_space_attribute_parse 		(GMathmlSpaceAttribute *attribute,
 							 GMathmlSpace *style_value,
 							 GMathmlStyle *style);
 
@@ -118,16 +118,16 @@ GMathmlSpaceList *	gmathml_space_list_new  	(unsigned int n_spaces);
 void 			gmathml_space_list_free 	(GMathmlSpaceList *space_list);
 GMathmlSpaceList *	gmathml_space_list_duplicate	(const GMathmlSpaceList *space_list);
 
-void 		gmathml_attribute_space_list_parse 	(GMathmlAttributeSpaceList *attribute,
+void 		gmathml_space_list_attribute_parse 	(GMathmlSpaceListAttribute *attribute,
 							 GMathmlSpaceList *style_value,
 							 const GMathmlStyle *style);
 
-void 	gmathml_attribute_row_align_list_parse 		(GDomAttributeNamedList *attribute,
-							 GDomNamedList *style_value);
-void 	gmathml_attribute_column_align_list_parse 	(GDomAttributeNamedList *attribute,
-							 GDomNamedList *style_value);
-void 	gmathml_attribute_line_list_parse 		(GDomAttributeNamedList *attribute,
-							 GDomNamedList *style_value);
+void 	gmathml_row_align_list_attribute_parse 		(GDomEnumListAttribute *attribute,
+							 GDomEnumList *style_value);
+void 	gmathml_column_align_list_attribute_parse 	(GDomEnumListAttribute *attribute,
+							 GDomEnumList *style_value);
+void 	gmathml_line_list_attribute_parse 		(GDomEnumListAttribute *attribute,
+							 GDomEnumList *style_value);
 
 void 	gdom_attribute_map_add_space_list 		(GDomAttributeMap *map,
 							 char const *name,

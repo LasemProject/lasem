@@ -23,7 +23,7 @@
 #include <gsvgattributes.h>
 
 void
-gsvg_attribute_length_parse (GSvgAttributeLength *attribute,
+gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,
 			     GSvgLength *default_value)
 {
 	const char *string;
@@ -45,7 +45,7 @@ gsvg_attribute_length_parse (GSvgAttributeLength *attribute,
 }
 
 void
-gsvg_attribute_animated_length_parse (GSvgAttributeAnimatedLength *attribute,
+gsvg_animated_length_attribute_parse (GSvgAnimatedLengthAttribute *attribute,
 				      GSvgLength *default_value)
 {
 	const char *string;

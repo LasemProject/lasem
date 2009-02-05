@@ -44,11 +44,11 @@ gmathml_string_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 
 	default_quote = g_strdup ("\"");
-	gdom_attribute_string_parse (&string_element->left_quote, &default_quote);
+	gdom_string_attribute_parse (&string_element->left_quote, &default_quote);
 	g_free (default_quote);
 
 	default_quote = g_strdup ("\"");
-	gdom_attribute_string_parse (&string_element->right_quote, &default_quote);
+	gdom_string_attribute_parse (&string_element->right_quote, &default_quote);
 	g_free (default_quote);
 }
 

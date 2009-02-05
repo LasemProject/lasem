@@ -41,10 +41,10 @@ gmathml_table_cell_element_update (GMathmlElement *self, GMathmlStyle *style)
 	unsigned int span;
 
 	span = 1;
-	gdom_attribute_unsigned_parse (&cell->row_span, &span);
+	gdom_unsigned_attribute_parse (&cell->row_span, &span);
 
 	span = 1;
-	gdom_attribute_unsigned_parse (&cell->column_span, &span);
+	gdom_unsigned_attribute_parse (&cell->column_span, &span);
 }
 
 static const GMathmlBbox *

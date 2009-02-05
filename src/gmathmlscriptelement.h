@@ -55,8 +55,8 @@ struct _GMathmlScriptElement {
 
 	GMathmlScriptElementType type;
 
-	GMathmlAttributeLength subscript_shift;
-	GMathmlAttributeLength superscript_shift;
+	GMathmlLengthAttribute subscript_shift;
+	GMathmlLengthAttribute superscript_shift;
 
 	GMathmlDisplay display;
 };

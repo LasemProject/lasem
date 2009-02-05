@@ -42,16 +42,16 @@ typedef struct {
 typedef struct {
 	GDomAttribute attr;
 	GSvgLength length;
-} GSvgAttributeLength;
+} GSvgLengthAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GSvgAnimatedLength length;
-} GSvgAttributeAnimatedLength;
+} GSvgAnimatedLengthAttribute;
 
-void		gsvg_attribute_length_parse 		(GSvgAttributeLength *attribute,
+void		gsvg_length_attribute_parse 		(GSvgLengthAttribute *attribute,
 							 GSvgLength *default_value);
-void 		gsvg_attribute_animated_length_parse 	(GSvgAttributeAnimatedLength *attribute,
+void 		gsvg_animated_length_attribute_parse 	(GSvgAnimatedLengthAttribute *attribute,
 							 GSvgLength *default_value);
 
 G_END_DECLS

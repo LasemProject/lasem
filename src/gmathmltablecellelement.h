@@ -40,8 +40,8 @@ typedef struct _GMathmlTableCellElementClass GMathmlTableCellElementClass;
 struct _GMathmlTableCellElement {
 	GMathmlElement	element;
 
-	GDomAttributeUnsigned row_span;
-	GDomAttributeUnsigned column_span;
+	GDomUnsignedAttribute row_span;
+	GDomUnsignedAttribute column_span;
 };
 
 struct _GMathmlTableCellElementClass {

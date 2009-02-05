@@ -46,51 +46,51 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 	GMathmlStyleElement *style_element = GMATHML_STYLE_ELEMENT (self);
 
 	display_style = style->display == GMATHML_DISPLAY_BLOCK;
-	gdom_attribute_boolean_parse (&style_element->display_style, &display_style);
+	gdom_boolean_attribute_parse (&style_element->display_style, &display_style);
 	style->display = display_style ? GMATHML_DISPLAY_BLOCK : GMATHML_DISPLAY_INLINE;
 
-	gdom_attribute_double_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
-	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
-	gmathml_attribute_length_parse (&style_element->script_min_size,
+	gdom_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
+	gmathml_color_attribute_parse (&style_element->math_background, &style->math_background);
+	gmathml_length_attribute_parse (&style_element->script_min_size,
 					&style->script_min_size,
 					style->math_size_value);
 
-	gmathml_attribute_script_level_parse (&style_element->script_level, &style->script_level);
+	gmathml_script_level_attribute_parse (&style_element->script_level, &style->script_level);
 
 	/* token */
 
 	font_style = GMATHML_FONT_STYLE_ERROR;
-	gmathml_attribute_font_style_parse (&style_element->font_style, &font_style);
+	gmathml_font_style_attribute_parse (&style_element->font_style, &font_style);
 
 	font_weight = GMATHML_FONT_WEIGHT_ERROR;
-	gmathml_attribute_font_weight_parse (&style_element->font_weight, &font_weight);
+	gmathml_font_weight_attribute_parse (&style_element->font_weight, &font_weight);
 
 	gmathml_variant_set_font_style (&style->math_variant, font_style);
 	gmathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	gdom_attribute_string_parse (&style_element->math_family, &style->math_family);
-	gmathml_attribute_length_parse (&style_element->math_size, &style->math_size, style->math_size_value);
-	gmathml_attribute_color_parse (&style_element->math_color, &style->math_color);
-	gmathml_attribute_color_parse (&style_element->math_background, &style->math_background);
-	gmathml_attribute_variant_parse (&style_element->math_variant, &style->math_variant);
+	gdom_string_attribute_parse (&style_element->math_family, &style->math_family);
+	gmathml_length_attribute_parse (&style_element->math_size, &style->math_size, style->math_size_value);
+	gmathml_color_attribute_parse (&style_element->math_color, &style->math_color);
+	gmathml_color_attribute_parse (&style_element->math_background, &style->math_background);
+	gmathml_variant_attribute_parse (&style_element->math_variant, &style->math_variant);
 
 	style->math_size_value = style_element->math_size.value;
 
 	/* mstyle */
 
-	gmathml_attribute_length_parse (&style_element->very_very_thin_math_space,
+	gmathml_length_attribute_parse (&style_element->very_very_thin_math_space,
 					&style->very_very_thin_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->very_thin_math_space,
+	gmathml_length_attribute_parse (&style_element->very_thin_math_space,
 					&style->very_thin_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->thin_math_space,
+	gmathml_length_attribute_parse (&style_element->thin_math_space,
 					&style->thin_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->medium_math_space,
+	gmathml_length_attribute_parse (&style_element->medium_math_space,
 					&style->medium_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->thick_math_space,
+	gmathml_length_attribute_parse (&style_element->thick_math_space,
 					&style->thick_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->very_thick_math_space,
+	gmathml_length_attribute_parse (&style_element->very_thick_math_space,
 					&style->very_thick_math_space, style->math_size_value);
-	gmathml_attribute_length_parse (&style_element->very_very_thick_math_space,
+	gmathml_length_attribute_parse (&style_element->very_very_thick_math_space,
 					&style->very_very_thick_math_space, style->math_size_value);
 
 	style->very_very_thin_math_space_value = style_element->very_very_thin_math_space.value;
@@ -103,7 +103,7 @@ gmathml_style_element_update (GMathmlElement *self, GMathmlStyle *style)
 
 	/* mfrac */
 
-	gmathml_attribute_length_parse (&style_element->line_thickness,
+	gmathml_length_attribute_parse (&style_element->line_thickness,
 					&style->line_thickness,
 					style->math_size_value);
 }

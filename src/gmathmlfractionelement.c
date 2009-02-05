@@ -48,8 +48,8 @@ gmathml_fraction_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlFractionElement *fraction = GMATHML_FRACTION_ELEMENT (self);
 
-	gmathml_attribute_length_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
-	gdom_attribute_boolean_parse (&fraction->bevelled, &style->bevelled);
+	gmathml_length_attribute_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
+	gdom_boolean_attribute_parse (&fraction->bevelled, &style->bevelled);
 
 	fraction->display = style->display;
 }

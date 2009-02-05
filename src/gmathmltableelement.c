@@ -50,18 +50,18 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 {
 	GMathmlTableElement *table = GMATHML_TABLE_ELEMENT (self);
 	GMathmlSpaceList *space_list;
-	GDomNamedList named_list;
-	unsigned int named;
+	GDomEnumList enum_list;
+	unsigned int enum_attribute;
 	gboolean flag;
 
-	named_list.n_values = 1;
-	named_list.values = &named;
+	enum_list.n_values = 1;
+	enum_list.values = &enum_attribute;
 
-	named = GMATHML_ROW_ALIGN_BASELINE;
-	gmathml_attribute_row_align_list_parse (&table->row_align, &named_list);
+	enum_attribute = GMATHML_ROW_ALIGN_BASELINE;
+	gmathml_row_align_list_attribute_parse (&table->row_align, &enum_list);
 
-	named = GMATHML_COLUMN_ALIGN_CENTER;
-	gmathml_attribute_column_align_list_parse (&table->column_align, &named_list);
+	enum_attribute = GMATHML_COLUMN_ALIGN_CENTER;
+	gmathml_column_align_list_attribute_parse (&table->column_align, &enum_list);
 
 	space_list = gmathml_space_list_new (1);
 
@@ -69,24 +69,24 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 	space_list->spaces[0].length.unit = GMATHML_UNIT_EX;
 	space_list->spaces[0].name = GMATHML_SPACE_NAME_ERROR;
 
-	gmathml_attribute_space_list_parse (&table->row_spacing, space_list, style);
+	gmathml_space_list_attribute_parse (&table->row_spacing, space_list, style);
 
 	space_list->spaces[0].length.value = 0.8;
 	space_list->spaces[0].length.unit = GMATHML_UNIT_EM;
 	space_list->spaces[0].name = GMATHML_SPACE_NAME_ERROR;
 
-	gmathml_attribute_space_list_parse (&table->column_spacing, space_list, style);
+	gmathml_space_list_attribute_parse (&table->column_spacing, space_list, style);
 
 	gmathml_space_list_free (space_list);
 
-	named = GMATHML_LINE_NONE;
-	gmathml_attribute_line_list_parse (&table->row_lines, &named_list);
+	enum_attribute = GMATHML_LINE_NONE;
+	gmathml_line_list_attribute_parse (&table->row_lines, &enum_list);
 
-	named = GMATHML_LINE_NONE;
-	gmathml_attribute_line_list_parse (&table->column_lines, &named_list);
+	enum_attribute = GMATHML_LINE_NONE;
+	gmathml_line_list_attribute_parse (&table->column_lines, &enum_list);
 
-	named = GMATHML_LINE_NONE;
-	gmathml_attribute_line_parse (&table->frame, &named);
+	enum_attribute = GMATHML_LINE_NONE;
+	gmathml_line_attribute_parse (&table->frame, &enum_attribute);
 
 	space_list = gmathml_space_list_new (2);
 
@@ -97,18 +97,18 @@ gmathml_table_element_update (GMathmlElement *self, GMathmlStyle *style)
 	space_list->spaces[1].length.unit = GMATHML_UNIT_EX;
 	space_list->spaces[1].name = GMATHML_SPACE_NAME_ERROR;
 
-	gmathml_attribute_space_list_parse (&table->frame_spacing, space_list, style);
+	gmathml_space_list_attribute_parse (&table->frame_spacing, space_list, style);
 
 	gmathml_space_list_free (space_list);
 
 	flag = FALSE;
-	gdom_attribute_boolean_parse (&table->equal_rows, &flag);
+	gdom_boolean_attribute_parse (&table->equal_rows, &flag);
 
 	flag = FALSE;
-	gdom_attribute_boolean_parse (&table->equal_columns, &flag);
+	gdom_boolean_attribute_parse (&table->equal_columns, &flag);
 
 	flag = FALSE;
-	gdom_attribute_boolean_parse (&table->display_style, &flag);
+	gdom_boolean_attribute_parse (&table->display_style, &flag);
 }
 
 static const GMathmlBbox *
@@ -483,17 +483,17 @@ gmathml_table_element_class_init (GMathmlTableElementClass *table_class)
 
 	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowalign",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "rowalign",
 					   offsetof (GMathmlTableElement, row_align));
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnalign",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "columnalign",
 					   offsetof (GMathmlTableElement, column_align));
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowspacing",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "rowspacing",
 					   offsetof (GMathmlTableElement, row_spacing));
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnspacing",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "columnspacing",
 					   offsetof (GMathmlTableElement, column_spacing));
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "rowlines",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "rowlines",
 					   offsetof (GMathmlTableElement, row_lines));
-	gdom_attribute_map_add_named_list (m_element_class->attributes, "columnlines",
+	gdom_attribute_map_add_enum_list (m_element_class->attributes, "columnlines",
 					   offsetof (GMathmlTableElement, column_lines));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "frame",
 					  offsetof (GMathmlTableElement, frame));

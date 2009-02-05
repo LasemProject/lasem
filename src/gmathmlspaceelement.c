@@ -53,17 +53,17 @@ gmathml_space_element_update (GMathmlElement *self, GMathmlStyle *style)
 	space.length.value = 0;
 	space.name = GMATHML_SPACE_NAME_ERROR;
 
-	gmathml_attribute_space_parse (&space_element->width, &space, style);
+	gmathml_space_attribute_parse (&space_element->width, &space, style);
 
 	length.unit = GMATHML_UNIT_EM;
 	length.value = 0.0;
 
-	gmathml_attribute_length_parse (&space_element->height, &length, style->math_size_value);
+	gmathml_length_attribute_parse (&space_element->height, &length, style->math_size_value);
 
 	length.unit = GMATHML_UNIT_EM;
 	length.value = 0.0;
 
-	gmathml_attribute_length_parse (&space_element->depth, &length, style->math_size_value);
+	gmathml_length_attribute_parse (&space_element->depth, &length, style->math_size_value);
 }
 
 static const GMathmlBbox *

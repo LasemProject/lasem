@@ -40,9 +40,9 @@ typedef struct _GMathmlSpaceElementClass GMathmlSpaceElementClass;
 struct _GMathmlSpaceElement {
 	GMathmlElement	element;
 
-	GMathmlAttributeSpace width;
-	GMathmlAttributeLength height;
-	GMathmlAttributeLength depth;
+	GMathmlSpaceAttribute width;
+	GMathmlLengthAttribute height;
+	GMathmlLengthAttribute depth;
 };
 
 struct _GMathmlSpaceElementClass {
