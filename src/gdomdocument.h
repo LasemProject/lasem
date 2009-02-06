@@ -25,6 +25,7 @@
 
 #include <gdom.h>
 #include <gdomnode.h>
+#include <gdomview.h>
 
 G_BEGIN_DECLS
 
@@ -47,6 +48,8 @@ struct _GDomDocumentClass {
 	GDomElement* 	(*get_document_element) (GDomDocument* self);
 	GDomElement* 	(*create_element) (GDomDocument* self, const char* tag_name);
 	GDomText* 	(*create_text_node) (GDomDocument* self, const char* data);
+
+	GDomView*	(*create_view) (GDomDocument *self);
 };
 
 GType gdom_document_get_type (void);
@@ -54,6 +57,8 @@ GType gdom_document_get_type (void);
 GDomElement* 	gdom_document_get_document_element 	(GDomDocument* self);
 GDomElement* 	gdom_document_create_element 		(GDomDocument* self, const char* tag_name);
 GDomText* 	gdom_document_create_text_node 		(GDomDocument* self, const char* data);
+
+GDomView*	gdom_document_create_view		(GDomDocument *self);
 
 G_END_DECLS
 

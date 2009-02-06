@@ -41,7 +41,12 @@
 #include <gmathmlstyleelement.h>
 #include <gmathmlalignmarkelement.h>
 #include <gmathmlaligngroupelement.h>
+#include <gmathmlview.h>
 #include <string.h>
+
+#include <gdomparser.h>
+
+#include <../itex2mml/itex2MML.h>
 
 /* GDomNode implementation */
 
@@ -120,9 +125,15 @@ gmathml_document_create_element (GDomDocument *document, const char *tag_name)
 	return GDOM_ELEMENT (node);
 }
 
+static GDomView *
+gmathml_document_create_view (GDomDocument *document)
+{
+	return GDOM_VIEW (gmathml_view_new (GMATHML_DOCUMENT (document)));
+}
+
 /* GMathmlDocument implementation */
 
-GDomNode *
+GMathmlDocument *
 gmathml_document_new (void)
 {
 	return g_object_new (GMATHML_TYPE_DOCUMENT, NULL);
@@ -152,6 +163,29 @@ gmathml_document_class_init (GMathmlDocumentClass *m_document_class)
 	d_node_class->can_append_child = gmathml_document_can_append_child;
 
 	d_document_class->create_element = gmathml_document_create_element;
+	d_document_class->create_view = gmathml_document_create_view;
 }
 
 G_DEFINE_TYPE (GMathmlDocument, gmathml_document, GDOM_TYPE_DOCUMENT)
+
+static void
+_dummy_error (const char *msg)
+{
+}
+
+GMathmlDocument *
+gmathml_document_new_from_itex (const char *itex)
+{
+	GMathmlDocument *document;
+	char *mathml;
+
+	g_return_val_if_fail (itex != NULL, NULL);
+
+	itex2MML_error = _dummy_error;
+
+	mathml = itex2MML_parse (itex, strlen (itex));
+	document = GMATHML_DOCUMENT (gdom_document_new_from_memory (mathml));
+	itex2MML_free_string (mathml);
+
+	return document;
+}

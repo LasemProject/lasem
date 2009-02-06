@@ -24,6 +24,9 @@ libgmathml_la_SOURCES =			\
 	gdomcharacterdata.c		\
 	gdomtext.c			\
 	gdomattributes.c		\
+	gdomview.c			\
+	gdomparser.c			\
+	gdomimplementation.c		\
 	gmathmlenums.c			\
 	gmathmlentitydictionary.c	\
 	gmathmloperatordictionary.c	\
@@ -57,7 +60,6 @@ libgmathml_la_SOURCES =			\
 	gmathmlaligngroupelement.c	\
 	gmathmlutils.c			\
 	gmathmllayoututils.c		\
-	gmathmlparser.c			\
 	gsvgdocument.c			\
 	gsvgelement.c			\
 	gsvggraphic.c			\
@@ -77,6 +79,9 @@ libgmathml_la_HEADERS = \
 	gdomcharacterdata.h		\
 	gdomtext.h			\
 	gdomattributes.h		\
+	gdomview.h			\
+	gdomparser.h			\
+	gdomimplementation.h		\
 	gmathml.h			\
 	gmathmlentitydictionary.h	\
 	gmathmloperatordictionary.h	\
@@ -111,7 +116,6 @@ libgmathml_la_HEADERS = \
 	gmathmlenums.h			\
 	gmathmlutils.h			\
 	gmathmllayoututils.h		\
-	gmathmlparser.h			\
 	gsvgdocument.h			\
 	gsvgelement.h			\
 	gsvggraphic.h			\

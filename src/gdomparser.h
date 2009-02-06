@@ -1,6 +1,5 @@
-/* gmathmlparser.h
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +19,15 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GMATHML_PARSER_H
-#define GMATHML_PARSER_H
+#ifndef GDOM_PARSER_H
+#define GDOM_PARSER_H
 
-#include <gmathmldocument.h>
+#include <gdomdocument.h>
 
 G_BEGIN_DECLS
 
-GMathmlDocument * 	gmathml_document_new_from_file 		(const char *filename);
-GMathmlDocument * 	gmathml_document_new_from_memory 	(const char *buffer);
-GMathmlDocument * 	gmathml_document_new_from_itex		(const char *itex);
+GDomDocument * 	gdom_document_new_from_file 	(const char *filename);
+GDomDocument * 	gdom_document_new_from_memory 	(const char *buffer);
 
 G_END_DECLS
 

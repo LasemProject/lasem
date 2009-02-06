@@ -46,7 +46,7 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 
 /* GSvgDocument implementation */
 
-GDomNode *
+GSvgDocument *
 gsvg_document_new (void)
 {
 	return g_object_new (GSVG_TYPE_DOCUMENT, NULL);

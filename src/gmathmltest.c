@@ -32,9 +32,8 @@
 #include <glib/gregex.h>
 #include <glib/gprintf.h>
 #include <gio/gio.h>
-#include <gmathmlview.h>
-#include <gmathmldocument.h>
-#include <gmathmlparser.h>
+#include <gdomparser.h>
+#include <gdomdocument.h>
 
 #include <libxml/parser.h>
 
@@ -62,8 +61,8 @@ static GRegex *regex_mml = NULL;
 void
 gmathml_test_render (char const *filename)
 {
-	GMathmlDocument *document;
-	GMathmlView *view;
+	GDomDocument *document;
+	GDomView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
 	char *buffer = NULL;
@@ -98,21 +97,21 @@ gmathml_test_render (char const *filename)
 		else
 			mathml = itex2MML_parse (buffer, size);
 
-		document = gmathml_document_new_from_memory (mathml);
+		document = gdom_document_new_from_memory (mathml);
 
-		view = gmathml_view_new (document, NULL);
+		view = gdom_document_create_view (document);
 
-		gmathml_view_measure (view, &width, &height);
+		gdom_view_measure (GDOM_VIEW (view), &width, &height);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2.5, height + 2.5);
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		gmathml_view_set_cairo (view, cairo);
+		gdom_view_set_cairo (GDOM_VIEW (view), cairo);
 
 		cairo_destroy (cairo);
 
-		gmathml_view_render (view, 1, 1);
+		gdom_view_render (GDOM_VIEW (view), 1, 1);
 
 		cairo_surface_write_to_png (surface, png_filename);
 

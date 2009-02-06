@@ -23,12 +23,11 @@
 #ifndef GMATHML_VIEW_H
 #define GMATHML_VIEW_H
 
+#include <gdomview.h>
 #include <gmathml.h>
 #include <gmathmlutils.h>
 #include <gmathmlelement.h>
 #include <gmathmlpresentationtoken.h>
-#include <cairo.h>
-#include <pango/pangocairo.h>
 
 G_BEGIN_DECLS
 
@@ -78,28 +77,16 @@ typedef struct _GMathmlViewClass GMathmlViewClass;
 typedef struct _GMathmlViewPrivate GMathmlViewPrivate;
 
 struct _GMathmlView {
-	GObject	object;
-
-	GMathmlViewPrivate *priv;
+	GDomView dom_view;
 };
 
 struct _GMathmlViewClass {
-	GObjectClass parent_class;
+	GDomViewClass dom_view_class;
 };
 
 GType gmathml_view_get_type (void);
 
-GMathmlView *		gmathml_view_new 		(GMathmlDocument *document, cairo_t *cr);
-
-void 			gmathml_view_render 		(GMathmlView *view, double x, double y);
-const GMathmlBbox *	gmathml_view_measure 		(GMathmlView *view, double *width, double *height);
-
-void 			gmathml_view_set_document 	(GMathmlView *view, GMathmlDocument *document);
-void			gmathml_view_set_cairo 		(GMathmlView *view, cairo_t *cr);
-
-void			gmathml_view_set_debug 		(GMathmlView *view, gboolean debug);
-
-void			gmathml_view_set_ppi 		(GMathmlView *view, double ppi);
+GMathmlView *		gmathml_view_new 		(GMathmlDocument *document);
 
 /* Internal API */
 

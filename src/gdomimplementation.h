@@ -1,6 +1,5 @@
-/* gdom.h
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,21 +19,17 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#ifndef GDOM_IMPLEMENTATION_H
+#define GDOM_IMPLEMENTATION_H
 
-#ifndef GDOM_H
-#define GDOM_H
-
-#include <glib-object.h>
+#include <gdom.h>
+#include <gdomdocument.h>
+#include <gmathmldocument.h>
+#include <gsvgdocument.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GDomNode GDomNode;
-typedef struct _GDomElement GDomElement;
-typedef struct _GDomDocument GDomDocument;
-typedef struct _GDomCharacterData GDomCharacterData;
-typedef struct _GDomText GDomText;
-
-typedef struct _GDomView GDomView;
+GDomDocument *gdom_implementation_create_document (const char *qualified_name);
 
 G_END_DECLS
 

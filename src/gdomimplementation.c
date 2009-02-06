@@ -1,6 +1,5 @@
-/* gdom.h
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,22 +19,18 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomimplementation.h>
+#include <string.h>
 
-#ifndef GDOM_H
-#define GDOM_H
+GDomDocument *
+gdom_implementation_create_document (const char *qualified_name)
+{
+	g_return_val_if_fail (qualified_name != NULL, NULL);
 
-#include <glib-object.h>
+	if (strcmp (qualified_name, "svg") == 0)
+		return GDOM_DOCUMENT (gsvg_document_new ());
+	else if (strcmp (qualified_name, "math") == 0)
+		return GDOM_DOCUMENT (gmathml_document_new ());
 
-G_BEGIN_DECLS
-
-typedef struct _GDomNode GDomNode;
-typedef struct _GDomElement GDomElement;
-typedef struct _GDomDocument GDomDocument;
-typedef struct _GDomCharacterData GDomCharacterData;
-typedef struct _GDomText GDomText;
-
-typedef struct _GDomView GDomView;
-
-G_END_DECLS
-
-#endif
+	return NULL;
+}

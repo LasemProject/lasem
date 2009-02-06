@@ -1,6 +1,5 @@
-/* gdomdocument.c
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -76,6 +75,14 @@ gdom_document_create_text_node (GDomDocument *document, const char *data)
 	return GDOM_DOCUMENT_GET_CLASS (document)->create_text_node (document, data);
 }
 
+GDomView*
+gdom_document_create_view (GDomDocument *self)
+{
+	g_return_val_if_fail (GDOM_IS_DOCUMENT (self), NULL);
+
+	return GDOM_DOCUMENT_GET_CLASS (self)->create_view (self);
+}
+
 static void
 gdom_document_init (GDomDocument *document)
 {
@@ -95,3 +102,4 @@ gdom_document_class_init (GDomDocumentClass *klass)
 }
 
 G_DEFINE_ABSTRACT_TYPE (GDomDocument, gdom_document, GDOM_TYPE_NODE)
+

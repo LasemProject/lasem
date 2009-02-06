@@ -1,6 +1,5 @@
-/* gmathmlparser.c
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/*
+ * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,34 +19,29 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <gdom.h>
-#include <gdomdocument.h>
-#include <gmathml.h>
-#include <gmathmldocument.h>
+#include <gdomimplementation.h>
 #include <gmathmlpresentationtoken.h>
 #include <gmathmlentitydictionary.h>
 #include <libxml/parser.h>
 #include <string.h>
 
-#include <../itex2mml/itex2MML.h>
-
 typedef enum {
 	STATE
-} GMathmlSaxParserStateEnum;
+} GDomSaxParserStateEnum;
 
 typedef struct {
-	GMathmlSaxParserStateEnum state;
+	GDomSaxParserStateEnum state;
 
-	GDomNode *document;
+	GDomDocument *document;
 	GDomNode *current_node;
 
 	gboolean is_error;
-} GMathmlSaxParserState;
+} GDomSaxParserState;
 
 static void
-gmathml_parser_start_document (void *user_data)
+gdom_parser_start_document (void *user_data)
 {
-	GMathmlSaxParserState *state = user_data;
+	GDomSaxParserState *state = user_data;
 
 	state->state = STATE;
 	state->document = NULL;
@@ -55,25 +49,26 @@ gmathml_parser_start_document (void *user_data)
 }
 
 static void
-gmathml_parser_end_document (void *user_data)
+gdom_parser_end_document (void *user_data)
 {
 }
 
 static void
-gmathml_parser_start_element(void *user_data,
-			     const xmlChar *name,
-			     const xmlChar **attrs)
+gdom_parser_start_element(void *user_data,
+			  const xmlChar *name,
+			  const xmlChar **attrs)
 {
-	GMathmlSaxParserState *state = user_data;
+	GDomSaxParserState *state = user_data;
 	GDomNode *node;
 	int i;
 
-	if (strcmp ((char *) name, "math") == 0) {
+	if (strcmp ((char *) name, "math") == 0 ||
+	    strcmp ((char *) name, "svg") == 0) {
 		if (state->document != NULL)
 			g_object_unref (state->document);
 
-		state->document = gmathml_document_new ();
-		state->current_node = state->document;
+		state->document = gdom_implementation_create_document ((char *)name);
+		state->current_node = GDOM_NODE (state->document);
 	}
 
 	g_return_if_fail (GDOM_IS_DOCUMENT (state->document));
@@ -96,10 +91,10 @@ gmathml_parser_start_element(void *user_data,
 }
 
 static void
-gmathml_parser_end_element (void *user_data,
+gdom_parser_end_element (void *user_data,
 			    const xmlChar *name)
 {
-	GMathmlSaxParserState *state = user_data;
+	GDomSaxParserState *state = user_data;
 
 	if (state->is_error)
 		return;
@@ -108,9 +103,9 @@ gmathml_parser_end_element (void *user_data,
 }
 
 static void
-gmathml_parser_characters (void *user_data, const xmlChar *ch, int len)
+gdom_parser_characters (void *user_data, const xmlChar *ch, int len)
 {
-	GMathmlSaxParserState *state = user_data;
+	GDomSaxParserState *state = user_data;
 
 	if (GMATHML_IS_PRESENTATION_TOKEN (state->current_node) &&
 	    !state->is_error) {
@@ -125,7 +120,7 @@ gmathml_parser_characters (void *user_data, const xmlChar *ch, int len)
 }
 
 static xmlEntityPtr
-gmathml_parser_get_entity (void *user_data, const xmlChar *name)
+gdom_parser_get_entity (void *user_data, const xmlChar *name)
 {
 	const char *utf8;
 
@@ -148,67 +143,45 @@ gmathml_parser_get_entity (void *user_data, const xmlChar *name)
 }
 
 static xmlSAXHandler sax_handler = {
-	.startDocument = gmathml_parser_start_document,
-	.endDocument = gmathml_parser_end_document,
-	.startElement = gmathml_parser_start_element,
-	.endElement = gmathml_parser_end_element,
-	.characters = gmathml_parser_characters,
-	.getEntity = gmathml_parser_get_entity
+	.startDocument = gdom_parser_start_document,
+	.endDocument = gdom_parser_end_document,
+	.startElement = gdom_parser_start_element,
+	.endElement = gdom_parser_end_element,
+	.characters = gdom_parser_characters,
+	.getEntity = gdom_parser_get_entity
 };
 
-GMathmlDocument *
-gmathml_document_new_from_file (const char *filename)
+GDomDocument *
+gdom_document_new_from_file (const char *filename)
 {
-	static GMathmlSaxParserState state;
+	static GDomSaxParserState state;
 
 	if (xmlSAXUserParseFile (&sax_handler, &state, filename) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
-		g_warning ("[GMathmlParser::from_memory] invalid document");
+		g_warning ("[GDomParser::from_memory] invalid document");
 		return NULL;
 	}
 
-	return GMATHML_DOCUMENT (state.document);
+	return GDOM_DOCUMENT (state.document);
 }
 
-GMathmlDocument *
-gmathml_document_new_from_memory (const char *buffer)
+GDomDocument *
+gdom_document_new_from_memory (const char *buffer)
 {
-	static GMathmlSaxParserState state;
+	static GDomSaxParserState state;
 
 	if (buffer == NULL)
-		return GMATHML_DOCUMENT (gmathml_document_new ());
+		return NULL;
 
 	state.document = NULL;
 
 	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, strlen (buffer) - 10) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
-		g_warning ("[GMathmlParser::from_memory] invalid document");
+		g_warning ("[GDomParser::from_memory] invalid document");
 		return NULL;
 	}
 
-	return GMATHML_DOCUMENT (state.document);
-}
-
-static void
-_dummy_error (const char *msg)
-{
-}
-
-GMathmlDocument *
-gmathml_document_new_from_itex (const char *itex)
-{
-	GMathmlDocument *document;
-	char *mathml;
-
-	g_return_val_if_fail (itex != NULL, NULL);
-
-	itex2MML_error = _dummy_error;
-
-	mathml = itex2MML_parse (itex, strlen (itex));
-	document = gmathml_document_new_from_memory (mathml);
-	itex2MML_free_string (mathml);
-
-	return document;
+	return GDOM_DOCUMENT (state.document);
 }

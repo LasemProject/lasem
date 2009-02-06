@@ -29,7 +29,7 @@
 #include <gmathmlfractionelement.h>
 #include <gmathmlrowelement.h>
 #include <gmathmlview.h>
-#include <gmathmlparser.h>
+#include <gdomparser.h>
 #include <glib/gmessages.h>
 #include <glib/goption.h>
 #include <glib/gprintf.h>
@@ -79,8 +79,8 @@ static const GOptionEntry entries[] =
 
 int main(int argc, char **argv)
 {
-	GMathmlDocument *document;
-	GMathmlView *view;
+	GDomDocument *document;
+	GDomView *view;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
 	GError *error = NULL;
@@ -184,13 +184,13 @@ int main(int argc, char **argv)
 		}
 
 		if (mathml != NULL) {
-			document = gmathml_document_new_from_memory (mathml);
+			document = gdom_document_new_from_memory (mathml);
 			if (document != NULL) {
-				view = gmathml_view_new (document, NULL);
+				view = gdom_document_create_view (document);
 
-				gmathml_view_set_debug (view, option_debug);
+				gdom_view_set_debug (view, option_debug);
 
-				gmathml_view_measure (view, &width, &height);
+				gdom_view_measure (view, &width, &height);
 
 				switch (format) {
 					case FORMAT_PDF:
@@ -213,12 +213,12 @@ int main(int argc, char **argv)
 				cairo = cairo_create (surface);
 				cairo_surface_destroy (surface);
 
-				gmathml_view_set_cairo (view, cairo);
+				gdom_view_set_cairo (view, cairo);
 
 				if (format == FORMAT_PNG)
 					cairo_scale (cairo, option_ppi / 72.0, option_ppi / 72.0);
 
-				gmathml_view_render (view, 0, 0);
+				gdom_view_render (view, 0, 0);
 
 				switch (format) {
 					case FORMAT_PNG:
