@@ -19,6 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gdomimplementation.h>
 #include <gmathmlpresentationtoken.h>
 #include <gmathmlentitydictionary.h>
@@ -142,7 +143,44 @@ gdom_parser_get_entity (void *user_data, const xmlChar *name)
 	return xmlGetPredefinedEntity(name);
 }
 
+#if 0
+static void
+gdom_parser_warning (void *user_data, const char *msg, ...)
+{
+	va_list args;
+
+	va_start(args, msg);
+	g_logv("XML", G_LOG_LEVEL_WARNING, msg, args);
+	va_end(args);
+}
+
+static void
+gdom_parser_error (void *user_data, const char *msg, ...)
+{
+	va_list args;
+
+	va_start(args, msg);
+	g_logv("XML", G_LOG_LEVEL_CRITICAL, msg, args);
+	va_end(args);
+}
+
+static void
+gdom_parser_fatal_error (void *user_data, const char *msg, ...)
+{
+	va_list args;
+
+	va_start(args, msg);
+	g_logv("XML", G_LOG_LEVEL_ERROR, msg, args);
+	va_end(args);
+}
+#endif
+
 static xmlSAXHandler sax_handler = {
+#if 0
+	.warning = gdom_parser_warning,
+	.error = gdom_parser_error,
+	.fatalError = gdom_parser_fatal_error,
+#endif
 	.startDocument = gdom_parser_start_document,
 	.endDocument = gdom_parser_end_document,
 	.startElement = gdom_parser_start_element,
@@ -176,7 +214,7 @@ gdom_document_new_from_memory (const char *buffer)
 
 	state.document = NULL;
 
-	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, strlen (buffer) - 10) < 0) {
+	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, strlen (buffer)) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
 		g_warning ("[GDomParser::from_memory] invalid document");

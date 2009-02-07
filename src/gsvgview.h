@@ -22,11 +22,8 @@
 #ifndef GSVG_VIEW_H
 #define GSVG_VIEW_H
 
+#include <gdomview.h>
 #include <gsvg.h>
-#include <gsvgelement.h>
-#include <gsvgdocument.h>
-#include <cairo.h>
-#include <pango/pangocairo.h>
 
 G_BEGIN_DECLS
 
@@ -41,26 +38,19 @@ typedef struct _GSvgViewClass GSvgViewClass;
 typedef struct _GSvgViewPrivate GSvgViewPrivate;
 
 struct _GSvgView {
-	GObject	object;
-
-	GSvgViewPrivate *priv;
+	GDomView dom_view;
 };
 
 struct _GSvgViewClass {
-	GObjectClass parent_class;
+	GDomViewClass parent_class;
 };
 
 GType gsvg_view_get_type (void);
 
-GSvgView *		gsvg_view_new 		(GSvgDocument *document, cairo_t *cr);
+GSvgView *	gsvg_view_new 			(GSvgDocument *document);
 
-void 			gsvg_view_render 	(GSvgView *view, double x, double y);
-void			gsvg_view_measure 	(GSvgView *view, double *width, double *height);
-
-void 			gsvg_view_set_document 	(GSvgView *view, GSvgDocument *document);
-void			gsvg_view_set_cairo 	(GSvgView *view, cairo_t *cr);
-
-void			gsvg_view_set_debug 	(GSvgView *view, gboolean debug);
+void 		gsvg_view_show_rectangle 	(GSvgView *view,
+						 double x, double y, double width, double height);
 
 G_END_DECLS
 

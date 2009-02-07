@@ -33,12 +33,17 @@ gsvg_rect_element_get_node_name (GDomNode *node)
 
 /* GSvgElement implementation */
 
+static void
+gsvg_rect_element_render (GSvgElement *self, GSvgView *view)
+{
+}
+
 /* GSvgRectElement implementation */
 
 GDomNode *
 gsvg_rect_element_new (void)
 {
-	return g_object_new (GSVG_TYPE_SVG_ELEMENT, NULL);
+	return g_object_new (GSVG_TYPE_RECT_ELEMENT, NULL);
 }
 
 static void
@@ -65,6 +70,8 @@ gsvg_rect_element_class_init (GSvgRectElementClass *s_rect_class)
 	object_class->finalize = gsvg_rect_element_finalize;
 
 	d_node_class->get_node_name = gsvg_rect_element_get_node_name;
+
+	s_element_class->render = gsvg_rect_element_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

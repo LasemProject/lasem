@@ -27,12 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define GSVG_TYPE_SVG_ELEMENT             (gsvg_rect_element_get_type ())
-#define GSVG_SVG_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_SVG_ELEMENT, GSvgRectElement))
-#define GSVG_SVG_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GSVG_TYPE_SVG_ELEMENT, GSvgRectElementClass))
-#define GSVG_IS_SVG_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSVG_TYPE_SVG_ELEMENT))
-#define GSVG_IS_SVG_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GSVG_TYPE_SVG_ELEMENT))
-#define GSVG_SVG_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GSVG_TYPE_SVG_ELEMENT, GSvgRectElementClass))
+#define GSVG_TYPE_RECT_ELEMENT             (gsvg_rect_element_get_type ())
+#define GSVG_RECT_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_RECT_ELEMENT, GSvgRectElement))
+#define GSVG_RECT_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GSVG_TYPE_RECT_ELEMENT, GSvgRectElementClass))
+#define GSVG_IS_RECT_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSVG_TYPE_RECT_ELEMENT))
+#define GSVG_IS_RECT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GSVG_TYPE_RECT_ELEMENT))
+#define GSVG_RECT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), GSVG_TYPE_RECT_ELEMENT, GSvgRectElementClass))
 
 typedef struct _GSvgRectElementClass GSvgRectElementClass;
 

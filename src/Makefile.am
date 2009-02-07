@@ -64,6 +64,7 @@ libgmathml_la_SOURCES =			\
 	gsvgelement.c			\
 	gsvggraphic.c			\
 	gsvgsvgelement.c		\
+	gsvgrectelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
 	gsvgview.c
@@ -120,6 +121,7 @@ libgmathml_la_HEADERS = \
 	gsvgelement.h			\
 	gsvggraphic.h			\
 	gsvgsvgelement.h		\
+	gsvgrectelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
 	gsvgview.h

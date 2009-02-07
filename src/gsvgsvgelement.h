@@ -53,6 +53,8 @@ GType gsvg_svg_element_get_type (void);
 
 GDomNode *		gsvg_svg_element_new 		(void);
 
+void 			gsvg_svg_element_measure 	(GSvgSvgElement *self, double *width, double *height);
+
 G_END_DECLS
 
 #endif

@@ -19,8 +19,10 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <gdomdebug.h>
 #include <gsvgdocument.h>
 #include <gsvgsvgelement.h>
+#include <gsvgrectelement.h>
 #include <string.h>
 
 /* GDomNode implementation */
@@ -40,8 +42,16 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 
 	if (strcmp (tag_name, "svg") == 0)
 		node = gsvg_svg_element_new ();
+	if (strcmp (tag_name, "rect") == 0)
+		node = gsvg_rect_element_new ();
 
 	return GDOM_ELEMENT (node);
+}
+
+static GDomView *
+gsvg_document_create_view (GDomDocument *document)
+{
+	return GDOM_VIEW (gsvg_view_new (GSVG_DOCUMENT (document)));
 }
 
 /* GSvgDocument implementation */
@@ -76,6 +86,7 @@ gsvg_document_class_init (GSvgDocumentClass *m_document_class)
 	d_node_class->can_append_child = gsvg_document_can_append_child;
 
 	d_document_class->create_element = gsvg_document_create_element;
+	d_document_class->create_view = gsvg_document_create_view;
 }
 
 G_DEFINE_TYPE (GSvgDocument, gsvg_document, GDOM_TYPE_DOCUMENT)

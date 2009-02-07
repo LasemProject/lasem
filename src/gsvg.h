@@ -30,6 +30,7 @@ typedef struct _GSvgDocument GSvgDocument;
 typedef struct _GSvgElement GSvgElement;
 typedef struct _GSvgGraphic GSvgGraphic;
 typedef struct _GSvgSvgElement GSvgSvgElement;
+typedef struct _GSvgRectElement GSvgRectElement;
 
 typedef struct _GSvgView GSvgView;
 

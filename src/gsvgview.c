@@ -23,6 +23,7 @@
 #include <gsvgview.h>
 #include <gsvgdocument.h>
 #include <gsvgelement.h>
+#include <gsvgsvgelement.h>
 #include <glib/gprintf.h>
 
 #include <math.h>
@@ -30,112 +31,47 @@
 
 static GObjectClass *parent_class;
 
-struct _GSvgViewPrivate {
-
-	GSvgDocument *document;
-
-	PangoFontDescription *	font_description;
-	PangoLayout*		pango_layout;
-	cairo_t *		cairo;
-
-	gboolean debug;
-};
-
 void
-gsvg_view_measure (GSvgView *view, double *width, double *height)
+gsvg_view_show_rectangle (GSvgView *view,
+			  double x, double y,
+			  double width, double height)
 {
+	cairo_rectangle (view->dom_view.cairo, x, y, width, height);
+	cairo_stroke (view->dom_view.cairo);
 }
 
-void
-gsvg_view_render (GSvgView *view, double x, double y)
+static void
+gsvg_view_measure (GDomView *view, double *width, double *height)
 {
-}
+	GSvgSvgElement *svg_element;
 
-void
-gsvg_view_set_debug (GSvgView *view, gboolean debug)
-{
-	g_return_if_fail (GSVG_IS_VIEW (view));
-
-	view->priv->debug = debug;
-}
-
-void
-gsvg_view_set_cairo (GSvgView *view, cairo_t *cairo)
-{
-	PangoContext *context;
-	PangoFontDescription *font_description;
-	cairo_font_options_t *font_options;
-	const cairo_font_options_t *current_font_options;
-	cairo_surface_t *surface;
-	cairo_surface_type_t type;
-
-	g_return_if_fail (GSVG_IS_VIEW (view));
-
-	if (view->priv->cairo == cairo)
+	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
+	if (svg_element == NULL)
 		return;
 
-	if (view->priv->cairo != NULL) {
-		cairo_destroy (view->priv->cairo);
-		g_object_unref (view->priv->pango_layout);
-	}
-
-	if (cairo == NULL) {
-		view->priv->cairo = NULL;
-		view->priv->pango_layout = NULL;
-
-		return;
-	}
-
-	font_description = view->priv->font_description;
-
-	cairo_reference (cairo);
-	view->priv->cairo = cairo;
-	view->priv->pango_layout = pango_cairo_create_layout (cairo);
-
-	surface = cairo_get_target (cairo);
-
-	type = cairo_surface_get_type (surface);
-
-	context = pango_layout_get_context (view->priv->pango_layout);
-	pango_cairo_context_set_resolution (context, 72);
-
-	current_font_options = pango_cairo_context_get_font_options (context);
-	if (current_font_options == NULL)
-		font_options = cairo_font_options_create ();
-	else
-		font_options = cairo_font_options_copy (current_font_options);
-	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
-	pango_cairo_context_set_font_options (context, font_options);
-	cairo_font_options_destroy (font_options);
+	gsvg_svg_element_measure (svg_element, width, height);
 }
 
-void
-gsvg_view_set_document (GSvgView *view, GSvgDocument *document)
+static void
+gsvg_view_render (GDomView *view, double x, double y)
 {
-	g_return_if_fail (GSVG_IS_VIEW (view));
-	g_return_if_fail (document == NULL || GSVG_IS_DOCUMENT (document));
+	GSvgSvgElement *svg_element;
 
-	if (view->priv->document == document)
+	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
+	if (svg_element == NULL)
 		return;
 
-	if (view->priv->document != NULL)
-		g_object_unref (view->priv->document);
-
-	if (document != NULL)
-	    g_object_ref (document);
-
-	view->priv->document = document;
+	gsvg_element_render (GSVG_ELEMENT (svg_element), GSVG_VIEW (view));
 }
 
 GSvgView *
-gsvg_view_new (GSvgDocument *document, cairo_t *cairo)
+gsvg_view_new (GSvgDocument *document)
 {
 	GSvgView *view;
 
 	view = g_object_new (GSVG_TYPE_VIEW, NULL);
 
-	gsvg_view_set_document (view, document);
-	gsvg_view_set_cairo (view, cairo);
+	gdom_view_set_document (GDOM_VIEW (view), GDOM_DOCUMENT (document));
 
 	return view;
 }
@@ -143,27 +79,11 @@ gsvg_view_new (GSvgDocument *document, cairo_t *cairo)
 static void
 gsvg_view_init (GSvgView *view)
 {
-	view->priv = G_TYPE_INSTANCE_GET_PRIVATE (view, GSVG_TYPE_VIEW, GSvgViewPrivate);
-	view->priv->font_description = pango_font_description_new ();
-
-	view->priv->pango_layout = NULL;
-	view->priv->cairo = NULL;
 }
 
 static void
 gsvg_view_finalize (GObject *object)
 {
-	GSvgView *view = GSVG_VIEW (object);
-
-	g_object_unref (view->priv->document);
-
-	if (view->priv->pango_layout != NULL)
-		g_object_unref (view->priv->pango_layout);
-	if (view->priv->cairo != NULL)
-		cairo_destroy (view->priv->cairo);
-
-	pango_font_description_free (view->priv->font_description);
-
 	parent_class->finalize (object);
 }
 
@@ -171,12 +91,14 @@ static void
 gsvg_view_class_init (GSvgViewClass *view_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (view_class);
+	GDomViewClass *d_view_class = GDOM_VIEW_CLASS (view_class);
 
 	parent_class = g_type_class_peek_parent (view_class);
 
 	object_class->finalize = gsvg_view_finalize;
 
-	g_type_class_add_private (object_class, sizeof (GSvgViewPrivate));
+	d_view_class->measure = gsvg_view_measure;
+	d_view_class->render = gsvg_view_render;
 }
 
-G_DEFINE_TYPE (GSvgView, gsvg_view, G_TYPE_OBJECT)
+G_DEFINE_TYPE (GSvgView, gsvg_view, GDOM_TYPE_VIEW)

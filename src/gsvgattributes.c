@@ -21,6 +21,7 @@
  */
 
 #include <gsvgattributes.h>
+#include <gdomdebug.h>
 
 void
 gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,

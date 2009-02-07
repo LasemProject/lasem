@@ -72,7 +72,7 @@ gmathml_test_render (char const *filename)
 	char *test_name;
 	char *mime;
 	double width, height;
-	gboolean is_mml, success;
+	gboolean is_xml, success;
 	GRegex *regex;
 	GError *error = NULL;
 	char *filtered_buffer;
@@ -83,21 +83,21 @@ gmathml_test_render (char const *filename)
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
 
 	mime = g_content_type_guess (filename, NULL, 0, NULL);
-	is_mml = strcmp (mime, "text/mathml") == 0;
+	is_xml = strcmp (mime, "text/mathml") == 0 || strcmp (mime, "image/svg+xml") == 0;
+	g_printf ("\trender %s (%s)\n", filename, mime);
 	g_free (mime);
 
-	g_printf ("\trender %s (%s)\n", filename, is_mml ? "MathML" : "Tex");
 
 	success = g_file_get_contents (filename, &buffer, &size, NULL);
 	if (success) {
-		char *mathml = NULL;
+		char *xml = NULL;
 
-		if (is_mml)
-			mathml = buffer;
+		if (is_xml)
+			xml = buffer;
 		else
-			mathml = itex2MML_parse (buffer, size);
+			xml = itex2MML_parse (buffer, size);
 
-		document = gdom_document_new_from_memory (mathml);
+		document = gdom_document_new_from_memory (xml);
 
 		view = gdom_document_create_view (document);
 
@@ -125,7 +125,7 @@ gmathml_test_render (char const *filename)
 		regex = g_regex_new ("<math>", 0, 0, &error);
 		assert (error == NULL);
 
-		filtered_buffer = g_regex_replace (regex, mathml,
+		filtered_buffer = g_regex_replace (regex, xml,
 						   -1, 0,
 						   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
 						   0, NULL);
@@ -142,7 +142,7 @@ gmathml_test_render (char const *filename)
 		gmathml_test_html ("</tr>\n");
 		gmathml_test_html ("</table>\n");
 
-		if (!is_mml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
+		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
 			FILE *file;
 			int result;
 			char *cmd;
@@ -174,18 +174,18 @@ gmathml_test_render (char const *filename)
 			result = system ("rm gmathmltest.ps");
 		}
 
-		if (mathml != buffer) {
+		if (xml != buffer) {
 			char *xml_filename;
 
 			xml_filename = g_strdup_printf ("%s.xml", test_name);
 
-			g_file_set_contents (xml_filename, mathml, -1, NULL);
+			g_file_set_contents (xml_filename, xml, -1, NULL);
 
 			g_free (xml_filename);
 			g_free (buffer);
-			itex2MML_free_string (mathml);
+			itex2MML_free_string (xml);
 		} else
-			g_free (mathml);
+			g_free (xml);
 	}
 
 	g_free (png_filename);
@@ -262,7 +262,7 @@ main (int argc, char **argv)
 
 	timer = g_timer_new ();
 
-	regex_mml = g_regex_new ("\\.(mml|tex)$", 0, 0, &error);
+	regex_mml = g_regex_new ("\\.(mml|tex|svg)$", 0, 0, &error);
 	assert (error == NULL);
 
 	if (argc >= 2)

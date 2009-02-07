@@ -49,12 +49,21 @@ gsvg_element_child_changed (GDomNode *parent, GDomNode *child)
 static void
 gsvg_element_set_attribute (GDomElement *self, const char* name, const char *value)
 {
+	GSvgElementClass *s_element_class = GSVG_ELEMENT_GET_CLASS(self);
+
+	gdom_debug ("[GSvgElement::set_attribute] node = %s, name = %s, value = %s",
+		    gdom_node_get_node_name (GDOM_NODE (self)), name, value);
+
+	gdom_attribute_map_set_attribute (s_element_class->attributes, self,
+					  name, value);
 }
 
 const char *
 gsvg_element_get_attribute (GDomElement *self, const char *name)
 {
-	return NULL;
+	GSvgElementClass *s_element_class = GSVG_ELEMENT_GET_CLASS(self);
+
+	return gdom_attribute_map_get_attribute (s_element_class->attributes, self, name);
 }
 
 /* GSvgElement implementation */

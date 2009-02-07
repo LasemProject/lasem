@@ -20,6 +20,7 @@
  */
 
 #include <gsvgsvgelement.h>
+#include <gdomdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -32,6 +33,27 @@ gsvg_svg_element_get_node_name (GDomNode *node)
 }
 
 /* GSvgElement implementation */
+
+void
+gsvg_svg_element_measure (GSvgSvgElement *self, double *width, double *height)
+{
+	GSvgLength length;
+
+	g_return_if_fail (GSVG_IS_SVG_ELEMENT (self));
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_length_attribute_parse (&self->width, &length);
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_length_attribute_parse (&self->height, &length);
+
+	if (width != NULL)
+		*width = self->width.length.value;
+	if (height != NULL)
+		*height = self->height.length.value;
+}
+
 
 /* GSvgSvgElement implementation */
 
