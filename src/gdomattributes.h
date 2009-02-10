@@ -63,6 +63,12 @@ GDomAttributeMap *	gdom_attribute_map_new 			(void);
 GDomAttributeMap *	gdom_attribute_map_duplicate		(const GDomAttributeMap *from);
 void			gdom_attribute_map_free			(GDomAttributeMap *map);
 
+void 			gdom_attribute_map_add_bag_attribute  	(GDomAttributeMap *map,
+								 const char *name,
+								 ptrdiff_t attribute_offset,
+								 const GDomAttributeClass *attribute_class,
+								 ptrdiff_t bag_offset,
+								 const GDomAttributeBagClass *bag_class);
 void			gdom_attribute_map_add_attribute_full	(GDomAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset,

@@ -67,6 +67,9 @@ libgmathml_la_SOURCES =			\
 	gsvgrectelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
+	gsvgattributebags.c		\
+	gsvgcolors.c			\
+	gsvgcairo.c			\
 	gsvgview.c
 
 libgmathml_ladir = $(includedir)/gmathml
@@ -124,6 +127,9 @@ libgmathml_la_HEADERS = \
 	gsvgrectelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
+	gsvgattributebags.h		\
+	gsvgcolors.h			\
+	gsvgcairo.h			\
 	gsvgview.h
 
 bin_PROGRAMS = gmathmltest gmathmlrender

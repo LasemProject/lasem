@@ -19,42 +19,15 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_ENUMS_H
-#define GSVG_ENUMS_H
+#ifndef GSVG_CAIRO_H
+#define GSVG_CAIRO_H
 
 #include <gsvg.h>
+#include <cairo.h>
 
 G_BEGIN_DECLS
 
-typedef enum {
-	GSVG_LENGTH_TYPE_UNKNOWN,
-	GSVG_LENGTH_TYPE_NUMBER,
-	GSVG_LENGTH_TYPE_PERCENTAGE,
-	GSVG_LENGTH_TYPE_EMS,
-	GSVG_LENGTH_TYPE_EXS,
-	GSVG_LENGTH_TYPE_PX,
-	GSVG_LENGTH_TYPE_CM,
-	GSVG_LENGTH_TYPE_MM,
-	GSVG_LENGTH_TYPE_IN,
-	GSVG_LENGTH_TYPE_PT,
-	GSVG_LENGTH_TYPE_PC
-} GSvgLengthType;
-
-const char * 		gsvg_length_type_to_string 		(GSvgLengthType length_type);
-GSvgLengthType 		gsvg_length_type_from_string 		(const char *string);
-
-typedef enum {
-	GSVG_PAINT_TYPE_UNKNOWN = 0,
-	GSVG_PAINT_TYPE_RGB_COLOR,
-	GSVG_PAINT_TYPE_RGB_COLOR_ICC_COLOR,
-	GSVG_PAINT_TYPE_NONE = 101,
-	GSVG_PAINT_TYPE_CURRENT_COLOR,
-	GSVG_PAINT_TYPE_URI_NONE,
-	GSVG_PAINT_TYPE_URI_CURRENT_COLOR,
-	GSVG_PAINT_TYPE_URI_RGB_COLOR,
-	GSVG_PAINT_TYPE_URI_RGB_COLOR_ICC_COLOR,
-	GSVG_PAINT_TYPE_URI
-} GSvgPaintType;
+void gsvg_cairo_emit_svg_path (cairo_t *cr, char const *path);
 
 G_END_DECLS
 

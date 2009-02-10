@@ -30,6 +30,13 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	double red;
+	double green;
+	double blue;
+	double alpha;
+} GSvgColor;
+
+typedef struct {
 	double value;
 	GSvgLengthType type;
 } GSvgLength;
@@ -40,6 +47,12 @@ typedef struct {
 } GSvgAnimatedLength;
 
 typedef struct {
+	GSvgPaintType type;
+	char *uri;
+	GSvgColor color;
+} GSvgPaint;
+
+typedef struct {
 	GDomAttribute attr;
 	GSvgLength length;
 } GSvgLengthAttribute;
@@ -48,6 +61,11 @@ typedef struct {
 	GDomAttribute attr;
 	GSvgAnimatedLength length;
 } GSvgAnimatedLengthAttribute;
+
+typedef struct {
+	GDomAttribute attr;
+	GSvgPaint paint;
+} GSvgPaintAttribute;
 
 void		gsvg_length_attribute_parse 		(GSvgLengthAttribute *attribute,
 							 GSvgLength *default_value);
