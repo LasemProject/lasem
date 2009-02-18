@@ -20,6 +20,7 @@
  */
 
 #include <gsvgsvgelement.h>
+#include <gsvgstyle.h>
 #include <gdomdebug.h>
 
 static GObjectClass *parent_class;
@@ -57,6 +58,21 @@ gsvg_svg_element_measure (GSvgSvgElement *self, double *width, double *height)
 
 /* GSvgSvgElement implementation */
 
+GSvgStyle *
+gsvg_svg_element_get_default_style (GSvgSvgElement *svg_element)
+{
+	g_return_val_if_fail (GSVG_IS_SVG_ELEMENT (svg_element), NULL);
+
+	return svg_element->default_style;
+}
+
+void
+gsvg_svg_element_update (GSvgSvgElement *svg_element)
+{
+	gsvg_element_update (GSVG_ELEMENT (svg_element),
+			     gsvg_svg_element_get_default_style (svg_element));
+}
+
 GDomNode *
 gsvg_svg_element_new (void)
 {
@@ -66,11 +82,33 @@ gsvg_svg_element_new (void)
 static void
 gsvg_svg_element_init (GSvgSvgElement *self)
 {
+	GSvgStyle *style;
+
+	style = gsvg_style_new ();
+	self->default_style = style;
+	g_return_if_fail (style != NULL);
+
+	style->fill.paint.type = GSVG_PAINT_TYPE_NONE;
+	style->fill.paint.uri = NULL;
+	style->fill.paint.color.red = 0.0;
+	style->fill.paint.color.green = 0.0;
+	style->fill.paint.color.blue = 0.0;
+	style->fill.opacity = 1.0;
+
+	style->stroke.paint.type = GSVG_PAINT_TYPE_RGB_COLOR;
+	style->stroke.paint.uri = NULL;
+	style->stroke.paint.uri = NULL;
+	style->stroke.paint.color.red = 0.0;
+	style->stroke.paint.color.green = 0.0;
+	style->stroke.paint.color.blue = 0.0;
 }
 
 static void
 gsvg_svg_element_finalize (GObject *object)
 {
+	GSvgSvgElement *svg_element = GSVG_SVG_ELEMENT (object);
+
+	gsvg_style_free (svg_element->default_style);
 }
 
 /* GSvgSvgElement class */

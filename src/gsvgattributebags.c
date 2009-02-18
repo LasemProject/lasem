@@ -21,16 +21,66 @@
 
 #include <gsvgattributebags.h>
 
-static const GDomAttributeBagClass gsvg_fill_attribute_bag_class = {};
+static void *
+gsvg_fill_attribute_bag_init (void)
+{
+	GSvgFillAttributeBag *fill;
+
+	fill = g_new0 (GSvgFillAttributeBag, 1);
+	return fill;
+}
+
+static void
+gsvg_fill_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const GDomAttributeBagClass gsvg_fill_attribute_bag_class =
+{
+	.init = gsvg_fill_attribute_bag_init,
+	.finalize = gsvg_fill_attribute_bag_finalize
+};
+
+static const GDomAttributeClass gsvg_paint_attribute_class = {
+	.finalize = gsvg_paint_attribute_finalize
+};
 
 void
 gdom_attribute_map_add_fill_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_offset)
 {
-	gdom_attribute_map_add_bag_attribute (map, "fill", offsetof (GSvgFillAttributeBag, fill), NULL,
+	gdom_attribute_map_add_bag_attribute (map, "fill",
+					      offsetof (GSvgFillAttributeBag, paint),
+					      &gsvg_paint_attribute_class,
 					      bag_offset, &gsvg_fill_attribute_bag_class);
 }
+
+static void *
+gsvg_stroke_attribute_bag_init (void)
+{
+	GSvgStrokeAttributeBag *stroke;
+
+	stroke = g_new0 (GSvgStrokeAttributeBag, 1);
+	return stroke;
+}
+
+static void
+gsvg_stroke_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const GDomAttributeBagClass gsvg_stroke_attribute_bag_class =
+{
+	.init = gsvg_stroke_attribute_bag_init,
+	.finalize = gsvg_stroke_attribute_bag_finalize
+};
 
 void
 gdom_attribute_map_add_stroke_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_offset)
 {
+	gdom_attribute_map_add_bag_attribute (map, "stroke",
+					      offsetof (GSvgStrokeAttributeBag, paint),
+					      &gsvg_paint_attribute_class,
+					      bag_offset, &gsvg_stroke_attribute_bag_class);
 }

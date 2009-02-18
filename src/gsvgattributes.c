@@ -71,8 +71,21 @@ gsvg_animated_length_attribute_parse (GSvgAnimatedLengthAttribute *attribute,
 }
 
 void
-gsvg_paint_attribute_finalize (GSvgPaintAttribute *attribute)
+gsvg_fill_rule_attribute_parse (GDomEnumAttribute *attribute,
+				unsigned int *style_value)
 {
+	return gdom_enum_attribute_parse (attribute, style_value, gsvg_fill_rule_from_string);
+}
+
+void
+gsvg_paint_attribute_finalize (void *abstract)
+{
+	GSvgPaintAttribute *attribute = abstract;
+
+	g_return_if_fail (attribute != NULL);
+
+	g_free (attribute->paint.uri);
+	attribute->paint.uri = NULL;
 }
 
 void

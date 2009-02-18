@@ -48,9 +48,8 @@ typedef struct {
 } GDomAttributeBag;
 
 typedef struct {
-	GDomAttributeBag * 	(*init) 	(void);
-	void 			(*inherit) 	(GDomAttributeBag *to, const GDomAttributeBag *from);
-	void 			(*finalize) 	(GDomAttributeBag *attribute_bag);
+	void * 			(*init) 	(void);
+	void 			(*finalize) 	(void *bag);
 } GDomAttributeBagClass;
 
 typedef struct {

@@ -63,3 +63,21 @@ gsvg_length_type_from_string (const char *string)
 	return gsvg_value_from_string (string, gsvg_length_type_strings,
 				       G_N_ELEMENTS (gsvg_length_type_strings));
 }
+
+static const char *gsvg_fill_rule_strings[] = {
+	"nonzero",
+	"evenodd"
+};
+
+const char *
+gsvg_fill_rule_to_string (GSvgFillRule fill_rule)
+{
+	return gsvg_fill_rule_strings[CLAMP (fill_rule, 0, GSVG_FILL_RULE_EVEN_ODD)];
+}
+
+GSvgFillRule
+gsvg_fill_rule_from_string (const char *string)
+{
+	return gsvg_value_from_string (string, gsvg_fill_rule_strings,
+				       G_N_ELEMENTS (gsvg_fill_rule_strings));
+}

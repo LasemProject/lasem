@@ -20,32 +20,52 @@
  */
 
 #include <gsvggraphic.h>
+#include <gdomdebug.h>
 
 static GObjectClass *parent_class;
+
+static void
+gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
+{
+	GSvgGraphic *graphic = GSVG_GRAPHIC (self);
+
+	if (graphic->fill != NULL) {
+		gdom_debug ("[GSvgGraphic::update] fill");
+
+		gsvg_paint_attribute_parse (&graphic->fill->paint, &parent_style->fill.paint);
+		gsvg_fill_rule_attribute_parse (&graphic->fill->rule, &parent_style->fill.rule);
+
+	}
+	if (graphic->stroke != NULL) {
+		gdom_debug ("[GSvgGraphic::update] stroke");
+	}
+}
 
 /* GSvgGraphic implementation */
 
 static void
-gsvg_graphic_element_init (GSvgGraphic *self)
+gsvg_graphic_init (GSvgGraphic *self)
 {
 }
 
 static void
-gsvg_graphic_element_finalize (GObject *object)
+gsvg_graphic_finalize (GObject *object)
 {
 }
 
 /* GSvgGraphic class */
 
 static void
-gsvg_graphic_element_class_init (GSvgGraphicClass *s_graphic_class)
+gsvg_graphic_class_init (GSvgGraphicClass *s_graphic_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (s_graphic_class);
 	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_graphic_class);
 
 	parent_class = g_type_class_peek_parent (s_graphic_class);
 
-	object_class->finalize = gsvg_graphic_element_finalize;
+	object_class->finalize = gsvg_graphic_finalize;
+
+	s_element_class->update = gsvg_graphic_update;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 
@@ -53,7 +73,10 @@ gsvg_graphic_element_class_init (GSvgGraphicClass *s_graphic_class)
 					  offsetof (GSvgGraphic, class_name));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "style",
 					  offsetof (GSvgGraphic, style));
+
+	gdom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, fill));
+	gdom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, stroke));
 }
 
-G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic_element, GSVG_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic, GSVG_TYPE_ELEMENT)
 

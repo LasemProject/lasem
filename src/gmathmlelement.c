@@ -115,6 +115,7 @@ gmathml_element_update (GMathmlElement *self, const GMathmlStyle *parent_style)
 	element_class = GMATHML_ELEMENT_GET_CLASS (self);
 
 	style = gmathml_style_duplicate (parent_style);
+	g_return_val_if_fail (style != NULL, FALSE);
 
 	if (element_class->update != NULL)
 		element_class->update (self, style);

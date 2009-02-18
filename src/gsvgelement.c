@@ -41,7 +41,14 @@ gsvg_element_changed (GDomNode *self)
 static gboolean
 gsvg_element_child_changed (GDomNode *parent, GDomNode *child)
 {
-	return FALSE;
+	GSvgElement *element = GSVG_ELEMENT (parent);
+
+	if (element->need_children_update)
+		return FALSE;
+
+	element->need_children_update = TRUE;
+
+	return TRUE;
 }
 
 /* GDomElement implementation */
@@ -68,10 +75,44 @@ gsvg_element_get_attribute (GDomElement *self, const char *name)
 
 /* GSvgElement implementation */
 
-gboolean
+void
 gsvg_element_update (GSvgElement *self, const GSvgStyle *parent_style)
 {
-	return FALSE;
+	GSvgElementClass *element_class;
+	GSvgStyle *style;
+	GDomNode *node;
+
+	g_return_if_fail (GSVG_IS_ELEMENT (self));
+	g_return_if_fail (parent_style != NULL);
+
+	if (!self->need_update && !self->need_children_update) {
+		gdom_debug ("[Element::update] %s already up to date",
+			    gdom_node_get_node_name (GDOM_NODE (self)));
+		return;
+	}
+
+	element_class = GSVG_ELEMENT_GET_CLASS (self);
+
+	style = gsvg_style_duplicate (parent_style);
+	g_return_if_fail (style != NULL);
+
+	if (element_class->update != NULL)
+		element_class->update (self, style);
+
+	gdom_debug ("[Element::update] update %s",
+		    gdom_node_get_node_name (GDOM_NODE (self)));
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+		if (GSVG_IS_ELEMENT (node)) {
+			if (self->need_update)
+				GSVG_ELEMENT (node)->need_update = TRUE;
+			gsvg_element_update (GSVG_ELEMENT (node), style);
+		}
+
+	gsvg_style_free (style);
+
+	self->need_update = FALSE;
+	self->need_children_update = FALSE;
 }
 
 /* GSvgElement implementation */

@@ -28,13 +28,13 @@
 G_BEGIN_DECLS
 
 typedef struct {
-	GSvgPaintAttribute fill;
+	GSvgPaintAttribute paint;
 	GDomEnumAttribute rule;
 	GDomDoubleAttribute opacity;
 } GSvgFillAttributeBag;
 
 typedef struct {
-	GSvgPaintAttribute stroke;
+	GSvgPaintAttribute paint;
 	GSvgLengthAttribute width;
 	GDomEnumAttribute cap;
 	GDomEnumAttribute join;

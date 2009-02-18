@@ -24,6 +24,7 @@
 #include <gsvgdocument.h>
 #include <gsvgelement.h>
 #include <gsvgsvgelement.h>
+#include <gsvgcairo.h>
 #include <glib/gprintf.h>
 
 #include <math.h>
@@ -37,6 +38,14 @@ gsvg_view_show_rectangle (GSvgView *view,
 			  double width, double height)
 {
 	cairo_rectangle (view->dom_view.cairo, x, y, width, height);
+	cairo_stroke (view->dom_view.cairo);
+}
+
+void
+gsvg_view_show_path (GSvgView *view,
+		     const char *d)
+{
+	gsvg_cairo_emit_svg_path (view->dom_view.cairo, d);
 	cairo_stroke (view->dom_view.cairo);
 }
 
@@ -60,6 +69,8 @@ gsvg_view_render (GDomView *view, double x, double y)
 	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
 	if (svg_element == NULL)
 		return;
+
+	gsvg_svg_element_update (svg_element);
 
 	gsvg_element_render (GSVG_ELEMENT (svg_element), GSVG_VIEW (view));
 }

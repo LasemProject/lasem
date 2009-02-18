@@ -19,23 +19,39 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_H
-#define GSVG_H
+#include <gsvgstyle.h>
+#include <string.h>
 
-#include <gdom.h>
+GSvgStyle *
+gsvg_style_new (void)
+{
+	GSvgStyle *style;
 
-G_BEGIN_DECLS
+	style = g_new0 (GSvgStyle, 1);
+	g_return_val_if_fail (style != NULL, NULL);
 
-typedef struct _GSvgDocument GSvgDocument;
-typedef struct _GSvgElement GSvgElement;
-typedef struct _GSvgGraphic GSvgGraphic;
-typedef struct _GSvgSvgElement GSvgSvgElement;
-typedef struct _GSvgRectElement GSvgRectElement;
-typedef struct _GSvgPathElement GSvgPathElement;
+	return style;
+}
 
-typedef struct _GSvgView GSvgView;
-typedef struct _GSvgStyle GSvgStyle;
+void
+gsvg_style_free (GSvgStyle *style)
+{
+	g_return_if_fail (style != NULL);
 
-G_END_DECLS
+	g_free (style);
+}
 
-#endif
+GSvgStyle *
+gsvg_style_duplicate (const GSvgStyle *from)
+{
+	GSvgStyle *style;
+
+	g_return_val_if_fail (from != NULL, NULL);
+
+	style = gsvg_style_new ();
+	g_return_val_if_fail (style != NULL, NULL);
+
+	memcpy (style, from, sizeof (GSvgStyle));
+
+	return style;
+}

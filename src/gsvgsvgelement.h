@@ -39,6 +39,8 @@ typedef struct _GSvgSvgElementClass GSvgSvgElementClass;
 struct _GSvgSvgElement {
 	GSvgGraphic graphic;
 
+	GSvgStyle *default_style;
+
 	GSvgLengthAttribute	x;
 	GSvgLengthAttribute	y;
 	GSvgLengthAttribute	width;
@@ -53,7 +55,9 @@ GType gsvg_svg_element_get_type (void);
 
 GDomNode *		gsvg_svg_element_new 		(void);
 
-void 			gsvg_svg_element_measure 	(GSvgSvgElement *self, double *width, double *height);
+GSvgStyle * 		gsvg_svg_element_get_default_style 	(GSvgSvgElement *svg_element);
+void 			gsvg_svg_element_update 		(GSvgSvgElement *svg_element);
+void 			gsvg_svg_element_measure 		(GSvgSvgElement *self, double *width, double *height);
 
 G_END_DECLS
 

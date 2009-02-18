@@ -202,8 +202,6 @@ gmathml_math_element_class_init (GMathmlMathElementClass *math_class)
 
 	m_element_class->attributes = gdom_attribute_map_duplicate (m_element_class->attributes);
 
-/*        gmathml_element_class_add_element_attributes (m_element_class);*/
-
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "mode",
 					  offsetof (GMathmlMathElement, mode));
 	gdom_attribute_map_add_attribute (m_element_class->attributes, "display",

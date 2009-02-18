@@ -24,16 +24,13 @@
 #define GSVG_ELEMENT_H
 
 #include <gsvg.h>
-#include <gsvgview.h>
 #include <gsvgattributes.h>
+#include <gsvgattributebags.h>
+#include <gsvgstyle.h>
 #include <gdomelement.h>
 #include <cairo.h>
 
 G_BEGIN_DECLS
-
-typedef struct {
-	char *		font_family;
-} GSvgStyle;
 
 #define GSVG_TYPE_ELEMENT             (gsvg_element_get_type ())
 #define GSVG_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_ELEMENT, GSvgElement))
@@ -52,6 +49,7 @@ struct _GSvgElement {
 	/* View */
 
 	gboolean need_update;
+	gboolean need_children_update;
 };
 
 struct _GSvgElementClass {
@@ -65,9 +63,8 @@ struct _GSvgElementClass {
 
 GType gsvg_element_get_type (void);
 
-gboolean		gsvg_element_update 		(GSvgElement *element, const GSvgStyle *style);
+void			gsvg_element_update 		(GSvgElement *element, const GSvgStyle *style);
 void 			gsvg_element_render 		(GSvgElement *element, GSvgView *view);
-
 
 G_END_DECLS
 

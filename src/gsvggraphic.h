@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-#define GSVG_TYPE_GRAPHIC             (gsvg_graphic_element_get_type ())
+#define GSVG_TYPE_GRAPHIC             (gsvg_graphic_get_type ())
 #define GSVG_GRAPHIC(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GSVG_TYPE_GRAPHIC, GSvgGraphic))
 #define GSVG_GRAPHIC_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GSVG_TYPE_GRAPHIC, GSvgGraphicClass))
 #define GSVG_IS_GRAPHIC(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GSVG_TYPE_GRAPHIC))
@@ -41,13 +41,16 @@ struct _GSvgGraphic {
 
 	GDomAttribute	*class_name;
 	GDomAttribute	*style;
+
+	GSvgFillAttributeBag *fill;
+	GSvgStrokeAttributeBag *stroke;
 };
 
 struct _GSvgGraphicClass {
 	GSvgElementClass  parent_class;
 };
 
-GType gsvg_graphic_element_get_type (void);
+GType gsvg_graphic_get_type (void);
 
 G_END_DECLS
 

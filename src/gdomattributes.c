@@ -20,6 +20,7 @@
  */
 
 #include <gdomattributes.h>
+#include <gdomdebug.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -170,9 +171,11 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 
 		bag_ptr = (void *)(instance + attribute_infos->bag_infos->bag_offset);
 		g_return_val_if_fail (bag_ptr != NULL, FALSE);
+
 		if (*bag_ptr == NULL)
 			*bag_ptr = attribute_infos->bag_infos->bag_class->init ();
 		g_return_val_if_fail (*bag_ptr != NULL, FALSE);
+
 		attribute = (void *)(*bag_ptr + attribute_infos->attribute_offset);
 	}
 

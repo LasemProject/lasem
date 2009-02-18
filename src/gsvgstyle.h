@@ -19,22 +19,30 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_H
-#define GSVG_H
+#ifndef GSVG_STYLE_H
+#define GSVG_STYLE_H
 
-#include <gdom.h>
+#include <gsvg.h>
+#include <gsvgattributebags.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GSvgDocument GSvgDocument;
-typedef struct _GSvgElement GSvgElement;
-typedef struct _GSvgGraphic GSvgGraphic;
-typedef struct _GSvgSvgElement GSvgSvgElement;
-typedef struct _GSvgRectElement GSvgRectElement;
-typedef struct _GSvgPathElement GSvgPathElement;
+struct _GSvgStyle {
+	struct {
+		GSvgPaint paint;
+		GSvgFillRule rule;
+		double opacity;
+	} fill;
 
-typedef struct _GSvgView GSvgView;
-typedef struct _GSvgStyle GSvgStyle;
+	struct {
+		GSvgPaint paint;
+		GSvgLength width;
+	} stroke;
+};
+
+GSvgStyle * 	gsvg_style_new 		(void);
+void 		gsvg_style_free 	(GSvgStyle *style);
+GSvgStyle *	gsvg_style_duplicate 	(const GSvgStyle *style);
 
 G_END_DECLS
 
