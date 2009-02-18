@@ -1,4 +1,6 @@
 /*
+ * Copyright © 2000 Eazel, Inc.
+ * Copyright © 2002 Dom Lachowicz
  * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify
@@ -15,8 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
  *
- * Author:
- * 	Emmanuel Pacaud <emmanuel@gnome.org>
+ * Authors:
+ * 	Raph Levien <raph@artofcode.com>
+ * 	Dom Lachowicz <cinamod@hotmail.com>
+ *	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
 #include <gsvgcolors.h>
