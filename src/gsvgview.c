@@ -33,6 +33,42 @@
 static GObjectClass *parent_class;
 
 void
+gsvg_view_push_fill_attributes (GSvgView *view, GSvgFillAttributeBag *fill)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (fill != NULL);
+
+	view->fill_stack = g_slist_prepend (view->fill_stack, fill);
+}
+
+void
+gsvg_view_pop_fill_attributes (GSvgView *view)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->fill_stack != NULL);
+
+	view->fill_stack = g_slist_delete_link (view->fill_stack, view->fill_stack);
+}
+
+void
+gsvg_view_push_stroke_attributes (GSvgView *view, GSvgStrokeAttributeBag *stroke)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (stroke != NULL);
+
+	view->stroke_stack = g_slist_prepend (view->stroke_stack, stroke);
+}
+
+void
+gsvg_view_pop_stroke_attributes (GSvgView *view)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->stroke_stack != NULL);
+
+	view->stroke_stack = g_slist_delete_link (view->stroke_stack, view->stroke_stack);
+}
+
+void
 gsvg_view_show_rectangle (GSvgView *view,
 			  double x, double y,
 			  double width, double height)
@@ -41,12 +77,51 @@ gsvg_view_show_rectangle (GSvgView *view,
 	cairo_stroke (view->dom_view.cairo);
 }
 
+static gboolean
+_set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
+{
+	switch (paint->type) {
+		case GSVG_PAINT_TYPE_NONE:
+			return FALSE;
+		case GSVG_PAINT_TYPE_RGB_COLOR:
+			cairo_set_source_rgba (cairo,
+					       paint->color.red,
+					       paint->color.green,
+					       paint->color.blue,
+					       1.0);
+			break;
+		default:
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
 void
 gsvg_view_show_path (GSvgView *view,
 		     const char *d)
 {
+	GSvgFillAttributeBag *fill;
+	GSvgStrokeAttributeBag *stroke;
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->fill_stack != NULL);
+	g_return_if_fail (view->stroke_stack != NULL);
+
 	gsvg_cairo_emit_svg_path (view->dom_view.cairo, d);
-	cairo_stroke (view->dom_view.cairo);
+
+	fill = view->fill_stack->data;
+	stroke = view->stroke_stack->data;
+
+	if (_set_color (view->dom_view.cairo, &fill->paint.paint, fill->opacity.value)) {
+		cairo_fill_preserve (view->dom_view.cairo);
+	}
+
+	if (_set_color (view->dom_view.cairo, &stroke->paint.paint, stroke->opacity.value)) {
+		cairo_stroke (view->dom_view.cairo);
+	}
+
+	cairo_new_path (view->dom_view.cairo);
 }
 
 static void
@@ -64,7 +139,10 @@ gsvg_view_measure (GDomView *view, double *width, double *height)
 static void
 gsvg_view_render (GDomView *view, double x, double y)
 {
+	GSvgView *svg_view;
 	GSvgSvgElement *svg_element;
+
+	svg_view = GSVG_VIEW (view);
 
 	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
 	if (svg_element == NULL)
@@ -72,7 +150,21 @@ gsvg_view_render (GDomView *view, double x, double y)
 
 	gsvg_svg_element_update (svg_element);
 
+	svg_view->fill_stack = NULL;
+	svg_view->stroke_stack = NULL;
+
 	gsvg_element_render (GSVG_ELEMENT (svg_element), GSVG_VIEW (view));
+
+	if (svg_view->fill_stack != NULL) {
+		g_warning ("[GSvgView::render] Dangling fill attribute in stack");
+		g_slist_free (svg_view->fill_stack);
+		svg_view->fill_stack = NULL;
+	}
+	if (svg_view->stroke_stack != NULL) {
+		g_warning ("[GSvgView::render] Dangling stroke attribute in stack");
+		g_slist_free (svg_view->stroke_stack);
+		svg_view->stroke_stack = NULL;
+	}
 }
 
 GSvgView *

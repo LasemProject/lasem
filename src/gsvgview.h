@@ -40,6 +40,9 @@ typedef struct _GSvgViewPrivate GSvgViewPrivate;
 
 struct _GSvgView {
 	GDomView dom_view;
+
+	GSList *fill_stack;
+	GSList *stroke_stack;
 };
 
 struct _GSvgViewClass {
@@ -49,6 +52,11 @@ struct _GSvgViewClass {
 GType gsvg_view_get_type (void);
 
 GSvgView *	gsvg_view_new 			(GSvgDocument *document);
+
+void 		gsvg_view_push_fill_attributes 		(GSvgView *view, GSvgFillAttributeBag *fill);
+void 		gsvg_view_pop_fill_attributes 		(GSvgView *view);
+void 		gsvg_view_push_stroke_attributes 	(GSvgView *view, GSvgStrokeAttributeBag *stroke);
+void 		gsvg_view_pop_stroke_attributes 	(GSvgView *view);
 
 void 		gsvg_view_show_rectangle 	(GSvgView *view, double x, double y, double width, double height);
 void		gsvg_view_show_path		(GSvgView *view, const char *d);

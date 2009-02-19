@@ -20,6 +20,7 @@
  */
 
 #include <gsvggraphic.h>
+#include <gsvgview.h>
 #include <gdomdebug.h>
 
 static GObjectClass *parent_class;
@@ -39,6 +40,34 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 	if (graphic->stroke != NULL) {
 		gdom_debug ("[GSvgGraphic::update] stroke");
 	}
+}
+
+static void
+gsvg_graphic_render (GSvgElement *self, GSvgView *view)
+{
+	GSvgGraphic *graphic = GSVG_GRAPHIC (self);
+	GSvgGraphicClass *graphic_class;
+	GDomNode *node;
+
+	gdom_debug ("[GSvgGraphic::render] Render %s", gdom_node_get_node_name (GDOM_NODE (self)));
+
+	if (graphic->fill != NULL)
+		gsvg_view_push_fill_attributes (view, graphic->fill);
+	if (graphic->stroke != NULL)
+		gsvg_view_push_stroke_attributes (view, graphic->stroke);
+
+	graphic_class = GSVG_GRAPHIC_GET_CLASS (graphic);
+	if (graphic_class->graphic_render != NULL)
+		graphic_class->graphic_render (self, view);
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+		if (GSVG_IS_ELEMENT (node))
+		    gsvg_element_render (GSVG_ELEMENT (node), view);
+
+	if (graphic->stroke != NULL)
+		gsvg_view_pop_stroke_attributes (view);
+	if (graphic->fill != NULL)
+		gsvg_view_pop_fill_attributes (view);
 }
 
 /* GSvgGraphic implementation */
@@ -66,6 +95,7 @@ gsvg_graphic_class_init (GSvgGraphicClass *s_graphic_class)
 	object_class->finalize = gsvg_graphic_finalize;
 
 	s_element_class->update = gsvg_graphic_update;
+	s_element_class->render = gsvg_graphic_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

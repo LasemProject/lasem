@@ -133,9 +133,8 @@ gsvg_element_render (GSvgElement *element, GSvgView *view)
 	GSvgElementClass *element_class;
 
 	g_return_if_fail (GSVG_IS_ELEMENT (element));
-	element_class = GSVG_ELEMENT_GET_CLASS (element);
-	g_return_if_fail (element_class != NULL);
 
+	element_class = GSVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render) {
 		element_class->render (element, view);
 	}

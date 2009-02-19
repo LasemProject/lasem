@@ -48,6 +48,8 @@ struct _GSvgGraphic {
 
 struct _GSvgGraphicClass {
 	GSvgElementClass  parent_class;
+
+	void 			(*graphic_render)	(GSvgElement *element, GSvgView *view);
 };
 
 GType gsvg_graphic_get_type (void);
