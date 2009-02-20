@@ -106,6 +106,8 @@ gdom_attribute_map_add_bag_attribute  (GDomAttributeMap *map,
 	attribute_infos->attribute_offset = attribute_offset;
 	attribute_infos->attribute_class = attribute_class;
 
+	gdom_debug ("name = %s - attribute_offset = %d", name, attribute_offset);
+
 	g_hash_table_insert (map->attribute_hash, (char *) name, attribute_infos);
 
 	if (bag_class != NULL) {
@@ -149,20 +151,19 @@ gdom_attribute_map_add_attribute (GDomAttributeMap *map,
 	gdom_attribute_map_add_bag_attribute (map, name, offset, NULL, 0, NULL);
 }
 
-gboolean
-gdom_attribute_map_set_attribute (GDomAttributeMap *map,
-				  void *instance,
-				  const char *name,
-				  const char *value)
+static GDomAttribute *
+_get_attribute (GDomAttributeMap *map,
+		void *instance,
+		const char *name)
 {
 	GDomAttributeInfos *attribute_infos;
 	GDomAttribute *attribute;
 
-	g_return_val_if_fail (map != NULL, FALSE);
-
 	attribute_infos = g_hash_table_lookup (map->attribute_hash, name);
-	if (attribute_infos == NULL)
-		return FALSE;
+	if (attribute_infos == NULL) {
+		gdom_debug ("[GDomAttribute] Attribute not found (%s)", name);
+		return NULL;
+	}
 
 	if (attribute_infos->bag_infos == NULL)
 		attribute = (void *)(instance + attribute_infos->attribute_offset);
@@ -176,13 +177,52 @@ gdom_attribute_map_set_attribute (GDomAttributeMap *map,
 			*bag_ptr = attribute_infos->bag_infos->bag_class->init ();
 		g_return_val_if_fail (*bag_ptr != NULL, FALSE);
 
-		attribute = (void *)(*bag_ptr + attribute_infos->attribute_offset);
+		attribute = (((void *) *bag_ptr) + attribute_infos->attribute_offset);
 	}
 
-	g_return_val_if_fail (attribute != NULL, FALSE);
+	g_return_val_if_fail (attribute != NULL, NULL);
+
+	return attribute;
+}
+
+gboolean
+gdom_attribute_map_set_attribute (GDomAttributeMap *map,
+				  void *instance,
+				  const char *name,
+				  const char *value)
+{
+	GDomAttribute *attribute;
+
+	g_return_val_if_fail (map != NULL, FALSE);
+
+	attribute = _get_attribute (map, instance, name);
+	if (attribute == NULL)
+		return FALSE;
 
 	g_free (attribute->value);
 	attribute->value = value != NULL ? g_strdup (value) : NULL;
+
+	return TRUE;
+}
+
+gboolean
+gdom_attribute_map_set_css_attribute (GDomAttributeMap *map,
+				      void *instance,
+				      const char *name,
+				      const char *value,
+				      GDomCssType type)
+{
+	GDomAttribute *attribute;
+
+	g_return_val_if_fail (map != NULL, FALSE);
+
+	attribute = _get_attribute (map, instance, name);
+	if (attribute == NULL)
+		return FALSE;
+
+	g_free (attribute->css_value);
+	attribute->css_value = value != NULL ? g_strdup (value) : NULL;
+	attribute->css_type = type;
 
 	return TRUE;
 }

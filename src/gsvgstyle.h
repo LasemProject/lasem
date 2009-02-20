@@ -37,6 +37,7 @@ struct _GSvgStyle {
 	struct {
 		GSvgPaint paint;
 		GSvgLength width;
+		double opacity;
 	} stroke;
 };
 

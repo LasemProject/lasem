@@ -39,8 +39,8 @@ typedef struct _GSvgGraphicClass GSvgGraphicClass;
 struct _GSvgGraphic {
 	GSvgElement	element;
 
-	GDomAttribute	*class_name;
-	GDomAttribute	*style;
+	GDomAttribute	class_name;
+	GDomAttribute	style;
 
 	GSvgFillAttributeBag *fill;
 	GSvgStrokeAttributeBag *stroke;

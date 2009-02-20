@@ -125,8 +125,9 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 				attribute->paint.uri[length - 1] = '\0';
 			}
 			string += length;
-		} else
+		} else {
 			attribute->paint.uri = NULL;
+		}
 
 		while (*string == ' ')
 			string++;
@@ -140,7 +141,7 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 					value = *string - '0';
 				else if (*string >= 'A' && *string <= 'F')
 					value = *string - 'A' + 10;
-				else if (*string >= 'a' && *string <= 'a')
+				else if (*string >= 'a' && *string <= 'f')
 					value = *string - 'a' + 10;
 				else {
 					color = 0;
@@ -154,6 +155,13 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 				color = ((color & 0xf00) << 8) | ((color & 0x0f0) << 4) | (color & 0x00f);
 				color |= color << 4;
 			}
+
+			attribute->paint.type = attribute->paint.uri != NULL ?
+				GSVG_PAINT_TYPE_URI_RGB_COLOR :
+				GSVG_PAINT_TYPE_RGB_COLOR;
+
+			gdom_debug ("[GSvgPaintAttribute::parse] #xxxxxx or #xxx syntax (0x%08x)", color);
+
 		} else if (g_str_has_prefix (string, "rgb(")) {
 			int i;
 			double value;
@@ -177,17 +185,28 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 
 				color = (color << 8) + (int) (0.5 + CLAMP (value, 0.0, 255.0));
 			}
-		} else
+
+			attribute->paint.type = attribute->paint.uri != NULL ?
+				GSVG_PAINT_TYPE_URI_RGB_COLOR :
+				GSVG_PAINT_TYPE_RGB_COLOR;
+
+		} else if (strcmp (string, "none") == 0) {
+
+			attribute->paint.type = attribute->paint.uri != NULL ?
+				GSVG_PAINT_TYPE_URI:
+				GSVG_PAINT_TYPE_NONE;
+
+		} else {
 			color = gsvg_color_from_string (string);
+
+			attribute->paint.type = attribute->paint.uri != NULL ?
+				GSVG_PAINT_TYPE_URI_RGB_COLOR :
+				GSVG_PAINT_TYPE_RGB_COLOR;
+		}
 
 		attribute->paint.color.red = (double) ((color & 0xff0000) >> 16) / 255.0;
 		attribute->paint.color.green = (double) ((color & 0x00ff00) >> 8) / 255.0;
 		attribute->paint.color.blue = (double) (color & 0x0000ff) / 255.0;
-
-		if (attribute->paint.uri != NULL)
-			attribute->paint.type = GSVG_PAINT_TYPE_URI_RGB_COLOR;
-		else
-			attribute->paint.type = GSVG_PAINT_TYPE_RGB_COLOR;
 
 		g_free (default_value->uri);
 		if (attribute->paint.uri != NULL)

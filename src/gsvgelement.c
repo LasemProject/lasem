@@ -96,11 +96,11 @@ gsvg_element_update (GSvgElement *self, const GSvgStyle *parent_style)
 	style = gsvg_style_duplicate (parent_style);
 	g_return_if_fail (style != NULL);
 
-	if (element_class->update != NULL)
-		element_class->update (self, style);
-
 	gdom_debug ("[Element::update] update %s",
 		    gdom_node_get_node_name (GDOM_NODE (self)));
+
+	if (element_class->update != NULL)
+		element_class->update (self, style);
 
 	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
 		if (GSVG_IS_ELEMENT (node)) {

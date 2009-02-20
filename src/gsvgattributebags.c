@@ -53,6 +53,10 @@ gdom_attribute_map_add_fill_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_
 					      offsetof (GSvgFillAttributeBag, paint),
 					      &gsvg_paint_attribute_class,
 					      bag_offset, &gsvg_fill_attribute_bag_class);
+	gdom_attribute_map_add_bag_attribute (map, "fill-opacity",
+					      offsetof (GSvgFillAttributeBag, opacity),
+					      NULL,
+					      bag_offset, &gsvg_fill_attribute_bag_class);
 }
 
 static void *
@@ -82,5 +86,9 @@ gdom_attribute_map_add_stroke_attribute_bag (GDomAttributeMap *map, ptrdiff_t ba
 	gdom_attribute_map_add_bag_attribute (map, "stroke",
 					      offsetof (GSvgStrokeAttributeBag, paint),
 					      &gsvg_paint_attribute_class,
+					      bag_offset, &gsvg_stroke_attribute_bag_class);
+	gdom_attribute_map_add_bag_attribute (map, "stroke-opacity",
+					      offsetof (GSvgStrokeAttributeBag, opacity),
+					      NULL,
 					      bag_offset, &gsvg_stroke_attribute_bag_class);
 }

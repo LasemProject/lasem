@@ -20,6 +20,7 @@
  */
 
 #include <gsvgrectelement.h>
+#include <gsvgview.h>
 
 static GObjectClass *parent_class;
 
@@ -34,8 +35,42 @@ gsvg_rect_element_get_node_name (GDomNode *node)
 /* GSvgElement implementation */
 
 static void
-gsvg_rect_element_render (GSvgElement *self, GSvgView *view)
+gsvg_rect_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
+	GSvgRectElement *rect = GSVG_RECT_ELEMENT (self);
+	GSvgLength length;
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->x, &length);
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->y, &length);
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->width, &length);
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->height, &length);
+
+	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+}
+
+/* GSvgGraphic implementation */
+
+static void
+gsvg_rect_element_graphic_render (GSvgElement *self, GSvgView *view)
+{
+	GSvgRectElement *rect = GSVG_RECT_ELEMENT (self);
+
+	gsvg_view_show_rectangle (view,
+				  rect->x.length.base.value,
+				  rect->y.length.base.value,
+				  rect->width.length.base.value,
+				  rect->height.length.base.value);
 }
 
 /* GSvgRectElement implementation */
@@ -64,6 +99,7 @@ gsvg_rect_element_class_init (GSvgRectElementClass *s_rect_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_rect_class);
 	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_rect_class);
+	GSvgGraphicClass *s_graphic_class = GSVG_GRAPHIC_CLASS (s_rect_class);
 
 	parent_class = g_type_class_peek_parent (s_rect_class);
 
@@ -71,7 +107,9 @@ gsvg_rect_element_class_init (GSvgRectElementClass *s_rect_class)
 
 	d_node_class->get_node_name = gsvg_rect_element_get_node_name;
 
-	s_element_class->render = gsvg_rect_element_render;
+	s_element_class->update = gsvg_rect_element_update;
+
+	s_graphic_class->graphic_render = gsvg_rect_element_graphic_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

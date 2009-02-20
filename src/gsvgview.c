@@ -68,15 +68,6 @@ gsvg_view_pop_stroke_attributes (GSvgView *view)
 	view->stroke_stack = g_slist_delete_link (view->stroke_stack, view->stroke_stack);
 }
 
-void
-gsvg_view_show_rectangle (GSvgView *view,
-			  double x, double y,
-			  double width, double height)
-{
-	cairo_rectangle (view->dom_view.cairo, x, y, width, height);
-	cairo_stroke (view->dom_view.cairo);
-}
-
 static gboolean
 _set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
 {
@@ -88,7 +79,7 @@ _set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
 					       paint->color.red,
 					       paint->color.green,
 					       paint->color.blue,
-					       1.0);
+					       opacity);
 			break;
 		default:
 			return FALSE;
@@ -97,31 +88,48 @@ _set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
 	return TRUE;
 }
 
-void
-gsvg_view_show_path (GSvgView *view,
-		     const char *d)
+static void
+_paint (GSvgView *view)
 {
 	GSvgFillAttributeBag *fill;
 	GSvgStrokeAttributeBag *stroke;
 
-	g_return_if_fail (GSVG_IS_VIEW (view));
 	g_return_if_fail (view->fill_stack != NULL);
 	g_return_if_fail (view->stroke_stack != NULL);
-
-	gsvg_cairo_emit_svg_path (view->dom_view.cairo, d);
 
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
-	if (_set_color (view->dom_view.cairo, &fill->paint.paint, fill->opacity.value)) {
+	if (_set_color (view->dom_view.cairo, &fill->paint.paint, fill->opacity.value))
 		cairo_fill_preserve (view->dom_view.cairo);
-	}
 
-	if (_set_color (view->dom_view.cairo, &stroke->paint.paint, stroke->opacity.value)) {
+	if (_set_color (view->dom_view.cairo, &stroke->paint.paint, stroke->opacity.value))
 		cairo_stroke (view->dom_view.cairo);
-	}
 
 	cairo_new_path (view->dom_view.cairo);
+}
+
+void
+gsvg_view_show_rectangle (GSvgView *view,
+			  double x, double y,
+			  double width, double height)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	cairo_rectangle (view->dom_view.cairo, x, y, width, height);
+
+	_paint (view);
+}
+
+void
+gsvg_view_show_path (GSvgView *view,
+		     const char *d)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	gsvg_cairo_emit_svg_path (view->dom_view.cairo, d);
+
+	_paint (view);
 }
 
 static void

@@ -31,12 +31,12 @@ typedef enum {
 	GDOM_CSS_TYPE_AUTHOR,
 	GDOM_CSS_TYPE_AUTHOR_IMPORTANT,
 	GDOM_CSS_TYPE_USER_IMPORTANT
-} GDomAttributeCssType;
+} GDomCssType;
 
 typedef struct {
 	char *value;
 	char *css_value;
-	GDomAttributeCssType css_type;
+	GDomCssType css_type;
 } GDomAttribute;
 
 typedef struct {
@@ -78,8 +78,6 @@ void			gdom_attribute_map_add_attribute 	(GDomAttributeMap *map,
 
 void			gdom_attribute_map_free_attributes 	(GDomAttributeMap *map,
 								 void *instance);
-void			gdom_attribute_map_free_css_values	(GDomAttributeMap *map,
-								 void *instance);
 
 gboolean		gdom_attribute_map_set_attribute	(GDomAttributeMap *map,
 								 void *instance,
@@ -88,11 +86,11 @@ gboolean		gdom_attribute_map_set_attribute	(GDomAttributeMap *map,
 char const *		gdom_attribute_map_get_attribute	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name);
-void			gdom_attribute_map_set_css_attribute	(GDomAttributeMap *map,
+gboolean		gdom_attribute_map_set_css_attribute	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value,
-								 GDomAttributeCssType css_type);
+								 GDomCssType css_type);
 gboolean		gdom_attribute_map_is_attribute_defined	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name);

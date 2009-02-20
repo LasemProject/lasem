@@ -88,19 +88,10 @@ gsvg_svg_element_init (GSvgSvgElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
-	style->fill.paint.type = GSVG_PAINT_TYPE_NONE;
-	style->fill.paint.uri = NULL;
-	style->fill.paint.color.red = 0.0;
-	style->fill.paint.color.green = 0.0;
-	style->fill.paint.color.blue = 0.0;
-	style->fill.opacity = 1.0;
-
-	style->stroke.paint.type = GSVG_PAINT_TYPE_RGB_COLOR;
-	style->stroke.paint.uri = NULL;
-	style->stroke.paint.uri = NULL;
-	style->stroke.paint.color.red = 0.0;
-	style->stroke.paint.color.green = 0.0;
-	style->stroke.paint.color.blue = 0.0;
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill", "black");
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill-opacity", "1");
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke", "black");
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-opacity", "1");
 }
 
 static void
