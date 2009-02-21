@@ -22,6 +22,7 @@
 #include <gsvgsvgelement.h>
 #include <gsvgstyle.h>
 #include <gdomdebug.h>
+#include <stdio.h>
 
 static GObjectClass *parent_class;
 
@@ -35,19 +36,41 @@ gsvg_svg_element_get_node_name (GDomNode *node)
 
 /* GSvgElement implementation */
 
+static void
+_svg_element_update (GSvgElement *self, GSvgStyle *parent_style)
+{
+	GSvgSvgElement *svg = GSVG_SVG_ELEMENT (self);
+	GSvgLength length;
+
+	printf ("here\n");
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_length_attribute_parse (&svg->x, &length);
+
+	length.value = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_length_attribute_parse (&svg->y, &length);
+
+	length.value = 100.0;
+	length.type = GSVG_LENGTH_TYPE_PERCENTAGE;
+	gsvg_length_attribute_parse (&svg->width, &length);
+
+	length.value = 100.0;
+	length.type = GSVG_LENGTH_TYPE_PERCENTAGE;
+	gsvg_length_attribute_parse (&svg->height, &length);
+
+	printf ("height = %g, width = %g\n",
+		svg->height.length.value,
+		svg->width.length.value);
+
+	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+}
+
 void
 gsvg_svg_element_measure (GSvgSvgElement *self, double *width, double *height)
 {
-	GSvgLength length;
-
 	g_return_if_fail (GSVG_IS_SVG_ELEMENT (self));
-
-	length.value = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_length_attribute_parse (&self->width, &length);
-	length.value = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_length_attribute_parse (&self->height, &length);
 
 	if (width != NULL)
 		*width = self->width.length.value;
@@ -116,6 +139,8 @@ gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
 	object_class->finalize = gsvg_svg_element_finalize;
 
 	d_node_class->get_node_name = gsvg_svg_element_get_node_name;
+
+	s_element_class->update = _svg_element_update;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

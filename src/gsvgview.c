@@ -141,6 +141,8 @@ gsvg_view_measure (GDomView *view, double *width, double *height)
 	if (svg_element == NULL)
 		return;
 
+	gsvg_svg_element_update (svg_element);
+
 	gsvg_svg_element_measure (svg_element, width, height);
 }
 
