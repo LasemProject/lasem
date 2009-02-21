@@ -22,5 +22,6 @@ autom4te*
 gmathml.svg
 tags
 *.lineno
+*.swp
 manugen
 gmathml.pc
