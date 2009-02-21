@@ -73,6 +73,8 @@ gmathml_test_render (char const *filename)
 	char *mime;
 	double width, height;
 	gboolean is_xml, success;
+	gboolean is_svg;
+	gboolean is_mathml;
 	GRegex *regex;
 	GError *error = NULL;
 	char *filtered_buffer;
@@ -83,10 +85,13 @@ gmathml_test_render (char const *filename)
 	reference_png_filename = g_strdup_printf ("%s.png", test_name);
 
 	mime = g_content_type_guess (filename, NULL, 0, NULL);
-	is_xml = strcmp (mime, "text/mathml") == 0 || strcmp (mime, "image/svg+xml") == 0;
+
+	is_svg = strcmp (mime, "image/svg+xml") == 0;
+	is_mathml = strcmp (mime, "text/mathml") == 0;
+	is_xml = is_svg || is_mathml;
+
 	g_printf ("\trender %s (%s)\n", filename, mime);
 	g_free (mime);
-
 
 	success = g_file_get_contents (filename, &buffer, &size, NULL);
 	if (success) {
@@ -122,18 +127,26 @@ gmathml_test_render (char const *filename)
 		gmathml_test_html ("<tr>");
 		gmathml_test_html ("<td>");
 
-		regex = g_regex_new ("<math>", 0, 0, &error);
-		assert (error == NULL);
+		if (is_mathml) {
+			regex = g_regex_new ("<math>", 0, 0, &error);
+			assert (error == NULL);
 
-		filtered_buffer = g_regex_replace (regex, xml,
-						   -1, 0,
-						   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
-						   0, NULL);
-		g_regex_unref (regex);
+			filtered_buffer = g_regex_replace (regex, xml,
+							   -1, 0,
+							   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
+							   0, NULL);
+			g_regex_unref (regex);
 
-		gmathml_test_html (filtered_buffer);
+			gmathml_test_html (filtered_buffer);
 
-		g_free (filtered_buffer);
+			g_free (filtered_buffer);
+		}
+
+		if (is_svg) {
+			gmathml_test_html ("<object type=\"image/svg+xml\" data=\"");
+			gmathml_test_html (filename);
+			gmathml_test_html ("\" width=\"320\"/>");
+		}
 
 		gmathml_test_html ("</td>");
 		gmathml_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
