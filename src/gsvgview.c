@@ -33,6 +33,26 @@
 static GObjectClass *parent_class;
 
 void
+gsvg_view_push_transform (GSvgView *view, const GSvgMatrix *matrix)
+{
+	cairo_matrix_t cr_matrix;
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
+	cairo_save (view->dom_view.cairo);
+	cairo_transform (view->dom_view.cairo, &cr_matrix);
+}
+
+void
+gsvg_view_pop_transform	(GSvgView *view)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	cairo_restore (view->dom_view.cairo);
+}
+
+void
 gsvg_view_push_fill_attributes (GSvgView *view, GSvgFillAttributeBag *fill)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
@@ -93,20 +113,24 @@ _paint (GSvgView *view)
 {
 	GSvgFillAttributeBag *fill;
 	GSvgStrokeAttributeBag *stroke;
+	cairo_t *cairo;
 
 	g_return_if_fail (view->fill_stack != NULL);
 	g_return_if_fail (view->stroke_stack != NULL);
 
+	cairo = view->dom_view.cairo;
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
-	if (_set_color (view->dom_view.cairo, &fill->paint.paint, fill->opacity.value))
+	if (_set_color (cairo, &fill->paint.paint, fill->opacity.value))
 		cairo_fill_preserve (view->dom_view.cairo);
 
-	if (_set_color (view->dom_view.cairo, &stroke->paint.paint, stroke->opacity.value))
-		cairo_stroke (view->dom_view.cairo);
+	if (_set_color (cairo, &stroke->paint.paint, stroke->opacity.value)) {
+		cairo_set_line_width (cairo, stroke->width.length.value);
+		cairo_stroke (cairo);
+	}
 
-	cairo_new_path (view->dom_view.cairo);
+	cairo_new_path (cairo);
 }
 
 void

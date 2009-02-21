@@ -45,6 +45,8 @@ struct _GSvgSvgElement {
 	GSvgLengthAttribute	y;
 	GSvgLengthAttribute	width;
 	GSvgLengthAttribute	height;
+
+	GSvgViewBoxAttribute	view_box;
 };
 
 struct _GSvgSvgElementClass {

@@ -53,6 +53,8 @@ GType gsvg_view_get_type (void);
 
 GSvgView *	gsvg_view_new 			(GSvgDocument *document);
 
+void		gsvg_view_push_transform 		(GSvgView *view, const GSvgMatrix *matrix);
+void		gsvg_view_pop_transform			(GSvgView *view);
 void 		gsvg_view_push_fill_attributes 		(GSvgView *view, GSvgFillAttributeBag *fill);
 void 		gsvg_view_pop_fill_attributes 		(GSvgView *view);
 void 		gsvg_view_push_stroke_attributes 	(GSvgView *view, GSvgStrokeAttributeBag *stroke);

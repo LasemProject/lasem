@@ -26,6 +26,7 @@
 #include <gdomattributes.h>
 #include <gsvg.h>
 #include <gsvgenums.h>
+#include <gsvgmatrix.h>
 
 G_BEGIN_DECLS
 
@@ -53,6 +54,13 @@ typedef struct {
 } GSvgPaint;
 
 typedef struct {
+	double x;
+	double y;
+	double width;
+	double height;
+} GSvgViewBox;
+
+typedef struct {
 	GDomAttribute attr;
 	GSvgLength length;
 } GSvgLengthAttribute;
@@ -67,6 +75,18 @@ typedef struct {
 	GSvgPaint paint;
 } GSvgPaintAttribute;
 
+typedef struct {
+	GDomAttribute attr;
+	GSvgViewBox value;
+} GSvgViewBoxAttribute;
+
+typedef struct {
+	GDomAttribute attr;
+	GSvgMatrix matrix;
+} GSvgTransformAttribute;
+
+double 		gsvg_length_compute 			(const GSvgLength *length, double viewbox, double font_size);
+
 void		gsvg_length_attribute_parse 		(GSvgLengthAttribute *attribute,
 							 GSvgLength *default_value);
 void 		gsvg_animated_length_attribute_parse 	(GSvgAnimatedLengthAttribute *attribute,
@@ -76,6 +96,9 @@ void 		gsvg_fill_rule_attribute_parse 		(GDomEnumAttribute *attribute,
 void 		gsvg_paint_attribute_finalize 		(void *abstract);
 void 		gsvg_paint_attribute_parse 		(GSvgPaintAttribute *attribute,
 							 GSvgPaint *default_value);
+void		gsvg_view_box_attribute_parse		(GSvgViewBoxAttribute *attribute,
+							 GSvgViewBox *default_value);
+void		gsvg_transform_attribute_parse		(GSvgTransformAttribute *attribute);
 
 G_END_DECLS
 

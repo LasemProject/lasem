@@ -21,6 +21,7 @@
 
 #include <gsvgsvgelement.h>
 #include <gsvgstyle.h>
+#include <gsvgview.h>
 #include <gdomdebug.h>
 #include <stdio.h>
 
@@ -41,6 +42,7 @@ _svg_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
 	GSvgSvgElement *svg = GSVG_SVG_ELEMENT (self);
 	GSvgLength length;
+	GSvgViewBox view_box = {0,0,0,0};
 
 	printf ("here\n");
 
@@ -60,9 +62,17 @@ _svg_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	length.type = GSVG_LENGTH_TYPE_PERCENTAGE;
 	gsvg_length_attribute_parse (&svg->height, &length);
 
+	gsvg_view_box_attribute_parse (&svg->view_box, &view_box);
+
 	printf ("height = %g, width = %g\n",
 		svg->height.length.value,
 		svg->width.length.value);
+
+	printf ("view_bbox = %g, %g, %g, %g\n",
+		svg->view_box.value.x,
+		svg->view_box.value.y,
+		svg->view_box.value.width,
+		svg->view_box.value.height);
 
 	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -73,11 +83,36 @@ gsvg_svg_element_measure (GSvgSvgElement *self, double *width, double *height)
 	g_return_if_fail (GSVG_IS_SVG_ELEMENT (self));
 
 	if (width != NULL)
-		*width = self->width.length.value;
+		*width = gsvg_length_compute (&self->width.length, self->view_box.value.width, 0.0);
 	if (height != NULL)
-		*height = self->height.length.value;
+		*height = gsvg_length_compute (&self->height.length, self->view_box.value.height, 0.0);
 }
 
+/* GSvgGraphic implementation */
+
+static void
+gsvg_svg_element_graphic_render (GSvgElement *self, GSvgView *view)
+{
+	GSvgSvgElement *svg = GSVG_SVG_ELEMENT (self);
+	GSvgMatrix matrix;
+
+	if (svg->view_box.value.width <= 0.0 ||
+	    svg->view_box.value.height <= 0.0)
+		return;
+
+	gsvg_matrix_init (&matrix,
+			  gsvg_length_compute (&svg->width.length, svg->view_box.value.width, 0.0) /
+			  svg->view_box.value.width,
+			  0, 0,
+			  gsvg_length_compute (&svg->height.length, svg->view_box.value.height, 0.0) /
+			  svg->view_box.value.height,
+			  0, 0);
+	gsvg_view_push_transform (view, &matrix);
+
+	GSVG_GRAPHIC_CLASS (parent_class)->graphic_render (self, view);
+
+	gsvg_view_pop_transform (view);
+}
 
 /* GSvgSvgElement implementation */
 
@@ -114,6 +149,7 @@ gsvg_svg_element_init (GSvgSvgElement *self)
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill", "black");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill-opacity", "1");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke", "black");
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-width", "1px");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-opacity", "1");
 }
 
@@ -133,6 +169,7 @@ gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (s_svg_class);
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_svg_class);
 	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_svg_class);
+	GSvgGraphicClass *s_graphic_class = GSVG_GRAPHIC_CLASS (s_svg_class);
 
 	parent_class = g_type_class_peek_parent (s_svg_class);
 
@@ -141,6 +178,8 @@ gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
 	d_node_class->get_node_name = gsvg_svg_element_get_node_name;
 
 	s_element_class->update = _svg_element_update;
+
+	s_graphic_class->graphic_render = gsvg_svg_element_graphic_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 
@@ -152,6 +191,8 @@ gsvg_svg_element_class_init (GSvgSvgElementClass *s_svg_class)
 					  offsetof (GSvgSvgElement, width));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "height",
 					  offsetof (GSvgSvgElement, height));
+	gdom_attribute_map_add_attribute (s_element_class->attributes, "viewBox",
+					  offsetof (GSvgSvgElement, view_box));
 }
 
 G_DEFINE_TYPE (GSvgSvgElement, gsvg_svg_element, GSVG_TYPE_GRAPHIC)

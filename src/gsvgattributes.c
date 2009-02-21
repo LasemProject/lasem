@@ -23,6 +23,39 @@
 #include <gsvgcolors.h>
 #include <gdomdebug.h>
 #include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+double
+gsvg_length_compute (const GSvgLength *length, double viewbox, double font_size)
+{
+	g_return_val_if_fail (length != NULL, 0.0);
+
+	switch (length->type) {
+		case GSVG_LENGTH_TYPE_PX:
+		case GSVG_LENGTH_TYPE_PT:
+			return length->value;
+		case GSVG_LENGTH_TYPE_PC:
+			return length->value * 72.0 / 6.0;
+		case GSVG_LENGTH_TYPE_CM:
+			return length->value * 72.0 / 2.54;
+		case GSVG_LENGTH_TYPE_MM:
+			return length->value * 72.0 / 25.4;
+		case GSVG_LENGTH_TYPE_IN:
+			return length->value * 72.0;
+		case GSVG_LENGTH_TYPE_EMS:
+			return length->value * font_size;
+		case GSVG_LENGTH_TYPE_EXS:
+			return length->value * font_size * 0.5;
+		case GSVG_LENGTH_TYPE_PERCENTAGE:
+			return viewbox * length->value / 100.0;
+		case GSVG_LENGTH_TYPE_NUMBER:
+		case GSVG_LENGTH_TYPE_UNKNOWN:
+			return length->value;
+	}
+
+	return 0.0;
+}
 
 void
 gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,
@@ -218,3 +251,59 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 	}
 }
 
+void
+gsvg_view_box_attribute_parse (GSvgViewBoxAttribute *attribute,
+			       GSvgViewBox *default_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	if (string == NULL) {
+		g_return_if_fail (default_value != NULL);
+
+		attribute->value = *default_value;
+	} else {
+		unsigned int i;
+		double value[4];
+
+		for (i = 0; i < 4 && *string != '\0'; i++) {
+			while (*string == ' ' || *string == ';')
+				string++;
+
+			value[i] = atof(string);
+
+			while ((*string >= '0' && *string <= '9') || *string == '.')
+				string++;
+		}
+
+		if (i == 4) {
+			attribute->value.x = value[0];
+			attribute->value.y = value[1];
+			attribute->value.width = value[2];
+			attribute->value.height = value[3];
+		} else {
+			attribute->value.x = 0;
+			attribute->value.y = 0;
+			attribute->value.width = 0;
+			attribute->value.height = 0;
+		}
+
+		*default_value = attribute->value;
+	}
+}
+
+void
+gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+
+	gsvg_matrix_init_identity (&attribute->matrix);
+
+	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	if (string != NULL) {
+	}
+}

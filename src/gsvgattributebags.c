@@ -87,6 +87,10 @@ gdom_attribute_map_add_stroke_attribute_bag (GDomAttributeMap *map, ptrdiff_t ba
 					      offsetof (GSvgStrokeAttributeBag, paint),
 					      &gsvg_paint_attribute_class,
 					      bag_offset, &gsvg_stroke_attribute_bag_class);
+	gdom_attribute_map_add_bag_attribute (map, "stroke-width",
+					      offsetof (GSvgStrokeAttributeBag, width),
+					      NULL,
+					      bag_offset, &gsvg_stroke_attribute_bag_class);
 	gdom_attribute_map_add_bag_attribute (map, "stroke-opacity",
 					      offsetof (GSvgStrokeAttributeBag, opacity),
 					      NULL,
