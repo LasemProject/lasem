@@ -3,6 +3,7 @@ AC_INIT(gmathml, 0.1.0)
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
+AC_CONFIG_MACRO_DIR(m4)
 
 AC_ISC_POSIX
 AC_PROG_CC
@@ -24,10 +25,14 @@ PKG_CHECK_MODULES(GMATHML, [gobject-2.0 glib-2.0 gio-2.0 cairo >= 1.2 pangocairo
 AC_SUBST(GMATHML_CFLAGS)
 AC_SUBST(GMATHML_LIBS)
 
+SHAVE_INIT([.])
+
 AC_OUTPUT([
-Makefile
-itex2mml/Makefile
-src/Makefile
-po/Makefile.in
-gmathml.pc
+	   shave
+	   shave-libtool
+	   Makefile
+	   itex2mml/Makefile
+	   src/Makefile
+	   po/Makefile.in
+	   gmathml.pc
 ])

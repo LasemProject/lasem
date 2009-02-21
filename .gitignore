@@ -24,3 +24,5 @@ tags
 *.lineno
 manugen
 gmathml.pc
+shave
+shave-libtool
