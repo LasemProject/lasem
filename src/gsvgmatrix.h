@@ -31,9 +31,16 @@ typedef struct {
 void 	gsvg_matrix_init 		(GSvgMatrix *matrix, double a, double b,
 					 double c, double d, double e, double f);
 void 	gsvg_matrix_init_identity 	(GSvgMatrix *matrix);
+void 	gsvg_matrix_init_scale 		(GSvgMatrix *matrix, double sx, double sy);
 void 	gsvg_matrix_scale 		(GSvgMatrix *matrix, double sx, double sy);
+void 	gsvg_matrix_init_translate 	(GSvgMatrix *matrix, double tx, double ty);
 void 	gsvg_matrix_translate 		(GSvgMatrix *matrix, double tx, double ty);
+void 	gsvg_matrix_init_rotate 	(GSvgMatrix *matrix, double radians);
 void 	gsvg_matrix_rotate 		(GSvgMatrix *matrix, double radians);
+void 	gsvg_matrix_init_skew_x 	(GSvgMatrix *matrix, double radians);
+void 	gsvg_matrix_skew_x 		(GSvgMatrix *matrix, double radians);
+void 	gsvg_matrix_init_skew_y 	(GSvgMatrix *matrix, double radians);
+void 	gsvg_matrix_skew_y 		(GSvgMatrix *matrix, double radians);
 void 	gsvg_matrix_multiply 		(GSvgMatrix *result, const GSvgMatrix *a, const GSvgMatrix *b);
 
 #endif

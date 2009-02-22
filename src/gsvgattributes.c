@@ -21,9 +21,11 @@
 
 #include <gsvgattributes.h>
 #include <gsvgcolors.h>
+#include <gsvgutils.h>
 #include <gdomdebug.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 double
@@ -125,11 +127,11 @@ void
 gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 			    GSvgPaint *default_value)
 {
-	const char *string;
+	char *string;
 
 	g_return_if_fail (attribute != NULL);
 
-	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	string = (char *) gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		g_free (attribute->paint.uri);
 		if (default_value->uri != NULL)
@@ -143,7 +145,7 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 
 		g_free (attribute->paint.uri);
 
-		if (g_str_has_prefix (string, "url(#")) {
+		if (strncmp (string, "url(#", 5) == 0) {
 			unsigned int length;
 
 			string += 5;
@@ -162,8 +164,7 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 			attribute->paint.uri = NULL;
 		}
 
-		while (*string == ' ')
-			string++;
+		gsvg_str_skip_spaces (&string);
 
 		if (*string == '#') {
 			int value, i;
@@ -195,21 +196,19 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 
 			gdom_debug ("[GSvgPaintAttribute::parse] #xxxxxx or #xxx syntax (0x%08x)", color);
 
-		} else if (g_str_has_prefix (string, "rgb(")) {
+		} else if (strncmp (string, "rgb(", 4) == 0) {
 			int i;
 			double value;
-			char *end_ptr;
 
 			string += 4;
 
 			for (i = 0; i < 3; i++) {
-				value = g_ascii_strtod (string, &end_ptr);
-				if (*end_ptr == '%') {
+				gsvg_str_parse_double (&string, &value);
+				if (*string == '%') {
 					value /= 100.0;
-					end_ptr++;
+					string++;
 				} else
 					value /= 255.0;
-				string = end_ptr;
 				if ((i < 2 && *string != ',') ||
 				    (i == 2 && *string != ')')) {
 					color = 0;
@@ -255,11 +254,11 @@ void
 gsvg_view_box_attribute_parse (GSvgViewBoxAttribute *attribute,
 			       GSvgViewBox *default_value)
 {
-	const char *string;
+	char *string;
 
 	g_return_if_fail (attribute != NULL);
 
-	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	string = (char *) gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string == NULL) {
 		g_return_if_fail (default_value != NULL);
 
@@ -269,13 +268,10 @@ gsvg_view_box_attribute_parse (GSvgViewBoxAttribute *attribute,
 		double value[4];
 
 		for (i = 0; i < 4 && *string != '\0'; i++) {
-			while (*string == ' ' || *string == ';')
-				string++;
+			gsvg_str_skip_semicolon_and_spaces (&string);
 
-			value[i] = atof(string);
-
-			while ((*string >= '0' && *string <= '9') || *string == '.')
-				string++;
+			if (!gsvg_str_parse_double (&string, &value[i]))
+				break;
 		}
 
 		if (i == 4) {
@@ -294,16 +290,140 @@ gsvg_view_box_attribute_parse (GSvgViewBoxAttribute *attribute,
 	}
 }
 
+static void
+_init_matrix (GSvgMatrix *matrix, GSvgTransformType transform, unsigned int n_values, double values[])
+{
+	switch (transform) {
+		case GSVG_TRANSFORM_TYPE_SCALE:
+			if (n_values == 1) {
+				gsvg_matrix_init_scale (matrix, values[0], values[0]);
+				return;
+			} else if (n_values == 2) {
+				gsvg_matrix_init_scale (matrix, values[0], values[1]);
+				return;
+			}
+			break;
+		case GSVG_TRANSFORM_TYPE_TRANSLATE:
+			if (n_values == 1) {
+				gsvg_matrix_init_translate (matrix, values[0], values[0]);
+				return;
+			} else if (n_values == 2) {
+				gsvg_matrix_init_translate (matrix, values[0], values[1]);
+				return;
+			}
+			break;
+		case GSVG_TRANSFORM_TYPE_MATRIX:
+			if (n_values == 6) {
+				gsvg_matrix_init (matrix,
+						  values[0], values[1],
+						  values[2], values[3],
+						  values[4], values[5]);
+				return;
+			}
+			break;
+		case GSVG_TRANSFORM_TYPE_ROTATE:
+			if (n_values == 1) {
+				gsvg_matrix_init_rotate (matrix, values[0] * M_PI / 180.0);
+				return;
+			} else if (n_values == 3)
+				g_warning ("[GSvgTransformAttribute::parse] Rotation center not handled");
+			break;
+		case GSVG_TRANSFORM_TYPE_SKEW_X:
+			if (n_values == 1) {
+				gsvg_matrix_init_skew_x (matrix, values[0] * M_PI / 180.0);
+				return;
+			}
+			break;
+		case GSVG_TRANSFORM_TYPE_SKEW_Y:
+			if (n_values == 1) {
+				gsvg_matrix_init_skew_y (matrix, values[0] * M_PI / 180.0);
+				return;
+			}
+		default:
+			break;
+	}
+
+	gsvg_matrix_init_identity (matrix);
+}
+
 void
 gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 {
-	const char *string;
+	char *string;
 
 	g_return_if_fail (attribute != NULL);
 
 	gsvg_matrix_init_identity (&attribute->matrix);
 
-	string = gdom_attribute_get_value ((GDomAttribute *) attribute);
+	string = (char *) gdom_attribute_get_value ((GDomAttribute *) attribute);
 	if (string != NULL) {
+		while (*string != '\0') {
+			GSvgTransformType transform;
+			double values[6];
+
+			gsvg_str_skip_spaces (&string);
+
+			printf ("string = '%s'\n", string);
+
+			if (strncmp (string, "translate", 9) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_TRANSLATE;
+				string += 9;
+			} else if (strncmp (string, "scale", 5) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_SCALE;
+				string += 5;
+			} else if (strncmp (string, "rotate", 6) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_ROTATE;
+				string += 6;
+			} else if (strncmp (string, "matrix", 6) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_MATRIX;
+				string += 6;
+			} else if (strncmp (string, "skewX", 5) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_SKEW_X;
+				string += 5;
+			} else if (strncmp (string, "skewY", 5) == 0) {
+				transform = GSVG_TRANSFORM_TYPE_SKEW_Y;
+				string += 5;
+			} else
+				break;
+
+			gsvg_str_skip_spaces (&string);
+
+			printf ("transform = %d\n", transform);
+
+			if (*string == '(') {
+				unsigned int n_values = 0;
+
+				string++;
+
+				while (*string != ')' && *string != '\0' && n_values < 6) {
+					gsvg_str_skip_comma_and_spaces (&string);
+
+					printf ("parse string = '%s'\n", string);
+
+					if (!gsvg_str_parse_double (&string, &values[n_values]))
+						break;
+
+					n_values++;
+				}
+
+				printf ("values = %d, %g, %g, %g, %g, %g, %g\n",
+					n_values,
+					values[0], values[1],
+					values[2], values[3],
+					values[4], values[5]);
+
+				gsvg_str_skip_comma_and_spaces (&string);
+
+				if (*string == ')') {
+					GSvgMatrix matrix;
+
+					string++;
+
+					_init_matrix (&matrix, transform, n_values, values);
+
+					gsvg_matrix_multiply (&attribute->matrix, &matrix, &attribute->matrix);
+				}
+			}
+		}
 	}
 }

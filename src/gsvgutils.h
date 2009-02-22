@@ -19,23 +19,51 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_H
-#define GSVG_H
 
-#include <gdom.h>
+#ifndef GSGV_UTILS_H
+#define GSGV_UTILS_H
+
+#include <gsvg.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GSvgDocument GSvgDocument;
-typedef struct _GSvgElement GSvgElement;
-typedef struct _GSvgGraphic GSvgGraphic;
-typedef struct _GSvgSvgElement GSvgSvgElement;
-typedef struct _GSvgGElement GSvgGElement;
-typedef struct _GSvgRectElement GSvgRectElement;
-typedef struct _GSvgPathElement GSvgPathElement;
+gboolean gsvg_str_parse_double 		(char **str, double *x);
+gboolean gsvg_str_parse_double_list 	(char **str, unsigned int n_values, double *values);
 
-typedef struct _GSvgView GSvgView;
-typedef struct _GSvgStyle GSvgStyle;
+static inline void
+gsvg_str_skip_spaces (char **str)
+{
+	while (g_ascii_isspace (**str))
+		(*str)++;
+}
+
+static inline void
+gsvg_str_skip_char (char **str, char c)
+{
+	while (**str == c)
+		(*str)++;
+}
+
+static inline void
+gsvg_str_skip_comma_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ',')
+		(*str)++;
+}
+
+static inline void
+gsvg_str_skip_semicolon_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ';')
+		(*str)++;
+}
+
+static inline void
+gsvg_str_skip_colon_and_spaces (char **str)
+{
+	while (g_ascii_isspace (**str) || **str == ':')
+		(*str)++;
+}
 
 G_END_DECLS
 

@@ -40,12 +40,24 @@ gsvg_matrix_init_identity (GSvgMatrix *matrix)
 }
 
 void
+gsvg_matrix_init_scale (GSvgMatrix *matrix, double sx, double sy)
+{
+	gsvg_matrix_init (matrix, sx, 0, 0, sy, 0, 0);
+}
+
+void
 gsvg_matrix_scale (GSvgMatrix *matrix, double sx, double sy)
 {
 	GSvgMatrix tmp;
 
-	gsvg_matrix_init (&tmp, sx, 0, 0, sy, 0, 0);
+	gsvg_matrix_init_scale (&tmp, sx, sy);
 	gsvg_matrix_multiply (matrix, &tmp, matrix);
+}
+
+void
+gsvg_matrix_init_translate (GSvgMatrix *matrix, double tx, double ty)
+{
+	gsvg_matrix_init (matrix, 1, 0, 0, 1, tx, ty);
 }
 
 void
@@ -53,21 +65,58 @@ gsvg_matrix_translate (GSvgMatrix *matrix, double tx, double ty)
 {
 	GSvgMatrix tmp;
 
-	gsvg_matrix_init (&tmp, 1, 0, 0, 1, tx, ty);
+	gsvg_matrix_init_translate (&tmp, tx, ty);
 	gsvg_matrix_multiply (matrix, &tmp, matrix);
 }
 
 void
-gsvg_matrix_rotate (GSvgMatrix *matrix, double radians)
+gsvg_matrix_init_rotate (GSvgMatrix *matrix, double radians)
 {
-	GSvgMatrix tmp;
 	double  s;
 	double  c;
 
 	s = sin (radians);
 	c = cos (radians);
 
-	gsvg_matrix_init (&tmp, c, s, -s, c, 0, 0);
+	gsvg_matrix_init (matrix, c, s, -s, c, 0, 0);
+}
+
+void
+gsvg_matrix_rotate (GSvgMatrix *matrix, double radians)
+{
+	GSvgMatrix tmp;
+
+	gsvg_matrix_init_rotate (&tmp,radians);
+	gsvg_matrix_multiply (matrix, &tmp, matrix);
+}
+
+void
+gsvg_matrix_init_skew_x (GSvgMatrix *matrix, double radians)
+{
+	gsvg_matrix_init (matrix, 1, 0, tan(radians), 1, 0, 0);
+}
+
+void
+gsvg_matrix_skew_x (GSvgMatrix *matrix, double radians)
+{
+	GSvgMatrix tmp;
+
+	gsvg_matrix_init_skew_x (&tmp,radians);
+	gsvg_matrix_multiply (matrix, &tmp, matrix);
+}
+
+void
+gsvg_matrix_init_skew_y (GSvgMatrix *matrix, double radians)
+{
+	gsvg_matrix_init (matrix, 1, tan(radians), 0, 1, 0, 0);
+}
+
+void
+gsvg_matrix_skew_y (GSvgMatrix *matrix, double radians)
+{
+	GSvgMatrix tmp;
+
+	gsvg_matrix_init_skew_y (&tmp,radians);
 	gsvg_matrix_multiply (matrix, &tmp, matrix);
 }
 

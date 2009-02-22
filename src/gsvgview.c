@@ -24,13 +24,78 @@
 #include <gsvgdocument.h>
 #include <gsvgelement.h>
 #include <gsvgsvgelement.h>
-#include <gsvgcairo.h>
+#include <gsvgutils.h>
 #include <glib/gprintf.h>
 
 #include <math.h>
 #include <string.h>
 
 static GObjectClass *parent_class;
+
+static void
+_emit_function_2 (char **path, cairo_t *cr,
+		 void (*cairo_func) (cairo_t *, double, double))
+{
+	double values[2];
+
+	gsvg_str_skip_spaces (path);
+
+	while (gsvg_str_parse_double_list (path, 2, values))
+		cairo_func (cr, values[0], values[1]);
+}
+
+static void
+_emit_function_6 (char **path, cairo_t *cr,
+		 void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
+{
+	double values[6];
+
+	gsvg_str_skip_spaces (path);
+
+	while (gsvg_str_parse_double_list (path, 6, values))
+		cairo_func (cr, values[0], values[1], values[2], values[3], values[4], values[5]);
+}
+
+static void
+_emit_svg_path (cairo_t *cr, char const *path)
+{
+	char *ptr;
+
+	g_return_if_fail (cr != NULL);
+
+	if (path == NULL)
+		return;
+
+	ptr = (char *) path;
+
+	gsvg_str_skip_spaces (&ptr);
+
+	while (*ptr != '\0') {
+		if (*ptr == 'M') {
+			ptr++;
+			_emit_function_2 (&ptr, cr, cairo_move_to);
+		} else if (*ptr == 'm') {
+			ptr++;
+			_emit_function_2 (&ptr, cr, cairo_rel_move_to);
+		} else if (*ptr == 'L') {
+			ptr++;
+			_emit_function_2 (&ptr, cr, cairo_line_to);
+		} else if (*ptr == 'l') {
+			ptr++;
+			_emit_function_2 (&ptr, cr, cairo_rel_line_to);
+		} else if (*ptr == 'C') {
+			ptr++;
+			_emit_function_6 (&ptr, cr, cairo_curve_to);
+		} else if (*ptr == 'c') {
+			ptr++;
+			_emit_function_6 (&ptr, cr, cairo_rel_curve_to);
+		} else if (*ptr == 'Z' || *ptr == 'z') {
+			ptr++;
+			cairo_close_path (cr);
+		} else
+			ptr++;
+	}
+}
 
 void
 gsvg_view_push_transform (GSvgView *view, const GSvgMatrix *matrix)
@@ -151,7 +216,7 @@ gsvg_view_show_path (GSvgView *view,
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
-	gsvg_cairo_emit_svg_path (view->dom_view.cairo, d);
+	_emit_svg_path (view->dom_view.cairo, d);
 
 	_paint (view);
 }

@@ -19,16 +19,48 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef GSVG_CAIRO_H
-#define GSVG_CAIRO_H
+#include <gsvggelement.h>
+#include <gdomdebug.h>
+#include <stdio.h>
 
-#include <gsvg.h>
-#include <cairo.h>
+static GObjectClass *parent_class;
 
-G_BEGIN_DECLS
+/* GdomNode implementation */
 
-void gsvg_cairo_emit_svg_path (cairo_t *cr, char const *path);
+static const char *
+gsvg_g_element_get_node_name (GDomNode *node)
+{
+	return "g";
+}
 
-G_END_DECLS
+/* GGElement implementation */
 
-#endif
+/* GSvgGraphic implementation */
+
+/* GSvgGElement implementation */
+
+GDomNode *
+gsvg_g_element_new (void)
+{
+	return g_object_new (GSVG_TYPE_G_ELEMENT, NULL);
+}
+
+static void
+gsvg_g_element_init (GSvgGElement *self)
+{
+}
+
+/* GSvgGElement class */
+
+static void
+gsvg_g_element_class_init (GSvgGElementClass *s_g_class)
+{
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (s_g_class);
+
+	parent_class = g_type_class_peek_parent (s_g_class);
+
+	d_node_class->get_node_name = gsvg_g_element_get_node_name;
+
+}
+
+G_DEFINE_TYPE (GSvgGElement, gsvg_g_element, GSVG_TYPE_GRAPHIC)

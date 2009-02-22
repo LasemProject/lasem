@@ -21,6 +21,7 @@
 
 #include <gsvggraphic.h>
 #include <gsvgview.h>
+#include <gsvgutils.h>
 #include <gdomdebug.h>
 
 static GObjectClass *parent_class;
@@ -29,6 +30,8 @@ static void
 gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 {
 	GSvgGraphic *graphic = GSVG_GRAPHIC (self);
+
+	/* Handle inline style here for now. This should move to the CSS handling part. */
 
 	if (graphic->style.value != NULL) {
 		GSvgElementClass *s_element_class = GSVG_ELEMENT_GET_CLASS (self);
@@ -43,28 +46,25 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 
 			while (*end_ptr != '\0') {
 
-				while (*end_ptr == ' ')
-					end_ptr++;
+				gsvg_str_skip_spaces (&end_ptr);
 
 				name = end_ptr;
 
-				while (*end_ptr != '\0' && *end_ptr != ':' && *end_ptr != ' ')
+				while (*end_ptr != '\0' && *end_ptr != ':' && !g_ascii_isspace (*end_ptr))
 					end_ptr++;
 
 				if (*end_ptr != '\0') {
 					*end_ptr = '\0';
 					end_ptr++;
 
-					while (*end_ptr == ' ' || *end_ptr == ':')
-						end_ptr++;
+					gsvg_str_skip_colon_and_spaces (&end_ptr);
 
 					if (*end_ptr != '\0') {
 						char old_char;
 
 						value = end_ptr;
 
-						while (*end_ptr != '\0' && *end_ptr != ';')
-							end_ptr++;
+						gsvg_str_skip_semicolon_and_spaces (&end_ptr);
 
 						old_char = *end_ptr;
 						*end_ptr = '\0';
@@ -79,8 +79,8 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 										      GDOM_CSS_TYPE_AUTHOR);
 
 						*end_ptr = old_char;
-						while (*end_ptr == ';')
-							end_ptr++;
+
+						gsvg_str_skip_char (&end_ptr, ';');
 					}
 				}
 			}
@@ -102,6 +102,10 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 		gsvg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint);
 		gsvg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width);
 		gdom_double_attribute_parse (&graphic->stroke->opacity, &parent_style->stroke.opacity);
+	}
+
+	if (graphic->transform != NULL) {
+		gsvg_transform_attribute_parse (&graphic->transform->transform);
 	}
 }
 
@@ -126,9 +130,13 @@ gsvg_graphic_render (GSvgElement *self, GSvgView *view)
 		gsvg_view_push_fill_attributes (view, graphic->fill);
 	if (graphic->stroke != NULL)
 		gsvg_view_push_stroke_attributes (view, graphic->stroke);
+	if (graphic->transform != NULL)
+		gsvg_view_push_transform (view, &graphic->transform->transform.matrix);
 
 	GSVG_GRAPHIC_GET_CLASS (graphic)->graphic_render (self, view);
 
+	if (graphic->transform != NULL)
+		gsvg_view_pop_transform (view);
 	if (graphic->stroke != NULL)
 		gsvg_view_pop_stroke_attributes (view);
 	if (graphic->fill != NULL)
@@ -173,6 +181,7 @@ gsvg_graphic_class_init (GSvgGraphicClass *s_graphic_class)
 
 	gdom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, fill));
 	gdom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, stroke));
+	gdom_attribute_map_add_transform_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, transform));
 }
 
 G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic, GSVG_TYPE_ELEMENT)

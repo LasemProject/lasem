@@ -22,6 +22,7 @@
 #include <gdomdebug.h>
 #include <gsvgdocument.h>
 #include <gsvgsvgelement.h>
+#include <gsvggelement.h>
 #include <gsvgrectelement.h>
 #include <gsvgpathelement.h>
 #include <gsvgview.h>
@@ -44,6 +45,8 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 
 	if (strcmp (tag_name, "svg") == 0)
 		node = gsvg_svg_element_new ();
+	if (strcmp (tag_name, "g") == 0)
+		node = gsvg_g_element_new ();
 	if (strcmp (tag_name, "rect") == 0)
 		node = gsvg_rect_element_new ();
 	if (strcmp (tag_name, "path") == 0)

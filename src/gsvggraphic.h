@@ -44,6 +44,7 @@ struct _GSvgGraphic {
 
 	GSvgFillAttributeBag *fill;
 	GSvgStrokeAttributeBag *stroke;
+	GSvgTransformAttributeBag *transform;
 };
 
 struct _GSvgGraphicClass {

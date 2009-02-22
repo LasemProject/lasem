@@ -19,25 +19,12 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <gsvgcairo.h>
+#include <gsvgutils.h>
+#include <stdio.h>
 #include <math.h>
 
-static void
-skip_spaces (char **path)
-{
-	while (**path == ' ')
-		(*path)++;
-}
-
-static void
-skip_comma_and_spaces (char **path)
-{
-	while (**path == ' ' || **path == ',')
-		(*path)++;
-}
-
-static gboolean
-parse_value (char **path, double *x)
+gboolean
+gsvg_str_parse_double (char **str, double *x)
 {
 	char *end, *c;
 	gboolean integer_part = FALSE;
@@ -49,7 +36,7 @@ parse_value (char **path, double *x)
 	gboolean mantissa_sign = 1.0;
 	gboolean exponent_sign = 1.0;
 
-	c = *path;
+	c = *str;
 
 	if (*c == '-') {
 		mantissa_sign = -1.0;
@@ -111,7 +98,6 @@ parse_value (char **path, double *x)
 				c++;
 			}
 		}
-
 	}
 
 	if (exponent_part) {
@@ -120,101 +106,27 @@ parse_value (char **path, double *x)
 	} else
 		*x = mantissa_sign * mantissa;
 
-	*path = end;
+	*str = end;
 
 	return TRUE;
 }
 
-static gboolean
-parse_values (char **path, unsigned int n_values, double *values)
+gboolean
+gsvg_str_parse_double_list (char **str, unsigned int n_values, double *values)
 {
-	char *ptr = *path;
+	char *ptr = *str;
 	unsigned int i;
 
-	skip_comma_and_spaces (path);
+	gsvg_str_skip_comma_and_spaces (str);
 
 	for (i = 0; i < n_values; i++) {
-		if (!parse_value (path, &values[i])) {
-			*path = ptr;
+		if (!gsvg_str_parse_double (str, &values[i])) {
+			*str = ptr;
 			return FALSE;
 		}
-		skip_comma_and_spaces (path);
+		gsvg_str_skip_comma_and_spaces (str);
 	}
 
 	return TRUE;
-}
-
-static void
-emit_function_2 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double))
-{
-	double values[2];
-
-	skip_spaces (path);
-
-	while (parse_values (path, 2, values))
-		cairo_func (cr, values[0], values[1]);
-}
-
-static void
-emit_function_6 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
-{
-	double values[6];
-
-	skip_spaces (path);
-
-	while (parse_values (path, 6, values))
-		cairo_func (cr, values[0], values[1], values[2], values[3], values[4], values[5]);
-}
-
-/**
- * gsvg_cairo_emit_svg_path:
- * @cr: a cairo context
- * @path: a SVG path
- *
- * Emits a path described as a SVG path string (d property of path elements) to 
- * a cairo context.
- **/
-
-void
-gsvg_cairo_emit_svg_path (cairo_t *cr, char const *path)
-{
-	char *ptr;
-
-	g_return_if_fail (cr != NULL);
-
-	if (path == NULL)
-		return;
-
-	ptr = (char *) path;
-
-	skip_spaces (&ptr);
-
-	while (*ptr != '\0') {
-		if (*ptr == 'M') {
-			ptr++;
-			emit_function_2 (&ptr, cr, cairo_move_to);
-		} else if (*ptr == 'm') {
-			ptr++;
-			emit_function_2 (&ptr, cr, cairo_rel_move_to);
-		} else if (*ptr == 'L') {
-			ptr++;
-			emit_function_2 (&ptr, cr, cairo_line_to);
-		} else if (*ptr == 'l') {
-			ptr++;
-			emit_function_2 (&ptr, cr, cairo_rel_line_to);
-		} else if (*ptr == 'C') {
-			ptr++;
-			emit_function_6 (&ptr, cr, cairo_curve_to);
-		} else if (*ptr == 'c') {
-			ptr++;
-			emit_function_6 (&ptr, cr, cairo_rel_curve_to);
-		} else if (*ptr == 'Z' || *ptr == 'z') {
-			ptr++;
-			cairo_close_path (cr);
-		} else
-			ptr++;
-	}
 }
 

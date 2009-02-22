@@ -64,6 +64,16 @@ typedef enum {
 const char * 		gsvg_fill_rule_to_string 		(GSvgFillRule fill_rule);
 GSvgFillRule 		gsvg_fill_rule_from_string 		(const char *string);
 
+typedef enum {
+	GSVG_TRANSFORM_TYPE_UNKNOWN,
+	GSVG_TRANSFORM_TYPE_MATRIX,
+	GSVG_TRANSFORM_TYPE_TRANSLATE,
+	GSVG_TRANSFORM_TYPE_SCALE,
+	GSVG_TRANSFORM_TYPE_ROTATE,
+	GSVG_TRANSFORM_TYPE_SKEW_X,
+	GSVG_TRANSFORM_TYPE_SKEW_Y
+} GSvgTransformType;
+
 G_END_DECLS
 
 #endif

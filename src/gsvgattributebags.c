@@ -96,3 +96,33 @@ gdom_attribute_map_add_stroke_attribute_bag (GDomAttributeMap *map, ptrdiff_t ba
 					      NULL,
 					      bag_offset, &gsvg_stroke_attribute_bag_class);
 }
+
+static void *
+gsvg_transform_attribute_bag_init (void)
+{
+	GSvgTransformAttributeBag *transform;
+
+	transform = g_new0 (GSvgTransformAttributeBag, 1);
+	return transform;
+}
+
+static void
+gsvg_transform_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const GDomAttributeBagClass gsvg_transform_attribute_bag_class =
+{
+	.init = gsvg_transform_attribute_bag_init,
+	.finalize = gsvg_transform_attribute_bag_finalize
+};
+
+void
+gdom_attribute_map_add_transform_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_offset)
+{
+	gdom_attribute_map_add_bag_attribute (map, "transform",
+					      offsetof (GSvgTransformAttributeBag, transform),
+					      NULL,
+					      bag_offset, &gsvg_transform_attribute_bag_class);
+}

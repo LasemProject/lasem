@@ -43,8 +43,13 @@ typedef struct {
 	GDomDoubleAttribute opacity;
 } GSvgStrokeAttributeBag;
 
+typedef struct {
+	GSvgTransformAttribute transform;
+} GSvgTransformAttributeBag;
+
 void 	gdom_attribute_map_add_fill_attribute_bag 	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	gdom_attribute_map_add_stroke_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	gdom_attribute_map_add_transform_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 
 G_END_DECLS
 
