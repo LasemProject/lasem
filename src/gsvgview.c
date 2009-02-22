@@ -167,6 +167,65 @@ _cairo_elliptical_arc (cairo_t *cairo, double rx, double ry, double x_axis_rotat
 }
 
 static void
+_cairo_rel_elliptical_arc (cairo_t *cairo, double rx, double ry, double x_axis_rotation,
+			   gboolean large_arc_flag, gboolean sweep_flag, double dx, double dy)
+{
+	double x, y;
+
+	cairo_get_current_point (cairo, &x, &y);
+
+	_cairo_elliptical_arc (cairo, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x +dx ,y + dy);
+}
+
+static void
+_cairo_vertical (cairo_t *cairo, double y)
+{
+	double x0, y0;
+
+	cairo_get_current_point (cairo, &x0, &y0);
+	cairo_line_to (cairo, x0, y);
+}
+
+static void
+_cairo_rel_vertical (cairo_t *cairo, double dy)
+{
+	double x0, y0;
+
+	cairo_get_current_point (cairo, &x0, &y0);
+	cairo_line_to (cairo, x0, y0 + dy);
+}
+
+static void
+_cairo_horizontal (cairo_t *cairo, double x)
+{
+	double x0, y0;
+
+	cairo_get_current_point (cairo, &x0, &y0);
+	cairo_line_to (cairo, x, y0);
+}
+
+static void
+_cairo_rel_horizontal (cairo_t *cairo, double dx)
+{
+	double x0, y0;
+
+	cairo_get_current_point (cairo, &x0, &y0);
+	cairo_line_to (cairo, x0 + dx, y0);
+}
+
+static void
+_emit_function_1 (char **path, cairo_t *cr,
+		 void (*cairo_func) (cairo_t *, double))
+{
+	double value;
+
+	gsvg_str_skip_spaces (path);
+
+	while (gsvg_str_parse_double_list (path, 1, &value))
+		cairo_func (cr, value);
+}
+
+static void
 _emit_function_2 (char **path, cairo_t *cr,
 		 void (*cairo_func) (cairo_t *, double, double))
 {
@@ -188,6 +247,19 @@ _emit_function_6 (char **path, cairo_t *cr,
 
 	while (gsvg_str_parse_double_list (path, 6, values))
 		cairo_func (cr, values[0], values[1], values[2], values[3], values[4], values[5]);
+}
+
+static void
+_emit_function_7 (char **path, cairo_t *cr,
+		 void (*cairo_func) (cairo_t *, double, double, double ,gboolean, gboolean, double, double))
+{
+	double values[7];
+
+	gsvg_str_skip_spaces (path);
+
+	while (gsvg_str_parse_double_list (path, 7, values))
+		cairo_func (cr, values[0], values[1], values[2],
+			    values[3], values[4], values[5], values[6]);
 }
 
 static void
@@ -223,6 +295,24 @@ _emit_svg_path (cairo_t *cr, char const *path)
 		} else if (*ptr == 'c') {
 			ptr++;
 			_emit_function_6 (&ptr, cr, cairo_rel_curve_to);
+		} else if (*ptr == 'V') {
+			ptr++;
+			_emit_function_1 (&ptr, cr, _cairo_vertical);
+		} else if (*ptr == 'v') {
+			ptr++;
+			_emit_function_1 (&ptr, cr, _cairo_rel_vertical);
+		} else if (*ptr == 'H') {
+			ptr++;
+			_emit_function_1 (&ptr, cr, _cairo_horizontal);
+		} else if (*ptr == 'h') {
+			ptr++;
+			_emit_function_1 (&ptr, cr, _cairo_rel_horizontal);
+		} else if (*ptr == 'A') {
+			ptr++;
+			_emit_function_7 (&ptr, cr, _cairo_elliptical_arc);
+		} else if (*ptr == 'a') {
+			ptr++;
+			_emit_function_7 (&ptr, cr, _cairo_rel_elliptical_arc);
 		} else if (*ptr == 'Z' || *ptr == 'z') {
 			ptr++;
 			cairo_close_path (cr);
