@@ -198,14 +198,199 @@ _paint (GSvgView *view)
 	cairo_new_path (cairo);
 }
 
+static double
+calc_angle (double ux, double uy, double vx, double vy)
+{
+	double top, u_magnitude, v_magnitude, angle_cos, angle;
+
+	top = ux * vx + uy * vy;
+	u_magnitude = sqrt (ux * ux + uy * uy);
+	v_magnitude = sqrt (vx * vx + vy * vy);
+	angle_cos = top / (u_magnitude * v_magnitude);
+
+	/* We check if the cosine is slightly out-of-bounds. */
+	if (angle_cos >= 1.0)
+		angle = 0.0;
+	if (angle_cos <= -1.0)
+		angle = M_PI;
+	else
+		angle = acos (angle_cos);
+
+	if (ux * vy - uy * vx < 0)
+		angle = - angle;
+
+	return angle;
+}
+
+static void
+_cairo_elliptical_arc (cairo_t *cairo, double rx, double ry, double x_axis_rotation,
+		       gboolean large_arc_flag, gboolean sweep_flag, double x, double y)
+{
+	double x1, y1, x2, y2, lambda;
+	double v1, v2, angle, angle_sin, angle_cos, x11, y11;
+	double rx_squared, ry_squared, x11_squared, y11_squared, top, bottom;
+	double c, cx1, cy1, cx, cy, start_angle, angle_delta;
+
+	cairo_get_current_point (cairo, &x1, &y1);
+
+	x2 = x;
+	y2 = y;
+
+	/* If the endpoints are exactly the same, just return (see SVG spec). */
+	if (x1 == x2 && y1 == y2)
+		return;
+
+	/* If either rx or ry is 0, do a simple lineto (see SVG spec). */
+	if (rx == 0.0 || ry == 0.0)
+	{
+		cairo_line_to (cairo, x2, y2);
+		return;
+	}
+
+	/* Calculate x1' and y1' (as per SVG implementation notes). */
+	v1 = (x1 - x2) / 2.0;
+	v2 = (y1 - y2) / 2.0;
+
+	angle = x_axis_rotation * (M_PI / 180.0);
+	angle_sin = sin (angle);
+	angle_cos = cos (angle);
+
+	x11 = (angle_cos * v1) + (angle_sin * v2);
+	y11 = - (angle_sin * v1) + (angle_cos * v2);
+
+	/* Ensure rx and ry are positive and large enough. */
+	rx = rx > 0.0 ? rx : - rx;
+	ry = ry > 0.0 ? ry : - ry;
+	lambda = (x11 * x11) / (rx * rx) + (y11 * y11) / (ry * ry);
+	if (lambda > 1.0)
+	{
+		gdouble square_root = sqrt (lambda);
+		rx *= square_root;
+		ry *= square_root;
+	}
+
+	/* Calculate cx' and cy'. */
+	rx_squared = rx * rx;
+	ry_squared = ry * ry;
+	x11_squared = x11 * x11;
+	y11_squared = y11 * y11;
+
+	top = (rx_squared * ry_squared) - (rx_squared * y11_squared)
+		- (ry_squared * x11_squared);
+	if (top < 0.0)
+	{
+		c = 0.0;
+	}
+	else
+	{
+		bottom = (rx_squared * y11_squared) + (ry_squared * x11_squared);
+		c = sqrt (top / bottom);
+	}
+
+	if (large_arc_flag == sweep_flag)
+		c = - c;
+
+	cx1 = c * ((rx * y11) / ry);
+	cy1 = c * (- (ry * x11) / rx);
+
+	/* Calculate cx and cy. */
+	cx = (angle_cos * cx1) - (angle_sin * cy1) + (x1 + x2) / 2;
+	cy = (angle_sin * cx1) + (angle_cos * cy1) + (y1 + y2) / 2;
+
+	/* Calculate the start and end angles. */
+	v1 = (x11 - cx1) / rx;
+	v2 = (y11 - cy1) / ry;
+
+	start_angle = calc_angle (1, 0, v1, v2);
+	angle_delta = calc_angle (v1, v2, (-x11 - cx1) / rx, (-y11 - cy1) / ry);
+
+	if (sweep_flag == 0 && angle_delta > 0.0)
+		angle_delta -= 2 * M_PI;
+	else if (sweep_flag == 1 && angle_delta < 0.0)
+		angle_delta += 2 * M_PI;
+
+	/* Now draw the arc. */
+	cairo_save (cairo);
+	cairo_translate (cairo, cx, cy);
+	cairo_rotate (cairo, angle);
+	cairo_scale (cairo, rx, ry);
+
+	if (angle_delta > 0.0)
+		cairo_arc (cairo, 0.0, 0.0, 1.0,
+			   start_angle, start_angle + angle_delta);
+	else
+		cairo_arc_negative (cairo, 0.0, 0.0, 1.0,
+				    start_angle, start_angle + angle_delta);
+
+	cairo_restore (cairo);
+}
+
 void
 gsvg_view_show_rectangle (GSvgView *view,
 			  double x, double y,
-			  double width, double height)
+			  double w, double h,
+			  double rx, double ry)
+{
+	cairo_t *cairo;
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	cairo = view->dom_view.cairo;
+
+	if (rx <= 0.0 || ry <= 0.0)
+		cairo_rectangle (cairo, x, y, w, h);
+	else {
+
+		if (rx > fabs (w / 2.))
+			rx = fabs (w / 2.);
+		if (ry > fabs (h / 2.))
+			ry = fabs (h / 2.);
+
+		cairo_move_to (cairo, x + rx, y);
+		cairo_line_to (cairo, x + w - rx, y);
+		_cairo_elliptical_arc (cairo, rx, ry, 0.0, FALSE, TRUE, x + w, y + ry);
+		cairo_line_to (cairo, x + w, y + h -ry);
+		_cairo_elliptical_arc (cairo, rx, ry, 0.0, FALSE, TRUE, x + w - rx, y + h);
+		cairo_line_to (cairo, x + rx, y + h);
+		_cairo_elliptical_arc (cairo, rx, ry, 0.0, FALSE, TRUE, x, y + h - ry);
+		cairo_line_to (cairo, x, y + ry);
+		_cairo_elliptical_arc (cairo, rx, ry, 0.0, FALSE, TRUE, x + rx, y);
+		cairo_close_path (cairo);
+	}
+
+	_paint (view);
+}
+
+void
+gsvg_view_show_circle (GSvgView *view, double cx, double cy, double r)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
-	cairo_rectangle (view->dom_view.cairo, x, y, width, height);
+	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);
+
+	_paint (view);
+}
+
+#define GSVG_ARC_MAGIC ((double) 0.5522847498) /* 4/3 * (1-cos 45)/sin 45 = 4/3 * sqrt(2) - 1 */
+
+void
+gsvg_view_show_ellipse (GSvgView *view, double cx, double cy, double rx, double ry)
+{
+	cairo_t *cairo;
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	if (rx <= 0 || ry <= 0)
+		return;
+
+	cairo = view->dom_view.cairo;
+
+	cairo_move_to (cairo, cx + rx, cy);
+	cairo_curve_to (cairo, cx + rx, cy - GSVG_ARC_MAGIC * ry, cx + GSVG_ARC_MAGIC * rx, cy - ry, cx, cy - ry);
+	cairo_curve_to (cairo, cx - GSVG_ARC_MAGIC * rx, cy - ry, cx - rx, cy - GSVG_ARC_MAGIC * ry, cx - rx, cy);
+	cairo_curve_to (cairo, cx - rx, cy + GSVG_ARC_MAGIC * ry, cx - GSVG_ARC_MAGIC * rx, cy + ry, cx, cy + ry);
+	cairo_curve_to (cairo, cx + GSVG_ARC_MAGIC * rx, cy + ry, cx + rx, cy + GSVG_ARC_MAGIC * ry, cx + rx, cy);
+	cairo_close_path (cairo);
 
 	_paint (view);
 }

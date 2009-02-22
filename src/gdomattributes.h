@@ -95,6 +95,7 @@ gboolean		gdom_attribute_map_is_attribute_defined	(GDomAttributeMap *map,
 								 void *instance,
 								 char const *name);
 
+gboolean 		gdom_attribute_is_defined 		(const GDomAttribute *attribute);
 char const * 		gdom_attribute_get_value 		(const GDomAttribute *attribute);
 
 typedef struct {

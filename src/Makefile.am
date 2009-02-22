@@ -66,6 +66,8 @@ libgmathml_la_SOURCES =			\
 	gsvgsvgelement.c		\
 	gsvggelement.c			\
 	gsvgrectelement.c		\
+	gsvgcircleelement.c		\
+	gsvgellipseelement.c		\
 	gsvgpathelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
@@ -130,6 +132,8 @@ libgmathml_la_HEADERS = \
 	gsvgsvgelement.h		\
 	gsvggelement.h			\
 	gsvgrectelement.h		\
+	gsvgcircleelement.h		\
+	gsvgellipseelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
 	gsvgattributebags.h		\

@@ -100,7 +100,7 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 		gdom_debug ("[GSvgGraphic::update] stroke");
 
 		gsvg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint);
-		gsvg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width);
+		gsvg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width, 0.0);
 		gdom_double_attribute_parse (&graphic->stroke->opacity, &parent_style->stroke.opacity);
 	}
 

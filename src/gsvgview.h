@@ -60,7 +60,11 @@ void 		gsvg_view_pop_fill_attributes 		(GSvgView *view);
 void 		gsvg_view_push_stroke_attributes 	(GSvgView *view, GSvgStrokeAttributeBag *stroke);
 void 		gsvg_view_pop_stroke_attributes 	(GSvgView *view);
 
-void 		gsvg_view_show_rectangle 	(GSvgView *view, double x, double y, double width, double height);
+void 		gsvg_view_show_rectangle 	(GSvgView *view, double x, double y,
+						                 double width, double height,
+								 double rx, double ry);
+void 		gsvg_view_show_circle		(GSvgView *view, double cx, double cy, double r);
+void 		gsvg_view_show_ellipse		(GSvgView *view, double cx, double cy, double rx, double ry);
 void		gsvg_view_show_path		(GSvgView *view, const char *d);
 
 G_END_DECLS

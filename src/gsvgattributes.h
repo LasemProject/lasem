@@ -39,6 +39,7 @@ typedef struct {
 
 typedef struct {
 	double value;
+	double value_unit;
 	GSvgLengthType type;
 } GSvgLength;
 
@@ -63,11 +64,13 @@ typedef struct {
 typedef struct {
 	GDomAttribute attr;
 	GSvgLength length;
+	double value;
 } GSvgLengthAttribute;
 
 typedef struct {
 	GDomAttribute attr;
 	GSvgAnimatedLength length;
+	double value;
 } GSvgAnimatedLengthAttribute;
 
 typedef struct {
@@ -85,12 +88,12 @@ typedef struct {
 	GSvgMatrix matrix;
 } GSvgTransformAttribute;
 
-double 		gsvg_length_compute 			(const GSvgLength *length, double viewbox, double font_size);
-
 void		gsvg_length_attribute_parse 		(GSvgLengthAttribute *attribute,
-							 GSvgLength *default_value);
+							 GSvgLength *default_value,
+							 double font_size);
 void 		gsvg_animated_length_attribute_parse 	(GSvgAnimatedLengthAttribute *attribute,
-							 GSvgLength *default_value);
+							 GSvgLength *default_value,
+							 double font_size);
 void 		gsvg_fill_rule_attribute_parse 		(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		gsvg_paint_attribute_finalize 		(void *abstract);

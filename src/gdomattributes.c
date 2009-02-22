@@ -277,6 +277,12 @@ gdom_attribute_map_is_attribute_defined (GDomAttributeMap *map,
 	return attribute->value != NULL;
 }
 
+gboolean
+gdom_attribute_is_defined (const GDomAttribute *attribute)
+{
+	return (attribute != NULL && attribute->value != NULL);
+}
+
 static void
 gdom_attribute_finalize_cb (gpointer key,
 			    gpointer value,

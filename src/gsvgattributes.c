@@ -28,7 +28,7 @@
 #include <stdio.h>
 #include <math.h>
 
-double
+static double
 gsvg_length_compute (const GSvgLength *length, double viewbox, double font_size)
 {
 	g_return_val_if_fail (length != NULL, 0.0);
@@ -36,24 +36,24 @@ gsvg_length_compute (const GSvgLength *length, double viewbox, double font_size)
 	switch (length->type) {
 		case GSVG_LENGTH_TYPE_PX:
 		case GSVG_LENGTH_TYPE_PT:
-			return length->value;
+			return length->value_unit;
 		case GSVG_LENGTH_TYPE_PC:
-			return length->value * 72.0 / 6.0;
+			return length->value_unit * 72.0 / 6.0;
 		case GSVG_LENGTH_TYPE_CM:
-			return length->value * 72.0 / 2.54;
+			return length->value_unit * 72.0 / 2.54;
 		case GSVG_LENGTH_TYPE_MM:
-			return length->value * 72.0 / 25.4;
+			return length->value_unit * 72.0 / 25.4;
 		case GSVG_LENGTH_TYPE_IN:
-			return length->value * 72.0;
+			return length->value_unit * 72.0;
 		case GSVG_LENGTH_TYPE_EMS:
-			return length->value * font_size;
+			return length->value_unit * font_size;
 		case GSVG_LENGTH_TYPE_EXS:
-			return length->value * font_size * 0.5;
+			return length->value_unit * font_size * 0.5;
 		case GSVG_LENGTH_TYPE_PERCENTAGE:
-			return viewbox * length->value / 100.0;
+			return viewbox * length->value_unit / 100.0;
 		case GSVG_LENGTH_TYPE_NUMBER:
 		case GSVG_LENGTH_TYPE_UNKNOWN:
-			return length->value;
+			return length->value_unit;
 	}
 
 	return 0.0;
@@ -61,7 +61,8 @@ gsvg_length_compute (const GSvgLength *length, double viewbox, double font_size)
 
 void
 gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,
-			     GSvgLength *default_value)
+			     GSvgLength *default_value,
+			     double font_size)
 {
 	const char *string;
 	char *length_type_str;
@@ -74,8 +75,10 @@ gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,
 
 		attribute->length = *default_value;
 	} else {
-		attribute->length.value = g_strtod (string, &length_type_str);
+		attribute->length.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.type = gsvg_length_type_from_string (length_type_str);
+		attribute->length.value = gsvg_length_compute (&attribute->length,
+							       default_value->value, font_size);
 
 		*default_value = attribute->length;
 	}
@@ -83,7 +86,8 @@ gsvg_length_attribute_parse (GSvgLengthAttribute *attribute,
 
 void
 gsvg_animated_length_attribute_parse (GSvgAnimatedLengthAttribute *attribute,
-				      GSvgLength *default_value)
+				      GSvgLength *default_value,
+				      double font_size)
 {
 	const char *string;
 	char *length_type_str;
@@ -97,8 +101,10 @@ gsvg_animated_length_attribute_parse (GSvgAnimatedLengthAttribute *attribute,
 		attribute->length.base = *default_value;
 		attribute->length.animated = *default_value;
 	} else {
-		attribute->length.base.value = g_strtod (string, &length_type_str);
+		attribute->length.base.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.base.type = gsvg_length_type_from_string (length_type_str);
+		attribute->length.base.value = gsvg_length_compute (&attribute->length.base,
+								    default_value->value, font_size);
 		attribute->length.animated = attribute->length.base;
 
 		*default_value = attribute->length.base;
@@ -363,8 +369,6 @@ gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 
 			gsvg_str_skip_spaces (&string);
 
-			printf ("string = '%s'\n", string);
-
 			if (strncmp (string, "translate", 9) == 0) {
 				transform = GSVG_TRANSFORM_TYPE_TRANSLATE;
 				string += 9;
@@ -388,8 +392,6 @@ gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 
 			gsvg_str_skip_spaces (&string);
 
-			printf ("transform = %d\n", transform);
-
 			if (*string == '(') {
 				unsigned int n_values = 0;
 
@@ -398,19 +400,11 @@ gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 				while (*string != ')' && *string != '\0' && n_values < 6) {
 					gsvg_str_skip_comma_and_spaces (&string);
 
-					printf ("parse string = '%s'\n", string);
-
 					if (!gsvg_str_parse_double (&string, &values[n_values]))
 						break;
 
 					n_values++;
 				}
-
-				printf ("values = %d, %g, %g, %g, %g, %g, %g\n",
-					n_values,
-					values[0], values[1],
-					values[2], values[3],
-					values[4], values[5]);
 
 				gsvg_str_skip_comma_and_spaces (&string);
 

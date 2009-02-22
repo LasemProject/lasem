@@ -41,20 +41,34 @@ gsvg_rect_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	GSvgLength length;
 
 	length.value = 0.0;
+	length.value_unit = 0.0;
 	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_animated_length_attribute_parse (&rect->x, &length);
+	gsvg_animated_length_attribute_parse (&rect->x, &length, 0.0);
 
 	length.value = 0.0;
+	length.value_unit = 0.0;
 	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_animated_length_attribute_parse (&rect->y, &length);
+	gsvg_animated_length_attribute_parse (&rect->y, &length, 0.0);
 
 	length.value = 0.0;
+	length.value_unit = 0.0;
 	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_animated_length_attribute_parse (&rect->width, &length);
+	gsvg_animated_length_attribute_parse (&rect->width, &length, 0.0);
 
 	length.value = 0.0;
+	length.value_unit = 0.0;
 	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_animated_length_attribute_parse (&rect->height, &length);
+	gsvg_animated_length_attribute_parse (&rect->height, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->rx, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&rect->ry, &length, 0.0);
 
 	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -65,12 +79,22 @@ static void
 gsvg_rect_element_graphic_render (GSvgElement *self, GSvgView *view)
 {
 	GSvgRectElement *rect = GSVG_RECT_ELEMENT (self);
+	double rx, ry;
+
+	rx = rect->rx.length.base.value;
+	ry = rect->ry.length.base.value;
+
+	if (!gdom_attribute_is_defined (&rect->rx.attr))
+		rx = ry;
+	else if (!gdom_attribute_is_defined (&rect->ry.attr))
+		ry = rx;
 
 	gsvg_view_show_rectangle (view,
 				  rect->x.length.base.value,
 				  rect->y.length.base.value,
 				  rect->width.length.base.value,
-				  rect->height.length.base.value);
+				  rect->height.length.base.value,
+				  rx, ry);
 }
 
 /* GSvgRectElement implementation */

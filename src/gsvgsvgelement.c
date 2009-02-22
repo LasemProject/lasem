@@ -44,35 +44,37 @@ _svg_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	GSvgLength length;
 	GSvgViewBox view_box = {0,0,0,0};
 
-	printf ("here\n");
-
-	length.value = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_length_attribute_parse (&svg->x, &length);
-
-	length.value = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
-	gsvg_length_attribute_parse (&svg->y, &length);
-
-	length.value = 100.0;
-	length.type = GSVG_LENGTH_TYPE_PERCENTAGE;
-	gsvg_length_attribute_parse (&svg->width, &length);
-
-	length.value = 100.0;
-	length.type = GSVG_LENGTH_TYPE_PERCENTAGE;
-	gsvg_length_attribute_parse (&svg->height, &length);
-
 	gsvg_view_box_attribute_parse (&svg->view_box, &view_box);
 
-	printf ("height = %g, width = %g\n",
-		svg->height.length.value,
-		svg->width.length.value);
+	length.value = svg->view_box.value.x;
+	length.value_unit = svg->view_box.value.x;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
+	gsvg_length_attribute_parse (&svg->x, &length, 0.0);
 
-	printf ("view_bbox = %g, %g, %g, %g\n",
-		svg->view_box.value.x,
-		svg->view_box.value.y,
-		svg->view_box.value.width,
-		svg->view_box.value.height);
+	length.value = svg->view_box.value.y;
+	length.value_unit = svg->view_box.value.y;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
+	gsvg_length_attribute_parse (&svg->y, &length, 0.0);
+
+	length.value = svg->view_box.value.width;
+	length.value_unit = svg->view_box.value.width;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
+	gsvg_length_attribute_parse (&svg->width, &length, 0.0);
+
+	length.value = svg->view_box.value.height;
+	length.value_unit = svg->view_box.value.height;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
+	gsvg_length_attribute_parse (&svg->height, &length, 0.0);
+
+	gdom_debug ("[GSvgSvgElement::update] height = %g, width = %g",
+		    svg->height.length.value,
+		    svg->width.length.value);
+
+	gdom_debug ("[GSvgSvgElement::update] view_bbox = %g, %g, %g, %g\n",
+		    svg->view_box.value.x,
+		    svg->view_box.value.y,
+		    svg->view_box.value.width,
+		    svg->view_box.value.height);
 
 	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -83,9 +85,9 @@ gsvg_svg_element_measure (GSvgSvgElement *self, double *width, double *height)
 	g_return_if_fail (GSVG_IS_SVG_ELEMENT (self));
 
 	if (width != NULL)
-		*width = gsvg_length_compute (&self->width.length, self->view_box.value.width, 0.0);
+		*width = self->width.length.value;
 	if (height != NULL)
-		*height = gsvg_length_compute (&self->height.length, self->view_box.value.height, 0.0);
+		*height = self->height.length.value;
 }
 
 /* GSvgGraphic implementation */
@@ -101,11 +103,9 @@ gsvg_svg_element_graphic_render (GSvgElement *self, GSvgView *view)
 		return;
 
 	gsvg_matrix_init (&matrix,
-			  gsvg_length_compute (&svg->width.length, svg->view_box.value.width, 0.0) /
-			  svg->view_box.value.width,
+			  svg->width.length.value / svg->view_box.value.width,
 			  0, 0,
-			  gsvg_length_compute (&svg->height.length, svg->view_box.value.height, 0.0) /
-			  svg->view_box.value.height,
+			  svg->height.length.value / svg->view_box.value.height,
 			  0, 0);
 	gsvg_view_push_transform (view, &matrix);
 
