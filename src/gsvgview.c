@@ -32,34 +32,28 @@
 
 static GObjectClass *parent_class;
 
+typedef struct {
+	cairo_t *cr;
+	char *ptr;
+	char last_command;
+	double last_cp_x;
+	double last_cp_y;
+	double values[7];
+} GSvgPathContext;
+
 /*
- * Code for _calc_angle and _cairo_elliptical_arc comes from the
- * goocanvas library (goocanvasutils.c)
+ * Code for:
+ *
+ * 	_calc_angle 
+ * 	_cairo_elliptical_arc 
+ * 	_cairo_quadratic_curve_to
+ * 	_emit_smooth_curve
+ * 	_emit_smooth_quadratic_curve
+ *
+ * is adpated from the goocanvas library (goocanvasutils.c)
  *
  * GooCanvas. Copyright (C) 2005 Damon Chaplin.
  */
-
-static void
-_cairo_smooth_curve_to (cairo_t *cairo, double x2, double y2, double x, double y)
-{
-	gdouble x1, y1;
-
-	/* TODO Handle the previous command */
-
-	cairo_get_current_point (cairo, &x1, &y1);
-	cairo_curve_to (cairo, x1, y1, x2, y2, x, y);
-}
-
-static void
-_cairo_rel_smooth_curve_to (cairo_t *cairo, double x2, double y2, double x, double y)
-{
-	gdouble x1, y1;
-
-	/* TODO Handle the previous command */
-
-	cairo_get_current_point (cairo, &x1, &y1);
-	cairo_curve_to (cairo, x1, y1, x1 + x2, y1 + y2, x1 + x, y1+ y);
-}
 
 static void
 _cairo_quadratic_curve_to (cairo_t *cr, double x1, double y1, double x, double y)
@@ -85,7 +79,7 @@ _cairo_rel_quadratic_curve_to (cairo_t *cr, double dx1, double dy1, double dx, d
 	double x0, y0;
 
 	cairo_get_current_point (cr, &x0, &y0);
-	_cairo_quadratic_curve_to (cr, x0 + dx1, y0 + dy1, x0 + dx, y0 + dx);
+	_cairo_quadratic_curve_to (cr, x0 + dx1, y0 + dy1, x0 + dx, y0 + dy);
 }
 
 static double
@@ -263,102 +257,191 @@ _cairo_rel_horizontal (cairo_t *cairo, double dx)
 }
 
 static void
-_emit_function_1 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double))
+_emit_function_1 (GSvgPathContext *ctxt,
+		  void (*cairo_func) (cairo_t *, double))
 {
-	double value;
-
-	gsvg_str_skip_spaces (path);
-
-	while (gsvg_str_parse_double_list (path, 1, &value))
-		cairo_func (cr, value);
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 1, ctxt->values))
+		cairo_func (ctxt->cr, ctxt->values[0]);
 }
 
 static void
-_emit_function_2 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double))
+_emit_function_2 (GSvgPathContext *ctxt,
+		  void (*cairo_func) (cairo_t *, double, double))
 {
-	double values[2];
-
-	gsvg_str_skip_spaces (path);
-
-	while (gsvg_str_parse_double_list (path, 2, values))
-		cairo_func (cr, values[0], values[1]);
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
+		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 }
 
 static void
-_emit_function_4 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double, double, double))
+_emit_function_4 (GSvgPathContext *ctxt,
+		  void (*cairo_func) (cairo_t *, double, double, double, double))
 {
-	double values[4];
-
-	gsvg_str_skip_spaces (path);
-
-	while (gsvg_str_parse_double_list (path, 4, values))
-		cairo_func (cr, values[0], values[1], values[2], values[3]);
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 4, ctxt->values))
+		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2], ctxt->values[3]);
 }
 
 static void
-_emit_function_6 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
+_emit_smooth_curve (GSvgPathContext *ctxt, gboolean relative)
 {
-	double values[6];
+	double x, y;
+	double x0, y0;
 
-	gsvg_str_skip_spaces (path);
+	cairo_get_current_point (ctxt->cr, &x0, &y0);
 
-	while (gsvg_str_parse_double_list (path, 6, values))
-		cairo_func (cr, values[0], values[1], values[2], values[3], values[4], values[5]);
+	switch (ctxt->last_command) {
+		case 'C':
+			x = 2 * x0 - ctxt->values[2];
+			y = 2 * y0 - ctxt->values[3];
+			break;
+		case 'c':
+			x = 2 * x0 - (ctxt->values[2] + x0 - ctxt->values[4]);
+			y = 2 * y0 - (ctxt->values[3] + y0 - ctxt->values[5]);
+			break;
+		case 'S':
+			x = 2 * x0 - ctxt->values[0];
+			y = 2 * y0 - ctxt->values[1];
+			break;
+		case 's':
+			x = 2 * x0 - (ctxt->values[0] + x0 - ctxt->values[2]);
+			y = 2 * y0 - (ctxt->values[1] + y0 - ctxt->values[3]);
+			break;
+		default: x = x0; y = y0; break;
+	}
+
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 4, ctxt->values)) {
+		if (relative) {
+			cairo_get_current_point (ctxt->cr, &x0, &y0);
+			cairo_curve_to (ctxt->cr,
+					x, y,
+					x0 + ctxt->values[0], y0 + ctxt->values[1],
+					x0 + ctxt->values[2], y0 + ctxt->values[3]);
+			x = 2 * (x0 + ctxt->values[2]) - (x0 + ctxt->values[0]);
+			y = 2 * (y0 + ctxt->values[3]) - (y0 + ctxt->values[1]);
+		} else {
+			cairo_curve_to (ctxt->cr, x, y,
+					ctxt->values[0], ctxt->values[1], ctxt->values[2], ctxt->values[3]);
+			x = 2 * ctxt->values[2] - ctxt->values[0];
+			y = 2 * ctxt->values[3] - ctxt->values[1];
+		}
+	}
 }
 
 static void
-_emit_function_7 (char **path, cairo_t *cr,
-		 void (*cairo_func) (cairo_t *, double, double, double ,gboolean, gboolean, double, double))
+_emit_smooth_quadratic_curve (GSvgPathContext *ctxt, gboolean relative)
 {
-	double values[7];
+	double x, y;
+	double x0, y0;
 
-	gsvg_str_skip_spaces (path);
+	cairo_get_current_point (ctxt->cr, &x0, &y0);
 
-	while (gsvg_str_parse_double_list (path, 7, values))
-		cairo_func (cr, values[0], values[1], values[2],
-			    values[3], values[4], values[5], values[6]);
+	switch (ctxt->last_command) {
+		case 'Q':
+			ctxt->last_cp_x = ctxt->values[0];
+			ctxt->last_cp_y = ctxt->values[1];
+			break;
+		case 'q':
+			ctxt->last_cp_x = ctxt->values[0] + x0 - ctxt->values[2];
+			ctxt->last_cp_y = ctxt->values[1] + y0 - ctxt->values[3];
+			break;
+		case 'T':
+		case 't':
+			break;
+		default: ctxt->last_cp_x = x0; ctxt->last_cp_y = y0; break;
+	}
+
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+		x = 2 * x0 - ctxt->last_cp_x;
+		y = 2 * y0 - ctxt->last_cp_y;
+		if (relative) {
+			cairo_get_current_point (ctxt->cr, &x0, &y0);
+			_cairo_quadratic_curve_to (ctxt->cr, x, y, x0 + ctxt->values[0], y0 + ctxt->values[1]);
+		} else {
+			_cairo_quadratic_curve_to (ctxt->cr, x, y, ctxt->values[0], ctxt->values[1]);
+		}
+		ctxt->last_cp_x = x;
+		ctxt->last_cp_y = y;
+		cairo_get_current_point (ctxt->cr, &x0, &y0);
+	}
+}
+
+static void
+_emit_function_6 (GSvgPathContext *ctxt,
+		  void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
+{
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 6, ctxt->values))
+		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
+			              ctxt->values[3], ctxt->values[4], ctxt->values[5]);
+}
+
+static void
+_emit_function_7 (GSvgPathContext *ctxt,
+		  void (*cairo_func) (cairo_t *, double, double, double ,gboolean, gboolean, double, double))
+{
+	while (gsvg_str_parse_double_list (&ctxt->ptr, 7, ctxt->values))
+		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
+			              ctxt->values[3], ctxt->values[4], ctxt->values[5],
+				      ctxt->values[6]);
 }
 
 static void
 _emit_svg_path (cairo_t *cr, char const *path)
 {
-	char *ptr;
+	GSvgPathContext ctxt;
 
 	g_return_if_fail (cr != NULL);
 
 	if (path == NULL)
 		return;
 
-	ptr = (char *) path;
+	ctxt.cr = cr;
+	ctxt.ptr = (char *) path;
+	ctxt.last_command = '\0';
+	cairo_get_current_point (cr,
+				 &ctxt.values[0],
+				 &ctxt.values[1]);
+	ctxt.values[2] = ctxt.values[4] = ctxt.values[0];
+	ctxt.values[3] = ctxt.values[5] = ctxt.values[1];
 
-	gsvg_str_skip_spaces (&ptr);
+	gsvg_str_skip_spaces (&ctxt.ptr);
 
-	while (*ptr != '\0') {
-		switch (*ptr) {
-			case 'M': ptr++; _emit_function_2 (&ptr, cr, cairo_move_to); break;
-			case 'm': ptr++; _emit_function_2 (&ptr, cr, cairo_rel_move_to); break;
-			case 'L': ptr++; _emit_function_2 (&ptr, cr, cairo_line_to); break;
-			case 'l': ptr++; _emit_function_2 (&ptr, cr, cairo_rel_line_to); break;
-			case 'C': ptr++; _emit_function_6 (&ptr, cr, cairo_curve_to); break;
-			case 'c': ptr++; _emit_function_6 (&ptr, cr, cairo_rel_curve_to); break;
-			case 'V': ptr++; _emit_function_1 (&ptr, cr, _cairo_vertical); break;
-			case 'v': ptr++; _emit_function_1 (&ptr, cr, _cairo_rel_vertical); break;
-			case 'H': ptr++; _emit_function_1 (&ptr, cr, _cairo_horizontal); break;
-			case 'h': ptr++; _emit_function_1 (&ptr, cr, _cairo_rel_horizontal); break;
-			case 'S': ptr++; _emit_function_4 (&ptr, cr, _cairo_smooth_curve_to); break;
-			case 's': ptr++; _emit_function_4 (&ptr, cr, _cairo_rel_smooth_curve_to); break;
-			case 'Q': ptr++; _emit_function_4 (&ptr, cr, _cairo_quadratic_curve_to); break;
-			case 'q': ptr++; _emit_function_4 (&ptr, cr, _cairo_rel_quadratic_curve_to); break;
-			case 'A': ptr++; _emit_function_7 (&ptr, cr, _cairo_elliptical_arc); break;
-			case 'a': ptr++; _emit_function_7 (&ptr, cr, _cairo_rel_elliptical_arc); break;
-			case 'Z':
-			case 'z': ptr++; cairo_close_path (cr); break;
-			default: ptr++; break;
+	while (*ctxt.ptr != '\0') {
+		char command;
+
+		command = *ctxt.ptr;
+		ctxt.ptr++;
+		gsvg_str_skip_spaces (&ctxt.ptr);
+
+		if (!cairo_has_current_point (cr)) {
+			cairo_move_to (cr, 0, 0);
+			ctxt.values[2] = ctxt.values[4] = ctxt.values[0] = 0;
+			ctxt.values[3] = ctxt.values[5] = ctxt.values[1] = 0;
 		}
+
+		switch (command) {
+			case 'M': _emit_function_2 (&ctxt, cairo_move_to); break;
+			case 'm': _emit_function_2 (&ctxt, cairo_rel_move_to); break;
+			case 'L': _emit_function_2 (&ctxt, cairo_line_to); break;
+			case 'l': _emit_function_2 (&ctxt, cairo_rel_line_to); break;
+			case 'C': _emit_function_6 (&ctxt, cairo_curve_to); break;
+			case 'c': _emit_function_6 (&ctxt, cairo_rel_curve_to); break;
+			case 'S': _emit_smooth_curve (&ctxt, FALSE); break;
+			case 's': _emit_smooth_curve (&ctxt, TRUE); break;
+			case 'V': _emit_function_1 (&ctxt, _cairo_vertical); break;
+			case 'v': _emit_function_1 (&ctxt, _cairo_rel_vertical); break;
+			case 'H': _emit_function_1 (&ctxt, _cairo_horizontal); break;
+			case 'h': _emit_function_1 (&ctxt, _cairo_rel_horizontal); break;
+			case 'Q': _emit_function_4 (&ctxt, _cairo_quadratic_curve_to); break;
+			case 'q': _emit_function_4 (&ctxt, _cairo_rel_quadratic_curve_to); break;
+			case 'T': _emit_smooth_quadratic_curve (&ctxt, FALSE); break;
+			case 't': _emit_smooth_quadratic_curve (&ctxt, TRUE); break;
+			case 'A': _emit_function_7 (&ctxt, _cairo_elliptical_arc); break;
+			case 'a': _emit_function_7 (&ctxt, _cairo_rel_elliptical_arc); break;
+			case 'Z':
+			case 'z': cairo_close_path (cr); break;
+			default: break;
+		}
+
+		ctxt.last_command = command;
 	}
 }
 
