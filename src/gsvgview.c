@@ -269,8 +269,12 @@ _emit_function_2 (GSvgPathContext *ctxt,
 		  void (*cairo_func_a) (cairo_t *, double, double),
 		  void (*cairo_func_b) (cairo_t *, double, double))
 {
+
 	if (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
 		cairo_func_a (ctxt->cr, ctxt->values[0], ctxt->values[1]);
+
+		/* Why oh why does the specification say Line is implied here ? */
+
 		while (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
 			cairo_func_b (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 	}
