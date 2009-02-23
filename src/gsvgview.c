@@ -266,10 +266,14 @@ _emit_function_1 (GSvgPathContext *ctxt,
 
 static void
 _emit_function_2 (GSvgPathContext *ctxt,
-		  void (*cairo_func) (cairo_t *, double, double))
+		  void (*cairo_func_a) (cairo_t *, double, double),
+		  void (*cairo_func_b) (cairo_t *, double, double))
 {
-	while (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
-		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1]);
+	if (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+		cairo_func_a (ctxt->cr, ctxt->values[0], ctxt->values[1]);
+		while (gsvg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
+			cairo_func_b (ctxt->cr, ctxt->values[0], ctxt->values[1]);
+	}
 }
 
 static void
@@ -418,10 +422,10 @@ _emit_svg_path (cairo_t *cr, char const *path)
 		}
 
 		switch (command) {
-			case 'M': _emit_function_2 (&ctxt, cairo_move_to); break;
-			case 'm': _emit_function_2 (&ctxt, cairo_rel_move_to); break;
-			case 'L': _emit_function_2 (&ctxt, cairo_line_to); break;
-			case 'l': _emit_function_2 (&ctxt, cairo_rel_line_to); break;
+			case 'M': _emit_function_2 (&ctxt, cairo_move_to, cairo_line_to); break;
+			case 'm': _emit_function_2 (&ctxt, cairo_rel_move_to, cairo_rel_line_to); break;
+			case 'L': _emit_function_2 (&ctxt, cairo_line_to, cairo_line_to); break;
+			case 'l': _emit_function_2 (&ctxt, cairo_rel_line_to, cairo_rel_line_to); break;
 			case 'C': _emit_function_6 (&ctxt, cairo_curve_to); break;
 			case 'c': _emit_function_6 (&ctxt, cairo_rel_curve_to); break;
 			case 'S': _emit_smooth_curve (&ctxt, FALSE); break;
