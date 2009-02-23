@@ -39,6 +39,55 @@ static GObjectClass *parent_class;
  * GooCanvas. Copyright (C) 2005 Damon Chaplin.
  */
 
+static void
+_cairo_smooth_curve_to (cairo_t *cairo, double x2, double y2, double x, double y)
+{
+	gdouble x1, y1;
+
+	/* TODO Handle the previous command */
+
+	cairo_get_current_point (cairo, &x1, &y1);
+	cairo_curve_to (cairo, x1, y1, x2, y2, x, y);
+}
+
+static void
+_cairo_rel_smooth_curve_to (cairo_t *cairo, double x2, double y2, double x, double y)
+{
+	gdouble x1, y1;
+
+	/* TODO Handle the previous command */
+
+	cairo_get_current_point (cairo, &x1, &y1);
+	cairo_curve_to (cairo, x1, y1, x1 + x2, y1 + y2, x1 + x, y1+ y);
+}
+
+static void
+_cairo_quadratic_curve_to (cairo_t *cr, double x1, double y1, double x, double y)
+{
+	double x0, y0, xx1, yy1, xx2, yy2;
+
+	cairo_get_current_point (cr, &x0, &y0);
+
+	/* We need to convert the quadratic into a cubic bezier. */
+
+	xx1 = x0 + (x1 - x0) * 2.0 / 3.0;
+	yy1 = y0 + (y1 - y0) * 2.0 / 3.0;
+
+	xx2 = xx1 + (x - x0) / 3.0;
+	yy2 = yy1 + (y - y0) / 3.0;
+
+	cairo_curve_to (cr, xx1, yy1, xx2, yy2, x, y);
+}
+
+static void
+_cairo_rel_quadratic_curve_to (cairo_t *cr, double dx1, double dy1, double dx, double dy)
+{
+	double x0, y0;
+
+	cairo_get_current_point (cr, &x0, &y0);
+	_cairo_quadratic_curve_to (cr, x0 + dx1, y0 + dy1, x0 + dx, y0 + dx);
+}
+
 static double
 _calc_angle (double ux, double uy, double vx, double vy)
 {
@@ -238,6 +287,18 @@ _emit_function_2 (char **path, cairo_t *cr,
 }
 
 static void
+_emit_function_4 (char **path, cairo_t *cr,
+		 void (*cairo_func) (cairo_t *, double, double, double, double))
+{
+	double values[4];
+
+	gsvg_str_skip_spaces (path);
+
+	while (gsvg_str_parse_double_list (path, 4, values))
+		cairo_func (cr, values[0], values[1], values[2], values[3]);
+}
+
+static void
 _emit_function_6 (char **path, cairo_t *cr,
 		 void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
 {
@@ -277,47 +338,27 @@ _emit_svg_path (cairo_t *cr, char const *path)
 	gsvg_str_skip_spaces (&ptr);
 
 	while (*ptr != '\0') {
-		if (*ptr == 'M') {
-			ptr++;
-			_emit_function_2 (&ptr, cr, cairo_move_to);
-		} else if (*ptr == 'm') {
-			ptr++;
-			_emit_function_2 (&ptr, cr, cairo_rel_move_to);
-		} else if (*ptr == 'L') {
-			ptr++;
-			_emit_function_2 (&ptr, cr, cairo_line_to);
-		} else if (*ptr == 'l') {
-			ptr++;
-			_emit_function_2 (&ptr, cr, cairo_rel_line_to);
-		} else if (*ptr == 'C') {
-			ptr++;
-			_emit_function_6 (&ptr, cr, cairo_curve_to);
-		} else if (*ptr == 'c') {
-			ptr++;
-			_emit_function_6 (&ptr, cr, cairo_rel_curve_to);
-		} else if (*ptr == 'V') {
-			ptr++;
-			_emit_function_1 (&ptr, cr, _cairo_vertical);
-		} else if (*ptr == 'v') {
-			ptr++;
-			_emit_function_1 (&ptr, cr, _cairo_rel_vertical);
-		} else if (*ptr == 'H') {
-			ptr++;
-			_emit_function_1 (&ptr, cr, _cairo_horizontal);
-		} else if (*ptr == 'h') {
-			ptr++;
-			_emit_function_1 (&ptr, cr, _cairo_rel_horizontal);
-		} else if (*ptr == 'A') {
-			ptr++;
-			_emit_function_7 (&ptr, cr, _cairo_elliptical_arc);
-		} else if (*ptr == 'a') {
-			ptr++;
-			_emit_function_7 (&ptr, cr, _cairo_rel_elliptical_arc);
-		} else if (*ptr == 'Z' || *ptr == 'z') {
-			ptr++;
-			cairo_close_path (cr);
-		} else
-			ptr++;
+		switch (*ptr) {
+			case 'M': ptr++; _emit_function_2 (&ptr, cr, cairo_move_to); break;
+			case 'm': ptr++; _emit_function_2 (&ptr, cr, cairo_rel_move_to); break;
+			case 'L': ptr++; _emit_function_2 (&ptr, cr, cairo_line_to); break;
+			case 'l': ptr++; _emit_function_2 (&ptr, cr, cairo_rel_line_to); break;
+			case 'C': ptr++; _emit_function_6 (&ptr, cr, cairo_curve_to); break;
+			case 'c': ptr++; _emit_function_6 (&ptr, cr, cairo_rel_curve_to); break;
+			case 'V': ptr++; _emit_function_1 (&ptr, cr, _cairo_vertical); break;
+			case 'v': ptr++; _emit_function_1 (&ptr, cr, _cairo_rel_vertical); break;
+			case 'H': ptr++; _emit_function_1 (&ptr, cr, _cairo_horizontal); break;
+			case 'h': ptr++; _emit_function_1 (&ptr, cr, _cairo_rel_horizontal); break;
+			case 'S': ptr++; _emit_function_4 (&ptr, cr, _cairo_smooth_curve_to); break;
+			case 's': ptr++; _emit_function_4 (&ptr, cr, _cairo_rel_smooth_curve_to); break;
+			case 'Q': ptr++; _emit_function_4 (&ptr, cr, _cairo_quadratic_curve_to); break;
+			case 'q': ptr++; _emit_function_4 (&ptr, cr, _cairo_rel_quadratic_curve_to); break;
+			case 'A': ptr++; _emit_function_7 (&ptr, cr, _cairo_elliptical_arc); break;
+			case 'a': ptr++; _emit_function_7 (&ptr, cr, _cairo_rel_elliptical_arc); break;
+			case 'Z':
+			case 'z': ptr++; cairo_close_path (cr); break;
+			default: ptr++; break;
+		}
 	}
 }
 
