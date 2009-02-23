@@ -80,9 +80,16 @@ gsvg_rect_element_graphic_render (GSvgElement *self, GSvgView *view)
 {
 	GSvgRectElement *rect = GSVG_RECT_ELEMENT (self);
 	double rx, ry;
+	double w, h;
 
 	rx = rect->rx.length.base.value;
 	ry = rect->ry.length.base.value;
+	w = rect->width.length.base.value;
+	h = rect->height.length.base.value;
+
+	/* SVG specification is so weird sometimes ... */
+	if (w == 0.0 || h == 0.0)
+		return;
 
 	if (!gdom_attribute_is_defined (&rect->rx.attr))
 		rx = ry;
@@ -92,9 +99,7 @@ gsvg_rect_element_graphic_render (GSvgElement *self, GSvgView *view)
 	gsvg_view_show_rectangle (view,
 				  rect->x.length.base.value,
 				  rect->y.length.base.value,
-				  rect->width.length.base.value,
-				  rect->height.length.base.value,
-				  rx, ry);
+				  w, h, rx, ry);
 }
 
 /* GSvgRectElement implementation */
