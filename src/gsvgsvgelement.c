@@ -148,7 +148,7 @@ gsvg_svg_element_init (GSvgSvgElement *self)
 
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill", "black");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "fill-opacity", "1");
-	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke", "black");
+	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke", "none");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-width", "1px");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-opacity", "1");
 }
