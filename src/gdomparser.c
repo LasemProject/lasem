@@ -23,6 +23,7 @@
 #include <gdomimplementation.h>
 #include <gmathmlpresentationtoken.h>
 #include <gmathmlentitydictionary.h>
+#include <gsvgtextelement.h>
 #include <libxml/parser.h>
 #include <string.h>
 
@@ -108,7 +109,8 @@ gdom_parser_characters (void *user_data, const xmlChar *ch, int len)
 {
 	GDomSaxParserState *state = user_data;
 
-	if (GMATHML_IS_PRESENTATION_TOKEN (state->current_node) &&
+	if ((GMATHML_IS_PRESENTATION_TOKEN (state->current_node) ||
+	     GSVG_IS_TEXT_ELEMENT (state->current_node)) &&
 	    !state->is_error) {
 		GDomNode *node;
 		char *text;

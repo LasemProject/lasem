@@ -30,6 +30,7 @@
 #include <gsvgpolylineelement.h>
 #include <gsvgpolygonelement.h>
 #include <gsvgpathelement.h>
+#include <gsvgtextelement.h>
 #include <gsvgview.h>
 #include <string.h>
 
@@ -66,6 +67,8 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gsvg_polyline_element_new ();
 	else if (strcmp (tag_name, "polygon") == 0)
 		node = gsvg_polygon_element_new ();
+	else if (strcmp (tag_name, "text") == 0)
+		node = gsvg_text_element_new ();
 
 	return GDOM_ELEMENT (node);
 }

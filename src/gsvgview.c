@@ -698,6 +698,25 @@ gsvg_view_show_polygon (GSvgView *view, const char *points)
 	_paint (view);
 }
 
+void
+gsvg_view_show_text (GSvgView *view, char const *text, double x, double y)
+{
+	PangoLayout *pango_layout;
+
+	if (text == NULL)
+		return;
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	pango_layout = view->dom_view.pango_layout;
+
+	cairo_move_to (view->dom_view.cairo, x, y);
+	pango_layout_set_text (pango_layout, text, -1);
+	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);
+
+	_paint (view);
+}
+
 static void
 gsvg_view_measure (GDomView *view, double *width, double *height)
 {

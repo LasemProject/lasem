@@ -69,6 +69,7 @@ void		gsvg_view_show_path		(GSvgView *view, const char *d);
 void 		gsvg_view_show_line 		(GSvgView *view, double x1, double y1, double x2, double y2);
 void 		gsvg_view_show_polyline		(GSvgView *view, const char *points);
 void 		gsvg_view_show_polygon		(GSvgView *view, const char *points);
+void 		gsvg_view_show_text 		(GSvgView *view, char const *text, double x, double y);
 
 G_END_DECLS
 

@@ -72,6 +72,7 @@ libgmathml_la_SOURCES =			\
 	gsvgpolylineelement.c		\
 	gsvgpolygonelement.c		\
 	gsvgpathelement.c		\
+	gsvgtextelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
 	gsvgattributebags.c		\
@@ -140,6 +141,7 @@ libgmathml_la_HEADERS = \
 	gsvglineelement.h		\
 	gsvgpolylineelement.h		\
 	gsvgpolygonelement.h		\
+	gsvgtextelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
 	gsvgattributebags.h		\
