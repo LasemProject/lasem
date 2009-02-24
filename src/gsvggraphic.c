@@ -64,7 +64,8 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 
 						value = end_ptr;
 
-						gsvg_str_skip_semicolon_and_spaces (&end_ptr);
+						while (*end_ptr != ';' && *end_ptr != '\0')
+							end_ptr++;
 
 						old_char = *end_ptr;
 						*end_ptr = '\0';
