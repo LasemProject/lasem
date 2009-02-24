@@ -509,6 +509,24 @@ gsvg_view_pop_stroke_attributes (GSvgView *view)
 	view->stroke_stack = g_slist_delete_link (view->stroke_stack, view->stroke_stack);
 }
 
+void
+gsvg_view_push_text_attributes (GSvgView *view, GSvgTextAttributeBag *text)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (text != NULL);
+
+	view->text_stack = g_slist_prepend (view->text_stack, text);
+}
+
+void
+gsvg_view_pop_text_attributes (GSvgView *view)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->text_stack != NULL);
+
+	view->text_stack = g_slist_delete_link (view->text_stack, view->text_stack);
+}
+
 static gboolean
 _set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
 {
@@ -699,19 +717,41 @@ gsvg_view_show_polygon (GSvgView *view, const char *points)
 }
 
 void
-gsvg_view_show_text (GSvgView *view, char const *text, double x, double y)
+gsvg_view_show_text (GSvgView *view, char const *string, double x, double y)
 {
 	PangoLayout *pango_layout;
+	PangoFontDescription *font_description;
+	PangoLayoutIter *iter;
+	PangoRectangle ink_rect;
+	GSvgTextAttributeBag *text;
+	int baseline;
 
-	if (text == NULL)
+	if (string == NULL)
 		return;
 
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
-	pango_layout = view->dom_view.pango_layout;
+	text = view->text_stack->data;
+	g_return_if_fail (text != NULL);
 
-	cairo_move_to (view->dom_view.cairo, x, y);
-	pango_layout_set_text (pango_layout, text, -1);
+	pango_layout = view->dom_view.pango_layout;
+	font_description = view->dom_view.font_description;
+
+	pango_font_description_set_family (font_description, text->font_family.value);
+	pango_font_description_set_size (font_description, text->font_size.length.value * PANGO_SCALE);
+
+	pango_layout_set_text (pango_layout, string, -1);
+	pango_layout_set_font_description (pango_layout, font_description);
+	pango_layout_get_extents (pango_layout, &ink_rect, NULL);
+
+	iter = pango_layout_get_iter (pango_layout);
+	baseline = pango_layout_iter_get_baseline (iter);
+	pango_layout_iter_free (iter);
+
+	cairo_move_to (view->dom_view.cairo,
+		       x - pango_units_to_double (ink_rect.x),
+		       y - pango_units_to_double (baseline));
+
 	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);
 
 	_paint (view);
@@ -747,6 +787,7 @@ gsvg_view_render (GDomView *view, double x, double y)
 
 	svg_view->fill_stack = NULL;
 	svg_view->stroke_stack = NULL;
+	svg_view->text_stack = NULL;
 
 	gsvg_element_render (GSVG_ELEMENT (svg_element), GSVG_VIEW (view));
 
@@ -759,6 +800,11 @@ gsvg_view_render (GDomView *view, double x, double y)
 		g_warning ("[GSvgView::render] Dangling stroke attribute in stack");
 		g_slist_free (svg_view->stroke_stack);
 		svg_view->stroke_stack = NULL;
+	}
+	if (svg_view->text_stack != NULL) {
+		g_warning ("[GSvgView::render] Dangling text attribute in stack");
+		g_slist_free (svg_view->text_stack);
+		svg_view->text_stack = NULL;
 	}
 }
 

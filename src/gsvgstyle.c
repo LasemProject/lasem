@@ -30,6 +30,8 @@ gsvg_style_new (void)
 	style = g_new0 (GSvgStyle, 1);
 	g_return_val_if_fail (style != NULL, NULL);
 
+	style->text.font_family = g_strdup ("sans");
+
 	return style;
 }
 
@@ -38,6 +40,7 @@ gsvg_style_free (GSvgStyle *style)
 {
 	g_return_if_fail (style != NULL);
 
+	g_free (style->text.font_family);
 	g_free (style);
 }
 
@@ -52,6 +55,8 @@ gsvg_style_duplicate (const GSvgStyle *from)
 	g_return_val_if_fail (style != NULL, NULL);
 
 	memcpy (style, from, sizeof (GSvgStyle));
+
+	style->text.font_family = g_strdup (from->text.font_family);
 
 	return style;
 }

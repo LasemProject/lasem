@@ -126,3 +126,42 @@ gdom_attribute_map_add_transform_attribute_bag (GDomAttributeMap *map, ptrdiff_t
 					      NULL,
 					      bag_offset, &gsvg_transform_attribute_bag_class);
 }
+
+static void *
+gsvg_text_attribute_bag_init (void)
+{
+	GSvgTextAttributeBag *text;
+
+	text = g_new0 (GSvgTextAttributeBag, 1);
+	return text;
+}
+
+static void
+gsvg_text_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const GDomAttributeBagClass gsvg_text_attribute_bag_class =
+{
+	.init = gsvg_text_attribute_bag_init,
+	.finalize = gsvg_text_attribute_bag_finalize
+};
+
+static const GDomAttributeClass gdom_string_attribute_class = {
+	.finalize = gdom_string_attribute_finalize
+};
+
+void
+gdom_attribute_map_add_text_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_offset)
+{
+	gdom_attribute_map_add_bag_attribute (map, "font-family",
+					      offsetof (GSvgTextAttributeBag, font_family),
+					      &gdom_string_attribute_class,
+					      bag_offset, &gsvg_text_attribute_bag_class);
+
+	gdom_attribute_map_add_bag_attribute (map, "font-size",
+					      offsetof (GSvgTextAttributeBag, font_size),
+					      NULL,
+					      bag_offset, &gsvg_text_attribute_bag_class);
+}

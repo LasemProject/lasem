@@ -43,6 +43,7 @@ struct _GSvgView {
 
 	GSList *fill_stack;
 	GSList *stroke_stack;
+	GSList *text_stack;
 };
 
 struct _GSvgViewClass {
@@ -59,6 +60,8 @@ void 		gsvg_view_push_fill_attributes 		(GSvgView *view, GSvgFillAttributeBag *f
 void 		gsvg_view_pop_fill_attributes 		(GSvgView *view);
 void 		gsvg_view_push_stroke_attributes 	(GSvgView *view, GSvgStrokeAttributeBag *stroke);
 void 		gsvg_view_pop_stroke_attributes 	(GSvgView *view);
+void 		gsvg_view_push_text_attributes 		(GSvgView *view, GSvgTextAttributeBag *text);
+void 		gsvg_view_pop_text_attributes 		(GSvgView *view);
 
 void 		gsvg_view_show_rectangle 	(GSvgView *view, double x, double y,
 						                 double width, double height,

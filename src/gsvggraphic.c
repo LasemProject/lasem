@@ -107,6 +107,11 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 	if (graphic->transform != NULL) {
 		gsvg_transform_attribute_parse (&graphic->transform->transform);
 	}
+
+	if (graphic->text != NULL) {
+		gdom_string_attribute_parse (&graphic->text->font_family, &parent_style->text.font_family);
+		gsvg_length_attribute_parse (&graphic->text->font_size, &parent_style->text.font_size, 0.0);
+	}
 }
 
 static void
@@ -130,6 +135,8 @@ gsvg_graphic_render (GSvgElement *self, GSvgView *view)
 		gsvg_view_push_fill_attributes (view, graphic->fill);
 	if (graphic->stroke != NULL)
 		gsvg_view_push_stroke_attributes (view, graphic->stroke);
+	if (graphic->text != NULL)
+		gsvg_view_push_text_attributes (view, graphic->text);
 	if (graphic->transform != NULL)
 		gsvg_view_push_transform (view, &graphic->transform->transform.matrix);
 
@@ -137,6 +144,8 @@ gsvg_graphic_render (GSvgElement *self, GSvgView *view)
 
 	if (graphic->transform != NULL)
 		gsvg_view_pop_transform (view);
+	if (graphic->text != NULL)
+		gsvg_view_pop_text_attributes (view);
 	if (graphic->stroke != NULL)
 		gsvg_view_pop_stroke_attributes (view);
 	if (graphic->fill != NULL)
@@ -182,6 +191,7 @@ gsvg_graphic_class_init (GSvgGraphicClass *s_graphic_class)
 	gdom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, fill));
 	gdom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, stroke));
 	gdom_attribute_map_add_transform_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, transform));
+	gdom_attribute_map_add_text_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, text));
 }
 
 G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic, GSVG_TYPE_ELEMENT)
