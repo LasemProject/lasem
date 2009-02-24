@@ -647,6 +647,57 @@ gsvg_view_show_path (GSvgView *view,
 	_paint (view);
 }
 
+void
+gsvg_view_show_line (GSvgView *view, double x1, double y1, double x2, double y2)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	cairo_move_to (view->dom_view.cairo, x1, y1);
+	cairo_line_to (view->dom_view.cairo, x2, y2);
+
+	_paint (view);
+}
+
+void
+gsvg_view_show_polyline (GSvgView *view, const char *points)
+{
+	char *str;
+	double values[2];
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	str = (char *) points;
+
+	if (gsvg_str_parse_double_list (&str, 2, values)) {
+		cairo_move_to (view->dom_view.cairo, values[0], values[1]);
+		while (gsvg_str_parse_double_list (&str, 2, values))
+			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
+	}
+
+	_paint (view);
+}
+
+void
+gsvg_view_show_polygon (GSvgView *view, const char *points)
+{
+	char *str;
+	double values[2];
+
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	str = (char *) points;
+
+	if (gsvg_str_parse_double_list (&str, 2, values)) {
+		cairo_move_to (view->dom_view.cairo, values[0], values[1]);
+		while (gsvg_str_parse_double_list (&str, 2, values))
+			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
+	}
+
+	cairo_close_path (view->dom_view.cairo);
+
+	_paint (view);
+}
+
 static void
 gsvg_view_measure (GDomView *view, double *width, double *height)
 {

@@ -66,6 +66,9 @@ void 		gsvg_view_show_rectangle 	(GSvgView *view, double x, double y,
 void 		gsvg_view_show_circle		(GSvgView *view, double cx, double cy, double r);
 void 		gsvg_view_show_ellipse		(GSvgView *view, double cx, double cy, double rx, double ry);
 void		gsvg_view_show_path		(GSvgView *view, const char *d);
+void 		gsvg_view_show_line 		(GSvgView *view, double x1, double y1, double x2, double y2);
+void 		gsvg_view_show_polyline		(GSvgView *view, const char *points);
+void 		gsvg_view_show_polygon		(GSvgView *view, const char *points);
 
 G_END_DECLS
 

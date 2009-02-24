@@ -26,6 +26,9 @@
 #include <gsvgrectelement.h>
 #include <gsvgcircleelement.h>
 #include <gsvgellipseelement.h>
+#include <gsvglineelement.h>
+#include <gsvgpolylineelement.h>
+#include <gsvgpolygonelement.h>
 #include <gsvgpathelement.h>
 #include <gsvgview.h>
 #include <string.h>
@@ -47,16 +50,22 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 
 	if (strcmp (tag_name, "svg") == 0)
 		node = gsvg_svg_element_new ();
-	if (strcmp (tag_name, "g") == 0)
+	else if (strcmp (tag_name, "g") == 0)
 		node = gsvg_g_element_new ();
-	if (strcmp (tag_name, "rect") == 0)
+	else if (strcmp (tag_name, "rect") == 0)
 		node = gsvg_rect_element_new ();
-	if (strcmp (tag_name, "circle") == 0)
+	else if (strcmp (tag_name, "circle") == 0)
 		node = gsvg_circle_element_new ();
-	if (strcmp (tag_name, "ellipse") == 0)
+	else if (strcmp (tag_name, "ellipse") == 0)
 		node = gsvg_ellipse_element_new ();
-	if (strcmp (tag_name, "path") == 0)
+	else if (strcmp (tag_name, "path") == 0)
 		node = gsvg_path_element_new ();
+	else if (strcmp (tag_name, "line") == 0)
+		node = gsvg_line_element_new ();
+	else if (strcmp (tag_name, "polyline") == 0)
+		node = gsvg_polyline_element_new ();
+	else if (strcmp (tag_name, "polygon") == 0)
+		node = gsvg_polygon_element_new ();
 
 	return GDOM_ELEMENT (node);
 }
