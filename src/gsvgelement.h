@@ -44,7 +44,7 @@ typedef struct _GSvgElementClass GSvgElementClass;
 struct _GSvgElement {
 	GDomElement	element;
 
-	GDomAttribute	*id;
+	GDomAttribute	id;
 
 	/* View */
 

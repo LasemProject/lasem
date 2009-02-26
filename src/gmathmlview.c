@@ -935,7 +935,7 @@ _view_measure (GMathmlView *view, double *width, double *height)
 	GMathmlMathElement *math_element;
 	const GMathmlBbox *bbox;
 
-	math_element = gmathml_document_get_math_element (GMATHML_DOCUMENT (view->dom_view.document));
+	math_element = gmathml_document_get_root_element (GMATHML_DOCUMENT (view->dom_view.document));
 	if (math_element == NULL)
 		return NULL;
 
@@ -967,7 +967,7 @@ gmathml_view_render (GDomView *dom_view, double x, double y)
 	cairo_t *cairo;
 	const GMathmlBbox *bbox;
 
-	math_element = gmathml_document_get_math_element (GMATHML_DOCUMENT (view->dom_view.document));
+	math_element = gmathml_document_get_root_element (GMATHML_DOCUMENT (view->dom_view.document));
 	if (math_element == NULL)
 		return;
 

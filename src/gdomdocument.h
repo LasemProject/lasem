@@ -40,14 +40,17 @@ typedef struct _GDomDocumentClass GDomDocumentClass;
 
 struct _GDomDocument {
 	GDomNode node;
+
+	GHashTable *		ids;
+	GHashTable *		elements;
 };
 
 struct _GDomDocumentClass {
 	GDomNodeClass parent_class;
 
-	GDomElement* 	(*get_document_element) (GDomDocument* self);
-	GDomElement* 	(*create_element) (GDomDocument* self, const char* tag_name);
-	GDomText* 	(*create_text_node) (GDomDocument* self, const char* data);
+	GDomElement * 	(*get_document_element) (GDomDocument* self);
+	GDomElement * 	(*create_element) (GDomDocument* self, const char *tag_name);
+	GDomText * 	(*create_text_node) (GDomDocument* self, const char *data);
 
 	GDomView*	(*create_view) (GDomDocument *self);
 };
@@ -55,8 +58,11 @@ struct _GDomDocumentClass {
 GType gdom_document_get_type (void);
 
 GDomElement* 	gdom_document_get_document_element 	(GDomDocument* self);
-GDomElement* 	gdom_document_create_element 		(GDomDocument* self, const char* tag_name);
-GDomText* 	gdom_document_create_text_node 		(GDomDocument* self, const char* data);
+GDomElement* 	gdom_document_create_element 		(GDomDocument* self, const char *tag_name);
+GDomText* 	gdom_document_create_text_node 		(GDomDocument* self, const char *data);
+GDomElement * 	gdom_document_get_element_by_id 	(GDomDocument *self, const char *id);
+
+void 		gdom_document_register_element	 	(GDomDocument *self, GDomElement *element, const char *id);
 
 GDomView*	gdom_document_create_view		(GDomDocument *self);
 

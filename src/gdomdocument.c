@@ -75,7 +75,7 @@ gdom_document_create_text_node (GDomDocument *document, const char *data)
 	return GDOM_DOCUMENT_GET_CLASS (document)->create_text_node (document, data);
 }
 
-GDomView*
+GDomView *
 gdom_document_create_view (GDomDocument *self)
 {
 	g_return_val_if_fail (GDOM_IS_DOCUMENT (self), NULL);
@@ -83,9 +83,50 @@ gdom_document_create_view (GDomDocument *self)
 	return GDOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
 
+GDomElement *
+gdom_document_get_element_by_id (GDomDocument *self, const char *id)
+{
+	g_return_val_if_fail (GDOM_IS_DOCUMENT (self), NULL);
+	g_return_val_if_fail (id != NULL, NULL);
+
+	return g_hash_table_lookup (self->ids, id);
+}
+
+void
+gdom_document_register_element (GDomDocument *self, GDomElement *element, const char *id)
+{
+	char *old_id;
+
+	g_return_if_fail (GDOM_IS_DOCUMENT (self));
+
+	old_id = g_hash_table_lookup (self->elements, element);
+	if (old_id != NULL) {
+		g_hash_table_remove (self->elements, element);
+		g_hash_table_remove (self->ids, old_id);
+	}
+
+	if (id != NULL) {
+		char *new_id = g_strdup (id);
+
+		g_hash_table_replace (self->ids, new_id, element);
+		g_hash_table_replace (self->elements, element, new_id);
+	}
+}
+
 static void
 gdom_document_init (GDomDocument *document)
 {
+	document->ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+	document->elements = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
+}
+
+static void
+gdom_document_finalize (GObject *object)
+{
+	GDomDocument *document = GDOM_DOCUMENT (object);
+
+	g_hash_table_unref (document->elements);
+	g_hash_table_unref (document->ids);
 }
 
 /* GDomDocument class */
@@ -93,7 +134,10 @@ gdom_document_init (GDomDocument *document)
 static void
 gdom_document_class_init (GDomDocumentClass *klass)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	GDomNodeClass *node_class = GDOM_NODE_CLASS (klass);
+
+	object_class->finalize = gdom_document_finalize;
 
 	node_class->get_node_name = gdom_document_get_node_name;
 	node_class->get_node_type = gdom_document_get_node_type;

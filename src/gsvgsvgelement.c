@@ -153,6 +153,7 @@ gsvg_svg_element_init (GSvgSvgElement *self)
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "stroke-opacity", "1");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "font-family", "sans");
 	gdom_element_set_attribute (GDOM_ELEMENT (self), "font-size", "10pt");
+
 }
 
 static void

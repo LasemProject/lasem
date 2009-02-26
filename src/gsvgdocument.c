@@ -92,10 +92,8 @@ gsvg_document_init (GSvgDocument *document)
 {
 }
 
-/* Additional methods */
-
 GSvgSvgElement *
-gsvg_document_get_svg_element (const GSvgDocument *document)
+gsvg_document_get_root_element (const GSvgDocument *document)
 {
 	return GSVG_SVG_ELEMENT (gdom_document_get_document_element (GDOM_DOCUMENT (document)));
 }

@@ -47,7 +47,7 @@ struct _GSvgDocumentClass {
 GType gsvg_document_get_type (void);
 
 GSvgDocument *		gsvg_document_new 		(void);
-GSvgSvgElement * 	gsvg_document_get_svg_element 	(const GSvgDocument *document);
+GSvgSvgElement * 	gsvg_document_get_root_element 	(const GSvgDocument *document);
 
 G_END_DECLS
 

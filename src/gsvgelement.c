@@ -20,8 +20,10 @@
  */
 
 #include <gdomdebug.h>
+#include <gdomdocument.h>
 #include <gsvgelement.h>
 #include <gsvgview.h>
+#include <string.h>
 
 static GObjectClass *parent_class;
 
@@ -31,11 +33,6 @@ static gboolean
 gsvg_element_can_append_child (GDomNode *self, GDomNode *child)
 {
 	return (GSVG_IS_ELEMENT (child));
-}
-
-static void
-gsvg_element_changed (GDomNode *self)
-{
 }
 
 static gboolean
@@ -80,6 +77,7 @@ gsvg_element_update (GSvgElement *self, const GSvgStyle *parent_style)
 {
 	GSvgElementClass *element_class;
 	GSvgStyle *style;
+	GDomDocument *document;
 	GDomNode *node;
 
 	g_return_if_fail (GSVG_IS_ELEMENT (self));
@@ -90,6 +88,10 @@ gsvg_element_update (GSvgElement *self, const GSvgStyle *parent_style)
 			    gdom_node_get_node_name (GDOM_NODE (self)));
 		return;
 	}
+
+	document = gdom_node_get_owner_document (GDOM_NODE (self));
+	if (document != NULL)
+		gdom_document_register_element (document, GDOM_ELEMENT (self), self->id.value);
 
 	element_class = GSVG_ELEMENT_GET_CLASS (self);
 
@@ -166,7 +168,6 @@ gsvg_element_class_init (GSvgElementClass *s_element_class)
 	object_class->finalize = gsvg_element_finalize;
 
 	d_node_class->can_append_child = gsvg_element_can_append_child;
-	d_node_class->changed = gsvg_element_changed;
 	d_node_class->child_changed = gsvg_element_child_changed;
 
 	d_element_class->get_attribute = gsvg_element_get_attribute;

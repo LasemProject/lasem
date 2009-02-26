@@ -762,7 +762,7 @@ gsvg_view_measure (GDomView *view, double *width, double *height)
 {
 	GSvgSvgElement *svg_element;
 
-	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
+	svg_element = gsvg_document_get_root_element (GSVG_DOCUMENT (view->document));
 	if (svg_element == NULL)
 		return;
 
@@ -779,7 +779,7 @@ gsvg_view_render (GDomView *view, double x, double y)
 
 	svg_view = GSVG_VIEW (view);
 
-	svg_element = gsvg_document_get_svg_element (GSVG_DOCUMENT (view->document));
+	svg_element = gsvg_document_get_root_element (GSVG_DOCUMENT (view->document));
 	if (svg_element == NULL)
 		return;
 
