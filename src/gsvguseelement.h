@@ -39,10 +39,10 @@ typedef struct _GSvgUseElementClass GSvgUseElementClass;
 struct _GSvgUseElement {
 	GSvgGraphic graphic;
 
-	GSvgLengthAttribute	x;
-	GSvgLengthAttribute	y;
-	GSvgLengthAttribute	width;
-	GSvgLengthAttribute	height;
+	GSvgAnimatedLengthAttribute	x;
+	GSvgAnimatedLengthAttribute	y;
+	GSvgAnimatedLengthAttribute	width;
+	GSvgAnimatedLengthAttribute	height;
 
 	GDomAttribute		href;
 };

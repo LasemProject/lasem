@@ -20,6 +20,7 @@
  */
 
 #include <gsvguseelement.h>
+#include <gsvgview.h>
 #include <gdomdebug.h>
 #include <gdomdocument.h>
 #include <stdio.h>
@@ -40,7 +41,36 @@ gsvg_use_can_append_child (GDomNode *node, GDomNode *child)
 	return FALSE;
 }
 
-/* GUseElement implementation */
+/* GSvgElement implementation */
+
+static void
+gsvg_use_element_update (GSvgElement *self, GSvgStyle *parent_style)
+{
+	GSvgUseElement *use_element = GSVG_USE_ELEMENT (self);
+	GSvgLength length;
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&use_element->x, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&use_element->y, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&use_element->width, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&use_element->height, &length, 0.0);
+
+	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+}
 
 /* GSvgGraphic implementation */
 
@@ -50,6 +80,7 @@ gsvg_use_element_graphic_render (GSvgElement *self, GSvgView *view)
 	GSvgUseElement *use_element;
 	GDomDocument *document;
 	GDomElement *element;
+	GSvgMatrix matrix;
 	const char *id;
 
 	document = gdom_node_get_owner_document (GDOM_NODE (self));
@@ -66,7 +97,17 @@ gsvg_use_element_graphic_render (GSvgElement *self, GSvgView *view)
 	if (!GSVG_IS_ELEMENT (element))
 		return;
 
+	if (use_element->width.length.base.value <= 0.0 ||
+	    use_element->height.length.base.value <= 0.0)
+		return;
+
+	gsvg_matrix_init_translate (&matrix,
+				    use_element->x.length.base.value,
+				    use_element->y.length.base.value);
+
+	gsvg_view_push_transform (view, &matrix);
 	gsvg_element_render (GSVG_ELEMENT (element), view);
+	gsvg_view_pop_transform (view);
 }
 
 /* GSvgUseElement implementation */
@@ -95,6 +136,8 @@ gsvg_use_element_class_init (GSvgUseElementClass *klass)
 
 	d_node_class->get_node_name = gsvg_use_element_get_node_name;
 	d_node_class->can_append_child = gsvg_use_can_append_child;
+
+	s_element_class->update = gsvg_use_element_update;
 
 	s_graphic_class->graphic_render = gsvg_use_element_graphic_render;
 
