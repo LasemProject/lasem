@@ -31,6 +31,8 @@ typedef struct _GSvgElement GSvgElement;
 typedef struct _GSvgGraphic GSvgGraphic;
 typedef struct _GSvgSvgElement GSvgSvgElement;
 typedef struct _GSvgGElement GSvgGElement;
+typedef struct _GSvgDefsElement GSvgDefsElement;
+typedef struct _GSvgUseElement GSvgUseElement;
 typedef struct _GSvgRectElement GSvgRectElement;
 typedef struct _GSvgCircleElement GSvgCircleElement;
 typedef struct _GSvgEllipseElement GSvgEllipseElement;

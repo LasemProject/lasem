@@ -23,6 +23,8 @@
 #include <gsvgdocument.h>
 #include <gsvgsvgelement.h>
 #include <gsvggelement.h>
+#include <gsvgdefselement.h>
+#include <gsvguseelement.h>
 #include <gsvgrectelement.h>
 #include <gsvgcircleelement.h>
 #include <gsvgellipseelement.h>
@@ -69,6 +71,10 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gsvg_polygon_element_new ();
 	else if (strcmp (tag_name, "text") == 0)
 		node = gsvg_text_element_new ();
+	else if (strcmp (tag_name, "use") == 0)
+		node = gsvg_use_element_new ();
+	else if (strcmp (tag_name, "defs") == 0)
+		node = gsvg_defs_element_new ();
 
 	return GDOM_ELEMENT (node);
 }
