@@ -25,6 +25,7 @@
 #include <gsvggelement.h>
 #include <gsvgdefselement.h>
 #include <gsvguseelement.h>
+#include <gsvgsymbolelement.h>
 #include <gsvgrectelement.h>
 #include <gsvgcircleelement.h>
 #include <gsvgellipseelement.h>
@@ -75,6 +76,8 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gsvg_use_element_new ();
 	else if (strcmp (tag_name, "defs") == 0)
 		node = gsvg_defs_element_new ();
+	else if (strcmp (tag_name, "symbol") == 0)
+		node = gsvg_symbol_element_new ();
 
 	return GDOM_ELEMENT (node);
 }
