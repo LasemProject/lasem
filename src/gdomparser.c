@@ -38,6 +38,8 @@ typedef struct {
 	GDomNode *current_node;
 
 	gboolean is_error;
+
+	int error_depth;
 } GDomSaxParserState;
 
 static void
@@ -48,6 +50,7 @@ gdom_parser_start_document (void *user_data)
 	state->state = STATE;
 	state->document = NULL;
 	state->is_error = FALSE;
+	state->error_depth = 0;
 }
 
 static void
@@ -63,6 +66,11 @@ gdom_parser_start_element(void *user_data,
 	GDomSaxParserState *state = user_data;
 	GDomNode *node;
 	int i;
+
+	if (state->is_error) {
+		state->error_depth++;
+		return;
+	}
 
 	if (strcmp ((char *) name, "math") == 0 ||
 	    strcmp ((char *) name, "svg") == 0) {
@@ -88,18 +96,27 @@ gdom_parser_start_element(void *user_data,
 
 		state->current_node = node;
 		state->is_error = FALSE;
-	} else
+		state->error_depth = 0;
+	} else {
 		state->is_error = TRUE;
+		state->error_depth = 1;
+	}
 }
 
 static void
 gdom_parser_end_element (void *user_data,
-			    const xmlChar *name)
+			 const xmlChar *name)
 {
 	GDomSaxParserState *state = user_data;
 
-	if (state->is_error)
+	if (state->is_error) {
+		state->error_depth--;
+		if (state->error_depth > 0)
+			return;
+
+		state->is_error = FALSE;
 		return;
+	}
 
 	state->current_node = gdom_node_get_parent_node (state->current_node);
 }
