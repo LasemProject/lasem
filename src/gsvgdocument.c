@@ -79,6 +79,9 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 	else if (strcmp (tag_name, "symbol") == 0)
 		node = gsvg_symbol_element_new ();
 
+	if (node != NULL)
+		gdom_debug ("[GSvgDocument::create_element] Create a %s element", tag_name);
+
 	return GDOM_ELEMENT (node);
 }
 

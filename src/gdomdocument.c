@@ -21,6 +21,7 @@
 
 #include <gdomdocument.h>
 #include <gdomelement.h>
+#include <gdomdebug.h>
 #include <gdomtext.h>
 
 /* GDomNode implementation */
@@ -89,6 +90,8 @@ gdom_document_get_element_by_id (GDomDocument *self, const char *id)
 	g_return_val_if_fail (GDOM_IS_DOCUMENT (self), NULL);
 	g_return_val_if_fail (id != NULL, NULL);
 
+	gdom_debug ("[GDomDocument::get_element_by_id] Lookup '%s'", id);
+
 	return g_hash_table_lookup (self->ids, id);
 }
 
@@ -101,12 +104,16 @@ gdom_document_register_element (GDomDocument *self, GDomElement *element, const 
 
 	old_id = g_hash_table_lookup (self->elements, element);
 	if (old_id != NULL) {
+		gdom_debug ("[GDomDocument::register_element] Unregister '%s'", old_id);
+
 		g_hash_table_remove (self->elements, element);
 		g_hash_table_remove (self->ids, old_id);
 	}
 
 	if (id != NULL) {
 		char *new_id = g_strdup (id);
+
+		gdom_debug ("[GDomDocument::register_element] Register '%s'", id);
 
 		g_hash_table_replace (self->ids, new_id, element);
 		g_hash_table_replace (self->elements, element, new_id);

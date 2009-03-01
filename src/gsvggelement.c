@@ -60,7 +60,6 @@ gsvg_g_element_class_init (GSvgGElementClass *s_g_class)
 	parent_class = g_type_class_peek_parent (s_g_class);
 
 	d_node_class->get_node_name = gsvg_g_element_get_node_name;
-
 }
 
 G_DEFINE_TYPE (GSvgGElement, gsvg_g_element, GSVG_TYPE_GRAPHIC)

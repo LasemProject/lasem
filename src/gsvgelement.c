@@ -124,6 +124,8 @@ _render (GSvgElement *element, GSvgView *view)
 {
 	GDomNode *node;
 
+	gdom_debug ("[GSvgElement::_render");
+
 	for (node = GDOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
 		if (GSVG_IS_ELEMENT (node))
 		    gsvg_element_render (GSVG_ELEMENT (node), view);
@@ -135,6 +137,10 @@ gsvg_element_render (GSvgElement *element, GSvgView *view)
 	GSvgElementClass *element_class;
 
 	g_return_if_fail (GSVG_IS_ELEMENT (element));
+
+	gdom_debug ("[GSvgElement::render] Render %s (%s)",
+		    gdom_node_get_node_name (GDOM_NODE (element)),
+		    element->id.value != NULL ? element->id.value : "no id");
 
 	element_class = GSVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render) {

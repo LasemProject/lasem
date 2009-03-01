@@ -120,17 +120,18 @@ _graphic_render (GSvgElement *self, GSvgView *view)
 {
 	GDomNode *node;
 
-	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
+	gdom_debug ("[GSvgGraphic::_graphic_render");
+
+	for (node = GDOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (GSVG_IS_ELEMENT (node))
 		    gsvg_element_render (GSVG_ELEMENT (node), view);
+	}
 }
 
 static void
 gsvg_graphic_render (GSvgElement *self, GSvgView *view)
 {
 	GSvgGraphic *graphic = GSVG_GRAPHIC (self);
-
-	gdom_debug ("[GSvgGraphic::render] Render %s", gdom_node_get_node_name (GDOM_NODE (self)));
 
 	if (graphic->fill != NULL)
 		gsvg_view_push_fill_attributes (view, graphic->fill);

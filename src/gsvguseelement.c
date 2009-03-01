@@ -84,8 +84,10 @@ gsvg_use_element_graphic_render (GSvgElement *self, GSvgView *view)
 	const char *id;
 
 	document = gdom_node_get_owner_document (GDOM_NODE (self));
-	if (document == NULL)
+	if (document == NULL) {
+		gdom_debug ("[GSvgUseElement::graphic_render] Owner document not found");
 		return;
+	}
 
 	use_element = GSVG_USE_ELEMENT (self);
 
@@ -93,13 +95,21 @@ gsvg_use_element_graphic_render (GSvgElement *self, GSvgView *view)
 	if (id == NULL)
 		return;
 
-	element = gdom_document_get_element_by_id (document, id);
-	if (!GSVG_IS_ELEMENT (element))
-		return;
+	/* TODO Ugly hack */
+	if (*id == '#')
+		id++;
 
-	if (use_element->width.length.base.value <= 0.0 ||
-	    use_element->height.length.base.value <= 0.0)
+	element = gdom_document_get_element_by_id (document, id);
+	if (!GSVG_IS_ELEMENT (element)) {
+		gdom_debug ("[GSvgUseElement::graphic_render] Target '%s' not found", id);
 		return;
+	}
+
+/*        if (use_element->width.length.base.value <= 0.0 ||*/
+/*            use_element->height.length.base.value <= 0.0)*/
+/*                return;*/
+
+	gdom_debug ("[GSvgUseElement::graphic_render] Use '%s'", id);
 
 	gsvg_matrix_init_translate (&matrix,
 				    use_element->x.length.base.value,
