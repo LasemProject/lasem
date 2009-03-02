@@ -76,6 +76,10 @@ libgmathml_la_SOURCES =			\
 	gsvgpolygonelement.c		\
 	gsvgpathelement.c		\
 	gsvgtextelement.c		\
+	gsvggradientelement.c		\
+	gsvglineargradientelement.c	\
+	gsvgradialgradientelement.c	\
+	gsvgstopelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
 	gsvgattributebags.c		\
@@ -125,7 +129,7 @@ libgmathml_la_HEADERS = \
 	gmathmlerrorelement.h		\
 	gmathmlactionelement.h		\
 	gmathmlattributes.h		\
-	gmathmlstyle.h		\
+	gmathmlstyle.h			\
 	gmathmlview.h			\
 	gmathmlglyphtableams.h		\
 	gmathmlalignmarkelement.h	\
@@ -148,6 +152,10 @@ libgmathml_la_HEADERS = \
 	gsvgpolylineelement.h		\
 	gsvgpolygonelement.h		\
 	gsvgtextelement.h		\
+	gsvggradientelement.h		\
+	gsvglineargradientelement.h	\
+	gsvgradialgradientelement.h	\
+	gsvgstopelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
 	gsvgattributebags.h		\

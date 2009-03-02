@@ -34,6 +34,9 @@
 #include <gsvgpolygonelement.h>
 #include <gsvgpathelement.h>
 #include <gsvgtextelement.h>
+#include <gsvglineargradientelement.h>
+#include <gsvgradialgradientelement.h>
+#include <gsvgstopelement.h>
 #include <gsvgview.h>
 #include <string.h>
 
@@ -72,6 +75,12 @@ gsvg_document_create_element (GDomDocument *document, const char *tag_name)
 		node = gsvg_polygon_element_new ();
 	else if (strcmp (tag_name, "text") == 0)
 		node = gsvg_text_element_new ();
+	else if (strcmp (tag_name, "linearGradient") == 0)
+		node = gsvg_linear_gradient_element_new ();
+	else if (strcmp (tag_name, "radialGradient") == 0)
+		node = gsvg_radial_gradient_element_new ();
+	else if (strcmp (tag_name, "stop") == 0)
+		node = gsvg_stop_element_new ();
 	else if (strcmp (tag_name, "use") == 0)
 		node = gsvg_use_element_new ();
 	else if (strcmp (tag_name, "defs") == 0)

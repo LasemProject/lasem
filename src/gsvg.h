@@ -42,6 +42,10 @@ typedef struct _GSvgPolylineElement GSvgPolylineElement;
 typedef struct _GSvgPolygonElement GSvgPolygonElement;
 typedef struct _GSvgPathElement GSvgPathElement;
 typedef struct _GSvgTextElement GSvgTextElement;
+typedef struct _GSvgGradientElement GSvgGradientElement;
+typedef struct _GSvgLinearGradientElement GSvgLinearGradientElement;
+typedef struct _GSvgRadialGradientElement GSvgRadialGradientElement;
+typedef struct _GSvgStopElement GSvgStopElement;
 
 typedef struct _GSvgView GSvgView;
 typedef struct _GSvgStyle GSvgStyle;
