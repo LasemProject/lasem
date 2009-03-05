@@ -35,9 +35,54 @@ gsvg_stop_element_get_node_name (GDomNode *node)
 }
 
 
-/* GStopElement implementation */
+/* GSvgElement implementation */
+
+static void
+gsvg_stop_element_update (GSvgElement *self, GSvgStyle *parent_style)
+{
+	GSvgStopElement *stop = GSVG_STOP_ELEMENT (self);
+	GSvgColor color;
+	GSvgLength length;
+	double opacity;
+
+	length.value = 1.0;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
+	gsvg_length_attribute_parse (&stop->offset, &length, 0.0);
+
+	opacity = 1.0;
+	gdom_double_attribute_parse (&stop->opacity, &opacity);
+
+	color.red = 0.0;
+	color.green = 0.0;
+	color.blue = 0.0;
+	gsvg_color_attribute_parse (&stop->color, &color);
+}
 
 /* GSvgStopElement implementation */
+
+double
+gsvg_stop_element_get_offset (GSvgStopElement *self)
+{
+	g_return_val_if_fail (GSVG_IS_STOP_ELEMENT (self), 0.0);
+
+	return GSVG_STOP_ELEMENT (self)->offset.value;
+}
+
+const GSvgColor *
+gsvg_stop_element_get_color (GSvgStopElement *self)
+{
+	g_return_val_if_fail (GSVG_IS_STOP_ELEMENT (self), &gsvg_color_null);
+
+	return &(GSVG_STOP_ELEMENT (self)->color.value);
+}
+
+double
+gsvg_stop_element_get_opacity (GSvgStopElement *self)
+{
+	g_return_val_if_fail (GSVG_IS_STOP_ELEMENT (self), 1.0);
+
+	return GSVG_STOP_ELEMENT (self)->opacity.value;
+}
 
 GDomNode *
 gsvg_stop_element_new (void)
@@ -61,6 +106,8 @@ gsvg_stop_element_class_init (GSvgStopElementClass *klass)
 	parent_class = g_type_class_peek_parent (klass);
 
 	d_node_class->get_node_name = gsvg_stop_element_get_node_name;
+
+	s_element_class->update = gsvg_stop_element_update;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

@@ -34,8 +34,9 @@ typedef struct {
 	double red;
 	double green;
 	double blue;
-	double alpha;
 } GSvgColor;
+
+extern const GSvgColor gsvg_color_null;
 
 typedef struct {
 	double value;
@@ -80,6 +81,11 @@ typedef struct {
 
 typedef struct {
 	GDomAttribute attr;
+	GSvgColor value;
+} GSvgColorAttribute;
+
+typedef struct {
+	GDomAttribute attr;
 	GSvgViewBox value;
 } GSvgViewBoxAttribute;
 
@@ -99,6 +105,8 @@ void 		gsvg_fill_rule_attribute_parse 		(GDomEnumAttribute *attribute,
 void 		gsvg_paint_attribute_finalize 		(void *abstract);
 void 		gsvg_paint_attribute_parse 		(GSvgPaintAttribute *attribute,
 							 GSvgPaint *default_value);
+void 		gsvg_color_attribute_parse 		(GSvgColorAttribute *attribute,
+							 GSvgColor *default_value);
 void		gsvg_view_box_attribute_parse		(GSvgViewBoxAttribute *attribute,
 							 GSvgViewBox *default_value);
 void		gsvg_transform_attribute_parse		(GSvgTransformAttribute *attribute);

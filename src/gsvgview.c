@@ -24,6 +24,7 @@
 #include <gsvgdocument.h>
 #include <gsvgelement.h>
 #include <gsvgsvgelement.h>
+#include <gsvggradientelement.h>
 #include <gsvgutils.h>
 #include <glib/gprintf.h>
 
@@ -31,6 +32,43 @@
 #include <string.h>
 
 static GObjectClass *parent_class;
+
+static void
+_set_pattern (GSvgView *view, cairo_pattern_t *pattern)
+{
+	if (view->pattern != NULL)
+		cairo_pattern_destroy (view->pattern);
+
+	view->pattern = pattern;
+}
+
+void
+gsvg_view_create_radial_pattern (GSvgView *view, double cx, double cy, double r, double fx, double fy)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	_set_pattern (view, cairo_pattern_create_radial (cx, cy, r, fx, fy, 0));
+}
+
+void
+gsvg_view_create_linear_gradient (GSvgView *view, double x1, double y1,
+				  double x2, double y2)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	_set_pattern (view, cairo_pattern_create_linear (x1, y1, x2, y2));
+}
+
+void
+gsvg_view_add_color_stop (GSvgView *view, double offset, const GSvgColor *color, double opacity)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->pattern != NULL);
+	g_return_if_fail (color != NULL);
+
+	cairo_pattern_add_color_stop_rgba (view->pattern, offset,
+					   color->red, color->green, color->blue, opacity);
+}
 
 typedef struct {
 	cairo_t *cr;
@@ -527,9 +565,28 @@ gsvg_view_pop_text_attributes (GSvgView *view)
 	view->text_stack = g_slist_delete_link (view->text_stack, view->text_stack);
 }
 
-static gboolean
-_set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
+static void
+_paint_uri (GSvgView *view, const char *uri)
 {
+	GDomElement *element;
+
+	element = gdom_document_get_element_by_id (view->dom_view.document, uri);
+	if (!GSVG_IS_GRADIENT_ELEMENT (element))
+		return;
+
+	gsvg_element_render (GSVG_ELEMENT (element), view);
+
+	if (view->pattern)
+		cairo_set_source (view->dom_view.cairo, view->pattern);
+	else
+		cairo_set_source_rgb (view->dom_view.cairo, 0.0, 0.0, 0.0);
+}
+
+static gboolean
+_set_color (GSvgView *view, const GSvgPaint *paint, double opacity)
+{
+	cairo_t *cairo = view->dom_view.cairo;
+
 	switch (paint->type) {
 		case GSVG_PAINT_TYPE_NONE:
 			return FALSE;
@@ -539,6 +596,12 @@ _set_color (cairo_t *cairo, const GSvgPaint *paint, double opacity)
 					       paint->color.green,
 					       paint->color.blue,
 					       opacity);
+			break;
+		case GSVG_PAINT_TYPE_URI:
+		case GSVG_PAINT_TYPE_URI_RGB_COLOR:
+		case GSVG_PAINT_TYPE_URI_CURRENT_COLOR:
+		case GSVG_PAINT_TYPE_URI_NONE:
+			_paint_uri (view, paint->uri);
 			break;
 		default:
 			return FALSE;
@@ -561,10 +624,10 @@ _paint (GSvgView *view)
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
-	if (_set_color (cairo, &fill->paint.paint, fill->opacity.value))
+	if (_set_color (view, &fill->paint.paint, fill->opacity.value))
 		cairo_fill_preserve (view->dom_view.cairo);
 
-	if (_set_color (cairo, &stroke->paint.paint, stroke->opacity.value)) {
+	if (_set_color (view, &stroke->paint.paint, stroke->opacity.value)) {
 		cairo_set_line_width (cairo, stroke->width.length.value);
 		cairo_stroke (cairo);
 	}
@@ -823,11 +886,14 @@ gsvg_view_new (GSvgDocument *document)
 static void
 gsvg_view_init (GSvgView *view)
 {
+	_set_pattern (view, NULL);
 }
 
 static void
 gsvg_view_finalize (GObject *object)
 {
+	_set_pattern (GSVG_VIEW (object), NULL);
+
 	parent_class->finalize (object);
 }
 

@@ -39,9 +39,9 @@ typedef struct _GSvgStopElementClass GSvgStopElementClass;
 struct _GSvgStopElement {
 	GSvgElement element;
 
-	GDomAttribute offset;
-	GDomAttribute color;
-	GDomAttribute opacity;
+	GSvgLengthAttribute offset;
+	GSvgColorAttribute color;
+	GDomDoubleAttribute opacity;
 };
 
 struct _GSvgStopElementClass {
@@ -51,6 +51,10 @@ struct _GSvgStopElementClass {
 GType gsvg_stop_element_get_type (void);
 
 GDomNode * gsvg_stop_element_new (void);
+
+double 			gsvg_stop_element_get_offset 	(GSvgStopElement *self);
+const GSvgColor *	gsvg_stop_element_get_color 	(GSvgStopElement *self);
+double 			gsvg_stop_element_get_opacity 	(GSvgStopElement *self);
 
 G_END_DECLS
 

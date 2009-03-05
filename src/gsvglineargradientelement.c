@@ -39,7 +39,49 @@ gsvg_linear_gradient_element_get_node_name (GDomNode *node)
 static void
 _linear_gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
-/*        GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);*/
+	GSvgLinearGradientElement *linear = GSVG_LINEAR_GRADIENT_ELEMENT (self);
+	GSvgLength length;
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&linear->x1, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&linear->y1, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&linear->x2, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&linear->y2, &length, 0.0);
+
+	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+}
+
+static void
+_linear_gradient_element_render (GSvgElement *self, GSvgView *view)
+{
+	GSvgLinearGradientElement *linear = GSVG_LINEAR_GRADIENT_ELEMENT (self);
+	double x1, x2, y1, y2;
+
+	x1 = linear->x1.length.base.value;
+	y1 = linear->y1.length.base.value;
+	x2 = linear->x2.length.base.value;
+	y2 = linear->y2.length.base.value;
+
+	gdom_debug ("GSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
+		    x1, y1, x2, y2);
+
+	gsvg_view_create_linear_gradient (view, x1, y1, x2, y2);
+
+	GSVG_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
 /* GSvgLinearGradientElement implementation */
@@ -77,6 +119,7 @@ gsvg_linear_gradient_element_class_init (GSvgLinearGradientElementClass *s_svg_c
 	d_node_class->get_node_name = gsvg_linear_gradient_element_get_node_name;
 
 	s_element_class->update = _linear_gradient_element_update;
+	s_element_class->render = _linear_gradient_element_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

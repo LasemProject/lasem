@@ -19,7 +19,8 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <gsvglineargradientelement.h>
+#include <gsvggradientelement.h>
+#include <gsvgstopelement.h>
 #include <gsvgview.h>
 #include <gdomdebug.h>
 #include <stdio.h>
@@ -28,7 +29,37 @@ static GObjectClass *parent_class;
 
 /* GdomNode implementation */
 
-/* GGradientElement implementation */
+static gboolean
+gsvg_gradient_element_can_append_child (GDomNode *parent, GDomNode *child)
+{
+	return GSVG_IS_STOP_ELEMENT (child);
+}
+
+/* GSvgElement implementation */
+
+static void
+_gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
+{
+}
+
+static void
+_gradient_element_render (GSvgElement *self, GSvgView *view)
+{
+	GDomNode *iter;
+
+	for (iter = GDOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
+		if (GSVG_IS_STOP_ELEMENT (iter)) {
+			GSvgStopElement *stop;
+
+			stop = GSVG_STOP_ELEMENT (iter);
+
+			gsvg_view_add_color_stop (view,
+						  gsvg_stop_element_get_offset (stop),
+						  gsvg_stop_element_get_color (stop),
+						  gsvg_stop_element_get_opacity (stop));
+		}
+	}
+}
 
 /* GSvgGradientElement implementation */
 
@@ -40,11 +71,17 @@ gsvg_gradient_element_init (GSvgGradientElement *self)
 /* GSvgGradientElement class */
 
 static void
-gsvg_gradient_element_class_init (GSvgGradientElementClass *s_svg_class)
+gsvg_gradient_element_class_init (GSvgGradientElementClass *klass)
 {
-	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (s_svg_class);
+	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (klass);
+	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (klass);
 
-	parent_class = g_type_class_peek_parent (s_svg_class);
+	parent_class = g_type_class_peek_parent (klass);
+
+	d_node_class->can_append_child = gsvg_gradient_element_can_append_child;
+
+	s_element_class->update = _gradient_element_update;
+	s_element_class->render = _gradient_element_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

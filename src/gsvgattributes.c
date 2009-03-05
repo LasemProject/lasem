@@ -28,6 +28,8 @@
 #include <stdio.h>
 #include <math.h>
 
+const GSvgColor gsvg_color_null = {0.0, 0.0, 0.0};
+
 static double
 gsvg_length_compute (const GSvgLength *length, double viewbox, double font_size)
 {
@@ -118,6 +120,82 @@ gsvg_fill_rule_attribute_parse (GDomEnumAttribute *attribute,
 	return gdom_enum_attribute_parse (attribute, style_value, gsvg_fill_rule_from_string);
 }
 
+static char *
+_parse_color (char *string, GSvgColor *svg_color, gboolean *color_set)
+{
+	unsigned int color = 0;
+	*color_set = FALSE;
+
+	gsvg_str_skip_spaces (&string);
+
+	if (*string == '#') {
+		int value, i;
+		string++;
+
+		for (i = 0; i < 6; i++) {
+			if (*string >= '0' && *string <= '9')
+				value = *string - '0';
+			else if (*string >= 'A' && *string <= 'F')
+				value = *string - 'A' + 10;
+			else if (*string >= 'a' && *string <= 'f')
+				value = *string - 'a' + 10;
+			else
+				break;
+
+			color = (color << 4) + value;
+			string++;
+		}
+
+		if (i == 3) {
+			color = ((color & 0xf00) << 8) | ((color & 0x0f0) << 4) | (color & 0x00f);
+			color |= color << 4;
+		} else if (i != 6)
+			color = 0;
+
+		*color_set = TRUE;
+	} else if (strncmp (string, "rgb(", 4) == 0) {
+		int i;
+		double value;
+
+
+		string += 4;
+
+		for (i = 0; i < 3; i++) {
+			if (!gsvg_str_parse_double (&string, &value))
+				break;
+
+			if (*string == '%') {
+				value = value * 255.0 / 100.0;
+				string++;
+			}
+
+			if (i < 2)
+				gsvg_str_skip_comma_and_spaces (&string);
+
+			color = (color << 8) + (int) (0.5 + CLAMP (value, 0.0, 255.0));
+		}
+
+		gsvg_str_skip_spaces (&string);
+
+		if (*string != ')' || i != 3)
+			color = 0;
+
+		*color_set  = TRUE;
+	} else if (strcmp (string, "none") == 0) {
+		*color_set = FALSE;
+	} else {
+		color = gsvg_color_from_string (string);
+
+		*color_set = TRUE;
+	}
+
+	svg_color->red = (double) ((color & 0xff0000) >> 16) / 255.0;
+	svg_color->green = (double) ((color & 0x00ff00) >> 8) / 255.0;
+	svg_color->blue = (double) (color & 0x0000ff) / 255.0;
+
+	return string;
+}
+
 void
 gsvg_paint_attribute_finalize (void *abstract)
 {
@@ -147,7 +225,7 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 		attribute->paint.color = default_value->color;
 		attribute->paint.type = default_value->type;
 	} else {
-		unsigned int color = 0;
+		gboolean color_set;
 
 		g_free (attribute->paint.uri);
 
@@ -170,84 +248,16 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 			attribute->paint.uri = NULL;
 		}
 
-		gsvg_str_skip_spaces (&string);
+		string = _parse_color (string, &attribute->paint.color, &color_set);
 
-		if (*string == '#') {
-			int value, i;
-			string++;
-
-			for (i = 0; i < 6; i++) {
-				if (*string >= '0' && *string <= '9')
-					value = *string - '0';
-				else if (*string >= 'A' && *string <= 'F')
-					value = *string - 'A' + 10;
-				else if (*string >= 'a' && *string <= 'f')
-					value = *string - 'a' + 10;
-				else
-					break;
-
-				color = (color << 4) + value;
-				string++;
-			}
-
-			if (i == 3) {
-				color = ((color & 0xf00) << 8) | ((color & 0x0f0) << 4) | (color & 0x00f);
-				color |= color << 4;
-			} else if (i != 6)
-				color = 0;
-
+		if (color_set)
 			attribute->paint.type = attribute->paint.uri != NULL ?
 				GSVG_PAINT_TYPE_URI_RGB_COLOR :
 				GSVG_PAINT_TYPE_RGB_COLOR;
-
-		} else if (strncmp (string, "rgb(", 4) == 0) {
-			int i;
-			double value;
-
-
-			string += 4;
-
-			for (i = 0; i < 3; i++) {
-				if (!gsvg_str_parse_double (&string, &value))
-					break;
-
-				if (*string == '%') {
-					value = value * 255.0 / 100.0;
-					string++;
-				}
-
-				if (i < 2)
-					gsvg_str_skip_comma_and_spaces (&string);
-
-				color = (color << 8) + (int) (0.5 + CLAMP (value, 0.0, 255.0));
-			}
-
-			gsvg_str_skip_spaces (&string);
-
-			if (*string != ')' || i != 3)
-				color = 0;
-
+		else
 			attribute->paint.type = attribute->paint.uri != NULL ?
-				GSVG_PAINT_TYPE_URI_RGB_COLOR :
-				GSVG_PAINT_TYPE_RGB_COLOR;
-
-		} else if (strcmp (string, "none") == 0) {
-
-			attribute->paint.type = attribute->paint.uri != NULL ?
-				GSVG_PAINT_TYPE_URI:
+				GSVG_PAINT_TYPE_URI :
 				GSVG_PAINT_TYPE_NONE;
-
-		} else {
-			color = gsvg_color_from_string (string);
-
-			attribute->paint.type = attribute->paint.uri != NULL ?
-				GSVG_PAINT_TYPE_URI_RGB_COLOR :
-				GSVG_PAINT_TYPE_RGB_COLOR;
-		}
-
-		attribute->paint.color.red = (double) ((color & 0xff0000) >> 16) / 255.0;
-		attribute->paint.color.green = (double) ((color & 0x00ff00) >> 8) / 255.0;
-		attribute->paint.color.blue = (double) (color & 0x0000ff) / 255.0;
 
 		g_free (default_value->uri);
 		if (attribute->paint.uri != NULL)
@@ -256,6 +266,26 @@ gsvg_paint_attribute_parse (GSvgPaintAttribute *attribute,
 			default_value->uri = NULL;
 		default_value->type = attribute->paint.type;
 		default_value->color = attribute->paint.color;
+	}
+}
+
+void
+gsvg_color_attribute_parse (GSvgColorAttribute *attribute,
+			    GSvgColor *default_value)
+{
+	char *string;
+
+	g_return_if_fail (attribute != NULL);
+
+	string = (char *) gdom_attribute_get_value ((GDomAttribute *) attribute);
+	if (string == NULL) {
+		attribute->value = *default_value;
+	} else {
+		gboolean color_set;
+
+		string = _parse_color (string, &attribute->value, &color_set);
+
+		*default_value = attribute->value;
 	}
 }
 
