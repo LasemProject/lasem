@@ -568,7 +568,15 @@ gsvg_view_pop_text_attributes (GSvgView *view)
 static void
 _paint_uri (GSvgView *view, const char *uri)
 {
+	cairo_t *cairo;
 	GDomElement *element;
+	double x1, x2, y1, y2;
+
+	cairo = view->dom_view.cairo;
+
+	cairo_path_extents (cairo, &x1, &y1, &x2, &y2);
+	if (x2 <= x1 || y2 <= y1)
+		return;
 
 	element = gdom_document_get_element_by_id (view->dom_view.document, uri);
 	if (!GSVG_IS_GRADIENT_ELEMENT (element))
@@ -576,10 +584,17 @@ _paint_uri (GSvgView *view, const char *uri)
 
 	gsvg_element_render (GSVG_ELEMENT (element), view);
 
-	if (view->pattern)
-		cairo_set_source (view->dom_view.cairo, view->pattern);
-	else
-		cairo_set_source_rgb (view->dom_view.cairo, 0.0, 0.0, 0.0);
+	if (view->pattern) {
+		cairo_matrix_t matrix;
+
+		gdom_debug ("scale = %g, %g", x2 - x1, y2 - y1);
+
+		cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
+		cairo_matrix_translate (&matrix, -x1, -y1);
+		cairo_pattern_set_matrix (view->pattern, &matrix);
+		cairo_set_source (cairo, view->pattern);
+	} else
+		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);
 }
 
 static gboolean

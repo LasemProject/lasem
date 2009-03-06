@@ -49,6 +49,8 @@ gsvg_stop_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	length.type = GSVG_LENGTH_TYPE_NUMBER;
 	gsvg_length_attribute_parse (&stop->offset, &length, 0.0);
 
+	gdom_debug ("offset = %s, %g", stop->offset.attr.value, stop->offset.length.value);
+
 	opacity = 1.0;
 	gdom_double_attribute_parse (&stop->opacity, &opacity);
 
@@ -65,7 +67,7 @@ gsvg_stop_element_get_offset (GSvgStopElement *self)
 {
 	g_return_val_if_fail (GSVG_IS_STOP_ELEMENT (self), 0.0);
 
-	return GSVG_STOP_ELEMENT (self)->offset.value;
+	return GSVG_STOP_ELEMENT (self)->offset.length.value;
 }
 
 const GSvgColor *

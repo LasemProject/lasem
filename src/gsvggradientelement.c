@@ -50,13 +50,20 @@ _gradient_element_render (GSvgElement *self, GSvgView *view)
 	for (iter = GDOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
 		if (GSVG_IS_STOP_ELEMENT (iter)) {
 			GSvgStopElement *stop;
+			const GSvgColor *color;
+			double offset;
+			double opacity;
 
 			stop = GSVG_STOP_ELEMENT (iter);
 
-			gsvg_view_add_color_stop (view,
-						  gsvg_stop_element_get_offset (stop),
-						  gsvg_stop_element_get_color (stop),
-						  gsvg_stop_element_get_opacity (stop));
+			offset = gsvg_stop_element_get_offset (stop);
+			color = gsvg_stop_element_get_color (stop);
+			opacity = gsvg_stop_element_get_opacity (stop);
+
+			gdom_debug ("[GSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
+				    offset, color->red, color->green, color->blue, opacity);
+
+			gsvg_view_add_color_stop (view, offset, color, opacity);
 		}
 	}
 }

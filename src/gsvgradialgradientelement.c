@@ -39,6 +39,34 @@ gsvg_radial_gradient_element_get_node_name (GDomNode *node)
 static void
 _radial_gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
+	GSvgRadialGradientElement *radial = GSVG_RADIAL_GRADIENT_ELEMENT (self);
+	GSvgLength length;
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&radial->cx, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&radial->cy, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&radial->r, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&radial->fx, &length, 0.0);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = GSVG_LENGTH_TYPE_PX;
+	gsvg_animated_length_attribute_parse (&radial->fy, &length, 0.0);
+
 	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
 
