@@ -120,6 +120,13 @@ gsvg_fill_rule_attribute_parse (GDomEnumAttribute *attribute,
 	return gdom_enum_attribute_parse (attribute, style_value, gsvg_fill_rule_from_string);
 }
 
+void
+gsvg_gradient_units_attribute_parse (GDomEnumAttribute *attribute,
+				     unsigned int *style_value)
+{
+	return gdom_enum_attribute_parse (attribute, style_value, gsvg_gradient_units_from_string);
+}
+
 static char *
 _parse_color (char *string, GSvgColor *svg_color, gboolean *color_set)
 {

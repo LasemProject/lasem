@@ -74,6 +74,14 @@ typedef enum {
 	GSVG_TRANSFORM_TYPE_SKEW_Y
 } GSvgTransformType;
 
+typedef enum {
+	GSVG_GRADIENT_UNITS_USER_SPACE_ON_USE,
+	GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX
+} GSvgGradientUnits;
+
+const char * 		gsvg_gradient_units_to_string 		(GSvgGradientUnits units);
+GSvgGradientUnits	gsvg_gradient_units_from_string		(const char *string);
+
 G_END_DECLS
 
 #endif

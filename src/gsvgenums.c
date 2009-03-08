@@ -81,3 +81,21 @@ gsvg_fill_rule_from_string (const char *string)
 	return gsvg_value_from_string (string, gsvg_fill_rule_strings,
 				       G_N_ELEMENTS (gsvg_fill_rule_strings));
 }
+
+static const char *gsvg_gradient_units_strings[] = {
+	"userSpaseOnUse",
+	"objectBoundingBox"
+};
+
+const char *
+gsvg_gradient_units_to_string (GSvgGradientUnits units)
+{
+	return gsvg_gradient_units_strings[CLAMP (units, 0, GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX)];
+}
+
+GSvgGradientUnits
+gsvg_gradient_units_from_string (const char *string)
+{
+	return gsvg_value_from_string (string, gsvg_gradient_units_strings,
+				       G_N_ELEMENTS (gsvg_gradient_units_strings));
+}

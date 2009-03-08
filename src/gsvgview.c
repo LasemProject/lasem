@@ -47,7 +47,7 @@ gsvg_view_create_radial_pattern (GSvgView *view, double cx, double cy, double r,
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
-	_set_pattern (view, cairo_pattern_create_radial (cx, cy, r, fx, fy, 0));
+	_set_pattern (view, cairo_pattern_create_radial (cx, cy, 0, fx, fy, r));
 }
 
 void
@@ -57,6 +57,14 @@ gsvg_view_create_linear_gradient (GSvgView *view, double x1, double y1,
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
 	_set_pattern (view, cairo_pattern_create_linear (x1, y1, x2, y2));
+}
+
+void
+gsvg_view_set_gradient_units (GSvgView *view, GSvgGradientUnits units)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+
+	view->gradient_units = units;
 }
 
 void
@@ -570,13 +578,8 @@ _paint_uri (GSvgView *view, const char *uri)
 {
 	cairo_t *cairo;
 	GDomElement *element;
-	double x1, x2, y1, y2;
 
 	cairo = view->dom_view.cairo;
-
-	cairo_path_extents (cairo, &x1, &y1, &x2, &y2);
-	if (x2 <= x1 || y2 <= y1)
-		return;
 
 	element = gdom_document_get_element_by_id (view->dom_view.document, uri);
 	if (!GSVG_IS_GRADIENT_ELEMENT (element))
@@ -585,13 +588,21 @@ _paint_uri (GSvgView *view, const char *uri)
 	gsvg_element_render (GSVG_ELEMENT (element), view);
 
 	if (view->pattern) {
-		cairo_matrix_t matrix;
 
-		gdom_debug ("scale = %g, %g", x2 - x1, y2 - y1);
+		if (view->gradient_units == GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
+			cairo_matrix_t matrix;
+			double x1, x2, y1, y2;
 
-		cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
-		cairo_matrix_translate (&matrix, -x1, -y1);
-		cairo_pattern_set_matrix (view->pattern, &matrix);
+			cairo_path_extents (cairo, &x1, &y1, &x2, &y2);
+			if (x2 <= x1 || y2 <= y1)
+				return;
+
+			cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
+			cairo_matrix_translate (&matrix, -x1, -y1);
+			cairo_pattern_set_matrix (view->pattern, &matrix);
+
+			gdom_debug ("scale = %g, %g", x2 - x1, y2 - y1);
+		}
 		cairo_set_source (cairo, view->pattern);
 	} else
 		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);

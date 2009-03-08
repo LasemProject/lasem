@@ -77,10 +77,13 @@ _radial_gradient_element_render (GSvgElement *self, GSvgView *view)
 	double cx, cy, fx, fy, r;
 
 	cx = radial->cx.length.base.value;
-	cy = radial->cx.length.base.value;
+	cy = radial->cy.length.base.value;
 	r  = radial->r.length.base.value;
 	fx = radial->fx.length.base.value;
 	fy = radial->fy.length.base.value;
+
+	gdom_debug ("[GSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
+		    cx, cy, r, fx, fy);
 
 	gsvg_view_create_radial_pattern (view, cx, cy, r, fx, fy);
 

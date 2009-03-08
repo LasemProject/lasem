@@ -40,11 +40,16 @@ gsvg_gradient_element_can_append_child (GDomNode *parent, GDomNode *child)
 static void
 _gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
+	GSvgGradientElement *gradient = GSVG_GRADIENT_ELEMENT (self);
+	GSvgGradientUnits units;
+
+	gsvg_gradient_units_attribute_parse (&gradient->gradient_units, &units);
 }
 
 static void
 _gradient_element_render (GSvgElement *self, GSvgView *view)
 {
+	GSvgGradientElement *gradient = GSVG_GRADIENT_ELEMENT (self);
 	GDomNode *iter;
 
 	for (iter = GDOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
@@ -66,6 +71,8 @@ _gradient_element_render (GSvgElement *self, GSvgView *view)
 			gsvg_view_add_color_stop (view, offset, color, opacity);
 		}
 	}
+
+	gsvg_view_set_gradient_units (view, gradient->gradient_units.value);
 }
 
 /* GSvgGradientElement implementation */

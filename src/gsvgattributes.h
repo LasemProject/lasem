@@ -102,6 +102,8 @@ void 		gsvg_animated_length_attribute_parse 	(GSvgAnimatedLengthAttribute *attri
 							 double font_size);
 void 		gsvg_fill_rule_attribute_parse 		(GDomEnumAttribute *attribute,
 							 unsigned int *style_value);
+void 		gsvg_gradient_units_attribute_parse 	(GDomEnumAttribute *attribute,
+							 unsigned int *style_value);
 void 		gsvg_paint_attribute_finalize 		(void *abstract);
 void 		gsvg_paint_attribute_parse 		(GSvgPaintAttribute *attribute,
 							 GSvgPaint *default_value);
