@@ -113,6 +113,11 @@ gsvg_graphic_update (GSvgElement *self, GSvgStyle *parent_style)
 		gdom_string_attribute_parse (&graphic->text->font_family, &parent_style->text.font_family);
 		gsvg_length_attribute_parse (&graphic->text->font_size, &parent_style->text.font_size, 0.0);
 	}
+
+	if (graphic->stop != NULL) {
+		gsvg_color_attribute_parse (&graphic->stop->color, &parent_style->stop.color);
+		gdom_double_attribute_parse (&graphic->stop->opacity, &parent_style->stop.opacity);
+	}
 }
 
 static void
@@ -194,6 +199,7 @@ gsvg_graphic_class_init (GSvgGraphicClass *s_graphic_class)
 	gdom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, stroke));
 	gdom_attribute_map_add_transform_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, transform));
 	gdom_attribute_map_add_text_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, text));
+	gdom_attribute_map_add_stop_attribute_bag (s_element_class->attributes, offsetof (GSvgGraphic, stop));
 }
 
 G_DEFINE_ABSTRACT_TYPE (GSvgGraphic, gsvg_graphic, GSVG_TYPE_ELEMENT)

@@ -414,8 +414,6 @@ gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 			GSvgTransformType transform;
 			double values[6];
 
-			printf ("transform = '%s'\n", string);
-
 			gsvg_str_skip_spaces (&string);
 
 			if (strncmp (string, "translate", 9) == 0) {

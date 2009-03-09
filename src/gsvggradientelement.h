@@ -23,7 +23,7 @@
 #define GSVG_GRADIENT_ELEMENT_H
 
 #include <gsvg.h>
-#include <gsvgelement.h>
+#include <gsvggraphic.h>
 
 G_BEGIN_DECLS
 
@@ -37,7 +37,7 @@ G_BEGIN_DECLS
 typedef struct _GSvgGradientElementClass GSvgGradientElementClass;
 
 struct _GSvgGradientElement {
-	GSvgElement element;
+	GSvgGraphic graphic;
 
 	GSvgTransformAttribute transform;
 	GDomEnumAttribute units;
@@ -46,7 +46,7 @@ struct _GSvgGradientElement {
 };
 
 struct _GSvgGradientElementClass {
-	GSvgElementClass  parent_class;
+	GSvgGraphicClass  parent_class;
 };
 
 GType gsvg_gradient_element_get_type (void);

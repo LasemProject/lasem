@@ -165,3 +165,38 @@ gdom_attribute_map_add_text_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_
 					      NULL,
 					      bag_offset, &gsvg_text_attribute_bag_class);
 }
+
+static void *
+gsvg_stop_attribute_bag_init (void)
+{
+	GSvgStopAttributeBag *stop;
+
+	stop = g_new0 (GSvgStopAttributeBag, 1);
+	return stop;
+}
+
+static void
+gsvg_stop_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const GDomAttributeBagClass gsvg_stop_attribute_bag_class =
+{
+	.init = gsvg_stop_attribute_bag_init,
+	.finalize = gsvg_stop_attribute_bag_finalize
+};
+
+void
+gdom_attribute_map_add_stop_attribute_bag (GDomAttributeMap *map, ptrdiff_t bag_offset)
+{
+	gdom_attribute_map_add_bag_attribute (map, "stop-color",
+					      offsetof (GSvgStopAttributeBag, color),
+					      NULL,
+					      bag_offset, &gsvg_stop_attribute_bag_class);
+
+	gdom_attribute_map_add_bag_attribute (map, "stop-opacity",
+					      offsetof (GSvgStopAttributeBag, opacity),
+					      NULL,
+					      bag_offset, &gsvg_stop_attribute_bag_class);
+}

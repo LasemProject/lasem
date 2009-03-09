@@ -52,10 +52,16 @@ typedef struct {
 	GSvgLengthAttribute font_size;
 } GSvgTextAttributeBag;
 
+typedef struct {
+	GSvgColorAttribute color;
+	GDomDoubleAttribute opacity;
+} GSvgStopAttributeBag;
+
 void 	gdom_attribute_map_add_fill_attribute_bag 	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	gdom_attribute_map_add_stroke_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	gdom_attribute_map_add_transform_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	gdom_attribute_map_add_text_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	gdom_attribute_map_add_stop_attribute_bag	(GDomAttributeMap *map, ptrdiff_t bag_offset);
 
 G_END_DECLS
 

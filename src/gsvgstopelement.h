@@ -23,7 +23,7 @@
 #define GSVG_STOP_ELEMENT_H
 
 #include <gsvg.h>
-#include <gsvgelement.h>
+#include <gsvggraphic.h>
 
 G_BEGIN_DECLS
 
@@ -37,15 +37,13 @@ G_BEGIN_DECLS
 typedef struct _GSvgStopElementClass GSvgStopElementClass;
 
 struct _GSvgStopElement {
-	GSvgElement element;
+	GSvgGraphic graphic;
 
 	GSvgLengthAttribute offset;
-	GSvgColorAttribute color;
-	GDomDoubleAttribute opacity;
 };
 
 struct _GSvgStopElementClass {
-	GSvgElementClass  parent_class;
+	GSvgGraphicClass  parent_class;
 };
 
 GType gsvg_stop_element_get_type (void);

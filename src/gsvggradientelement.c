@@ -50,18 +50,10 @@ _gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	gsvg_gradient_units_attribute_parse (&gradient->units, &units);
 	gsvg_spread_method_attribute_parse (&gradient->spread_method, &method);
 	gsvg_transform_attribute_parse (&gradient->transform);
-
-	printf ("transform = %g, %g, %g, %g, %g, %g\n",
-		gradient->transform.matrix.a,
-		gradient->transform.matrix.b,
-		gradient->transform.matrix.c,
-		gradient->transform.matrix.d,
-		gradient->transform.matrix.e,
-		gradient->transform.matrix.f);
 }
 
 static void
-_gradient_element_render (GSvgElement *self, GSvgView *view)
+_gradient_element_graphic_render (GSvgElement *self, GSvgView *view)
 {
 	GSvgGradientElement *gradient = GSVG_GRADIENT_ELEMENT (self);
 	GDomNode *iter;
@@ -106,13 +98,14 @@ gsvg_gradient_element_class_init (GSvgGradientElementClass *klass)
 {
 	GDomNodeClass *d_node_class = GDOM_NODE_CLASS (klass);
 	GSvgElementClass *s_element_class = GSVG_ELEMENT_CLASS (klass);
+	GSvgGraphicClass *s_graphic_class = GSVG_GRAPHIC_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
 	d_node_class->can_append_child = gsvg_gradient_element_can_append_child;
 
 	s_element_class->update = _gradient_element_update;
-	s_element_class->render = _gradient_element_render;
+	s_graphic_class->graphic_render = _gradient_element_graphic_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 
@@ -126,4 +119,4 @@ gsvg_gradient_element_class_init (GSvgGradientElementClass *klass)
 					  offsetof (GSvgGradientElement, href));
 }
 
-G_DEFINE_ABSTRACT_TYPE (GSvgGradientElement, gsvg_gradient_element, GSVG_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (GSvgGradientElement, gsvg_gradient_element, GSVG_TYPE_GRAPHIC)

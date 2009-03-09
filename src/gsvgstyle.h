@@ -44,6 +44,11 @@ struct _GSvgStyle {
 		char *font_family;
 		GSvgLength font_size;
 	} text;
+
+	struct {
+		GSvgColor color;
+		double opacity;
+	} stop;
 };
 
 GSvgStyle * 	gsvg_style_new 		(void);
