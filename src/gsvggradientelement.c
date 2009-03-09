@@ -42,8 +42,22 @@ _gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 {
 	GSvgGradientElement *gradient = GSVG_GRADIENT_ELEMENT (self);
 	GSvgGradientUnits units;
+	GSvgSpreadMethod method;
 
-	gsvg_gradient_units_attribute_parse (&gradient->gradient_units, &units);
+	units = GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX;
+	method = GSVG_SPREAD_METHOD_PAD;
+
+	gsvg_gradient_units_attribute_parse (&gradient->units, &units);
+	gsvg_spread_method_attribute_parse (&gradient->spread_method, &method);
+	gsvg_transform_attribute_parse (&gradient->transform);
+
+	printf ("transform = %g, %g, %g, %g, %g, %g\n",
+		gradient->transform.matrix.a,
+		gradient->transform.matrix.b,
+		gradient->transform.matrix.c,
+		gradient->transform.matrix.d,
+		gradient->transform.matrix.e,
+		gradient->transform.matrix.f);
 }
 
 static void
@@ -72,7 +86,10 @@ _gradient_element_render (GSvgElement *self, GSvgView *view)
 		}
 	}
 
-	gsvg_view_set_gradient_units (view, gradient->gradient_units.value);
+	gsvg_view_set_gradient_properties (view,
+					   gradient->spread_method.value,
+					   gradient->units.value,
+					   &gradient->transform.matrix);
 }
 
 /* GSvgGradientElement implementation */
@@ -100,9 +117,9 @@ gsvg_gradient_element_class_init (GSvgGradientElementClass *klass)
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "gradientUnits",
-					  offsetof (GSvgGradientElement, gradient_units));
+					  offsetof (GSvgGradientElement, units));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "gradientTransform",
-					  offsetof (GSvgGradientElement, gradient_transform));
+					  offsetof (GSvgGradientElement, transform));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "spreadMethod",
 					  offsetof (GSvgGradientElement, spread_method));
 	gdom_attribute_map_add_attribute (s_element_class->attributes, "xlink:href",

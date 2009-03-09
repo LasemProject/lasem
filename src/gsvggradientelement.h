@@ -39,9 +39,9 @@ typedef struct _GSvgGradientElementClass GSvgGradientElementClass;
 struct _GSvgGradientElement {
 	GSvgElement element;
 
-	GDomEnumAttribute gradient_units;
-	GDomAttribute gradient_transform;
-	GDomAttribute spread_method;
+	GSvgTransformAttribute transform;
+	GDomEnumAttribute units;
+	GDomEnumAttribute spread_method;
 	GDomAttribute href;
 };
 

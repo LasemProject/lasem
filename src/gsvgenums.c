@@ -99,3 +99,22 @@ gsvg_gradient_units_from_string (const char *string)
 	return gsvg_value_from_string (string, gsvg_gradient_units_strings,
 				       G_N_ELEMENTS (gsvg_gradient_units_strings));
 }
+
+static const char *gsvg_spread_method_strings[] = {
+	"pad",
+	"reflect",
+	"repeat"
+};
+
+const char *
+gsvg_spread_method_to_string (GSvgSpreadMethod units)
+{
+	return gsvg_spread_method_strings[CLAMP (units, 0, GSVG_SPREAD_METHOD_REPEAT)];
+}
+
+GSvgSpreadMethod
+gsvg_spread_method_from_string (const char *string)
+{
+	return gsvg_value_from_string (string, gsvg_spread_method_strings,
+				       G_N_ELEMENTS (gsvg_spread_method_strings));
+}

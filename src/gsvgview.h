@@ -48,6 +48,8 @@ struct _GSvgView {
 	cairo_pattern_t *pattern;
 
 	GSvgGradientUnits gradient_units;
+	GSvgSpreadMethod spread_method;
+	cairo_matrix_t gradient_matrix;
 };
 
 struct _GSvgViewClass {
@@ -58,7 +60,10 @@ GType gsvg_view_get_type (void);
 
 GSvgView *	gsvg_view_new 			(GSvgDocument *document);
 
-void 		gsvg_view_set_gradient_units 		(GSvgView *view, GSvgGradientUnits units);
+void 		gsvg_view_set_gradient_properties	(GSvgView *view,
+							 GSvgSpreadMethod method,
+							 GSvgGradientUnits units,
+							 GSvgMatrix *matrix);
 void 		gsvg_view_create_radial_pattern 	(GSvgView *view, double cx, double cy,
 							                 double r, double fx, double fy);
 void 		gsvg_view_create_linear_gradient 	(GSvgView *view, double x1, double y1,

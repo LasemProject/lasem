@@ -82,6 +82,15 @@ typedef enum {
 const char * 		gsvg_gradient_units_to_string 		(GSvgGradientUnits units);
 GSvgGradientUnits	gsvg_gradient_units_from_string		(const char *string);
 
+typedef enum {
+	GSVG_SPREAD_METHOD_PAD,
+	GSVG_SPREAD_METHOD_REFLECT,
+	GSVG_SPREAD_METHOD_REPEAT
+} GSvgSpreadMethod;
+
+const char * 		gsvg_spread_method_to_string 		(GSvgSpreadMethod method);
+GSvgSpreadMethod	gsvg_spread_method_from_string		(const char *string);
+
 G_END_DECLS
 
 #endif

@@ -127,6 +127,13 @@ gsvg_gradient_units_attribute_parse (GDomEnumAttribute *attribute,
 	return gdom_enum_attribute_parse (attribute, style_value, gsvg_gradient_units_from_string);
 }
 
+void
+gsvg_spread_method_attribute_parse (GDomEnumAttribute *attribute,
+				    unsigned int *style_value)
+{
+	return gdom_enum_attribute_parse (attribute, style_value, gsvg_spread_method_from_string);
+}
+
 static char *
 _parse_color (char *string, GSvgColor *svg_color, gboolean *color_set)
 {
@@ -406,6 +413,8 @@ gsvg_transform_attribute_parse (GSvgTransformAttribute *attribute)
 		while (*string != '\0') {
 			GSvgTransformType transform;
 			double values[6];
+
+			printf ("transform = '%s'\n", string);
 
 			gsvg_str_skip_spaces (&string);
 

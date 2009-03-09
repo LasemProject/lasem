@@ -44,22 +44,22 @@ _linear_gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
 	gsvg_animated_length_attribute_parse (&linear->x1, &length, 0.0);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
 	gsvg_animated_length_attribute_parse (&linear->y1, &length, 0.0);
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
+	length.value = 1.0;
+	length.value_unit = 1.0;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
 	gsvg_animated_length_attribute_parse (&linear->x2, &length, 0.0);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
-	length.type = GSVG_LENGTH_TYPE_PX;
+	length.type = GSVG_LENGTH_TYPE_NUMBER;
 	gsvg_animated_length_attribute_parse (&linear->y2, &length, 0.0);
 
 	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);

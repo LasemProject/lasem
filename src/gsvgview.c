@@ -60,11 +60,23 @@ gsvg_view_create_linear_gradient (GSvgView *view, double x1, double y1,
 }
 
 void
-gsvg_view_set_gradient_units (GSvgView *view, GSvgGradientUnits units)
+gsvg_view_set_gradient_properties (GSvgView *view,
+				   GSvgSpreadMethod method,
+				   GSvgGradientUnits units,
+				   GSvgMatrix *matrix)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
 	view->gradient_units = units;
+	view->spread_method = method;
+
+	if (matrix != NULL) {
+		cairo_matrix_init (&view->gradient_matrix, matrix->a, matrix->b,
+						           matrix->c, matrix->d,
+							   matrix->e, matrix->f);
+		cairo_matrix_invert (&view->gradient_matrix);
+	} else
+		cairo_matrix_init_identity (&view->gradient_matrix);
 }
 
 void
@@ -599,10 +611,25 @@ _paint_uri (GSvgView *view, const char *uri)
 
 			cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
 			cairo_matrix_translate (&matrix, -x1, -y1);
+
+			cairo_matrix_multiply (&matrix, &view->gradient_matrix, &matrix);
 			cairo_pattern_set_matrix (view->pattern, &matrix);
 
 			gdom_debug ("scale = %g, %g", x2 - x1, y2 - y1);
+		} else
+			cairo_pattern_set_matrix (view->pattern, &view->gradient_matrix);
+
+		switch (view->spread_method) {
+			case GSVG_SPREAD_METHOD_REFLECT:
+				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_REFLECT);
+				break;
+			case GSVG_SPREAD_METHOD_REPEAT:
+				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_REPEAT);
+				break;
+			default:
+				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_PAD);
 		}
+
 		cairo_set_source (cairo, view->pattern);
 	} else
 		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);
@@ -913,6 +940,10 @@ static void
 gsvg_view_init (GSvgView *view)
 {
 	_set_pattern (view, NULL);
+
+	view->gradient_units = GSVG_GRADIENT_UNITS_USER_SPACE_ON_USE;
+	view->spread_method = GSVG_SPREAD_METHOD_PAD;
+	cairo_matrix_init_identity (&view->gradient_matrix);
 }
 
 static void
