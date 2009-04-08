@@ -80,6 +80,7 @@ libgmathml_la_SOURCES =			\
 	gsvglineargradientelement.c	\
 	gsvgradialgradientelement.c	\
 	gsvgstopelement.c		\
+	gsvgpatternelement.c		\
 	gsvgenums.c			\
 	gsvgattributes.c		\
 	gsvgattributebags.c		\
@@ -156,6 +157,7 @@ libgmathml_la_HEADERS = \
 	gsvglineargradientelement.h	\
 	gsvgradialgradientelement.h	\
 	gsvgstopelement.h		\
+	gsvgpatternelement.h		\
 	gsvgenums.h			\
 	gsvgattributes.h		\
 	gsvgattributebags.h		\

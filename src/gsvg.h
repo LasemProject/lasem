@@ -46,6 +46,7 @@ typedef struct _GSvgGradientElement GSvgGradientElement;
 typedef struct _GSvgLinearGradientElement GSvgLinearGradientElement;
 typedef struct _GSvgRadialGradientElement GSvgRadialGradientElement;
 typedef struct _GSvgStopElement GSvgStopElement;
+typedef struct _GSvgPatternElement GSvgPatternElement;
 
 typedef struct _GSvgView GSvgView;
 typedef struct _GSvgStyle GSvgStyle;

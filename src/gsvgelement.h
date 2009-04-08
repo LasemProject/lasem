@@ -59,12 +59,14 @@ struct _GSvgElementClass {
 
 	void			(*update)		(GSvgElement *element, GSvgStyle *style);
 	void 			(*render)		(GSvgElement *element, GSvgView *view);
+	void 			(*render_paint)		(GSvgElement *element, GSvgView *view);
 };
 
 GType gsvg_element_get_type (void);
 
 void			gsvg_element_update 		(GSvgElement *element, const GSvgStyle *style);
 void 			gsvg_element_render 		(GSvgElement *element, GSvgView *view);
+void 			gsvg_element_render_paint 	(GSvgElement *element, GSvgView *view);
 
 G_END_DECLS
 

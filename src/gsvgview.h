@@ -38,6 +38,8 @@ G_BEGIN_DECLS
 typedef struct _GSvgViewClass GSvgViewClass;
 typedef struct _GSvgViewPrivate GSvgViewPrivate;
 
+typedef struct _GSvgViewPatternData GSvgViewPatternData;
+
 struct _GSvgView {
 	GDomView dom_view;
 
@@ -45,11 +47,9 @@ struct _GSvgView {
 	GSList *stroke_stack;
 	GSList *text_stack;
 
-	cairo_pattern_t *pattern;
+	GSvgViewPatternData *pattern_data;
 
-	GSvgGradientUnits gradient_units;
-	GSvgSpreadMethod spread_method;
-	cairo_matrix_t gradient_matrix;
+	GSList *pattern_stack;
 };
 
 struct _GSvgViewClass {
@@ -60,16 +60,22 @@ GType gsvg_view_get_type (void);
 
 GSvgView *	gsvg_view_new 			(GSvgDocument *document);
 
-void 		gsvg_view_set_gradient_properties	(GSvgView *view,
-							 GSvgSpreadMethod method,
-							 GSvgGradientUnits units,
-							 GSvgMatrix *matrix);
-void 		gsvg_view_create_radial_pattern 	(GSvgView *view, double cx, double cy,
+void 		gsvg_view_create_radial_gradient 	(GSvgView *view, double cx, double cy,
 							                 double r, double fx, double fy);
 void 		gsvg_view_create_linear_gradient 	(GSvgView *view, double x1, double y1,
 							                 double x2, double y2);
-void 		gsvg_view_add_color_stop 		(GSvgView *view, double offset,
-							                 const GSvgColor *color, double opacity);
+void 		gsvg_view_add_gradient_color_stop	(GSvgView *view, double offset,
+							 const GSvgColor *color, double opacity);
+void 		gsvg_view_set_gradient_properties	(GSvgView *view,
+							 GSvgSpreadMethod method,
+							 GSvgGradientUnits units,
+							 const GSvgMatrix *matrix);
+
+void		gsvg_view_create_surface_pattern	(GSvgView *view, double width, double height);
+void 		gsvg_view_set_pattern_properties	(GSvgView *view,
+							 GSvgGradientUnits units,
+							 GSvgGradientUnits content_units,
+							 const GSvgMatrix *matrix);
 
 void		gsvg_view_push_transform 		(GSvgView *view, const GSvgMatrix *matrix);
 void		gsvg_view_pop_transform			(GSvgView *view);

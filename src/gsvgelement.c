@@ -138,13 +138,30 @@ gsvg_element_render (GSvgElement *element, GSvgView *view)
 
 	g_return_if_fail (GSVG_IS_ELEMENT (element));
 
-	gdom_debug ("[GSvgElement::render] Render %s (%s)",
-		    gdom_node_get_node_name (GDOM_NODE (element)),
-		    element->id.value != NULL ? element->id.value : "no id");
+	element_class = GSVG_ELEMENT_GET_CLASS (element);
+	if (element_class->render != NULL) {
+		gdom_debug ("[GSvgElement::render] Render %s (%s)",
+			    gdom_node_get_node_name (GDOM_NODE (element)),
+			    element->id.value != NULL ? element->id.value : "no id");
+
+		element_class->render (element, view);
+	}
+}
+
+void
+gsvg_element_render_paint (GSvgElement *element, GSvgView *view)
+{
+	GSvgElementClass *element_class;
+
+	g_return_if_fail (GSVG_IS_ELEMENT (element));
 
 	element_class = GSVG_ELEMENT_GET_CLASS (element);
-	if (element_class->render) {
-		element_class->render (element, view);
+	if (element_class->render_paint != NULL) {
+		gdom_debug ("[GSvgElement::render_paint] Render %s (%s)",
+			    gdom_node_get_node_name (GDOM_NODE (element)),
+			    element->id.value != NULL ? element->id.value : "no id");
+
+		element_class->render_paint (element, view);
 	}
 }
 
@@ -181,6 +198,7 @@ gsvg_element_class_init (GSvgElementClass *s_element_class)
 
 	s_element_class->update = NULL;
 	s_element_class->render = _render;
+	s_element_class->render_paint = NULL;
 
 	s_element_class->attributes = gdom_attribute_map_new ();
 

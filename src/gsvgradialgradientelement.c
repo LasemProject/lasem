@@ -71,7 +71,7 @@ _radial_gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 }
 
 static void
-_radial_gradient_element_render (GSvgElement *self, GSvgView *view)
+_radial_gradient_element_render_paint (GSvgElement *self, GSvgView *view)
 {
 	GSvgRadialGradientElement *radial = GSVG_RADIAL_GRADIENT_ELEMENT (self);
 	double cx, cy, fx, fy, r;
@@ -85,9 +85,9 @@ _radial_gradient_element_render (GSvgElement *self, GSvgView *view)
 	gdom_debug ("[GSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
 		    cx, cy, r, fx, fy);
 
-	gsvg_view_create_radial_pattern (view, cx, cy, r, fx, fy);
+	gsvg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
 
-	GSVG_ELEMENT_CLASS (parent_class)->render (self, view);
+	GSVG_ELEMENT_CLASS (parent_class)->render_paint (self, view);
 }
 
 /* GSvgRadialGradientElement implementation */
@@ -125,7 +125,7 @@ gsvg_radial_gradient_element_class_init (GSvgRadialGradientElementClass *s_svg_c
 	d_node_class->get_node_name = gsvg_radial_gradient_element_get_node_name;
 
 	s_element_class->update = _radial_gradient_element_update;
-	s_element_class->render = _radial_gradient_element_render;
+	s_element_class->render_paint = _radial_gradient_element_render_paint;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);
 

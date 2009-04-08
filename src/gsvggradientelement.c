@@ -50,6 +50,8 @@ _gradient_element_update (GSvgElement *self, GSvgStyle *parent_style)
 	gsvg_gradient_units_attribute_parse (&gradient->units, &units);
 	gsvg_spread_method_attribute_parse (&gradient->spread_method, &method);
 	gsvg_transform_attribute_parse (&gradient->transform);
+
+	GSVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
 
 static void
@@ -74,7 +76,7 @@ _gradient_element_graphic_render (GSvgElement *self, GSvgView *view)
 			gdom_debug ("[GSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
 				    offset, color->red, color->green, color->blue, opacity);
 
-			gsvg_view_add_color_stop (view, offset, color, opacity);
+			gsvg_view_add_gradient_color_stop (view, offset, color, opacity);
 		}
 	}
 
@@ -105,6 +107,8 @@ gsvg_gradient_element_class_init (GSvgGradientElementClass *klass)
 	d_node_class->can_append_child = gsvg_gradient_element_can_append_child;
 
 	s_element_class->update = _gradient_element_update;
+	s_element_class->render_paint = s_element_class->render;
+	s_element_class->render = NULL;
 	s_graphic_class->graphic_render = _gradient_element_graphic_render;
 
 	s_element_class->attributes = gdom_attribute_map_duplicate (s_element_class->attributes);

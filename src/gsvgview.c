@@ -25,6 +25,7 @@
 #include <gsvgelement.h>
 #include <gsvgsvgelement.h>
 #include <gsvggradientelement.h>
+#include <gsvgpatternelement.h>
 #include <gsvgutils.h>
 #include <glib/gprintf.h>
 
@@ -33,17 +34,67 @@
 
 static GObjectClass *parent_class;
 
+struct _GSvgViewPatternData {
+	cairo_t *old_cairo;
+
+	cairo_pattern_t *pattern;
+	cairo_matrix_t matrix;
+
+	GSvgGradientUnits units;
+	GSvgGradientUnits content_units;
+	GSvgSpreadMethod spread_method;
+};
+
+static void
+_start_pattern (GSvgView *view)
+{
+	gdom_debug ("[GSvgView::start_pattern]");
+
+	view->pattern_stack = g_slist_prepend (view->pattern_stack, view->pattern_data);
+
+	view->pattern_data = g_new (GSvgViewPatternData, 1);
+	view->pattern_data->old_cairo = view->dom_view.cairo;
+	view->pattern_data->pattern = NULL;
+	view->pattern_data->units = GSVG_GRADIENT_UNITS_USER_SPACE_ON_USE;
+	view->pattern_data->spread_method = GSVG_SPREAD_METHOD_PAD;
+
+	cairo_matrix_init_identity (&view->pattern_data->matrix);
+}
+
+static void
+_end_pattern (GSvgView *view)
+{
+	g_return_if_fail (view->pattern_data != NULL);
+
+	if (view->pattern_data->pattern != NULL)
+		cairo_pattern_destroy (view->pattern_data->pattern);
+	g_free (view->pattern_data);
+
+	if (view->pattern_stack != NULL) {
+		view->pattern_data = view->pattern_stack->data;
+		view->pattern_stack = g_slist_delete_link (view->pattern_stack, view->pattern_stack);
+	} else
+		view->pattern_data = NULL;
+
+	gdom_debug ("[GSvgView::end_pattern]");
+}
+
 static void
 _set_pattern (GSvgView *view, cairo_pattern_t *pattern)
 {
-	if (view->pattern != NULL)
-		cairo_pattern_destroy (view->pattern);
+	g_return_if_fail (view->pattern_data != NULL);
 
-	view->pattern = pattern;
+	if (view->pattern_data->pattern != NULL)
+		cairo_pattern_destroy (view->pattern_data->pattern);
+
+	view->pattern_data->pattern = pattern;
 }
 
 void
-gsvg_view_create_radial_pattern (GSvgView *view, double cx, double cy, double r, double fx, double fy)
+gsvg_view_create_radial_gradient (GSvgView *view,
+				  double cx, double cy,
+				  double r,
+				  double fx, double fy)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
 
@@ -51,7 +102,8 @@ gsvg_view_create_radial_pattern (GSvgView *view, double cx, double cy, double r,
 }
 
 void
-gsvg_view_create_linear_gradient (GSvgView *view, double x1, double y1,
+gsvg_view_create_linear_gradient (GSvgView *view,
+				  double x1, double y1,
 				  double x2, double y2)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
@@ -60,34 +112,53 @@ gsvg_view_create_linear_gradient (GSvgView *view, double x1, double y1,
 }
 
 void
-gsvg_view_set_gradient_properties (GSvgView *view,
-				   GSvgSpreadMethod method,
-				   GSvgGradientUnits units,
-				   GSvgMatrix *matrix)
+gsvg_view_add_gradient_color_stop (GSvgView *view, double offset, const GSvgColor *color, double opacity)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
+	g_return_if_fail (view->pattern_data != NULL);
+	g_return_if_fail (view->pattern_data->pattern != NULL);
+	g_return_if_fail (color != NULL);
 
-	view->gradient_units = units;
-	view->spread_method = method;
-
-	if (matrix != NULL) {
-		cairo_matrix_init (&view->gradient_matrix, matrix->a, matrix->b,
-						           matrix->c, matrix->d,
-							   matrix->e, matrix->f);
-		cairo_matrix_invert (&view->gradient_matrix);
-	} else
-		cairo_matrix_init_identity (&view->gradient_matrix);
+	cairo_pattern_add_color_stop_rgba (view->pattern_data->pattern, offset,
+					   color->red, color->green, color->blue, opacity);
 }
 
 void
-gsvg_view_add_color_stop (GSvgView *view, double offset, const GSvgColor *color, double opacity)
+gsvg_view_set_gradient_properties (GSvgView *view,
+				   GSvgSpreadMethod method,
+				   GSvgGradientUnits units,
+				   const GSvgMatrix *matrix)
 {
 	g_return_if_fail (GSVG_IS_VIEW (view));
-	g_return_if_fail (view->pattern != NULL);
-	g_return_if_fail (color != NULL);
+	g_return_if_fail (view->pattern_data != NULL);
 
-	cairo_pattern_add_color_stop_rgba (view->pattern, offset,
-					   color->red, color->green, color->blue, opacity);
+	view->pattern_data->units = units;
+	view->pattern_data->spread_method = method;
+
+	if (matrix != NULL) {
+		cairo_matrix_init (&view->pattern_data->matrix,
+				   matrix->a, matrix->b,
+				   matrix->c, matrix->d,
+				   matrix->e, matrix->f);
+		cairo_matrix_invert (&view->pattern_data->matrix);
+	} else
+		cairo_matrix_init_identity (&view->pattern_data->matrix);
+}
+
+void
+gsvg_view_create_surface_pattern (GSvgView *view,
+				  double width, double height)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
+}
+
+void
+gsvg_view_set_pattern_properties (GSvgView *view,
+				  GSvgGradientUnits units,
+				  GSvgGradientUnits content_units,
+				  const GSvgMatrix *matrix)
+{
+	g_return_if_fail (GSVG_IS_VIEW (view));
 }
 
 typedef struct {
@@ -591,17 +662,20 @@ _paint_uri (GSvgView *view, const char *uri)
 	cairo_t *cairo;
 	GDomElement *element;
 
-	cairo = view->dom_view.cairo;
-
 	element = gdom_document_get_element_by_id (view->dom_view.document, uri);
-	if (!GSVG_IS_GRADIENT_ELEMENT (element))
+	if (!GSVG_IS_GRADIENT_ELEMENT (element) &&
+	    !GSVG_IS_PATTERN_ELEMENT (element))
 		return;
 
-	gsvg_element_render (GSVG_ELEMENT (element), view);
+	_start_pattern (view);
 
-	if (view->pattern) {
+	gsvg_element_render_paint (GSVG_ELEMENT (element), view);
 
-		if (view->gradient_units == GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
+	cairo = view->pattern_data->old_cairo;
+
+	if (view->pattern_data->pattern) {
+
+		if (view->pattern_data->units == GSVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
 			cairo_matrix_t matrix;
 			double x1, x2, y1, y2;
 
@@ -612,27 +686,27 @@ _paint_uri (GSvgView *view, const char *uri)
 			cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
 			cairo_matrix_translate (&matrix, -x1, -y1);
 
-			cairo_matrix_multiply (&matrix, &view->gradient_matrix, &matrix);
-			cairo_pattern_set_matrix (view->pattern, &matrix);
-
-			gdom_debug ("scale = %g, %g", x2 - x1, y2 - y1);
+			cairo_matrix_multiply (&matrix, &view->pattern_data->matrix, &matrix);
+			cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
 		} else
-			cairo_pattern_set_matrix (view->pattern, &view->gradient_matrix);
+			cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
 
-		switch (view->spread_method) {
+		switch (view->pattern_data->spread_method) {
 			case GSVG_SPREAD_METHOD_REFLECT:
-				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_REFLECT);
+				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REFLECT);
 				break;
 			case GSVG_SPREAD_METHOD_REPEAT:
-				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_REPEAT);
+				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
 				break;
 			default:
-				cairo_pattern_set_extend (view->pattern, CAIRO_EXTEND_PAD);
+				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_PAD);
 		}
 
-		cairo_set_source (cairo, view->pattern);
+		cairo_set_source (cairo, view->pattern_data->pattern);
 	} else
 		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);
+
+	_end_pattern (view);
 }
 
 static gboolean
@@ -939,18 +1013,11 @@ gsvg_view_new (GSvgDocument *document)
 static void
 gsvg_view_init (GSvgView *view)
 {
-	_set_pattern (view, NULL);
-
-	view->gradient_units = GSVG_GRADIENT_UNITS_USER_SPACE_ON_USE;
-	view->spread_method = GSVG_SPREAD_METHOD_PAD;
-	cairo_matrix_init_identity (&view->gradient_matrix);
 }
 
 static void
 gsvg_view_finalize (GObject *object)
 {
-	_set_pattern (GSVG_VIEW (object), NULL);
-
 	parent_class->finalize (object);
 }
 
