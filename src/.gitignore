@@ -3,6 +3,6 @@
 *.lo
 *.la
 .libs
-gmathmlrender
-gmathmltest
+lasemrender
+lasemtest
 *.swp
