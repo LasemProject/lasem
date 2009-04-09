@@ -20,7 +20,7 @@
  */
 
 #include <lsmdomattributes.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -106,7 +106,7 @@ lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
 	attribute_infos->attribute_offset = attribute_offset;
 	attribute_infos->attribute_class = attribute_class;
 
-	lsm_dom_debug ("name = %s - attribute_offset = %d", name, attribute_offset);
+	lsm_debug ("name = %s - attribute_offset = %d", name, attribute_offset);
 
 	g_hash_table_insert (map->attribute_hash, (char *) name, attribute_infos);
 
@@ -161,7 +161,7 @@ _get_attribute (LsmDomAttributeMap *map,
 
 	attribute_infos = g_hash_table_lookup (map->attribute_hash, name);
 	if (attribute_infos == NULL) {
-		lsm_dom_debug ("[LsmDomAttribute] Attribute not found (%s)", name);
+		lsm_debug ("[LsmDomAttribute] Attribute not found (%s)", name);
 		return NULL;
 	}
 

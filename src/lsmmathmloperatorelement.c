@@ -20,7 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmmathmloperatorelement.h>
 #include <lsmmathmloperatordictionary.h>
 #include <lsmmathmlview.h>
@@ -81,7 +81,7 @@ lsm_mathml_operator_element_post_new_child (LsmDomNode *self, LsmDomNode *child)
 
 	entry = lsm_mathml_operator_element_dictionary_lookup (operator_element);
 
-	lsm_dom_debug ("[OperatorElement::post_new_child] found %s %s",
+	lsm_debug ("[OperatorElement::post_new_child] found %s %s",
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	flag = entry->stretchy;
@@ -106,7 +106,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 
 	entry = lsm_mathml_operator_element_dictionary_lookup (operator_element);
 
-	lsm_dom_debug ("[OperatorElement::update] found %s %s",
+	lsm_debug ("[OperatorElement::update] found %s %s",
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	space = entry->left_space;
@@ -121,7 +121,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	lsm_dom_boolean_attribute_parse (&operator_element->accent, &flag);
 
 	if (operator_element->accent.value)
-		lsm_dom_debug ("[OperatorElement::update] Is accent");
+		lsm_debug ("[OperatorElement::update] Is accent");
 
 	flag = entry->large_op;
 	lsm_dom_boolean_attribute_parse (&operator_element->large_op, &flag);
@@ -139,7 +139,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == LSM_MATHML_DISPLAY_BLOCK);
 	if (operator_element->is_large_op)
-		lsm_dom_debug ("[OperatorElement::update] Large op");
+		lsm_debug ("[OperatorElement::update] Large op");
 }
 
 static const LsmMathmlBbox *

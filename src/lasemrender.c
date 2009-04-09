@@ -21,7 +21,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmdomtext.h>
 #include <lsmmathmloperatordictionary.h>
 #include <lsmmathmldocument.h>
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
 	g_option_context_free (context);
 
 	if (option_debug)
-		lsm_dom_debug_enable ();
+		lsm_debug_enable ();
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
 		g_print ("One input file name is required\n");
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
 
 				g_object_unref (document);
 
-				lsm_dom_debug ("width = %g pt, height = %g pt",  width, height);
+				lsm_debug ("width = %g pt, height = %g pt",  width, height);
 			} else
 				g_warning ("Can't load %s", input_filename);
 		} else

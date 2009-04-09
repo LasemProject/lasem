@@ -19,7 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmsvgview.h>
 #include <lsmsvgdocument.h>
 #include <lsmsvgelement.h>
@@ -48,7 +48,7 @@ struct _GSvgViewPatternData {
 static void
 _start_pattern (LsmSvgView *view)
 {
-	lsm_dom_debug ("[LsmSvgView::start_pattern]");
+	lsm_debug ("[LsmSvgView::start_pattern]");
 
 	view->pattern_stack = g_slist_prepend (view->pattern_stack, view->pattern_data);
 
@@ -76,7 +76,7 @@ _end_pattern (LsmSvgView *view)
 	} else
 		view->pattern_data = NULL;
 
-	lsm_dom_debug ("[LsmSvgView::end_pattern]");
+	lsm_debug ("[LsmSvgView::end_pattern]");
 }
 
 static void

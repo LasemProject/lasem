@@ -2,8 +2,8 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = itex2mml src po
 
-gmathmldocdir = ${prefix}/doc/gmathml
-gmathmldoc_DATA = 	\
+lasemdocdir = ${prefix}/doc/lasem
+lasemdoc_DATA = 	\
 	README		\
 	COPYING		\
 	ChangeLog 	\
@@ -11,7 +11,7 @@ gmathmldoc_DATA = 	\
 	INSTALL		\
 	NEWS
 
-EXTRA_DIST = $(gmathmldoc_DATA)
+EXTRA_DIST = $(lasemdoc_DATA)
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:
@@ -22,4 +22,4 @@ dist-hook:
 	done
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = gmathml.pc
+pkgconfig_DATA = lasem.pc

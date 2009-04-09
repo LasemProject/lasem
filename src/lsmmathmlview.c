@@ -20,7 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmmathmlview.h>
 #include <lsmmathmldocument.h>
 #include <lsmmathmlelement.h>
@@ -185,7 +185,7 @@ lsm_mathml_view_measure_axis_offset (LsmMathmlView *view,
 
 	axis_offset = pango_units_to_double (- 0.5 * ink_rect.height - ink_rect.y + baseline);
 
-	lsm_dom_debug ("[LsmMathmlView::measure_axis_offset] offset = %g (%g %%)",
+	lsm_debug ("[LsmMathmlView::measure_axis_offset] offset = %g (%g %%)",
 		   axis_offset, axis_offset / math_size);
 
 	return axis_offset;
@@ -250,7 +250,7 @@ lsm_mathml_view_show_text (LsmMathmlView *view,
 	if (text == NULL || strlen (text) < 1)
 		return;
 
-	lsm_dom_debug ("[LsmMathmlView::show_text] '%s' at %g, %g (size = %g) %s",
+	lsm_debug ("[LsmMathmlView::show_text] '%s' at %g, %g (size = %g) %s",
 		   text, x, y, style->math_size,
 		   lsm_mathml_variant_to_string (style->math_variant));
 
@@ -348,7 +348,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 	pango_layout = view->dom_view.measure_pango_layout;
 
 	if (is_stretch_bbox_defined)
-		lsm_dom_debug ("[LsmMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
+		lsm_debug ("[LsmMathmlView::measure_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
 	glyph = lsm_mathml_glyph_table_find_operator_glyph (text);
@@ -357,7 +357,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 							 pango_layout, &ink_rect, NULL, &baseline);
 		flags = 0;
 
-		lsm_dom_debug ("[LsmMathmlView::measure_operator] operator = %s", text);
+		lsm_debug ("[LsmMathmlView::measure_operator] operator = %s", text);
 
 	} else {
 		PangoLayoutIter *iter;
@@ -388,7 +388,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 			height = pango_units_to_double (ink_rect.height);
 			width = pango_units_to_double (ink_rect.width);
 
-			lsm_dom_debug ("[LsmMathmlView::measure_operator] Glyph #%i -> width = %g, height = %g", i,
+			lsm_debug ("[LsmMathmlView::measure_operator] Glyph #%i -> width = %g, height = %g", i,
 				    width, height);
 
 			if (!is_stretch_bbox_defined) {
@@ -411,7 +411,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 		}
 
 		if (found)
-			lsm_dom_debug ("[LsmMathmlView::measure_operator] Found sized glyph #%i", i);
+			lsm_debug ("[LsmMathmlView::measure_operator] Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
@@ -481,7 +481,7 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 	pango_layout = view->dom_view.measure_pango_layout;
 
 	if (stretch_bbox->is_defined)
-		lsm_dom_debug ("[LsmMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
+		lsm_debug ("[LsmMathmlView::show_operator] Stretch bbox w = %g, h = %g, d = %g",
 			   stretch_bbox->width, stretch_bbox->height, stretch_bbox->depth);
 
 	glyph = lsm_mathml_glyph_table_find_operator_glyph (text);
@@ -512,7 +512,7 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
 
-			lsm_dom_debug ("[LsmMathmlView::show_operator] Glyph #%i -> width = %g, height = %g", i,
+			lsm_debug ("[LsmMathmlView::show_operator] Glyph #%i -> width = %g, height = %g", i,
 				   pango_units_to_double (ink_rect.width),
 				   pango_units_to_double (ink_rect.height));
 
@@ -538,14 +538,14 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 		}
 
 		if (found)
-			lsm_dom_debug ("[LsmMathmlView::show_operator] Found sized glyph #%i", i);
+			lsm_debug ("[LsmMathmlView::show_operator] Found sized glyph #%i", i);
 
 		iter = pango_layout_get_iter (pango_layout);
 		baseline = pango_layout_iter_get_baseline (iter);
 		pango_layout_iter_free (iter);
 	}
 
-	lsm_dom_debug ("[LsmMathmlView::show_operator] '%s' at %g, %g (size = %g) %s",
+	lsm_debug ("[LsmMathmlView::show_operator] '%s' at %g, %g (size = %g) %s",
 		    text, x, y, style->math_size,
 		    lsm_mathml_variant_to_string (style->math_variant));
 
@@ -983,7 +983,7 @@ lsm_mathml_view_render (LsmDomView *dom_view, double x, double y)
 
 	lsm_mathml_math_element_render (math_element, view);
 
-	lsm_dom_debug ("[LsmMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
+	lsm_debug ("[LsmMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
 
 	cairo_restore (cairo);
 }

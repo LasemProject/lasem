@@ -19,7 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmdomdocument.h>
 #include <lsmsvgelement.h>
 #include <lsmsvgview.h>
@@ -55,7 +55,7 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 {
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS(self);
 
-	lsm_dom_debug ("[LsmSvgElement::set_attribute] node = %s, name = %s, value = %s",
+	lsm_debug ("[LsmSvgElement::set_attribute] node = %s, name = %s, value = %s",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)), name, value);
 
 	lsm_dom_attribute_map_set_attribute (s_element_class->attributes, self,
@@ -84,7 +84,7 @@ lsm_svg_element_update (LsmSvgElement *self, const LsmSvgStyle *parent_style)
 	g_return_if_fail (parent_style != NULL);
 
 	if (!self->need_update && !self->need_children_update) {
-		lsm_dom_debug ("[Element::update] %s already up to date",
+		lsm_debug ("[Element::update] %s already up to date",
 			    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
 		return;
 	}
@@ -98,7 +98,7 @@ lsm_svg_element_update (LsmSvgElement *self, const LsmSvgStyle *parent_style)
 	style = lsm_svg_style_duplicate (parent_style);
 	g_return_if_fail (style != NULL);
 
-	lsm_dom_debug ("[Element::update] update %s",
+	lsm_debug ("[Element::update] update %s",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
 
 	if (element_class->update != NULL)
@@ -124,7 +124,7 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmDomNode *node;
 
-	lsm_dom_debug ("[LsmSvgElement::_render");
+	lsm_debug ("[LsmSvgElement::_render");
 
 	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
 		if (LSM_SVG_IS_ELEMENT (node))
@@ -140,7 +140,7 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render != NULL) {
-		lsm_dom_debug ("[LsmSvgElement::render] Render %s (%s)",
+		lsm_debug ("[LsmSvgElement::render] Render %s (%s)",
 			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 			    element->id.value != NULL ? element->id.value : "no id");
 
@@ -157,7 +157,7 @@ lsm_svg_element_render_paint (LsmSvgElement *element, LsmSvgView *view)
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render_paint != NULL) {
-		lsm_dom_debug ("[LsmSvgElement::render_paint] Render %s (%s)",
+		lsm_debug ("[LsmSvgElement::render_paint] Render %s (%s)",
 			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 			    element->id.value != NULL ? element->id.value : "no id");
 

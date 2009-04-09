@@ -19,7 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmsvgdocument.h>
 #include <lsmsvgsvgelement.h>
 #include <lsmsvggelement.h>
@@ -92,7 +92,7 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_symbol_element_new ();
 
 	if (node != NULL)
-		lsm_dom_debug ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
+		lsm_debug ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
 }

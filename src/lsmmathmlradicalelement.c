@@ -20,7 +20,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmmathmlradicalelement.h>
 #include <lsmmathmlview.h>
 
@@ -124,7 +124,7 @@ lsm_mathml_radical_element_measure (LsmMathmlElement *self, LsmMathmlView *view,
 
 	lsm_mathml_bbox_add_horizontally (&self->bbox, &radical->bbox);
 
-	lsm_dom_debug ("[LsmMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
+	lsm_debug ("[LsmMathmlRadicalElement::measure] Radical bbox w = %g, h = %g, d = %g",
 		    radical->bbox.width, radical->bbox.height, radical->bbox.depth);
 
 	if (radical->type == LSM_MATHML_RADICAL_ELEMENT_TYPE_ROOT) {
@@ -140,7 +140,7 @@ lsm_mathml_radical_element_measure (LsmMathmlElement *self, LsmMathmlView *view,
 			radical->radical_x_offset = child_bbox.width - x_offset;
 			self->bbox.width += radical->radical_x_offset;
 
-			lsm_dom_debug ("[LsmMathmlRadicalElement::measure] y_offset = %g", y_offset);
+			lsm_debug ("[LsmMathmlRadicalElement::measure] y_offset = %g", y_offset);
 
 			height = self->bbox.height - y_offset + child_bbox.height + child_bbox.depth;
 			if (height > self->bbox.height)
@@ -148,7 +148,7 @@ lsm_mathml_radical_element_measure (LsmMathmlElement *self, LsmMathmlView *view,
 
 			radical->order_y_offset = - self->bbox.height + child_bbox.height;
 
-			lsm_dom_debug ("[LsmMathmlRadicalElement::measure] order_y_offset = %g",
+			lsm_debug ("[LsmMathmlRadicalElement::measure] order_y_offset = %g",
 				    radical->order_y_offset);
 		}
 	}

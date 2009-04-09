@@ -22,7 +22,7 @@
 #include <lsmsvgattributes.h>
 #include <lsmsvgcolors.h>
 #include <lsmsvgutils.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

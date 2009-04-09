@@ -16,7 +16,7 @@ liblasem_la_LIBADD = 				\
 	$(LASEM_LIBS)
 
 liblasem_la_SOURCES =				\
-	lsmdomdebug.c				\
+	lsmdebug.c				\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
 	lsmdomdocument.c			\
@@ -92,8 +92,8 @@ liblasem_la_SOURCES =				\
 
 liblasem_ladir = $(includedir)/lasem
 liblasem_la_HEADERS = \
+	lsmdebug.h				\
 	lsmdom.h				\
-	lsmdomdebug.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
 	lsmdomdocument.h			\

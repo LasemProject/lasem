@@ -21,7 +21,7 @@
 
 #include <lsmsvglineargradientelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class;
@@ -76,7 +76,7 @@ _linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	x2 = linear->x2.length.base.value;
 	y2 = linear->y2.length.base.value;
 
-	lsm_dom_debug ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
+	lsm_debug ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
 		    x1, y1, x2, y2);
 
 	lsm_svg_view_create_linear_gradient (view, x1, y1, x2, y2);

@@ -22,7 +22,7 @@
 #include <lsmsvggraphic.h>
 #include <lsmsvgview.h>
 #include <lsmsvgutils.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -70,7 +70,7 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 						old_char = *end_ptr;
 						*end_ptr = '\0';
 
-						lsm_dom_debug ("[LsmSvgGraphic::update] inline_style %s = %s",
+						lsm_debug ("[LsmSvgGraphic::update] inline_style %s = %s",
 							    name, value);
 
 						lsm_dom_attribute_map_set_css_attribute (s_element_class->attributes,
@@ -90,7 +90,7 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	}
 
 	if (graphic->fill != NULL) {
-		lsm_dom_debug ("[LsmSvgGraphic::update] fill");
+		lsm_debug ("[LsmSvgGraphic::update] fill");
 
 		lsm_svg_paint_attribute_parse (&graphic->fill->paint, &parent_style->fill.paint);
 		lsm_svg_fill_rule_attribute_parse (&graphic->fill->rule, &parent_style->fill.rule);
@@ -98,7 +98,7 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	}
 
 	if (graphic->stroke != NULL) {
-		lsm_dom_debug ("[LsmSvgGraphic::update] stroke");
+		lsm_debug ("[LsmSvgGraphic::update] stroke");
 
 		lsm_svg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint);
 		lsm_svg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width, 0.0);
@@ -125,7 +125,7 @@ _graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmDomNode *node;
 
-	lsm_dom_debug ("[LsmSvgGraphic::_graphic_render");
+	lsm_debug ("[LsmSvgGraphic::_graphic_render");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_SVG_IS_ELEMENT (node))

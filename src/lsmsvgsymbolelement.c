@@ -21,7 +21,7 @@
 
 #include <lsmsvgsymbolelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmdomdocument.h>
 #include <stdio.h>
 

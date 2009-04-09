@@ -20,7 +20,7 @@
  */
 
 #include <lsmsvgdefselement.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class;

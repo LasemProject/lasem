@@ -22,7 +22,7 @@
 #include <lsmsvgsvgelement.h>
 #include <lsmsvgstyle.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class;
@@ -66,11 +66,11 @@ _svg_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
 	lsm_svg_length_attribute_parse (&svg->height, &length, 0.0);
 
-	lsm_dom_debug ("[LsmSvgSvgElement::update] height = %g, width = %g",
+	lsm_debug ("[LsmSvgSvgElement::update] height = %g, width = %g",
 		    svg->height.length.value,
 		    svg->width.length.value);
 
-	lsm_dom_debug ("[LsmSvgSvgElement::update] view_bbox = %g, %g, %g, %g\n",
+	lsm_debug ("[LsmSvgSvgElement::update] view_bbox = %g, %g, %g, %g\n",
 		    svg->view_box.value.x,
 		    svg->view_box.value.y,
 		    svg->view_box.value.width,

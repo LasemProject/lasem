@@ -21,7 +21,7 @@
 
 #include <lsmsvgpathelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -42,7 +42,7 @@ lsm_svg_path_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 	path = LSM_SVG_PATH_ELEMENT (self);
 
-	lsm_dom_debug ("[LsmSvgPathElement::graphic_render]");
+	lsm_debug ("[LsmSvgPathElement::graphic_render]");
 
 	lsm_svg_view_show_path (view, lsm_dom_attribute_get_value (&path->d));
 }

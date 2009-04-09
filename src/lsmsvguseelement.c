@@ -21,7 +21,7 @@
 
 #include <lsmsvguseelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmdomdocument.h>
 #include <stdio.h>
 
@@ -85,7 +85,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 	if (document == NULL) {
-		lsm_dom_debug ("[LsmSvgUseElement::graphic_render] Owner document not found");
+		lsm_debug ("[LsmSvgUseElement::graphic_render] Owner document not found");
 		return;
 	}
 
@@ -101,7 +101,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 	element = lsm_dom_document_get_element_by_id (document, id);
 	if (!LSM_SVG_IS_ELEMENT (element)) {
-		lsm_dom_debug ("[LsmSvgUseElement::graphic_render] Target '%s' not found", id);
+		lsm_debug ("[LsmSvgUseElement::graphic_render] Target '%s' not found", id);
 		return;
 	}
 
@@ -109,7 +109,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 /*            use_element->height.length.base.value <= 0.0)*/
 /*                return;*/
 
-	lsm_dom_debug ("[LsmSvgUseElement::graphic_render] Use '%s'", id);
+	lsm_debug ("[LsmSvgUseElement::graphic_render] Use '%s'", id);
 
 	lsm_svg_matrix_init_translate (&matrix,
 				    use_element->x.length.base.value,

@@ -19,7 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <lsmdomimplementation.h>
 #include <lsmmathmlpresentationtoken.h>
 #include <lsmmathmlentitydictionary.h>

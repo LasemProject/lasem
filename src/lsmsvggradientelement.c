@@ -22,7 +22,7 @@
 #include <lsmsvggradientelement.h>
 #include <lsmsvgstopelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class;
@@ -73,7 +73,7 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 			color = lsm_svg_stop_element_get_color (stop);
 			opacity = lsm_svg_stop_element_get_opacity (stop);
 
-			lsm_dom_debug ("[LsmSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
+			lsm_debug ("[LsmSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
 				    offset, color->red, color->green, color->blue, opacity);
 
 			lsm_svg_view_add_gradient_color_stop (view, offset, color, opacity);

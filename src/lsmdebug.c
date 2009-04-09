@@ -1,4 +1,4 @@
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <glib/gprintf.h>
 #include <stdlib.h>
 
@@ -13,7 +13,7 @@ _is_debug_enabled ()
 	if (debug_checked)
 		return debug_enabled;
 
-	debug_var = g_getenv ("LSM_MATHML_DEBUG");
+	debug_var = g_getenv ("LSM_DEBUG");
 
 	debug_enabled = debug_var != NULL ? atoi (debug_var) != 0 : FALSE;
 
@@ -23,7 +23,7 @@ _is_debug_enabled ()
 }
 
 void
-lsm_dom_debug (char const *format, ...)
+lsm_debug (char const *format, ...)
 {
 	va_list args;
 
@@ -37,7 +37,7 @@ lsm_dom_debug (char const *format, ...)
 }
 
 void
-lsm_dom_debug_enable (void)
+lsm_debug_enable (void)
 {
 	debug_enabled = TRUE;
 	debug_checked = TRUE;

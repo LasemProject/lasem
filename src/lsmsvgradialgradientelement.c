@@ -21,7 +21,7 @@
 
 #include <lsmsvgradialgradientelement.h>
 #include <lsmsvgview.h>
-#include <lsmdomdebug.h>
+#include <lsmdebug.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class;
@@ -82,7 +82,7 @@ _radial_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	fx = radial->fx.length.base.value;
 	fy = radial->fy.length.base.value;
 
-	lsm_dom_debug ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
+	lsm_debug ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
 		    cx, cy, r, fx, fy);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
