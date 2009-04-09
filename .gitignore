@@ -19,9 +19,9 @@ missing
 mkinstalldirs
 stamp*
 autom4te*
-gmathml.svg
 tags
 *.lineno
 *.swp
-manugen
+lasem.svg
 lasem.pc
+manugen

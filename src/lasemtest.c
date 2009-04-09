@@ -40,16 +40,16 @@
 #include <../itex2mml/itex2MML.h>
 
 #define TEST_WIDTH 	480
-#define XML_FILENAME	"lsmmathmltest.xml"
+#define XML_FILENAME	"lasemtest.xml"
 
 static const char *fail_face = "", *normal_face = "";
-FILE *lsm_mathml_test_html_file = NULL;
+FILE *lasem_test_html_file = NULL;
 
 static void
-lsm_mathml_test_html (const char *fmt, ...)
+lasem_test_html (const char *fmt, ...)
 {
 	va_list va;
-	FILE *file = lsm_mathml_test_html_file ? lsm_mathml_test_html_file : stdout;
+	FILE *file = lasem_test_html_file ? lasem_test_html_file : stdout;
 
 	va_start (va, fmt);
 	vfprintf (file, fmt, va);
@@ -59,7 +59,7 @@ lsm_mathml_test_html (const char *fmt, ...)
 static GRegex *regex_mml = NULL;
 
 void
-lsm_mathml_test_render (char const *filename)
+lasem_test_render (char const *filename)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -123,9 +123,9 @@ lsm_mathml_test_render (char const *filename)
 		g_object_unref (view);
 		g_object_unref (document);
 
-		lsm_mathml_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
-		lsm_mathml_test_html ("<tr>");
-		lsm_mathml_test_html ("<td>");
+		lasem_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
+		lasem_test_html ("<tr>");
+		lasem_test_html ("<td>");
 
 		if (is_mathml) {
 			regex = g_regex_new ("<math>", 0, 0, &error);
@@ -137,23 +137,23 @@ lsm_mathml_test_render (char const *filename)
 							   0, NULL);
 			g_regex_unref (regex);
 
-			lsm_mathml_test_html (filtered_buffer);
+			lasem_test_html (filtered_buffer);
 
 			g_free (filtered_buffer);
 		}
 
 		if (is_svg) {
-			lsm_mathml_test_html ("<object type=\"image/svg+xml\" data=\"");
-			lsm_mathml_test_html (filename);
-			lsm_mathml_test_html ("\" width=\"320\"/>");
+			lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
+			lasem_test_html (filename);
+			lasem_test_html ("\" width=\"320\"/>");
 		}
 
-		lsm_mathml_test_html ("</td>");
-		lsm_mathml_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
+		lasem_test_html ("</td>");
+		lasem_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
 				   filename, png_filename);
-		lsm_mathml_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
-		lsm_mathml_test_html ("</tr>\n");
-		lsm_mathml_test_html ("</table>\n");
+		lasem_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
+		lasem_test_html ("</tr>\n");
+		lasem_test_html ("</table>\n");
 
 		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
 			FILE *file;
@@ -208,7 +208,7 @@ lsm_mathml_test_render (char const *filename)
 }
 
 unsigned int
-lsm_mathml_test_process_dir (const char *name)
+lasem_test_process_dir (const char *name)
 {
 	GDir *directory;
 	GError *error = NULL;
@@ -221,7 +221,7 @@ lsm_mathml_test_process_dir (const char *name)
 
 	g_printf ("In directory %s\n", name);
 
-	lsm_mathml_test_html ("<h1>%s</h1>", name);
+	lasem_test_html ("<h1>%s</h1>", name);
 
 	do {
 		entry = g_dir_read_name (directory);
@@ -231,10 +231,10 @@ lsm_mathml_test_process_dir (const char *name)
 			filename = g_build_filename (name, entry, NULL);
 
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-				n_files += lsm_mathml_test_process_dir (filename);
+				n_files += lasem_test_process_dir (filename);
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 				 g_regex_match (regex_mml, filename, 0, NULL)) {
-				lsm_mathml_test_render (filename);
+				lasem_test_render (filename);
 				n_files++;
 			}
 
@@ -262,14 +262,14 @@ main (int argc, char **argv)
 	}
 #endif
 
-	lsm_mathml_test_html_file = fopen (XML_FILENAME, "w");
+	lasem_test_html_file = fopen (XML_FILENAME, "w");
 
-	lsm_mathml_test_html ("<?xml version=\"1.0\"?>");
-	lsm_mathml_test_html ("<!DOCTYPE html PUBLIC "
+	lasem_test_html ("<?xml version=\"1.0\"?>");
+	lasem_test_html ("<!DOCTYPE html PUBLIC "
 			   "\"-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN\" "
 			   "\"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd\">");
-	lsm_mathml_test_html ("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-	lsm_mathml_test_html ("<body>\n");
+	lasem_test_html ("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
+	lasem_test_html ("<body>\n");
 
 	g_type_init ();
 
@@ -280,15 +280,15 @@ main (int argc, char **argv)
 
 	if (argc >= 2)
 		for (i = 0; i < argc - 1; i++)
-			lsm_mathml_test_render (argv[i + 1]);
+			lasem_test_render (argv[i + 1]);
 	else
-		n_files = lsm_mathml_test_process_dir (".");
+		n_files = lasem_test_process_dir (".");
 
-	lsm_mathml_test_html ("</body>\n");
-	lsm_mathml_test_html ("</html>\n");
+	lasem_test_html ("</body>\n");
+	lasem_test_html ("</html>\n");
 
-	if (lsm_mathml_test_html_file != NULL)
-		fclose (lsm_mathml_test_html_file);
+	if (lasem_test_html_file != NULL)
+		fclose (lasem_test_html_file);
 
 	g_regex_unref (regex_mml);
 
