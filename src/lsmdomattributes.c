@@ -127,9 +127,9 @@ lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
 
 void
 lsm_dom_attribute_map_add_attribute_full (LsmDomAttributeMap *map,
-				       const char *name,
-				       ptrdiff_t offset,
-				       const LsmDomAttributeClass *attribute_class)
+					  const char *name,
+					  ptrdiff_t offset,
+					  const LsmDomAttributeClass *attribute_class)
 {
 	lsm_dom_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
 }
@@ -187,9 +187,9 @@ _get_attribute (LsmDomAttributeMap *map,
 
 gboolean
 lsm_dom_attribute_map_set_attribute (LsmDomAttributeMap *map,
-				  void *instance,
-				  const char *name,
-				  const char *value)
+				     void *instance,
+				     const char *name,
+				     const char *value)
 {
 	LsmDomAttribute *attribute;
 
@@ -229,8 +229,8 @@ lsm_dom_attribute_map_set_css_attribute (LsmDomAttributeMap *map,
 
 char const *
 lsm_dom_attribute_map_get_attribute (LsmDomAttributeMap *map,
-				  void *instance,
-				  const char *name)
+				     void *instance,
+				     const char *name)
 {
 	LsmDomAttributeInfos *attribute_infos;
 	LsmDomAttribute *attribute;

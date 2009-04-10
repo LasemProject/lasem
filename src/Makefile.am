@@ -138,6 +138,7 @@ liblasem_la_HEADERS = \
 	lsmmathmlenums.h			\
 	lsmmathmlutils.h			\
 	lsmmathmllayoututils.h			\
+	lsmsvg.h				\
 	lsmsvgdocument.h			\
 	lsmsvgelement.h				\
 	lsmsvggraphic.h				\
@@ -150,6 +151,7 @@ liblasem_la_HEADERS = \
 	lsmsvgcircleelement.h			\
 	lsmsvgellipseelement.h			\
 	lsmsvglineelement.h			\
+	lsmsvgpathelement.h			\
 	lsmsvgpolylineelement.h			\
 	lsmsvgpolygonelement.h			\
 	lsmsvgtextelement.h			\

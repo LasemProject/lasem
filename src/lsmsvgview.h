@@ -61,9 +61,9 @@ GType lsm_svg_view_get_type (void);
 LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
 void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
-							                 double r, double fx, double fy);
+							                   double r, double fx, double fy);
 void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
-							                 double x2, double y2);
+							                   double x2, double y2);
 void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset,
 							 const LsmSvgColor *color, double opacity);
 void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
@@ -71,30 +71,29 @@ void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgGradientUnits units,
 							 const LsmSvgMatrix *matrix);
 
-void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, double width, double height);
-void 		lsm_svg_view_set_pattern_properties	(LsmSvgView *view,
+void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, double width, double height,
 							 LsmSvgGradientUnits units,
 							 LsmSvgGradientUnits content_units,
 							 const LsmSvgMatrix *matrix);
 
 void		lsm_svg_view_push_transform 		(LsmSvgView *view, const LsmSvgMatrix *matrix);
-void		lsm_svg_view_pop_transform			(LsmSvgView *view);
-void 		lsm_svg_view_push_fill_attributes 		(LsmSvgView *view, LsmSvgFillAttributeBag *fill);
-void 		lsm_svg_view_pop_fill_attributes 		(LsmSvgView *view);
+void		lsm_svg_view_pop_transform		(LsmSvgView *view);
+void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);
+void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
 void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, LsmSvgStrokeAttributeBag *stroke);
 void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_text_attributes 		(LsmSvgView *view, LsmSvgTextAttributeBag *text);
-void 		lsm_svg_view_pop_text_attributes 		(LsmSvgView *view);
+void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, LsmSvgTextAttributeBag *text);
+void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
 
 void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
-						                 double width, double height,
-								 double rx, double ry);
-void 		lsm_svg_view_show_circle		(LsmSvgView *view, double cx, double cy, double r);
-void 		lsm_svg_view_show_ellipse		(LsmSvgView *view, double cx, double cy, double rx, double ry);
+						                   double width, double height,
+								   double rx, double ry);
+void 		lsm_svg_view_show_circle	(LsmSvgView *view, double cx, double cy, double r);
+void 		lsm_svg_view_show_ellipse	(LsmSvgView *view, double cx, double cy, double rx, double ry);
 void		lsm_svg_view_show_path		(LsmSvgView *view, const char *d);
 void 		lsm_svg_view_show_line 		(LsmSvgView *view, double x1, double y1, double x2, double y2);
-void 		lsm_svg_view_show_polyline		(LsmSvgView *view, const char *points);
-void 		lsm_svg_view_show_polygon		(LsmSvgView *view, const char *points);
+void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
+void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
 
 G_END_DECLS

@@ -56,7 +56,9 @@ _start_pattern (LsmSvgView *view)
 	view->pattern_data->old_cairo = view->dom_view.cairo;
 	view->pattern_data->pattern = NULL;
 	view->pattern_data->units = LSM_SVG_GRADIENT_UNITS_USER_SPACE_ON_USE;
-	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_PAD;
+	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_REPEAT;
+
+	view->dom_view.cairo = NULL;
 
 	cairo_matrix_init_identity (&view->pattern_data->matrix);
 }
@@ -68,6 +70,11 @@ _end_pattern (LsmSvgView *view)
 
 	if (view->pattern_data->pattern != NULL)
 		cairo_pattern_destroy (view->pattern_data->pattern);
+	if (view->dom_view.cairo != NULL)
+		cairo_destroy (view->dom_view.cairo);
+
+	view->dom_view.cairo = view->pattern_data->old_cairo;
+
 	g_free (view->pattern_data);
 
 	if (view->pattern_stack != NULL) {
@@ -103,8 +110,8 @@ lsm_svg_view_create_radial_gradient (LsmSvgView *view,
 
 void
 lsm_svg_view_create_linear_gradient (LsmSvgView *view,
-				  double x1, double y1,
-				  double x2, double y2)
+				     double x1, double y1,
+				     double x2, double y2)
 {
 	g_return_if_fail (LSM_SVG_IS_VIEW (view));
 
@@ -125,9 +132,9 @@ lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset, const Lsm
 
 void
 lsm_svg_view_set_gradient_properties (LsmSvgView *view,
-				   LsmSvgSpreadMethod method,
-				   LsmSvgGradientUnits units,
-				   const LsmSvgMatrix *matrix)
+				      LsmSvgSpreadMethod method,
+				      LsmSvgGradientUnits units,
+				      const LsmSvgMatrix *matrix)
 {
 	g_return_if_fail (LSM_SVG_IS_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
@@ -147,18 +154,39 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 
 void
 lsm_svg_view_create_surface_pattern (LsmSvgView *view,
-				  double width, double height)
+				     double width, double height,
+				     LsmSvgGradientUnits units,
+				     LsmSvgGradientUnits content_units,
+				     const LsmSvgMatrix *matrix)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
-}
+	cairo_surface_t *surface;
+	cairo_pattern_t *pattern;
 
-void
-lsm_svg_view_set_pattern_properties (LsmSvgView *view,
-				  LsmSvgGradientUnits units,
-				  LsmSvgGradientUnits content_units,
-				  const LsmSvgMatrix *matrix)
-{
 	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (view->pattern_data != NULL);
+	g_return_if_fail (view->dom_view.cairo == NULL);
+
+	surface = cairo_surface_create_similar (cairo_get_target (view->pattern_data->old_cairo),
+						CAIRO_CONTENT_COLOR_ALPHA,
+						width, height);
+	pattern = cairo_pattern_create_for_surface (surface);
+	view->dom_view.cairo = cairo_create (surface);
+	cairo_surface_destroy (surface);
+
+	_set_pattern (view, pattern);
+
+	view->pattern_data->units = units;
+	view->pattern_data->content_units = content_units;
+
+	if (matrix != NULL) {
+		cairo_matrix_init (&view->pattern_data->matrix,
+				   matrix->a, matrix->b,
+				   matrix->c, matrix->d,
+				   matrix->e, matrix->f);
+		cairo_matrix_invert (&view->pattern_data->matrix);
+	} else
+		cairo_matrix_init_identity (&view->pattern_data->matrix);
+
 }
 
 typedef struct {
@@ -595,7 +623,7 @@ lsm_svg_view_push_transform (LsmSvgView *view, const LsmSvgMatrix *matrix)
 }
 
 void
-lsm_svg_view_pop_transform	(LsmSvgView *view)
+lsm_svg_view_pop_transform (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_SVG_IS_VIEW (view));
 
@@ -674,14 +702,23 @@ _paint_uri (LsmSvgView *view, const char *uri)
 	cairo = view->pattern_data->old_cairo;
 
 	if (view->pattern_data->pattern) {
+#if 0
+		char *filename;
+
+		filename = g_strdup_printf ("%s.png", uri);
+		cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
+		g_free (filename);
+#endif
 
 		if (view->pattern_data->units == LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
 			cairo_matrix_t matrix;
 			double x1, x2, y1, y2;
 
 			cairo_path_extents (cairo, &x1, &y1, &x2, &y2);
-			if (x2 <= x1 || y2 <= y1)
+			if (x2 <= x1 || y2 <= y1) {
+				_end_pattern (view);
 				return;
+			}
 
 			cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
 			cairo_matrix_translate (&matrix, -x1, -y1);
@@ -776,9 +813,9 @@ _paint (LsmSvgView *view)
 
 void
 lsm_svg_view_show_rectangle (LsmSvgView *view,
-			  double x, double y,
-			  double w, double h,
-			  double rx, double ry)
+			     double x, double y,
+			     double w, double h,
+			     double rx, double ry)
 {
 	cairo_t *cairo;
 

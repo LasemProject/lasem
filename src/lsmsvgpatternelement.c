@@ -75,7 +75,7 @@ _pattern_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 }
 
 static void
-_pattern_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+_pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
 	double width, height;
@@ -83,15 +83,18 @@ _pattern_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	width = pattern->width.length.base.value;
 	height = pattern->height.length.base.value;
 
-	if (width <= 0 || height <= 0)
+	if (width < 1.0 || height < 1.0)
 		return;
 
-	lsm_svg_view_create_surface_pattern (view, width, height);
-/*                                          pattern->units.value,*/
-/*                                          pattern->content_units.value,*/
-/*                                          &pattern->transform.matrix);*/
+	lsm_debug ("[LsmSvgPatternElement::render_paint] Create pattern w = %g, h = %g",
+		   width, height);
 
-	LSM_SVG_GRAPHIC_CLASS (parent_class)->graphic_render (self, view);
+	lsm_svg_view_create_surface_pattern (view, width, height,
+					     pattern->units.value,
+					     pattern->content_units.value,
+					     &pattern->transform.matrix);
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 }
 
 /* LsmSvgPatternElement implementation */
@@ -105,6 +108,15 @@ lsm_svg_pattern_element_new (void)
 static void
 lsm_svg_pattern_element_init (LsmSvgPatternElement *self)
 {
+	/* Hack - Force the creation of the attribute bags,
+	   making sure the properties will be inherited from the
+	   pattern element ancestor, not the referencing one. */
+
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", NULL);
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke", NULL);
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "transform", NULL);
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-family", NULL);
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-color", NULL);
 }
 
 /* LsmSvgPatternElement class */
@@ -114,17 +126,14 @@ lsm_svg_pattern_element_class_init (LsmSvgPatternElementClass *klass)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (klass);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
 	d_node_class->get_node_name = _pattern_element_get_node_name;
 
 	s_element_class->update = _pattern_element_update;
-	s_element_class->render_paint = s_element_class->render;
-	s_element_class->render_paint = NULL;
+	s_element_class->render_paint = _pattern_element_render_paint;
 	s_element_class->render = NULL;
-	s_graphic_class->graphic_render = _pattern_element_graphic_render;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 

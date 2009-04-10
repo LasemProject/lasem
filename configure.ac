@@ -1,4 +1,11 @@
-AC_INIT(lasem, 0.1.0)
+AC_PREREQ(2.54)
+
+m4_define([lasem_version_major], [0])
+m4_define([lasem_version_minor], [1])
+m4_define([lasem_version_micro], [0])
+m4_define([lasem_version], [lasem_version_major.lasem_version_minor.lasem_version_micro])
+
+AC_INIT([lasem], [lasem_version])
 
 AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 AM_CONFIG_HEADER(config.h)

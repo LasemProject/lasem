@@ -57,11 +57,11 @@ typedef struct {
 	LsmDomDoubleAttribute opacity;
 } LsmSvgStopAttributeBag;
 
-void 	lsm_dom_attribute_map_add_fill_attribute_bag 	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
-void 	lsm_dom_attribute_map_add_stroke_attribute_bag	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	lsm_dom_attribute_map_add_fill_attribute_bag 		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	lsm_dom_attribute_map_add_stroke_attribute_bag		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	lsm_dom_attribute_map_add_transform_attribute_bag	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
-void 	lsm_dom_attribute_map_add_text_attribute_bag	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
-void 	lsm_dom_attribute_map_add_stop_attribute_bag	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	lsm_dom_attribute_map_add_text_attribute_bag		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
+void 	lsm_dom_attribute_map_add_stop_attribute_bag		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
 
 G_END_DECLS
 
