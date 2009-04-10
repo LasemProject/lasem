@@ -378,8 +378,16 @@ _init_matrix (LsmSvgMatrix *matrix, LsmSvgTransformType transform, unsigned int 
 			if (n_values == 1) {
 				lsm_svg_matrix_init_rotate (matrix, values[0] * M_PI / 180.0);
 				return;
-			} else if (n_values == 3)
-				g_warning ("[LsmSvgTransformAttribute::parse] Rotation center not handled");
+			} else if (n_values == 3) {
+				LsmSvgMatrix matrix_b;
+
+				lsm_svg_matrix_init_translate (matrix, values[1], values[2]);
+				lsm_svg_matrix_init_rotate (&matrix_b, values[0] * M_PI / 180.0);
+				lsm_svg_matrix_multiply (matrix, &matrix_b, matrix);
+				lsm_svg_matrix_init_translate (&matrix_b, -values[1], -values[2]);
+				lsm_svg_matrix_multiply (matrix, &matrix_b, matrix);
+				return;
+			}
 			break;
 		case LSM_SVG_TRANSFORM_TYPE_SKEW_X:
 			if (n_values == 1) {
