@@ -60,8 +60,8 @@ lsm_dom_parser_end_document (void *user_data)
 
 static void
 lsm_dom_parser_start_element(void *user_data,
-			  const xmlChar *name,
-			  const xmlChar **attrs)
+			     const xmlChar *name,
+			     const xmlChar **attrs)
 {
 	LsmDomSaxParserState *state = user_data;
 	LsmDomNode *node;
@@ -105,7 +105,7 @@ lsm_dom_parser_start_element(void *user_data,
 
 static void
 lsm_dom_parser_end_element (void *user_data,
-			 const xmlChar *name)
+			    const xmlChar *name)
 {
 	LsmDomSaxParserState *state = user_data;
 

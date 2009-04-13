@@ -67,14 +67,22 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
 	LsmDomNode *node = LSM_DOM_NODE (self);
-	const char *string;
+	LsmDomNode *iter;
+	GString *string = g_string_new ("");
 
 	if (node->first_child == NULL)
 		return;
 
-	string = lsm_dom_node_get_node_value (node->first_child);
+	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
+		if (LSM_DOM_IS_TEXT (iter)) {
+			g_string_append (string, lsm_dom_node_get_node_value (iter));
+		}
+	}
 
-	lsm_svg_view_show_text (view, string, text->x.length.base.value, text->y.length.base.value);
+	lsm_svg_view_show_text (view, g_strstrip (string->str),
+				text->x.length.base.value, text->y.length.base.value);
+
+	g_string_free (string, TRUE);
 }
 
 /* LsmSvgTextElement implementation */
