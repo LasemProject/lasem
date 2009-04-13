@@ -175,7 +175,8 @@ int main(int argc, char **argv)
 	if (success) {
 		char *mathml;
 
-		if (strcmp (mime, "text/mathml") == 0)
+		if (strcmp (mime, "text/mathml") == 0 ||
+		    strcmp (mime, "image/svg+xml") == 0)
 			mathml = buffer;
 		else {
 			mathml = itex2MML_parse (buffer, size);
