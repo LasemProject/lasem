@@ -59,6 +59,7 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgGradientElement *gradient = LSM_SVG_GRADIENT_ELEMENT (self);
 	LsmDomNode *iter;
+	double last_offset = 0.0;
 
 	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
 		if (LSM_SVG_IS_STOP_ELEMENT (iter)) {
@@ -72,6 +73,11 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 			offset = lsm_svg_stop_element_get_offset (stop);
 			color = lsm_svg_stop_element_get_color (stop);
 			opacity = lsm_svg_stop_element_get_opacity (stop);
+
+			if (offset < last_offset)
+				offset = last_offset;
+			else
+				last_offset = offset;
 
 			lsm_debug ("[LsmSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
 				    offset, color->red, color->green, color->blue, opacity);

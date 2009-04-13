@@ -30,6 +30,29 @@
 
 const LsmSvgColor lsm_svg_color_null = {0.0, 0.0, 0.0};
 
+void
+lsm_svg_double_attribute_parse (LsmSvgDoubleAttribute *attribute,
+				double *double_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+	g_return_if_fail (double_value != NULL);
+
+	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+
+	if (g_strcmp0 (string, "inherit") == 0)
+		string = NULL;
+
+	if (string == NULL) {
+		attribute->value = *double_value;
+		return;
+	}
+
+	attribute->value = atof (string);
+	*double_value = attribute->value;
+}
+
 static double
 lsm_svg_length_compute (const LsmSvgLength *length, double viewbox, double font_size)
 {
@@ -135,12 +158,24 @@ lsm_svg_spread_method_attribute_parse (LsmDomEnumAttribute *attribute,
 }
 
 static char *
-_parse_color (char *string, LsmSvgColor *svg_color, gboolean *color_set)
+_parse_color (char *string,
+	      LsmSvgColor *svg_color,
+	      gboolean *color_set,
+	      const LsmSvgColor *current_color)
 {
 	unsigned int color = 0;
 	*color_set = FALSE;
 
 	lsm_svg_str_skip_spaces (&string);
+
+	if (g_strcmp0 (string, "currentColor") == 0) {
+		*svg_color = *current_color;
+		*color_set = TRUE;
+
+		string += 12; /* strlen ("current_color") */
+
+		return string;
+	}
 
 	if (*string == '#') {
 		int value, i;
@@ -172,7 +207,7 @@ _parse_color (char *string, LsmSvgColor *svg_color, gboolean *color_set)
 		double value;
 
 
-		string += 4;
+		string += 4; /* strlen ("rgb(") */
 
 		for (i = 0; i < 3; i++) {
 			if (!lsm_svg_str_parse_double (&string, &value))
@@ -195,7 +230,7 @@ _parse_color (char *string, LsmSvgColor *svg_color, gboolean *color_set)
 			color = 0;
 
 		*color_set  = TRUE;
-	} else if (strcmp (string, "none") == 0) {
+	} else if (g_strcmp0 (string, "none") == 0) {
 		*color_set = FALSE;
 	} else {
 		color = lsm_svg_color_from_string (string);
@@ -223,13 +258,15 @@ lsm_svg_paint_attribute_finalize (void *abstract)
 
 void
 lsm_svg_paint_attribute_parse (LsmSvgPaintAttribute *attribute,
-			    LsmSvgPaint *default_value)
+			       LsmSvgPaint *default_value,
+			       const LsmSvgColor *current_color)
 {
 	char *string;
 
 	g_return_if_fail (attribute != NULL);
 
 	string = (char *) lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+
 	if (string == NULL) {
 		g_free (attribute->paint.uri);
 		if (default_value->uri != NULL)
@@ -262,7 +299,8 @@ lsm_svg_paint_attribute_parse (LsmSvgPaintAttribute *attribute,
 			attribute->paint.uri = NULL;
 		}
 
-		string = _parse_color (string, &attribute->paint.color, &color_set);
+		string = _parse_color (string, &attribute->paint.color, &color_set,
+				       current_color);
 
 		if (color_set)
 			attribute->paint.type = attribute->paint.uri != NULL ?
@@ -285,19 +323,24 @@ lsm_svg_paint_attribute_parse (LsmSvgPaintAttribute *attribute,
 
 void
 lsm_svg_color_attribute_parse (LsmSvgColorAttribute *attribute,
-			    LsmSvgColor *default_value)
+			       LsmSvgColor *default_value,
+			       const LsmSvgColor *current_color)
 {
 	char *string;
 
 	g_return_if_fail (attribute != NULL);
 
 	string = (char *) lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+
+	if (g_strcmp0 (string, "inherit") == 0)
+		string = NULL;
+
 	if (string == NULL) {
 		attribute->value = *default_value;
 	} else {
 		gboolean color_set;
 
-		string = _parse_color (string, &attribute->value, &color_set);
+		string = _parse_color (string, &attribute->value, &color_set, current_color);
 
 		*default_value = attribute->value;
 	}
@@ -305,7 +348,7 @@ lsm_svg_color_attribute_parse (LsmSvgColorAttribute *attribute,
 
 void
 lsm_svg_view_box_attribute_parse (LsmSvgViewBoxAttribute *attribute,
-			       LsmSvgViewBox *default_value)
+				  LsmSvgViewBox *default_value)
 {
 	char *string;
 

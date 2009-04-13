@@ -54,7 +54,7 @@ typedef struct {
 
 typedef struct {
 	LsmSvgColorAttribute color;
-	LsmDomDoubleAttribute opacity;
+	LsmSvgDoubleAttribute opacity;
 } LsmSvgStopAttributeBag;
 
 void 	lsm_dom_attribute_map_add_fill_attribute_bag 		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);

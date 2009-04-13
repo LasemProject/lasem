@@ -31,6 +31,11 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	LsmDomAttribute attr;
+	double value;
+} LsmSvgDoubleAttribute;
+
+typedef struct {
 	double red;
 	double green;
 	double blue;
@@ -81,6 +86,11 @@ typedef struct {
 
 typedef struct {
 	LsmDomAttribute attr;
+	char *value;
+} LsmSvgStringAttribute;
+
+typedef struct {
+	LsmDomAttribute attr;
 	LsmSvgColor value;
 } LsmSvgColorAttribute;
 
@@ -94,26 +104,30 @@ typedef struct {
 	LsmSvgMatrix matrix;
 } LsmSvgTransformAttribute;
 
+void 		lsm_svg_double_attribute_parse 		(LsmSvgDoubleAttribute *attribute,
+							 double *double_value);
 void		lsm_svg_length_attribute_parse 		(LsmSvgLengthAttribute *attribute,
 							 LsmSvgLength *default_value,
 							 double font_size);
-void 		lsm_svg_animated_length_attribute_parse 	(LsmSvgAnimatedLengthAttribute *attribute,
+void 		lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
 							 LsmSvgLength *default_value,
 							 double font_size);
-void 		lsm_svg_fill_rule_attribute_parse 		(LsmDomEnumAttribute *attribute,
+void 		lsm_svg_fill_rule_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_gradient_units_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_spread_method_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		lsm_svg_paint_attribute_finalize 		(void *abstract);
+void 		lsm_svg_paint_attribute_finalize 	(void *abstract);
 void 		lsm_svg_paint_attribute_parse 		(LsmSvgPaintAttribute *attribute,
-							 LsmSvgPaint *default_value);
+							 LsmSvgPaint *default_value,
+							 const LsmSvgColor *current_color);
 void 		lsm_svg_color_attribute_parse 		(LsmSvgColorAttribute *attribute,
-							 LsmSvgColor *default_value);
-void		lsm_svg_view_box_attribute_parse		(LsmSvgViewBoxAttribute *attribute,
+							 LsmSvgColor *default_value,
+							 const LsmSvgColor *current_color);
+void		lsm_svg_view_box_attribute_parse	(LsmSvgViewBoxAttribute *attribute,
 							 LsmSvgViewBox *default_value);
-void		lsm_svg_transform_attribute_parse		(LsmSvgTransformAttribute *attribute);
+void		lsm_svg_transform_attribute_parse	(LsmSvgTransformAttribute *attribute);
 
 G_END_DECLS
 

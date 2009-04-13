@@ -89,10 +89,13 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 		}
 	}
 
+	lsm_svg_color_attribute_parse (&graphic->color, &parent_style->color, &parent_style->color);
+
 	if (graphic->fill != NULL) {
 		lsm_debug ("[LsmSvgGraphic::update] fill");
 
-		lsm_svg_paint_attribute_parse (&graphic->fill->paint, &parent_style->fill.paint);
+		lsm_svg_paint_attribute_parse (&graphic->fill->paint, &parent_style->fill.paint,
+					       &graphic->color.value);
 		lsm_svg_fill_rule_attribute_parse (&graphic->fill->rule, &parent_style->fill.rule);
 		lsm_dom_double_attribute_parse (&graphic->fill->opacity, &parent_style->fill.opacity);
 	}
@@ -100,7 +103,8 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	if (graphic->stroke != NULL) {
 		lsm_debug ("[LsmSvgGraphic::update] stroke");
 
-		lsm_svg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint);
+		lsm_svg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint,
+					       &graphic->color.value);
 		lsm_svg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width, 0.0);
 		lsm_dom_double_attribute_parse (&graphic->stroke->opacity, &parent_style->stroke.opacity);
 	}
@@ -115,8 +119,10 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	}
 
 	if (graphic->stop != NULL) {
-		lsm_svg_color_attribute_parse (&graphic->stop->color, &parent_style->stop.color);
-		lsm_dom_double_attribute_parse (&graphic->stop->opacity, &parent_style->stop.opacity);
+		lsm_svg_color_attribute_parse (&graphic->stop->color,
+					       &parent_style->stop.color,
+					       &graphic->color.value);
+		lsm_svg_double_attribute_parse (&graphic->stop->opacity, &parent_style->stop.opacity);
 	}
 }
 
@@ -194,6 +200,8 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 					  offsetof (LsmSvgGraphic, class_name));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "style",
 					  offsetof (LsmSvgGraphic, style));
+	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "color",
+					     offsetof (LsmSvgGraphic, color));
 
 	lsm_dom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, fill));
 	lsm_dom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stroke));

@@ -226,28 +226,28 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
 
 	lsm_dom_attribute_map_add_string (m_element_class->attributes, "mathfamily",
-				       offsetof (LsmMathmlPresentationToken, math_family));
+					  offsetof (LsmMathmlPresentationToken, math_family));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					  offsetof (LsmMathmlPresentationToken, math_variant));
+					     offsetof (LsmMathmlPresentationToken, math_variant));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					  offsetof (LsmMathmlPresentationToken, math_size));
+					     offsetof (LsmMathmlPresentationToken, math_size));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
-					  offsetof (LsmMathmlPresentationToken, math_color));
+					     offsetof (LsmMathmlPresentationToken, math_color));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
-					  offsetof (LsmMathmlPresentationToken, math_background));
+					     offsetof (LsmMathmlPresentationToken, math_background));
 
 	/* Deprecated attributes */
 
 	lsm_dom_attribute_map_add_string (m_element_class->attributes, "fontfamily",
-				       offsetof (LsmMathmlPresentationToken, math_family));
+					  offsetof (LsmMathmlPresentationToken, math_family));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					  offsetof (LsmMathmlPresentationToken, math_size));
+					     offsetof (LsmMathmlPresentationToken, math_size));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "color",
-					  offsetof (LsmMathmlPresentationToken, math_color));
+					     offsetof (LsmMathmlPresentationToken, math_color));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
-					  offsetof (LsmMathmlPresentationToken, font_weight));
+					     offsetof (LsmMathmlPresentationToken, font_weight));
 	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
-					  offsetof (LsmMathmlPresentationToken, font_style));
+					     offsetof (LsmMathmlPresentationToken, font_style));
 }
 
 G_DEFINE_TYPE (LsmMathmlPresentationToken, lsm_mathml_presentation_token, LSM_MATHML_TYPE_ELEMENT)

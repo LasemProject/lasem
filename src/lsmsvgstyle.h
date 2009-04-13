@@ -28,6 +28,8 @@
 G_BEGIN_DECLS
 
 struct _GSvgStyle {
+	LsmSvgColor color;
+
 	struct {
 		LsmSvgPaint paint;
 		LsmSvgFillRule rule;

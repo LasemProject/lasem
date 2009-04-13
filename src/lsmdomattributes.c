@@ -399,7 +399,7 @@ lsm_dom_double_attribute_parse (LsmDomDoubleAttribute *attribute,
 
 void
 lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
-			     char **style_value)
+				char **style_value)
 {
 	const char *string;
 
