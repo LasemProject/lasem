@@ -138,21 +138,35 @@ lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribut
 
 void
 lsm_svg_fill_rule_attribute_parse (LsmDomEnumAttribute *attribute,
-				unsigned int *style_value)
+				   unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_fill_rule_from_string);
 }
 
 void
+lsm_svg_line_join_attribute_parse (LsmDomEnumAttribute *attribute,
+				   unsigned int *style_value)
+{
+	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_line_join_from_string);
+}
+
+void
+lsm_svg_line_cap_attribute_parse (LsmDomEnumAttribute *attribute,
+				  unsigned int *style_value)
+{
+	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_line_cap_from_string);
+}
+
+void
 lsm_svg_gradient_units_attribute_parse (LsmDomEnumAttribute *attribute,
-				     unsigned int *style_value)
+					unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_gradient_units_from_string);
 }
 
 void
 lsm_svg_spread_method_attribute_parse (LsmDomEnumAttribute *attribute,
-				    unsigned int *style_value)
+				       unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_spread_method_from_string);
 }

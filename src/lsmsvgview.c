@@ -788,10 +788,36 @@ _paint (LsmSvgView *view)
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
-	if (_set_color (view, &fill->paint.paint, fill->opacity.value))
-		cairo_fill_preserve (view->dom_view.cairo);
+	if (_set_color (view, &fill->paint.paint, fill->opacity.value)) {
+		cairo_set_fill_rule (cairo, fill->rule.value == LSM_SVG_FILL_RULE_EVEN_ODD ?
+				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
+		cairo_fill_preserve (cairo);
+	}
 
 	if (_set_color (view, &stroke->paint.paint, stroke->opacity.value)) {
+		switch (stroke->line_join.value) {
+			case LSM_SVG_LINE_JOIN_MITER:
+				cairo_set_line_join (cairo, CAIRO_LINE_JOIN_MITER);
+				break;
+			case LSM_SVG_LINE_JOIN_ROUND:
+				cairo_set_line_join (cairo,CAIRO_LINE_JOIN_ROUND);
+				break;
+			default:
+				cairo_set_line_join (cairo,CAIRO_LINE_JOIN_BEVEL);
+		}
+
+		switch (stroke->line_cap.value) {
+			case LSM_SVG_LINE_CAP_BUTT:
+				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_BUTT);
+				break;
+			case LSM_SVG_LINE_CAP_ROUND:
+				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_ROUND);
+				break;
+			default:
+				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_SQUARE);
+		}
+
+		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
 		cairo_set_line_width (cairo, stroke->width.length.value);
 		cairo_stroke (cairo);
 	}

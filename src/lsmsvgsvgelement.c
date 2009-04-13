@@ -146,15 +146,19 @@ lsm_svg_svg_element_init (LsmSvgSvgElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", "black");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill-opacity", "1");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke", "none");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-width", "1px");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-opacity", "1");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-family", "sans");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-size", "10pt");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-color", "black");
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-opacity", "1");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", 			"black");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill-opacity", 		"1");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill-rule",		"nonzero");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke", 		"none");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-width", 		"1px");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-opacity", 	"1");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-linejoin", 	"miter");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-linecap", 	"butt");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke-miterlimit", 	"4");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-family", 		"sans");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-size", 		"10pt");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-color", 		"black");
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-opacity", 		"1");
 
 }
 

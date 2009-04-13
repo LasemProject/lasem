@@ -36,9 +36,9 @@ typedef struct {
 typedef struct {
 	LsmSvgPaintAttribute paint;
 	LsmSvgLengthAttribute width;
-	LsmDomEnumAttribute cap;
-	LsmDomEnumAttribute join;
-	LsmDomEnumAttribute miter_limit;
+	LsmDomEnumAttribute line_join;
+	LsmDomEnumAttribute line_cap;
+	LsmSvgDoubleAttribute miter_limit;
 	LsmSvgLengthAttribute dash_offset;
 	LsmDomDoubleAttribute opacity;
 } LsmSvgStrokeAttributeBag;

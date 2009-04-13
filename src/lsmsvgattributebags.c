@@ -50,13 +50,17 @@ void
 lsm_dom_attribute_map_add_fill_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
 {
 	lsm_dom_attribute_map_add_bag_attribute (map, "fill",
-					      offsetof (LsmSvgFillAttributeBag, paint),
-					      &lsm_svg_paint_attribute_class,
-					      bag_offset, &lsm_svg_fill_attribute_bag_class);
+						 offsetof (LsmSvgFillAttributeBag, paint),
+						 &lsm_svg_paint_attribute_class,
+						 bag_offset, &lsm_svg_fill_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "fill-rule",
+						 offsetof (LsmSvgFillAttributeBag, rule),
+						 NULL,
+						 bag_offset, &lsm_svg_fill_attribute_bag_class);
 	lsm_dom_attribute_map_add_bag_attribute (map, "fill-opacity",
-					      offsetof (LsmSvgFillAttributeBag, opacity),
-					      NULL,
-					      bag_offset, &lsm_svg_fill_attribute_bag_class);
+						 offsetof (LsmSvgFillAttributeBag, opacity),
+						 NULL,
+						 bag_offset, &lsm_svg_fill_attribute_bag_class);
 }
 
 static void *
@@ -84,17 +88,29 @@ void
 lsm_dom_attribute_map_add_stroke_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
 {
 	lsm_dom_attribute_map_add_bag_attribute (map, "stroke",
-					      offsetof (LsmSvgStrokeAttributeBag, paint),
-					      &lsm_svg_paint_attribute_class,
-					      bag_offset, &lsm_svg_stroke_attribute_bag_class);
+						 offsetof (LsmSvgStrokeAttributeBag, paint),
+						 &lsm_svg_paint_attribute_class,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
 	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-width",
-					      offsetof (LsmSvgStrokeAttributeBag, width),
-					      NULL,
-					      bag_offset, &lsm_svg_stroke_attribute_bag_class);
+						 offsetof (LsmSvgStrokeAttributeBag, width),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
 	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-opacity",
-					      offsetof (LsmSvgStrokeAttributeBag, opacity),
-					      NULL,
-					      bag_offset, &lsm_svg_stroke_attribute_bag_class);
+						 offsetof (LsmSvgStrokeAttributeBag, opacity),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-linejoin",
+						 offsetof (LsmSvgStrokeAttributeBag, line_join),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-linecap",
+						 offsetof (LsmSvgStrokeAttributeBag, line_cap),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-miterlimit",
+						 offsetof (LsmSvgStrokeAttributeBag, miter_limit),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
 }
 
 static void *

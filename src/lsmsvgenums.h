@@ -54,7 +54,7 @@ typedef enum {
 } LsmSvgLengthType;
 
 const char * 		lsm_svg_length_type_to_string 		(LsmSvgLengthType length_type);
-LsmSvgLengthType 		lsm_svg_length_type_from_string 		(const char *string);
+LsmSvgLengthType	lsm_svg_length_type_from_string 	(const char *string);
 
 typedef enum {
 	LSM_SVG_FILL_RULE_NON_ZERO,
@@ -63,6 +63,24 @@ typedef enum {
 
 const char * 		lsm_svg_fill_rule_to_string 		(LsmSvgFillRule fill_rule);
 LsmSvgFillRule 		lsm_svg_fill_rule_from_string 		(const char *string);
+
+typedef enum {
+	LSM_SVG_LINE_JOIN_MITER,
+	LSM_SVG_LINE_JOIN_ROUND,
+	LSM_SVG_LINE_JOIN_BEVEL
+} LsmSvgLineJoin;
+
+const char * 		lsm_svg_line_join_to_string 		(LsmSvgLineJoin line_join);
+LsmSvgLineJoin 		lsm_svg_line_join_from_string 		(const char *string);
+
+typedef enum {
+	LSM_SVG_LINE_CAP_BUTT,
+	LSM_SVG_LINE_CAP_ROUND,
+	LSM_SVG_LINE_CAP_SQUARE
+} LsmSvgLineCap;
+
+const char * 		lsm_svg_line_cap_to_string 		(LsmSvgLineCap line_cap);
+LsmSvgLineCap		lsm_svg_line_cap_from_string 		(const char *string);
 
 typedef enum {
 	LSM_SVG_TRANSFORM_TYPE_UNKNOWN,

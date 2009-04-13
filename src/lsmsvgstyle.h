@@ -39,7 +39,10 @@ struct _GSvgStyle {
 	struct {
 		LsmSvgPaint paint;
 		LsmSvgLength width;
+		LsmSvgLineJoin line_join;
+		LsmSvgLineCap line_cap;
 		double opacity;
+		double miter_limit;
 	} stroke;
 
 	struct {

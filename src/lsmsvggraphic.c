@@ -107,6 +107,9 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 					       &graphic->color.value);
 		lsm_svg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width, 0.0);
 		lsm_dom_double_attribute_parse (&graphic->stroke->opacity, &parent_style->stroke.opacity);
+		lsm_svg_line_join_attribute_parse (&graphic->stroke->line_join, &parent_style->stroke.line_join);
+		lsm_svg_line_cap_attribute_parse (&graphic->stroke->line_cap, &parent_style->stroke.line_cap);
+		lsm_svg_double_attribute_parse (&graphic->stroke->miter_limit, &parent_style->stroke.miter_limit);
 	}
 
 	if (graphic->transform != NULL) {
@@ -205,7 +208,8 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 
 	lsm_dom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, fill));
 	lsm_dom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stroke));
-	lsm_dom_attribute_map_add_transform_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, transform));
+	lsm_dom_attribute_map_add_transform_attribute_bag (s_element_class->attributes,
+							   offsetof (LsmSvgGraphic, transform));
 	lsm_dom_attribute_map_add_text_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, text));
 	lsm_dom_attribute_map_add_stop_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stop));
 }

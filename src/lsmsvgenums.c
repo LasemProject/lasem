@@ -79,7 +79,45 @@ LsmSvgFillRule
 lsm_svg_fill_rule_from_string (const char *string)
 {
 	return lsm_svg_value_from_string (string, lsm_svg_fill_rule_strings,
-				       G_N_ELEMENTS (lsm_svg_fill_rule_strings));
+					  G_N_ELEMENTS (lsm_svg_fill_rule_strings));
+}
+
+static const char *lsm_svg_line_join_strings[] = {
+	"miter",
+	"round",
+	"bevel"
+};
+
+const char *
+lsm_svg_line_join_to_string (LsmSvgLineJoin line_join)
+{
+	return lsm_svg_line_join_strings[CLAMP (line_join, 0, LSM_SVG_LINE_JOIN_BEVEL)];
+}
+
+LsmSvgLineJoin
+lsm_svg_line_join_from_string (const char *string)
+{
+	return lsm_svg_value_from_string (string, lsm_svg_line_join_strings,
+					  G_N_ELEMENTS (lsm_svg_line_join_strings));
+}
+
+static const char *lsm_svg_line_cap_strings[] = {
+	"butt",
+	"round",
+	"square"
+};
+
+const char *
+lsm_svg_line_cap_to_string (LsmSvgLineCap line_cap)
+{
+	return lsm_svg_line_cap_strings[CLAMP (line_cap, 0, LSM_SVG_LINE_CAP_SQUARE)];
+}
+
+LsmSvgLineCap
+lsm_svg_line_cap_from_string (const char *string)
+{
+	return lsm_svg_value_from_string (string, lsm_svg_line_cap_strings,
+					  G_N_ELEMENTS (lsm_svg_line_cap_strings));
 }
 
 static const char *lsm_svg_gradient_units_strings[] = {
