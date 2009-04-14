@@ -35,7 +35,7 @@ static const LsmMathmlBbox null_bbox = {0.0,0.0,0.0, FALSE};
 static gboolean
 lsm_mathml_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_MATHML_IS_ELEMENT (child));
+	return (LSM_IS_MATHML_ELEMENT (child));
 }
 
 static void
@@ -89,7 +89,7 @@ _update_children (LsmMathmlElement *self, LsmMathmlStyle *style)
 	gboolean need_measure = FALSE;
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_MATHML_IS_ELEMENT (node))
+		if (LSM_IS_MATHML_ELEMENT (node))
 			if (lsm_mathml_element_update (LSM_MATHML_ELEMENT (node), style))
 				need_measure = TRUE;
 
@@ -103,7 +103,7 @@ lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_
 	LsmMathmlStyle *style;
 	gboolean need_measure;
 
-	g_return_val_if_fail (LSM_MATHML_IS_ELEMENT (self), FALSE);
+	g_return_val_if_fail (LSM_IS_MATHML_ELEMENT (self), FALSE);
 	g_return_val_if_fail (parent_style != NULL, FALSE);
 
 	if (!self->need_update && !self->need_children_update) {
@@ -136,7 +136,7 @@ lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_
 		LsmDomNode *node;
 
 		for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-			if (LSM_MATHML_IS_ELEMENT (node))
+			if (LSM_IS_MATHML_ELEMENT (node))
 				LSM_MATHML_ELEMENT (node)->need_update = TRUE;
 	}
 
@@ -173,7 +173,7 @@ _measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox
 	stretch_bbox = *bbox;
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (LSM_MATHML_IS_ELEMENT (node)) {
+		if (LSM_IS_MATHML_ELEMENT (node)) {
 			operator = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
 			if (operator != NULL && operator->stretchy.value) {
 				stretchy_found = TRUE;
@@ -198,7 +198,7 @@ _measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox
 			    stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
 
 		for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-			if (LSM_MATHML_IS_ELEMENT (node)) {
+			if (LSM_IS_MATHML_ELEMENT (node)) {
 				operator = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
 				if (operator != NULL && operator->stretchy.value) {
 					child_bbox = *lsm_mathml_element_measure (LSM_MATHML_ELEMENT (node), view,
@@ -218,7 +218,7 @@ lsm_mathml_element_measure (LsmMathmlElement *element, LsmMathmlView *view, cons
 {
 	LsmMathmlElementClass *element_class;
 
-	g_return_val_if_fail (LSM_MATHML_IS_ELEMENT (element), &null_bbox);
+	g_return_val_if_fail (LSM_IS_MATHML_ELEMENT (element), &null_bbox);
 
 	element_class = LSM_MATHML_ELEMENT_GET_CLASS (element);
 
@@ -263,7 +263,7 @@ _layout (LsmMathmlElement *self, LsmMathmlView *view,
 	double offset;
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_MATHML_IS_ELEMENT (node)) {
+		if (LSM_IS_MATHML_ELEMENT (node)) {
 			child_bbox = *lsm_mathml_element_get_bbox (LSM_MATHML_ELEMENT (node));
 			operator = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
 			if (operator != NULL)
@@ -283,7 +283,7 @@ lsm_mathml_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 {
 	LsmMathmlElementClass *element_class;
 
-	g_return_if_fail (LSM_MATHML_IS_ELEMENT (self));
+	g_return_if_fail (LSM_IS_MATHML_ELEMENT (self));
 
 	element_class = LSM_MATHML_ELEMENT_GET_CLASS (self);
 
@@ -309,7 +309,7 @@ _render (LsmMathmlElement *element, LsmMathmlView *view)
 	LsmDomNode *node;
 
 	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_MATHML_IS_ELEMENT (node))
+		if (LSM_IS_MATHML_ELEMENT (node))
 		    lsm_mathml_element_render (LSM_MATHML_ELEMENT (node), view);
 }
 
@@ -318,7 +318,7 @@ lsm_mathml_element_render (LsmMathmlElement *element, LsmMathmlView *view)
 {
 	LsmMathmlElementClass *element_class;
 
-	g_return_if_fail (LSM_MATHML_IS_ELEMENT (element));
+	g_return_if_fail (LSM_IS_MATHML_ELEMENT (element));
 	element_class = LSM_MATHML_ELEMENT_GET_CLASS (element);
 	g_return_if_fail (element_class != NULL);
 
@@ -339,11 +339,11 @@ _get_embellished_core (const LsmMathmlElement *self)
 	LsmDomNode *node;
 	LsmMathmlOperatorElement *core = NULL;
 
-	g_assert (LSM_MATHML_IS_ELEMENT (self));
+	g_assert (LSM_IS_MATHML_ELEMENT (self));
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (LSM_MATHML_IS_ELEMENT (node)) {
-			if (!LSM_MATHML_IS_SPACE_ELEMENT (node)) {
+		if (LSM_IS_MATHML_ELEMENT (node)) {
+			if (!LSM_IS_MATHML_SPACE_ELEMENT (node)) {
 				if (core != NULL)
 					return NULL;
 				core = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
@@ -361,7 +361,7 @@ lsm_mathml_element_get_embellished_core (const LsmMathmlElement *self)
 {
 	LsmMathmlElementClass *element_class;
 
-	g_return_val_if_fail (LSM_MATHML_IS_ELEMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_MATHML_ELEMENT (self), NULL);
 
 	element_class = LSM_MATHML_ELEMENT_GET_CLASS (self);
 
@@ -374,7 +374,7 @@ lsm_mathml_element_get_embellished_core (const LsmMathmlElement *self)
 const LsmMathmlBbox *
 lsm_mathml_element_get_bbox (const LsmMathmlElement *self)
 {
-	g_return_val_if_fail (LSM_MATHML_IS_ELEMENT (self), &lsm_mathml_bbox_null);
+	g_return_val_if_fail (LSM_IS_MATHML_ELEMENT (self), &lsm_mathml_bbox_null);
 
 	return &self->bbox;
 }
@@ -390,7 +390,7 @@ lsm_mathml_element_is_inferred_row (const LsmMathmlElement *self)
 {
 	LsmMathmlElementClass *element_class;
 
-	g_return_val_if_fail (LSM_MATHML_IS_ELEMENT (self), FALSE);
+	g_return_val_if_fail (LSM_IS_MATHML_ELEMENT (self), FALSE);
 
 	element_class = LSM_MATHML_ELEMENT_GET_CLASS (self);
 
@@ -458,4 +458,4 @@ lsm_mathml_element_class_init (LsmMathmlElementClass *m_element_class)
 					  offsetof (LsmMathmlElement, href));
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmMathmlElement, lsm_mathml_element, LSM_DOM_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (LsmMathmlElement, lsm_mathml_element, LSM_TYPE_DOM_ELEMENT)

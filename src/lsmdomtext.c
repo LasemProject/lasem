@@ -49,7 +49,7 @@ lsm_dom_text_new (const char *data)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_DOM_TYPE_TEXT, NULL);
+	node = g_object_new (LSM_TYPE_DOM_TEXT, NULL);
 
 	lsm_dom_character_data_set_data (LSM_DOM_CHARACTER_DATA (node), data);
 
@@ -73,4 +73,4 @@ lsm_dom_text_class_init (LsmDomTextClass *klass)
 	node_class->get_node_type = lsm_dom_text_get_node_type;
 }
 
-G_DEFINE_TYPE (LsmDomText, lsm_dom_text, LSM_DOM_TYPE_CHARACTER_DATA)
+G_DEFINE_TYPE (LsmDomText, lsm_dom_text, LSM_TYPE_DOM_CHARACTER_DATA)

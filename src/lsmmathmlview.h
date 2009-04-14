@@ -66,12 +66,12 @@ typedef struct {
 	LsmMathmlGlyph		sized_glyphs[5];
 } LsmMathmlOperatorGlyph;
 
-#define LSM_MATHML_TYPE_VIEW             (lsm_mathml_view_get_type ())
-#define LSM_MATHML_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_VIEW, LsmMathmlView))
-#define LSM_MATHML_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_VIEW, LsmMathmlViewClass))
-#define LSM_MATHML_IS_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_VIEW))
-#define LSM_MATHML_IS_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_VIEW))
-#define LSM_MATHML_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_VIEW, LsmMathmlViewClass))
+#define LSM_TYPE_MATHML_VIEW             (lsm_mathml_view_get_type ())
+#define LSM_MATHML_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_VIEW, LsmMathmlView))
+#define LSM_MATHML_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_VIEW, LsmMathmlViewClass))
+#define LSM_IS_MATHML_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_VIEW))
+#define LSM_IS_MATHML_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_VIEW))
+#define LSM_MATHML_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_VIEW, LsmMathmlViewClass))
 
 typedef struct _GMathmlViewClass LsmMathmlViewClass;
 typedef struct _GMathmlViewPrivate LsmMathmlViewPrivate;

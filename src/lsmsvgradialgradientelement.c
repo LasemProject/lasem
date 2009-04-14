@@ -95,7 +95,7 @@ _radial_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_radial_gradient_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_RADIAL_GRADIENT_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_RADIAL_GRADIENT_ELEMENT, NULL);
 }
 
 static void
@@ -141,4 +141,4 @@ lsm_svg_radial_gradient_element_class_init (LsmSvgRadialGradientElementClass *s_
 					  offsetof (LsmSvgRadialGradientElement, fy));
 }
 
-G_DEFINE_TYPE (LsmSvgRadialGradientElement, lsm_svg_radial_gradient_element, LSM_SVG_TYPE_GRADIENT_ELEMENT)
+G_DEFINE_TYPE (LsmSvgRadialGradientElement, lsm_svg_radial_gradient_element, LSM_TYPE_SVG_GRADIENT_ELEMENT)

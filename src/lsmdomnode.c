@@ -82,7 +82,7 @@ LsmDomNodeType lsm_dom_node_get_node_type (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_get_parent_node (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	return self->parent_node;
 }
@@ -96,7 +96,7 @@ lsm_dom_node_get_parent_node (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_get_first_child (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	return self->first_child;
 }
@@ -104,7 +104,7 @@ lsm_dom_node_get_first_child (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_get_last_child (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	return self->last_child;
 }
@@ -112,7 +112,7 @@ lsm_dom_node_get_last_child (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_get_previous_sibling (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	return self->previous_sibling;
 }
@@ -120,7 +120,7 @@ lsm_dom_node_get_previous_sibling (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_get_next_sibling (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	return self->next_sibling;
 }
@@ -136,11 +136,11 @@ lsm_dom_node_get_owner_document (LsmDomNode* self)
 {
 	LsmDomNode *parent;
 
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
 	for (parent = self;
 	     parent != NULL &&
-	     !LSM_DOM_IS_DOCUMENT (parent);
+	     !LSM_IS_DOM_DOCUMENT (parent);
 	     parent = parent->parent_node);
 
 	return LSM_DOM_DOCUMENT (parent);
@@ -168,8 +168,8 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 	LsmDomNode *node;
 	LsmDomNodeClass *node_class;
 
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
-	g_return_val_if_fail (LSM_DOM_IS_NODE (old_child), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (old_child), NULL);
 
 	for (node = self->first_child;
 	     node != NULL && node != old_child;
@@ -206,7 +206,7 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 {
 	LsmDomNodeClass *node_class;
 
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 	g_return_val_if_fail (LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child), NULL);
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
 
@@ -243,7 +243,7 @@ lsm_dom_node_changed (LsmDomNode *self)
 	LsmDomNode *child_node;
 	LsmDomNodeClass *node_class;
 
-	g_return_if_fail (LSM_DOM_IS_NODE (self));
+	g_return_if_fail (LSM_IS_DOM_NODE (self));
 
 	node_class = LSM_DOM_NODE_GET_CLASS (self);
 
@@ -265,7 +265,7 @@ lsm_dom_node_changed (LsmDomNode *self)
 gboolean
 lsm_dom_node_has_child_nodes (LsmDomNode* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_NODE (self), FALSE);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), FALSE);
 
 	return self->first_child != NULL;
 }
@@ -277,7 +277,7 @@ lsm_dom_node_dump (LsmDomNode *self)
 	LsmDomNodeType type;
 	const char *text;
 
-	g_return_if_fail (LSM_DOM_IS_NODE (self));
+	g_return_if_fail (LSM_IS_DOM_NODE (self));
 
 	type = lsm_dom_node_get_node_type (self);
 

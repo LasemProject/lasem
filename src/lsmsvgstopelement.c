@@ -55,7 +55,7 @@ _stop_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 double
 lsm_svg_stop_element_get_offset (LsmSvgStopElement *self)
 {
-	g_return_val_if_fail (LSM_SVG_IS_STOP_ELEMENT (self), 0.0);
+	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 0.0);
 
 	return LSM_SVG_STOP_ELEMENT (self)->offset.length.value;
 }
@@ -63,7 +63,7 @@ lsm_svg_stop_element_get_offset (LsmSvgStopElement *self)
 const LsmSvgColor *
 lsm_svg_stop_element_get_color (LsmSvgStopElement *self)
 {
-	g_return_val_if_fail (LSM_SVG_IS_STOP_ELEMENT (self), &lsm_svg_color_null);
+	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), &lsm_svg_color_null);
 
 	if (LSM_SVG_GRAPHIC(self)->stop != NULL)
 		return &(LSM_SVG_GRAPHIC (self)->stop->color.value);
@@ -74,7 +74,7 @@ lsm_svg_stop_element_get_color (LsmSvgStopElement *self)
 double
 lsm_svg_stop_element_get_opacity (LsmSvgStopElement *self)
 {
-	g_return_val_if_fail (LSM_SVG_IS_STOP_ELEMENT (self), 1.0);
+	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 1.0);
 
 	if (LSM_SVG_GRAPHIC(self)->stop != NULL)
 		return LSM_SVG_GRAPHIC (self)->stop->opacity.value;
@@ -85,7 +85,7 @@ lsm_svg_stop_element_get_opacity (LsmSvgStopElement *self)
 LsmDomNode *
 lsm_svg_stop_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_STOP_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_STOP_ELEMENT, NULL);
 }
 
 static void
@@ -113,4 +113,4 @@ lsm_svg_stop_element_class_init (LsmSvgStopElementClass *klass)
 					  offsetof (LsmSvgStopElement, offset));
 }
 
-G_DEFINE_TYPE (LsmSvgStopElement, lsm_svg_stop_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgStopElement, lsm_svg_stop_element, LSM_TYPE_SVG_GRAPHIC)

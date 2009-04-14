@@ -35,7 +35,7 @@ lsm_dom_view_measure (LsmDomView *view, double *width, double *height)
 	if (height != NULL)
 		*height = 0.0;
 
-	g_return_if_fail (LSM_DOM_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
 	if (view_class->measure != NULL)
@@ -47,7 +47,7 @@ lsm_dom_view_render (LsmDomView *view, double x, double y)
 {
 	LsmDomViewClass *view_class;
 
-	g_return_if_fail (LSM_DOM_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 	g_return_if_fail (view->cairo != NULL);
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
@@ -58,7 +58,7 @@ lsm_dom_view_render (LsmDomView *view, double x, double y)
 void
 lsm_dom_view_set_debug (LsmDomView *view, gboolean debug)
 {
-	g_return_if_fail (LSM_DOM_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 
 	view->debug = debug;
 }
@@ -73,7 +73,7 @@ lsm_dom_view_set_cairo (LsmDomView *view, cairo_t *cairo)
 	cairo_surface_t *surface;
 	cairo_surface_type_t type;
 
-	g_return_if_fail (LSM_DOM_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 
 	if (view->cairo == cairo)
 		return;
@@ -120,8 +120,8 @@ lsm_dom_view_set_cairo (LsmDomView *view, cairo_t *cairo)
 void
 lsm_dom_view_set_document (LsmDomView *view, LsmDomDocument *document)
 {
-	g_return_if_fail (LSM_DOM_IS_VIEW (view));
-	g_return_if_fail (document == NULL || LSM_DOM_IS_DOCUMENT (document));
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (document == NULL || LSM_IS_DOM_DOCUMENT (document));
 
 	if (view->document == document)
 		return;

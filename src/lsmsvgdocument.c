@@ -46,7 +46,7 @@
 static gboolean
 lsm_svg_document_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_SVG_IS_SVG_ELEMENT (child));
+	return (LSM_IS_SVG_SVG_ELEMENT (child));
 }
 
 /* LsmDomDocument implementation */
@@ -108,7 +108,7 @@ lsm_svg_document_create_view (LsmDomDocument *document)
 LsmSvgDocument *
 lsm_svg_document_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_DOCUMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_DOCUMENT, NULL);
 }
 
 static void
@@ -136,4 +136,4 @@ lsm_svg_document_class_init (LsmSvgDocumentClass *m_document_class)
 	d_document_class->create_view = lsm_svg_document_create_view;
 }
 
-G_DEFINE_TYPE (LsmSvgDocument, lsm_svg_document, LSM_DOM_TYPE_DOCUMENT)
+G_DEFINE_TYPE (LsmSvgDocument, lsm_svg_document, LSM_TYPE_DOM_DOCUMENT)

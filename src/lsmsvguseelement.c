@@ -100,7 +100,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		id++;
 
 	element = lsm_dom_document_get_element_by_id (document, id);
-	if (!LSM_SVG_IS_ELEMENT (element)) {
+	if (!LSM_IS_SVG_ELEMENT (element)) {
 		lsm_debug ("[LsmSvgUseElement::graphic_render] Target '%s' not found", id);
 		return;
 	}
@@ -125,7 +125,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_use_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_USE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_USE_ELEMENT, NULL);
 }
 
 static void
@@ -165,4 +165,4 @@ lsm_svg_use_element_class_init (LsmSvgUseElementClass *klass)
 					  offsetof (LsmSvgUseElement, href));
 }
 
-G_DEFINE_TYPE (LsmSvgUseElement, lsm_svg_use_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgUseElement, lsm_svg_use_element, LSM_TYPE_SVG_GRAPHIC)

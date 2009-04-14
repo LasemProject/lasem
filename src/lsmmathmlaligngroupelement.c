@@ -69,7 +69,7 @@ lsm_mathml_align_group_element_render (LsmMathmlElement *element, LsmMathmlView 
 LsmDomNode *
 lsm_mathml_align_group_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_ALIGN_GROUP_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_ALIGN_GROUP_ELEMENT, NULL);
 }
 
 static void
@@ -97,4 +97,4 @@ lsm_mathml_align_group_element_class_init (LsmMathmlAlignGroupElementClass *alig
 	m_element_class->is_inferred_row = NULL;
 }
 
-G_DEFINE_TYPE (LsmMathmlAlignGroupElement, lsm_mathml_align_group_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlAlignGroupElement, lsm_mathml_align_group_element, LSM_TYPE_MATHML_ELEMENT)

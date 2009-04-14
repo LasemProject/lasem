@@ -36,7 +36,7 @@ lsm_svg_text_element_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_svg_text_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_DOM_IS_TEXT (child));
+	return (LSM_IS_DOM_TEXT (child));
 }
 
 /* LsmSvgElement implementation */
@@ -74,7 +74,7 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		return;
 
 	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
-		if (LSM_DOM_IS_TEXT (iter)) {
+		if (LSM_IS_DOM_TEXT (iter)) {
 			g_string_append (string, lsm_dom_node_get_node_value (iter));
 		}
 	}
@@ -90,7 +90,7 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_text_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_TEXT_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_TEXT_ELEMENT, NULL);
 }
 
 static void
@@ -132,4 +132,4 @@ lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_rect_class)
 					  offsetof (LsmSvgTextElement, y));
 }
 
-G_DEFINE_TYPE (LsmSvgTextElement, lsm_svg_text_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgTextElement, lsm_svg_text_element, LSM_TYPE_SVG_GRAPHIC)

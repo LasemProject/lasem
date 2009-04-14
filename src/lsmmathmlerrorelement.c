@@ -35,7 +35,7 @@ lsm_mathml_error_element_get_node_name (LsmDomNode *node)
 LsmDomNode *
 lsm_mathml_error_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_ERROR_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_ERROR_ELEMENT, NULL);
 }
 
 static void
@@ -53,5 +53,5 @@ lsm_mathml_error_element_class_init (LsmMathmlErrorElementClass *klass)
 	d_node_class->get_node_name = lsm_mathml_error_element_get_node_name;
 }
 
-G_DEFINE_TYPE (LsmMathmlErrorElement, lsm_mathml_error_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlErrorElement, lsm_mathml_error_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)
 

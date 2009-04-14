@@ -50,7 +50,7 @@ lsm_svg_symbol_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 LsmDomNode *
 lsm_svg_symbol_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_SYMBOL_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_SYMBOL_ELEMENT, NULL);
 }
 
 static void
@@ -75,4 +75,4 @@ lsm_svg_symbol_element_class_init (LsmSvgSymbolElementClass *klass)
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 }
 
-G_DEFINE_TYPE (LsmSvgSymbolElement, lsm_svg_symbol_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgSymbolElement, lsm_svg_symbol_element, LSM_TYPE_SVG_GRAPHIC)

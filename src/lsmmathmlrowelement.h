@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_MATHML_TYPE_ROW_ELEMENT             (lsm_mathml_row_element_get_type ())
-#define LSM_MATHML_ROW_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_ROW_ELEMENT, LsmMathmlRowElement))
-#define LSM_MATHML_ROW_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_ROW_ELEMENT, LsmMathmlRowElementClass))
-#define LSM_MATHML_IS_ROW_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_ROW_ELEMENT))
-#define LSM_MATHML_IS_ROW_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_ROW_ELEMENT))
-#define LSM_MATHML_ROW_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_ROW_ELEMENT, LsmMathmlRowElementClass))
+#define LSM_TYPE_MATHML_ROW_ELEMENT             (lsm_mathml_row_element_get_type ())
+#define LSM_MATHML_ROW_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_ROW_ELEMENT, LsmMathmlRowElement))
+#define LSM_MATHML_ROW_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_ROW_ELEMENT, LsmMathmlRowElementClass))
+#define LSM_IS_MATHML_ROW_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_ROW_ELEMENT))
+#define LSM_IS_MATHML_ROW_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ROW_ELEMENT))
+#define LSM_MATHML_ROW_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ROW_ELEMENT, LsmMathmlRowElementClass))
 
 typedef struct _GMathmlRowElementClass LsmMathmlRowElementClass;
 

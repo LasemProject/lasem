@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_SVG_TYPE_VIEW             (lsm_svg_view_get_type ())
-#define LSM_SVG_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_SVG_TYPE_VIEW, LsmSvgView))
-#define LSM_SVG_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_SVG_TYPE_VIEW, LsmSvgViewClass))
-#define LSM_SVG_IS_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_SVG_TYPE_VIEW))
-#define LSM_SVG_IS_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_SVG_TYPE_VIEW))
-#define LSM_SVG_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_SVG_TYPE_VIEW, LsmSvgViewClass))
+#define LSM_TYPE_SVG_VIEW             (lsm_svg_view_get_type ())
+#define LSM_SVG_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_SVG_VIEW, LsmSvgView))
+#define LSM_SVG_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_SVG_VIEW, LsmSvgViewClass))
+#define LSM_IS_SVG_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_SVG_VIEW))
+#define LSM_IS_SVG_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_VIEW))
+#define LSM_SVG_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_VIEW, LsmSvgViewClass))
 
 typedef struct _GSvgViewClass LsmSvgViewClass;
 typedef struct _GSvgViewPrivate LsmSvgViewPrivate;

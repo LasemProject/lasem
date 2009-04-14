@@ -89,7 +89,7 @@ _linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_linear_gradient_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_LINEAR_GRADIENT_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_LINEAR_GRADIENT_ELEMENT, NULL);
 }
 
 static void
@@ -133,4 +133,4 @@ lsm_svg_linear_gradient_element_class_init (LsmSvgLinearGradientElementClass *s_
 					  offsetof (LsmSvgLinearGradientElement, y2));
 }
 
-G_DEFINE_TYPE (LsmSvgLinearGradientElement, lsm_svg_linear_gradient_element, LSM_SVG_TYPE_GRADIENT_ELEMENT)
+G_DEFINE_TYPE (LsmSvgLinearGradientElement, lsm_svg_linear_gradient_element, LSM_TYPE_SVG_GRADIENT_ELEMENT)

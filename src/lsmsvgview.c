@@ -103,7 +103,7 @@ lsm_svg_view_create_radial_gradient (LsmSvgView *view,
 				  double r,
 				  double fx, double fy)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	_set_pattern (view, cairo_pattern_create_radial (cx, cy, 0, fx, fy, r));
 }
@@ -113,7 +113,7 @@ lsm_svg_view_create_linear_gradient (LsmSvgView *view,
 				     double x1, double y1,
 				     double x2, double y2)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	_set_pattern (view, cairo_pattern_create_linear (x1, y1, x2, y2));
 }
@@ -121,7 +121,7 @@ lsm_svg_view_create_linear_gradient (LsmSvgView *view,
 void
 lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset, const LsmSvgColor *color, double opacity)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->pattern_data->pattern != NULL);
 	g_return_if_fail (color != NULL);
@@ -136,7 +136,7 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 				      LsmSvgGradientUnits units,
 				      const LsmSvgMatrix *matrix)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
 
 	view->pattern_data->units = units;
@@ -162,7 +162,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	cairo_surface_t *surface;
 	cairo_pattern_t *pattern;
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->dom_view.cairo == NULL);
 
@@ -615,7 +615,7 @@ lsm_svg_view_push_transform (LsmSvgView *view, const LsmSvgMatrix *matrix)
 {
 	cairo_matrix_t cr_matrix;
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
 	cairo_save (view->dom_view.cairo);
@@ -625,7 +625,7 @@ lsm_svg_view_push_transform (LsmSvgView *view, const LsmSvgMatrix *matrix)
 void
 lsm_svg_view_pop_transform (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_restore (view->dom_view.cairo);
 }
@@ -633,7 +633,7 @@ lsm_svg_view_pop_transform (LsmSvgView *view)
 void
 lsm_svg_view_push_fill_attributes (LsmSvgView *view, LsmSvgFillAttributeBag *fill)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (fill != NULL);
 
 	view->fill_stack = g_slist_prepend (view->fill_stack, fill);
@@ -642,7 +642,7 @@ lsm_svg_view_push_fill_attributes (LsmSvgView *view, LsmSvgFillAttributeBag *fil
 void
 lsm_svg_view_pop_fill_attributes (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->fill_stack != NULL);
 
 	view->fill_stack = g_slist_delete_link (view->fill_stack, view->fill_stack);
@@ -651,7 +651,7 @@ lsm_svg_view_pop_fill_attributes (LsmSvgView *view)
 void
 lsm_svg_view_push_stroke_attributes (LsmSvgView *view, LsmSvgStrokeAttributeBag *stroke)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (stroke != NULL);
 
 	view->stroke_stack = g_slist_prepend (view->stroke_stack, stroke);
@@ -660,7 +660,7 @@ lsm_svg_view_push_stroke_attributes (LsmSvgView *view, LsmSvgStrokeAttributeBag 
 void
 lsm_svg_view_pop_stroke_attributes (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->stroke_stack != NULL);
 
 	view->stroke_stack = g_slist_delete_link (view->stroke_stack, view->stroke_stack);
@@ -669,7 +669,7 @@ lsm_svg_view_pop_stroke_attributes (LsmSvgView *view)
 void
 lsm_svg_view_push_text_attributes (LsmSvgView *view, LsmSvgTextAttributeBag *text)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (text != NULL);
 
 	view->text_stack = g_slist_prepend (view->text_stack, text);
@@ -678,7 +678,7 @@ lsm_svg_view_push_text_attributes (LsmSvgView *view, LsmSvgTextAttributeBag *tex
 void
 lsm_svg_view_pop_text_attributes (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->text_stack != NULL);
 
 	view->text_stack = g_slist_delete_link (view->text_stack, view->text_stack);
@@ -691,8 +691,8 @@ _paint_uri (LsmSvgView *view, const char *uri)
 	LsmDomElement *element;
 
 	element = lsm_dom_document_get_element_by_id (view->dom_view.document, uri);
-	if (!LSM_SVG_IS_GRADIENT_ELEMENT (element) &&
-	    !LSM_SVG_IS_PATTERN_ELEMENT (element))
+	if (!LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
+	    !LSM_IS_SVG_PATTERN_ELEMENT (element))
 		return;
 
 	_start_pattern (view);
@@ -845,7 +845,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 {
 	cairo_t *cairo;
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo = view->dom_view.cairo;
 
@@ -876,7 +876,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 void
 lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);
 
@@ -890,7 +890,7 @@ lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, do
 {
 	cairo_t *cairo;
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	if (rx <= 0 || ry <= 0)
 		return;
@@ -911,7 +911,7 @@ void
 lsm_svg_view_show_path (LsmSvgView *view,
 		     const char *d)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	_emit_svg_path (view->dom_view.cairo, d);
 
@@ -921,7 +921,7 @@ lsm_svg_view_show_path (LsmSvgView *view,
 void
 lsm_svg_view_show_line (LsmSvgView *view, double x1, double y1, double x2, double y2)
 {
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 	cairo_line_to (view->dom_view.cairo, x2, y2);
@@ -935,7 +935,7 @@ lsm_svg_view_show_polyline (LsmSvgView *view, const char *points)
 	char *str;
 	double values[2];
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	str = (char *) points;
 
@@ -954,7 +954,7 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 	char *str;
 	double values[2];
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	str = (char *) points;
 
@@ -982,7 +982,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	if (string == NULL)
 		return;
 
-	g_return_if_fail (LSM_SVG_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	text = view->text_stack->data;
 	g_return_if_fail (text != NULL);
@@ -1066,7 +1066,7 @@ lsm_svg_view_new (LsmSvgDocument *document)
 {
 	LsmSvgView *view;
 
-	view = g_object_new (LSM_SVG_TYPE_VIEW, NULL);
+	view = g_object_new (LSM_TYPE_SVG_VIEW, NULL);
 
 	lsm_dom_view_set_document (LSM_DOM_VIEW (view), LSM_DOM_DOCUMENT (document));
 
@@ -1098,4 +1098,4 @@ lsm_svg_view_class_init (LsmSvgViewClass *view_class)
 	d_view_class->render = lsm_svg_view_render;
 }
 
-G_DEFINE_TYPE (LsmSvgView, lsm_svg_view, LSM_DOM_TYPE_VIEW)
+G_DEFINE_TYPE (LsmSvgView, lsm_svg_view, LSM_TYPE_DOM_VIEW)

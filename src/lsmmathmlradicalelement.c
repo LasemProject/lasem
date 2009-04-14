@@ -45,9 +45,9 @@ lsm_mathml_radical_element_can_append_child (LsmDomNode *self, LsmDomNode *child
 	LsmMathmlRadicalElement *radical = LSM_MATHML_RADICAL_ELEMENT (self);
 
 	if (radical->type == LSM_MATHML_RADICAL_ELEMENT_TYPE_SQRT)
-		return LSM_MATHML_IS_ELEMENT (child);
+		return LSM_IS_MATHML_ELEMENT (child);
 
-	return LSM_MATHML_IS_ELEMENT (child) && (self->first_child == NULL ||
+	return LSM_IS_MATHML_ELEMENT (child) && (self->first_child == NULL ||
 					      self->first_child->next_sibling == NULL);
 }
 
@@ -215,7 +215,7 @@ lsm_mathml_sqrt_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_RADICAL_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_RADICAL_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_RADICAL_ELEMENT (node)->type = LSM_MATHML_RADICAL_ELEMENT_TYPE_SQRT;
@@ -228,7 +228,7 @@ lsm_mathml_root_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_RADICAL_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_RADICAL_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_RADICAL_ELEMENT (node)->type = LSM_MATHML_RADICAL_ELEMENT_TYPE_ROOT;
@@ -262,4 +262,4 @@ lsm_mathml_radical_element_class_init (LsmMathmlRadicalElementClass *radical_cla
 	m_element_class->is_inferred_row = lsm_mathml_radical_element_is_inferred_row;
 }
 
-G_DEFINE_TYPE (LsmMathmlRadicalElement, lsm_mathml_radical_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlRadicalElement, lsm_mathml_radical_element, LSM_TYPE_MATHML_ELEMENT)

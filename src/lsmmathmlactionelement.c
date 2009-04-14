@@ -64,7 +64,7 @@ lsm_mathml_action_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 LsmDomNode *
 lsm_mathml_action_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_ACTION_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_ACTION_ELEMENT, NULL);
 }
 
 static void
@@ -87,5 +87,5 @@ lsm_mathml_action_element_class_init (LsmMathmlActionElementClass *m_action_clas
 	m_element_class->render = lsm_mathml_action_element_render;
 }
 
-G_DEFINE_TYPE (LsmMathmlActionElement, lsm_mathml_action_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlActionElement, lsm_mathml_action_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)
 

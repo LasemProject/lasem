@@ -78,7 +78,7 @@ lsm_mathml_string_element_get_text (LsmMathmlPresentationToken *token)
 LsmDomNode *
 lsm_mathml_string_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_STRING_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_STRING_ELEMENT, NULL);
 }
 
 static void
@@ -111,5 +111,5 @@ lsm_mathml_string_element_class_init (LsmMathmlStringElementClass *string_class)
 				       offsetof (LsmMathmlStringElement, right_quote));
 }
 
-G_DEFINE_TYPE (LsmMathmlStringElement, lsm_mathml_string_element, LSM_MATHML_TYPE_PRESENTATION_TOKEN)
+G_DEFINE_TYPE (LsmMathmlStringElement, lsm_mathml_string_element, LSM_TYPE_MATHML_PRESENTATION_TOKEN)
 

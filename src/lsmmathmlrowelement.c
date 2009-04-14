@@ -35,7 +35,7 @@ lsm_mathml_row_element_get_node_name (LsmDomNode *node)
 LsmDomNode *
 lsm_mathml_row_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_ROW_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_ROW_ELEMENT, NULL);
 }
 
 static void
@@ -53,5 +53,5 @@ lsm_mathml_row_element_class_init (LsmMathmlRowElementClass *klass)
 	d_node_class->get_node_name = lsm_mathml_row_element_get_node_name;
 }
 
-G_DEFINE_TYPE (LsmMathmlRowElement, lsm_mathml_row_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlRowElement, lsm_mathml_row_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)
 

@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_TYPE_TEXT             (lsm_dom_text_get_type ())
-#define LSM_DOM_TEXT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_TEXT, LsmDomText))
-#define LSM_DOM_TEXT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_TEXT, LsmDomTextClass))
-#define LSM_DOM_IS_TEXT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_TEXT))
-#define LSM_DOM_IS_TEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_TEXT))
-#define LSM_DOM_TEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_TEXT, LsmDomTextClass))
+#define LSM_TYPE_DOM_TEXT             (lsm_dom_text_get_type ())
+#define LSM_DOM_TEXT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_TEXT, LsmDomText))
+#define LSM_DOM_TEXT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_TEXT, LsmDomTextClass))
+#define LSM_IS_DOM_TEXT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_TEXT))
+#define LSM_IS_DOM_TEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_TEXT))
+#define LSM_DOM_TEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_TEXT, LsmDomTextClass))
 
 typedef struct _GDomTextClass LsmDomTextClass;
 

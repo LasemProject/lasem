@@ -39,4 +39,4 @@ lsm_mathml_presentation_container_class_init (LsmMathmlPresentationContainerClas
 {
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmMathmlPresentationContainer, lsm_mathml_presentation_container, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (LsmMathmlPresentationContainer, lsm_mathml_presentation_container, LSM_TYPE_MATHML_ELEMENT)

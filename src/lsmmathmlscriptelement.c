@@ -186,7 +186,7 @@ lsm_mathml_sub_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_SCRIPT_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_SCRIPT_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_SCRIPT_ELEMENT (node)->type = LSM_MATHML_SCRIPT_ELEMENT_TYPE_SUB;
@@ -199,7 +199,7 @@ lsm_mathml_sup_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_SCRIPT_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_SCRIPT_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_SCRIPT_ELEMENT (node)->type = LSM_MATHML_SCRIPT_ELEMENT_TYPE_SUP;
@@ -212,7 +212,7 @@ lsm_mathml_sub_sup_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_SCRIPT_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_SCRIPT_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_SCRIPT_ELEMENT (node)->type = LSM_MATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP;
@@ -245,4 +245,4 @@ lsm_mathml_script_element_class_init (LsmMathmlScriptElementClass *script_class)
 	m_element_class->is_inferred_row = NULL;
 }
 
-G_DEFINE_TYPE (LsmMathmlScriptElement, lsm_mathml_script_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlScriptElement, lsm_mathml_script_element, LSM_TYPE_MATHML_ELEMENT)

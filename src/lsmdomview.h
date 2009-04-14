@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_TYPE_VIEW             (lsm_dom_view_get_type ())
-#define LSM_DOM_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_VIEW, LsmDomView))
-#define LSM_DOM_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_VIEW, LsmDomViewClass))
-#define LSM_DOM_IS_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_VIEW))
-#define LSM_DOM_IS_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_VIEW))
-#define LSM_DOM_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_VIEW, LsmDomViewClass))
+#define LSM_TYPE_DOM_VIEW             (lsm_dom_view_get_type ())
+#define LSM_DOM_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_VIEW, LsmDomView))
+#define LSM_DOM_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_VIEW, LsmDomViewClass))
+#define LSM_IS_DOM_VIEW(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_VIEW))
+#define LSM_IS_DOM_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_VIEW))
+#define LSM_DOM_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_VIEW, LsmDomViewClass))
 
 typedef struct _GDomViewClass LsmDomViewClass;
 

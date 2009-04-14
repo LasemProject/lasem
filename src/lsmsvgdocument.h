@@ -27,12 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_SVG_TYPE_DOCUMENT             (lsm_svg_document_get_type ())
-#define LSM_SVG_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_SVG_TYPE_DOCUMENT, LsmSvgDocument))
-#define LSM_SVG_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_SVG_TYPE_DOCUMENT, LsmSvgDocumentClass))
-#define LSM_SVG_IS_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_SVG_TYPE_DOCUMENT))
-#define LSM_SVG_IS_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_SVG_TYPE_DOCUMENT))
-#define LSM_SVG_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_SVG_TYPE_DOCUMENT, LsmSvgDocumentClass))
+#define LSM_TYPE_SVG_DOCUMENT             (lsm_svg_document_get_type ())
+#define LSM_SVG_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_SVG_DOCUMENT, LsmSvgDocument))
+#define LSM_SVG_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_SVG_DOCUMENT, LsmSvgDocumentClass))
+#define LSM_IS_SVG_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_SVG_DOCUMENT))
+#define LSM_IS_SVG_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_DOCUMENT))
+#define LSM_SVG_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_DOCUMENT, LsmSvgDocumentClass))
 
 typedef struct _GSvgDocumentClass LsmSvgDocumentClass;
 

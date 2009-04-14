@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_MATHML_TYPE_DOCUMENT             (lsm_mathml_document_get_type ())
-#define LSM_MATHML_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_DOCUMENT, LsmMathmlDocument))
-#define LSM_MATHML_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_DOCUMENT, LsmMathmlDocumentClass))
-#define LSM_MATHML_IS_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_DOCUMENT))
-#define LSM_MATHML_IS_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_DOCUMENT))
-#define LSM_MATHML_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_DOCUMENT, LsmMathmlDocumentClass))
+#define LSM_TYPE_MATHML_DOCUMENT             (lsm_mathml_document_get_type ())
+#define LSM_MATHML_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_DOCUMENT, LsmMathmlDocument))
+#define LSM_MATHML_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_DOCUMENT, LsmMathmlDocumentClass))
+#define LSM_IS_MATHML_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_DOCUMENT))
+#define LSM_IS_MATHML_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_DOCUMENT))
+#define LSM_MATHML_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_DOCUMENT, LsmMathmlDocumentClass))
 
 typedef struct _GMathmlDocumentClass LsmMathmlDocumentClass;
 

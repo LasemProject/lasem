@@ -56,7 +56,7 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 LsmMathmlStyle *
 lsm_mathml_math_element_get_default_style (LsmMathmlMathElement *math_element)
 {
-	g_return_val_if_fail (LSM_MATHML_IS_MATH_ELEMENT (math_element), NULL);
+	g_return_val_if_fail (LSM_IS_MATHML_MATH_ELEMENT (math_element), NULL);
 
 	return math_element->default_style;
 }
@@ -64,7 +64,7 @@ lsm_mathml_math_element_get_default_style (LsmMathmlMathElement *math_element)
 void
 lsm_mathml_math_element_set_default_style (LsmMathmlMathElement *math_element, LsmMathmlStyle *style)
 {
-	g_return_if_fail (LSM_MATHML_IS_MATH_ELEMENT (math_element));
+	g_return_if_fail (LSM_IS_MATHML_MATH_ELEMENT (math_element));
 	g_return_if_fail (style != NULL);
 
 	if (style == math_element->default_style) {
@@ -109,7 +109,7 @@ lsm_mathml_math_element_render (LsmMathmlMathElement *math_element, LsmMathmlVie
 LsmDomNode *
 lsm_mathml_math_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_MATH_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_MATH_ELEMENT, NULL);
 }
 
 static void
@@ -208,4 +208,4 @@ lsm_mathml_math_element_class_init (LsmMathmlMathElementClass *math_class)
 					  offsetof (LsmMathmlMathElement, display));
 }
 
-G_DEFINE_TYPE (LsmMathmlMathElement, lsm_mathml_math_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlMathElement, lsm_mathml_math_element, LSM_TYPE_MATHML_ELEMENT)

@@ -44,7 +44,7 @@ lsm_mathml_phantom_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 LsmDomNode *
 lsm_mathml_phantom_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_PHANTOM_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_PHANTOM_ELEMENT, NULL);
 }
 
 static void
@@ -67,4 +67,4 @@ lsm_mathml_phantom_element_class_init (LsmMathmlPhantomElementClass *phantom_cla
 	m_element_class->render = lsm_mathml_phantom_element_render;
 }
 
-G_DEFINE_TYPE (LsmMathmlPhantomElement, lsm_mathml_phantom_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlPhantomElement, lsm_mathml_phantom_element, LSM_TYPE_MATHML_ELEMENT)

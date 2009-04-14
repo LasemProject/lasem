@@ -39,12 +39,12 @@ typedef struct {
 	LsmMathmlColor 	math_background;
 } LsmMathmlElementStyle;
 
-#define LSM_MATHML_TYPE_ELEMENT             (lsm_mathml_element_get_type ())
-#define LSM_MATHML_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_ELEMENT, LsmMathmlElement))
-#define LSM_MATHML_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_ELEMENT, LsmMathmlElementClass))
-#define LSM_MATHML_IS_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_ELEMENT))
-#define LSM_MATHML_IS_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_ELEMENT))
-#define LSM_MATHML_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_ELEMENT, LsmMathmlElementClass))
+#define LSM_TYPE_MATHML_ELEMENT             (lsm_mathml_element_get_type ())
+#define LSM_MATHML_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_ELEMENT, LsmMathmlElement))
+#define LSM_MATHML_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_ELEMENT, LsmMathmlElementClass))
+#define LSM_IS_MATHML_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_ELEMENT))
+#define LSM_IS_MATHML_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ELEMENT))
+#define LSM_MATHML_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ELEMENT, LsmMathmlElementClass))
 
 typedef struct _GMathmlElementClass LsmMathmlElementClass;
 

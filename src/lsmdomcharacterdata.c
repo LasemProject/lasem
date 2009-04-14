@@ -29,7 +29,7 @@ static GObjectClass *parent_class = NULL;
 char*
 lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_CHARACTER_DATA (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_CHARACTER_DATA (self), NULL);
 
 	return self->data;
 }
@@ -37,7 +37,7 @@ lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 void
 lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char* value)
 {
-	g_return_if_fail (LSM_DOM_IS_CHARACTER_DATA (self));
+	g_return_if_fail (LSM_IS_DOM_CHARACTER_DATA (self));
 	g_return_if_fail (value != NULL);
 
 	g_free (self->data);
@@ -73,4 +73,4 @@ lsm_dom_character_data_class_init (LsmDomCharacterDataClass *character_data_clas
 	object_class->finalize = lsm_dom_character_data_finalize;
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmDomCharacterData, lsm_dom_character_data, LSM_DOM_TYPE_NODE)
+G_DEFINE_ABSTRACT_TYPE (LsmDomCharacterData, lsm_dom_character_data, LSM_TYPE_DOM_NODE)

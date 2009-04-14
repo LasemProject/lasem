@@ -53,7 +53,7 @@
 static gboolean
 lsm_mathml_document_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_MATHML_IS_MATH_ELEMENT (child));
+	return (LSM_IS_MATHML_MATH_ELEMENT (child));
 }
 
 /* LsmDomDocument implementation */
@@ -136,7 +136,7 @@ lsm_mathml_document_create_view (LsmDomDocument *document)
 LsmMathmlDocument *
 lsm_mathml_document_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_DOCUMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_DOCUMENT, NULL);
 }
 
 static void
@@ -166,7 +166,7 @@ lsm_mathml_document_class_init (LsmMathmlDocumentClass *m_document_class)
 	d_document_class->create_view = lsm_mathml_document_create_view;
 }
 
-G_DEFINE_TYPE (LsmMathmlDocument, lsm_mathml_document, LSM_DOM_TYPE_DOCUMENT)
+G_DEFINE_TYPE (LsmMathmlDocument, lsm_mathml_document, LSM_TYPE_DOM_DOCUMENT)
 
 static void
 _dummy_error (const char *msg)

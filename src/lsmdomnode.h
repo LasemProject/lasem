@@ -42,12 +42,12 @@ typedef enum  {
 	LSM_DOM_NODE_TYPE_NOTATION_NODE
 } LsmDomNodeType;
 
-#define LSM_DOM_TYPE_NODE             (lsm_dom_node_get_type ())
-#define LSM_DOM_NODE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_NODE, LsmDomNode))
-#define LSM_DOM_NODE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_NODE, LsmDomNodeClass))
-#define LSM_DOM_IS_NODE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_NODE))
-#define LSM_DOM_IS_NODE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_NODE))
-#define LSM_DOM_NODE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_NODE, LsmDomNodeClass))
+#define LSM_TYPE_DOM_NODE             (lsm_dom_node_get_type ())
+#define LSM_DOM_NODE(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_NODE, LsmDomNode))
+#define LSM_DOM_NODE_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_NODE, LsmDomNodeClass))
+#define LSM_IS_DOM_NODE(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_NODE))
+#define LSM_IS_DOM_NODE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_NODE))
+#define LSM_DOM_NODE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_NODE, LsmDomNodeClass))
 
 typedef struct _GDomNodeClass LsmDomNodeClass;
 

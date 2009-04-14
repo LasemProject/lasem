@@ -81,11 +81,11 @@ lsm_dom_parser_start_element(void *user_data,
 		state->current_node = LSM_DOM_NODE (state->document);
 	}
 
-	g_return_if_fail (LSM_DOM_IS_DOCUMENT (state->document));
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (state->document));
 
 	node = LSM_DOM_NODE (lsm_dom_document_create_element (LSM_DOM_DOCUMENT (state->document), (char *) name));
 
-	if (LSM_DOM_IS_NODE (node)) {
+	if (LSM_IS_DOM_NODE (node)) {
 		lsm_dom_node_append_child (state->current_node, node);
 
 		if (attrs != NULL)
@@ -126,8 +126,8 @@ lsm_dom_parser_characters (void *user_data, const xmlChar *ch, int len)
 {
 	LsmDomSaxParserState *state = user_data;
 
-	if ((LSM_MATHML_IS_PRESENTATION_TOKEN (state->current_node) ||
-	     LSM_SVG_IS_TEXT_ELEMENT (state->current_node)) &&
+	if ((LSM_IS_MATHML_PRESENTATION_TOKEN (state->current_node) ||
+	     LSM_IS_SVG_TEXT_ELEMENT (state->current_node)) &&
 	    !state->is_error) {
 		LsmDomNode *node;
 		char *text;

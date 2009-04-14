@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_TYPE_ELEMENT             (lsm_dom_element_get_type ())
-#define LSM_DOM_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_ELEMENT, LsmDomElement))
-#define LSM_DOM_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_ELEMENT, LsmDomElementClass))
-#define LSM_DOM_IS_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_ELEMENT))
-#define LSM_DOM_IS_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_ELEMENT))
-#define LSM_DOM_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_ELEMENT, LsmDomElementClass))
+#define LSM_TYPE_DOM_ELEMENT             (lsm_dom_element_get_type ())
+#define LSM_DOM_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_ELEMENT, LsmDomElement))
+#define LSM_DOM_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_ELEMENT, LsmDomElementClass))
+#define LSM_IS_DOM_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_ELEMENT))
+#define LSM_IS_DOM_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_ELEMENT))
+#define LSM_DOM_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_ELEMENT, LsmDomElementClass))
 
 typedef struct _GDomElementClass LsmDomElementClass;
 

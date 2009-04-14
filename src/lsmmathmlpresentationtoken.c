@@ -50,9 +50,9 @@ lsm_mathml_presentation_token_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_mathml_presentation_token_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_DOM_IS_TEXT (child) /*||
-		LSM_MATHML_IS_GLYPH_ELEMENT (child) ||
-		LSM_MATHML_IS_ALIGN_MARK_ELEMENT (child)*/);
+	return (LSM_IS_DOM_TEXT (child) /*||
+		LSM_IS_MATHML_GLYPH_ELEMENT (child) ||
+		LSM_IS_MATHML_ALIGN_MARK_ELEMENT (child)*/);
 }
 
 /* LsmMathmlElement implementation */
@@ -65,7 +65,7 @@ _get_text (LsmMathmlPresentationToken *self)
 	char *text;
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (LSM_DOM_IS_TEXT (node)) {
+		if (LSM_IS_DOM_TEXT (node)) {
 			g_string_append (string, lsm_dom_node_get_node_value (node));
 		}
 	}
@@ -82,7 +82,7 @@ lsm_mathml_presentation_token_get_text (LsmMathmlPresentationToken *self)
 {
 	LsmMathmlPresentationTokenClass *token_class;
 
-	g_return_val_if_fail (LSM_MATHML_IS_PRESENTATION_TOKEN (self), NULL);
+	g_return_val_if_fail (LSM_IS_MATHML_PRESENTATION_TOKEN (self), NULL);
 
 	token_class = LSM_MATHML_PRESENTATION_TOKEN_GET_CLASS (self);
 
@@ -162,7 +162,7 @@ lsm_mathml_number_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_PRESENTATION_TOKEN, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_PRESENTATION_TOKEN (node)->type = LSM_MATHML_PRESENTATION_TOKEN_TYPE_NUMBER;
@@ -175,7 +175,7 @@ lsm_mathml_identifier_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_PRESENTATION_TOKEN, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_PRESENTATION_TOKEN (node)->type = LSM_MATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER;
@@ -188,7 +188,7 @@ lsm_mathml_text_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_PRESENTATION_TOKEN, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_PRESENTATION_TOKEN, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_PRESENTATION_TOKEN (node)->type = LSM_MATHML_PRESENTATION_TOKEN_TYPE_TEXT;
@@ -250,4 +250,4 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 					     offsetof (LsmMathmlPresentationToken, font_style));
 }
 
-G_DEFINE_TYPE (LsmMathmlPresentationToken, lsm_mathml_presentation_token, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlPresentationToken, lsm_mathml_presentation_token, LSM_TYPE_MATHML_ELEMENT)

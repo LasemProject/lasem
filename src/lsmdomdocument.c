@@ -43,7 +43,7 @@ lsm_dom_document_get_node_type (LsmDomNode *node)
 LsmDomElement *
 lsm_dom_document_get_document_element (LsmDomDocument *self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_DOCUMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
 
 	return LSM_DOM_ELEMENT (lsm_dom_node_get_first_child (LSM_DOM_NODE (self)));
 }
@@ -53,7 +53,7 @@ lsm_dom_document_create_element (LsmDomDocument *document, const char *tag_name)
 {
 	LsmDomDocumentClass *document_class;
 
-	g_return_val_if_fail (LSM_DOM_IS_DOCUMENT (document), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (document), NULL);
 
 	document_class = LSM_DOM_DOCUMENT_GET_CLASS (document);
 	if (document_class->create_element != NULL)
@@ -71,7 +71,7 @@ lsm_dom_document_create_text_node_base (LsmDomDocument *document, const char *da
 LsmDomText *
 lsm_dom_document_create_text_node (LsmDomDocument *document, const char *data)
 {
-	g_return_val_if_fail (LSM_DOM_IS_DOCUMENT (document), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (document), NULL);
 
 	return LSM_DOM_DOCUMENT_GET_CLASS (document)->create_text_node (document, data);
 }
@@ -79,7 +79,7 @@ lsm_dom_document_create_text_node (LsmDomDocument *document, const char *data)
 LsmDomView *
 lsm_dom_document_create_view (LsmDomDocument *self)
 {
-	g_return_val_if_fail (LSM_DOM_IS_DOCUMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
 
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
@@ -87,7 +87,7 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 LsmDomElement *
 lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
 {
-	g_return_val_if_fail (LSM_DOM_IS_DOCUMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
 	g_return_val_if_fail (id != NULL, NULL);
 
 	lsm_debug ("[LsmDomDocument::get_element_by_id] Lookup '%s'", id);
@@ -100,7 +100,7 @@ lsm_dom_document_register_element (LsmDomDocument *self, LsmDomElement *element,
 {
 	char *old_id;
 
-	g_return_if_fail (LSM_DOM_IS_DOCUMENT (self));
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
 
 	old_id = g_hash_table_lookup (self->elements, element);
 	if (old_id != NULL) {
@@ -152,5 +152,5 @@ lsm_dom_document_class_init (LsmDomDocumentClass *klass)
 	klass->create_text_node = lsm_dom_document_create_text_node_base;
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmDomDocument, lsm_dom_document, LSM_DOM_TYPE_NODE)
+G_DEFINE_ABSTRACT_TYPE (LsmDomDocument, lsm_dom_document, LSM_TYPE_DOM_NODE)
 

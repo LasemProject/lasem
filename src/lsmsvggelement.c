@@ -42,7 +42,7 @@ lsm_svg_g_element_get_node_name (LsmDomNode *node)
 LsmDomNode *
 lsm_svg_g_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_G_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_G_ELEMENT, NULL);
 }
 
 static void
@@ -62,4 +62,4 @@ lsm_svg_g_element_class_init (LsmSvgGElementClass *s_g_class)
 	d_node_class->get_node_name = lsm_svg_g_element_get_node_name;
 }
 
-G_DEFINE_TYPE (LsmSvgGElement, lsm_svg_g_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgGElement, lsm_svg_g_element, LSM_TYPE_SVG_GRAPHIC)

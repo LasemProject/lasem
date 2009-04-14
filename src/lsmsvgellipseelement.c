@@ -82,7 +82,7 @@ lsm_svg_ellipse_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_ellipse_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_ELLIPSE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_ELLIPSE_ELEMENT, NULL);
 }
 
 static void
@@ -127,4 +127,4 @@ lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
 					  offsetof (LsmSvgEllipseElement, ry));
 }
 
-G_DEFINE_TYPE (LsmSvgEllipseElement, lsm_svg_ellipse_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgEllipseElement, lsm_svg_ellipse_element, LSM_TYPE_SVG_GRAPHIC)

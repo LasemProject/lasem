@@ -113,7 +113,7 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 LsmDomNode *
 lsm_mathml_style_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_STYLE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_STYLE_ELEMENT, NULL);
 }
 
 static void
@@ -190,4 +190,4 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 					  offsetof (LsmMathmlStyleElement, font_style));
 }
 
-G_DEFINE_TYPE (LsmMathmlStyleElement, lsm_mathml_style_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlStyleElement, lsm_mathml_style_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

@@ -52,7 +52,7 @@ lsm_svg_path_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_path_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_PATH_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_PATH_ELEMENT, NULL);
 }
 
 static void
@@ -89,4 +89,4 @@ lsm_svg_path_element_class_init (LsmSvgPathElementClass *s_rect_class)
 					  offsetof (LsmSvgPathElement, d));
 }
 
-G_DEFINE_TYPE (LsmSvgPathElement, lsm_svg_path_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgPathElement, lsm_svg_path_element, LSM_TYPE_SVG_GRAPHIC)

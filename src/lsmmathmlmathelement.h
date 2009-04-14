@@ -35,12 +35,12 @@ G_BEGIN_DECLS
 #define LSM_MATHML_FONT_SCRIPT		"cmsy10"
 #define LSM_MATHML_FONT_DOUBLE_STRUCK	"msbm10"
 
-#define LSM_MATHML_TYPE_MATH_ELEMENT             (lsm_mathml_math_element_get_type ())
-#define LSM_MATHML_MATH_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_MATH_ELEMENT, LsmMathmlMathElement))
-#define LSM_MATHML_MATH_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_MATH_ELEMENT, LsmMathmlMathElementClass))
-#define LSM_MATHML_IS_MATH_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_MATH_ELEMENT))
-#define LSM_MATHML_IS_MATH_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_MATH_ELEMENT))
-#define LSM_MATHML_MATH_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_MATH_ELEMENT, LsmMathmlMathElementClass))
+#define LSM_TYPE_MATHML_MATH_ELEMENT             (lsm_mathml_math_element_get_type ())
+#define LSM_MATHML_MATH_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_MATH_ELEMENT, LsmMathmlMathElement))
+#define LSM_MATHML_MATH_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_MATH_ELEMENT, LsmMathmlMathElementClass))
+#define LSM_IS_MATHML_MATH_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_MATH_ELEMENT))
+#define LSM_IS_MATHML_MATH_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_MATH_ELEMENT))
+#define LSM_MATHML_MATH_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_MATH_ELEMENT, LsmMathmlMathElementClass))
 
 typedef struct _GMathmlMathElementClass LsmMathmlMathElementClass;
 

@@ -82,7 +82,7 @@ _svg_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 void
 lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *height)
 {
-	g_return_if_fail (LSM_SVG_IS_SVG_ELEMENT (self));
+	g_return_if_fail (LSM_IS_SVG_SVG_ELEMENT (self));
 
 	if (width != NULL)
 		*width = self->width.length.value;
@@ -119,7 +119,7 @@ lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmSvgStyle *
 lsm_svg_svg_element_get_default_style (LsmSvgSvgElement *svg_element)
 {
-	g_return_val_if_fail (LSM_SVG_IS_SVG_ELEMENT (svg_element), NULL);
+	g_return_val_if_fail (LSM_IS_SVG_SVG_ELEMENT (svg_element), NULL);
 
 	return svg_element->default_style;
 }
@@ -134,7 +134,7 @@ lsm_svg_svg_element_update (LsmSvgSvgElement *svg_element)
 LsmDomNode *
 lsm_svg_svg_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_SVG_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_SVG_ELEMENT, NULL);
 }
 
 static void
@@ -204,4 +204,4 @@ lsm_svg_svg_element_class_init (LsmSvgSvgElementClass *s_svg_class)
 					  offsetof (LsmSvgSvgElement, view_box));
 }
 
-G_DEFINE_TYPE (LsmSvgSvgElement, lsm_svg_svg_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgSvgElement, lsm_svg_svg_element, LSM_TYPE_SVG_GRAPHIC)

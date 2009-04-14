@@ -250,7 +250,7 @@ lsm_mathml_under_over_element_measure (LsmMathmlElement *self, LsmMathmlView *vi
 
 	index = 0;
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (LSM_MATHML_IS_ELEMENT (node)) {
+		if (LSM_IS_MATHML_ELEMENT (node)) {
 			operator = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
 			if (operator != NULL && operator->stretchy.value) {
 				stretchy_found = TRUE;
@@ -286,7 +286,7 @@ lsm_mathml_under_over_element_measure (LsmMathmlElement *self, LsmMathmlView *vi
 			    regular_stretch_bbox.depth);
 
 		for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-			if (LSM_MATHML_IS_ELEMENT (node)) {
+			if (LSM_IS_MATHML_ELEMENT (node)) {
 				operator = lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node));
 				if (operator != NULL && operator->stretchy.value) {
 					if (node == LSM_DOM_NODE (under_over->base)) {
@@ -403,7 +403,7 @@ lsm_mathml_under_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_UNDER_OVER_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_UNDER_OVER_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_UNDER_OVER_ELEMENT (node)->type = LSM_MATHML_UNDER_OVER_ELEMENT_TYPE_UNDER;
@@ -416,7 +416,7 @@ lsm_mathml_over_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_UNDER_OVER_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_UNDER_OVER_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_UNDER_OVER_ELEMENT (node)->type = LSM_MATHML_UNDER_OVER_ELEMENT_TYPE_OVER;
@@ -429,7 +429,7 @@ lsm_mathml_under_over_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_UNDER_OVER_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_UNDER_OVER_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_UNDER_OVER_ELEMENT (node)->type = LSM_MATHML_UNDER_OVER_ELEMENT_TYPE_UNDER_OVER;
@@ -471,4 +471,4 @@ lsm_mathml_under_over_element_class_init (LsmMathmlUnderOverElementClass *under_
 					  offsetof (LsmMathmlUnderOverElement, accent_under));
 }
 
-G_DEFINE_TYPE (LsmMathmlUnderOverElement, lsm_mathml_under_over_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlUnderOverElement, lsm_mathml_under_over_element, LSM_TYPE_MATHML_ELEMENT)

@@ -32,7 +32,7 @@ static GObjectClass *parent_class;
 static gboolean
 lsm_svg_gradient_element_can_append_child (LsmDomNode *parent, LsmDomNode *child)
 {
-	return LSM_SVG_IS_STOP_ELEMENT (child);
+	return LSM_IS_SVG_STOP_ELEMENT (child);
 }
 
 /* LsmSvgElement implementation */
@@ -62,7 +62,7 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	double last_offset = 0.0;
 
 	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
-		if (LSM_SVG_IS_STOP_ELEMENT (iter)) {
+		if (LSM_IS_SVG_STOP_ELEMENT (iter)) {
 			LsmSvgStopElement *stop;
 			const LsmSvgColor *color;
 			double offset;
@@ -129,4 +129,4 @@ lsm_svg_gradient_element_class_init (LsmSvgGradientElementClass *klass)
 					  offsetof (LsmSvgGradientElement, href));
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmSvgGradientElement, lsm_svg_gradient_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_ABSTRACT_TYPE (LsmSvgGradientElement, lsm_svg_gradient_element, LSM_TYPE_SVG_GRAPHIC)

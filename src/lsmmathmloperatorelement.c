@@ -45,13 +45,13 @@ lsm_mathml_operator_element_dictionary_lookup (LsmMathmlOperatorElement *operato
 
 	for (node = LSM_DOM_NODE (operator);
 	     node->parent_node != NULL &&
-	     LSM_MATHML_IS_ELEMENT (node->parent_node) &&
+	     LSM_IS_MATHML_ELEMENT (node->parent_node) &&
 	     lsm_mathml_element_get_embellished_core (LSM_MATHML_ELEMENT (node->parent_node)) == operator;
 	     node = node->parent_node);
 
 	text = lsm_mathml_presentation_token_get_text (LSM_MATHML_PRESENTATION_TOKEN (operator));
 
-	if (LSM_MATHML_IS_ELEMENT (node->parent_node) &&
+	if (LSM_IS_MATHML_ELEMENT (node->parent_node) &&
 	    lsm_mathml_element_is_inferred_row (LSM_MATHML_ELEMENT (node->parent_node))) {
 		if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
 		    (node->previous_sibling == NULL && node->next_sibling == NULL))
@@ -200,7 +200,7 @@ lsm_mathml_operator_element_get_slant (const LsmMathmlOperatorElement *operator_
 {
 	char *text;
 
-	g_return_val_if_fail (LSM_MATHML_IS_OPERATOR_ELEMENT (operator_element), 0.0);
+	g_return_val_if_fail (LSM_IS_MATHML_OPERATOR_ELEMENT (operator_element), 0.0);
 
 	text = lsm_mathml_presentation_token_get_text (LSM_MATHML_PRESENTATION_TOKEN (operator_element));
 
@@ -210,7 +210,7 @@ lsm_mathml_operator_element_get_slant (const LsmMathmlOperatorElement *operator_
 LsmDomNode *
 lsm_mathml_operator_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_OPERATOR_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_OPERATOR_ELEMENT, NULL);
 }
 
 static void
@@ -264,4 +264,4 @@ lsm_mathml_operator_element_class_init (LsmMathmlOperatorElementClass *operator_
 					  offsetof (LsmMathmlOperatorElement, movable_limits));
 }
 
-G_DEFINE_TYPE (LsmMathmlOperatorElement, lsm_mathml_operator_element, LSM_MATHML_TYPE_PRESENTATION_TOKEN)
+G_DEFINE_TYPE (LsmMathmlOperatorElement, lsm_mathml_operator_element, LSM_TYPE_MATHML_PRESENTATION_TOKEN)

@@ -91,7 +91,7 @@ lsm_mathml_space_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 LsmDomNode *
 lsm_mathml_space_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_SPACE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_SPACE_ELEMENT, NULL);
 }
 
 static void
@@ -127,4 +127,4 @@ lsm_mathml_space_element_class_init (LsmMathmlSpaceElementClass *space_class)
 					  offsetof (LsmMathmlSpaceElement, depth));
 }
 
-G_DEFINE_TYPE (LsmMathmlSpaceElement, lsm_mathml_space_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlSpaceElement, lsm_mathml_space_element, LSM_TYPE_MATHML_ELEMENT)

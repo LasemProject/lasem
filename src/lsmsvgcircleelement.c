@@ -76,7 +76,7 @@ lsm_svg_circle_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_circle_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_CIRCLE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_CIRCLE_ELEMENT, NULL);
 }
 
 static void
@@ -119,4 +119,4 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 					  offsetof (LsmSvgCircleElement, r));
 }
 
-G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_TYPE_SVG_GRAPHIC)

@@ -134,7 +134,7 @@ lsm_mathml_fenced_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 LsmDomNode *
 lsm_mathml_fenced_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_FENCED_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_FENCED_ELEMENT, NULL);
 }
 
 static void
@@ -169,5 +169,5 @@ lsm_mathml_fenced_element_class_init (LsmMathmlFencedElementClass *m_fenced_elem
 				       offsetof (LsmMathmlFencedElement, separators));
 }
 
-G_DEFINE_TYPE (LsmMathmlFencedElement, lsm_mathml_fenced_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlFencedElement, lsm_mathml_fenced_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)
 

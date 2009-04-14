@@ -27,12 +27,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_SVG_TYPE_DEFS_ELEMENT             (lsm_svg_defs_element_get_type ())
-#define LSM_SVG_DEFS_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_SVG_TYPE_DEFS_ELEMENT, LsmSvgDefsElement))
-#define LSM_SVG_DEFS_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_SVG_TYPE_DEFS_ELEMENT, LsmSvgDefsElementClass))
-#define LSM_SVG_IS_DEFS_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_SVG_TYPE_DEFS_ELEMENT))
-#define LSM_SVG_IS_DEFS_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_SVG_TYPE_DEFS_ELEMENT))
-#define LSM_SVG_DEFS_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_SVG_TYPE_DEFS_ELEMENT, LsmSvgDefsElementClass))
+#define LSM_TYPE_SVG_DEFS_ELEMENT             (lsm_svg_defs_element_get_type ())
+#define LSM_SVG_DEFS_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_SVG_DEFS_ELEMENT, LsmSvgDefsElement))
+#define LSM_SVG_DEFS_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_SVG_DEFS_ELEMENT, LsmSvgDefsElementClass))
+#define LSM_IS_SVG_DEFS_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_SVG_DEFS_ELEMENT))
+#define LSM_IS_SVG_DEFS_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_DEFS_ELEMENT))
+#define LSM_SVG_DEFS_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_DEFS_ELEMENT, LsmSvgDefsElementClass))
 
 typedef struct _GSvgDefsElementClass LsmSvgDefsElementClass;
 

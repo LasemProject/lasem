@@ -74,7 +74,7 @@ lsm_mathml_table_cell_element_get_spans (const LsmMathmlTableCellElement *self,
 	if (column_span != NULL)
 		*column_span = 0;
 
-	g_return_if_fail (LSM_MATHML_IS_TABLE_CELL_ELEMENT (self));
+	g_return_if_fail (LSM_IS_MATHML_TABLE_CELL_ELEMENT (self));
 
 	if (row_span != NULL)
 		*row_span = self->row_span.value;
@@ -85,7 +85,7 @@ lsm_mathml_table_cell_element_get_spans (const LsmMathmlTableCellElement *self,
 LsmDomNode *
 lsm_mathml_table_cell_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_TABLE_CELL_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_TABLE_CELL_ELEMENT, NULL);
 }
 
 static void
@@ -117,4 +117,4 @@ lsm_mathml_table_cell_element_class_init (LsmMathmlTableCellElementClass *table_
 					  offsetof (LsmMathmlTableCellElement, column_span));
 }
 
-G_DEFINE_TYPE (LsmMathmlTableCellElement, lsm_mathml_table_cell_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlTableCellElement, lsm_mathml_table_cell_element, LSM_TYPE_MATHML_ELEMENT)

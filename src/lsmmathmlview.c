@@ -167,7 +167,7 @@ lsm_mathml_view_measure_axis_offset (LsmMathmlView *view,
 	double axis_offset;
 	int baseline;
 
-	g_return_val_if_fail (LSM_MATHML_IS_VIEW (view), 0.0);
+	g_return_val_if_fail (LSM_IS_MATHML_VIEW (view), 0.0);
 
 	font_description = view->dom_view.font_description;
 	pango_layout = view->dom_view.measure_pango_layout;
@@ -216,7 +216,7 @@ lsm_mathml_view_measure_text (LsmMathmlView *view,
 	PangoRectangle ink_rect;
 	int baseline;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (bbox != NULL);
 
@@ -244,7 +244,7 @@ lsm_mathml_view_show_text (LsmMathmlView *view,
 	cairo_t *cairo;
 	int baseline;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	if (text == NULL || strlen (text) < 1)
@@ -332,7 +332,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 	int baseline;
 	gboolean is_stretch_bbox_defined;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (bbox != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
@@ -470,7 +470,7 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 	double scale_x, scale_y;
 	int baseline;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
 
@@ -598,7 +598,7 @@ lsm_mathml_view_measure_radical (LsmMathmlView *view,
 	LsmMathmlBbox radical_stretch_bbox;
 	double thickness;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (bbox != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
@@ -637,7 +637,7 @@ lsm_mathml_view_show_radical (LsmMathmlView *view,
 	double dummy = 0.0;
 	double alpha;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 	g_return_if_fail (stretch_bbox != NULL);
 
@@ -802,7 +802,7 @@ lsm_mathml_view_show_background (LsmMathmlView *view,
 	cairo_t *cairo;
 	double x0, y0, x1, y1;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	cairo = view->dom_view.cairo;
@@ -829,7 +829,7 @@ lsm_mathml_view_show_bbox (LsmMathmlView *view, double x, double y, const LsmMat
 {
 	cairo_t *cairo;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 
 	cairo = view->dom_view.cairo;
 
@@ -852,7 +852,7 @@ lsm_mathml_view_show_rectangle (LsmMathmlView *view,
 	cairo_t *cairo;
 	double x1, y1;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	stroke_width = _emit_stroke_attributes (view, line, line_width, &style->math_color);
@@ -880,7 +880,7 @@ lsm_mathml_view_show_line (LsmMathmlView *view,
 	_GMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	stroke_width = _emit_stroke_attributes (view, line, line_width, &style->math_color);
@@ -907,7 +907,7 @@ lsm_mathml_view_show_fraction_line (LsmMathmlView *view,
 	cairo_t *cairo;
 	double x0, y0, x1, y1;
 
-	g_return_if_fail (LSM_MATHML_IS_VIEW (view));
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
 
 	stroke_width = _emit_stroke_attributes (view, LSM_MATHML_LINE_SOLID, thickness, &style->math_color);
@@ -993,7 +993,7 @@ lsm_mathml_view_new (LsmMathmlDocument *document)
 {
 	LsmMathmlView *view;
 
-	view = g_object_new (LSM_MATHML_TYPE_VIEW, NULL);
+	view = g_object_new (LSM_TYPE_MATHML_VIEW, NULL);
 
 	lsm_dom_view_set_document (LSM_DOM_VIEW (view), LSM_DOM_DOCUMENT (document));
 
@@ -1025,4 +1025,4 @@ lsm_mathml_view_class_init (LsmMathmlViewClass *view_class)
 	d_view_class->render = lsm_mathml_view_render;
 }
 
-G_DEFINE_TYPE (LsmMathmlView, lsm_mathml_view, LSM_DOM_TYPE_VIEW)
+G_DEFINE_TYPE (LsmMathmlView, lsm_mathml_view, LSM_TYPE_DOM_VIEW)

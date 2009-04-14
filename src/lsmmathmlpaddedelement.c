@@ -35,7 +35,7 @@ lsm_mathml_padded_element_get_node_name (LsmDomNode *node)
 LsmDomNode *
 lsm_mathml_padded_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_PADDED_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_PADDED_ELEMENT, NULL);
 }
 
 static void
@@ -53,5 +53,5 @@ lsm_mathml_padded_element_class_init (LsmMathmlPaddedElementClass *klass)
 	d_node_class->get_node_name = lsm_mathml_padded_element_get_node_name;
 }
 
-G_DEFINE_TYPE (LsmMathmlPaddedElement, lsm_mathml_padded_element, LSM_MATHML_TYPE_PRESENTATION_CONTAINER)
+G_DEFINE_TYPE (LsmMathmlPaddedElement, lsm_mathml_padded_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)
 

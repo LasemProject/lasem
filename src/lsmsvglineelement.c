@@ -81,7 +81,7 @@ lsm_svg_line_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_line_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_LINE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_LINE_ELEMENT, NULL);
 }
 
 static void
@@ -118,4 +118,4 @@ lsm_svg_line_element_class_init (LsmSvgLineElementClass *s_rect_class)
 					  offsetof (LsmSvgLineElement, y2));
 }
 
-G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_TYPE_SVG_GRAPHIC)

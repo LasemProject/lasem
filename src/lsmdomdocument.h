@@ -29,12 +29,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_TYPE_DOCUMENT             (lsm_dom_document_get_type ())
-#define LSM_DOM_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_DOCUMENT, LsmDomDocument))
-#define LSM_DOM_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_DOCUMENT, LsmDomDocumentClass))
-#define LSM_DOM_IS_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_DOCUMENT))
-#define LSM_DOM_IS_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_DOCUMENT))
-#define LSM_DOM_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_DOCUMENT, LsmDomDocumentClass))
+#define LSM_TYPE_DOM_DOCUMENT             (lsm_dom_document_get_type ())
+#define LSM_DOM_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_DOCUMENT, LsmDomDocument))
+#define LSM_DOM_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_DOCUMENT, LsmDomDocumentClass))
+#define LSM_IS_DOM_DOCUMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_DOCUMENT))
+#define LSM_IS_DOM_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_DOCUMENT))
+#define LSM_DOM_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_DOCUMENT, LsmDomDocumentClass))
 
 typedef struct _GDomDocumentClass LsmDomDocumentClass;
 

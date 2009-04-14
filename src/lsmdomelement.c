@@ -41,7 +41,7 @@ lsm_dom_element_get_node_type (LsmDomNode *node)
 const char*
 lsm_dom_element_get_attribute (LsmDomElement* self, const char* name)
 {
-	g_return_val_if_fail (LSM_DOM_IS_ELEMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_ELEMENT (self), NULL);
 	g_return_val_if_fail (name != NULL, NULL);
 
 	return LSM_DOM_ELEMENT_GET_CLASS (self)->get_attribute (self, name);
@@ -50,7 +50,7 @@ lsm_dom_element_get_attribute (LsmDomElement* self, const char* name)
 void
 lsm_dom_element_set_attribute (LsmDomElement* self, const char* name, const char* attribute_value)
 {
-	g_return_if_fail (LSM_DOM_IS_ELEMENT (self));
+	g_return_if_fail (LSM_IS_DOM_ELEMENT (self));
 	g_return_if_fail (name != NULL);
 
 	LSM_DOM_ELEMENT_GET_CLASS (self)->set_attribute (self, name, attribute_value);
@@ -74,4 +74,4 @@ lsm_dom_element_class_init (LsmDomElementClass *klass)
 	node_class->get_node_type = lsm_dom_element_get_node_type;
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmDomElement, lsm_dom_element, LSM_DOM_TYPE_NODE)
+G_DEFINE_ABSTRACT_TYPE (LsmDomElement, lsm_dom_element, LSM_TYPE_DOM_NODE)

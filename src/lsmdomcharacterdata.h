@@ -28,12 +28,12 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_TYPE_CHARACTER_DATA             (lsm_dom_character_data_get_type ())
-#define LSM_DOM_CHARACTER_DATA(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_DOM_TYPE_CHARACTER_DATA, LsmDomCharacterData))
-#define LSM_DOM_CHARACTER_DATA_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_DOM_TYPE_CHARACTER_DATA, LsmDomNodeClass))
-#define LSM_DOM_IS_CHARACTER_DATA(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_DOM_TYPE_CHARACTER_DATA))
-#define LSM_DOM_IS_CHARACTER_DATA_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_DOM_TYPE_CHARACTER_DATA))
-#define LSM_DOM_CHARACTER_DATA_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_DOM_TYPE_CHARACTER_DATA, LsmDomCharacterDataClass))
+#define LSM_TYPE_DOM_CHARACTER_DATA             (lsm_dom_character_data_get_type ())
+#define LSM_DOM_CHARACTER_DATA(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_CHARACTER_DATA, LsmDomCharacterData))
+#define LSM_DOM_CHARACTER_DATA_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_CHARACTER_DATA, LsmDomNodeClass))
+#define LSM_IS_DOM_CHARACTER_DATA(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_CHARACTER_DATA))
+#define LSM_IS_DOM_CHARACTER_DATA_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_CHARACTER_DATA))
+#define LSM_DOM_CHARACTER_DATA_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_CHARACTER_DATA, LsmDomCharacterDataClass))
 
 typedef struct _GDomCharacterDataClass LsmDomCharacterDataClass;
 

@@ -40,7 +40,7 @@ lsm_mathml_table_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_mathml_table_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return LSM_MATHML_IS_TABLE_ROW_ELEMENT (child);
+	return LSM_IS_MATHML_TABLE_ROW_ELEMENT (child);
 }
 
 /* LsmMathmlElement implementation */
@@ -432,7 +432,7 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 LsmDomNode *
 lsm_mathml_table_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_TABLE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_TABLE_ELEMENT, NULL);
 }
 
 static void
@@ -505,4 +505,4 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 					  offsetof (LsmMathmlTableElement, equal_columns));
 }
 
-G_DEFINE_TYPE (LsmMathmlTableElement, lsm_mathml_table_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlTableElement, lsm_mathml_table_element, LSM_TYPE_MATHML_ELEMENT)

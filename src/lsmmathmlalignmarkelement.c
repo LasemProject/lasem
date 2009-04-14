@@ -69,7 +69,7 @@ lsm_mathml_align_mark_element_render (LsmMathmlElement *element, LsmMathmlView *
 LsmDomNode *
 lsm_mathml_align_mark_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_ALIGN_MARK_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_ALIGN_MARK_ELEMENT, NULL);
 }
 
 static void
@@ -97,4 +97,4 @@ lsm_mathml_align_mark_element_class_init (LsmMathmlAlignMarkElementClass *align_
 	m_element_class->is_inferred_row = NULL;
 }
 
-G_DEFINE_TYPE (LsmMathmlAlignMarkElement, lsm_mathml_align_mark_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlAlignMarkElement, lsm_mathml_align_mark_element, LSM_TYPE_MATHML_ELEMENT)

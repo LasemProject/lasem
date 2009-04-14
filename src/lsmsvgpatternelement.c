@@ -102,7 +102,7 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_pattern_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_PATTERN_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_PATTERN_ELEMENT, NULL);
 }
 
 static void
@@ -155,4 +155,4 @@ lsm_svg_pattern_element_class_init (LsmSvgPatternElementClass *klass)
 					  offsetof (LsmSvgPatternElement, href));
 }
 
-G_DEFINE_TYPE (LsmSvgPatternElement, lsm_svg_pattern_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgPatternElement, lsm_svg_pattern_element, LSM_TYPE_SVG_GRAPHIC)

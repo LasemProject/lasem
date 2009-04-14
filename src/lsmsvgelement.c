@@ -32,7 +32,7 @@ static GObjectClass *parent_class;
 static gboolean
 lsm_svg_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_SVG_IS_ELEMENT (child));
+	return (LSM_IS_SVG_ELEMENT (child));
 }
 
 static gboolean
@@ -80,7 +80,7 @@ lsm_svg_element_update (LsmSvgElement *self, const LsmSvgStyle *parent_style)
 	LsmDomDocument *document;
 	LsmDomNode *node;
 
-	g_return_if_fail (LSM_SVG_IS_ELEMENT (self));
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (self));
 	g_return_if_fail (parent_style != NULL);
 
 	if (!self->need_update && !self->need_children_update) {
@@ -105,7 +105,7 @@ lsm_svg_element_update (LsmSvgElement *self, const LsmSvgStyle *parent_style)
 		element_class->update (self, style);
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_SVG_IS_ELEMENT (node)) {
+		if (LSM_IS_SVG_ELEMENT (node)) {
 			if (self->need_update)
 				LSM_SVG_ELEMENT (node)->need_update = TRUE;
 			lsm_svg_element_update (LSM_SVG_ELEMENT (node), style);
@@ -127,7 +127,7 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 	lsm_debug ("[LsmSvgElement::_render");
 
 	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_SVG_IS_ELEMENT (node))
+		if (LSM_IS_SVG_ELEMENT (node))
 		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
 }
 
@@ -136,7 +136,7 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmSvgElementClass *element_class;
 
-	g_return_if_fail (LSM_SVG_IS_ELEMENT (element));
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render != NULL) {
@@ -153,7 +153,7 @@ lsm_svg_element_render_paint (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmSvgElementClass *element_class;
 
-	g_return_if_fail (LSM_SVG_IS_ELEMENT (element));
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render_paint != NULL) {
@@ -206,4 +206,4 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 					  offsetof (LsmSvgElement, id));
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmSvgElement, lsm_svg_element, LSM_DOM_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (LsmSvgElement, lsm_svg_element, LSM_TYPE_DOM_ELEMENT)

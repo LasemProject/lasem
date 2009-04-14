@@ -45,7 +45,7 @@ lsm_mathml_table_row_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_mathml_table_row_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return LSM_MATHML_IS_ELEMENT (child);
+	return LSM_IS_MATHML_ELEMENT (child);
 }
 
 /* LsmMathmlElement implementation */
@@ -72,7 +72,7 @@ lsm_mathml_table_row_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_TABLE_ROW_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_TABLE_ROW_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_TABLE_ROW_ELEMENT (node)->type = LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_ROW;
@@ -85,7 +85,7 @@ lsm_mathml_labeled_table_row_element_new (void)
 {
 	LsmDomNode *node;
 
-	node = g_object_new (LSM_MATHML_TYPE_TABLE_ROW_ELEMENT, NULL);
+	node = g_object_new (LSM_TYPE_MATHML_TABLE_ROW_ELEMENT, NULL);
 	g_return_val_if_fail (node != NULL, NULL);
 
 	LSM_MATHML_TABLE_ROW_ELEMENT (node)->type = LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW;
@@ -116,4 +116,4 @@ lsm_mathml_table_row_element_class_init (LsmMathmlTableRowElementClass *table_ro
 	m_element_class->is_inferred_row = NULL;
 }
 
-G_DEFINE_TYPE (LsmMathmlTableRowElement, lsm_mathml_table_row_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlTableRowElement, lsm_mathml_table_row_element, LSM_TYPE_MATHML_ELEMENT)

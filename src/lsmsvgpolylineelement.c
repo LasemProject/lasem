@@ -49,7 +49,7 @@ lsm_svg_polyline_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 LsmDomNode *
 lsm_svg_polyline_element_new (void)
 {
-	return g_object_new (LSM_SVG_TYPE_POLYLINE_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_SVG_POLYLINE_ELEMENT, NULL);
 }
 
 static void
@@ -78,4 +78,4 @@ lsm_svg_polyline_element_class_init (LsmSvgPolylineElementClass *s_rect_class)
 					  offsetof (LsmSvgPolylineElement, points));
 }
 
-G_DEFINE_TYPE (LsmSvgPolylineElement, lsm_svg_polyline_element, LSM_SVG_TYPE_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgPolylineElement, lsm_svg_polyline_element, LSM_TYPE_SVG_GRAPHIC)

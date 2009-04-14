@@ -137,7 +137,7 @@ _graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_debug ("[LsmSvgGraphic::_graphic_render");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
-		if (LSM_SVG_IS_ELEMENT (node))
+		if (LSM_IS_SVG_ELEMENT (node))
 		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
 	}
 }
@@ -214,5 +214,5 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 	lsm_dom_attribute_map_add_stop_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stop));
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmSvgGraphic, lsm_svg_graphic, LSM_SVG_TYPE_ELEMENT)
+G_DEFINE_ABSTRACT_TYPE (LsmSvgGraphic, lsm_svg_graphic, LSM_TYPE_SVG_ELEMENT)
 

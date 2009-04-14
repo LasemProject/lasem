@@ -34,12 +34,12 @@ typedef enum {
 	LSM_MATHML_SCRIPT_ELEMENT_TYPE_SUB_SUP
 } LsmMathmlScriptElementType;
 
-#define LSM_MATHML_TYPE_SCRIPT_ELEMENT             (lsm_mathml_script_element_get_type ())
-#define LSM_MATHML_SCRIPT_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_MATHML_TYPE_SCRIPT_ELEMENT, LsmMathmlScriptElement))
-#define LSM_MATHML_SCRIPT_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_MATHML_TYPE_SCRIPT_ELEMENT, LsmMathmlScriptElementClass))
-#define LSM_MATHML_IS_SCRIPT_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_MATHML_TYPE_SCRIPT_ELEMENT))
-#define LSM_MATHML_IS_SCRIPT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_MATHML_TYPE_SCRIPT_ELEMENT))
-#define LSM_MATHML_SCRIPT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_MATHML_TYPE_SCRIPT_ELEMENT, LsmMathmlScriptElementClass))
+#define LSM_TYPE_MATHML_SCRIPT_ELEMENT             (lsm_mathml_script_element_get_type ())
+#define LSM_MATHML_SCRIPT_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_MATHML_SCRIPT_ELEMENT, LsmMathmlScriptElement))
+#define LSM_MATHML_SCRIPT_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_MATHML_SCRIPT_ELEMENT, LsmMathmlScriptElementClass))
+#define LSM_IS_MATHML_SCRIPT_ELEMENT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_MATHML_SCRIPT_ELEMENT))
+#define LSM_IS_MATHML_SCRIPT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_SCRIPT_ELEMENT))
+#define LSM_MATHML_SCRIPT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_SCRIPT_ELEMENT, LsmMathmlScriptElementClass))
 
 typedef struct _GMathmlScriptElementClass LsmMathmlScriptElementClass;
 

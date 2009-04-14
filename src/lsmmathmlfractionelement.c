@@ -36,7 +36,7 @@ lsm_mathml_fraction_element_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_mathml_fraction_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (LSM_MATHML_IS_ELEMENT (child) &&
+	return (LSM_IS_MATHML_ELEMENT (child) &&
 		(self->first_child == NULL ||
 		 self->first_child->next_sibling == NULL));
 }
@@ -186,7 +186,7 @@ lsm_mathml_fraction_element_get_embellished_core (const LsmMathmlElement *self)
 LsmDomNode *
 lsm_mathml_fraction_element_new (void)
 {
-	return g_object_new (LSM_MATHML_TYPE_FRACTION_ELEMENT, NULL);
+	return g_object_new (LSM_TYPE_MATHML_FRACTION_ELEMENT, NULL);
 }
 
 static void
@@ -224,4 +224,4 @@ lsm_mathml_fraction_element_class_init (LsmMathmlFractionElementClass *fraction_
 					  offsetof (LsmMathmlFractionElement, bevelled));
 }
 
-G_DEFINE_TYPE (LsmMathmlFractionElement, lsm_mathml_fraction_element, LSM_MATHML_TYPE_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlFractionElement, lsm_mathml_fraction_element, LSM_TYPE_MATHML_ELEMENT)
