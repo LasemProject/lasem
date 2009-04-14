@@ -187,5 +187,10 @@ lsm_mathml_document_new_from_itex (const char *itex)
 	document = LSM_MATHML_DOCUMENT (lsm_dom_document_new_from_memory (mathml));
 	itex2MML_free_string (mathml);
 
+	if (document != NULL && !LSM_IS_MATHML_DOCUMENT (document)) {
+		g_object_unref (document);
+		return NULL;
+	}
+
 	return document;
 }
