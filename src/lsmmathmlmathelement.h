@@ -60,12 +60,13 @@ struct _GMathmlMathElementClass {
 GType lsm_mathml_math_element_get_type (void);
 
 LsmDomNode *		lsm_mathml_math_element_new 		(void);
-LsmMathmlStyle * 		lsm_mathml_math_element_get_default_style 	(LsmMathmlMathElement *math_element);
+
+LsmMathmlStyle * 	lsm_mathml_math_element_get_default_style 	(LsmMathmlMathElement *math_element);
 void 			lsm_mathml_math_element_set_default_style 	(LsmMathmlMathElement *math_element,
-								 LsmMathmlStyle *style);
+									 LsmMathmlStyle *style);
 
 void 			lsm_mathml_math_element_update 		(LsmMathmlMathElement *math_element);
-const LsmMathmlBbox * 	lsm_mathml_math_element_measure 		(LsmMathmlMathElement *math_element,
+const LsmMathmlBbox * 	lsm_mathml_math_element_measure 	(LsmMathmlMathElement *math_element,
 								 LsmMathmlView *view);
 void 			lsm_mathml_math_element_layout 		(LsmMathmlMathElement *math_element,
 								 LsmMathmlView *view,

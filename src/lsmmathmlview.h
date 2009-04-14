@@ -93,67 +93,70 @@ LsmMathmlView *		lsm_mathml_view_new 		(LsmMathmlDocument *document);
 double 		lsm_mathml_view_measure_axis_offset	(LsmMathmlView *view, double math_size);
 
 void 		lsm_mathml_view_get_font_metrics 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double *ascent,
-						 double *descent);
+							 const LsmMathmlElementStyle *style,
+							 double *ascent,
+							 double *descent);
 
-void 		lsm_mathml_view_measure_text 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 char const *text,
-						 LsmMathmlBbox *bbox);
+void 		lsm_mathml_view_measure_text 		(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 char const *text,
+							 LsmMathmlBbox *bbox);
 void 		lsm_mathml_view_show_text 		(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y, const char *text);
+							 const LsmMathmlElementStyle *style,
+							 double x, double y, const char *text);
 
 void 		lsm_mathml_view_measure_operator 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 char const *text,
-						 gboolean large, gboolean symmetric,
-						 double axis_offset,
-						 LsmMathmlBbox const *stretch_bbox, LsmMathmlBbox *bbox);
-void 		lsm_mathml_view_show_operator 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y, char const *text,
-						 gboolean large,
-						 LsmMathmlBbox const *stretch_bbox);
-double 		lsm_mathml_view_get_operator_slant (LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 const char *text);
+							 const LsmMathmlElementStyle *style,
+							 char const *text,
+							 gboolean large, gboolean symmetric,
+							 double axis_offset,
+							 const LsmMathmlBbox *stretch_bbox,
+							 LsmMathmlBbox *bbox);
+void 		lsm_mathml_view_show_operator 		(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 double x, double y, char const *text,
+							 gboolean large,
+							 const LsmMathmlBbox *stretch_bbox);
+double 		lsm_mathml_view_get_operator_slant 	(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 const char *text);
 
 void 		lsm_mathml_view_measure_radical 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 LsmMathmlBbox const *stretch_bbox, LsmMathmlBbox *bbox,
-						 double *x_offset, double *y_offset);
-void 		lsm_mathml_view_show_radical	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y, double width,
-						 LsmMathmlBbox const *stretch_bbox);
+							 const LsmMathmlElementStyle *style,
+							 const LsmMathmlBbox *stretch_bbox,
+							 LsmMathmlBbox *bbox,
+							 double *x_offset, double *y_offset);
+void 		lsm_mathml_view_show_radical		(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 double x, double y, double width,
+							 const LsmMathmlBbox *stretch_bbox);
 
 void 		lsm_mathml_view_show_background 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y,
-						 const LsmMathmlBbox *bbox);
-void 		lsm_mathml_view_show_rectangle 	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y, double width, double height,
-						 LsmMathmlLine line, double line_width);
+							 const LsmMathmlElementStyle *style,
+							 double x, double y,
+							 const LsmMathmlBbox *bbox);
+void 		lsm_mathml_view_show_rectangle 		(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 double x, double y, double width, double height,
+							 LsmMathmlLine line, double line_width);
 void 		lsm_mathml_view_show_line 		(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x0, double y0, double x1, double y1,
-						 LsmMathmlLine line, double line_width);
+							 const LsmMathmlElementStyle *style,
+							 double x0, double y0, double x1, double y1,
+							 LsmMathmlLine line, double line_width);
 void 		lsm_mathml_view_show_fraction_line	(LsmMathmlView *view,
-						 const LsmMathmlElementStyle *style,
-						 double x, double y,
-						 double width, double thickness);
+							 const LsmMathmlElementStyle *style,
+							 double x, double y,
+							 double width, double thickness);
 
-void 		lsm_mathml_view_show_bbox 		(LsmMathmlView *view, double x, double y, const LsmMathmlBbox *bbox);
+void 		lsm_mathml_view_show_bbox 		(LsmMathmlView *view, double x, double y,
+							 const LsmMathmlBbox *bbox);
 
 void		lsm_mathml_view_draw_root		(LsmMathmlView *view,
-						 double x, double y,
-						 double width, double height,
-						 double top_width,
-						 double thickness,
-						 LsmMathmlColor *color);
+							 double x, double y,
+							 double width, double height,
+							 double top_width,
+							 double thickness,
+							 LsmMathmlColor *color);
 
 G_END_DECLS
 

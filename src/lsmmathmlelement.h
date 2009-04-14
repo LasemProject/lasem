@@ -32,11 +32,11 @@
 G_BEGIN_DECLS
 
 typedef struct {
-	char *		math_family;
+	char *			math_family;
 	LsmMathmlVariant 	math_variant;
-	double 		math_size;
-	LsmMathmlColor 	math_color;
-	LsmMathmlColor 	math_background;
+	double 			math_size;
+	LsmMathmlColor 		math_color;
+	LsmMathmlColor 		math_background;
 } LsmMathmlElementStyle;
 
 #define LSM_TYPE_MATHML_ELEMENT             (lsm_mathml_element_get_type ())
@@ -73,29 +73,30 @@ struct _GMathmlElementClass {
 
 	LsmDomAttributeMap *attributes;
 
-	void			(*update)		(LsmMathmlElement *element, LsmMathmlStyle *style);
-	gboolean		(*update_children)	(LsmMathmlElement *element, LsmMathmlStyle *style);
-	const LsmMathmlBbox * 	(*measure) 		(LsmMathmlElement *element, LsmMathmlView *view,
-							 const LsmMathmlBbox *bbox);
-	void 			(*layout) 		(LsmMathmlElement *element, LsmMathmlView *view,
-							 double x, double y, const LsmMathmlBbox *bbox);
-	void 			(*render)		(LsmMathmlElement *element, LsmMathmlView *view);
+	void				(*update)		(LsmMathmlElement *element, LsmMathmlStyle *style);
+	gboolean			(*update_children)	(LsmMathmlElement *element, LsmMathmlStyle *style);
+	const LsmMathmlBbox * 		(*measure) 		(LsmMathmlElement *element, LsmMathmlView *view,
+								 const LsmMathmlBbox *bbox);
+	void 				(*layout) 		(LsmMathmlElement *element, LsmMathmlView *view,
+								 double x, double y, const LsmMathmlBbox *bbox);
+	void 				(*render)		(LsmMathmlElement *element, LsmMathmlView *view);
 
-	LsmMathmlOperatorElement *(*get_embellished_core)	(const LsmMathmlElement *self);
+	LsmMathmlOperatorElement *	(*get_embellished_core)	(const LsmMathmlElement *self);
 
-	gboolean		(*is_inferred_row)	(const LsmMathmlElement *self);
+	gboolean			(*is_inferred_row)	(const LsmMathmlElement *self);
 };
 
 GType lsm_mathml_element_get_type (void);
 
 gboolean		lsm_mathml_element_update 		(LsmMathmlElement *element, const LsmMathmlStyle *style);
 const LsmMathmlBbox *	lsm_mathml_element_measure		(LsmMathmlElement *element, LsmMathmlView *view,
-							 const LsmMathmlBbox *stretch_bbox);
+								 const LsmMathmlBbox *stretch_bbox);
 void 			lsm_mathml_element_layout 		(LsmMathmlElement *element, LsmMathmlView *view,
-							 double x, double y, const LsmMathmlBbox *bbox);
+								 double x, double y, const LsmMathmlBbox *bbox);
 void 			lsm_mathml_element_render 		(LsmMathmlElement *element, LsmMathmlView *view);
 
-LsmMathmlOperatorElement *lsm_mathml_element_get_embellished_core 	(const LsmMathmlElement *self);
+LsmMathmlOperatorElement *	lsm_mathml_element_get_embellished_core 	(const LsmMathmlElement *self);
+
 const LsmMathmlBbox * 	lsm_mathml_element_get_bbox 		(const LsmMathmlElement *self);
 gboolean 		lsm_mathml_element_is_inferred_row 	(const LsmMathmlElement *self);
 
