@@ -216,7 +216,7 @@ lsm_dom_document_new_from_file (const char *filename)
 	if (xmlSAXUserParseFile (&sax_handler, &state, filename) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
-		g_warning ("[LsmDomParser::from_memory] invalid document");
+		g_warning ("[LsmDomParser::from_file] invalid document");
 		return NULL;
 	}
 
