@@ -6,7 +6,7 @@
 
   <name xml:lang="en">Lasem</name>
   <shortdesc xml:lang="en">SVG and Mathml rendering library</shortdesc>
-  <homepage rdf:resource="http://blogs.gnome.org/emmanuel/" />
+  <homepage rdf:resource="http://blogs.gnome.org/emmanuel/category/lasem" />
 
   <maintainer>
     <foaf:Person>
