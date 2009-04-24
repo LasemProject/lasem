@@ -72,20 +72,17 @@ lsm_dom_parser_start_element(void *user_data,
 		return;
 	}
 
-	if (strcmp ((char *) name, "math") == 0 ||
-	    strcmp ((char *) name, "svg") == 0) {
-		if (state->document != NULL)
-			g_object_unref (state->document);
-
+	if (state->document == NULL) {
 		state->document = lsm_dom_implementation_create_document ((char *)name);
 		state->current_node = LSM_DOM_NODE (state->document);
-	}
 
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (state->document));
+		g_return_if_fail (LSM_IS_DOM_DOCUMENT (state->document));
+	}
 
 	node = LSM_DOM_NODE (lsm_dom_document_create_element (LSM_DOM_DOCUMENT (state->document), (char *) name));
 
 	if (LSM_IS_DOM_NODE (node)) {
+
 		lsm_dom_node_append_child (state->current_node, node);
 
 		if (attrs != NULL)
@@ -111,8 +108,9 @@ lsm_dom_parser_end_element (void *user_data,
 
 	if (state->is_error) {
 		state->error_depth--;
-		if (state->error_depth > 0)
+		if (state->error_depth > 0) {
 			return;
+		}
 
 		state->is_error = FALSE;
 		return;
@@ -134,6 +132,7 @@ lsm_dom_parser_characters (void *user_data, const xmlChar *ch, int len)
 
 		text = g_strndup ((char *) ch, len);
 		node = LSM_DOM_NODE (lsm_dom_document_create_text_node (LSM_DOM_DOCUMENT (state->document), text));
+
 		lsm_dom_node_append_child (state->current_node, node);
 		g_free (text);
 	}
