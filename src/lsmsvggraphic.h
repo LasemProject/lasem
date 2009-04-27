@@ -43,6 +43,7 @@ struct _GSvgGraphic {
 	LsmDomAttribute	style;
 
 	LsmSvgColorAttribute color;
+	LsmSvgDoubleAttribute opacity;
 
 	LsmSvgFillAttributeBag *fill;
 	LsmSvgStrokeAttributeBag *stroke;

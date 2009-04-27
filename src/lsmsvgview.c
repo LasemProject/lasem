@@ -1010,6 +1010,23 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	_paint (view);
 }
 
+void
+lsm_svg_view_push_group (LsmSvgView *view)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	cairo_push_group (view->dom_view.cairo);
+}
+
+void
+lsm_svg_view_paint_group (LsmSvgView *view, double opacity)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	cairo_pop_group_to_source (view->dom_view.cairo);
+	cairo_paint_with_alpha (view->dom_view.cairo, opacity);
+}
+
 static void
 lsm_svg_view_measure (LsmDomView *view, double *width, double *height)
 {

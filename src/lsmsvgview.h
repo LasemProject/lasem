@@ -96,6 +96,9 @@ void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
 
+void 		lsm_svg_view_push_group 	(LsmSvgView *view);
+void 		lsm_svg_view_paint_group 	(LsmSvgView *view, double opacity);
+
 G_END_DECLS
 
 #endif

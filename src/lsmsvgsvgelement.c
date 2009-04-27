@@ -146,6 +146,7 @@ lsm_svg_svg_element_init (LsmSvgSvgElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
+	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "opacity", 		"1.0");
 	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", 			"black");
 	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill-opacity", 		"1");
 	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill-rule",		"nonzero");

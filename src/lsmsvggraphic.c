@@ -30,6 +30,7 @@ static void
 lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 {
 	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
+	double default_opacity;
 
 	/* Handle inline style here for now. This should move to the CSS handling part. */
 
@@ -91,6 +92,9 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	lsm_svg_color_attribute_parse (&graphic->color, &parent_style->color, &parent_style->color);
 
+	default_opacity = 1.0;
+	lsm_svg_double_attribute_parse (&graphic->opacity, &default_opacity); /* FIXME handle inherit */
+
 	if (graphic->fill != NULL) {
 		lsm_debug ("[LsmSvgGraphic::update] fill");
 
@@ -147,6 +151,9 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
 
+	if (graphic->opacity.value < 1.0)
+		lsm_svg_view_push_group (view);
+
 	if (graphic->fill != NULL)
 		lsm_svg_view_push_fill_attributes (view, graphic->fill);
 	if (graphic->stroke != NULL)
@@ -166,6 +173,9 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_stroke_attributes (view);
 	if (graphic->fill != NULL)
 		lsm_svg_view_pop_fill_attributes (view);
+
+	if (graphic->opacity.value < 1.0)
+		lsm_svg_view_paint_group (view, graphic->opacity.value);
 }
 
 /* LsmSvgGraphic implementation */
@@ -200,11 +210,13 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "class",
-					  offsetof (LsmSvgGraphic, class_name));
+					     offsetof (LsmSvgGraphic, class_name));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "style",
-					  offsetof (LsmSvgGraphic, style));
+					     offsetof (LsmSvgGraphic, style));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "color",
 					     offsetof (LsmSvgGraphic, color));
+	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "opacity",
+					     offsetof (LsmSvgGraphic, opacity));
 
 	lsm_dom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, fill));
 	lsm_dom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stroke));
