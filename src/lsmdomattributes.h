@@ -58,45 +58,45 @@ typedef struct {
 
 typedef void (*LsmDomAttributeFinalizeFunc) (void *);
 
-LsmDomAttributeMap *	lsm_dom_attribute_map_new 			(void);
+LsmDomAttributeMap *	lsm_dom_attribute_map_new 		(void);
 LsmDomAttributeMap *	lsm_dom_attribute_map_duplicate		(const LsmDomAttributeMap *from);
-void			lsm_dom_attribute_map_free			(LsmDomAttributeMap *map);
+void			lsm_dom_attribute_map_free		(LsmDomAttributeMap *map);
 
-void 			lsm_dom_attribute_map_add_bag_attribute  	(LsmDomAttributeMap *map,
+void 		lsm_dom_attribute_map_add_bag_attribute  	(LsmDomAttributeMap *map,
 								 const char *name,
 								 ptrdiff_t attribute_offset,
 								 const LsmDomAttributeClass *attribute_class,
 								 ptrdiff_t bag_offset,
 								 const LsmDomAttributeBagClass *bag_class);
-void			lsm_dom_attribute_map_add_attribute_full	(LsmDomAttributeMap *map,
+void		lsm_dom_attribute_map_add_attribute_full	(LsmDomAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset,
 								 const LsmDomAttributeClass *attribute_class);
-void			lsm_dom_attribute_map_add_attribute 	(LsmDomAttributeMap *map,
+void		lsm_dom_attribute_map_add_attribute 		(LsmDomAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset);
 
-void			lsm_dom_attribute_map_free_attributes 	(LsmDomAttributeMap *map,
+void		lsm_dom_attribute_map_free_attributes 		(LsmDomAttributeMap *map,
 								 void *instance);
 
-gboolean		lsm_dom_attribute_map_set_attribute	(LsmDomAttributeMap *map,
+gboolean	lsm_dom_attribute_map_set_attribute		(LsmDomAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value);
-char const *		lsm_dom_attribute_map_get_attribute	(LsmDomAttributeMap *map,
+char const *	lsm_dom_attribute_map_get_attribute		(LsmDomAttributeMap *map,
 								 void *instance,
 								 char const *name);
-gboolean		lsm_dom_attribute_map_set_css_attribute	(LsmDomAttributeMap *map,
+gboolean	lsm_dom_attribute_map_set_css_attribute		(LsmDomAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value,
 								 LsmDomCssType css_type);
-gboolean		lsm_dom_attribute_map_is_attribute_defined	(LsmDomAttributeMap *map,
+gboolean	lsm_dom_attribute_map_is_attribute_defined	(LsmDomAttributeMap *map,
 								 void *instance,
 								 char const *name);
 
-gboolean 		lsm_dom_attribute_is_defined 		(const LsmDomAttribute *attribute);
-char const * 		lsm_dom_attribute_get_value 		(const LsmDomAttribute *attribute);
+gboolean 	lsm_dom_attribute_is_defined 			(const LsmDomAttribute *attribute);
+char const * 	lsm_dom_attribute_get_value 			(const LsmDomAttribute *attribute);
 
 typedef struct {
 	LsmDomAttribute attr;
@@ -138,7 +138,7 @@ typedef unsigned int (*LsmDomNamedConvert) (const char *string);
 
 void 	lsm_dom_boolean_attribute_parse		(LsmDomBooleanAttribute *attribute,
 						 gboolean *default_value);
-void 	lsm_dom_unsigned_attribute_parse		(LsmDomUnsignedAttribute *attribute,
+void 	lsm_dom_unsigned_attribute_parse	(LsmDomUnsignedAttribute *attribute,
 						 unsigned *default_value);
 void 	lsm_dom_double_attribute_parse		(LsmDomDoubleAttribute *attribute,
 						 double *default_value);
@@ -151,11 +151,11 @@ void 	lsm_dom_enum_list_attribute_parse 	(LsmDomEnumListAttribute *attribute,
 						 LsmDomEnumList *style_value,
 						 LsmDomNamedConvert convert);
 
-void	lsm_dom_string_attribute_finalize		(void *abstract);
+void	lsm_dom_string_attribute_finalize	(void *abstract);
 void 	lsm_dom_enum_list_attribute_finalize 	(void *abstract);
 
 
-void 	lsm_dom_attribute_map_add_string 		(LsmDomAttributeMap *map,
+void 	lsm_dom_attribute_map_add_string 	(LsmDomAttributeMap *map,
 						 char const *name,
 						 ptrdiff_t offset);
 void 	lsm_dom_attribute_map_add_enum_list 	(LsmDomAttributeMap *map,

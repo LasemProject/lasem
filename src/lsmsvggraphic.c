@@ -114,6 +114,8 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 		lsm_svg_line_join_attribute_parse (&graphic->stroke->line_join, &parent_style->stroke.line_join);
 		lsm_svg_line_cap_attribute_parse (&graphic->stroke->line_cap, &parent_style->stroke.line_cap);
 		lsm_svg_double_attribute_parse (&graphic->stroke->miter_limit, &parent_style->stroke.miter_limit);
+		lsm_svg_dash_array_attribute_parse (&graphic->stroke->dash_array, &parent_style->stroke.dash_array);
+		lsm_svg_length_attribute_parse (&graphic->stroke->dash_offset, &parent_style->stroke.dash_offset, 0.0);
 	}
 
 	if (graphic->transform != NULL) {

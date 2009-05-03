@@ -28,6 +28,53 @@
 #include <stdio.h>
 #include <math.h>
 
+const LsmSvgDashArray lsm_svg_dash_array_null = {0, NULL};
+
+LsmSvgDashArray *
+lsm_svg_dash_array_new (unsigned int n_dashes)
+{
+	LsmSvgDashArray *array;
+
+	g_return_val_if_fail (n_dashes > 0, (LsmSvgDashArray *) &lsm_svg_dash_array_null);
+
+	array = g_new (LsmSvgDashArray, 1);
+	if (array != NULL) {
+		array->n_dashes = n_dashes;
+		array->dashes = g_new (double, n_dashes);
+		if (array->dashes != NULL)
+			return array;
+		g_free (array);
+	}
+
+	return (LsmSvgDashArray *) &lsm_svg_dash_array_null;
+}
+
+void
+lsm_svg_dash_array_free (LsmSvgDashArray *array)
+{
+	if (array == NULL || array == &lsm_svg_dash_array_null)
+		return;
+
+	g_free (array->dashes);
+	g_free (array);
+}
+
+LsmSvgDashArray *
+lsm_svg_dash_array_duplicate (const LsmSvgDashArray *origin)
+{
+	LsmSvgDashArray *duplicate;
+
+	if (origin == NULL || origin == &lsm_svg_dash_array_null)
+		return (LsmSvgDashArray *) &lsm_svg_dash_array_null;
+
+	duplicate = lsm_svg_dash_array_new (origin->n_dashes);
+
+	if (duplicate != &lsm_svg_dash_array_null)
+		memcpy (duplicate->dashes, origin->dashes, sizeof (double) * origin->n_dashes);
+
+	return duplicate;
+}
+
 const LsmSvgColor lsm_svg_color_null = {0.0, 0.0, 0.0};
 
 void
@@ -86,8 +133,8 @@ lsm_svg_length_compute (const LsmSvgLength *length, double viewbox, double font_
 
 void
 lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
-			     LsmSvgLength *default_value,
-			     double font_size)
+				LsmSvgLength *default_value,
+				double font_size)
 {
 	const char *string;
 	char *length_type_str;
@@ -103,7 +150,7 @@ lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
 		attribute->length.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.type = lsm_svg_length_type_from_string (length_type_str);
 		attribute->length.value = lsm_svg_length_compute (&attribute->length,
-							       default_value->value, font_size);
+								  default_value->value, font_size);
 
 		*default_value = attribute->length;
 	}
@@ -111,8 +158,8 @@ lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
 
 void
 lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
-				      LsmSvgLength *default_value,
-				      double font_size)
+					 LsmSvgLength *default_value,
+					 double font_size)
 {
 	const char *string;
 	char *length_type_str;
@@ -129,10 +176,85 @@ lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribut
 		attribute->length.base.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.base.type = lsm_svg_length_type_from_string (length_type_str);
 		attribute->length.base.value = lsm_svg_length_compute (&attribute->length.base,
-								    default_value->value, font_size);
+								       default_value->value, font_size);
 		attribute->length.animated = attribute->length.base;
 
 		*default_value = attribute->length.base;
+	}
+}
+
+void
+lsm_svg_dash_array_attribute_finalize (void *abstract)
+{
+	LsmSvgDashArrayAttribute *attribute = abstract;
+
+	g_return_if_fail (attribute != NULL);
+
+	lsm_svg_dash_array_free (attribute->value);
+	attribute->value = NULL;
+}
+
+void
+lsm_svg_dash_array_attribute_parse (LsmSvgDashArrayAttribute *attribute,
+				    LsmSvgDashArray **default_value)
+{
+	const char *string;
+
+	g_return_if_fail (attribute != NULL);
+
+	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	if (g_strcmp0 (string, "inherit") == 0)
+		string = NULL;
+
+	if (string == NULL) {
+		lsm_svg_dash_array_free (attribute->value);
+		attribute->value = lsm_svg_dash_array_duplicate (*default_value);
+	} else {
+		unsigned int n_dashes = 1;
+
+		lsm_svg_dash_array_free (attribute->value);
+
+		if (strcmp (string, "none") == 0) {
+			attribute->value = (LsmSvgDashArray *) &lsm_svg_dash_array_null;
+		} else {
+			char *iter = (char *) string;
+			unsigned int i;
+
+			while (*iter != '\0') {
+				if (*iter == ',')
+					n_dashes++;
+				iter++;
+			}
+
+			g_message ("n_dashes = %d", n_dashes);
+
+			attribute->value = lsm_svg_dash_array_new (n_dashes);
+			if (attribute->value != &lsm_svg_dash_array_null) {
+				LsmSvgLength length;
+
+				iter = (char *)string;
+				lsm_svg_str_skip_spaces (&iter);
+
+				for (i = 0; i < n_dashes; i++) {
+					g_message ("iter = %s", iter);
+					if (lsm_svg_str_parse_double (&iter, &length.value_unit)) {
+						g_message ("iter for length = %s", iter);
+						length.type = lsm_svg_length_type_from_string (iter);
+						attribute->value->dashes[i] = lsm_svg_length_compute (&length,
+												      0.0, 0.0);
+						g_message ("length.value = %g", length.value_unit);
+						while (*iter != '\0' && *iter != ' ' && *iter != ',')
+							iter ++;
+					} else
+						attribute->value->dashes[i] = 0.0;
+					g_message ("dashes[%d] = %g", i, attribute->value->dashes[i]);
+					lsm_svg_str_skip_comma_and_spaces (&iter);
+				}
+			}
+		}
+
+		lsm_svg_dash_array_free (*default_value);
+		*default_value = lsm_svg_dash_array_duplicate (attribute->value);
 	}
 }
 

@@ -43,6 +43,8 @@ struct _GSvgStyle {
 		LsmSvgLineCap line_cap;
 		double opacity;
 		double miter_limit;
+		LsmSvgDashArray *dash_array;
+		LsmSvgLength dash_offset;
 	} stroke;
 
 	struct {

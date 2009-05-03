@@ -819,6 +819,15 @@ _paint (LsmSvgView *view)
 
 		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
 		cairo_set_line_width (cairo, stroke->width.length.value);
+
+		if (stroke->dash_array.value != NULL)
+			cairo_set_dash (cairo,
+					stroke->dash_array.value->dashes,
+					stroke->dash_array.value->n_dashes,
+					stroke->dash_offset.length.value);
+		else
+			cairo_set_dash (cairo, NULL, 0, 0.0);
+
 		cairo_stroke (cairo);
 	}
 

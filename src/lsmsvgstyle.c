@@ -40,6 +40,8 @@ lsm_svg_style_free (LsmSvgStyle *style)
 {
 	g_return_if_fail (style != NULL);
 
+	lsm_svg_dash_array_free (style->stroke.dash_array);
+
 	g_free (style->text.font_family);
 	g_free (style);
 }
@@ -56,6 +58,7 @@ lsm_svg_style_duplicate (const LsmSvgStyle *from)
 
 	memcpy (style, from, sizeof (LsmSvgStyle));
 
+	style->stroke.dash_array = lsm_svg_dash_array_duplicate (from->stroke.dash_array);
 	style->text.font_family = g_strdup (from->text.font_family);
 
 	return style;

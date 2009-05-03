@@ -44,6 +44,22 @@ typedef struct {
 extern const LsmSvgColor lsm_svg_color_null;
 
 typedef struct {
+	unsigned int n_dashes;
+	double *dashes;
+} LsmSvgDashArray;
+
+extern const LsmSvgDashArray lsm_svg_dash_array_null;
+
+LsmSvgDashArray * 	lsm_svg_dash_array_new 		(unsigned int n_dashes);
+void 			lsm_svg_dash_array_free 	(LsmSvgDashArray *array);
+LsmSvgDashArray * 	lsm_svg_dash_array_duplicate 	(const LsmSvgDashArray *origin);
+
+typedef struct {
+	LsmDomAttribute attr;
+	LsmSvgDashArray *value;
+} LsmSvgDashArrayAttribute;
+
+typedef struct {
 	double value;
 	double value_unit;
 	LsmSvgLengthType type;
@@ -112,6 +128,11 @@ void		lsm_svg_length_attribute_parse 		(LsmSvgLengthAttribute *attribute,
 void 		lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
 							 LsmSvgLength *default_value,
 							 double font_size);
+
+void 		lsm_svg_dash_array_attribute_finalize 	(void *abstract);
+
+void		lsm_svg_dash_array_attribute_parse	(LsmSvgDashArrayAttribute *attribute,
+							 LsmSvgDashArray **default_value);
 void 		lsm_svg_fill_rule_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_line_join_attribute_parse 	(LsmDomEnumAttribute *attribute,

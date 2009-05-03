@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-gboolean lsm_svg_str_parse_double 		(char **str, double *x);
+gboolean lsm_svg_str_parse_double 	(char **str, double *x);
 gboolean lsm_svg_str_parse_double_list 	(char **str, unsigned int n_values, double *values);
 
 static inline void

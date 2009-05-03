@@ -84,6 +84,10 @@ static const LsmDomAttributeBagClass lsm_svg_stroke_attribute_bag_class =
 	.finalize = lsm_svg_stroke_attribute_bag_finalize
 };
 
+static const LsmDomAttributeClass lsm_svg_dash_array_attribute_class = {
+	.finalize = lsm_svg_dash_array_attribute_finalize
+};
+
 void
 lsm_dom_attribute_map_add_stroke_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
 {
@@ -109,6 +113,14 @@ lsm_dom_attribute_map_add_stroke_attribute_bag (LsmDomAttributeMap *map, ptrdiff
 						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
 	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-miterlimit",
 						 offsetof (LsmSvgStrokeAttributeBag, miter_limit),
+						 NULL,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-dasharray",
+						 offsetof (LsmSvgStrokeAttributeBag, dash_array),
+						 &lsm_svg_dash_array_attribute_class,
+						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "stroke-dashoffset",
+						 offsetof (LsmSvgStrokeAttributeBag, dash_offset),
 						 NULL,
 						 bag_offset, &lsm_svg_stroke_attribute_bag_class);
 }
