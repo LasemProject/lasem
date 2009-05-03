@@ -17,4 +17,4 @@ lasemtest, which, if launched without argument, renders recursively all svg and 
 files in a directory, and generate an html file which displays the browser
 rendering, lasem rendering, and if present the reference output. The html
 filename is lasemtest.xml. It's main use is the rendering of the sample files
-in the samples directory, by invoking "cd samples && ../src/lasemtest".
+in the samples directory, by invoking "cd test && ../src/lasemtest".
