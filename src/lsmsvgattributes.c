@@ -226,8 +226,6 @@ lsm_svg_dash_array_attribute_parse (LsmSvgDashArrayAttribute *attribute,
 				iter++;
 			}
 
-			g_message ("n_dashes = %d", n_dashes);
-
 			attribute->value = lsm_svg_dash_array_new (n_dashes);
 			if (attribute->value != &lsm_svg_dash_array_null) {
 				LsmSvgLength length;
@@ -236,18 +234,14 @@ lsm_svg_dash_array_attribute_parse (LsmSvgDashArrayAttribute *attribute,
 				lsm_svg_str_skip_spaces (&iter);
 
 				for (i = 0; i < n_dashes; i++) {
-					g_message ("iter = %s", iter);
 					if (lsm_svg_str_parse_double (&iter, &length.value_unit)) {
-						g_message ("iter for length = %s", iter);
 						length.type = lsm_svg_length_type_from_string (iter);
 						attribute->value->dashes[i] = lsm_svg_length_compute (&length,
 												      0.0, 0.0);
-						g_message ("length.value = %g", length.value_unit);
 						while (*iter != '\0' && *iter != ' ' && *iter != ',')
 							iter ++;
 					} else
 						attribute->value->dashes[i] = 0.0;
-					g_message ("dashes[%d] = %g", i, attribute->value->dashes[i]);
 					lsm_svg_str_skip_comma_and_spaces (&iter);
 				}
 			}
