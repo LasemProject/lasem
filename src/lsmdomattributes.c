@@ -414,6 +414,7 @@ lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
 	} else {
 		g_free (*style_value);
 		*style_value = g_strdup (string);
+		g_free (attribute->value);
 		attribute->value = g_strdup (string);
 	}
 }
