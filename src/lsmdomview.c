@@ -26,16 +26,19 @@
 static GObjectClass *parent_class;
 
 void
-lsm_dom_view_measure (LsmDomView *view, double *width, double *height)
+lsm_dom_view_get_size (LsmDomView *view, double *width, double *height)
 {
 	LsmDomViewClass *view_class;
-
-	if (width != NULL)
-		*width = 0.0;
-	if (height != NULL)
-		*height = 0.0;
+	double dummy_width = 0.0;
+	double dummy_height = 0.0;
 
 	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (view->document != NULL);
+
+	if (width == NULL)
+		width = &dummy_width;
+	if (height == NULL)
+		height = &dummy_height;
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
 	if (view_class->measure != NULL)
@@ -43,16 +46,50 @@ lsm_dom_view_measure (LsmDomView *view, double *width, double *height)
 }
 
 void
+lsm_dom_view_get_size_px (LsmDomView *view, unsigned int *width, unsigned int *height)
+{
+	double resolution_ppi;
+	double width_pt;
+	double height_pt;
+
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (view->document != NULL);
+
+	resolution_ppi = lsm_dom_document_get_resolution (view->document);
+	g_return_if_fail (resolution_ppi > 0.0);
+
+	width_pt =  width  != NULL ? *width  * 72.0 / resolution_ppi : 0.0;
+	height_pt = height != NULL ? *height * 72.0 / resolution_ppi : 0.0;
+
+	lsm_dom_view_get_size (view, &width_pt, &height_pt);
+
+	if (width != NULL)
+		*width =  (double) (0.5 + width_pt  * resolution_ppi / 72.0);
+	if (height != NULL)
+		*height = (double) (0.5 + height_pt * resolution_ppi / 72.0);
+}
+
+void
 lsm_dom_view_render (LsmDomView *view, double x, double y)
 {
 	LsmDomViewClass *view_class;
+	double resolution_ppi;
 
 	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (view->document));
 	g_return_if_fail (view->cairo != NULL);
 
+	resolution_ppi = lsm_dom_document_get_resolution (view->document);
+
+	cairo_save (view->cairo);
+
+	cairo_translate (view->cairo, x, y);
+
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
-	if (view_class->measure != NULL)
-		view_class->render (view, x, y);
+	if (view_class->render != NULL)
+		view_class->render (view);
+
+	cairo_restore (view->cairo);
 }
 
 void

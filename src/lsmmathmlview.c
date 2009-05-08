@@ -960,7 +960,7 @@ lsm_mathml_view_measure (LsmDomView *dom_view, double *width, double *height)
 }
 
 static void
-lsm_mathml_view_render (LsmDomView *dom_view, double x, double y)
+lsm_mathml_view_render (LsmDomView *dom_view)
 {
 	LsmMathmlView *view = LSM_MATHML_VIEW (dom_view);
 	LsmMathmlMathElement *math_element;
@@ -977,15 +977,11 @@ lsm_mathml_view_render (LsmDomView *dom_view, double x, double y)
 
 	cairo = view->dom_view.cairo;
 
-	cairo_save (view->dom_view.cairo);
-
-	cairo_translate (cairo, x, y + bbox->height);
+	cairo_translate (cairo, 0, bbox->height);
 
 	lsm_mathml_math_element_render (math_element, view);
 
 	lsm_debug ("[LsmMathmlView::render] cairo status = %s", cairo_status_to_string (cairo_status (cairo)));
-
-	cairo_restore (cairo);
 }
 
 LsmMathmlView *

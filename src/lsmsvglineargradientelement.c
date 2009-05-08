@@ -42,27 +42,31 @@ _linear_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgLinearGradientElement *linear = LSM_SVG_LINEAR_GRADIENT_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&linear->x1, &length, 0.0);
-
-	length.value = 0.0;
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&linear->y1, &length, 0.0);
-
-	length.value = 1.0;
-	length.value_unit = 1.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&linear->x2, &length, 0.0);
-
-	length.value = 0.0;
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&linear->y2, &length, 0.0);
-
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&linear->x1, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&linear->y1, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	length.value = 100.0;
+	length.value_unit = 100.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&linear->x2, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	length.value = 0.0;
+	length.value_unit = 0.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&linear->y2, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 }
 
 static void

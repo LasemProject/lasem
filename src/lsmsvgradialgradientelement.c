@@ -42,32 +42,33 @@ _radial_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgRadialGradientElement *radial = LSM_SVG_RADIAL_GRADIENT_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.5;
-	length.value_unit = 0.5;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->cx, &length, 0.0);
-
-	length.value = 0.5;
-	length.value_unit = 0.5;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->cy, &length, 0.0);
-
-	length.value = 0.5;
-	length.value_unit = 0.5;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->r, &length, 0.0);
-
-	length.value = 0.5;
-	length.value_unit = 0.5;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->fx, &length, 0.0);
-
-	length.value = 0.5;
-	length.value_unit = 0.5;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->fy, &length, 0.0);
-
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+
+	length.value = 50.0;
+	length.value_unit = 50.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&radial->cx, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	length.value = 50.0;
+	length.value_unit = 50.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&radial->cy, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	length.value = 50.0;
+	length.value_unit = 50.0;
+	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
+	lsm_svg_animated_length_attribute_parse (&radial->r, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	length = radial->cx.length.base;
+	lsm_svg_animated_length_attribute_parse (&radial->fx, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	length = radial->cy.length.base;
+	lsm_svg_animated_length_attribute_parse (&radial->fy, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 }
 
 static void

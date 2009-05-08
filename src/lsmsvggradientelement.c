@@ -51,6 +51,12 @@ _gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	lsm_svg_spread_method_attribute_parse (&gradient->spread_method, &method);
 	lsm_svg_transform_attribute_parse (&gradient->transform);
 
+	if (gradient->units.value == LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
+		parent_style->viewport.width = 1.0;
+		parent_style->viewport.height = 1.0;
+		parent_style->viewport.diagonal = 1.0;
+	}
+
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
 
@@ -87,9 +93,9 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	lsm_svg_view_set_gradient_properties (view,
-					   gradient->spread_method.value,
-					   gradient->units.value,
-					   &gradient->transform.matrix);
+					      gradient->spread_method.value,
+					      gradient->units.value,
+					      &gradient->transform.matrix);
 }
 
 /* LsmSvgGradientElement implementation */

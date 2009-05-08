@@ -106,8 +106,6 @@ lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
 	attribute_infos->attribute_offset = attribute_offset;
 	attribute_infos->attribute_class = attribute_class;
 
-	lsm_debug ("name = %s - attribute_offset = %d", name, attribute_offset);
-
 	g_hash_table_insert (map->attribute_hash, (char *) name, attribute_infos);
 
 	if (bag_class != NULL) {

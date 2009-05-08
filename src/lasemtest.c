@@ -39,7 +39,6 @@
 
 #include <../itex2mml/itex2MML.h>
 
-#define TEST_WIDTH 	480
 #define XML_FILENAME	"lasemtest.xml"
 
 static const char *fail_face = "", *normal_face = "";
@@ -71,7 +70,7 @@ lasem_test_render (char const *filename)
 	char *reference_png_filename;
 	char *test_name;
 	char *mime;
-	double width, height;
+	unsigned int width, height;
 	gboolean is_xml, success;
 	gboolean is_svg;
 	gboolean is_mathml;
@@ -106,9 +105,11 @@ lasem_test_render (char const *filename)
 
 		view = lsm_dom_document_create_view (document);
 
-		lsm_dom_view_measure (LSM_DOM_VIEW (view), &width, &height);
+		lsm_dom_document_set_viewport_px (document, 480.0, 360.0);
+		lsm_dom_document_set_resolution (document, 96.0);
+		lsm_dom_view_get_size_px (LSM_DOM_VIEW (view), &width, &height);
 
-		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2.5, height + 2.5);
+		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
@@ -125,6 +126,11 @@ lasem_test_render (char const *filename)
 
 		lasem_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
 		lasem_test_html ("<tr>");
+
+		lasem_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
+				   filename, png_filename);
+		lasem_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
+
 		lasem_test_html ("<td>");
 
 		if (is_mathml) {
@@ -145,13 +151,10 @@ lasem_test_render (char const *filename)
 		if (is_svg) {
 			lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
 			lasem_test_html (filename);
-			lasem_test_html ("\" width=\"320\"/>");
+			lasem_test_html ("\" width=\"480\"/>");
 		}
 
 		lasem_test_html ("</td>");
-		lasem_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
-				   filename, png_filename);
-		lasem_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
 		lasem_test_html ("</tr>\n");
 		lasem_test_html ("</table>\n");
 

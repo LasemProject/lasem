@@ -29,6 +29,10 @@
 
 G_BEGIN_DECLS
 
+#define LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION 		 72.0
+#define LSM_DOM_DOCUMENT_DEFAULT_VIEWPORT_WIDTH		320.0
+#define LSM_DOM_DOCUMENT_DEFAULT_VIEWPORT_HEIGHT 	200.0
+
 #define LSM_TYPE_DOM_DOCUMENT             (lsm_dom_document_get_type ())
 #define LSM_DOM_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_DOCUMENT, LsmDomDocument))
 #define LSM_DOM_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_DOCUMENT, LsmDomDocumentClass))
@@ -43,28 +47,38 @@ struct _GDomDocument {
 
 	GHashTable *		ids;
 	GHashTable *		elements;
+
+	/* Not really a document property, but that simplifies things greatly */
+	double resolution_ppi;
+	double viewport_width;
+	double viewport_height;
 };
 
 struct _GDomDocumentClass {
 	LsmDomNodeClass parent_class;
 
-	LsmDomElement * 	(*get_document_element) (LsmDomDocument* self);
-	LsmDomElement * 	(*create_element) (LsmDomDocument* self, const char *tag_name);
-	LsmDomText * 	(*create_text_node) (LsmDomDocument* self, const char *data);
+	LsmDomElement *	(*get_document_element) (LsmDomDocument* self);
+	LsmDomElement *	(*create_element) 	(LsmDomDocument* self, const char *tag_name);
+	LsmDomText * 	(*create_text_node) 	(LsmDomDocument* self, const char *data);
 
-	LsmDomView*	(*create_view) (LsmDomDocument *self);
+	LsmDomView*	(*create_view) 		(LsmDomDocument *self);
 };
 
 GType lsm_dom_document_get_type (void);
 
 LsmDomElement* 	lsm_dom_document_get_document_element 	(LsmDomDocument* self);
-LsmDomElement* 	lsm_dom_document_create_element 		(LsmDomDocument* self, const char *tag_name);
-LsmDomText* 	lsm_dom_document_create_text_node 		(LsmDomDocument* self, const char *data);
-LsmDomElement * 	lsm_dom_document_get_element_by_id 	(LsmDomDocument *self, const char *id);
+LsmDomElement* 	lsm_dom_document_create_element 	(LsmDomDocument* self, const char *tag_name);
+LsmDomText* 	lsm_dom_document_create_text_node 	(LsmDomDocument* self, const char *data);
+LsmDomElement *	lsm_dom_document_get_element_by_id 	(LsmDomDocument *self, const char *id);
 
-void 		lsm_dom_document_register_element	 	(LsmDomDocument *self, LsmDomElement *element, const char *id);
+void 		lsm_dom_document_register_element 	(LsmDomDocument *self, LsmDomElement *element, const char *id);
 
 LsmDomView*	lsm_dom_document_create_view		(LsmDomDocument *self);
+double		lsm_dom_document_get_resolution		(LsmDomDocument *self);
+void		lsm_dom_document_set_resolution		(LsmDomDocument *self, double ppi);
+void 		lsm_dom_document_set_viewport 		(LsmDomDocument *self, double width, double height);
+void 		lsm_dom_document_get_viewport 		(LsmDomDocument *self, double *width, double *height);
+void 		lsm_dom_document_set_viewport_px 	(LsmDomDocument *self, double width, double height);
 
 G_END_DECLS
 

@@ -27,8 +27,19 @@
 
 G_BEGIN_DECLS
 
-struct _GSvgStyle {
+struct _LsmSvgStyle {
 	LsmSvgColor color;
+
+	double resolution_ppi;
+
+	struct {
+		double width;
+		double height;
+		double diagonal;
+		double horizontal_scale;
+		double vertical_scale;
+		double diagonal_scale;
+	} viewport;
 
 	struct {
 		LsmSvgPaint paint;
@@ -59,7 +70,7 @@ struct _GSvgStyle {
 };
 
 LsmSvgStyle * 	lsm_svg_style_new 		(void);
-void 		lsm_svg_style_free 	(LsmSvgStyle *style);
+void 		lsm_svg_style_free 		(LsmSvgStyle *style);
 LsmSvgStyle *	lsm_svg_style_duplicate 	(const LsmSvgStyle *style);
 
 G_END_DECLS

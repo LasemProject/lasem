@@ -43,32 +43,38 @@ lsm_svg_rect_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->x, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->x, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->y, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->y, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->width, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->width, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->height, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->height, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->rx, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->rx, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->ry, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&rect->ry, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }

@@ -184,14 +184,14 @@ void
 lsm_dom_attribute_map_add_text_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
 {
 	lsm_dom_attribute_map_add_bag_attribute (map, "font-family",
-					      offsetof (LsmSvgTextAttributeBag, font_family),
-					      &lsm_dom_string_attribute_class,
-					      bag_offset, &lsm_svg_text_attribute_bag_class);
+						 offsetof (LsmSvgTextAttributeBag, font_family),
+						 &lsm_dom_string_attribute_class,
+						 bag_offset, &lsm_svg_text_attribute_bag_class);
 
 	lsm_dom_attribute_map_add_bag_attribute (map, "font-size",
-					      offsetof (LsmSvgTextAttributeBag, font_size),
-					      NULL,
-					      bag_offset, &lsm_svg_text_attribute_bag_class);
+						 offsetof (LsmSvgTextAttributeBag, font_size),
+						 NULL,
+						 bag_offset, &lsm_svg_text_attribute_bag_class);
 }
 
 static void *

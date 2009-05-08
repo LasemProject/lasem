@@ -1051,7 +1051,7 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height)
 }
 
 static void
-lsm_svg_view_render (LsmDomView *view, double x, double y)
+lsm_svg_view_render (LsmDomView *view)
 {
 	LsmSvgView *svg_view;
 	LsmSvgSvgElement *svg_element;

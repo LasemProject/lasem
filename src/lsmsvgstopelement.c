@@ -45,7 +45,8 @@ _stop_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	length.value = 1.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&stop->offset, &length, 0.0);
+	lsm_svg_length_attribute_parse (&stop->offset, &length, parent_style,
+					LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }

@@ -120,19 +120,27 @@ typedef struct {
 	LsmSvgMatrix matrix;
 } LsmSvgTransformAttribute;
 
+
+/* Properties */
+
 void 		lsm_svg_double_attribute_parse 		(LsmSvgDoubleAttribute *attribute,
 							 double *double_value);
 void		lsm_svg_length_attribute_parse 		(LsmSvgLengthAttribute *attribute,
 							 LsmSvgLength *default_value,
-							 double font_size);
+							 const LsmSvgStyle *style,
+							 LsmSvgLengthDirection direction);
 void 		lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
 							 LsmSvgLength *default_value,
-							 double font_size);
+							 const LsmSvgStyle *style,
+							 LsmSvgLengthDirection direction);
 
 void 		lsm_svg_dash_array_attribute_finalize 	(void *abstract);
 
 void		lsm_svg_dash_array_attribute_parse	(LsmSvgDashArrayAttribute *attribute,
-							 LsmSvgDashArray **default_value);
+							 LsmSvgDashArray **default_value,
+							 const LsmSvgStyle *style,
+							 LsmSvgLengthDirection direction);
+
 void 		lsm_svg_fill_rule_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_line_join_attribute_parse 	(LsmDomEnumAttribute *attribute,
@@ -150,8 +158,10 @@ void 		lsm_svg_paint_attribute_parse 		(LsmSvgPaintAttribute *attribute,
 void 		lsm_svg_color_attribute_parse 		(LsmSvgColorAttribute *attribute,
 							 LsmSvgColor *default_value,
 							 const LsmSvgColor *current_color);
-void		lsm_svg_view_box_attribute_parse	(LsmSvgViewBoxAttribute *attribute,
-							 LsmSvgViewBox *default_value);
+
+/* Attributes */
+
+void		lsm_svg_view_box_attribute_parse	(LsmSvgViewBoxAttribute *attribute);
 void		lsm_svg_transform_attribute_parse	(LsmSvgTransformAttribute *attribute);
 
 G_END_DECLS

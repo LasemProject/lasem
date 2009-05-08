@@ -49,7 +49,7 @@ typedef struct _GSvgStopElement LsmSvgStopElement;
 typedef struct _GSvgPatternElement LsmSvgPatternElement;
 
 typedef struct _GSvgView LsmSvgView;
-typedef struct _GSvgStyle LsmSvgStyle;
+typedef struct _LsmSvgStyle LsmSvgStyle;
 
 G_END_DECLS
 

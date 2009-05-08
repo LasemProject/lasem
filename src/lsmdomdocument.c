@@ -84,6 +84,54 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
 
+double
+lsm_dom_document_get_resolution (LsmDomDocument *self)
+{
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), 0.0);
+
+	return self->resolution_ppi;
+}
+
+void
+lsm_dom_document_set_resolution (LsmDomDocument *self, double ppi)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+
+	if (ppi < 0.0)
+		self->resolution_ppi = LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION;
+	else
+		self->resolution_ppi = ppi;
+}
+
+void
+lsm_dom_document_set_viewport (LsmDomDocument *self, double width, double height)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+
+	self->viewport_width = width;
+	self->viewport_height = height;
+}
+
+void
+lsm_dom_document_set_viewport_px (LsmDomDocument *self, double width, double height)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+
+	self->viewport_width  = width  * 72.0 / self->resolution_ppi;
+	self->viewport_height = height * 72.0 / self->resolution_ppi;
+}
+
+void
+lsm_dom_document_get_viewport (LsmDomDocument *self, double *width, double *height)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+
+	if (width != NULL)
+		*width = self->viewport_width;
+	if (height != NULL)
+		*height = self->viewport_height;
+}
+
 LsmDomElement *
 lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
 {
@@ -125,6 +173,9 @@ lsm_dom_document_init (LsmDomDocument *document)
 {
 	document->ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 	document->elements = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
+	document->resolution_ppi = LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION;
+	document->viewport_width = LSM_DOM_DOCUMENT_DEFAULT_VIEWPORT_WIDTH;
+	document->viewport_height = LSM_DOM_DOCUMENT_DEFAULT_VIEWPORT_HEIGHT;
 }
 
 static void

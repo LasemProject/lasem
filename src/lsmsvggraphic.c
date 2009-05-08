@@ -95,6 +95,12 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	default_opacity = 1.0;
 	lsm_svg_double_attribute_parse (&graphic->opacity, &default_opacity); /* FIXME handle inherit */
 
+	if (graphic->text != NULL) {
+		lsm_dom_string_attribute_parse (&graphic->text->font_family, &parent_style->text.font_family);
+		lsm_svg_length_attribute_parse (&graphic->text->font_size, &parent_style->text.font_size,
+						parent_style, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	}
+
 	if (graphic->fill != NULL) {
 		lsm_debug ("[LsmSvgGraphic::update] fill");
 
@@ -109,22 +115,20 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 		lsm_svg_paint_attribute_parse (&graphic->stroke->paint, &parent_style->stroke.paint,
 					       &graphic->color.value);
-		lsm_svg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width, 0.0);
+		lsm_svg_length_attribute_parse (&graphic->stroke->width, &parent_style->stroke.width,
+						parent_style, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 		lsm_dom_double_attribute_parse (&graphic->stroke->opacity, &parent_style->stroke.opacity);
 		lsm_svg_line_join_attribute_parse (&graphic->stroke->line_join, &parent_style->stroke.line_join);
 		lsm_svg_line_cap_attribute_parse (&graphic->stroke->line_cap, &parent_style->stroke.line_cap);
 		lsm_svg_double_attribute_parse (&graphic->stroke->miter_limit, &parent_style->stroke.miter_limit);
-		lsm_svg_dash_array_attribute_parse (&graphic->stroke->dash_array, &parent_style->stroke.dash_array);
-		lsm_svg_length_attribute_parse (&graphic->stroke->dash_offset, &parent_style->stroke.dash_offset, 0.0);
+		lsm_svg_dash_array_attribute_parse (&graphic->stroke->dash_array, &parent_style->stroke.dash_array,
+						    parent_style, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+		lsm_svg_length_attribute_parse (&graphic->stroke->dash_offset, &parent_style->stroke.dash_offset,
+						    parent_style, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 	}
 
 	if (graphic->transform != NULL) {
 		lsm_svg_transform_attribute_parse (&graphic->transform->transform);
-	}
-
-	if (graphic->text != NULL) {
-		lsm_dom_string_attribute_parse (&graphic->text->font_family, &parent_style->text.font_family);
-		lsm_svg_length_attribute_parse (&graphic->text->font_size, &parent_style->text.font_size, 0.0);
 	}
 
 	if (graphic->stop != NULL) {

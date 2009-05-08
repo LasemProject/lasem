@@ -43,17 +43,20 @@ lsm_svg_circle_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cx, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&circle->cx, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cy, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&circle->cy, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->r, &length, 0.0);
+	lsm_svg_animated_length_attribute_parse (&circle->r, &length, parent_style,
+						 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }

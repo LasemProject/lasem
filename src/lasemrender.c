@@ -92,7 +92,8 @@ int main(int argc, char **argv)
 	char *mime;
 	char *buffer = NULL;
 	size_t size;
-	double height, width;
+	double height_pt, width_pt;
+	unsigned int height, width;
 	gboolean success;
 
 	g_type_init ();
@@ -186,28 +187,37 @@ int main(int argc, char **argv)
 
 		if (mathml != NULL) {
 			document = lsm_dom_document_new_from_memory (mathml);
+			lsm_dom_document_set_resolution (document, option_ppi);
+
 			if (document != NULL) {
 				view = lsm_dom_document_create_view (document);
 
 				lsm_dom_view_set_debug (view, option_debug);
 
-				lsm_dom_view_measure (view, &width, &height);
+				width_pt = 2.0;
+				height_pt = 2.0;
+
+				lsm_dom_view_get_size (view, &width_pt, &height_pt);
+				lsm_dom_view_get_size_px (view, &width, &height);
 
 				switch (format) {
 					case FORMAT_PDF:
-						surface = cairo_pdf_surface_create (output_filename, width, height);
+						surface = cairo_pdf_surface_create (output_filename,
+										    width_pt, height_pt);
 						break;
 					case FORMAT_PS:
-						surface = cairo_ps_surface_create (output_filename, width, height);
+						surface = cairo_ps_surface_create (output_filename,
+										   width_pt, height_pt);
 						break;
 					case FORMAT_PNG:
 						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-										      width * option_ppi / 72.0 + 0.5,
-										      height * option_ppi / 72.0 + 0.5);
+										      width,
+										      height);
 						break;
 					case FORMAT_SVG:
 					default:
-						surface = cairo_svg_surface_create (output_filename, width, height);
+						surface = cairo_svg_surface_create (output_filename,
+										    width_pt, height_pt);
 						break;
 				}
 
@@ -236,7 +246,7 @@ int main(int argc, char **argv)
 
 				g_object_unref (document);
 
-				lsm_debug ("width = %g pt, height = %g pt",  width, height);
+				lsm_debug ("width = %g pt, height = %g pt",  width_pt, height_pt);
 			} else
 				g_warning ("Can't load %s", input_filename);
 		} else
