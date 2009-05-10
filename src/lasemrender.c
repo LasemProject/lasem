@@ -226,9 +226,6 @@ int main(int argc, char **argv)
 
 				lsm_dom_view_set_cairo (view, cairo);
 
-				if (format == FORMAT_PNG)
-					cairo_scale (cairo, option_ppi / 72.0, option_ppi / 72.0);
-
 				lsm_dom_view_render (view, 0, 0);
 
 				switch (format) {
