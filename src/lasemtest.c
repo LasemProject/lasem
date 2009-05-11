@@ -32,6 +32,7 @@
 #include <glib/gregex.h>
 #include <glib/gprintf.h>
 #include <gio/gio.h>
+#include <lsmdebug.h>
 #include <lsmdomparser.h>
 #include <lsmdomdocument.h>
 
@@ -40,6 +41,21 @@
 #include <../itex2mml/itex2MML.h>
 
 #define XML_FILENAME	"lasemtest.xml"
+
+static gboolean option_debug = FALSE;
+static char **option_input_filenames = NULL;
+double option_ppi = 72.0;
+
+static const GOptionEntry entries[] =
+{
+	{ G_OPTION_REMAINING,	' ', 0,	G_OPTION_ARG_FILENAME_ARRAY,
+		&option_input_filenames, 	NULL, NULL},
+	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
+		&option_ppi, 			"Pixel per inch", NULL },
+	{ "debug", 		'd', 0, G_OPTION_ARG_NONE,
+		&option_debug, 			"Debug mode", NULL },
+	{ NULL }
+};
 
 static const char *fail_face = "", *normal_face = "";
 FILE *lasem_test_html_file = NULL;
@@ -106,7 +122,7 @@ lasem_test_render (char const *filename)
 		view = lsm_dom_document_create_view (document);
 
 		lsm_dom_document_set_viewport_px (document, 480.0, 360.0);
-		lsm_dom_document_set_resolution (document, 96.0);
+		lsm_dom_document_set_resolution (document, option_ppi);
 		lsm_dom_view_get_size_px (LSM_DOM_VIEW (view), &width, &height);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
@@ -253,10 +269,11 @@ lasem_test_process_dir (const char *name)
 int
 main (int argc, char **argv)
 {
+	GOptionContext *context;
 	GTimer *timer;
 	GError *error = NULL;
 	unsigned int i;
-	unsigned int n_files = 0;
+	unsigned int n_input_files = 0;
 
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
@@ -275,17 +292,32 @@ main (int argc, char **argv)
 	lasem_test_html ("<body>\n");
 
 	g_type_init ();
+	context = g_option_context_new (NULL);
+	g_option_context_add_main_entries (context, entries, NULL);
+
+	if (!g_option_context_parse (context, &argc, &argv, &error))
+	{
+		g_option_context_free (context);
+		g_print ("Option parsing failed: %s\n", error->message);
+		return 1;
+	}
+
+	g_option_context_free (context);
+
+	if (option_debug)
+		lsm_debug_enable ();
 
 	timer = g_timer_new ();
 
 	regex_mml = g_regex_new ("\\.(mml|tex|svg)$", 0, 0, &error);
 	assert (error == NULL);
 
-	if (argc >= 2)
-		for (i = 0; i < argc - 1; i++)
-			lasem_test_render (argv[i + 1]);
+	n_input_files = option_input_filenames != NULL ? g_strv_length (option_input_filenames) : 0;
+	if (n_input_files > 0)
+		for (i = 0; i < n_input_files; i++)
+			lasem_test_render (option_input_filenames[i]);
 	else
-		n_files = lasem_test_process_dir (".");
+		n_input_files = lasem_test_process_dir (".");
 
 	lasem_test_html ("</body>\n");
 	lasem_test_html ("</html>\n");
@@ -295,7 +327,7 @@ main (int argc, char **argv)
 
 	g_regex_unref (regex_mml);
 
-	g_printf ("%d files processed in %g seconds.\n", n_files, g_timer_elapsed (timer, NULL));
+	g_printf ("%d files processed in %g seconds.\n", n_input_files, g_timer_elapsed (timer, NULL));
 
 	g_timer_destroy (timer);
 
