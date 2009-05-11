@@ -46,7 +46,7 @@ lsm_dom_view_get_size (LsmDomView *view, double *width, double *height)
 }
 
 void
-lsm_dom_view_get_size_px (LsmDomView *view, unsigned int *width, unsigned int *height)
+lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned int *height)
 {
 	double resolution_ppi;
 	double width_pt;

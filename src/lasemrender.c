@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 				height_pt = 2.0;
 
 				lsm_dom_view_get_size (view, &width_pt, &height_pt);
-				lsm_dom_view_get_size_px (view, &width, &height);
+				lsm_dom_view_get_size_pixels (view, &width, &height);
 
 				switch (format) {
 					case FORMAT_PDF:

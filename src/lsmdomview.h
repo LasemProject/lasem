@@ -64,7 +64,7 @@ GType lsm_dom_view_get_type (void);
 
 void 			lsm_dom_view_render 		(LsmDomView *view, double x, double y);
 void			lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height);
-void 			lsm_dom_view_get_size_px 	(LsmDomView *view, unsigned int *width, unsigned int *height);
+void 			lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height);
 
 void 			lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
 void			lsm_dom_view_set_cairo 		(LsmDomView *view, cairo_t *cr);
