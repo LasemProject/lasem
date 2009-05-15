@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_RADIAL_GRADIENT_ELEMENT))
 #define LSM_SVG_RADIAL_GRADIENT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_RADIAL_GRADIENT_ELEMENT, LsmSvgRadialGradientElementClass))
 
-typedef struct _GSvgRadialGradientElementClass LsmSvgRadialGradientElementClass;
+typedef struct _LsmSvgRadialGradientElementClass LsmSvgRadialGradientElementClass;
 
-struct _GSvgRadialGradientElement {
+struct _LsmSvgRadialGradientElement {
 	LsmSvgGradientElement gradient;
 
 	LsmSvgAnimatedLengthAttribute	cx;
@@ -46,7 +46,7 @@ struct _GSvgRadialGradientElement {
 	LsmSvgAnimatedLengthAttribute	fy;
 };
 
-struct _GSvgRadialGradientElementClass {
+struct _LsmSvgRadialGradientElementClass {
 	LsmSvgGradientElementClass  parent_class;
 };
 

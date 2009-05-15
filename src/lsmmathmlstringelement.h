@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_STRING_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_STRING_ELEMENT))
 #define LSM_MATHML_STRING_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_STRING_ELEMENT, LsmMathmlStringElementClass))
 
-typedef struct _GMathmlStringElementClass LsmMathmlStringElementClass;
+typedef struct _LsmMathmlStringElementClass LsmMathmlStringElementClass;
 
-struct _GMathmlStringElement {
+struct _LsmMathmlStringElement {
 	LsmMathmlPresentationToken presentation_token;
 
 	LsmDomStringAttribute left_quote;
 	LsmDomStringAttribute right_quote;
 };
 
-struct _GMathmlStringElementClass {
+struct _LsmMathmlStringElementClass {
 	LsmMathmlPresentationTokenClass parent_class;
 };
 

@@ -26,29 +26,29 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GSvgDocument LsmSvgDocument;
-typedef struct _GSvgElement LsmSvgElement;
-typedef struct _GSvgGraphic LsmSvgGraphic;
-typedef struct _GSvgSvgElement LsmSvgSvgElement;
-typedef struct _GSvgGElement LsmSvgGElement;
-typedef struct _GSvgDefsElement LsmSvgDefsElement;
-typedef struct _GSvgUseElement LsmSvgUseElement;
-typedef struct _GSvgSymbolElement LsmSvgSymbolElement;
-typedef struct _GSvgRectElement LsmSvgRectElement;
-typedef struct _GSvgCircleElement LsmSvgCircleElement;
-typedef struct _GSvgEllipseElement LsmSvgEllipseElement;
-typedef struct _GSvgLineElement LsmSvgLineElement;
-typedef struct _GSvgPolylineElement LsmSvgPolylineElement;
-typedef struct _GSvgPolygonElement LsmSvgPolygonElement;
-typedef struct _GSvgPathElement LsmSvgPathElement;
-typedef struct _GSvgTextElement LsmSvgTextElement;
-typedef struct _GSvgGradientElement LsmSvgGradientElement;
-typedef struct _GSvgLinearGradientElement LsmSvgLinearGradientElement;
-typedef struct _GSvgRadialGradientElement LsmSvgRadialGradientElement;
-typedef struct _GSvgStopElement LsmSvgStopElement;
-typedef struct _GSvgPatternElement LsmSvgPatternElement;
+typedef struct _LsmSvgDocument LsmSvgDocument;
+typedef struct _LsmSvgElement LsmSvgElement;
+typedef struct _LsmSvgGraphic LsmSvgGraphic;
+typedef struct _LsmSvgSvgElement LsmSvgSvgElement;
+typedef struct _LsmSvgGElement LsmSvgGElement;
+typedef struct _LsmSvgDefsElement LsmSvgDefsElement;
+typedef struct _LsmSvgUseElement LsmSvgUseElement;
+typedef struct _LsmSvgSymbolElement LsmSvgSymbolElement;
+typedef struct _LsmSvgRectElement LsmSvgRectElement;
+typedef struct _LsmSvgCircleElement LsmSvgCircleElement;
+typedef struct _LsmSvgEllipseElement LsmSvgEllipseElement;
+typedef struct _LsmSvgLineElement LsmSvgLineElement;
+typedef struct _LsmSvgPolylineElement LsmSvgPolylineElement;
+typedef struct _LsmSvgPolygonElement LsmSvgPolygonElement;
+typedef struct _LsmSvgPathElement LsmSvgPathElement;
+typedef struct _LsmSvgTextElement LsmSvgTextElement;
+typedef struct _LsmSvgGradientElement LsmSvgGradientElement;
+typedef struct _LsmSvgLinearGradientElement LsmSvgLinearGradientElement;
+typedef struct _LsmSvgRadialGradientElement LsmSvgRadialGradientElement;
+typedef struct _LsmSvgStopElement LsmSvgStopElement;
+typedef struct _LsmSvgPatternElement LsmSvgPatternElement;
 
-typedef struct _GSvgView LsmSvgView;
+typedef struct _LsmSvgView LsmSvgView;
 typedef struct _LsmSvgStyle LsmSvgStyle;
 
 G_END_DECLS

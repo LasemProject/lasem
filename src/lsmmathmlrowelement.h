@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_ROW_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ROW_ELEMENT))
 #define LSM_MATHML_ROW_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ROW_ELEMENT, LsmMathmlRowElementClass))
 
-typedef struct _GMathmlRowElementClass LsmMathmlRowElementClass;
+typedef struct _LsmMathmlRowElementClass LsmMathmlRowElementClass;
 
-struct _GMathmlRowElement {
+struct _LsmMathmlRowElement {
 	LsmMathmlPresentationContainer presentation_container;
 };
 
-struct _GMathmlRowElementClass {
+struct _LsmMathmlRowElementClass {
 	LsmMathmlPresentationContainerClass parent_class;
 };
 

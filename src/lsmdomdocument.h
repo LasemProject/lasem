@@ -40,9 +40,9 @@ G_BEGIN_DECLS
 #define LSM_IS_DOM_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_DOCUMENT))
 #define LSM_DOM_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_DOCUMENT, LsmDomDocumentClass))
 
-typedef struct _GDomDocumentClass LsmDomDocumentClass;
+typedef struct _LsmDomDocumentClass LsmDomDocumentClass;
 
-struct _GDomDocument {
+struct _LsmDomDocument {
 	LsmDomNode node;
 
 	GHashTable *		ids;
@@ -53,7 +53,7 @@ struct _GDomDocument {
 	LsmBox viewport_pt;
 };
 
-struct _GDomDocumentClass {
+struct _LsmDomDocumentClass {
 	LsmDomNodeClass parent_class;
 
 	LsmDomElement *	(*get_document_element) (LsmDomDocument* self);

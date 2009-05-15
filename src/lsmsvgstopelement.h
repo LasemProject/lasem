@@ -34,15 +34,15 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_STOP_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_STOP_ELEMENT))
 #define LSM_SVG_STOP_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_STOP_ELEMENT, LsmSvgStopElementClass))
 
-typedef struct _GSvgStopElementClass LsmSvgStopElementClass;
+typedef struct _LsmSvgStopElementClass LsmSvgStopElementClass;
 
-struct _GSvgStopElement {
+struct _LsmSvgStopElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgLengthAttribute offset;
 };
 
-struct _GSvgStopElementClass {
+struct _LsmSvgStopElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

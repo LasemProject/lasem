@@ -34,15 +34,15 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_POLYGON_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_POLYGON_ELEMENT))
 #define LSM_SVG_POLYGON_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_POLYGON_ELEMENT, LsmSvgPolygonElementClass))
 
-typedef struct _GSvgPolygonElementClass LsmSvgPolygonElementClass;
+typedef struct _LsmSvgPolygonElementClass LsmSvgPolygonElementClass;
 
-struct _GSvgPolygonElement {
+struct _LsmSvgPolygonElement {
 	LsmSvgGraphic graphic;
 
 	LsmDomAttribute	points;
 };
 
-struct _GSvgPolygonElementClass {
+struct _LsmSvgPolygonElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

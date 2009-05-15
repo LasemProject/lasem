@@ -98,11 +98,11 @@ _radial_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		}
 	}
 
-	lsm_debug ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
-		    cx, cy, r, fx, fy);
-
 	if (is_object_bounding_box)
 		lsm_svg_view_pop_viewbox (view);
+
+	lsm_debug ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
+		    cx, cy, r, fx, fy);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
 

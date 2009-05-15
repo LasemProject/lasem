@@ -41,9 +41,9 @@ typedef enum {
 #define LSM_IS_MATHML_PRESENTATION_TOKEN_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_PRESENTATION_TOKEN))
 #define LSM_MATHML_PRESENTATION_TOKEN_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_PRESENTATION_TOKEN, LsmMathmlPresentationTokenClass))
 
-typedef struct _GMathmlPresentationTokenClass LsmMathmlPresentationTokenClass;
+typedef struct _LsmMathmlPresentationTokenClass LsmMathmlPresentationTokenClass;
 
-struct _GMathmlPresentationToken {
+struct _LsmMathmlPresentationToken {
 	LsmMathmlElement	element;
 
 	LsmMathmlPresentationTokenType type;
@@ -60,7 +60,7 @@ struct _GMathmlPresentationToken {
 	LsmDomEnumAttribute font_style;
 };
 
-struct _GMathmlPresentationTokenClass {
+struct _LsmMathmlPresentationTokenClass {
 	LsmMathmlElementClass  parent_class;
 
 	char * (*get_text)	(LsmMathmlPresentationToken *self);

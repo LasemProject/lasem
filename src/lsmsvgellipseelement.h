@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_ELLIPSE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_ELLIPSE_ELEMENT))
 #define LSM_SVG_ELLIPSE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_ELLIPSE_ELEMENT, LsmSvgEllipseElementClass))
 
-typedef struct _GSvgEllipseElementClass LsmSvgEllipseElementClass;
+typedef struct _LsmSvgEllipseElementClass LsmSvgEllipseElementClass;
 
-struct _GSvgEllipseElement {
+struct _LsmSvgEllipseElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	cx;
@@ -45,7 +45,7 @@ struct _GSvgEllipseElement {
 	LsmSvgAnimatedLengthAttribute	ry;
 };
 
-struct _GSvgEllipseElementClass {
+struct _LsmSvgEllipseElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

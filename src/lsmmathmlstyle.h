@@ -27,7 +27,7 @@
 
 G_BEGIN_DECLS
 
-struct _GMathmlStyle {
+struct _LsmMathmlStyle {
 	double math_size_value;
 	/* mstyle */
 	LsmMathmlDisplay display;

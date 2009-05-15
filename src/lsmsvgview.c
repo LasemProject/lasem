@@ -34,7 +34,7 @@
 
 static GObjectClass *parent_class;
 
-struct _GSvgViewPatternData {
+struct _LsmSvgViewPatternData {
 	cairo_t *old_cairo;
 
 	cairo_pattern_t *pattern;

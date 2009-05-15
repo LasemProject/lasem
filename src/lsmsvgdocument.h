@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_DOCUMENT))
 #define LSM_SVG_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_DOCUMENT, LsmSvgDocumentClass))
 
-typedef struct _GSvgDocumentClass LsmSvgDocumentClass;
+typedef struct _LsmSvgDocumentClass LsmSvgDocumentClass;
 
-struct _GSvgDocument {
+struct _LsmSvgDocument {
 	LsmDomDocument	document;
 };
 
-struct _GSvgDocumentClass {
+struct _LsmSvgDocumentClass {
 	LsmDomDocumentClass  parent_class;
 };
 

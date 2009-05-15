@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_STYLE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_STYLE_ELEMENT))
 #define LSM_MATHML_STYLE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_STYLE_ELEMENT, LsmMathmlStyleElementClass))
 
-typedef struct _GMathmlStyleElementClass LsmMathmlStyleElementClass;
+typedef struct _LsmMathmlStyleElementClass LsmMathmlStyleElementClass;
 
-struct _GMathmlStyleElement {
+struct _LsmMathmlStyleElement {
 	LsmMathmlPresentationContainer presentation_container;
 
 	/* Style attributes */
@@ -72,7 +72,7 @@ struct _GMathmlStyleElement {
 	LsmMathmlLengthAttribute line_thickness;
 };
 
-struct _GMathmlStyleElementClass {
+struct _LsmMathmlStyleElementClass {
 	LsmMathmlPresentationContainerClass parent_class;
 };
 

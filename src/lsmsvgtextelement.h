@@ -34,16 +34,16 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_TEXT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_TEXT_ELEMENT))
 #define LSM_SVG_TEXT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_TEXT_ELEMENT, LsmSvgTextElementClass))
 
-typedef struct _GSvgTextElementClass LsmSvgTextElementClass;
+typedef struct _LsmSvgTextElementClass LsmSvgTextElementClass;
 
-struct _GSvgTextElement {
+struct _LsmSvgTextElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	x;
 	LsmSvgAnimatedLengthAttribute	y;
 };
 
-struct _GSvgTextElementClass {
+struct _LsmSvgTextElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

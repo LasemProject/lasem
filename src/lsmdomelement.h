@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_DOM_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_ELEMENT))
 #define LSM_DOM_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_ELEMENT, LsmDomElementClass))
 
-typedef struct _GDomElementClass LsmDomElementClass;
+typedef struct _LsmDomElementClass LsmDomElementClass;
 
-struct _GDomElement {
+struct _LsmDomElement {
 	LsmDomNode node;
 };
 
-struct _GDomElementClass {
+struct _LsmDomElementClass {
 	LsmDomNodeClass parent_class;
 
 	const char* 	(*get_attribute) (LsmDomElement* self, const char* name);

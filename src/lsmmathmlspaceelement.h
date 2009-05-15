@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_SPACE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_SPACE_ELEMENT))
 #define LSM_MATHML_SPACE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_SPACE_ELEMENT, LsmMathmlSpaceElementClass))
 
-typedef struct _GMathmlSpaceElementClass LsmMathmlSpaceElementClass;
+typedef struct _LsmMathmlSpaceElementClass LsmMathmlSpaceElementClass;
 
-struct _GMathmlSpaceElement {
+struct _LsmMathmlSpaceElement {
 	LsmMathmlElement	element;
 
 	LsmMathmlSpaceAttribute width;
@@ -45,7 +45,7 @@ struct _GMathmlSpaceElement {
 	LsmMathmlLengthAttribute depth;
 };
 
-struct _GMathmlSpaceElementClass {
+struct _LsmMathmlSpaceElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

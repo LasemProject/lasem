@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_DOCUMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_DOCUMENT))
 #define LSM_MATHML_DOCUMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_DOCUMENT, LsmMathmlDocumentClass))
 
-typedef struct _GMathmlDocumentClass LsmMathmlDocumentClass;
+typedef struct _LsmMathmlDocumentClass LsmMathmlDocumentClass;
 
-struct _GMathmlDocument {
+struct _LsmMathmlDocument {
 	LsmDomDocument	document;
 };
 
-struct _GMathmlDocumentClass {
+struct _LsmMathmlDocumentClass {
 	LsmDomDocumentClass  parent_class;
 };
 

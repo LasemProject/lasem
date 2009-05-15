@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_PADDED_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_PADDED_ELEMENT))
 #define LSM_MATHML_PADDED_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_PADDED_ELEMENT, LsmMathmlPaddedElementClass))
 
-typedef struct _GMathmlPaddedElementClass LsmMathmlPaddedElementClass;
+typedef struct _LsmMathmlPaddedElementClass LsmMathmlPaddedElementClass;
 
-struct _GMathmlPaddedElement {
+struct _LsmMathmlPaddedElement {
 	LsmMathmlPresentationContainer presentation_container;
 };
 
-struct _GMathmlPaddedElementClass {
+struct _LsmMathmlPaddedElementClass {
 	LsmMathmlPresentationContainerClass parent_class;
 };
 

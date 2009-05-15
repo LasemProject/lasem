@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_SYMBOL_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_SYMBOL_ELEMENT))
 #define LSM_SVG_SYMBOL_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_SYMBOL_ELEMENT, LsmSvgSymbolElementClass))
 
-typedef struct _GSvgSymbolElementClass LsmSvgSymbolElementClass;
+typedef struct _LsmSvgSymbolElementClass LsmSvgSymbolElementClass;
 
-struct _GSvgSymbolElement {
+struct _LsmSvgSymbolElement {
 	LsmSvgGraphic graphic;
 };
 
-struct _GSvgSymbolElementClass {
+struct _LsmSvgSymbolElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

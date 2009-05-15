@@ -34,15 +34,15 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_POLYLINE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_POLYLINE_ELEMENT))
 #define LSM_SVG_POLYLINE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_POLYLINE_ELEMENT, LsmSvgPolylineElementClass))
 
-typedef struct _GSvgPolylineElementClass LsmSvgPolylineElementClass;
+typedef struct _LsmSvgPolylineElementClass LsmSvgPolylineElementClass;
 
-struct _GSvgPolylineElement {
+struct _LsmSvgPolylineElement {
 	LsmSvgGraphic graphic;
 
 	LsmDomAttribute	points;
 };
 
-struct _GSvgPolylineElementClass {
+struct _LsmSvgPolylineElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

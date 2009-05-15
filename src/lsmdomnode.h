@@ -49,9 +49,9 @@ typedef enum  {
 #define LSM_IS_DOM_NODE_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_NODE))
 #define LSM_DOM_NODE_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_NODE, LsmDomNodeClass))
 
-typedef struct _GDomNodeClass LsmDomNodeClass;
+typedef struct _LsmDomNodeClass LsmDomNodeClass;
 
-struct _GDomNode {
+struct _LsmDomNode {
 	GObject	object;
 
 	LsmDomNode	*next_sibling;
@@ -61,7 +61,7 @@ struct _GDomNode {
 	LsmDomNode	*last_child;
 };
 
-struct _GDomNodeClass {
+struct _LsmDomNodeClass {
 	GObjectClass parent_class;
 
 	/* DOM node virtuals */

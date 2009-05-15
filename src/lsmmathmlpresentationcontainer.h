@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_PRESENTATION_CONTAINER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_PRESENTATION_CONTAINER))
 #define LSM_MATHML_PRESENTATION_CONTAINER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_PRESENTATION_CONTAINER, LsmMathmlPresentationContainerClass))
 
-typedef struct _GMathmlPresentationContainerClass LsmMathmlPresentationContainerClass;
+typedef struct _LsmMathmlPresentationContainerClass LsmMathmlPresentationContainerClass;
 
-struct _GMathmlPresentationContainer {
+struct _LsmMathmlPresentationContainer {
 	LsmMathmlElement	element;
 };
 
-struct _GMathmlPresentationContainerClass {
+struct _LsmMathmlPresentationContainerClass {
 	LsmMathmlElementClass  parent_class;
 };
 

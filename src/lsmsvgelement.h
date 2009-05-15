@@ -39,9 +39,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_ELEMENT))
 #define LSM_SVG_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_ELEMENT, LsmSvgElementClass))
 
-typedef struct _GSvgElementClass LsmSvgElementClass;
+typedef struct _LsmSvgElementClass LsmSvgElementClass;
 
-struct _GSvgElement {
+struct _LsmSvgElement {
 	LsmDomElement	element;
 
 	LsmDomAttribute	id;
@@ -52,7 +52,7 @@ struct _GSvgElement {
 	gboolean need_children_update;
 };
 
-struct _GSvgElementClass {
+struct _LsmSvgElementClass {
 	LsmDomElementClass  parent_class;
 
 	LsmDomAttributeMap *attributes;

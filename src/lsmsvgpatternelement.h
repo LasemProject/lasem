@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_PATTERN_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_PATTERN_ELEMENT))
 #define LSM_SVG_PATTERN_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_PATTERN_ELEMENT, LsmSvgPatternElementClass))
 
-typedef struct _GSvgPatternElementClass LsmSvgPatternElementClass;
+typedef struct _LsmSvgPatternElementClass LsmSvgPatternElementClass;
 
-struct _GSvgPatternElement {
+struct _LsmSvgPatternElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	x;
@@ -49,7 +49,7 @@ struct _GSvgPatternElement {
 	LsmDomAttribute 			href;
 };
 
-struct _GSvgPatternElementClass {
+struct _LsmSvgPatternElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

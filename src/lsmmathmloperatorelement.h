@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_OPERATOR_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_OPERATOR_ELEMENT))
 #define LSM_MATHML_OPERATOR_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_OPERATOR_ELEMENT, LsmMathmlOperatorElementClass))
 
-typedef struct _GMathmlOperatorElementClass LsmMathmlOperatorElementClass;
+typedef struct _LsmMathmlOperatorElementClass LsmMathmlOperatorElementClass;
 
-struct _GMathmlOperatorElement {
+struct _LsmMathmlOperatorElement {
 	LsmMathmlPresentationToken presentation_token;
 
 	LsmDomEnumAttribute form;
@@ -56,7 +56,7 @@ struct _GMathmlOperatorElement {
 	gboolean is_large_op;
 };
 
-struct _GMathmlOperatorElementClass {
+struct _LsmMathmlOperatorElementClass {
 	LsmMathmlPresentationTokenClass parent_class;
 };
 

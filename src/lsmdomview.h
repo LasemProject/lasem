@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_DOM_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_VIEW))
 #define LSM_DOM_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_VIEW, LsmDomViewClass))
 
-typedef struct _GDomViewClass LsmDomViewClass;
+typedef struct _LsmDomViewClass LsmDomViewClass;
 
-struct _GDomView {
+struct _LsmDomView {
 	GObject	object;
 
 	LsmDomDocument *		document;
@@ -51,7 +51,7 @@ struct _GDomView {
 	gboolean debug;
 };
 
-struct _GDomViewClass {
+struct _LsmDomViewClass {
 	GObjectClass parent_class;
 
 	GType document_type;

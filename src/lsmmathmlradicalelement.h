@@ -40,9 +40,9 @@ typedef enum {
 #define LSM_IS_MATHML_RADICAL_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_RADICAL_ELEMENT))
 #define LSM_MATHML_RADICAL_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_RADICAL_ELEMENT, LsmMathmlRadicalElementClass))
 
-typedef struct _GMathmlRadicalElementClass LsmMathmlRadicalElementClass;
+typedef struct _LsmMathmlRadicalElementClass LsmMathmlRadicalElementClass;
 
-struct _GMathmlRadicalElement {
+struct _LsmMathmlRadicalElement {
 	LsmMathmlElement	element;
 
 	LsmMathmlRadicalElementType type;
@@ -55,7 +55,7 @@ struct _GMathmlRadicalElement {
 	double order_y_offset;
 };
 
-struct _GMathmlRadicalElementClass {
+struct _LsmMathmlRadicalElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

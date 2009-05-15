@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_ALIGN_MARK_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ALIGN_MARK_ELEMENT))
 #define LSM_MATHML_ALIGN_MARK_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ALIGN_MARK_ELEMENT, LsmMathmlAlignMarkElementClass))
 
-typedef struct _GMathmlAlignMarkElementClass LsmMathmlAlignMarkElementClass;
+typedef struct _LsmMathmlAlignMarkElementClass LsmMathmlAlignMarkElementClass;
 
-struct _GMathmlAlignMarkElement {
+struct _LsmMathmlAlignMarkElement {
 	LsmMathmlElement	element;
 };
 
-struct _GMathmlAlignMarkElementClass {
+struct _LsmMathmlAlignMarkElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

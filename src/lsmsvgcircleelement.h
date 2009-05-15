@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_CIRCLE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_CIRCLE_ELEMENT))
 #define LSM_SVG_CIRCLE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_CIRCLE_ELEMENT, LsmSvgCircleElementClass))
 
-typedef struct _GSvgCircleElementClass LsmSvgCircleElementClass;
+typedef struct _LsmSvgCircleElementClass LsmSvgCircleElementClass;
 
-struct _GSvgCircleElement {
+struct _LsmSvgCircleElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	cx;
@@ -44,7 +44,7 @@ struct _GSvgCircleElement {
 	LsmSvgAnimatedLengthAttribute	r;
 };
 
-struct _GSvgCircleElementClass {
+struct _LsmSvgCircleElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

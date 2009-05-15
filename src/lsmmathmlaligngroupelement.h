@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_ALIGN_GROUP_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ALIGN_GROUP_ELEMENT))
 #define LSM_MATHML_ALIGN_GROUP_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ALIGN_GROUP_ELEMENT, LsmMathmlAlignGroupElementClass))
 
-typedef struct _GMathmlAlignGroupElementClass LsmMathmlAlignGroupElementClass;
+typedef struct _LsmMathmlAlignGroupElementClass LsmMathmlAlignGroupElementClass;
 
-struct _GMathmlAlignGroupElement {
+struct _LsmMathmlAlignGroupElement {
 	LsmMathmlElement	element;
 };
 
-struct _GMathmlAlignGroupElementClass {
+struct _LsmMathmlAlignGroupElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

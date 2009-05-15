@@ -42,9 +42,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_MATH_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_MATH_ELEMENT))
 #define LSM_MATHML_MATH_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_MATH_ELEMENT, LsmMathmlMathElementClass))
 
-typedef struct _GMathmlMathElementClass LsmMathmlMathElementClass;
+typedef struct _LsmMathmlMathElementClass LsmMathmlMathElementClass;
 
-struct _GMathmlMathElement {
+struct _LsmMathmlMathElement {
 	LsmMathmlElement	element;
 
 	LsmMathmlStyle *default_style;
@@ -53,7 +53,7 @@ struct _GMathmlMathElement {
 	LsmDomEnumAttribute display;
 };
 
-struct _GMathmlMathElementClass {
+struct _LsmMathmlMathElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

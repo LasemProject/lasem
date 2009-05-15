@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_PHANTOM_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_PHANTOM_ELEMENT))
 #define LSM_MATHML_PHANTOM_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_PHANTOM_ELEMENT, LsmMathmlPhantomElementClass))
 
-typedef struct _GMathmlPhantomElementClass LsmMathmlPhantomElementClass;
+typedef struct _LsmMathmlPhantomElementClass LsmMathmlPhantomElementClass;
 
-struct _GMathmlPhantomElement {
+struct _LsmMathmlPhantomElement {
 	LsmMathmlElement	element;
 };
 
-struct _GMathmlPhantomElementClass {
+struct _LsmMathmlPhantomElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

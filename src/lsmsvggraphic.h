@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_GRAPHIC_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_GRAPHIC))
 #define LSM_SVG_GRAPHIC_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_GRAPHIC, LsmSvgGraphicClass))
 
-typedef struct _GSvgGraphicClass LsmSvgGraphicClass;
+typedef struct _LsmSvgGraphicClass LsmSvgGraphicClass;
 
-struct _GSvgGraphic {
+struct _LsmSvgGraphic {
 	LsmSvgElement	element;
 
 	LsmDomAttribute	class_name;
@@ -52,7 +52,7 @@ struct _GSvgGraphic {
 	LsmSvgStopAttributeBag *stop;
 };
 
-struct _GSvgGraphicClass {
+struct _LsmSvgGraphicClass {
 	LsmSvgElementClass  parent_class;
 
 	void 			(*graphic_render)	(LsmSvgElement *element, LsmSvgView *view);

@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_ACTION_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_ACTION_ELEMENT))
 #define LSM_MATHML_ACTION_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_ACTION_ELEMENT, LsmMathmlActionElementClass))
 
-typedef struct _GMathmlActionElementClass LsmMathmlActionElementClass;
+typedef struct _LsmMathmlActionElementClass LsmMathmlActionElementClass;
 
-struct _GMathmlActionElement {
+struct _LsmMathmlActionElement {
 	LsmMathmlPresentationContainer presentation_container;
 };
 
-struct _GMathmlActionElementClass {
+struct _LsmMathmlActionElementClass {
 	LsmMathmlPresentationContainerClass parent_class;
 };
 

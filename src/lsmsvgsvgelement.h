@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_SVG_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_SVG_ELEMENT))
 #define LSM_SVG_SVG_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_SVG_ELEMENT, LsmSvgSvgElementClass))
 
-typedef struct _GSvgSvgElementClass LsmSvgSvgElementClass;
+typedef struct _LsmSvgSvgElementClass LsmSvgSvgElementClass;
 
-struct _GSvgSvgElement {
+struct _LsmSvgSvgElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgStyle *default_style;
@@ -51,7 +51,7 @@ struct _GSvgSvgElement {
 	LsmBox svg_box;
 };
 
-struct _GSvgSvgElementClass {
+struct _LsmSvgSvgElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

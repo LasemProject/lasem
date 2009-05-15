@@ -41,9 +41,9 @@ typedef enum {
 #define LSM_IS_MATHML_UNDER_OVER_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_UNDER_OVER_ELEMENT))
 #define LSM_MATHML_UNDER_OVER_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_UNDER_OVER_ELEMENT, LsmMathmlUnderOverElementClass))
 
-typedef struct _GMathmlUnderOverElementClass LsmMathmlUnderOverElementClass;
+typedef struct _LsmMathmlUnderOverElementClass LsmMathmlUnderOverElementClass;
 
-struct _GMathmlUnderOverElement {
+struct _LsmMathmlUnderOverElement {
 	LsmMathmlElement	element;
 
 	LsmDomBooleanAttribute accent;
@@ -65,7 +65,7 @@ struct _GMathmlUnderOverElement {
 	double overscript_offset;
 };
 
-struct _GMathmlUnderOverElementClass {
+struct _LsmMathmlUnderOverElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

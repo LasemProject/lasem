@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_LINEAR_GRADIENT_ELEMENT))
 #define LSM_SVG_LINEAR_GRADIENT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_LINEAR_GRADIENT_ELEMENT, LsmSvgLinearGradientElementClass))
 
-typedef struct _GSvgLinearGradientElementClass LsmSvgLinearGradientElementClass;
+typedef struct _LsmSvgLinearGradientElementClass LsmSvgLinearGradientElementClass;
 
-struct _GSvgLinearGradientElement {
+struct _LsmSvgLinearGradientElement {
 	LsmSvgGradientElement gradient;
 
 	LsmSvgAnimatedLengthAttribute	x1;
@@ -45,7 +45,7 @@ struct _GSvgLinearGradientElement {
 	LsmSvgAnimatedLengthAttribute	y2;
 };
 
-struct _GSvgLinearGradientElementClass {
+struct _LsmSvgLinearGradientElementClass {
 	LsmSvgGradientElementClass  parent_class;
 };
 

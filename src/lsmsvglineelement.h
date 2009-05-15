@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_LINE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_LINE_ELEMENT))
 #define LSM_SVG_LINE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_LINE_ELEMENT, LsmSvgLineElementClass))
 
-typedef struct _GSvgLineElementClass LsmSvgLineElementClass;
+typedef struct _LsmSvgLineElementClass LsmSvgLineElementClass;
 
-struct _GSvgLineElement {
+struct _LsmSvgLineElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	x1;
@@ -45,7 +45,7 @@ struct _GSvgLineElement {
 	LsmSvgAnimatedLengthAttribute	y2;
 };
 
-struct _GSvgLineElementClass {
+struct _LsmSvgLineElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

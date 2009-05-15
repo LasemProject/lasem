@@ -27,35 +27,35 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GMathmlDocument LsmMathmlDocument;
-typedef struct _GMathmlElement LsmMathmlElement;
-typedef struct _GMathmlPhantomElement LsmMathmlPhantomElement;
-typedef struct _GMathmlTableElement LsmMathmlTableElement;
-typedef struct _GMathmlTableRowElement LsmMathmlTableRowElement;
-typedef struct _GMathmlTableCellElement LsmMathmlTableCellElement;
-typedef struct _GMathmlSpaceElement LsmMathmlSpaceElement;
-typedef struct _GMathmlFractionElement LsmMathmlFractionElement;
-typedef struct _GMathmlUnderOverElement LsmMathmlUnderOverElement;
-typedef struct _GMathmlMathElement LsmMathmlMathElement;
-typedef struct _GMathmlRadicalElement LsmMathmlRadicalElement;
-typedef struct _GMathmlScriptElement LsmMathmlScriptElement;
-typedef struct _GMathmlPresentationToken LsmMathmlPresentationToken;
-typedef struct _GMathmlNumberElement LsmMathmlNumberElement;
-typedef struct _GMathmlOperatorElement LsmMathmlOperatorElement;
-typedef struct _GMathmlStringElement LsmMathmlStringElement;
-typedef struct _GMathmlPresentationContainer LsmMathmlPresentationContainer;
-typedef struct _GMathmlStyleElement LsmMathmlStyleElement;
-typedef struct _GMathmlRowElement LsmMathmlRowElement;
-typedef struct _GMathmlFencedElement LsmMathmlFencedElement;
-typedef struct _GMathmlPaddedElement LsmMathmlPaddedElement;
-typedef struct _GMathmlErrorElement LsmMathmlErrorElement;
-typedef struct _GMathmlActionElement LsmMathmlActionElement;
-typedef struct _GMathmlAlignMarkElement LsmMathmlAlignMarkElement;
-typedef struct _GMathmlAlignGroupElement LsmMathmlAlignGroupElement;
+typedef struct _LsmMathmlDocument LsmMathmlDocument;
+typedef struct _LsmMathmlElement LsmMathmlElement;
+typedef struct _LsmMathmlPhantomElement LsmMathmlPhantomElement;
+typedef struct _LsmMathmlTableElement LsmMathmlTableElement;
+typedef struct _LsmMathmlTableRowElement LsmMathmlTableRowElement;
+typedef struct _LsmMathmlTableCellElement LsmMathmlTableCellElement;
+typedef struct _LsmMathmlSpaceElement LsmMathmlSpaceElement;
+typedef struct _LsmMathmlFractionElement LsmMathmlFractionElement;
+typedef struct _LsmMathmlUnderOverElement LsmMathmlUnderOverElement;
+typedef struct _LsmMathmlMathElement LsmMathmlMathElement;
+typedef struct _LsmMathmlRadicalElement LsmMathmlRadicalElement;
+typedef struct _LsmMathmlScriptElement LsmMathmlScriptElement;
+typedef struct _LsmMathmlPresentationToken LsmMathmlPresentationToken;
+typedef struct _LsmMathmlNumberElement LsmMathmlNumberElement;
+typedef struct _LsmMathmlOperatorElement LsmMathmlOperatorElement;
+typedef struct _LsmMathmlStringElement LsmMathmlStringElement;
+typedef struct _LsmMathmlPresentationContainer LsmMathmlPresentationContainer;
+typedef struct _LsmMathmlStyleElement LsmMathmlStyleElement;
+typedef struct _LsmMathmlRowElement LsmMathmlRowElement;
+typedef struct _LsmMathmlFencedElement LsmMathmlFencedElement;
+typedef struct _LsmMathmlPaddedElement LsmMathmlPaddedElement;
+typedef struct _LsmMathmlErrorElement LsmMathmlErrorElement;
+typedef struct _LsmMathmlActionElement LsmMathmlActionElement;
+typedef struct _LsmMathmlAlignMarkElement LsmMathmlAlignMarkElement;
+typedef struct _LsmMathmlAlignGroupElement LsmMathmlAlignGroupElement;
 
-typedef struct _GMathmlView LsmMathmlView;
+typedef struct _LsmMathmlView LsmMathmlView;
 
-typedef struct _GMathmlStyle LsmMathmlStyle;
+typedef struct _LsmMathmlStyle LsmMathmlStyle;
 
 G_END_DECLS
 

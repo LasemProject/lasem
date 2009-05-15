@@ -73,14 +73,14 @@ typedef struct {
 #define LSM_IS_MATHML_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_VIEW))
 #define LSM_MATHML_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_VIEW, LsmMathmlViewClass))
 
-typedef struct _GMathmlViewClass LsmMathmlViewClass;
-typedef struct _GMathmlViewPrivate LsmMathmlViewPrivate;
+typedef struct _LsmMathmlViewClass LsmMathmlViewClass;
+typedef struct _LsmMathmlViewPrivate LsmMathmlViewPrivate;
 
-struct _GMathmlView {
+struct _LsmMathmlView {
 	LsmDomView dom_view;
 };
 
-struct _GMathmlViewClass {
+struct _LsmMathmlViewClass {
 	LsmDomViewClass dom_view_class;
 };
 

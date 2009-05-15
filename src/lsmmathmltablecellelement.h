@@ -35,16 +35,16 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_TABLE_CELL_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_TABLE_CELL_ELEMENT))
 #define LSM_MATHML_TABLE_CELL_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_TABLE_CELL_ELEMENT, LsmMathmlTableCellElementClass))
 
-typedef struct _GMathmlTableCellElementClass LsmMathmlTableCellElementClass;
+typedef struct _LsmMathmlTableCellElementClass LsmMathmlTableCellElementClass;
 
-struct _GMathmlTableCellElement {
+struct _LsmMathmlTableCellElement {
 	LsmMathmlElement	element;
 
 	LsmDomUnsignedAttribute row_span;
 	LsmDomUnsignedAttribute column_span;
 };
 
-struct _GMathmlTableCellElementClass {
+struct _LsmMathmlTableCellElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

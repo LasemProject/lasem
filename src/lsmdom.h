@@ -35,13 +35,13 @@ typedef struct {
 	double height;
 } LsmBox;
 
-typedef struct _GDomNode LsmDomNode;
-typedef struct _GDomElement LsmDomElement;
-typedef struct _GDomDocument LsmDomDocument;
-typedef struct _GDomCharacterData LsmDomCharacterData;
-typedef struct _GDomText LsmDomText;
+typedef struct _LsmDomNode LsmDomNode;
+typedef struct _LsmDomElement LsmDomElement;
+typedef struct _LsmDomDocument LsmDomDocument;
+typedef struct _LsmDomCharacterData LsmDomCharacterData;
+typedef struct _LsmDomText LsmDomText;
 
-typedef struct _GDomView LsmDomView;
+typedef struct _LsmDomView LsmDomView;
 
 G_END_DECLS
 

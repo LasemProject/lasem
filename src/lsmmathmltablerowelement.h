@@ -40,15 +40,15 @@ typedef enum {
 #define LSM_IS_MATHML_TABLE_ROW_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_TABLE_ROW_ELEMENT))
 #define LSM_MATHML_TABLE_ROW_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_TABLE_ROW_ELEMENT, LsmMathmlTableRowElementClass))
 
-typedef struct _GMathmlTableRowElementClass LsmMathmlTableRowElementClass;
+typedef struct _LsmMathmlTableRowElementClass LsmMathmlTableRowElementClass;
 
-struct _GMathmlTableRowElement {
+struct _LsmMathmlTableRowElement {
 	LsmMathmlElement	element;
 
 	LsmMathmlTableRowElementType type;
 };
 
-struct _GMathmlTableRowElementClass {
+struct _LsmMathmlTableRowElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

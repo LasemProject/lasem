@@ -35,13 +35,13 @@ G_BEGIN_DECLS
 #define LSM_IS_DOM_TEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_TEXT))
 #define LSM_DOM_TEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_TEXT, LsmDomTextClass))
 
-typedef struct _GDomTextClass LsmDomTextClass;
+typedef struct _LsmDomTextClass LsmDomTextClass;
 
-struct _GDomText {
+struct _LsmDomText {
 	LsmDomCharacterData	character_data;
 };
 
-struct _GDomTextClass {
+struct _LsmDomTextClass {
 	LsmDomCharacterDataClass  parent_class;
 };
 

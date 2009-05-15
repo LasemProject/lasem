@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_TABLE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_TABLE_ELEMENT))
 #define LSM_MATHML_TABLE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_TABLE_ELEMENT, LsmMathmlTableElementClass))
 
-typedef struct _GMathmlTableElementClass LsmMathmlTableElementClass;
+typedef struct _LsmMathmlTableElementClass LsmMathmlTableElementClass;
 
-struct _GMathmlTableElement {
+struct _LsmMathmlTableElement {
 	LsmMathmlElement	element;
 
 	LsmDomEnumListAttribute row_align;
@@ -62,7 +62,7 @@ struct _GMathmlTableElement {
 	double line_width;
 };
 
-struct _GMathmlTableElementClass {
+struct _LsmMathmlTableElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

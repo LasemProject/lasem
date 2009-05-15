@@ -704,11 +704,11 @@ typedef enum {
 	_GMATHML_STROKE_WIDTH_ODD,
 	_GMATHML_STROKE_WIDTH_NULL,
 	_GMATHML_STROKE_WIDTH_VECTOR
-} _GMathmlStrokeWidth;
+} _LsmMathmlStrokeWidth;
 
 static void
 _round_rectangle_coordinates (cairo_t *cairo,
-			      _GMathmlStrokeWidth stroke_width,
+			      _LsmMathmlStrokeWidth stroke_width,
 			      double *x0, double *y0,
 			      double *x1, double *y1)
 {
@@ -733,11 +733,11 @@ _round_rectangle_coordinates (cairo_t *cairo,
 	}
 }
 
-static _GMathmlStrokeWidth
+static _LsmMathmlStrokeWidth
 _emit_stroke_attributes (LsmMathmlView *view, LsmMathmlLine line, double line_width,
 			 const LsmMathmlColor *color)
 {
-	_GMathmlStrokeWidth stroke_width;
+	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 	double dashes[2] = {3.0, 2.0};
 	double rounded_width = line_width;
@@ -848,7 +848,7 @@ lsm_mathml_view_show_rectangle (LsmMathmlView *view,
 			     double x0, double y0, double width, double height,
 			     LsmMathmlLine line, double line_width)
 {
-	_GMathmlStrokeWidth stroke_width;
+	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 	double x1, y1;
 
@@ -877,7 +877,7 @@ lsm_mathml_view_show_line (LsmMathmlView *view,
 			double x0, double y0, double x1, double y1,
 			LsmMathmlLine line, double line_width)
 {
-	_GMathmlStrokeWidth stroke_width;
+	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 
 	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
@@ -903,7 +903,7 @@ lsm_mathml_view_show_fraction_line (LsmMathmlView *view,
 				 double x, double y,
 				 double width, double thickness)
 {
-	_GMathmlStrokeWidth stroke_width;
+	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 	double x0, y0, x1, y1;
 

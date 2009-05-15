@@ -35,9 +35,9 @@ G_BEGIN_DECLS
 #define LSM_IS_MATHML_FENCED_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_FENCED_ELEMENT))
 #define LSM_MATHML_FENCED_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_FENCED_ELEMENT, LsmMathmlFencedElementClass))
 
-typedef struct _GMathmlFencedElementClass LsmMathmlFencedElementClass;
+typedef struct _LsmMathmlFencedElementClass LsmMathmlFencedElementClass;
 
-struct _GMathmlFencedElement {
+struct _LsmMathmlFencedElement {
 	LsmMathmlPresentationContainer presentation_container;
 
 	LsmDomStringAttribute open;
@@ -50,7 +50,7 @@ struct _GMathmlFencedElement {
 	LsmMathmlBbox close_bbox;
 };
 
-struct _GMathmlFencedElementClass {
+struct _LsmMathmlFencedElementClass {
 	LsmMathmlPresentationContainerClass parent_class;
 };
 

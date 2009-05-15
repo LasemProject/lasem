@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_RECT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_RECT_ELEMENT))
 #define LSM_SVG_RECT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_RECT_ELEMENT, LsmSvgRectElementClass))
 
-typedef struct _GSvgRectElementClass LsmSvgRectElementClass;
+typedef struct _LsmSvgRectElementClass LsmSvgRectElementClass;
 
-struct _GSvgRectElement {
+struct _LsmSvgRectElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	x;
@@ -47,7 +47,7 @@ struct _GSvgRectElement {
 	LsmSvgAnimatedLengthAttribute	ry;
 };
 
-struct _GSvgRectElementClass {
+struct _LsmSvgRectElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

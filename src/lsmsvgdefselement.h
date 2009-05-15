@@ -34,13 +34,13 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_DEFS_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_DEFS_ELEMENT))
 #define LSM_SVG_DEFS_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_DEFS_ELEMENT, LsmSvgDefsElementClass))
 
-typedef struct _GSvgDefsElementClass LsmSvgDefsElementClass;
+typedef struct _LsmSvgDefsElementClass LsmSvgDefsElementClass;
 
-struct _GSvgDefsElement {
+struct _LsmSvgDefsElement {
 	LsmSvgGraphic graphic;
 };
 
-struct _GSvgDefsElementClass {
+struct _LsmSvgDefsElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

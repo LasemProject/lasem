@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_USE_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_USE_ELEMENT))
 #define LSM_SVG_USE_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_USE_ELEMENT, LsmSvgUseElementClass))
 
-typedef struct _GSvgUseElementClass LsmSvgUseElementClass;
+typedef struct _LsmSvgUseElementClass LsmSvgUseElementClass;
 
-struct _GSvgUseElement {
+struct _LsmSvgUseElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgAnimatedLengthAttribute	x;
@@ -47,7 +47,7 @@ struct _GSvgUseElement {
 	LsmDomAttribute		href;
 };
 
-struct _GSvgUseElementClass {
+struct _LsmSvgUseElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 

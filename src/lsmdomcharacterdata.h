@@ -35,16 +35,16 @@ G_BEGIN_DECLS
 #define LSM_IS_DOM_CHARACTER_DATA_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_CHARACTER_DATA))
 #define LSM_DOM_CHARACTER_DATA_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_CHARACTER_DATA, LsmDomCharacterDataClass))
 
-typedef struct _GDomCharacterDataClass LsmDomCharacterDataClass;
+typedef struct _LsmDomCharacterDataClass LsmDomCharacterDataClass;
 
-struct _GDomCharacterData
+struct _LsmDomCharacterData
 {
 	LsmDomNode node;
 
 	char *data;
 };
 
-struct _GDomCharacterDataClass {
+struct _LsmDomCharacterDataClass {
 	LsmDomNodeClass parent_class;
 };
 

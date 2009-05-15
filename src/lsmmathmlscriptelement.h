@@ -41,9 +41,9 @@ typedef enum {
 #define LSM_IS_MATHML_SCRIPT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_MATHML_SCRIPT_ELEMENT))
 #define LSM_MATHML_SCRIPT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_MATHML_SCRIPT_ELEMENT, LsmMathmlScriptElementClass))
 
-typedef struct _GMathmlScriptElementClass LsmMathmlScriptElementClass;
+typedef struct _LsmMathmlScriptElementClass LsmMathmlScriptElementClass;
 
-struct _GMathmlScriptElement {
+struct _LsmMathmlScriptElement {
 	LsmMathmlElement	element;
 
 	LsmMathmlElement *base;
@@ -61,7 +61,7 @@ struct _GMathmlScriptElement {
 	LsmMathmlDisplay display;
 };
 
-struct _GMathmlScriptElementClass {
+struct _LsmMathmlScriptElementClass {
 	LsmMathmlElementClass  parent_class;
 };
 

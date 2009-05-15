@@ -35,12 +35,12 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_VIEW_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_VIEW))
 #define LSM_SVG_VIEW_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_VIEW, LsmSvgViewClass))
 
-typedef struct _GSvgViewClass LsmSvgViewClass;
-typedef struct _GSvgViewPrivate LsmSvgViewPrivate;
+typedef struct _LsmSvgViewClass LsmSvgViewClass;
+typedef struct _LsmSvgViewPrivate LsmSvgViewPrivate;
 
-typedef struct _GSvgViewPatternData LsmSvgViewPatternData;
+typedef struct _LsmSvgViewPatternData LsmSvgViewPatternData;
 
-struct _GSvgView {
+struct _LsmSvgView {
 	LsmDomView dom_view;
 
 	double resolution_ppi;
@@ -55,7 +55,7 @@ struct _GSvgView {
 	GSList *pattern_stack;
 };
 
-struct _GSvgViewClass {
+struct _LsmSvgViewClass {
 	LsmDomViewClass parent_class;
 };
 

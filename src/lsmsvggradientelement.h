@@ -34,9 +34,9 @@ G_BEGIN_DECLS
 #define LSM_IS_SVG_GRADIENT_ELEMENT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_SVG_GRADIENT_ELEMENT))
 #define LSM_SVG_GRADIENT_ELEMENT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_SVG_GRADIENT_ELEMENT, LsmSvgGradientElementClass))
 
-typedef struct _GSvgGradientElementClass LsmSvgGradientElementClass;
+typedef struct _LsmSvgGradientElementClass LsmSvgGradientElementClass;
 
-struct _GSvgGradientElement {
+struct _LsmSvgGradientElement {
 	LsmSvgGraphic graphic;
 
 	LsmSvgTransformAttribute transform;
@@ -45,7 +45,7 @@ struct _GSvgGradientElement {
 	LsmDomAttribute href;
 };
 
-struct _GSvgGradientElementClass {
+struct _LsmSvgGradientElementClass {
 	LsmSvgGraphicClass  parent_class;
 };
 
