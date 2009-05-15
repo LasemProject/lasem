@@ -50,7 +50,7 @@ GType lsm_svg_stop_element_get_type (void);
 
 LsmDomNode * lsm_svg_stop_element_new (void);
 
-const LsmSvgLength *	lsm_svg_stop_element_get_offset 	(LsmSvgStopElement *self);
+double 			lsm_svg_stop_element_get_offset 	(LsmSvgStopElement *self);
 const LsmSvgColor *	lsm_svg_stop_element_get_color 		(LsmSvgStopElement *self);
 double 			lsm_svg_stop_element_get_opacity 	(LsmSvgStopElement *self);
 

@@ -70,8 +70,7 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 			stop = LSM_SVG_STOP_ELEMENT (iter);
 
-			offset = lsm_svg_view_normalize_length (view,  lsm_svg_stop_element_get_offset (stop),
-								LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+			offset = lsm_svg_stop_element_get_offset (stop);
 			color = lsm_svg_stop_element_get_color (stop);
 			opacity = lsm_svg_stop_element_get_opacity (stop);
 

@@ -51,12 +51,15 @@ _stop_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 /* LsmSvgStopElement implementation */
 
-const LsmSvgLength *
+double
 lsm_svg_stop_element_get_offset (LsmSvgStopElement *self)
 {
-	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), NULL);
+	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 0.0);
 
-	return &(LSM_SVG_STOP_ELEMENT (self)->offset.length);
+	if (self->offset.length.type == LSM_SVG_LENGTH_TYPE_PERCENTAGE)
+		return self->offset.length.value_unit / 100.0;
+	else
+		return self->offset.length.value_unit;
 }
 
 const LsmSvgColor *
