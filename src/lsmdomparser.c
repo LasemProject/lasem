@@ -40,7 +40,22 @@ typedef struct {
 	gboolean is_error;
 
 	int error_depth;
+
+	GHashTable *entities;
 } LsmDomSaxParserState;
+
+void
+_free_entity (void *data)
+{
+	xmlEntity *entity = data;
+
+	xmlFree ((xmlChar *) entity->name);
+	xmlFree ((xmlChar *) entity->ExternalID);
+	xmlFree ((xmlChar *) entity->SystemID);
+	xmlFree (entity->content);
+	xmlFree (entity->orig);
+	g_free (entity);
+}
 
 static void
 lsm_dom_parser_start_document (void *user_data)
@@ -51,11 +66,15 @@ lsm_dom_parser_start_document (void *user_data)
 	state->document = NULL;
 	state->is_error = FALSE;
 	state->error_depth = 0;
+	state->entities = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, _free_entity);
 }
 
 static void
 lsm_dom_parser_end_document (void *user_data)
 {
+	LsmDomSaxParserState *state = user_data;
+
+	g_hash_table_unref (state->entities);
 }
 
 static void
@@ -141,24 +160,53 @@ lsm_dom_parser_characters (void *user_data, const xmlChar *ch, int len)
 static xmlEntityPtr
 lsm_dom_parser_get_entity (void *user_data, const xmlChar *name)
 {
+	LsmDomSaxParserState *state = user_data;
+	xmlEntity *entity;
 	const char *utf8;
+
+	entity = g_hash_table_lookup (state->entities, name);
+	if (entity != NULL)
+		return entity;
 
 	utf8 = lsm_mathml_entity_get_utf8 ((char *) name);
 	if (utf8 != NULL) {
-		xmlEntity *entity;
 
 		entity = g_new0 (xmlEntity, 1);
 
 		entity->type = XML_ENTITY_DECL;
-		entity->name = name;
-		entity->content = (xmlChar *) utf8;
-		entity->length = g_utf8_strlen (utf8, -1);
+		entity->name = (xmlChar *) xmlMemStrdup ((const char *) name);
+		entity->content = (xmlChar *) xmlMemStrdup (utf8);
+		entity->length = strlen (utf8);
 		entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
+
+		g_hash_table_insert (state->entities, (char *) name, entity);
 
 		return entity;
 	}
 
 	return xmlGetPredefinedEntity(name);
+}
+
+void
+lsm_dom_parser_declare_entity (void * user_data, const xmlChar * name, int type,
+			       const xmlChar * publicId, const xmlChar * systemId,
+			       xmlChar * content)
+{
+	LsmDomSaxParserState *state = user_data;
+
+	if (content != NULL) {
+		xmlEntity *entity;
+
+		entity = g_new0 (xmlEntity, 1);
+
+		entity->type = XML_ENTITY_DECL;
+		entity->name = (xmlChar *) xmlMemStrdup ((const char *) name);
+		entity->content = (xmlChar *) xmlMemStrdup ((const char *) content);
+		entity->length = strlen ((const char *) content);
+		entity->etype = type;
+
+		g_hash_table_insert (state->entities, (char *) name, entity);
+	}
 }
 
 #if 0
@@ -204,7 +252,8 @@ static xmlSAXHandler sax_handler = {
 	.startElement = lsm_dom_parser_start_element,
 	.endElement = lsm_dom_parser_end_element,
 	.characters = lsm_dom_parser_characters,
-	.getEntity = lsm_dom_parser_get_entity
+	.getEntity = lsm_dom_parser_get_entity,
+	.entityDecl = lsm_dom_parser_declare_entity
 };
 
 LsmDomDocument *
