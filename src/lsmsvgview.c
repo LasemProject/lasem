@@ -40,14 +40,28 @@ struct _GSvgViewPatternData {
 	cairo_pattern_t *pattern;
 	cairo_matrix_t matrix;
 
-	LsmSvgGradientUnits units;
-	LsmSvgGradientUnits content_units;
+	LsmBox extents;
+
+	LsmSvgPatternUnits units;
+	LsmSvgPatternUnits content_units;
 	LsmSvgSpreadMethod spread_method;
 };
+
+LsmBox
+lsm_svg_view_get_extents (LsmSvgView *view)
+{
+	LsmBox null_box = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), null_box);
+	g_return_val_if_fail (view->pattern_data != NULL, null_box);
+
+	return view->pattern_data->extents;
+}
 
 static void
 _start_pattern (LsmSvgView *view)
 {
+	double x1, x2, y1, y2;
 	lsm_debug ("[LsmSvgView::start_pattern]");
 
 	view->pattern_stack = g_slist_prepend (view->pattern_stack, view->pattern_data);
@@ -55,10 +69,18 @@ _start_pattern (LsmSvgView *view)
 	view->pattern_data = g_new (LsmSvgViewPatternData, 1);
 	view->pattern_data->old_cairo = view->dom_view.cairo;
 	view->pattern_data->pattern = NULL;
-	view->pattern_data->units = LSM_SVG_GRADIENT_UNITS_USER_SPACE_ON_USE;
+	view->pattern_data->content_units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
+	view->pattern_data->units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_REPEAT;
 
+	cairo_path_extents (view->dom_view.cairo, &x1, &y1, &x2, &y2);
+
 	view->dom_view.cairo = NULL;
+
+	view->pattern_data->extents.x = x1;
+	view->pattern_data->extents.y = y1;
+	view->pattern_data->extents.width = x2 - x1;
+	view->pattern_data->extents.height = y2 - y1;
 
 	cairo_matrix_init_identity (&view->pattern_data->matrix);
 }
@@ -90,22 +112,20 @@ static void
 _set_pattern (LsmSvgView *view, cairo_pattern_t *pattern)
 {
 	g_return_if_fail (view->pattern_data != NULL);
-
-	if (view->pattern_data->pattern != NULL)
-		cairo_pattern_destroy (view->pattern_data->pattern);
+	g_return_if_fail (view->pattern_data->pattern == NULL);
 
 	view->pattern_data->pattern = pattern;
 }
 
 void
 lsm_svg_view_create_radial_gradient (LsmSvgView *view,
-				  double cx, double cy,
-				  double r,
-				  double fx, double fy)
+				     double cx, double cy,
+				     double r,
+				     double fx, double fy)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
-	_set_pattern (view, cairo_pattern_create_radial (cx, cy, 0, fx, fy, r));
+	_set_pattern (view, cairo_pattern_create_radial (fx, fy, 0, cx, cy, r));
 }
 
 void
@@ -133,7 +153,7 @@ lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset, const Lsm
 void
 lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 				      LsmSvgSpreadMethod method,
-				      LsmSvgGradientUnits units,
+				      LsmSvgPatternUnits units,
 				      const LsmSvgMatrix *matrix)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -155,8 +175,8 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 void
 lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 				     double width, double height,
-				     LsmSvgGradientUnits units,
-				     LsmSvgGradientUnits content_units,
+				     LsmSvgPatternUnits units,
+				     LsmSvgPatternUnits content_units,
 				     const LsmSvgMatrix *matrix)
 {
 	cairo_surface_t *surface;
@@ -165,6 +185,14 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->dom_view.cairo == NULL);
+
+	if (units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {
+		width = width * view->pattern_data->extents.width;
+		height = height * view->pattern_data->extents.height;
+	}
+
+	if (height < 1 || width < 1)
+		return;
 
 	surface = cairo_surface_create_similar (cairo_get_target (view->pattern_data->old_cairo),
 						CAIRO_CONTENT_COLOR_ALPHA,
@@ -610,6 +638,53 @@ _emit_svg_path (cairo_t *cr, char const *path)
 	}
 }
 
+double
+lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, LsmSvgLengthDirection direction)
+{
+	double font_size;
+
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), 0.0);
+
+	/* TODO cache font size */
+	if (view->text_stack != NULL && view->viewbox_stack != NULL) {
+		LsmSvgTextAttributeBag *text;
+
+		text = view->text_stack->data;
+		font_size = lsm_svg_length_normalize (&text->font_size.length, view->viewbox_stack->data,
+						      0.0, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	} else
+		font_size = 0.0;
+
+	return lsm_svg_length_normalize (length, view->viewbox_stack->data, font_size, direction);
+}
+
+void
+lsm_svg_view_push_viewbox (LsmSvgView *view, const LsmBox *viewbox)
+{
+	LsmSvgViewbox *svg_viewbox;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	lsm_debug ("[LsmSvgView::push_viewbox] viewbox = %g, %g, %g, %g",
+		   viewbox->x, viewbox->y, viewbox->width, viewbox->height);
+
+	svg_viewbox = lsm_svg_viewbox_new (view->resolution_ppi, viewbox);
+
+	view->viewbox_stack = g_slist_prepend (view->viewbox_stack, svg_viewbox);
+}
+
+void
+lsm_svg_view_pop_viewbox (LsmSvgView *view)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (view->viewbox_stack != NULL);
+
+	lsm_debug ("[LsmSvgView::pop_viewbox]");
+
+	lsm_svg_viewbox_free (view->viewbox_stack->data);
+	view->viewbox_stack = g_slist_delete_link (view->viewbox_stack, view->viewbox_stack);
+}
+
 void
 lsm_svg_view_push_transform (LsmSvgView *view, const LsmSvgMatrix *matrix)
 {
@@ -684,8 +759,13 @@ lsm_svg_view_pop_text_attributes (LsmSvgView *view)
 	view->text_stack = g_slist_delete_link (view->text_stack, view->text_stack);
 }
 
+typedef enum {
+	LSM_SVG_VIEW_PAINT_OPERATION_FILL,
+	LSM_SVG_VIEW_PAINT_OPERATION_STROKE
+} LsmSvgViewPaintOperation;
+
 static void
-_paint_uri (LsmSvgView *view, const char *uri)
+_paint_uri (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *uri)
 {
 	cairo_t *cairo;
 	LsmDomElement *element;
@@ -710,18 +790,22 @@ _paint_uri (LsmSvgView *view, const char *uri)
 		g_free (filename);
 #endif
 
-		if (view->pattern_data->units == LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
+		if (LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
+		    view->pattern_data->units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {
 			cairo_matrix_t matrix;
-			double x1, x2, y1, y2;
 
-			cairo_path_extents (cairo, &x1, &y1, &x2, &y2);
-			if (x2 <= x1 || y2 <= y1) {
+			if (view->pattern_data->extents.width <= 0.0 ||
+			    view->pattern_data->extents.height <= 0.0) {
 				_end_pattern (view);
 				return;
 			}
 
-			cairo_matrix_init_scale (&matrix, 1.0 / (x2 - x1), 1.0 / (y2 - y1));
-			cairo_matrix_translate (&matrix, -x1, -y1);
+			cairo_matrix_init_scale (&matrix,
+						 1.0 / view->pattern_data->extents.width,
+						 1.0 / view->pattern_data->extents.height);
+			cairo_matrix_translate (&matrix,
+						-view->pattern_data->extents.x,
+						-view->pattern_data->extents.y);
 
 			cairo_matrix_multiply (&matrix, &view->pattern_data->matrix, &matrix);
 			cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
@@ -747,7 +831,8 @@ _paint_uri (LsmSvgView *view, const char *uri)
 }
 
 static gboolean
-_set_color (LsmSvgView *view, const LsmSvgPaint *paint, double opacity)
+_set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
+	    const LsmSvgPaint *paint, double opacity)
 {
 	cairo_t *cairo = view->dom_view.cairo;
 
@@ -765,7 +850,7 @@ _set_color (LsmSvgView *view, const LsmSvgPaint *paint, double opacity)
 		case LSM_SVG_PAINT_TYPE_URI_RGB_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_CURRENT_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_NONE:
-			_paint_uri (view, paint->uri);
+			_paint_uri (view, operation, paint->uri);
 			break;
 		default:
 			return FALSE;
@@ -788,13 +873,17 @@ _paint (LsmSvgView *view)
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
-	if (_set_color (view, &fill->paint.paint, fill->opacity.value)) {
+	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_FILL,
+			&fill->paint.paint, fill->opacity.value)) {
 		cairo_set_fill_rule (cairo, fill->rule.value == LSM_SVG_FILL_RULE_EVEN_ODD ?
 				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
 		cairo_fill_preserve (cairo);
 	}
 
-	if (_set_color (view, &stroke->paint.paint, stroke->opacity.value)) {
+	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
+			&stroke->paint.paint, stroke->opacity.value)) {
+		double line_width;
+
 		switch (stroke->line_join.value) {
 			case LSM_SVG_LINE_JOIN_MITER:
 				cairo_set_line_join (cairo, CAIRO_LINE_JOIN_MITER);
@@ -817,15 +906,23 @@ _paint (LsmSvgView *view)
 				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_SQUARE);
 		}
 
-		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
-		cairo_set_line_width (cairo, stroke->width.length.value);
+		line_width = lsm_svg_view_normalize_length (view, &stroke->width.length,
+							    LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-		if (stroke->dash_array.value != NULL)
+		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
+		cairo_set_line_width (cairo, line_width);
+
+		if (stroke->dash_array.value != NULL) {
+			double dash_offset;
+
+			dash_offset = lsm_svg_view_normalize_length (view, &stroke->dash_offset.length,
+								     LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
 			cairo_set_dash (cairo,
 					stroke->dash_array.value->dashes,
 					stroke->dash_array.value->n_dashes,
-					stroke->dash_offset.length.value);
-		else
+					dash_offset);
+		} else
 			cairo_set_dash (cairo, NULL, 0, 0.0);
 
 		cairo_stroke (cairo);
@@ -986,6 +1083,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	PangoLayoutIter *iter;
 	PangoRectangle ink_rect;
 	LsmSvgTextAttributeBag *text;
+	double font_size;
 	int baseline;
 
 	if (string == NULL)
@@ -999,8 +1097,10 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	pango_layout = view->dom_view.pango_layout;
 	font_description = view->dom_view.font_description;
 
+	font_size = lsm_svg_view_normalize_length (view, &text->font_size.length, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
 	pango_font_description_set_family (font_description, text->font_family.value);
-	pango_font_description_set_size (font_description, text->font_size.length.value * PANGO_SCALE);
+	pango_font_description_set_size (font_description, font_size * PANGO_SCALE);
 
 	pango_layout_set_text (pango_layout, string, -1);
 	pango_layout_set_font_description (pango_layout, font_description);
@@ -1064,12 +1164,20 @@ lsm_svg_view_render (LsmDomView *view)
 
 	lsm_svg_svg_element_update (svg_element);
 
+	svg_view->viewbox_stack = NULL;
 	svg_view->fill_stack = NULL;
 	svg_view->stroke_stack = NULL;
 	svg_view->text_stack = NULL;
 
-	lsm_svg_element_render (LSM_SVG_ELEMENT (svg_element), LSM_SVG_VIEW (view));
+	svg_view->resolution_ppi = lsm_dom_document_get_resolution (view->document);
 
+	lsm_svg_svg_element_render  (svg_element, svg_view);
+
+	if (svg_view->viewbox_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling viewport in stack");
+		g_slist_free (svg_view->viewbox_stack);
+		svg_view->viewbox_stack = NULL;
+	}
 	if (svg_view->fill_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling fill attribute in stack");
 		g_slist_free (svg_view->fill_stack);

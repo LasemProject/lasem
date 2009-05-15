@@ -43,22 +43,20 @@ _stop_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgStopElement *stop = LSM_SVG_STOP_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 1.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&stop->offset, &length, parent_style,
-					LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	lsm_svg_length_attribute_parse (&stop->offset, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
 
 /* LsmSvgStopElement implementation */
 
-double
+const LsmSvgLength *
 lsm_svg_stop_element_get_offset (LsmSvgStopElement *self)
 {
-	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 0.0);
+	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), NULL);
 
-	return LSM_SVG_STOP_ELEMENT (self)->offset.length.value;
+	return &(LSM_SVG_STOP_ELEMENT (self)->offset.length);
 }
 
 const LsmSvgColor *

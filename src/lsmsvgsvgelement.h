@@ -46,7 +46,9 @@ struct _GSvgSvgElement {
 	LsmSvgLengthAttribute	width;
 	LsmSvgLengthAttribute	height;
 
-	LsmSvgViewBoxAttribute	view_box;
+	LsmSvgViewboxAttribute	viewbox;
+
+	LsmBox svg_box;
 };
 
 struct _GSvgSvgElementClass {
@@ -60,6 +62,7 @@ LsmDomNode *		lsm_svg_svg_element_new 		(void);
 LsmSvgStyle * 		lsm_svg_svg_element_get_default_style 	(LsmSvgSvgElement *svg_element);
 void 			lsm_svg_svg_element_update 		(LsmSvgSvgElement *svg_element);
 void 			lsm_svg_svg_element_measure 		(LsmSvgSvgElement *self, double *width, double *height);
+void 			lsm_svg_svg_element_render 		(LsmSvgSvgElement *svg_element, LsmSvgView *view);
 
 G_END_DECLS
 

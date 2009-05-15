@@ -110,6 +110,7 @@ lasem_test_render (char const *filename)
 
 	success = g_file_get_contents (filename, &buffer, &size, NULL);
 	if (success) {
+		LsmBox viewport;
 		char *xml = NULL;
 
 		if (is_xml)
@@ -121,8 +122,13 @@ lasem_test_render (char const *filename)
 
 		view = lsm_dom_document_create_view (document);
 
-		lsm_dom_document_set_viewport_px (document, 480.0, 360.0);
+		viewport.x = 0.0;
+		viewport.y = 0.0;
+		viewport.width = 480.0;
+		viewport.height = 360.0;
+
 		lsm_dom_document_set_resolution (document, option_ppi);
+		lsm_dom_document_set_viewport_px (document, &viewport);
 		lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);

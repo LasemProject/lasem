@@ -47,17 +47,13 @@ lsm_svg_text_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&text->x, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&text->x, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&text->y, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&text->y, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -71,6 +67,7 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmDomNode *node = LSM_DOM_NODE (self);
 	LsmDomNode *iter;
 	GString *string = g_string_new ("");
+	double x, y;
 
 	if (node->first_child == NULL)
 		return;
@@ -81,8 +78,10 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		}
 	}
 
-	lsm_svg_view_show_text (view, g_strstrip (string->str),
-				text->x.length.base.value, text->y.length.base.value);
+	x = lsm_svg_view_normalize_length (view, &text->x.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &text->y.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_svg_view_show_text (view, g_strstrip (string->str), x, y);
 
 	g_string_free (string, TRUE);
 }

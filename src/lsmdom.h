@@ -28,6 +28,13 @@
 
 G_BEGIN_DECLS
 
+typedef struct {
+	double x;
+	double y;
+	double width;
+	double height;
+} LsmBox;
+
 typedef struct _GDomNode LsmDomNode;
 typedef struct _GDomElement LsmDomElement;
 typedef struct _GDomDocument LsmDomDocument;

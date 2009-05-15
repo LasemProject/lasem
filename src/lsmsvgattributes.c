@@ -111,68 +111,9 @@ lsm_svg_double_attribute_parse (LsmSvgDoubleAttribute *attribute,
 	*double_value = attribute->value;
 }
 
-static double
-lsm_svg_length_compute (const LsmSvgLength *length,
-			const LsmSvgStyle *style,
-			LsmSvgLengthDirection direction)
-{
-	double viewport;
-	double viewport_scale;
-
-	g_return_val_if_fail (length != NULL, 0.0);
-
-	switch (direction) {
-		case LSM_SVG_LENGTH_DIRECTION_HORIZONTAL:
-			viewport = style->viewport.width;
-			viewport_scale = style->viewport.horizontal_scale;
-			break;
-		case LSM_SVG_LENGTH_DIRECTION_VERTICAL:
-			viewport = style->viewport.height;
-			viewport_scale = style->viewport.vertical_scale;
-			break;
-		case LSM_SVG_LENGTH_DIRECTION_DIAGONAL:
-			viewport = style->viewport.diagonal;
-			viewport_scale = style->viewport.diagonal_scale;
-			break;
-		default:
-			viewport = 0.0;
-			viewport_scale = 0.0;
-	}
-
-	switch (length->type) {
-		case LSM_SVG_LENGTH_TYPE_NUMBER:
-		case LSM_SVG_LENGTH_TYPE_UNKNOWN:
-			return length->value_unit;
-		case LSM_SVG_LENGTH_TYPE_PERCENTAGE:
-			return length->value_unit * viewport / 100.0;
-		case LSM_SVG_LENGTH_TYPE_PX:
-			return length->value_unit * 72.0 * viewport_scale / style->resolution_ppi;
-		case LSM_SVG_LENGTH_TYPE_PT:
-			return length->value_unit * viewport_scale;
-		case LSM_SVG_LENGTH_TYPE_PC:
-			return length->value_unit * 72.0 * viewport_scale / 6.0;
-		case LSM_SVG_LENGTH_TYPE_CM:
-			return length->value_unit * 72.0 * viewport_scale / 2.54;
-		case LSM_SVG_LENGTH_TYPE_MM:
-			return length->value_unit * 72.0 * viewport_scale / 25.4;
-		case LSM_SVG_LENGTH_TYPE_IN:
-			return length->value_unit * 72.0 * viewport_scale;
-		case LSM_SVG_LENGTH_TYPE_EMS:
-			return length->value_unit * style->text.font_size.value;
-		case LSM_SVG_LENGTH_TYPE_EXS:
-			return length->value_unit * style->text.font_size.value * 0.5;
-	}
-
-	g_warning ("[LsmSvgLength::compute] Invalid length property");
-
-	return 0.0;
-}
-
 void
 lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
-				LsmSvgLength *default_value,
-				const LsmSvgStyle *style,
-				LsmSvgLengthDirection direction)
+				LsmSvgLength *default_value)
 {
 	const char *string;
 	char *length_type_str;
@@ -188,7 +129,6 @@ lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
 	} else {
 		attribute->length.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.type = lsm_svg_length_type_from_string (length_type_str);
-		attribute->length.value = lsm_svg_length_compute (&attribute->length, style, direction);
 
 		*default_value = attribute->length;
 	}
@@ -196,9 +136,7 @@ lsm_svg_length_attribute_parse (LsmSvgLengthAttribute *attribute,
 
 void
 lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
-					 LsmSvgLength *default_value,
-					 const LsmSvgStyle *style,
-					 LsmSvgLengthDirection direction)
+					 LsmSvgLength *default_value)
 {
 	const char *string;
 	char *length_type_str;
@@ -214,7 +152,6 @@ lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribut
 	} else {
 		attribute->length.base.value_unit = g_strtod (string, &length_type_str);
 		attribute->length.base.type = lsm_svg_length_type_from_string (length_type_str);
-		attribute->length.base.value = lsm_svg_length_compute (&attribute->length.base, style, direction);
 		attribute->length.animated = attribute->length.base;
 
 		*default_value = attribute->length.base;
@@ -234,9 +171,7 @@ lsm_svg_dash_array_attribute_finalize (void *abstract)
 
 void
 lsm_svg_dash_array_attribute_parse (LsmSvgDashArrayAttribute *attribute,
-				    LsmSvgDashArray **default_value,
-				    const LsmSvgStyle *style,
-				    LsmSvgLengthDirection direction)
+				    LsmSvgDashArray **default_value)
 {
 	const char *string;
 
@@ -274,8 +209,9 @@ lsm_svg_dash_array_attribute_parse (LsmSvgDashArrayAttribute *attribute,
 				for (i = 0; i < n_dashes; i++) {
 					if (lsm_svg_str_parse_double (&iter, &length.value_unit)) {
 						length.type = lsm_svg_length_type_from_string (iter);
-						attribute->value->dashes[i] =
-							lsm_svg_length_compute (&length, style, direction);
+						/* FIXME */
+						attribute->value->dashes[i] = 0.0;
+/*                                                        lsm_svg_length_compute (&length, style, direction);*/
 						while (*iter != '\0' && *iter != ' ' && *iter != ',')
 							iter ++;
 					} else
@@ -312,10 +248,10 @@ lsm_svg_line_cap_attribute_parse (LsmDomEnumAttribute *attribute,
 }
 
 void
-lsm_svg_gradient_units_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_svg_pattern_units_attribute_parse (LsmDomEnumAttribute *attribute,
 					unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_gradient_units_from_string);
+	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_svg_pattern_units_from_string);
 }
 
 void
@@ -512,7 +448,7 @@ lsm_svg_color_attribute_parse (LsmSvgColorAttribute *attribute,
 }
 
 void
-lsm_svg_view_box_attribute_parse (LsmSvgViewBoxAttribute *attribute)
+lsm_svg_viewbox_attribute_parse (LsmSvgViewboxAttribute *attribute)
 {
 	char *string;
 
@@ -536,18 +472,18 @@ lsm_svg_view_box_attribute_parse (LsmSvgViewBoxAttribute *attribute)
 			attribute->value.y = value[1];
 			attribute->value.width = value[2];
 			attribute->value.height = value[3];
-		} else {
-			attribute->value.x = 0;
-			attribute->value.y = 0;
-			attribute->value.width = 0;
-			attribute->value.height = 0;
+
+			lsm_debug ("[LsmSvgViewboxAttribute::parse] viewbox = %g, %g, %g, %g",
+				   value[0], value[1], value[2], value[3]);
+
+			return;
 		}
-	} else {
-		attribute->value.x = 0;
-		attribute->value.y = 0;
-		attribute->value.width = 0;
-		attribute->value.height = 0;
 	}
+
+	attribute->value.x =
+	attribute->value.y =
+	attribute->value.width =
+	attribute->value.height = 0.0;
 }
 
 static void

@@ -23,6 +23,7 @@
 #include <lsmsvgview.h>
 #include <lsmdebug.h>
 #include <stdio.h>
+#include <math.h>
 
 static GObjectClass *parent_class;
 
@@ -44,47 +45,64 @@ _radial_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 
-	length.value = 50.0;
 	length.value_unit = 50.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&radial->cx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&radial->cx, &length);
 
-	length.value = 50.0;
 	length.value_unit = 50.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&radial->cy, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&radial->cy, &length);
 
-	length.value = 50.0;
 	length.value_unit = 50.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&radial->r, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
+	lsm_svg_animated_length_attribute_parse (&radial->r, &length);
 
 	length = radial->cx.length.base;
-	lsm_svg_animated_length_attribute_parse (&radial->fx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&radial->fx, &length);
 
 	length = radial->cy.length.base;
-	lsm_svg_animated_length_attribute_parse (&radial->fy, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&radial->fy, &length);
 }
 
 static void
 _radial_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgRadialGradientElement *radial = LSM_SVG_RADIAL_GRADIENT_ELEMENT (self);
+	gboolean is_object_bounding_box;
 	double cx, cy, fx, fy, r;
+	double gradient_radius;
 
-	cx = radial->cx.length.base.value;
-	cy = radial->cy.length.base.value;
-	r  = radial->r.length.base.value;
-	fx = radial->fx.length.base.value;
-	fy = radial->fy.length.base.value;
+	is_object_bounding_box = (LSM_SVG_GRADIENT_ELEMENT (self)->units.value ==
+				  LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	cx = lsm_svg_view_normalize_length (view, &radial->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &radial->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	r  = lsm_svg_view_normalize_length (view, &radial->r.length.base,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	fx = lsm_svg_view_normalize_length (view, &radial->fx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	fy = lsm_svg_view_normalize_length (view, &radial->fy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	gradient_radius = sqrt ((fx - cx) * (fx - cx) + (fy - cy) * (fy - cy));
+	if (gradient_radius > r) {
+		if (gradient_radius > 0.0) {
+			fx = cx + ((fx - cx) * r / gradient_radius);
+			fy = cy + ((fy - cy) * r / gradient_radius);
+		} else {
+			fx = cx;
+			fy = cy;
+		}
+	}
 
 	lsm_debug ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
 		    cx, cy, r, fx, fy);
+
+	if (is_object_bounding_box)
+		lsm_svg_view_pop_viewbox (view);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
 

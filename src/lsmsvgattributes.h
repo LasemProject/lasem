@@ -24,8 +24,10 @@
 #define LSM_SVG_ATTRIBUTES_H
 
 #include <lsmdomattributes.h>
+#include <lsmdomview.h>
 #include <lsmsvg.h>
 #include <lsmsvgenums.h>
+#include <lsmsvglength.h>
 #include <lsmsvgmatrix.h>
 
 G_BEGIN_DECLS
@@ -60,28 +62,10 @@ typedef struct {
 } LsmSvgDashArrayAttribute;
 
 typedef struct {
-	double value;
-	double value_unit;
-	LsmSvgLengthType type;
-} LsmSvgLength;
-
-typedef struct {
-	LsmSvgLength base;
-	LsmSvgLength animated;
-} LsmSvgAnimatedLength;
-
-typedef struct {
 	LsmSvgPaintType type;
 	char *uri;
 	LsmSvgColor color;
 } LsmSvgPaint;
-
-typedef struct {
-	double x;
-	double y;
-	double width;
-	double height;
-} LsmSvgViewBox;
 
 typedef struct {
 	LsmDomAttribute attr;
@@ -112,8 +96,8 @@ typedef struct {
 
 typedef struct {
 	LsmDomAttribute attr;
-	LsmSvgViewBox value;
-} LsmSvgViewBoxAttribute;
+	LsmBox value;
+} LsmSvgViewboxAttribute;
 
 typedef struct {
 	LsmDomAttribute attr;
@@ -126,20 +110,14 @@ typedef struct {
 void 		lsm_svg_double_attribute_parse 		(LsmSvgDoubleAttribute *attribute,
 							 double *double_value);
 void		lsm_svg_length_attribute_parse 		(LsmSvgLengthAttribute *attribute,
-							 LsmSvgLength *default_value,
-							 const LsmSvgStyle *style,
-							 LsmSvgLengthDirection direction);
+							 LsmSvgLength *default_value);
 void 		lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
-							 LsmSvgLength *default_value,
-							 const LsmSvgStyle *style,
-							 LsmSvgLengthDirection direction);
+							 LsmSvgLength *default_value);
 
 void 		lsm_svg_dash_array_attribute_finalize 	(void *abstract);
 
 void		lsm_svg_dash_array_attribute_parse	(LsmSvgDashArrayAttribute *attribute,
-							 LsmSvgDashArray **default_value,
-							 const LsmSvgStyle *style,
-							 LsmSvgLengthDirection direction);
+							 LsmSvgDashArray **default_value);
 
 void 		lsm_svg_fill_rule_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
@@ -147,7 +125,7 @@ void 		lsm_svg_line_join_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_line_cap_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void 		lsm_svg_gradient_units_attribute_parse 	(LsmDomEnumAttribute *attribute,
+void 		lsm_svg_pattern_units_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_svg_spread_method_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
@@ -161,7 +139,7 @@ void 		lsm_svg_color_attribute_parse 		(LsmSvgColorAttribute *attribute,
 
 /* Attributes */
 
-void		lsm_svg_view_box_attribute_parse	(LsmSvgViewBoxAttribute *attribute);
+void		lsm_svg_viewbox_attribute_parse		(LsmSvgViewboxAttribute *attribute);
 void		lsm_svg_transform_attribute_parse	(LsmSvgTransformAttribute *attribute);
 
 G_END_DECLS

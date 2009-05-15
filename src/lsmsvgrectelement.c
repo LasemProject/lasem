@@ -40,41 +40,29 @@ lsm_svg_rect_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgRectElement *rect = LSM_SVG_RECT_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->x, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&rect->x, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->y, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&rect->y, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->width, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&rect->width, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->height, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&rect->height, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->rx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&rect->rx, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&rect->ry, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&rect->ry, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -85,13 +73,16 @@ static void
 lsm_svg_rect_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgRectElement *rect = LSM_SVG_RECT_ELEMENT (self);
+	double x, y;
 	double rx, ry;
 	double w, h;
 
-	rx = rect->rx.length.base.value;
-	ry = rect->ry.length.base.value;
-	w = rect->width.length.base.value;
-	h = rect->height.length.base.value;
+	x = lsm_svg_view_normalize_length (view, &rect->x.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &rect->y.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	rx = lsm_svg_view_normalize_length (view, &rect->rx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	ry = lsm_svg_view_normalize_length (view, &rect->ry.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	w = lsm_svg_view_normalize_length (view, &rect->width.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	h = lsm_svg_view_normalize_length (view, &rect->height.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	/* SVG specification is so weird sometimes ... */
 	if (w == 0.0 || h == 0.0)
@@ -102,10 +93,7 @@ lsm_svg_rect_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	else if (!lsm_dom_attribute_is_defined (&rect->ry.attr))
 		ry = rx;
 
-	lsm_svg_view_show_rectangle (view,
-				  rect->x.length.base.value,
-				  rect->y.length.base.value,
-				  w, h, rx, ry);
+	lsm_svg_view_show_rectangle (view, x, y, w, h, rx, ry);
 }
 
 /* LsmSvgRectElement implementation */

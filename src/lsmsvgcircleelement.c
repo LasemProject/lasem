@@ -40,23 +40,17 @@ lsm_svg_circle_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&circle->cx, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cy, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&circle->cy, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->r, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	lsm_svg_animated_length_attribute_parse (&circle->r, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -67,11 +61,13 @@ static void
 lsm_svg_circle_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
+	double cx, cy, r;
 
-	lsm_svg_view_show_circle (view,
-				  circle->cx.length.base.value,
-				  circle->cy.length.base.value,
-				  circle->r.length.base.value);
+	cx = lsm_svg_view_normalize_length (view, &circle->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &circle->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	r  = lsm_svg_view_normalize_length (view, &circle->r.length.base,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	lsm_svg_view_show_circle (view, cx, cy, r);
 }
 
 /* LsmSvgCircleElement implementation */

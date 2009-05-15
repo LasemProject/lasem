@@ -19,49 +19,38 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef LSM_SVG_STYLE_H
-#define LSM_SVG_STYLE_H
+#ifndef LSM_SVG_LENGTH
+#define LSM_SVG_LENGTH
 
+#include <lsmdomview.h>
 #include <lsmsvg.h>
-#include <lsmsvgattributebags.h>
+#include <lsmsvgenums.h>
 
 G_BEGIN_DECLS
 
-struct _LsmSvgStyle {
-	LsmBox viewport;
-	LsmSvgColor color;
+typedef struct {
+	double resolution_ppi;
+	LsmBox viewbox;
+	double diagonal;
+} LsmSvgViewbox;
 
-	struct {
-		LsmSvgPaint paint;
-		LsmSvgFillRule rule;
-		double opacity;
-	} fill;
+LsmSvgViewbox *	lsm_svg_viewbox_new 		(double resolution_ppi, const LsmBox *viewbox);
+void		lsm_svg_viewbox_free 		(LsmSvgViewbox *viewbox);
 
-	struct {
-		LsmSvgPaint paint;
-		LsmSvgLength width;
-		LsmSvgLineJoin line_join;
-		LsmSvgLineCap line_cap;
-		double opacity;
-		double miter_limit;
-		LsmSvgDashArray *dash_array;
-		LsmSvgLength dash_offset;
-	} stroke;
+typedef struct {
+	double value_unit;
+	LsmSvgLengthType type;
+} LsmSvgLength;
 
-	struct {
-		char *font_family;
-		LsmSvgLength font_size;
-	} text;
+typedef struct {
+	LsmSvgLength base;
+	LsmSvgLength animated;
+} LsmSvgAnimatedLength;
 
-	struct {
-		LsmSvgColor color;
-		double opacity;
-	} stop;
-};
-
-LsmSvgStyle * 	lsm_svg_style_new 		(void);
-void 		lsm_svg_style_free 		(LsmSvgStyle *style);
-LsmSvgStyle *	lsm_svg_style_duplicate 	(const LsmSvgStyle *style);
+double 			lsm_svg_length_normalize	(const LsmSvgLength *length,
+							 const LsmSvgViewbox *viewbox,
+							 double font_size,
+							 LsmSvgLengthDirection direction);
 
 G_END_DECLS
 

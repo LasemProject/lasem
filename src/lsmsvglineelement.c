@@ -21,6 +21,7 @@
 
 #include <lsmsvglineelement.h>
 #include <lsmsvgview.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -40,29 +41,21 @@ lsm_svg_line_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->x1, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&line->x1, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->y1, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&line->y1, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->x2, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&line->x2, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->y2, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&line->y2, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -73,11 +66,16 @@ static void
 lsm_svg_line_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
+	double x1, y1, x2, y2;
 
-	lsm_svg_view_show_line (view,line->x1.length.base.value,
-				  line->y1.length.base.value,
-				  line->x2.length.base.value,
-				  line->y2.length.base.value);
+	x1 = lsm_svg_view_normalize_length (view, &line->x1.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y1 = lsm_svg_view_normalize_length (view, &line->y1.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x2 = lsm_svg_view_normalize_length (view, &line->x2.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y2 = lsm_svg_view_normalize_length (view, &line->y2.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_debug ("[LsmSvgLineElement::graphic_render] %g, %g, %g, %g", x1, y1, x2, y2);
+
+	lsm_svg_view_show_line (view, x1, y1, x2, y2);
 }
 
 /* LsmSvgLineElement implementation */

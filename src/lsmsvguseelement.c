@@ -49,29 +49,21 @@ lsm_svg_use_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgUseElement *use_element = LSM_SVG_USE_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&use_element->x, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&use_element->x, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&use_element->y, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&use_element->y, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&use_element->width, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&use_element->width, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&use_element->height, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&use_element->height, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -86,6 +78,7 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmDomElement *element;
 	LsmSvgMatrix matrix;
 	const char *id;
+	double x, y, width, height;
 
 	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 	if (document == NULL) {
@@ -109,18 +102,25 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		return;
 	}
 
-/*        if (use_element->width.length.base.value <= 0.0 ||*/
-/*            use_element->height.length.base.value <= 0.0)*/
+	width = lsm_svg_view_normalize_length (view, &use_element->width.length.base,
+					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	height = lsm_svg_view_normalize_length (view, &use_element->height.length.base,
+						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+/*        if (width <= 0.0 || height <= 0.0)*/
 /*                return;*/
 
 	lsm_debug ("[LsmSvgUseElement::graphic_render] Use '%s'", id);
 
-	lsm_svg_matrix_init_translate (&matrix,
-				    use_element->x.length.base.value,
-				    use_element->y.length.base.value);
+	x = lsm_svg_view_normalize_length (view, &use_element->x.length.base,
+					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &use_element->y.length.base,
+					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
+	lsm_svg_matrix_init_translate (&matrix, x, y);
 	lsm_svg_view_push_transform (view, &matrix);
+
 	lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
+
 	lsm_svg_view_pop_transform (view);
 }
 

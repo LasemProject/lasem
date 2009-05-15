@@ -40,40 +40,32 @@ static void
 _pattern_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 {
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
-	LsmSvgGradientUnits units;
+	LsmSvgPatternUnits units;
 	LsmSvgLength length;
 
-	units = LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX;
-	lsm_svg_gradient_units_attribute_parse (&pattern->units, &units);
+	units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
+	lsm_svg_pattern_units_attribute_parse (&pattern->units, &units);
 
-	units = LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX;
-	lsm_svg_gradient_units_attribute_parse (&pattern->content_units, &units);
+	units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
+	lsm_svg_pattern_units_attribute_parse (&pattern->content_units, &units);
 
 	lsm_svg_transform_attribute_parse (&pattern->transform);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&pattern->x, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&pattern->x, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&pattern->y, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&pattern->y, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&pattern->width, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&pattern->width, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&pattern->height, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&pattern->height, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -82,23 +74,58 @@ static void
 _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
-	double width, height;
+	double x, y, width, height;
+	gboolean is_object_bounding_box;
 
-	width = pattern->width.length.base.value;
-	height = pattern->height.length.base.value;
+	is_object_bounding_box = (pattern->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
-	if (width < 1.0 || height < 1.0)
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	x      = lsm_svg_view_normalize_length (view, &pattern->x.length.base,
+						LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y      = lsm_svg_view_normalize_length (view, &pattern->y.length.base,
+						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	width  = lsm_svg_view_normalize_length (view, &pattern->width.length.base,
+						LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	height = lsm_svg_view_normalize_length (view, &pattern->height.length.base,
+						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	if (is_object_bounding_box)
+		lsm_svg_view_pop_viewbox (view);
+
+	if (width <= 0.0 || height <= 0.0)
 		return;
 
-	lsm_debug ("[LsmSvgPatternElement::render_paint] Create pattern w = %g, h = %g",
-		   width, height);
+	lsm_debug ("[LsmSvgPatternElement::render_paint] Create pattern x = %g, y = %g, w = %g, h = %g",
+		   x, y, width, height);
 
 	lsm_svg_view_create_surface_pattern (view, width, height,
 					     pattern->units.value,
 					     pattern->content_units.value,
 					     &pattern->transform.matrix);
 
+	is_object_bounding_box = (pattern->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox extents;
+		LsmSvgMatrix matrix;
+
+		extents = lsm_svg_view_get_extents (view);
+		lsm_svg_matrix_init_scale (&matrix, extents.width, extents.height);
+		lsm_svg_view_push_viewbox (view, &extents);
+		lsm_svg_view_push_transform (view, &matrix);
+	}
+
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_transform (view);
+		lsm_svg_view_pop_viewbox (view);
+	}
 }
 
 /* LsmSvgPatternElement implementation */

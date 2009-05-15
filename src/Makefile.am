@@ -86,6 +86,7 @@ liblasem_la_SOURCES =				\
 	lsmsvgattributebags.c			\
 	lsmsvgstyle.c				\
 	lsmsvgcolors.c				\
+	lsmsvglength.c				\
 	lsmsvgutils.c				\
 	lsmsvgview.c				\
 	lsmsvgmatrix.c

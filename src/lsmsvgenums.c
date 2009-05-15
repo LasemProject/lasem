@@ -120,22 +120,22 @@ lsm_svg_line_cap_from_string (const char *string)
 					  G_N_ELEMENTS (lsm_svg_line_cap_strings));
 }
 
-static const char *lsm_svg_gradient_units_strings[] = {
+static const char *lsm_svg_pattern_units_strings[] = {
 	"userSpaseOnUse",
 	"objectBoundingBox"
 };
 
 const char *
-lsm_svg_gradient_units_to_string (LsmSvgGradientUnits units)
+lsm_svg_pattern_units_to_string (LsmSvgPatternUnits units)
 {
-	return lsm_svg_gradient_units_strings[CLAMP (units, 0, LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX)];
+	return lsm_svg_pattern_units_strings[CLAMP (units, 0, LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX)];
 }
 
-LsmSvgGradientUnits
-lsm_svg_gradient_units_from_string (const char *string)
+LsmSvgPatternUnits
+lsm_svg_pattern_units_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_gradient_units_strings,
-				       G_N_ELEMENTS (lsm_svg_gradient_units_strings));
+	return lsm_svg_value_from_string (string, lsm_svg_pattern_units_strings,
+					  G_N_ELEMENTS (lsm_svg_pattern_units_strings));
 }
 
 static const char *lsm_svg_spread_method_strings[] = {

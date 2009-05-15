@@ -45,74 +45,47 @@ _svg_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgSvgElement *svg = LSM_SVG_SVG_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
+	length.value_unit = 0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&svg->x, &length, parent_style, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_length_attribute_parse (&svg->x, &length);
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
+	length.value_unit = 0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&svg->y, &length, parent_style, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_length_attribute_parse (&svg->y, &length);
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
+	length.value_unit = parent_style->viewport.width;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&svg->width, &length, parent_style, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_length_attribute_parse (&svg->width, &length);
 
-	length.value = 0.0;
-	length.value_unit = 0.0;
+	length.value_unit = parent_style->viewport.height;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&svg->height, &length, parent_style, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_length_attribute_parse (&svg->height, &length);
 
-	if (svg->width.length.value <= 0.0)
-		svg->width.length.value = parent_style->viewport.width;
-	if (svg->height.length.value <= 0.0)
-		svg->height.length.value = parent_style->viewport.height;
-
-	lsm_svg_view_box_attribute_parse (&svg->view_box);
-
-	if (svg->view_box.value.width <= 0.0)
-		svg->view_box.value.width = svg->width.length.value;
-	if (svg->view_box.value.height <= 0.0)
-		svg->view_box.value.height = svg->height.length.value;
-
-	lsm_debug ("[LsmSvgSvgElement::update] height = %g px, width = %g px",
-		    svg->height.length.value,
-		    svg->width.length.value);
+	lsm_svg_viewbox_attribute_parse (&svg->viewbox);
 
 	lsm_debug ("[LsmSvgSvgElement::update] view_bbox = %g, %g, %g, %g\n",
-		    svg->view_box.value.x,
-		    svg->view_box.value.y,
-		    svg->view_box.value.width,
-		    svg->view_box.value.height);
-
-	parent_style->viewport.width = svg->view_box.value.width;
-	parent_style->viewport.height = svg->view_box.value.height;
-	parent_style->viewport.diagonal= sqrt (pow (svg->view_box.value.width, 2.0) +
-					       pow (svg->view_box.value.height, 2.0)) / sqrt (2.0);
-
-	parent_style->viewport.horizontal_scale = svg->width.length.value / svg->view_box.value.width;
-	parent_style->viewport.vertical_scale = svg->height.length.value / svg->view_box.value.height;
-	parent_style->viewport.diagonal_scale = sqrt (pow (parent_style->viewport.horizontal_scale, 2.0) +
-						      pow (parent_style->viewport.vertical_scale, 2.0)) / sqrt (2.0);
-	parent_style->viewport.horizontal_scale =
-	parent_style->viewport.vertical_scale =
-	parent_style->viewport.diagonal_scale =  parent_style->resolution_ppi / 72.0;
-
-	lsm_debug ("[LsmSvgSvgElement::update] viewport       = %g, %g",
-		   parent_style->viewport.width, parent_style->viewport.height);
-	lsm_debug ("[LsmSvgSvgElement::update] viewport_scale = %g, %g",
-		   parent_style->viewport.horizontal_scale, parent_style->viewport.vertical_scale);
+		    svg->viewbox.value.x,
+		    svg->viewbox.value.y,
+		    svg->viewbox.value.width,
+		    svg->viewbox.value.height);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+
+	parent_style->viewport = svg->viewbox.value;
 }
 
 void
 lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *height)
 {
 	LsmDomDocument *document;
+	LsmSvgViewbox *svg_viewbox;
+	LsmBox viewport;
 	double resolution_ppi;
+	double svg_x;
+	double svg_y;
+	double svg_width;
+	double svg_height;
+	double font_size;
 
 	g_return_if_fail (LSM_IS_SVG_SVG_ELEMENT (self));
 
@@ -120,11 +93,34 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *heig
 	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
 
 	resolution_ppi = lsm_dom_document_get_resolution (document);
+	viewport = lsm_dom_document_get_viewport_px (document);
+
+	svg_viewbox = lsm_svg_viewbox_new (resolution_ppi, &viewport);
+	font_size = 10 * resolution_ppi / 72.0;
+
+	svg_x      = lsm_svg_length_normalize (&self->x.length, svg_viewbox,
+					       font_size, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	svg_y      = lsm_svg_length_normalize (&self->y.length, svg_viewbox,
+					       font_size, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	svg_width  = lsm_svg_length_normalize (&self->width.length, svg_viewbox,
+					       font_size, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	svg_height = lsm_svg_length_normalize (&self->height.length, svg_viewbox,
+					       font_size, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	if (width != NULL)
-		*width = self->width.length.value * 72.0 / resolution_ppi;
+		*width = svg_width * 72.0 / resolution_ppi;
 	if (height != NULL)
-		*height = self->height.length.value * 72.0 / resolution_ppi;
+		*height = svg_height * 72.0 / resolution_ppi;
+
+	self->svg_box.x = svg_x;
+	self->svg_box.y = svg_y;
+	self->svg_box.width = svg_width;
+	self->svg_box.height = svg_height;
+
+	lsm_debug ("[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
+		   svg_x, svg_y, svg_width, svg_height);
+
+	lsm_svg_viewbox_free (svg_viewbox);
 }
 
 /* LsmSvgGraphic implementation */
@@ -133,23 +129,37 @@ static void
 lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgSvgElement *svg = LSM_SVG_SVG_ELEMENT (self);
-	LsmSvgMatrix matrix;
+	const LsmBox *viewbox;
+	gboolean is_viewbox_defined;
 
-	if (svg->view_box.value.width <= 0.0 ||
-	    svg->view_box.value.height <= 0.0)
-		return;
+	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &svg->viewbox);
 
-	lsm_svg_matrix_init (&matrix,
-			     svg->width.length.value / svg->view_box.value.width,
-			     0, 0,
-			     svg->height.length.value / svg->view_box.value.height,
-			     0, 0);
+	if (is_viewbox_defined) {
+		LsmSvgMatrix matrix;
 
-	lsm_svg_view_push_transform (view, &matrix);
+		if (svg->viewbox.value.width <= 0.0 ||
+		    svg->viewbox.value.height <= 0.0)
+			return;
+
+		viewbox = &svg->viewbox.value;
+
+		lsm_svg_matrix_init (&matrix,
+				     svg->svg_box.width / svg->viewbox.value.width, 0.0,
+				     0.0 , svg->svg_box.height / svg->viewbox.value.height,
+				     -svg->viewbox.value.x,-svg->viewbox.value.y);
+
+		lsm_svg_view_push_transform (view, &matrix);
+	} else
+		viewbox = &svg->svg_box;
+
+	lsm_svg_view_push_viewbox (view, viewbox);
 
 	LSM_SVG_GRAPHIC_CLASS (parent_class)->graphic_render (self, view);
 
-	lsm_svg_view_pop_transform (view);
+	lsm_svg_view_pop_viewbox (view);
+
+	if (is_viewbox_defined)
+		lsm_svg_view_pop_transform (view);
 }
 
 /* LsmSvgSvgElement implementation */
@@ -175,16 +185,15 @@ lsm_svg_svg_element_update (LsmSvgSvgElement *svg_element)
 
 	style = lsm_svg_svg_element_get_default_style (svg_element);
 
-	style->resolution_ppi = lsm_dom_document_get_resolution (document);
-	lsm_dom_document_get_viewport (document, &style->viewport.width, &style->viewport.height);
-	style->viewport.diagonal = sqrt (pow (style->viewport.width, 2.0) + pow (style->viewport.height, 2.0)) /
-		sqrt (2.0);
-	style->viewport.horizontal_scale =
-	style->viewport.vertical_scale =
-	style->viewport.diagonal_scale = style->resolution_ppi / 72.0;
+	style->viewport = lsm_dom_document_get_viewport_px (document);
 
-	lsm_svg_element_update (LSM_SVG_ELEMENT (svg_element),
-			     lsm_svg_svg_element_get_default_style (svg_element));
+	lsm_svg_element_update (LSM_SVG_ELEMENT (svg_element), style);
+}
+
+void
+lsm_svg_svg_element_render (LsmSvgSvgElement *svg, LsmSvgView *view)
+{
+	lsm_svg_element_render (LSM_SVG_ELEMENT (svg), view);
 }
 
 LsmDomNode *
@@ -250,15 +259,15 @@ lsm_svg_svg_element_class_init (LsmSvgSvgElementClass *s_svg_class)
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x",
-					  offsetof (LsmSvgSvgElement, x));
+					     offsetof (LsmSvgSvgElement, x));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y",
-					  offsetof (LsmSvgSvgElement, y));
+					     offsetof (LsmSvgSvgElement, y));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "width",
-					  offsetof (LsmSvgSvgElement, width));
+					     offsetof (LsmSvgSvgElement, width));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "height",
-					  offsetof (LsmSvgSvgElement, height));
+					     offsetof (LsmSvgSvgElement, height));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "viewBox",
-					  offsetof (LsmSvgSvgElement, view_box));
+					     offsetof (LsmSvgSvgElement, viewbox));
 }
 
 G_DEFINE_TYPE (LsmSvgSvgElement, lsm_svg_svg_element, LSM_TYPE_SVG_GRAPHIC)

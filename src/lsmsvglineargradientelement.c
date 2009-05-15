@@ -44,44 +44,49 @@ _linear_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->x1, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&linear->x1, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->y1, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&linear->y1, &length);
 
-	length.value = 100.0;
 	length.value_unit = 100.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->x2, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&linear->x2, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->y2, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&linear->y2, &length);
 }
 
 static void
 _linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgLinearGradientElement *linear = LSM_SVG_LINEAR_GRADIENT_ELEMENT (self);
+	gboolean is_object_bounding_box;
 	double x1, x2, y1, y2;
 
-	x1 = linear->x1.length.base.value;
-	y1 = linear->y1.length.base.value;
-	x2 = linear->x2.length.base.value;
-	y2 = linear->y2.length.base.value;
+	is_object_bounding_box = (LSM_SVG_GRADIENT_ELEMENT (self)->units.value ==
+				  LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	x1 = lsm_svg_view_normalize_length (view, &linear->x1.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y1 = lsm_svg_view_normalize_length (view, &linear->y1.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x2 = lsm_svg_view_normalize_length (view, &linear->x2.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y2 = lsm_svg_view_normalize_length (view, &linear->y2.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_debug ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
 		    x1, y1, x2, y2);
+
+	if (is_object_bounding_box)
+		lsm_svg_view_pop_viewbox (view);
 
 	lsm_svg_view_create_linear_gradient (view, x1, y1, x2, y2);
 

@@ -41,21 +41,15 @@ static void
 _gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 {
 	LsmSvgGradientElement *gradient = LSM_SVG_GRADIENT_ELEMENT (self);
-	LsmSvgGradientUnits units;
+	LsmSvgPatternUnits units;
 	LsmSvgSpreadMethod method;
 
-	units = LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX;
+	units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
 	method = LSM_SVG_SPREAD_METHOD_PAD;
 
-	lsm_svg_gradient_units_attribute_parse (&gradient->units, &units);
+	lsm_svg_pattern_units_attribute_parse (&gradient->units, &units);
 	lsm_svg_spread_method_attribute_parse (&gradient->spread_method, &method);
 	lsm_svg_transform_attribute_parse (&gradient->transform);
-
-	if (gradient->units.value == LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX) {
-		parent_style->viewport.width = 1.0;
-		parent_style->viewport.height = 1.0;
-		parent_style->viewport.diagonal = 1.0;
-	}
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -76,7 +70,8 @@ _gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 			stop = LSM_SVG_STOP_ELEMENT (iter);
 
-			offset = lsm_svg_stop_element_get_offset (stop);
+			offset = lsm_svg_view_normalize_length (view,  lsm_svg_stop_element_get_offset (stop),
+								LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 			color = lsm_svg_stop_element_get_color (stop);
 			opacity = lsm_svg_stop_element_get_opacity (stop);
 

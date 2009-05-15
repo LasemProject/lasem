@@ -40,29 +40,21 @@ lsm_svg_ellipse_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
 	LsmSvgLength length;
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->cx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&ellipse->cx, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->cy, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&ellipse->cy, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->rx, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	lsm_svg_animated_length_attribute_parse (&ellipse->rx, &length);
 
-	length.value = 0.0;
 	length.value_unit = 0.0;
 	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->ry, &length, parent_style,
-						 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	lsm_svg_animated_length_attribute_parse (&ellipse->ry, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -73,12 +65,14 @@ static void
 lsm_svg_ellipse_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
+	double cx, cy, rx, ry;
 
-	lsm_svg_view_show_ellipse (view,
-				ellipse->cx.length.base.value,
-				ellipse->cy.length.base.value,
-				ellipse->rx.length.base.value,
-				ellipse->ry.length.base.value);
+	cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_svg_view_show_ellipse (view, cx, cy, rx, ry);
 }
 
 /* LsmSvgEllipseElement implementation */

@@ -43,6 +43,9 @@ typedef struct _GSvgViewPatternData LsmSvgViewPatternData;
 struct _GSvgView {
 	LsmDomView dom_view;
 
+	double resolution_ppi;
+
+	GSList *viewbox_stack;
 	GSList *fill_stack;
 	GSList *stroke_stack;
 	GSList *text_stack;
@@ -60,6 +63,8 @@ GType lsm_svg_view_get_type (void);
 
 LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
+LsmBox 		lsm_svg_view_get_extents 		(LsmSvgView *view);
+
 void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
 							                   double r, double fx, double fy);
 void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
@@ -68,14 +73,18 @@ void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset,
 							 const LsmSvgColor *color, double opacity);
 void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgSpreadMethod method,
-							 LsmSvgGradientUnits units,
+							 LsmSvgPatternUnits units,
 							 const LsmSvgMatrix *matrix);
 
 void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, double width, double height,
-							 LsmSvgGradientUnits units,
-							 LsmSvgGradientUnits content_units,
+							 LsmSvgPatternUnits units,
+							 LsmSvgPatternUnits content_units,
 							 const LsmSvgMatrix *matrix);
 
+double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *length,
+							 LsmSvgLengthDirection direction);
+void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
+void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
 void		lsm_svg_view_push_transform 		(LsmSvgView *view, const LsmSvgMatrix *matrix);
 void		lsm_svg_view_pop_transform		(LsmSvgView *view);
 void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);

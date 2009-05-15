@@ -99,12 +99,12 @@ typedef enum {
 } LsmSvgTransformType;
 
 typedef enum {
-	LSM_SVG_GRADIENT_UNITS_USER_SPACE_ON_USE,
-	LSM_SVG_GRADIENT_UNITS_OBJECT_BOUNDING_BOX
-} LsmSvgGradientUnits;
+	LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE,
+	LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX
+} LsmSvgPatternUnits;
 
-const char * 		lsm_svg_gradient_units_to_string 		(LsmSvgGradientUnits units);
-LsmSvgGradientUnits	lsm_svg_gradient_units_from_string		(const char *string);
+const char * 		lsm_svg_pattern_units_to_string 		(LsmSvgPatternUnits units);
+LsmSvgPatternUnits	lsm_svg_pattern_units_from_string		(const char *string);
 
 typedef enum {
 	LSM_SVG_SPREAD_METHOD_PAD,
