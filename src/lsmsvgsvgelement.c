@@ -129,37 +129,46 @@ static void
 lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgSvgElement *svg = LSM_SVG_SVG_ELEMENT (self);
-	const LsmBox *viewbox;
 	gboolean is_viewbox_defined;
+	LsmSvgMatrix matrix;
+	double svg_x;
+	double svg_y;
+	double svg_width;
+	double svg_height;
+
+	svg_x      = lsm_svg_view_normalize_length (view, &svg->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	svg_y      = lsm_svg_view_normalize_length (view, &svg->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	svg_width  = lsm_svg_view_normalize_length (view, &svg->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	svg_height = lsm_svg_view_normalize_length (view, &svg->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &svg->viewbox);
 
+	if (is_viewbox_defined && (svg->viewbox.value.width <= 0.0 ||
+				   svg->viewbox.value.height <= 0.0))
+		return;
+
+	lsm_svg_matrix_init_translate (&matrix, svg_x, svg_y);
+	lsm_svg_view_push_transform (view, &matrix);
+
 	if (is_viewbox_defined) {
-		LsmSvgMatrix matrix;
-
-		if (svg->viewbox.value.width <= 0.0 ||
-		    svg->viewbox.value.height <= 0.0)
-			return;
-
-		viewbox = &svg->viewbox.value;
 
 		lsm_svg_matrix_init (&matrix,
-				     svg->svg_box.width / svg->viewbox.value.width, 0.0,
-				     0.0 , svg->svg_box.height / svg->viewbox.value.height,
+				     svg_width / svg->viewbox.value.width, 0.0,
+				     0.0 , svg_height / svg->viewbox.value.height,
 				     -svg->viewbox.value.x,-svg->viewbox.value.y);
 
 		lsm_svg_view_push_transform (view, &matrix);
-	} else
-		viewbox = &svg->svg_box;
-
-	lsm_svg_view_push_viewbox (view, viewbox);
+		lsm_svg_view_push_viewbox (view, &svg->viewbox.value);
+	}
 
 	LSM_SVG_GRAPHIC_CLASS (parent_class)->graphic_render (self, view);
 
-	lsm_svg_view_pop_viewbox (view);
-
-	if (is_viewbox_defined)
+	if (is_viewbox_defined) {
+		lsm_svg_view_pop_viewbox (view);
 		lsm_svg_view_pop_transform (view);
+	}
+
+	lsm_svg_view_pop_transform (view);
 }
 
 /* LsmSvgSvgElement implementation */
@@ -193,7 +202,9 @@ lsm_svg_svg_element_update (LsmSvgSvgElement *svg_element)
 void
 lsm_svg_svg_element_render (LsmSvgSvgElement *svg, LsmSvgView *view)
 {
+	lsm_svg_view_push_viewbox (view, &svg->svg_box);
 	lsm_svg_element_render (LSM_SVG_ELEMENT (svg), view);
+	lsm_svg_view_pop_viewbox (view);
 }
 
 LsmDomNode *
