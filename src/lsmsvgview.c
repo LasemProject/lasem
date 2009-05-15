@@ -912,16 +912,27 @@ _paint (LsmSvgView *view)
 		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
 		cairo_set_line_width (cairo, line_width);
 
-		if (stroke->dash_array.value != NULL) {
+		if (stroke->dash_array.value != NULL &&
+		    stroke->dash_array.value->n_dashes > 0) {
 			double dash_offset;
+			double *dashes;
+			unsigned int i;
 
 			dash_offset = lsm_svg_view_normalize_length (view, &stroke->dash_offset.length,
 								     LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
+			dashes = g_new(double, stroke->dash_array.value->n_dashes);
+			for (i = 0; i < stroke->dash_array.value->n_dashes; i++)
+				dashes[i] = lsm_svg_view_normalize_length (view,
+									   &stroke->dash_array.value->dashes[i],
+									   LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
 			cairo_set_dash (cairo,
-					stroke->dash_array.value->dashes,
+					dashes,
 					stroke->dash_array.value->n_dashes,
 					dash_offset);
+
+			g_free (dashes);
 		} else
 			cairo_set_dash (cairo, NULL, 0, 0.0);
 

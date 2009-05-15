@@ -47,7 +47,7 @@ extern const LsmSvgColor lsm_svg_color_null;
 
 typedef struct {
 	unsigned int n_dashes;
-	double *dashes;
+	LsmSvgLength *dashes;
 } LsmSvgDashArray;
 
 extern const LsmSvgDashArray lsm_svg_dash_array_null;
