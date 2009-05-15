@@ -43,10 +43,12 @@ struct _LsmSvgPatternElement {
 	LsmSvgAnimatedLengthAttribute	y;
 	LsmSvgAnimatedLengthAttribute	width;
 	LsmSvgAnimatedLengthAttribute	height;
-	LsmSvgTransformAttribute 		transform;
+	LsmSvgTransformAttribute 	transform;
 	LsmDomEnumAttribute 		units;
 	LsmDomEnumAttribute 		content_units;
-	LsmDomAttribute 			href;
+	LsmDomAttribute 		href;
+
+	LsmSvgViewboxAttribute	viewbox;
 };
 
 struct _LsmSvgPatternElementClass {

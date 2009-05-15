@@ -67,6 +67,8 @@ _pattern_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	length.type = LSM_SVG_LENGTH_TYPE_PX;
 	lsm_svg_animated_length_attribute_parse (&pattern->height, &length);
 
+	lsm_svg_viewbox_attribute_parse (&pattern->viewbox);
+
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
 
@@ -76,6 +78,7 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
 	double x, y, width, height;
 	gboolean is_object_bounding_box;
+	gboolean is_viewbox_defined;
 
 	is_object_bounding_box = (pattern->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -120,7 +123,27 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_transform (view, &matrix);
 	}
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &pattern->viewbox);
+
+	if (!(is_viewbox_defined) || 
+	    (is_viewbox_defined && pattern->viewbox.value.width > 0.0 && pattern->viewbox.value.height > 0.0)) {
+		if (is_viewbox_defined) {
+			LsmSvgMatrix matrix;
+
+			lsm_svg_matrix_init_scale (&matrix,
+						   width / pattern->viewbox.value.width,
+						   height / pattern->viewbox.value.height);
+			lsm_svg_view_push_viewbox (view, &pattern->viewbox.value);
+			lsm_svg_view_push_transform (view, &matrix);
+		}
+
+		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+		if (is_viewbox_defined) {
+			lsm_svg_view_pop_transform (view);
+			lsm_svg_view_pop_viewbox (view);
+		}
+	}
 
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_transform (view);
@@ -169,21 +192,23 @@ lsm_svg_pattern_element_class_init (LsmSvgPatternElementClass *klass)
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x",
-					  offsetof (LsmSvgPatternElement, x));
+					     offsetof (LsmSvgPatternElement, x));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y",
-					  offsetof (LsmSvgPatternElement, y));
+					     offsetof (LsmSvgPatternElement, y));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "width",
-					  offsetof (LsmSvgPatternElement, width));
+					     offsetof (LsmSvgPatternElement, width));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "height",
-					  offsetof (LsmSvgPatternElement, height));
+					     offsetof (LsmSvgPatternElement, height));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "patternUnits",
-					  offsetof (LsmSvgPatternElement, units));
+					     offsetof (LsmSvgPatternElement, units));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "patternContentUnits",
-					  offsetof (LsmSvgPatternElement, content_units));
+					     offsetof (LsmSvgPatternElement, content_units));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "patternTransform",
-					  offsetof (LsmSvgPatternElement, transform));
+					     offsetof (LsmSvgPatternElement, transform));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "xlink:href",
-					  offsetof (LsmSvgPatternElement, href));
+					     offsetof (LsmSvgPatternElement, href));
+	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "viewBox",
+					     offsetof (LsmSvgPatternElement, viewbox));
 }
 
 G_DEFINE_TYPE (LsmSvgPatternElement, lsm_svg_pattern_element, LSM_TYPE_SVG_GRAPHIC)
