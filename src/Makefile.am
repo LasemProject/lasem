@@ -166,6 +166,7 @@ liblasem_la_HEADERS = \
 	lsmsvgattributebags.h			\
 	lsmsvgstyle.h				\
 	lsmsvgcolors.h				\
+	lsmsvglength.h				\
 	lsmsvgutils.h				\
 	lsmsvgview.h				\
 	lsmsvgmatrix.h
