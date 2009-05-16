@@ -966,16 +966,21 @@ lsm_mathml_view_render (LsmDomView *dom_view)
 	LsmMathmlMathElement *math_element;
 	cairo_t *cairo;
 	const LsmMathmlBbox *bbox;
+	double resolution_ppi;
 
 	math_element = lsm_mathml_document_get_root_element (LSM_MATHML_DOCUMENT (view->dom_view.document));
 	if (math_element == NULL)
 		return;
+
+	resolution_ppi = lsm_dom_document_get_resolution (view->dom_view.document);
 
 	bbox = _view_measure (view, NULL, NULL);
 
 	lsm_mathml_math_element_layout (math_element, view, bbox);
 
 	cairo = view->dom_view.cairo;
+
+	cairo_scale (cairo, resolution_ppi / 72.0, resolution_ppi / 72.0);
 
 	cairo_translate (cairo, 0, bbox->height);
 
