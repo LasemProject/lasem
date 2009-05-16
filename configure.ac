@@ -2,7 +2,7 @@ AC_PREREQ(2.54)
 
 m4_define([lasem_version_major], [0])
 m4_define([lasem_version_minor], [1])
-m4_define([lasem_version_micro], [1])
+m4_define([lasem_version_micro], [2])
 m4_define([lasem_version], [lasem_version_major.lasem_version_minor.lasem_version_micro])
 
 AC_INIT([lasem], [lasem_version])
