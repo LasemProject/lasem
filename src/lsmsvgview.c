@@ -756,6 +756,8 @@ lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmB
 			y_scale = y_ratio;
 		}
 
+		lsm_debug ("[LsmSvgView::push_viewport] scale = %g, %g", x_scale, y_scale);
+
 		lsm_svg_view_push_viewbox (view, viewbox);
 
 	} else {

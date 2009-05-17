@@ -144,6 +144,9 @@ lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 				   svg->viewbox.value.height <= 0.0))
 		return;
 
+	lsm_debug ("[LsmSvgSvgElement::graphic_render] viewport %g, %g, %g, %g",
+		   viewport.x, viewport.y, viewport.width, viewport.height);
+
 	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,
 				    &svg->preserve_aspect_ratio.value);
 
