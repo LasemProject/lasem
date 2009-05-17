@@ -107,8 +107,8 @@ lsm_dom_parser_start_element(void *user_data,
 		if (attrs != NULL)
 			for (i = 0; attrs[i] != NULL && attrs[i+1] != NULL; i += 2)
 				lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (node),
-							    (char *) attrs[i],
-							    (char *) attrs[i+1]);
+							       (char *) attrs[i],
+							       (char *) attrs[i+1]);
 
 		state->current_node = node;
 		state->is_error = FALSE;

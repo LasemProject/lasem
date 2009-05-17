@@ -25,6 +25,7 @@
 #include <lsmdomview.h>
 #include <lsmsvgelement.h>
 #include <lsmsvg.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -108,6 +109,7 @@ void 		lsm_svg_view_show_line 		(LsmSvgView *view, double x1, double y1, double 
 void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
+void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
 
 void 		lsm_svg_view_push_group 	(LsmSvgView *view);
 void 		lsm_svg_view_paint_group 	(LsmSvgView *view, double opacity);

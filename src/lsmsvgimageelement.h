@@ -24,6 +24,7 @@
 
 #include <lsmsvg.h>
 #include <lsmsvggraphic.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -45,6 +46,10 @@ struct _LsmSvgImageElement {
 	LsmSvgAnimatedLengthAttribute	height;
 
 	LsmDomAttribute		href;
+
+	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
+
+	GdkPixbuf *pixbuf;
 };
 
 struct _LsmSvgImageElementClass {

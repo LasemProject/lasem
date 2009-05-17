@@ -59,7 +59,7 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)), name, value);
 
 	lsm_dom_attribute_map_set_attribute (s_element_class->attributes, self,
-					  name, value);
+					     name, value);
 }
 
 const char *
