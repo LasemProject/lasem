@@ -85,6 +85,10 @@ double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *
 							 LsmSvgLengthDirection direction);
 void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
 void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
+void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
+							 const LsmBox *viewbox,
+							 const LsmSvgPreserveAspectRatio *aspect_ratio);
+void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
 void		lsm_svg_view_push_transform 		(LsmSvgView *view, const LsmSvgMatrix *matrix);
 void		lsm_svg_view_pop_transform		(LsmSvgView *view);
 void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);

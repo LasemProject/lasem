@@ -46,7 +46,8 @@ struct _LsmSvgSvgElement {
 	LsmSvgLengthAttribute	width;
 	LsmSvgLengthAttribute	height;
 
-	LsmSvgViewboxAttribute	viewbox;
+	LsmSvgViewboxAttribute			viewbox;
+	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
 
 	LsmBox svg_box;
 };

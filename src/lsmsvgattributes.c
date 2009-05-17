@@ -619,3 +619,41 @@ lsm_svg_transform_attribute_parse (LsmSvgTransformAttribute *attribute)
 		}
 	}
 }
+
+void
+lsm_svg_preserve_aspect_ratio_attribute_parse (LsmSvgPreserveAspectRatioAttribute *attribute)
+{
+	char *string;
+
+	g_return_if_fail (attribute != NULL);
+
+	string = (char *) lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	if (string != NULL) {
+		char **tokens;
+		unsigned int i = 0;
+
+		tokens = g_strsplit (string, " ", -1);
+
+		if (tokens[i] != NULL && strcmp (tokens[i], "defer") == 0) {
+			attribute->value.defer = TRUE;
+			i++;
+		} else
+			attribute->value.defer = FALSE;
+
+		if (tokens[i] != NULL) {
+			attribute->value.align = lsm_svg_align_from_string (tokens[i]);
+			i++;
+			if (tokens[i] != NULL)
+				attribute->value.meet_or_slice = lsm_svg_meet_or_slice_from_string (tokens[i]);
+			else
+				attribute->value.meet_or_slice = LSM_SVG_MEET_OR_SLICE_MEET;
+		} else attribute->value.align = LSM_SVG_ALIGN_X_MID_Y_MID;
+
+		g_strfreev (tokens);
+
+	} else {
+		attribute->value.defer = FALSE;
+		attribute->value.align = LSM_SVG_ALIGN_X_MID_Y_MID;
+		attribute->value.meet_or_slice = LSM_SVG_MEET_OR_SLICE_MEET;
+	}
+}

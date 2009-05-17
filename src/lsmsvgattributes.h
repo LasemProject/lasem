@@ -104,6 +104,16 @@ typedef struct {
 	LsmSvgMatrix matrix;
 } LsmSvgTransformAttribute;
 
+typedef struct {
+	gboolean defer;
+	LsmSvgAlign align;
+	LsmSvgMeetOrSlice meet_or_slice;
+} LsmSvgPreserveAspectRatio;
+
+typedef struct {
+	LsmDomAttribute attr;
+	LsmSvgPreserveAspectRatio value;
+} LsmSvgPreserveAspectRatioAttribute;
 
 /* Properties */
 
@@ -139,8 +149,9 @@ void 		lsm_svg_color_attribute_parse 		(LsmSvgColorAttribute *attribute,
 
 /* Attributes */
 
-void		lsm_svg_viewbox_attribute_parse		(LsmSvgViewboxAttribute *attribute);
-void		lsm_svg_transform_attribute_parse	(LsmSvgTransformAttribute *attribute);
+void		lsm_svg_viewbox_attribute_parse			(LsmSvgViewboxAttribute *attribute);
+void		lsm_svg_transform_attribute_parse		(LsmSvgTransformAttribute *attribute);
+void 		lsm_svg_preserve_aspect_ratio_attribute_parse 	(LsmSvgPreserveAspectRatioAttribute *attribute);
 
 G_END_DECLS
 

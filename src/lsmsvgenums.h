@@ -115,6 +115,32 @@ typedef enum {
 const char * 		lsm_svg_spread_method_to_string 		(LsmSvgSpreadMethod method);
 LsmSvgSpreadMethod	lsm_svg_spread_method_from_string		(const char *string);
 
+typedef enum {
+	LSM_SVG_ALIGN_UNKNOWN,
+	LSM_SVG_ALIGN_NONE,
+	LSM_SVG_ALIGN_X_MIN_Y_MIN,
+	LSM_SVG_ALIGN_X_MID_Y_MIN,
+	LSM_SVG_ALIGN_X_MAX_Y_MIN,
+	LSM_SVG_ALIGN_X_MIN_Y_MID,
+	LSM_SVG_ALIGN_X_MID_Y_MID,
+	LSM_SVG_ALIGN_X_MAX_Y_MID,
+	LSM_SVG_ALIGN_X_MIN_Y_MAX,
+	LSM_SVG_ALIGN_X_MID_Y_MAX,
+	LSM_SVG_ALIGN_X_MAX_Y_MAX
+} LsmSvgAlign;
+
+const char * 		lsm_svg_align_to_string 		(LsmSvgAlign align);
+LsmSvgAlign		lsm_svg_align_from_string		(const char *string);
+
+typedef enum {
+	LSM_SVG_MEET_OR_SLICE_UNKNOWN,
+	LSM_SVG_MEET_OR_SLICE_MEET,
+	LSM_SVG_MEET_OR_SLICE_SLICE
+} LsmSvgMeetOrSlice;
+
+const char * 		lsm_svg_meet_or_slice_to_string 	(LsmSvgMeetOrSlice meet_or_slice);
+LsmSvgMeetOrSlice	lsm_svg_meet_or_slice_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

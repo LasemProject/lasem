@@ -156,3 +156,49 @@ lsm_svg_spread_method_from_string (const char *string)
 	return lsm_svg_value_from_string (string, lsm_svg_spread_method_strings,
 				       G_N_ELEMENTS (lsm_svg_spread_method_strings));
 }
+
+static const char *lsm_svg_align_strings[] = {
+	"",
+	"none",
+	"xMinYMin",
+	"xMidYMin",
+	"xMaxYMin",
+	"xMinYMid",
+	"xMidYMid",
+	"xMaxYMid",
+	"xMinYMax",
+	"xMidYMax",
+	"xMaxYMax"
+};
+
+const char *
+lsm_svg_align_to_string (LsmSvgAlign align)
+{
+	return lsm_svg_align_strings[CLAMP (align, 0, LSM_SVG_ALIGN_X_MAX_Y_MAX)];
+}
+
+LsmSvgAlign
+lsm_svg_align_from_string (const char *string)
+{
+	return lsm_svg_value_from_string (string, lsm_svg_align_strings,
+					  G_N_ELEMENTS (lsm_svg_align_strings));
+}
+
+static const char *lsm_svg_meet_or_slice_strings[] = {
+	"",
+	"meet",
+	"slice"
+};
+
+const char *
+lsm_svg_meet_or_slice_to_string (LsmSvgMeetOrSlice meet_or_slice)
+{
+	return lsm_svg_meet_or_slice_strings[CLAMP (meet_or_slice, 0, LSM_SVG_MEET_OR_SLICE_SLICE)];
+}
+
+LsmSvgMeetOrSlice
+lsm_svg_meet_or_slice_from_string (const char *string)
+{
+	return lsm_svg_value_from_string (string, lsm_svg_meet_or_slice_strings,
+					  G_N_ELEMENTS (lsm_svg_meet_or_slice_strings));
+}

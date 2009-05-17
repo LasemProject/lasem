@@ -62,6 +62,7 @@ _svg_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	lsm_svg_length_attribute_parse (&svg->height, &length);
 
 	lsm_svg_viewbox_attribute_parse (&svg->viewbox);
+	lsm_svg_preserve_aspect_ratio_attribute_parse (&svg->preserve_aspect_ratio);
 
 	lsm_debug ("[LsmSvgSvgElement::update] view_bbox = %g, %g, %g, %g\n",
 		    svg->viewbox.value.x,
@@ -130,16 +131,12 @@ lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgSvgElement *svg = LSM_SVG_SVG_ELEMENT (self);
 	gboolean is_viewbox_defined;
-	LsmSvgMatrix matrix;
-	double svg_x;
-	double svg_y;
-	double svg_width;
-	double svg_height;
+	LsmBox viewport;
 
-	svg_x      = lsm_svg_view_normalize_length (view, &svg->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	svg_y      = lsm_svg_view_normalize_length (view, &svg->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	svg_width  = lsm_svg_view_normalize_length (view, &svg->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	svg_height = lsm_svg_view_normalize_length (view, &svg->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.x      = lsm_svg_view_normalize_length (view, &svg->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.y      = lsm_svg_view_normalize_length (view, &svg->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.width  = lsm_svg_view_normalize_length (view, &svg->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &svg->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &svg->viewbox);
 
@@ -147,28 +144,12 @@ lsm_svg_svg_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 				   svg->viewbox.value.height <= 0.0))
 		return;
 
-	lsm_svg_matrix_init_translate (&matrix, svg_x, svg_y);
-	lsm_svg_view_push_transform (view, &matrix);
-
-	if (is_viewbox_defined) {
-
-		lsm_svg_matrix_init (&matrix,
-				     svg_width / svg->viewbox.value.width, 0.0,
-				     0.0 , svg_height / svg->viewbox.value.height,
-				     -svg->viewbox.value.x,-svg->viewbox.value.y);
-
-		lsm_svg_view_push_transform (view, &matrix);
-		lsm_svg_view_push_viewbox (view, &svg->viewbox.value);
-	}
+	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,
+				    &svg->preserve_aspect_ratio.value);
 
 	LSM_SVG_GRAPHIC_CLASS (parent_class)->graphic_render (self, view);
 
-	if (is_viewbox_defined) {
-		lsm_svg_view_pop_viewbox (view);
-		lsm_svg_view_pop_transform (view);
-	}
-
-	lsm_svg_view_pop_transform (view);
+	lsm_svg_view_pop_viewport (view);
 }
 
 /* LsmSvgSvgElement implementation */
@@ -279,6 +260,8 @@ lsm_svg_svg_element_class_init (LsmSvgSvgElementClass *s_svg_class)
 					     offsetof (LsmSvgSvgElement, height));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "viewBox",
 					     offsetof (LsmSvgSvgElement, viewbox));
+	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "preserveAspectRatio",
+					     offsetof (LsmSvgSvgElement, preserve_aspect_ratio));
 }
 
 G_DEFINE_TYPE (LsmSvgSvgElement, lsm_svg_svg_element, LSM_TYPE_SVG_GRAPHIC)
