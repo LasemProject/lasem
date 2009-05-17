@@ -1275,8 +1275,6 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->stroke_stack = NULL;
 	svg_view->text_stack = NULL;
 
-	svg_view->resolution_ppi = lsm_dom_document_get_resolution (view->document);
-
 	lsm_svg_svg_element_render  (svg_element, svg_view);
 
 	if (svg_view->viewbox_stack != NULL) {
