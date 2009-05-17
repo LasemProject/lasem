@@ -319,11 +319,15 @@ main (int argc, char **argv)
 	assert (error == NULL);
 
 	n_input_files = option_input_filenames != NULL ? g_strv_length (option_input_filenames) : 0;
-	if (n_input_files > 0)
-		for (i = 0; i < n_input_files; i++)
-			lasem_test_render (option_input_filenames[i]);
-	else
-		n_input_files = lasem_test_process_dir (".");
+	if (n_input_files == 1 && g_file_test (option_input_filenames[0], G_FILE_TEST_IS_DIR))
+		n_input_files = lasem_test_process_dir (option_input_filenames[0]);
+	else {
+		if (n_input_files > 0)
+			for (i = 0; i < n_input_files; i++)
+				lasem_test_render (option_input_filenames[i]);
+		else
+			n_input_files = lasem_test_process_dir (".");
+	}
 
 	lasem_test_html ("</body>\n");
 	lasem_test_html ("</html>\n");
