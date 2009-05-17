@@ -65,6 +65,7 @@ liblasem_la_SOURCES =				\
 	lsmsvggraphic.c				\
 	lsmsvgsvgelement.c			\
 	lsmsvguseelement.c			\
+	lsmsvgimageelement.c			\
 	lsmsvgsymbolelement.c			\
 	lsmsvggelement.c			\
 	lsmsvgdefselement.c			\
@@ -147,6 +148,7 @@ liblasem_la_HEADERS = \
 	lsmsvggelement.h			\
 	lsmsvgdefselement.h			\
 	lsmsvguseelement.h			\
+	lsmsvgimageelement.h			\
 	lsmsvgsymbolelement.h			\
 	lsmsvgrectelement.h			\
 	lsmsvgcircleelement.h			\

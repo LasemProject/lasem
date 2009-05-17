@@ -25,6 +25,7 @@
 #include <lsmsvggelement.h>
 #include <lsmsvgdefselement.h>
 #include <lsmsvguseelement.h>
+#include <lsmsvgimageelement.h>
 #include <lsmsvgsymbolelement.h>
 #include <lsmsvgrectelement.h>
 #include <lsmsvgcircleelement.h>
@@ -86,6 +87,8 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_pattern_element_new ();
 	else if (strcmp (tag_name, "use") == 0)
 		node = lsm_svg_use_element_new ();
+	else if (strcmp (tag_name, "image") == 0)
+		node = lsm_svg_image_element_new ();
 	else if (strcmp (tag_name, "defs") == 0)
 		node = lsm_svg_defs_element_new ();
 	else if (strcmp (tag_name, "symbol") == 0)
