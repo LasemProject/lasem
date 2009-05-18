@@ -21,6 +21,7 @@
 
 #include <lsmdebug.h>
 #include <lsmsvgdocument.h>
+#include <lsmsvgclippathelement.h>
 #include <lsmsvgsvgelement.h>
 #include <lsmsvggelement.h>
 #include <lsmsvgdefselement.h>
@@ -93,6 +94,8 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_defs_element_new ();
 	else if (strcmp (tag_name, "symbol") == 0)
 		node = lsm_svg_symbol_element_new ();
+	else if (strcmp (tag_name, "clip-path") == 0)
+		node = lsm_svg_clip_path_element_new ();
 
 	if (node != NULL)
 		lsm_debug ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
