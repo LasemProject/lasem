@@ -49,6 +49,7 @@ struct _LsmSvgPatternElement {
 	LsmDomAttribute 		href;
 
 	LsmSvgViewboxAttribute	viewbox;
+	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
 };
 
 struct _LsmSvgPatternElementClass {

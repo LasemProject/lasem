@@ -77,7 +77,7 @@ void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgPatternUnits units,
 							 const LsmSvgMatrix *matrix);
 
-void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, double width, double height,
+void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
 							 LsmSvgPatternUnits units,
 							 LsmSvgPatternUnits content_units,
 							 const LsmSvgMatrix *matrix);

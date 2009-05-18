@@ -68,6 +68,7 @@ _pattern_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	lsm_svg_animated_length_attribute_parse (&pattern->height, &length);
 
 	lsm_svg_viewbox_attribute_parse (&pattern->viewbox);
+	lsm_svg_preserve_aspect_ratio_attribute_parse (&pattern->preserve_aspect_ratio);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
@@ -76,9 +77,9 @@ static void
 _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
-	double x, y, width, height;
 	gboolean is_object_bounding_box;
 	gboolean is_viewbox_defined;
+	LsmBox viewport;
 
 	is_object_bounding_box = (pattern->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -88,25 +89,25 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 	}
 
-	x      = lsm_svg_view_normalize_length (view, &pattern->x.length.base,
-						LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y      = lsm_svg_view_normalize_length (view, &pattern->y.length.base,
-						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	width  = lsm_svg_view_normalize_length (view, &pattern->width.length.base,
-						LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	height = lsm_svg_view_normalize_length (view, &pattern->height.length.base,
-						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.x      = lsm_svg_view_normalize_length (view, &pattern->x.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.y      = lsm_svg_view_normalize_length (view, &pattern->y.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.width  = lsm_svg_view_normalize_length (view, &pattern->width.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &pattern->height.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	if (is_object_bounding_box)
 		lsm_svg_view_pop_viewbox (view);
 
-	if (width <= 0.0 || height <= 0.0)
+	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
 
 	lsm_debug ("[LsmSvgPatternElement::render_paint] Create pattern x = %g, y = %g, w = %g, h = %g",
-		   x, y, width, height);
+		   viewport.x, viewport.y, viewport.width, viewport.height);
 
-	lsm_svg_view_create_surface_pattern (view, width, height,
+	lsm_svg_view_create_surface_pattern (view, &viewport,
 					     pattern->units.value,
 					     pattern->content_units.value,
 					     &pattern->transform.matrix);
@@ -125,24 +126,15 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &pattern->viewbox);
 
-	if (!(is_viewbox_defined) || 
+	if (!(is_viewbox_defined) ||
 	    (is_viewbox_defined && pattern->viewbox.value.width > 0.0 && pattern->viewbox.value.height > 0.0)) {
-		if (is_viewbox_defined) {
-			LsmSvgMatrix matrix;
 
-			lsm_svg_matrix_init_scale (&matrix,
-						   width / pattern->viewbox.value.width,
-						   height / pattern->viewbox.value.height);
-			lsm_svg_view_push_viewbox (view, &pattern->viewbox.value);
-			lsm_svg_view_push_transform (view, &matrix);
-		}
+		lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &pattern->viewbox.value : NULL,
+					    &pattern->preserve_aspect_ratio.value);
 
 		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 
-		if (is_viewbox_defined) {
-			lsm_svg_view_pop_transform (view);
-			lsm_svg_view_pop_viewbox (view);
-		}
+		lsm_svg_view_pop_viewport (view);
 	}
 
 	if (is_object_bounding_box) {
@@ -209,6 +201,8 @@ lsm_svg_pattern_element_class_init (LsmSvgPatternElementClass *klass)
 					     offsetof (LsmSvgPatternElement, href));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "viewBox",
 					     offsetof (LsmSvgPatternElement, viewbox));
+	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "preserveAspectRatio",
+					     offsetof (LsmSvgPatternElement, preserve_aspect_ratio));
 }
 
 G_DEFINE_TYPE (LsmSvgPatternElement, lsm_svg_pattern_element, LSM_TYPE_SVG_GRAPHIC)
