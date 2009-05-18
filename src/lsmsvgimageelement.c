@@ -97,18 +97,20 @@ lsm_svg_image_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 			data_size = 0;
 		}
 
-		loader = gdk_pixbuf_loader_new ();
+		if (image_data != NULL) {
+			loader = gdk_pixbuf_loader_new ();
 
-		result = gdk_pixbuf_loader_write (loader, image_data, data_size, NULL);
+			result = gdk_pixbuf_loader_write (loader, image_data, data_size, NULL);
 
-		g_free (image_data);
+			g_free (image_data);
 
-		gdk_pixbuf_loader_close (loader, NULL);
+			gdk_pixbuf_loader_close (loader, NULL);
 
-		image_element->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-		g_object_ref (image_element->pixbuf);
+			image_element->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+			g_object_ref (image_element->pixbuf);
 
-		g_object_unref (loader);
+			g_object_unref (loader);
+		}
 	}
 }
 
