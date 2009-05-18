@@ -71,7 +71,7 @@ lsm_svg_dash_array_duplicate (const LsmSvgDashArray *origin)
 	duplicate = lsm_svg_dash_array_new (origin->n_dashes);
 
 	if (duplicate != &lsm_svg_dash_array_null)
-		memcpy (duplicate->dashes, origin->dashes, sizeof (double) * origin->n_dashes);
+		memcpy (duplicate->dashes, origin->dashes, sizeof (LsmSvgLength) * origin->n_dashes);
 
 	return duplicate;
 }

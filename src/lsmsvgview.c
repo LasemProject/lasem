@@ -1025,7 +1025,6 @@ _paint (LsmSvgView *view)
 
 			dash_offset = lsm_svg_view_normalize_length (view, &stroke->dash_offset.length,
 								     LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
-
 			dashes = g_new(double, stroke->dash_array.value->n_dashes);
 			for (i = 0; i < stroke->dash_array.value->n_dashes; i++)
 				dashes[i] = lsm_svg_view_normalize_length (view,

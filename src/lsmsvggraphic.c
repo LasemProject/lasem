@@ -140,7 +140,7 @@ _graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmDomNode *node;
 
-	lsm_debug ("[LsmSvgGraphic::_graphic_render");
+	lsm_debug ("[LsmSvgGraphic::_graphic_render]");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_SVG_ELEMENT (node))
