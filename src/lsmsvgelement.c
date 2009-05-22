@@ -165,6 +165,23 @@ lsm_svg_element_render_paint (LsmSvgElement *element, LsmSvgView *view)
 	}
 }
 
+void
+lsm_svg_element_render_clip (LsmSvgElement *element, LsmSvgView *view)
+{
+	LsmSvgElementClass *element_class;
+
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+	if (element_class->render_clip != NULL) {
+		lsm_debug ("[LsmSvgElement::render_clip] Render %s (%s)",
+			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+			    element->id.value != NULL ? element->id.value : "no id");
+
+		element_class->render_clip (element, view);
+	}
+}
+
 static void
 lsm_svg_element_init (LsmSvgElement *element)
 {

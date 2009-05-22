@@ -121,7 +121,7 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		extents = lsm_svg_view_get_extents (view);
 		lsm_svg_matrix_init_scale (&matrix, extents.width, extents.height);
 		lsm_svg_view_push_viewbox (view, &extents);
-		lsm_svg_view_push_transform (view, &matrix);
+		lsm_svg_view_push_matrix (view, &matrix);
 	}
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &pattern->viewbox);
@@ -138,7 +138,7 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	if (is_object_bounding_box) {
-		lsm_svg_view_pop_transform (view);
+		lsm_svg_view_pop_matrix (view);
 		lsm_svg_view_pop_viewbox (view);
 	}
 }

@@ -31,7 +31,7 @@ static GObjectClass *parent_class;
 static const char *
 _clip_path_element_get_node_name (LsmDomNode *node)
 {
-	return "clip-path";
+	return "clipPath";
 }
 
 /* LsmSvgElement implementation */
@@ -47,8 +47,6 @@ _clip_path_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
 }
-
-/* LsmSvgClipPathElement implementation */
 
 LsmDomNode *
 lsm_svg_clip_path_element_new (void)
@@ -83,6 +81,7 @@ lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
 	d_node_class->get_node_name = _clip_path_element_get_node_name;
 
 	s_element_class->update = _clip_path_element_update;
+	s_element_class->render_clip = s_element_class->render;
 	s_element_class->render = NULL;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);

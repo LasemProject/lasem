@@ -107,6 +107,7 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 					       &graphic->color.value);
 		lsm_svg_fill_rule_attribute_parse (&graphic->fill->rule, &parent_style->fill.rule);
 		lsm_dom_double_attribute_parse (&graphic->fill->opacity, &parent_style->fill.opacity);
+		lsm_svg_fill_rule_attribute_parse (&graphic->fill->clip_rule, &parent_style->clip.rule);
 	}
 
 	if (graphic->stroke != NULL) {
@@ -124,6 +125,8 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	}
 
 	if (graphic->transform != NULL) {
+		lsm_debug ("[LsmSvgGraphic::update] transform");
+
 		lsm_svg_transform_attribute_parse (&graphic->transform->transform);
 	}
 
@@ -153,31 +156,41 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
 
+	if (graphic->transform != NULL)
+		lsm_svg_view_push_matrix (view, &graphic->transform->transform.matrix);
+
 	if (graphic->opacity.value < 1.0)
 		lsm_svg_view_push_group (view);
 
-	if (graphic->fill != NULL)
+	if (graphic->fill != NULL) {
 		lsm_svg_view_push_fill_attributes (view, graphic->fill);
+
+		if (graphic->fill->clip_path.value != NULL)
+			lsm_svg_view_push_clip (view, graphic->fill->clip_path.value,
+						graphic->fill->clip_rule.value);
+	}
 	if (graphic->stroke != NULL)
 		lsm_svg_view_push_stroke_attributes (view, graphic->stroke);
 	if (graphic->text != NULL)
 		lsm_svg_view_push_text_attributes (view, graphic->text);
-	if (graphic->transform != NULL)
-		lsm_svg_view_push_transform (view, &graphic->transform->transform.matrix);
 
 	LSM_SVG_GRAPHIC_GET_CLASS (graphic)->graphic_render (self, view);
 
-	if (graphic->transform != NULL)
-		lsm_svg_view_pop_transform (view);
 	if (graphic->text != NULL)
 		lsm_svg_view_pop_text_attributes (view);
 	if (graphic->stroke != NULL)
 		lsm_svg_view_pop_stroke_attributes (view);
-	if (graphic->fill != NULL)
+	if (graphic->fill != NULL) {
+		if (graphic->fill->clip_path.value != NULL)
+			lsm_svg_view_pop_clip (view);
 		lsm_svg_view_pop_fill_attributes (view);
+	}
 
 	if (graphic->opacity.value < 1.0)
 		lsm_svg_view_paint_group (view, graphic->opacity.value);
+
+	if (graphic->transform != NULL)
+		lsm_svg_view_pop_matrix (view);
 }
 
 /* LsmSvgGraphic implementation */

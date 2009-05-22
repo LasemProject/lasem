@@ -60,6 +60,7 @@ struct _LsmSvgElementClass {
 	void			(*update)		(LsmSvgElement *element, LsmSvgStyle *style);
 	void 			(*render)		(LsmSvgElement *element, LsmSvgView *view);
 	void 			(*render_paint)		(LsmSvgElement *element, LsmSvgView *view);
+	void 			(*render_clip)		(LsmSvgElement *element, LsmSvgView *view);
 };
 
 GType lsm_svg_element_get_type (void);
@@ -67,6 +68,7 @@ GType lsm_svg_element_get_type (void);
 void			lsm_svg_element_update 		(LsmSvgElement *element, const LsmSvgStyle *style);
 void 			lsm_svg_element_render 		(LsmSvgElement *element, LsmSvgView *view);
 void 			lsm_svg_element_render_paint 	(LsmSvgElement *element, LsmSvgView *view);
+void 			lsm_svg_element_render_clip 	(LsmSvgElement *element, LsmSvgView *view);
 
 G_END_DECLS
 

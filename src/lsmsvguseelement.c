@@ -117,11 +117,11 @@ lsm_svg_use_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_svg_matrix_init_translate (&matrix, x, y);
-	lsm_svg_view_push_transform (view, &matrix);
+	lsm_svg_view_push_matrix (view, &matrix);
 
 	lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
 
-	lsm_svg_view_pop_transform (view);
+	lsm_svg_view_pop_matrix (view);
 }
 
 /* LsmSvgUseElement implementation */

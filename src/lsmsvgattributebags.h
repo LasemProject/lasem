@@ -31,6 +31,8 @@ typedef struct {
 	LsmSvgPaintAttribute paint;
 	LsmDomEnumAttribute rule;
 	LsmDomDoubleAttribute opacity;
+	LsmDomAttribute clip_path;
+	LsmDomEnumAttribute clip_rule;
 } LsmSvgFillAttributeBag;
 
 typedef struct {

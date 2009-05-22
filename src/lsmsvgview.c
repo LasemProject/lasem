@@ -26,6 +26,7 @@
 #include <lsmsvgsvgelement.h>
 #include <lsmsvggradientelement.h>
 #include <lsmsvgpatternelement.h>
+#include <lsmsvgclippathelement.h>
 #include <lsmsvgutils.h>
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
@@ -791,23 +792,88 @@ lsm_svg_view_pop_viewport (LsmSvgView *view)
 }
 
 void
-lsm_svg_view_push_transform (LsmSvgView *view, const LsmSvgMatrix *matrix)
+lsm_svg_view_push_matrix (LsmSvgView *view, LsmSvgMatrix *matrix)
 {
 	cairo_matrix_t cr_matrix;
+	cairo_matrix_t *ctm;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
+	ctm = g_new (cairo_matrix_t, 1);
+	cairo_get_matrix (view->dom_view.cairo, ctm);
+
+	view->matrix_stack = g_slist_prepend (view->matrix_stack, ctm);
+
 	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
-	cairo_save (view->dom_view.cairo);
 	cairo_transform (view->dom_view.cairo, &cr_matrix);
 }
 
 void
-lsm_svg_view_pop_transform (LsmSvgView *view)
+lsm_svg_view_pop_matrix (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
+	if (view->matrix_stack != NULL) {
+		cairo_matrix_t *ctm;
+
+		ctm = view->matrix_stack->data;
+
+		cairo_set_matrix (view->dom_view.cairo, ctm);
+
+		g_free (ctm);
+		view->matrix_stack = g_slist_delete_link (view->matrix_stack, view->matrix_stack);
+	}
+}
+
+void
+lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule)
+{
+	LsmDomElement *element;
+	char *uri;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (!view->is_clipping);
+
+	uri = clip_path;
+
+	lsm_debug ("[LsmSvgView::push_clip] Using '%s'", clip_path);
+
+	cairo_save (view->dom_view.cairo);
+
+	if (strncmp (uri, "url(#", 5) ==0) {
+		char *end;
+
+		uri = g_strdup (uri + 5);
+		for (end = uri; *end != '\0' && *end != ')'; end++);
+		*end = '\0';
+
+		element = lsm_dom_document_get_element_by_id (view->dom_view.document, uri);
+
+		g_free (uri);
+
+		if (element != NULL && !LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
+			view->is_clipping = TRUE;
+			lsm_svg_element_render_clip (LSM_SVG_ELEMENT (element), view);
+			cairo_clip (view->dom_view.cairo);
+			view->is_clipping = FALSE;
+		}
+	}
+}
+
+void
+lsm_svg_view_pop_clip (LsmSvgView *view)
+{
+	lsm_debug ("[LsmSvgView::pop_clip");
+
 	cairo_restore (view->dom_view.cairo);
+}
+
+gboolean
+lsm_svg_view_is_clipping (LsmSvgView *view)
+{
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), FALSE);
+
+	return view->is_clipping;
 }
 
 void
@@ -965,7 +1031,7 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 }
 
 static void
-_paint (LsmSvgView *view)
+paint (LsmSvgView *view)
 {
 	LsmSvgFillAttributeBag *fill;
 	LsmSvgStrokeAttributeBag *stroke;
@@ -1046,6 +1112,20 @@ _paint (LsmSvgView *view)
 	cairo_new_path (cairo);
 }
 
+static void
+process_path (LsmSvgView *view)
+{
+	if (view->is_clipping) {
+		LsmSvgFillAttributeBag *fill;
+
+		fill = view->fill_stack->data;
+		cairo_set_fill_rule (view->dom_view.cairo, fill->clip_rule.value);
+		g_message ("Clip (rule = %s)", lsm_svg_fill_rule_to_string (fill->clip_rule.value));
+/*                cairo_clip (view->dom_view.cairo);*/
+	} else
+		paint (view);
+}
+
 /*
  * Code for show_rectangle and show ellipse is inspired from
  * the librsvg library (rsvg-shapes.c)
@@ -1091,7 +1171,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 		cairo_close_path (cairo);
 	}
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1101,7 +1181,7 @@ lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 
 	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);
 
-	_paint (view);
+	process_path (view);
 }
 
 #define LSM_SVG_ARC_MAGIC ((double) 0.5522847498) /* 4/3 * (1-cos 45)/sin 45 = 4/3 * sqrt(2) - 1 */
@@ -1125,7 +1205,7 @@ lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, do
 	cairo_curve_to (cairo, cx + LSM_SVG_ARC_MAGIC * rx, cy + ry, cx + rx, cy + LSM_SVG_ARC_MAGIC * ry, cx + rx, cy);
 	cairo_close_path (cairo);
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1136,7 +1216,7 @@ lsm_svg_view_show_path (LsmSvgView *view,
 
 	_emit_svg_path (view->dom_view.cairo, d);
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1147,7 +1227,7 @@ lsm_svg_view_show_line (LsmSvgView *view, double x1, double y1, double x2, doubl
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 	cairo_line_to (view->dom_view.cairo, x2, y2);
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1166,7 +1246,7 @@ lsm_svg_view_show_polyline (LsmSvgView *view, const char *points)
 			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
 	}
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1187,7 +1267,7 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 
 	cairo_close_path (view->dom_view.cairo);
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1231,7 +1311,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);
 
-	_paint (view);
+	process_path (view);
 }
 
 void
@@ -1293,11 +1373,22 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->fill_stack = NULL;
 	svg_view->stroke_stack = NULL;
 	svg_view->text_stack = NULL;
+	svg_view->matrix_stack = NULL;
+
+	svg_view->is_clipping = FALSE;
 
 	svg_view->resolution_ppi = lsm_dom_document_get_resolution (view->document);
 
 	lsm_svg_svg_element_render  (svg_element, svg_view);
 
+	if (svg_view->is_clipping)
+		g_warning ("[LsmSvgView::render] Unfinished clipping");
+
+	if (svg_view->matrix_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling matrix in stack");
+		g_slist_free (svg_view->matrix_stack);
+		svg_view->matrix_stack = NULL;
+	}
 	if (svg_view->viewbox_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling viewport in stack");
 		g_slist_free (svg_view->viewbox_stack);

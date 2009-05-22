@@ -50,10 +50,13 @@ struct _LsmSvgView {
 	GSList *fill_stack;
 	GSList *stroke_stack;
 	GSList *text_stack;
+	GSList *matrix_stack;
 
 	LsmSvgViewPatternData *pattern_data;
 
 	GSList *pattern_stack;
+
+	gboolean is_clipping;
 };
 
 struct _LsmSvgViewClass {
@@ -90,8 +93,11 @@ void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
 							 const LsmBox *viewbox,
 							 const LsmSvgPreserveAspectRatio *aspect_ratio);
 void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
-void		lsm_svg_view_push_transform 		(LsmSvgView *view, const LsmSvgMatrix *matrix);
-void		lsm_svg_view_pop_transform		(LsmSvgView *view);
+void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
+void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
+void 		lsm_svg_view_push_clip 			(LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule);
+void 		lsm_svg_view_pop_clip 			(LsmSvgView *view);
+gboolean 	lsm_svg_view_is_clipping 		(LsmSvgView *view);
 void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);
 void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
 void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, LsmSvgStrokeAttributeBag *stroke);

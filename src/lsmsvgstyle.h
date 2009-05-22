@@ -49,6 +49,10 @@ struct _LsmSvgStyle {
 	} stroke;
 
 	struct {
+		LsmSvgFillRule rule;
+	} clip;
+
+	struct {
 		char *font_family;
 		LsmSvgLength font_size;
 	} text;

@@ -61,6 +61,14 @@ lsm_dom_attribute_map_add_fill_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t
 						 offsetof (LsmSvgFillAttributeBag, opacity),
 						 NULL,
 						 bag_offset, &lsm_svg_fill_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "clip-path",
+						 offsetof (LsmSvgFillAttributeBag, clip_path),
+						 NULL,
+						 bag_offset, &lsm_svg_fill_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "clip-rule",
+						 offsetof (LsmSvgFillAttributeBag, clip_rule),
+						 NULL,
+						 bag_offset, &lsm_svg_fill_attribute_bag_class);
 }
 
 static void *
@@ -150,9 +158,9 @@ void
 lsm_dom_attribute_map_add_transform_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
 {
 	lsm_dom_attribute_map_add_bag_attribute (map, "transform",
-					      offsetof (LsmSvgTransformAttributeBag, transform),
-					      NULL,
-					      bag_offset, &lsm_svg_transform_attribute_bag_class);
+						 offsetof (LsmSvgTransformAttributeBag, transform),
+						 NULL,
+						 bag_offset, &lsm_svg_transform_attribute_bag_class);
 }
 
 static void *
