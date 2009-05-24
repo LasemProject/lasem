@@ -851,7 +851,7 @@ lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_r
 
 		g_free (uri);
 
-		if (element != NULL && !LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
+		if (element != NULL && LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
 			view->is_clipping = TRUE;
 			lsm_svg_element_render_clip (LSM_SVG_ELEMENT (element), view);
 			cairo_clip (view->dom_view.cairo);
@@ -1120,8 +1120,6 @@ process_path (LsmSvgView *view)
 
 		fill = view->fill_stack->data;
 		cairo_set_fill_rule (view->dom_view.cairo, fill->clip_rule.value);
-		g_message ("Clip (rule = %s)", lsm_svg_fill_rule_to_string (fill->clip_rule.value));
-/*                cairo_clip (view->dom_view.cairo);*/
 	} else
 		paint (view);
 }
