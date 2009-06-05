@@ -29,6 +29,13 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	double x1;
+	double y1;
+	double x2;
+	double y2;
+} LsmExtents;
+
+typedef struct {
 	double x;
 	double y;
 	double width;

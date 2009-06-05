@@ -42,10 +42,37 @@ _clip_path_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	LsmSvgClipPathElement *pattern = LSM_SVG_CLIP_PATH_ELEMENT (self);
 	LsmSvgPatternUnits units;
 
-	units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
+	units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	lsm_svg_pattern_units_attribute_parse (&pattern->units, &units);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+}
+
+static void
+_clip_path_element_render_clip (LsmSvgElement *self, LsmSvgView *view)
+{
+	LsmSvgClipPathElement *clip = LSM_SVG_CLIP_PATH_ELEMENT (self);
+	gboolean is_object_bounding_box;
+
+	is_object_bounding_box = (clip->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmSvgMatrix matrix;
+		const LsmBox *viewbox;
+
+		viewbox = lsm_svg_view_get_clip_extents (view);
+		lsm_svg_matrix_init_translate (&matrix, viewbox->x, viewbox->y);
+		lsm_svg_matrix_scale (&matrix, viewbox->width, viewbox->height);
+		lsm_svg_view_push_viewbox (view, viewbox);
+		lsm_svg_view_push_matrix (view, &matrix);
+	}
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_matrix (view);
+		lsm_svg_view_pop_viewbox (view);
+	}
 }
 
 LsmDomNode *
@@ -81,7 +108,7 @@ lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
 	d_node_class->get_node_name = _clip_path_element_get_node_name;
 
 	s_element_class->update = _clip_path_element_update;
-	s_element_class->render_clip = s_element_class->render;
+	s_element_class->render_clip = _clip_path_element_render_clip;
 	s_element_class->render = NULL;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);

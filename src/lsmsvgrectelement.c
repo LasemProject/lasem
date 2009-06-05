@@ -96,6 +96,24 @@ lsm_svg_rect_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_show_rectangle (view, x, y, w, h, rx, ry);
 }
 
+static void
+lsm_svg_rect_element_graphic_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgRectElement *rect = LSM_SVG_RECT_ELEMENT (self);
+	double x, y;
+	double w, h;
+
+	x = lsm_svg_view_normalize_length (view, &rect->x.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &rect->y.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	w = lsm_svg_view_normalize_length (view, &rect->width.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	h = lsm_svg_view_normalize_length (view, &rect->height.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	extents->x1 = x;
+	extents->y1 = y;
+	extents->x2 = x + w;
+	extents->y2 = y + h;
+}
+
 /* LsmSvgRectElement implementation */
 
 LsmDomNode *
@@ -133,6 +151,7 @@ lsm_svg_rect_element_class_init (LsmSvgRectElementClass *s_rect_class)
 	s_element_class->update = lsm_svg_rect_element_update;
 
 	s_graphic_class->graphic_render = lsm_svg_rect_element_graphic_render;
+	s_graphic_class->graphic_get_extents = lsm_svg_rect_element_graphic_get_extents;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 

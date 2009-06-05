@@ -136,3 +136,43 @@ lsm_svg_matrix_multiply (LsmSvgMatrix *result, const LsmSvgMatrix *a, const LsmS
 
 	*result = r;
 }
+
+void
+lsm_svg_matrix_transform_point (const LsmSvgMatrix *matrix, double *x, double *y)
+{
+	double new_x;
+	double new_y;
+
+	new_x = (matrix->a * *x + matrix->c * *y) + matrix->e;
+	new_y = (matrix->b * *x + matrix->d * *y) + matrix->f;
+
+	*x = new_x;
+	*y = new_y;
+}
+
+void
+lsm_svg_matrix_transform_bounding_box (const LsmSvgMatrix *matrix, double *x1, double *y1, double *x2, double *y2)
+{
+	double x12, y12, x21, y21;
+	double x_min, y_min, x_max, y_max;
+
+	x12 = *x1;
+	y12 = *y2;
+	x21 = *x2;
+	y21 = *y1;
+
+	lsm_svg_matrix_transform_point (matrix, x1, y1);
+	lsm_svg_matrix_transform_point (matrix, x2, y2);
+	lsm_svg_matrix_transform_point (matrix, &x12, &y12);
+	lsm_svg_matrix_transform_point (matrix, &x21, &y21);
+
+	x_min = MIN (MIN (*x1, *x2), MIN (x12, x21));
+	x_max = MAX (MAX (*x1, *x2), MAX (x12, x21));
+	y_min = MIN (MIN (*y1, *y2), MIN (y12, y21));
+	y_max = MAX (MAX (*y1, *y2), MAX (y12, y21));
+
+	*x1 = x_min;
+	*y1 = y_min;
+	*x2 = x_max;
+	*y2 = y_max;
+}

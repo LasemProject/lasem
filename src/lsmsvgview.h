@@ -57,6 +57,7 @@ struct _LsmSvgView {
 	GSList *pattern_stack;
 
 	gboolean is_clipping;
+	LsmBox clip_extents;
 };
 
 struct _LsmSvgViewClass {
@@ -67,7 +68,8 @@ GType lsm_svg_view_get_type (void);
 
 LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
-LsmBox 		lsm_svg_view_get_extents 		(LsmSvgView *view);
+const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
+const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
 
 void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
 							                   double r, double fx, double fy);
@@ -95,7 +97,8 @@ void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
 void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
 void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
 void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
-void 		lsm_svg_view_push_clip 			(LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule);
+void 		lsm_svg_view_push_clip 			(LsmSvgView *view, char *clip_path,
+							 LsmSvgFillRule clip_rule, const LsmExtents *extents);
 void 		lsm_svg_view_pop_clip 			(LsmSvgView *view);
 gboolean 	lsm_svg_view_is_clipping 		(LsmSvgView *view);
 void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);

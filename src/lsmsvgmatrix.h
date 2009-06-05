@@ -28,19 +28,23 @@ typedef struct {
 	double a, b, c, d, e, f;
 } LsmSvgMatrix;
 
-void 	lsm_svg_matrix_init 		(LsmSvgMatrix *matrix, double a, double b,
-					 double c, double d, double e, double f);
-void 	lsm_svg_matrix_init_identity 	(LsmSvgMatrix *matrix);
+void 	lsm_svg_matrix_init 			(LsmSvgMatrix *matrix, double a, double b,
+					                               double c, double d,
+								       double e, double f);
+void 	lsm_svg_matrix_init_identity 		(LsmSvgMatrix *matrix);
 void 	lsm_svg_matrix_init_scale 		(LsmSvgMatrix *matrix, double sx, double sy);
-void 	lsm_svg_matrix_scale 		(LsmSvgMatrix *matrix, double sx, double sy);
-void 	lsm_svg_matrix_init_translate 	(LsmSvgMatrix *matrix, double tx, double ty);
+void 	lsm_svg_matrix_scale 			(LsmSvgMatrix *matrix, double sx, double sy);
+void 	lsm_svg_matrix_init_translate 		(LsmSvgMatrix *matrix, double tx, double ty);
 void 	lsm_svg_matrix_translate 		(LsmSvgMatrix *matrix, double tx, double ty);
-void 	lsm_svg_matrix_init_rotate 	(LsmSvgMatrix *matrix, double radians);
-void 	lsm_svg_matrix_rotate 		(LsmSvgMatrix *matrix, double radians);
-void 	lsm_svg_matrix_init_skew_x 	(LsmSvgMatrix *matrix, double radians);
-void 	lsm_svg_matrix_skew_x 		(LsmSvgMatrix *matrix, double radians);
-void 	lsm_svg_matrix_init_skew_y 	(LsmSvgMatrix *matrix, double radians);
-void 	lsm_svg_matrix_skew_y 		(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_init_rotate 		(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_rotate 			(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_init_skew_x 		(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_skew_x 			(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_init_skew_y 		(LsmSvgMatrix *matrix, double radians);
+void 	lsm_svg_matrix_skew_y 			(LsmSvgMatrix *matrix, double radians);
 void 	lsm_svg_matrix_multiply 		(LsmSvgMatrix *result, const LsmSvgMatrix *a, const LsmSvgMatrix *b);
+void 	lsm_svg_matrix_transform_point 		(const LsmSvgMatrix *matrix, double *x, double *y);
+void 	lsm_svg_matrix_transform_bounding_box 	(const LsmSvgMatrix *matrix, double *x1, double *y1,
+						                             double *x2, double *y2);
 
 #endif

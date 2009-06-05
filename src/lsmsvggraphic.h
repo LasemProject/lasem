@@ -55,7 +55,8 @@ struct _LsmSvgGraphic {
 struct _LsmSvgGraphicClass {
 	LsmSvgElementClass  parent_class;
 
-	void 			(*graphic_render)	(LsmSvgElement *element, LsmSvgView *view);
+	void 		(*graphic_render)	(LsmSvgElement *element, LsmSvgView *view);
+	void 		(*graphic_get_extents)	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 };
 
 GType lsm_svg_graphic_get_type (void);

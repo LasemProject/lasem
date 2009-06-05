@@ -115,12 +115,13 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	is_object_bounding_box = (pattern->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
 	if (is_object_bounding_box) {
-		LsmBox extents;
 		LsmSvgMatrix matrix;
+		const LsmBox *viewbox;
 
-		extents = lsm_svg_view_get_extents (view);
-		lsm_svg_matrix_init_scale (&matrix, extents.width, extents.height);
-		lsm_svg_view_push_viewbox (view, &extents);
+		viewbox = lsm_svg_view_get_pattern_extents (view);
+		lsm_svg_matrix_init_translate (&matrix, viewbox->x, viewbox->y);
+		lsm_svg_matrix_scale (&matrix, viewbox->width, viewbox->height);
+		lsm_svg_view_push_viewbox (view, viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 	}
 

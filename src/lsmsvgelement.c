@@ -182,6 +182,30 @@ lsm_svg_element_render_clip (LsmSvgElement *element, LsmSvgView *view)
 	}
 }
 
+void
+lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgElementClass *element_class;
+
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (extents != NULL);
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+	if (element_class->get_extents != NULL) {
+		element_class->get_extents (element, view, extents);
+
+		lsm_debug ("LsmSvgElement::get_extents] Exents for '%s' = %g,%g %g,%g",
+			   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+			   extents->x1, extents->y1, extents->x2, extents->y2);
+	} else {
+		extents->x1 = 0.0;
+		extents->y1 = 0.0;
+		extents->x2 = 0.0;
+		extents->y2 = 0.0;
+	}
+}
+
 static void
 lsm_svg_element_init (LsmSvgElement *element)
 {

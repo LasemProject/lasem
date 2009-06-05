@@ -49,15 +49,26 @@ struct _LsmSvgViewPatternData {
 	LsmSvgSpreadMethod spread_method;
 };
 
-LsmBox
-lsm_svg_view_get_extents (LsmSvgView *view)
+const LsmBox *
+lsm_svg_view_get_pattern_extents (LsmSvgView *view)
 {
-	LsmBox null_box = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
 
-	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), null_box);
-	g_return_val_if_fail (view->pattern_data != NULL, null_box);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), &null_extents);
+	g_return_val_if_fail (view->pattern_data != NULL, &null_extents);
 
-	return view->pattern_data->extents;
+	return &view->pattern_data->extents;
+}
+
+const LsmBox *
+lsm_svg_view_get_clip_extents (LsmSvgView *view)
+{
+	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), &null_extents);
+	g_return_val_if_fail (view->is_clipping, &null_extents);
+
+	return &view->clip_extents;
 }
 
 static void
@@ -826,19 +837,25 @@ lsm_svg_view_pop_matrix (LsmSvgView *view)
 }
 
 void
-lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule)
+lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule, const LsmExtents *extents)
 {
 	LsmDomElement *element;
 	char *uri;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (!view->is_clipping);
+	g_return_if_fail (extents != NULL);
 
 	uri = clip_path;
 
 	lsm_debug ("[LsmSvgView::push_clip] Using '%s'", clip_path);
 
 	cairo_save (view->dom_view.cairo);
+
+	view->clip_extents.x = extents->x1;
+	view->clip_extents.y = extents->y1;
+	view->clip_extents.width  = extents->x2 - extents->x1;
+	view->clip_extents.height = extents->y2 - extents->y1;
 
 	if (strncmp (uri, "url(#", 5) ==0) {
 		char *end;

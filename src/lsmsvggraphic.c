@@ -165,9 +165,13 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	if (graphic->fill != NULL) {
 		lsm_svg_view_push_fill_attributes (view, graphic->fill);
 
-		if (graphic->fill->clip_path.value != NULL)
+		if (graphic->fill->clip_path.value != NULL) {
+			LsmExtents extents;
+
+			lsm_svg_element_get_extents (self, view, &extents);
 			lsm_svg_view_push_clip (view, graphic->fill->clip_path.value,
-						graphic->fill->clip_rule.value);
+						graphic->fill->clip_rule.value, &extents);
+		}
 	}
 	if (graphic->stroke != NULL)
 		lsm_svg_view_push_stroke_attributes (view, graphic->stroke);
@@ -191,6 +195,55 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (graphic->transform != NULL)
 		lsm_svg_view_pop_matrix (view);
+}
+
+static void
+_graphic_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
+	LsmDomNode *node;
+	gboolean first_child = TRUE;
+	LsmExtents element_extents = {0.0, 0.0, 0.0, 0.0};
+
+	lsm_debug ("[LsmSvgGraphic::_graphic_get_extents]");
+
+	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+		if (LSM_IS_SVG_ELEMENT (node)) {
+			LsmExtents child_extents;
+
+			lsm_svg_element_get_extents (LSM_SVG_ELEMENT (node), view, &child_extents);
+
+			if (graphic->transform != NULL)
+				lsm_svg_matrix_transform_bounding_box (&graphic->transform->transform.matrix,
+								       &child_extents.x1, &child_extents.y1,
+								       &child_extents.x2, &child_extents.y2);
+			if (first_child) {
+				element_extents = child_extents;
+				first_child = FALSE;
+			} else {
+				element_extents.x1 = MIN (element_extents.x1, child_extents.x1);
+				element_extents.y1 = MIN (element_extents.y1, child_extents.y1);
+				element_extents.x2 = MAX (element_extents.x2, child_extents.x2);
+				element_extents.y2 = MAX (element_extents.y2, child_extents.y2);
+			}
+		}
+	}
+
+	*extents = element_extents;
+}
+
+static void
+lsm_svg_graphic_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
+
+	if (graphic->text != NULL)
+		lsm_svg_view_push_text_attributes (view, graphic->text);
+
+	LSM_SVG_GRAPHIC_GET_CLASS (graphic)->graphic_get_extents (self, view, extents);
+
+	if (graphic->text != NULL)
+		lsm_svg_view_pop_text_attributes (view);
 }
 
 /* LsmSvgGraphic implementation */
@@ -219,8 +272,10 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 
 	s_element_class->update = lsm_svg_graphic_update;
 	s_element_class->render = lsm_svg_graphic_render;
+	s_element_class->get_extents = lsm_svg_graphic_get_extents;
 
 	s_graphic_class->graphic_render = _graphic_render;
+	s_graphic_class->graphic_get_extents = _graphic_get_extents;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
