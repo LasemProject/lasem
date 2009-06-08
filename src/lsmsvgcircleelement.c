@@ -21,6 +21,7 @@
 
 #include <lsmsvgcircleelement.h>
 #include <lsmsvgview.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -66,6 +67,9 @@ lsm_svg_circle_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	cx = lsm_svg_view_normalize_length (view, &circle->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	cy = lsm_svg_view_normalize_length (view, &circle->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	r  = lsm_svg_view_normalize_length (view, &circle->r.length.base,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	lsm_debug ("[LsmSvgCircleElement::graphic_render] cx = %g, cy = %g, r = %g",
+		   cx, cy, r);
 
 	lsm_svg_view_show_circle (view, cx, cy, r);
 }

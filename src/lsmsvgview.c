@@ -194,20 +194,27 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 {
 	cairo_surface_t *surface;
 	cairo_pattern_t *pattern;
-	double width, height;
+	double width, height, x, y;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (viewport != NULL);
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->dom_view.cairo == NULL);
 
+	x = viewport->x;
+	y = viewport->y;
 	width = viewport->width;
 	height = viewport->height;
 
 	if (units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {
-		width = width * view->pattern_data->extents.width;
-		height = height * view->pattern_data->extents.height;
+		x *= view->pattern_data->extents.width;
+		y *= view->pattern_data->extents.height;
+		width *= view->pattern_data->extents.width;
+		height *= view->pattern_data->extents.height;
 	}
+
+	lsm_debug ("[LsmSvgView::create_pattern] pattern size = %g ,%g",
+		   width, height);
 
 	if (height < 1 || width < 1)
 		return;
@@ -219,7 +226,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	view->dom_view.cairo = cairo_create (surface);
 	cairo_surface_destroy (surface);
 
-	cairo_translate (view->dom_view.cairo, -viewport->x, -viewport->y);
+	cairo_translate (view->dom_view.cairo, -x, -y);
 
 	_set_pattern (view, pattern);
 
@@ -230,10 +237,10 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		cairo_matrix_init (&view->pattern_data->matrix,
 				   matrix->a, matrix->b,
 				   matrix->c, matrix->d,
-				   matrix->e + viewport->x, matrix->f + viewport->y);
+				   matrix->e + x, matrix->f + y);
 		cairo_matrix_invert (&view->pattern_data->matrix);
 	} else
-		cairo_matrix_init_translate (&view->pattern_data->matrix, -viewport->x, -viewport->y);
+		cairo_matrix_init_translate (&view->pattern_data->matrix, -x, -y);
 
 }
 
@@ -815,8 +822,20 @@ lsm_svg_view_push_matrix (LsmSvgView *view, LsmSvgMatrix *matrix)
 
 	view->matrix_stack = g_slist_prepend (view->matrix_stack, ctm);
 
+	lsm_debug ("[LsmSvgView::push_matrix] New transform %g, %g, %g, %g, %g, %g",
+		   matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
+
 	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
 	cairo_transform (view->dom_view.cairo, &cr_matrix);
+
+	{
+		cairo_matrix_t current_ctm;
+		cairo_get_matrix (view->dom_view.cairo, &current_ctm);
+
+		lsm_debug ("[LsmSvgView::push_matrix] Current ctm %g, %g, %g, %g, %g, %g",
+			   current_ctm.xx, current_ctm.xy, current_ctm.yx, current_ctm.yy,
+			   current_ctm.x0, current_ctm.y0);
+	}
 }
 
 void
@@ -971,11 +990,13 @@ _paint_uri (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *ur
 
 	if (view->pattern_data->pattern) {
 #if 0
-		char *filename;
+		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
+			char *filename;
 
-		filename = g_strdup_printf ("%s.png", uri);
-		cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
-		g_free (filename);
+			filename = g_strdup_printf ("%s.png", uri);
+			cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
+			g_free (filename);
+		}
 #endif
 
 		if (LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
@@ -1192,6 +1213,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 void
 lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 {
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);

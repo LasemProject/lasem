@@ -80,6 +80,9 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	gboolean is_object_bounding_box;
 	gboolean is_viewbox_defined;
 	LsmBox viewport;
+	const LsmBox *pattern_extents;
+
+	pattern_extents = lsm_svg_view_get_pattern_extents (view);
 
 	is_object_bounding_box = (pattern->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -116,13 +119,15 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 
 	if (is_object_bounding_box) {
 		LsmSvgMatrix matrix;
-		const LsmBox *viewbox;
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
 
-		viewbox = lsm_svg_view_get_pattern_extents (view);
-		lsm_svg_matrix_init_translate (&matrix, viewbox->x, viewbox->y);
-		lsm_svg_matrix_scale (&matrix, viewbox->width, viewbox->height);
-		lsm_svg_view_push_viewbox (view, viewbox);
+		lsm_svg_matrix_init_scale (&matrix, pattern_extents->width, pattern_extents->height);
+		lsm_svg_matrix_translate (&matrix, -pattern_extents->x, -pattern_extents->y);
+		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
+
+		lsm_debug ("[LsmSvgPatternElement::render_paint] object_bounding_box"
+			   " x_scale = %g, y_scale = %g",pattern_extents->width, pattern_extents->height);
 	}
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &pattern->viewbox);
