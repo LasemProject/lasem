@@ -49,6 +49,7 @@ struct _LsmSvgView {
 	GSList *viewbox_stack;
 	GSList *fill_stack;
 	GSList *stroke_stack;
+	GSList *opacity_stack;
 	GSList *text_stack;
 	GSList *matrix_stack;
 
@@ -120,8 +121,8 @@ void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
 void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
 
-void 		lsm_svg_view_push_group 	(LsmSvgView *view);
-void 		lsm_svg_view_paint_group 	(LsmSvgView *view, double opacity);
+void 		lsm_svg_view_push_opacity 	(LsmSvgView *view, double opacity, gboolean late_opacity_handling);
+void 		lsm_svg_view_pop_opacity 	(LsmSvgView *view);
 
 G_END_DECLS
 

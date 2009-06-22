@@ -36,6 +36,11 @@
 
 static GObjectClass *parent_class;
 
+typedef struct {
+	double opacity;
+	gboolean late_opacity_handling;
+} LsmSvgViewOpacityData;
+
 struct _LsmSvgViewPatternData {
 	cairo_t *old_cairo;
 
@@ -1074,6 +1079,8 @@ paint (LsmSvgView *view)
 	LsmSvgFillAttributeBag *fill;
 	LsmSvgStrokeAttributeBag *stroke;
 	cairo_t *cairo;
+	gboolean use_group;
+	double global_opacity;
 
 	g_return_if_fail (view->fill_stack != NULL);
 	g_return_if_fail (view->stroke_stack != NULL);
@@ -1082,15 +1089,37 @@ paint (LsmSvgView *view)
 	fill = view->fill_stack->data;
 	stroke = view->stroke_stack->data;
 
+	if (view->opacity_stack != NULL) {
+		LsmSvgViewOpacityData *opacity_data;
+
+		opacity_data = view->opacity_stack->data;
+		global_opacity = opacity_data->opacity;
+
+		use_group = fill->paint.paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+			stroke->paint.paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+			global_opacity < 1.0;
+
+		if (!opacity_data->late_opacity_handling)
+			g_warning ("[LsmSvgView::paint] Missing late_opacity_handling declaration in"
+				   " caller element");
+	} else {
+		use_group = FALSE;
+		global_opacity = 1.0;
+	}
+
+	/* FIXME Instead of push_group, restrict to the current path bounding box */
+	if (use_group)
+		cairo_push_group (cairo);
+
 	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_FILL,
-			&fill->paint.paint, fill->opacity.value)) {
+			&fill->paint.paint, fill->opacity.value * global_opacity)) {
 		cairo_set_fill_rule (cairo, fill->rule.value == LSM_SVG_FILL_RULE_EVEN_ODD ?
 				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
 		cairo_fill_preserve (cairo);
 	}
 
 	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
-			&stroke->paint.paint, stroke->opacity.value)) {
+			&stroke->paint.paint, stroke->opacity.value * global_opacity)) {
 		double line_width;
 
 		switch (stroke->line_join.value) {
@@ -1148,6 +1177,11 @@ paint (LsmSvgView *view)
 	}
 
 	cairo_new_path (cairo);
+
+	if (use_group) {
+		cairo_pop_group_to_source (cairo);
+		cairo_paint_with_alpha (cairo, global_opacity);
+	}
 }
 
 static void
@@ -1362,20 +1396,38 @@ lsm_svg_view_show_pixbuf (LsmSvgView *view, GdkPixbuf *pixbuf)
 }
 
 void
-lsm_svg_view_push_group (LsmSvgView *view)
+lsm_svg_view_push_opacity (LsmSvgView *view, double opacity, gboolean late_opacity_handling)
 {
+	LsmSvgViewOpacityData *opacity_data;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
-	cairo_push_group (view->dom_view.cairo);
+	opacity_data = g_new (LsmSvgViewOpacityData, 1);
+	opacity_data->opacity = opacity;
+	opacity_data->late_opacity_handling = late_opacity_handling;
+
+	if (opacity < 1.0 && !late_opacity_handling)
+		cairo_push_group (view->dom_view.cairo);
+
+	view->opacity_stack = g_slist_prepend (view->opacity_stack, opacity_data);
 }
 
 void
-lsm_svg_view_paint_group (LsmSvgView *view, double opacity)
+lsm_svg_view_pop_opacity (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	LsmSvgViewOpacityData *opacity_data;
 
-	cairo_pop_group_to_source (view->dom_view.cairo);
-	cairo_paint_with_alpha (view->dom_view.cairo, opacity);
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (view->opacity_stack != NULL);
+
+	opacity_data = view->opacity_stack->data;
+
+	if (opacity_data->opacity < 1.0 && !opacity_data->late_opacity_handling) {
+		cairo_pop_group_to_source (view->dom_view.cairo);
+		cairo_paint_with_alpha (view->dom_view.cairo, opacity_data->opacity);
+	}
+
+	view->opacity_stack = g_slist_delete_link (view->opacity_stack, view->opacity_stack);
 }
 
 static void
@@ -1409,6 +1461,7 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->viewbox_stack = NULL;
 	svg_view->fill_stack = NULL;
 	svg_view->stroke_stack = NULL;
+	svg_view->opacity_stack = NULL;
 	svg_view->text_stack = NULL;
 	svg_view->matrix_stack = NULL;
 
@@ -1430,6 +1483,11 @@ lsm_svg_view_render (LsmDomView *view)
 		g_warning ("[LsmSvgView::render] Dangling viewport in stack");
 		g_slist_free (svg_view->viewbox_stack);
 		svg_view->viewbox_stack = NULL;
+	}
+	if (svg_view->opacity_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling opacity data in stack");
+		g_slist_free (svg_view->opacity_stack);
+		svg_view->opacity_stack = NULL;
 	}
 	if (svg_view->fill_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling fill attribute in stack");

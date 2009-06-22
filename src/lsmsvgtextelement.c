@@ -124,6 +124,7 @@ lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_rect_class)
 	s_element_class->update = lsm_svg_text_element_update;
 
 	s_graphic_class->graphic_render = lsm_svg_text_element_graphic_render;
+	s_graphic_class->late_opacity_handling = TRUE;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 

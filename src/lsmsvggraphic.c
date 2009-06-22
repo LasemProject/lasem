@@ -159,8 +159,8 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	if (graphic->transform != NULL)
 		lsm_svg_view_push_matrix (view, &graphic->transform->transform.matrix);
 
-	if (graphic->opacity.value < 1.0)
-		lsm_svg_view_push_group (view);
+	lsm_svg_view_push_opacity (view, graphic->opacity.value,
+				   LSM_SVG_GRAPHIC_GET_CLASS (graphic)->late_opacity_handling);
 
 	if (graphic->fill != NULL) {
 		lsm_svg_view_push_fill_attributes (view, graphic->fill);
@@ -190,8 +190,7 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_fill_attributes (view);
 	}
 
-	if (graphic->opacity.value < 1.0)
-		lsm_svg_view_paint_group (view, graphic->opacity.value);
+	lsm_svg_view_pop_opacity (view);
 
 	if (graphic->transform != NULL)
 		lsm_svg_view_pop_matrix (view);
@@ -276,6 +275,7 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 
 	s_graphic_class->graphic_render = _graphic_render;
 	s_graphic_class->graphic_get_extents = _graphic_get_extents;
+	s_graphic_class->late_opacity_handling = FALSE;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
