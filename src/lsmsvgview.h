@@ -70,6 +70,32 @@ GType lsm_svg_view_get_type (void);
 
 LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
+double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *length,
+							 LsmSvgLengthDirection direction);
+void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
+void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
+void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
+							 const LsmBox *viewbox,
+							 const LsmSvgPreserveAspectRatio *aspect_ratio);
+void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
+void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
+void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
+
+void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);
+void		lsm_svg_view_pop_element		(LsmSvgView *view);
+
+void 		lsm_svg_view_push_group_opacity 	(LsmSvgView *view);
+void 		lsm_svg_view_pop_group_opacity 		(LsmSvgView *view);
+
+void		lsm_svg_view_push_mask_attributes	(LsmSvgView *view, const LsmSvgMaskAttributeBag *mask);
+void		lsm_svg_view_pop_mask_attributes	(LsmSvgView *view);
+void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, const LsmSvgFillAttributeBag *fill);
+void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
+void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, const LsmSvgStrokeAttributeBag *stroke);
+void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
+void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, const LsmSvgTextAttributeBag *text);
+void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
+
 const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
 const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
 
@@ -89,29 +115,6 @@ void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewp
 							 LsmSvgPatternUnits content_units,
 							 const LsmSvgMatrix *matrix);
 
-double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *length,
-							 LsmSvgLengthDirection direction);
-void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
-void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
-void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
-							 const LsmBox *viewbox,
-							 const LsmSvgPreserveAspectRatio *aspect_ratio);
-void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
-void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
-void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
-
-void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);
-void		lsm_svg_view_pop_element		(LsmSvgView *view);
-
-void		lsm_svg_view_push_mask_attributes	(LsmSvgView *view, const LsmSvgMaskAttributeBag *mask);
-void		lsm_svg_view_pop_mask_attributes	(LsmSvgView *view);
-void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, const LsmSvgFillAttributeBag *fill);
-void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, const LsmSvgStrokeAttributeBag *stroke);
-void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, const LsmSvgTextAttributeBag *text);
-void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
-
 void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
 						                   double width, double height,
 								   double rx, double ry);
@@ -123,9 +126,6 @@ void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
 void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
-
-void 		lsm_svg_view_push_group_opacity (LsmSvgView *view);
-void 		lsm_svg_view_pop_group_opacity 	(LsmSvgView *view);
 
 G_END_DECLS
 
