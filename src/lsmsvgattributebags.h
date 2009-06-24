@@ -28,11 +28,15 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	LsmDomAttribute clip_path;
+	LsmDomEnumAttribute clip_rule;
+	LsmSvgDoubleAttribute opacity;
+} LsmSvgMaskAttributeBag;
+
+typedef struct {
 	LsmSvgPaintAttribute paint;
 	LsmDomEnumAttribute rule;
 	LsmDomDoubleAttribute opacity;
-	LsmDomAttribute clip_path;
-	LsmDomEnumAttribute clip_rule;
 } LsmSvgFillAttributeBag;
 
 typedef struct {
@@ -60,6 +64,7 @@ typedef struct {
 	LsmSvgDoubleAttribute opacity;
 } LsmSvgStopAttributeBag;
 
+void 	lsm_dom_attribute_map_add_mask_attribute_bag 		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	lsm_dom_attribute_map_add_fill_attribute_bag 		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	lsm_dom_attribute_map_add_stroke_attribute_bag		(LsmDomAttributeMap *map, ptrdiff_t bag_offset);
 void 	lsm_dom_attribute_map_add_transform_attribute_bag	(LsmDomAttributeMap *map, ptrdiff_t bag_offset);

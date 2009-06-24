@@ -46,10 +46,11 @@ struct _LsmSvgView {
 
 	double resolution_ppi;
 
+	GSList *element_stack;
 	GSList *viewbox_stack;
+	GSList *mask_stack;
 	GSList *fill_stack;
 	GSList *stroke_stack;
-	GSList *opacity_stack;
 	GSList *text_stack;
 	GSList *matrix_stack;
 
@@ -98,15 +99,17 @@ void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
 void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
 void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
 void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
-void 		lsm_svg_view_push_clip 			(LsmSvgView *view, char *clip_path,
-							 LsmSvgFillRule clip_rule, const LsmExtents *extents);
-void 		lsm_svg_view_pop_clip 			(LsmSvgView *view);
-gboolean 	lsm_svg_view_is_clipping 		(LsmSvgView *view);
-void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, LsmSvgFillAttributeBag *fill);
+
+void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);
+void		lsm_svg_view_pop_element		(LsmSvgView *view);
+
+void		lsm_svg_view_push_mask_attributes	(LsmSvgView *view, const LsmSvgMaskAttributeBag *mask);
+void		lsm_svg_view_pop_mask_attributes	(LsmSvgView *view);
+void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, const LsmSvgFillAttributeBag *fill);
 void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, LsmSvgStrokeAttributeBag *stroke);
+void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, const LsmSvgStrokeAttributeBag *stroke);
 void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, LsmSvgTextAttributeBag *text);
+void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, const LsmSvgTextAttributeBag *text);
 void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
 
 void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
@@ -121,8 +124,8 @@ void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
 void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
 
-void 		lsm_svg_view_push_opacity 	(LsmSvgView *view, double opacity, gboolean late_opacity_handling);
-void 		lsm_svg_view_pop_opacity 	(LsmSvgView *view);
+void 		lsm_svg_view_push_group_opacity (LsmSvgView *view);
+void 		lsm_svg_view_pop_group_opacity 	(LsmSvgView *view);
 
 G_END_DECLS
 

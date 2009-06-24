@@ -138,6 +138,9 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
+
+	lsm_svg_view_push_element (view, element);
+
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render != NULL) {
 		lsm_debug ("[LsmSvgElement::render] Render %s (%s)",
@@ -146,6 +149,8 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 
 		element_class->render (element, view);
 	}
+
+	lsm_svg_view_pop_element (view);
 }
 
 void

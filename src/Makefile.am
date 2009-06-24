@@ -83,6 +83,7 @@ liblasem_la_SOURCES =				\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
 	lsmsvgpatternelement.c			\
+	lsmsvgmaskelement.c			\
 	lsmsvgenums.c				\
 	lsmsvgattributes.c			\
 	lsmsvgattributebags.c			\
@@ -165,6 +166,7 @@ liblasem_la_HEADERS = \
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
 	lsmsvgpatternelement.h			\
+	lsmsvgmaskelement.h			\
 	lsmsvgenums.h				\
 	lsmsvgattributes.h			\
 	lsmsvgattributebags.h			\

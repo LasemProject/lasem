@@ -82,7 +82,6 @@ lsm_svg_path_element_class_init (LsmSvgPathElementClass *s_rect_class)
 	d_node_class->get_node_name = lsm_svg_path_element_get_node_name;
 
 	s_graphic_class->graphic_render = lsm_svg_path_element_graphic_render;
-	s_graphic_class->late_opacity_handling = TRUE;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 

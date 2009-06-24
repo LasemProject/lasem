@@ -49,6 +49,7 @@ typedef struct _LsmSvgLinearGradientElement LsmSvgLinearGradientElement;
 typedef struct _LsmSvgRadialGradientElement LsmSvgRadialGradientElement;
 typedef struct _LsmSvgStopElement LsmSvgStopElement;
 typedef struct _LsmSvgPatternElement LsmSvgPatternElement;
+typedef struct _LsmSvgMaskElement LsmSvgMaskElement;
 
 typedef struct _LsmSvgView LsmSvgView;
 typedef struct _LsmSvgStyle LsmSvgStyle;

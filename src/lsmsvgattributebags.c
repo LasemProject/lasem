@@ -22,6 +22,44 @@
 #include <lsmsvgattributebags.h>
 
 static void *
+lsm_svg_mask_attribute_bag_init (void)
+{
+	LsmSvgMaskAttributeBag *mask;
+
+	mask = g_new0 (LsmSvgMaskAttributeBag, 1);
+	return mask;
+}
+
+static void
+lsm_svg_mask_attribute_bag_finalize (void *bag)
+{
+	g_free (bag);
+}
+
+static const LsmDomAttributeBagClass lsm_svg_mask_attribute_bag_class =
+{
+	.init = lsm_svg_mask_attribute_bag_init,
+	.finalize = lsm_svg_mask_attribute_bag_finalize
+};
+
+void
+lsm_dom_attribute_map_add_mask_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t bag_offset)
+{
+	lsm_dom_attribute_map_add_bag_attribute (map, "opacity",
+						 offsetof (LsmSvgMaskAttributeBag, opacity),
+						 NULL,
+						 bag_offset, &lsm_svg_mask_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "clip-path",
+						 offsetof (LsmSvgMaskAttributeBag, clip_path),
+						 NULL,
+						 bag_offset, &lsm_svg_mask_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "clip-rule",
+						 offsetof (LsmSvgMaskAttributeBag, clip_rule),
+						 NULL,
+						 bag_offset, &lsm_svg_mask_attribute_bag_class);
+}
+
+static void *
 lsm_svg_fill_attribute_bag_init (void)
 {
 	LsmSvgFillAttributeBag *fill;
@@ -59,14 +97,6 @@ lsm_dom_attribute_map_add_fill_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t
 						 bag_offset, &lsm_svg_fill_attribute_bag_class);
 	lsm_dom_attribute_map_add_bag_attribute (map, "fill-opacity",
 						 offsetof (LsmSvgFillAttributeBag, opacity),
-						 NULL,
-						 bag_offset, &lsm_svg_fill_attribute_bag_class);
-	lsm_dom_attribute_map_add_bag_attribute (map, "clip-path",
-						 offsetof (LsmSvgFillAttributeBag, clip_path),
-						 NULL,
-						 bag_offset, &lsm_svg_fill_attribute_bag_class);
-	lsm_dom_attribute_map_add_bag_attribute (map, "clip-rule",
-						 offsetof (LsmSvgFillAttributeBag, clip_rule),
 						 NULL,
 						 bag_offset, &lsm_svg_fill_attribute_bag_class);
 }

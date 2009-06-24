@@ -40,6 +40,7 @@
 #include <lsmsvgradialgradientelement.h>
 #include <lsmsvgstopelement.h>
 #include <lsmsvgpatternelement.h>
+#include <lsmsvgmaskelement.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -86,6 +87,8 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_stop_element_new ();
 	else if (strcmp (tag_name, "pattern") == 0)
 		node = lsm_svg_pattern_element_new ();
+	else if (strcmp (tag_name, "mask") == 0)
+		node = lsm_svg_mask_element_new ();
 	else if (strcmp (tag_name, "use") == 0)
 		node = lsm_svg_use_element_new ();
 	else if (strcmp (tag_name, "image") == 0)

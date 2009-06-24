@@ -43,8 +43,8 @@ struct _LsmSvgGraphic {
 	LsmDomAttribute	style;
 
 	LsmSvgColorAttribute color;
-	LsmSvgDoubleAttribute opacity;
 
+	LsmSvgMaskAttributeBag *mask;
 	LsmSvgFillAttributeBag *fill;
 	LsmSvgStrokeAttributeBag *stroke;
 	LsmSvgTransformAttributeBag *transform;
@@ -57,8 +57,6 @@ struct _LsmSvgGraphicClass {
 
 	void 		(*graphic_render)	(LsmSvgElement *element, LsmSvgView *view);
 	void 		(*graphic_get_extents)	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
-
-	gboolean	late_opacity_handling;
 };
 
 GType lsm_svg_graphic_get_type (void);

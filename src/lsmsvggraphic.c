@@ -92,12 +92,17 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 
 	lsm_svg_color_attribute_parse (&graphic->color, &parent_style->color, &parent_style->color);
 
-	default_opacity = 1.0;
-	lsm_svg_double_attribute_parse (&graphic->opacity, &default_opacity); /* FIXME handle inherit */
 
 	if (graphic->text != NULL) {
 		lsm_dom_string_attribute_parse (&graphic->text->font_family, &parent_style->text.font_family);
 		lsm_svg_length_attribute_parse (&graphic->text->font_size, &parent_style->text.font_size);
+	}
+
+	if (graphic->mask != NULL) {
+		lsm_svg_fill_rule_attribute_parse (&graphic->mask->clip_rule, &parent_style->clip.rule);
+		default_opacity = 1.0;
+		/* FIXME handle inherit */
+		lsm_svg_double_attribute_parse (&graphic->mask->opacity, &default_opacity);
 	}
 
 	if (graphic->fill != NULL) {
@@ -107,7 +112,6 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 					       &graphic->color.value);
 		lsm_svg_fill_rule_attribute_parse (&graphic->fill->rule, &parent_style->fill.rule);
 		lsm_dom_double_attribute_parse (&graphic->fill->opacity, &parent_style->fill.opacity);
-		lsm_svg_fill_rule_attribute_parse (&graphic->fill->clip_rule, &parent_style->clip.rule);
 	}
 
 	if (graphic->stroke != NULL) {
@@ -141,14 +145,21 @@ lsm_svg_graphic_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 static void
 _graphic_render (LsmSvgElement *self, LsmSvgView *view)
 {
+	LsmSvgGraphic *graphic = LSM_SVG_GRAPHIC (self);
 	LsmDomNode *node;
 
 	lsm_debug ("[LsmSvgGraphic::_graphic_render]");
+
+	if (graphic->mask != NULL)
+		lsm_svg_view_push_group_opacity (view);
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_SVG_ELEMENT (node))
 		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
 	}
+
+	if (graphic->mask != NULL)
+		lsm_svg_view_pop_group_opacity (view);
 }
 
 static void
@@ -159,20 +170,10 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 	if (graphic->transform != NULL)
 		lsm_svg_view_push_matrix (view, &graphic->transform->transform.matrix);
 
-	lsm_svg_view_push_opacity (view, graphic->opacity.value,
-				   LSM_SVG_GRAPHIC_GET_CLASS (graphic)->late_opacity_handling);
-
-	if (graphic->fill != NULL) {
+	if (graphic->mask != NULL)
+		lsm_svg_view_push_mask_attributes (view, graphic->mask);
+	if (graphic->fill != NULL)
 		lsm_svg_view_push_fill_attributes (view, graphic->fill);
-
-		if (graphic->fill->clip_path.value != NULL) {
-			LsmExtents extents;
-
-			lsm_svg_element_get_extents (self, view, &extents);
-			lsm_svg_view_push_clip (view, graphic->fill->clip_path.value,
-						graphic->fill->clip_rule.value, &extents);
-		}
-	}
 	if (graphic->stroke != NULL)
 		lsm_svg_view_push_stroke_attributes (view, graphic->stroke);
 	if (graphic->text != NULL)
@@ -184,13 +185,10 @@ lsm_svg_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_text_attributes (view);
 	if (graphic->stroke != NULL)
 		lsm_svg_view_pop_stroke_attributes (view);
-	if (graphic->fill != NULL) {
-		if (graphic->fill->clip_path.value != NULL)
-			lsm_svg_view_pop_clip (view);
+	if (graphic->fill != NULL)
 		lsm_svg_view_pop_fill_attributes (view);
-	}
-
-	lsm_svg_view_pop_opacity (view);
+	if (graphic->mask != NULL)
+		lsm_svg_view_pop_mask_attributes (view);
 
 	if (graphic->transform != NULL)
 		lsm_svg_view_pop_matrix (view);
@@ -275,7 +273,6 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 
 	s_graphic_class->graphic_render = _graphic_render;
 	s_graphic_class->graphic_get_extents = _graphic_get_extents;
-	s_graphic_class->late_opacity_handling = FALSE;
 
 	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 
@@ -285,9 +282,8 @@ lsm_svg_graphic_class_init (LsmSvgGraphicClass *s_graphic_class)
 					     offsetof (LsmSvgGraphic, style));
 	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "color",
 					     offsetof (LsmSvgGraphic, color));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "opacity",
-					     offsetof (LsmSvgGraphic, opacity));
 
+	lsm_dom_attribute_map_add_mask_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, mask));
 	lsm_dom_attribute_map_add_fill_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, fill));
 	lsm_dom_attribute_map_add_stroke_attribute_bag (s_element_class->attributes, offsetof (LsmSvgGraphic, stroke));
 	lsm_dom_attribute_map_add_transform_attribute_bag (s_element_class->attributes,
