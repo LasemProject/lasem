@@ -49,20 +49,20 @@ _mask_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 	units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	lsm_svg_pattern_units_attribute_parse (&mask->content_units, &units);
 
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
+	length.value_unit = -10.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
 	lsm_svg_animated_length_attribute_parse (&mask->x, &length);
 
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
+	length.value_unit = -10.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
 	lsm_svg_animated_length_attribute_parse (&mask->y, &length);
 
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
+	length.value_unit = 120.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
 	lsm_svg_animated_length_attribute_parse (&mask->width, &length);
 
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
+	length.value_unit = 120.0;
+	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
 	lsm_svg_animated_length_attribute_parse (&mask->height, &length);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
@@ -71,6 +71,73 @@ _mask_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
 static void
 _mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 {
+	LsmSvgMaskElement *mask = LSM_SVG_MASK_ELEMENT (self);
+	gboolean is_object_bounding_box;
+	LsmBox viewport;
+	const LsmBox *mask_extents;
+
+	mask_extents = lsm_svg_view_get_pattern_extents (view);
+
+	is_object_bounding_box = (mask->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	viewport.x      = lsm_svg_view_normalize_length (view, &mask->x.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.y      = lsm_svg_view_normalize_length (view, &mask->y.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.width  = lsm_svg_view_normalize_length (view, &mask->width.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &mask->height.length.base,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_viewbox (view);
+
+		viewport.x = viewport.x * mask_extents->width + mask_extents->x;
+		viewport.y = viewport.y * mask_extents->height + mask_extents->y;
+		viewport.width *= mask_extents->width;
+		viewport.height *= mask_extents->height;
+	}
+
+	if (viewport.width <= 0.0 || viewport.height <= 0.0)
+		return;
+
+	lsm_debug ("[LsmSvgMaskElement::render_paint] Create mask x = %g, y = %g, w = %g, h = %g",
+		   viewport.x, viewport.y, viewport.width, viewport.height);
+
+	lsm_svg_view_create_surface_pattern (view, &viewport,
+					     mask->units.value,
+					     mask->content_units.value, NULL,
+					     LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
+
+	is_object_bounding_box = (mask->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmSvgMatrix matrix;
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_matrix_init_translate (&matrix, +mask_extents->x, +mask_extents->y);
+		lsm_svg_matrix_scale (&matrix, mask_extents->width, mask_extents->height);
+		lsm_svg_view_push_viewbox (view, &viewbox);
+		lsm_svg_view_push_matrix (view, &matrix);
+
+		lsm_debug ("[LsmSvgMaskElement::render_paint] object_bounding_box"
+			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
+			   mask_extents->width, mask_extents->height,
+			   mask_extents->x, mask_extents->y);
+	}
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_matrix (view);
+		lsm_svg_view_pop_viewbox (view);
+	}
 }
 
 /* LsmSvgMaskElement implementation */

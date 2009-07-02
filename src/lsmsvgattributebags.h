@@ -28,9 +28,10 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	LsmSvgDoubleAttribute opacity;
 	LsmDomAttribute clip_path;
 	LsmDomEnumAttribute clip_rule;
-	LsmSvgDoubleAttribute opacity;
+	LsmDomAttribute mask;
 } LsmSvgMaskAttributeBag;
 
 typedef struct {

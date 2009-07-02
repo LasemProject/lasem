@@ -101,8 +101,14 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	viewport.height = lsm_svg_view_normalize_length (view, &pattern->height.length.base,
 							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	if (is_object_bounding_box)
+	if (is_object_bounding_box) {
 		lsm_svg_view_pop_viewbox (view);
+
+		viewport.x *= pattern_extents->width;
+		viewport.y *= pattern_extents->height;
+		viewport.width *= pattern_extents->width;
+		viewport.height *= pattern_extents->height;
+	}
 
 	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
@@ -113,7 +119,8 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_create_surface_pattern (view, &viewport,
 					     pattern->units.value,
 					     pattern->content_units.value,
-					     &pattern->transform.matrix);
+					     &pattern->transform.matrix,
+					     LSM_SVG_VIEW_SURFACE_TYPE_AUTO);
 
 	is_object_bounding_box = (pattern->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -127,7 +134,9 @@ _pattern_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_matrix (view, &matrix);
 
 		lsm_debug ("[LsmSvgPatternElement::render_paint] object_bounding_box"
-			   " x_scale = %g, y_scale = %g",pattern_extents->width, pattern_extents->height);
+			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
+			   pattern_extents->width, pattern_extents->height,
+			   pattern_extents->x,     pattern_extents->y);
 	}
 
 	is_viewbox_defined = lsm_dom_attribute_is_defined ((LsmDomAttribute *) &pattern->viewbox);

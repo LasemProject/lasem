@@ -57,6 +57,10 @@ lsm_dom_attribute_map_add_mask_attribute_bag (LsmDomAttributeMap *map, ptrdiff_t
 						 offsetof (LsmSvgMaskAttributeBag, clip_rule),
 						 NULL,
 						 bag_offset, &lsm_svg_mask_attribute_bag_class);
+	lsm_dom_attribute_map_add_bag_attribute (map, "mask",
+						 offsetof (LsmSvgMaskAttributeBag, mask),
+						 NULL,
+						 bag_offset, &lsm_svg_mask_attribute_bag_class);
 }
 
 static void *

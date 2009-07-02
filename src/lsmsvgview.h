@@ -29,6 +29,11 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	LSM_SVG_VIEW_SURFACE_TYPE_AUTO,
+	LSM_SVG_VIEW_SURFACE_TYPE_IMAGE
+} LsmSvgViewSurfaceType;
+
 #define LSM_TYPE_SVG_VIEW             (lsm_svg_view_get_type ())
 #define LSM_SVG_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_SVG_VIEW, LsmSvgView))
 #define LSM_SVG_VIEW_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_SVG_VIEW, LsmSvgViewClass))
@@ -72,6 +77,39 @@ LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
 double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *length,
 							 LsmSvgLengthDirection direction);
+
+const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
+const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
+
+void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
+							                   double r, double fx, double fy);
+void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
+							                   double x2, double y2);
+void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset,
+							 const LsmSvgColor *color, double opacity);
+void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
+							 LsmSvgSpreadMethod method,
+							 LsmSvgPatternUnits units,
+							 const LsmSvgMatrix *matrix);
+
+void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
+							 LsmSvgPatternUnits units,
+							 LsmSvgPatternUnits content_units,
+							 const LsmSvgMatrix *matrix,
+							 LsmSvgViewSurfaceType surface_type);
+
+void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
+						                   double width, double height,
+								   double rx, double ry);
+void 		lsm_svg_view_show_circle	(LsmSvgView *view, double cx, double cy, double r);
+void 		lsm_svg_view_show_ellipse	(LsmSvgView *view, double cx, double cy, double rx, double ry);
+void		lsm_svg_view_show_path		(LsmSvgView *view, const char *d);
+void 		lsm_svg_view_show_line 		(LsmSvgView *view, double x1, double y1, double x2, double y2);
+void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
+void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
+void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
+void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
+
 void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
 void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
 void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
@@ -95,37 +133,6 @@ void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, const LsmSvgStrok
 void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
 void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, const LsmSvgTextAttributeBag *text);
 void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
-
-const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
-const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
-
-void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
-							                   double r, double fx, double fy);
-void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
-							                   double x2, double y2);
-void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset,
-							 const LsmSvgColor *color, double opacity);
-void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
-							 LsmSvgSpreadMethod method,
-							 LsmSvgPatternUnits units,
-							 const LsmSvgMatrix *matrix);
-
-void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
-							 LsmSvgPatternUnits units,
-							 LsmSvgPatternUnits content_units,
-							 const LsmSvgMatrix *matrix);
-
-void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
-						                   double width, double height,
-								   double rx, double ry);
-void 		lsm_svg_view_show_circle	(LsmSvgView *view, double cx, double cy, double r);
-void 		lsm_svg_view_show_ellipse	(LsmSvgView *view, double cx, double cy, double rx, double ry);
-void		lsm_svg_view_show_path		(LsmSvgView *view, const char *d);
-void 		lsm_svg_view_show_line 		(LsmSvgView *view, double x1, double y1, double x2, double y2);
-void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
-void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
-void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
-void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
 
 G_END_DECLS
 
