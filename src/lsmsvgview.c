@@ -819,14 +819,14 @@ paint (LsmSvgView *view)
 		cairo_push_group (cairo);
 
 	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_FILL,
-			&fill->paint.paint, fill->opacity.value * group_opacity)) {
+			&fill->paint.paint, fill->opacity.value * (use_group ? 1.0 : group_opacity))) {
 		cairo_set_fill_rule (cairo, fill->rule.value == LSM_SVG_FILL_RULE_EVEN_ODD ?
 				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
 		cairo_fill_preserve (cairo);
 	}
 
 	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
-			&stroke->paint.paint, stroke->opacity.value * group_opacity)) {
+			&stroke->paint.paint, stroke->opacity.value * (use_group ? 1.0 : group_opacity))) {
 		double line_width;
 
 		switch (stroke->line_join.value) {
