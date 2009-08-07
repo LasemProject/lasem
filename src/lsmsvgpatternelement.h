@@ -23,7 +23,7 @@
 #define LSM_SVG_PATTERN_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,23 +37,25 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgPatternElementClass LsmSvgPatternElementClass;
 
 struct _LsmSvgPatternElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x;
-	LsmSvgAnimatedLengthAttribute	y;
-	LsmSvgAnimatedLengthAttribute	width;
-	LsmSvgAnimatedLengthAttribute	height;
+	LsmSvgLengthAttribute		x;
+	LsmSvgLengthAttribute		y;
+	LsmSvgLengthAttribute		width;
+	LsmSvgLengthAttribute		height;
 	LsmSvgTransformAttribute 	transform;
-	LsmDomEnumAttribute 		units;
-	LsmDomEnumAttribute 		content_units;
-	LsmDomAttribute 		href;
+	LsmSvgPatternUnitsAttribute	units;
+	LsmSvgPatternUnitsAttribute	content_units;
+	LsmAttribute 			href;
 
 	LsmSvgViewboxAttribute	viewbox;
 	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
+
+	gboolean enable_rendering;
 };
 
 struct _LsmSvgPatternElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_pattern_element_get_type (void);

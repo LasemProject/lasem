@@ -85,16 +85,11 @@ int main(int argc, char **argv)
 	cairo_surface_t *surface;
 	GError *error = NULL;
 	GOptionContext *context;
-	GFile *file;
 	FileFormat format;
 	char *output_filename;
 	char *input_filename;
-	char *mime;
-	char *buffer = NULL;
-	size_t size;
 	double height_pt, width_pt;
 	unsigned int height, width;
-	gboolean success;
 
 	g_type_init ();
 
@@ -164,102 +159,69 @@ int main(int argc, char **argv)
 		g_free (directory);
 	}
 
-	mime = g_content_type_guess (input_filename, NULL, 0, NULL);
-	file = g_file_new_for_path (input_filename);
+	document = lsm_dom_document_new_from_path (input_filename, NULL);
+	if (document == NULL)
+		document = lsm_dom_document_new_from_url (input_filename, NULL);
 
-	success = g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL);
-	if (!success) {
-		g_object_unref (file);
-		file = g_file_new_for_uri (input_filename);
-		success = g_file_load_contents (file, NULL, &buffer, &size, NULL, NULL);
-	}
+	if (document != NULL) {
+		lsm_dom_document_set_resolution (document, option_ppi);
 
-	if (success) {
-		char *mathml;
+		view = lsm_dom_document_create_view (document);
 
-		if (strcmp (mime, "text/mathml") == 0 ||
-		    strcmp (mime, "image/svg+xml") == 0)
-			mathml = buffer;
-		else {
-			mathml = itex2MML_parse (buffer, size);
-			g_free (buffer);
-			buffer = NULL;
+		lsm_dom_view_set_debug (view, option_debug);
+
+		width_pt = 2.0;
+		height_pt = 2.0;
+
+		lsm_dom_view_get_size (view, &width_pt, &height_pt);
+		lsm_dom_view_get_size_pixels (view, &width, &height);
+
+		switch (format) {
+			case FORMAT_PDF:
+				surface = cairo_pdf_surface_create (output_filename,
+								    width_pt, height_pt);
+				break;
+			case FORMAT_PS:
+				surface = cairo_ps_surface_create (output_filename,
+								   width_pt, height_pt);
+				break;
+			case FORMAT_PNG:
+				surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+								      width,
+								      height);
+				break;
+			case FORMAT_SVG:
+			default:
+				surface = cairo_svg_surface_create (output_filename,
+								    width_pt, height_pt);
+				break;
 		}
 
-		if (mathml != NULL) {
-			document = lsm_dom_document_new_from_memory (mathml);
-			lsm_dom_document_set_resolution (document, option_ppi);
+		cairo = cairo_create (surface);
+		cairo_surface_destroy (surface);
 
-			if (document != NULL) {
-				view = lsm_dom_document_create_view (document);
+		lsm_dom_view_set_cairo (view, cairo);
 
-				lsm_dom_view_set_debug (view, option_debug);
+		lsm_dom_view_render (view, 0, 0);
 
-				width_pt = 2.0;
-				height_pt = 2.0;
+		switch (format) {
+			case FORMAT_PNG:
+				cairo_surface_write_to_png (cairo_get_target (cairo),
+							    output_filename);
+				break;
+			default:
+				break;
+		}
 
-				lsm_dom_view_get_size (view, &width_pt, &height_pt);
-				lsm_dom_view_get_size_pixels (view, &width, &height);
+		cairo_destroy (cairo);
 
-				switch (format) {
-					case FORMAT_PDF:
-						surface = cairo_pdf_surface_create (output_filename,
-										    width_pt, height_pt);
-						break;
-					case FORMAT_PS:
-						surface = cairo_ps_surface_create (output_filename,
-										   width_pt, height_pt);
-						break;
-					case FORMAT_PNG:
-						surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
-										      width,
-										      height);
-						break;
-					case FORMAT_SVG:
-					default:
-						surface = cairo_svg_surface_create (output_filename,
-										    width_pt, height_pt);
-						break;
-				}
+		g_object_unref (view);
 
-				cairo = cairo_create (surface);
-				cairo_surface_destroy (surface);
+		g_object_unref (document);
 
-				lsm_dom_view_set_cairo (view, cairo);
-
-				lsm_dom_view_render (view, 0, 0);
-
-				switch (format) {
-					case FORMAT_PNG:
-						cairo_surface_write_to_png (cairo_get_target (cairo),
-									    output_filename);
-						break;
-					default:
-						break;
-				}
-
-				cairo_destroy (cairo);
-
-				g_object_unref (view);
-
-				g_object_unref (document);
-
-				lsm_debug ("width = %g pt, height = %g pt",  width_pt, height_pt);
-			} else
-				g_warning ("Can't load %s", input_filename);
-		} else
-			g_warning ("Invalid document");
-
-		if (mathml == buffer)
-			g_free (mathml);
-		else
-			itex2MML_free_string (mathml);
-
-		g_object_unref (file);
+		lsm_debug ("width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else
 		g_warning ("Can't load %s", input_filename);
-
-	g_free (mime);
 
 	return (0);
 }

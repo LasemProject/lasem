@@ -115,10 +115,13 @@ lasem_test_render (char const *filename)
 
 		if (is_xml)
 			xml = buffer;
-		else
+		else {
 			xml = itex2MML_parse (buffer, size);
+			size = 0;
+		}
 
-		document = lsm_dom_document_new_from_memory (xml);
+		document = lsm_dom_document_new_from_memory (xml, size, NULL);
+		lsm_dom_document_set_path (document, filename);
 
 		view = lsm_dom_document_create_view (document);
 

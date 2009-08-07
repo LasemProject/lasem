@@ -23,135 +23,70 @@
 #ifndef LSM_SVG_ATTRIBUTES_H
 #define LSM_SVG_ATTRIBUTES_H
 
-#include <lsmdomattributes.h>
+#include <lsmattributes.h>
 #include <lsmdomview.h>
 #include <lsmsvg.h>
 #include <lsmsvgenums.h>
+#include <lsmsvgtraits.h>
 #include <lsmsvglength.h>
 #include <lsmsvgmatrix.h>
 
 G_BEGIN_DECLS
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	double value;
 } LsmSvgDoubleAttribute;
 
 typedef struct {
-	double red;
-	double green;
-	double blue;
-} LsmSvgColor;
-
-extern const LsmSvgColor lsm_svg_color_null;
-
-typedef struct {
-	unsigned int n_dashes;
-	LsmSvgLength *dashes;
-} LsmSvgDashArray;
-
-extern const LsmSvgDashArray lsm_svg_dash_array_null;
-
-LsmSvgDashArray * 	lsm_svg_dash_array_new 		(unsigned int n_dashes);
-void 			lsm_svg_dash_array_free 	(LsmSvgDashArray *array);
-LsmSvgDashArray * 	lsm_svg_dash_array_duplicate 	(const LsmSvgDashArray *origin);
-
-typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgDashArray *value;
 } LsmSvgDashArrayAttribute;
 
 typedef struct {
-	LsmSvgPaintType type;
-	char *uri;
-	LsmSvgColor color;
-} LsmSvgPaint;
-
-typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgLength length;
-	double value;
 } LsmSvgLengthAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
-	LsmSvgAnimatedLength length;
-	double value;
-} LsmSvgAnimatedLengthAttribute;
-
-typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgPaint paint;
 } LsmSvgPaintAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	char *value;
 } LsmSvgStringAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgColor value;
 } LsmSvgColorAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmBox value;
 } LsmSvgViewboxAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgMatrix matrix;
 } LsmSvgTransformAttribute;
 
 typedef struct {
-	gboolean defer;
-	LsmSvgAlign align;
-	LsmSvgMeetOrSlice meet_or_slice;
-} LsmSvgPreserveAspectRatio;
-
-typedef struct {
-	LsmDomAttribute attr;
+	LsmAttribute base;
 	LsmSvgPreserveAspectRatio value;
 } LsmSvgPreserveAspectRatioAttribute;
 
-/* Properties */
+typedef struct {
+	LsmAttribute base;
+	LsmSvgSpreadMethod value;
+} LsmSvgSpreadMethodAtttribute;
 
-void 		lsm_svg_double_attribute_parse 		(LsmSvgDoubleAttribute *attribute,
-							 double *double_value);
-void		lsm_svg_length_attribute_parse 		(LsmSvgLengthAttribute *attribute,
-							 LsmSvgLength *default_value);
-void 		lsm_svg_animated_length_attribute_parse (LsmSvgAnimatedLengthAttribute *attribute,
-							 LsmSvgLength *default_value);
-
-void 		lsm_svg_dash_array_attribute_finalize 	(void *abstract);
-
-void		lsm_svg_dash_array_attribute_parse	(LsmSvgDashArrayAttribute *attribute,
-							 LsmSvgDashArray **default_value);
-
-void 		lsm_svg_fill_rule_attribute_parse 	(LsmDomEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_svg_line_join_attribute_parse 	(LsmDomEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_svg_line_cap_attribute_parse 	(LsmDomEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_svg_pattern_units_attribute_parse 	(LsmDomEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_svg_spread_method_attribute_parse 	(LsmDomEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_svg_paint_attribute_finalize 	(void *abstract);
-void 		lsm_svg_paint_attribute_parse 		(LsmSvgPaintAttribute *attribute,
-							 LsmSvgPaint *default_value,
-							 const LsmSvgColor *current_color);
-void 		lsm_svg_color_attribute_parse 		(LsmSvgColorAttribute *attribute,
-							 LsmSvgColor *default_value,
-							 const LsmSvgColor *current_color);
-
-/* Attributes */
-
-void		lsm_svg_viewbox_attribute_parse			(LsmSvgViewboxAttribute *attribute);
-void		lsm_svg_transform_attribute_parse		(LsmSvgTransformAttribute *attribute);
-void 		lsm_svg_preserve_aspect_ratio_attribute_parse 	(LsmSvgPreserveAspectRatioAttribute *attribute);
+typedef struct {
+	LsmAttribute base;
+	LsmSvgPatternUnits value;
+} LsmSvgPatternUnitsAttribute;
 
 G_END_DECLS
 

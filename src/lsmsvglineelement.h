@@ -23,7 +23,7 @@
 #define LSM_SVG_LINE_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,16 +37,16 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgLineElementClass LsmSvgLineElementClass;
 
 struct _LsmSvgLineElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x1;
-	LsmSvgAnimatedLengthAttribute	y1;
-	LsmSvgAnimatedLengthAttribute	x2;
-	LsmSvgAnimatedLengthAttribute	y2;
+	LsmSvgLengthAttribute	x1;
+	LsmSvgLengthAttribute	y1;
+	LsmSvgLengthAttribute	x2;
+	LsmSvgLengthAttribute	y2;
 };
 
 struct _LsmSvgLineElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_line_element_get_type (void);

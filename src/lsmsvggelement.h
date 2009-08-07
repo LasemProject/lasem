@@ -23,7 +23,7 @@
 #define LSM_SVG_G_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,11 +37,11 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgGElementClass LsmSvgGElementClass;
 
 struct _LsmSvgGElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 };
 
 struct _LsmSvgGElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_g_element_get_type (void);

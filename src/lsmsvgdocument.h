@@ -46,7 +46,7 @@ struct _LsmSvgDocumentClass {
 
 GType lsm_svg_document_get_type (void);
 
-LsmSvgDocument *		lsm_svg_document_new 		(void);
+LsmSvgDocument *	lsm_svg_document_new 			(void);
 LsmSvgSvgElement * 	lsm_svg_document_get_root_element 	(const LsmSvgDocument *document);
 
 G_END_DECLS

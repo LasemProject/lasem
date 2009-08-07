@@ -35,40 +35,19 @@ lsm_svg_circle_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
-static void
-lsm_svg_circle_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
-	LsmSvgLength length;
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cx, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->cy, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&circle->r, &length);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_circle_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	double cx, cy, r;
 
-	cx = lsm_svg_view_normalize_length (view, &circle->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &circle->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	r  = lsm_svg_view_normalize_length (view, &circle->r.length.base,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-	lsm_debug ("[LsmSvgCircleElement::graphic_render] cx = %g, cy = %g, r = %g",
+	lsm_debug ("[LsmSvgCircleElement::render] cx = %g, cy = %g, r = %g",
 		   cx, cy, r);
 
 	lsm_svg_view_show_circle (view, cx, cy, r);
@@ -82,17 +61,44 @@ lsm_svg_circle_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_CIRCLE_ELEMENT, NULL);
 }
 
+static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+
 static void
 lsm_svg_circle_element_init (LsmSvgCircleElement *self)
 {
+	self->cx.length = length_default;
+	self->cy.length = length_default;
+	self->r.length = length_default;
 }
 
 static void
 lsm_svg_circle_element_finalize (GObject *object)
 {
+	parent_class->finalize (object);
 }
 
 /* LsmSvgCircleElement class */
+
+static const LsmAttributeInfos lsm_svg_circle_element_attribute_infos[] = {
+	{
+		.name = "cx",
+		.attribute_offset = offsetof (LsmSvgCircleElement, cx),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "cy",
+		.attribute_offset = offsetof (LsmSvgCircleElement, cy),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "r",
+		.attribute_offset = offsetof (LsmSvgCircleElement, r),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
 static void
 lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
@@ -100,7 +106,6 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (s_rect_class);
 
 	parent_class = g_type_class_peek_parent (s_rect_class);
 
@@ -108,18 +113,12 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 
 	d_node_class->get_node_name = lsm_svg_circle_element_get_node_name;
 
-	s_element_class->update = lsm_svg_circle_element_update;
+	s_element_class->render = lsm_svg_circle_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_graphic_class->graphic_render = lsm_svg_circle_element_graphic_render;
-
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "cx",
-					  offsetof (LsmSvgCircleElement, cx));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "cy",
-					  offsetof (LsmSvgCircleElement, cy));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "r",
-					  offsetof (LsmSvgCircleElement, r));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_circle_element_attribute_infos),
+					      lsm_svg_circle_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_TYPE_SVG_ELEMENT)

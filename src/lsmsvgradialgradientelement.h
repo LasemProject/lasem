@@ -39,11 +39,11 @@ typedef struct _LsmSvgRadialGradientElementClass LsmSvgRadialGradientElementClas
 struct _LsmSvgRadialGradientElement {
 	LsmSvgGradientElement gradient;
 
-	LsmSvgAnimatedLengthAttribute	cx;
-	LsmSvgAnimatedLengthAttribute	cy;
-	LsmSvgAnimatedLengthAttribute	r;
-	LsmSvgAnimatedLengthAttribute	fx;
-	LsmSvgAnimatedLengthAttribute	fy;
+	LsmSvgLengthAttribute	cx;
+	LsmSvgLengthAttribute	cy;
+	LsmSvgLengthAttribute	r;
+	LsmSvgLengthAttribute	fx;
+	LsmSvgLengthAttribute	fy;
 };
 
 struct _LsmSvgRadialGradientElementClass {

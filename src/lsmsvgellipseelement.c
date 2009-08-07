@@ -34,43 +34,18 @@ lsm_svg_ellipse_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
-static void
-lsm_svg_ellipse_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
-	LsmSvgLength length;
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->cx, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->cy, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->rx, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_animated_length_attribute_parse (&ellipse->ry, &length);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_ellipse_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_ellipse_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
 	double cx, cy, rx, ry;
 
-	cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_svg_view_show_ellipse (view, cx, cy, rx, ry);
 }
@@ -83,17 +58,51 @@ lsm_svg_ellipse_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_ELLIPSE_ELEMENT, NULL);
 }
 
+static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+
 static void
 lsm_svg_ellipse_element_init (LsmSvgEllipseElement *self)
 {
+	self->cx.length = length_default;
+	self->cy.length = length_default;
+	self->rx.length = length_default;
+	self->ry.length = length_default;
 }
 
 static void
 lsm_svg_ellipse_element_finalize (GObject *object)
 {
+	parent_class->finalize (object);
 }
 
 /* LsmSvgEllipseElement class */
+
+static const LsmAttributeInfos lsm_svg_ellipse_element_attribute_infos[] = {
+	{
+		.name = "cx",
+		.attribute_offset = offsetof (LsmSvgEllipseElement, cx),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "cy",
+		.attribute_offset = offsetof (LsmSvgEllipseElement, cy),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "rx",
+		.attribute_offset = offsetof (LsmSvgEllipseElement, rx),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "ry",
+		.attribute_offset = offsetof (LsmSvgEllipseElement, ry),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
 static void
 lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
@@ -101,7 +110,6 @@ lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
 	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (s_rect_class);
 
 	parent_class = g_type_class_peek_parent (s_rect_class);
 
@@ -109,20 +117,12 @@ lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
 
 	d_node_class->get_node_name = lsm_svg_ellipse_element_get_node_name;
 
-	s_element_class->update = lsm_svg_ellipse_element_update;
+	s_element_class->render = lsm_svg_ellipse_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_graphic_class->graphic_render = lsm_svg_ellipse_element_graphic_render;
-
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "cx",
-					  offsetof (LsmSvgEllipseElement, cx));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "cy",
-					  offsetof (LsmSvgEllipseElement, cy));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "rx",
-					  offsetof (LsmSvgEllipseElement, rx));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "ry",
-					  offsetof (LsmSvgEllipseElement, ry));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_ellipse_element_attribute_infos),
+					      lsm_svg_ellipse_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgEllipseElement, lsm_svg_ellipse_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgEllipseElement, lsm_svg_ellipse_element, LSM_TYPE_SVG_ELEMENT)

@@ -23,7 +23,7 @@
 #define LSM_SVG_POLYGON_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,13 +37,13 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgPolygonElementClass LsmSvgPolygonElementClass;
 
 struct _LsmSvgPolygonElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmDomAttribute	points;
+	LsmAttribute	points;
 };
 
 struct _LsmSvgPolygonElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_polygon_element_get_type (void);

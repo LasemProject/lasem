@@ -23,7 +23,7 @@
 #define LSM_SVG_GRADIENT_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,16 +37,20 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgGradientElementClass LsmSvgGradientElementClass;
 
 struct _LsmSvgGradientElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
 	LsmSvgTransformAttribute transform;
-	LsmDomEnumAttribute units;
-	LsmDomEnumAttribute spread_method;
-	LsmDomAttribute href;
+	LsmSvgPatternUnitsAttribute units;
+	LsmSvgSpreadMethodAtttribute spread_method;
+	LsmAttribute href;
+
+	gboolean enable_rendering;
 };
 
 struct _LsmSvgGradientElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
+
+	void (*create_gradient)	(LsmSvgElement *self, LsmSvgView *view);
 };
 
 GType lsm_svg_gradient_element_get_type (void);

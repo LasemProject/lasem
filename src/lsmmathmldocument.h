@@ -50,7 +50,9 @@ GType lsm_mathml_document_get_type (void);
 LsmMathmlDocument *	lsm_mathml_document_new 		(void);
 LsmMathmlMathElement * 	lsm_mathml_document_get_root_element 	(const LsmMathmlDocument *document);
 
+#if 0
 LsmMathmlDocument * 	lsm_mathml_document_new_from_itex	(const char *itex);
+#endif
 
 G_END_DECLS
 

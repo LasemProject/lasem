@@ -23,7 +23,7 @@
 #define LSM_SVG_USE_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,18 +37,18 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgUseElementClass LsmSvgUseElementClass;
 
 struct _LsmSvgUseElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x;
-	LsmSvgAnimatedLengthAttribute	y;
-	LsmSvgAnimatedLengthAttribute	width;
-	LsmSvgAnimatedLengthAttribute	height;
+	LsmSvgLengthAttribute	x;
+	LsmSvgLengthAttribute	y;
+	LsmSvgLengthAttribute	width;
+	LsmSvgLengthAttribute	height;
 
-	LsmDomAttribute		href;
+	LsmAttribute		href;
 };
 
 struct _LsmSvgUseElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_use_element_get_type (void);

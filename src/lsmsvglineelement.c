@@ -35,45 +35,20 @@ lsm_svg_line_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
-static void
-lsm_svg_line_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
-	LsmSvgLength length;
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->x1, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->y1, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->x2, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&line->y2, &length);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_line_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_line_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
 	double x1, y1, x2, y2;
 
-	x1 = lsm_svg_view_normalize_length (view, &line->x1.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y1 = lsm_svg_view_normalize_length (view, &line->y1.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	x2 = lsm_svg_view_normalize_length (view, &line->x2.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y2 = lsm_svg_view_normalize_length (view, &line->y2.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x1 = lsm_svg_view_normalize_length (view, &line->x1.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y1 = lsm_svg_view_normalize_length (view, &line->y1.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x2 = lsm_svg_view_normalize_length (view, &line->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y2 = lsm_svg_view_normalize_length (view, &line->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_debug ("[LsmSvgLineElement::graphic_render] %g, %g, %g, %g", x1, y1, x2, y2);
+	lsm_debug ("[LsmSvgLineElement::render] %g, %g, %g, %g", x1, y1, x2, y2);
 
 	lsm_svg_view_show_line (view, x1, y1, x2, y2);
 }
@@ -86,38 +61,62 @@ lsm_svg_line_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_LINE_ELEMENT, NULL);
 }
 
+static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+
 static void
 lsm_svg_line_element_init (LsmSvgLineElement *self)
 {
+	self->x1.length = length_default;
+	self->x2.length = length_default;
+	self->y1.length = length_default;
+	self->y2.length = length_default;
 }
 
 /* LsmSvgLineElement class */
+
+static const LsmAttributeInfos lsm_svg_line_element_attribute_infos[] = {
+	{
+		.name = "x1",
+		.attribute_offset = offsetof (LsmSvgLineElement, x1),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "y1",
+		.attribute_offset = offsetof (LsmSvgLineElement, y1),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "x2",
+		.attribute_offset = offsetof (LsmSvgLineElement, x2),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "y2",
+		.attribute_offset = offsetof (LsmSvgLineElement, y2),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
 static void
 lsm_svg_line_element_class_init (LsmSvgLineElementClass *s_rect_class)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (s_rect_class);
 
 	parent_class = g_type_class_peek_parent (s_rect_class);
 
 	d_node_class->get_node_name = lsm_svg_line_element_get_node_name;
 
-	s_element_class->update = lsm_svg_line_element_update;
+	s_element_class->render = lsm_svg_line_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_graphic_class->graphic_render = lsm_svg_line_element_graphic_render;
-
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x1",
-					  offsetof (LsmSvgLineElement, x1));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y1",
-					  offsetof (LsmSvgLineElement, y1));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x2",
-					  offsetof (LsmSvgLineElement, x2));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y2",
-					  offsetof (LsmSvgLineElement, y2));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_line_element_attribute_infos),
+					      lsm_svg_line_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_TYPE_SVG_ELEMENT)

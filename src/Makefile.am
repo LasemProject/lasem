@@ -7,7 +7,8 @@ INCLUDES = \
 AM_CFLAGS =\
 	 -Wall\
 	 -Werror \
-	 -g
+	 -g \
+	 -O0
 
 lib_LTLIBRARIES = liblasem.la
 
@@ -17,6 +18,10 @@ liblasem_la_LIBADD = 				\
 
 liblasem_la_SOURCES =				\
 	lsmdebug.c				\
+	lsmstr.c				\
+	lsmtraits.c				\
+	lsmproperties.c				\
+	lsmattributes.c				\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
 	lsmdomdocument.c			\
@@ -60,9 +65,15 @@ liblasem_la_SOURCES =				\
 	lsmmathmlaligngroupelement.c		\
 	lsmmathmlutils.c			\
 	lsmmathmllayoututils.c			\
+	lsmsvgenums.c				\
+	lsmsvgtraits.c				\
+	lsmsvgstyle.c				\
+	lsmsvgcolors.c				\
+	lsmsvglength.c				\
+	lsmsvgview.c				\
+	lsmsvgmatrix.c				\
 	lsmsvgdocument.c			\
 	lsmsvgelement.c				\
-	lsmsvggraphic.c				\
 	lsmsvgclippathelement.c			\
 	lsmsvgsvgelement.c			\
 	lsmsvguseelement.c			\
@@ -83,20 +94,16 @@ liblasem_la_SOURCES =				\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
 	lsmsvgpatternelement.c			\
-	lsmsvgmaskelement.c			\
-	lsmsvgenums.c				\
-	lsmsvgattributes.c			\
-	lsmsvgattributebags.c			\
-	lsmsvgstyle.c				\
-	lsmsvgcolors.c				\
-	lsmsvglength.c				\
-	lsmsvgutils.c				\
-	lsmsvgview.c				\
-	lsmsvgmatrix.c
+	lsmsvgmaskelement.c
 
 liblasem_ladir = $(includedir)/lasem
 liblasem_la_HEADERS = \
+	lsm.h					\
+	lsmstr.h				\
 	lsmdebug.h				\
+	lsmtraits.h				\
+	lsmproperties.h				\
+	lsmattributes.h				\
 	lsmdom.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
@@ -143,9 +150,16 @@ liblasem_la_HEADERS = \
 	lsmmathmlutils.h			\
 	lsmmathmllayoututils.h			\
 	lsmsvg.h				\
+	lsmsvgenums.h				\
+	lsmsvgtraits.h				\
+	lsmsvgattributes.h			\
+	lsmsvgstyle.h				\
+	lsmsvgcolors.h				\
+	lsmsvglength.h				\
+	lsmsvgview.h				\
+	lsmsvgmatrix.h				\
 	lsmsvgdocument.h			\
 	lsmsvgelement.h				\
-	lsmsvggraphic.h				\
 	lsmsvgclippathelement.h			\
 	lsmsvgsvgelement.h			\
 	lsmsvggelement.h			\
@@ -166,16 +180,7 @@ liblasem_la_HEADERS = \
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
 	lsmsvgpatternelement.h			\
-	lsmsvgmaskelement.h			\
-	lsmsvgenums.h				\
-	lsmsvgattributes.h			\
-	lsmsvgattributebags.h			\
-	lsmsvgstyle.h				\
-	lsmsvgcolors.h				\
-	lsmsvglength.h				\
-	lsmsvgutils.h				\
-	lsmsvgview.h				\
-	lsmsvgmatrix.h
+	lsmsvgmaskelement.h
 
 bin_PROGRAMS = lasemtest lasemrender
 

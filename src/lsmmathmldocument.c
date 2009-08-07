@@ -168,6 +168,7 @@ lsm_mathml_document_class_init (LsmMathmlDocumentClass *m_document_class)
 
 G_DEFINE_TYPE (LsmMathmlDocument, lsm_mathml_document, LSM_TYPE_DOM_DOCUMENT)
 
+#if 0
 static void
 _dummy_error (const char *msg)
 {
@@ -194,3 +195,4 @@ lsm_mathml_document_new_from_itex (const char *itex)
 
 	return document;
 }
+#endif

@@ -23,7 +23,7 @@
 #define LSM_SVG_MASK_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,18 +37,20 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgMaskElementClass LsmSvgMaskElementClass;
 
 struct _LsmSvgMaskElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x;
-	LsmSvgAnimatedLengthAttribute	y;
-	LsmSvgAnimatedLengthAttribute	width;
-	LsmSvgAnimatedLengthAttribute	height;
-	LsmDomEnumAttribute 		units;
-	LsmDomEnumAttribute 		content_units;
+	LsmSvgLengthAttribute		x;
+	LsmSvgLengthAttribute		y;
+	LsmSvgLengthAttribute		width;
+	LsmSvgLengthAttribute		height;
+	LsmSvgPatternUnitsAttribute	units;
+	LsmSvgPatternUnitsAttribute	content_units;
+
+	gboolean enable_rendering;
 };
 
 struct _LsmSvgMaskElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_mask_element_get_type (void);

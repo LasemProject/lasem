@@ -23,7 +23,7 @@
 #define LSM_SVG_TEXT_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,14 +37,14 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgTextElementClass LsmSvgTextElementClass;
 
 struct _LsmSvgTextElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x;
-	LsmSvgAnimatedLengthAttribute	y;
+	LsmSvgLengthAttribute	x;
+	LsmSvgLengthAttribute	y;
 };
 
 struct _LsmSvgTextElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_text_element_get_type (void);

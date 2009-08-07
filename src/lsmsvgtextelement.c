@@ -41,27 +41,10 @@ lsm_svg_text_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 
 /* LsmSvgElement implementation */
 
-static void
-lsm_svg_text_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
-	LsmSvgLength length;
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&text->x, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PX;
-	lsm_svg_animated_length_attribute_parse (&text->y, &length);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_text_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
 	LsmDomNode *node = LSM_DOM_NODE (self);
@@ -78,8 +61,8 @@ lsm_svg_text_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
 		}
 	}
 
-	x = lsm_svg_view_normalize_length (view, &text->x.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y = lsm_svg_view_normalize_length (view, &text->y.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x = lsm_svg_view_normalize_length (view, &text->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &text->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_svg_view_show_text (view, g_strstrip (string->str), x, y);
 
@@ -94,43 +77,58 @@ lsm_svg_text_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_TEXT_ELEMENT, NULL);
 }
 
+static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+
 static void
 lsm_svg_text_element_init (LsmSvgTextElement *self)
 {
+	self->x.length = length_default;
+	self->y.length = length_default;
 }
 
 static void
 lsm_svg_text_element_finalize (GObject *object)
 {
+	parent_class->finalize (object);
 }
 
 /* LsmSvgTextElement class */
 
-static void
-lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_rect_class)
-{
-	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
-	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
-	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (s_rect_class);
+static const LsmAttributeInfos lsm_svg_text_element_attribute_infos[] = {
+	{
+		.name = "x",
+		.attribute_offset = offsetof (LsmSvgTextElement, x),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "y",
+		.attribute_offset = offsetof (LsmSvgTextElement, y),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
-	parent_class = g_type_class_peek_parent (s_rect_class);
+static void
+lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_text_class)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (s_text_class);
+	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_text_class);
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_text_class);
+
+	parent_class = g_type_class_peek_parent (s_text_class);
 
 	object_class->finalize = lsm_svg_text_element_finalize;
 
 	d_node_class->get_node_name = lsm_svg_text_element_get_node_name;
 	d_node_class->can_append_child = lsm_svg_text_element_can_append_child;
 
-	s_element_class->update = lsm_svg_text_element_update;
+	s_element_class->render = lsm_svg_text_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_graphic_class->graphic_render = lsm_svg_text_element_graphic_render;
-
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x",
-					  offsetof (LsmSvgTextElement, x));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y",
-					  offsetof (LsmSvgTextElement, y));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_text_element_attribute_infos),
+					      lsm_svg_text_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgTextElement, lsm_svg_text_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgTextElement, lsm_svg_text_element, LSM_TYPE_SVG_ELEMENT)

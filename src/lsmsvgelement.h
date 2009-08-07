@@ -24,8 +24,8 @@
 #define LSM_SVG_ELEMENT_H
 
 #include <lsmsvg.h>
+#include <lsmattributes.h>
 #include <lsmsvgattributes.h>
-#include <lsmsvgattributebags.h>
 #include <lsmsvgstyle.h>
 #include <lsmdomelement.h>
 #include <cairo.h>
@@ -44,32 +44,27 @@ typedef struct _LsmSvgElementClass LsmSvgElementClass;
 struct _LsmSvgElement {
 	LsmDomElement	element;
 
-	LsmDomAttribute	id;
+	LsmPropertyBag property_bag;
 
-	/* View */
-
-	gboolean need_update;
-	gboolean need_children_update;
+	LsmAttribute			id;
+	LsmAttribute			class_name;
+	LsmSvgTransformAttribute 	transform;
 };
 
 struct _LsmSvgElementClass {
 	LsmDomElementClass  parent_class;
 
-	LsmDomAttributeMap *attributes;
+	LsmAttributeManager *attribute_manager;
 
-	void		(*update)		(LsmSvgElement *element, LsmSvgStyle *style);
+	void		(*enable_rendering)	(LsmSvgElement *element);
 	void 		(*render)		(LsmSvgElement *element, LsmSvgView *view);
-	void 		(*render_paint)		(LsmSvgElement *element, LsmSvgView *view);
-	void 		(*render_clip)		(LsmSvgElement *element, LsmSvgView *view);
 	void 		(*get_extents)		(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 };
 
 GType lsm_svg_element_get_type (void);
 
-void		lsm_svg_element_update 		(LsmSvgElement *element, const LsmSvgStyle *style);
 void 		lsm_svg_element_render 		(LsmSvgElement *element, LsmSvgView *view);
-void 		lsm_svg_element_render_paint 	(LsmSvgElement *element, LsmSvgView *view);
-void 		lsm_svg_element_render_clip 	(LsmSvgElement *element, LsmSvgView *view);
+void 		lsm_svg_element_force_render 	(LsmSvgElement *element, LsmSvgView *view);
 void		lsm_svg_element_get_extents	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 
 G_END_DECLS

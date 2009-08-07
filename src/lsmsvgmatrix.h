@@ -24,9 +24,16 @@
 
 #include <lsmsvg.h>
 
+typedef enum {
+	LSM_SVG_MATRIX_FLAGS_IDENTITY = 1 << 0
+} LsmSvgMatrixFlags;
+
 typedef struct {
 	double a, b, c, d, e, f;
+	LsmSvgMatrixFlags flags;
 } LsmSvgMatrix;
+
+gboolean lsm_svg_matrix_is_identity (const LsmSvgMatrix *matrix);
 
 void 	lsm_svg_matrix_init 			(LsmSvgMatrix *matrix, double a, double b,
 					                               double c, double d,

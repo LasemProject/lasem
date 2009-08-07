@@ -24,8 +24,11 @@
 #include <lsmmathmlpresentationtoken.h>
 #include <lsmmathmlentitydictionary.h>
 #include <lsmsvgtextelement.h>
+#include <lsmstr.h>
 #include <libxml/parser.h>
+#include <gio/gio.h>
 #include <string.h>
+#include <../itex2mml/itex2MML.h>
 
 typedef enum {
 	STATE
@@ -256,37 +259,134 @@ static xmlSAXHandler sax_handler = {
 	.entityDecl = lsm_dom_parser_declare_entity
 };
 
-LsmDomDocument *
-lsm_dom_document_new_from_file (const char *filename)
+static GQuark
+lsm_dom_document_error_quark (void)
 {
-	static LsmDomSaxParserState state;
+	static GQuark q = 0;
 
-	if (xmlSAXUserParseFile (&sax_handler, &state, filename) < 0) {
-		if (state.document !=  NULL)
-			g_object_unref (state.document);
-		g_warning ("[LsmDomParser::from_file] invalid document");
-		return NULL;
-	}
+        if (q == 0) {
+                q = g_quark_from_static_string ("mrp-error-quark");
+        }
 
-	return LSM_DOM_DOCUMENT (state.document);
+        return q;
 }
 
-LsmDomDocument *
-lsm_dom_document_new_from_memory (const char *buffer)
+#define LSM_DOM_DOCUMENT_ERROR lsm_dom_document_error_quark ()
+
+typedef enum {
+	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
+} LsmDomDocumentError;
+
+static void
+_dummy_error (const char *msg)
+{
+}
+
+static LsmDomDocument *
+lsm_dom_document_new_from_contents (const char *contents, gsize size, GError **error)
 {
 	static LsmDomSaxParserState state;
-
-	if (buffer == NULL)
-		return NULL;
+	char *mime;
+	char *xml;
 
 	state.document = NULL;
 
-	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, strlen (buffer)) < 0) {
-		if (state.document !=  NULL)
-			g_object_unref (state.document);
-		g_warning ("[LsmDomParser::from_memory] invalid document");
-		return NULL;
+	mime = g_content_type_guess (NULL, (guchar *) contents, size, NULL);
+	lsm_debug ("[LsmDomDocument::new_from_contents] mime = '%s'", mime);
+	if (g_strcmp0 (mime, "image/svg+xml") == 0 ||
+	    g_strcmp0 (mime, "text/mathml") == 0 ||
+	    g_strcmp0 (mime, "application/xml") == 0) {
+		xml = (char *) contents;
+	} else {
+		itex2MML_error = _dummy_error;
+
+		xml = itex2MML_parse (contents, size);
+		size = strlen (contents);
 	}
 
-	return LSM_DOM_DOCUMENT (state.document);
+	if (xmlSAXUserParseMemory (&sax_handler, &state, xml, size) < 0) {
+		if (state.document !=  NULL)
+			g_object_unref (state.document);
+		state.document = NULL;
+
+		lsm_debug ("[LsmDomParser::from_memory] invalid document");
+
+		g_set_error (error,
+			     LSM_DOM_DOCUMENT_ERROR,
+			     LSM_DOM_DOCUMENT_ERROR_INVALID_XML,
+			     "Invalid document.");
+	}
+
+	if (xml != contents)
+		itex2MML_free_string (xml);
+
+	return state.document;
+}
+
+LsmDomDocument *
+lsm_dom_document_new_from_memory (const char *buffer, gsize size, GError **error)
+{
+	g_return_val_if_fail (buffer != NULL, NULL);
+
+	if (size < 1)
+		size = strlen (buffer);
+
+	return lsm_dom_document_new_from_contents (buffer, size, error);
+}
+
+static LsmDomDocument *
+lsm_dom_document_new_from_file (GFile *file, GError **error)
+{
+	LsmDomDocument *document;
+	gsize size = 0;
+	char *contents = NULL;
+
+	if (!g_file_load_contents (file, NULL, &contents, &size, NULL, error))
+		return NULL;
+
+	document = lsm_dom_document_new_from_contents (contents, size, error);
+
+	g_free (contents);
+
+	return document;
+}
+
+LsmDomDocument *
+lsm_dom_document_new_from_path (const char *path, GError **error)
+{
+	LsmDomDocument *document;
+	GFile *file;
+
+	g_return_val_if_fail (path != NULL, NULL);
+
+	file = g_file_new_for_path (path);
+
+	document = lsm_dom_document_new_from_file (file, error);
+
+	g_object_unref (file);
+
+	if (document != NULL)
+		lsm_dom_document_set_path (document, path);
+
+	return document;
+}
+
+LsmDomDocument *
+lsm_dom_document_new_from_url (const char *url, GError **error)
+{
+	LsmDomDocument *document;
+	GFile *file;
+
+	g_return_val_if_fail (url != NULL, NULL);
+
+	file = g_file_new_for_uri (url);
+
+	document = lsm_dom_document_new_from_file (file, error);
+
+	g_object_unref (file);
+
+	if (document != NULL)
+		lsm_dom_document_set_url (document, url);
+
+	return document;
 }

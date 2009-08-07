@@ -23,7 +23,7 @@
 #define LSM_SVG_CLIP_PATH_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,13 +37,15 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgClipPathElementClass LsmSvgClipPathElementClass;
 
 struct _LsmSvgClipPathElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmDomEnumAttribute 		units;
+	LsmSvgPatternUnitsAttribute units;
+
+	gboolean enable_rendering;
 };
 
 struct _LsmSvgClipPathElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_clip_path_element_get_type (void);

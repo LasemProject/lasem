@@ -37,44 +37,23 @@ _mask_element_get_node_name (LsmDomNode *node)
 /* LsmSvgElement implementation */
 
 static void
-_mask_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgMaskElement *mask = LSM_SVG_MASK_ELEMENT (self);
-	LsmSvgPatternUnits units;
-	LsmSvgLength length;
-
-	units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
-	lsm_svg_pattern_units_attribute_parse (&mask->units, &units);
-
-	units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
-	lsm_svg_pattern_units_attribute_parse (&mask->content_units, &units);
-
-	length.value_unit = -10.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&mask->x, &length);
-
-	length.value_unit = -10.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&mask->y, &length);
-
-	length.value_unit = 120.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&mask->width, &length);
-
-	length.value_unit = 120.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&mask->height, &length);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
-static void
-_mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgMaskElement *mask = LSM_SVG_MASK_ELEMENT (self);
 	gboolean is_object_bounding_box;
 	LsmBox viewport;
 	const LsmBox *mask_extents;
+	LsmSvgStyle *style;
+
+	if (!mask->enable_rendering) {
+		lsm_debug ("[LsmSvgMaskElement::render] Direct rendering not allowed");
+		return;
+	} else {
+		mask->enable_rendering = FALSE;
+	}
+
+	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
+	lsm_svg_view_push_style (view, style);
 
 	mask_extents = lsm_svg_view_get_pattern_extents (view);
 
@@ -86,13 +65,13 @@ _mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 	}
 
-	viewport.x      = lsm_svg_view_normalize_length (view, &mask->x.length.base,
+	viewport.x      = lsm_svg_view_normalize_length (view, &mask->x.length,
 							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.y      = lsm_svg_view_normalize_length (view, &mask->y.length.base,
+	viewport.y      = lsm_svg_view_normalize_length (view, &mask->y.length,
 							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	viewport.width  = lsm_svg_view_normalize_length (view, &mask->width.length.base,
+	viewport.width  = lsm_svg_view_normalize_length (view, &mask->width.length,
 							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.height = lsm_svg_view_normalize_length (view, &mask->height.length.base,
+	viewport.height = lsm_svg_view_normalize_length (view, &mask->height.length,
 							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	if (is_object_bounding_box) {
@@ -107,7 +86,7 @@ _mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
 
-	lsm_debug ("[LsmSvgMaskElement::render_paint] Create mask x = %g, y = %g, w = %g, h = %g",
+	lsm_debug ("[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	lsm_svg_view_create_surface_pattern (view, &viewport,
@@ -126,7 +105,7 @@ _mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 
-		lsm_debug ("[LsmSvgMaskElement::render_paint] object_bounding_box"
+		lsm_debug ("[LsmSvgMaskElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
 			   mask_extents->width, mask_extents->height,
 			   mask_extents->x, mask_extents->y);
@@ -138,6 +117,15 @@ _mask_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_matrix (view);
 		lsm_svg_view_pop_viewbox (view);
 	}
+
+	lsm_svg_view_pop_style (view);
+	lsm_svg_style_free (style);
+}
+
+static void
+lsm_svg_mask_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_MASK_ELEMENT (element)->enable_rendering  = TRUE;
 }
 
 /* LsmSvgMaskElement implementation */
@@ -148,21 +136,63 @@ lsm_svg_mask_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_MASK_ELEMENT, NULL);
 }
 
+static const LsmSvgLength x_y_default = 	{ .value_unit = -10.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
+static const LsmSvgLength width_height_default ={ .value_unit = 120.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
+static const LsmSvgPatternUnits units_default =  	LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
+static const LsmSvgPatternUnits content_units_default = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
+
 static void
 lsm_svg_mask_element_init (LsmSvgMaskElement *self)
 {
-	/* Hack - Force the creation of the attribute bags,
-	   making sure the properties will be inherited from the
-	   mask element ancestor, not the referencing one. */
-
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "transform", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-family", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-color", NULL);
+	self->enable_rendering = FALSE;
+	self->x.length = x_y_default;
+	self->y.length = x_y_default;
+	self->width.length = width_height_default;
+	self->height.length = width_height_default;
+	self->units.value = units_default;
+	self->content_units.value = content_units_default;
 }
 
 /* LsmSvgMaskElement class */
+
+static const LsmAttributeInfos lsm_svg_mask_element_attribute_infos[] = {
+	{
+		.name = "x",
+		.attribute_offset = offsetof (LsmSvgMaskElement, x),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x_y_default
+	},
+	{
+		.name = "y",
+		.attribute_offset = offsetof (LsmSvgMaskElement, y),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x_y_default
+	},
+	{
+		.name = "width",
+		.attribute_offset = offsetof (LsmSvgMaskElement, width),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &width_height_default
+	},
+	{
+		.name = "height",
+		.attribute_offset = offsetof (LsmSvgMaskElement, height),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &width_height_default
+	},
+	{
+		.name = "maskUnits",
+		.attribute_offset = offsetof (LsmSvgMaskElement, units),
+		.trait_class = &lsm_svg_pattern_units_trait_class,
+		.trait_default = &units_default
+	},
+	{
+		.name = "maskContentUnits",
+		.attribute_offset = offsetof (LsmSvgMaskElement, content_units),
+		.trait_class = &lsm_svg_pattern_units_trait_class,
+		.trait_default = &content_units_default
+	}
+};
 
 static void
 lsm_svg_mask_element_class_init (LsmSvgMaskElementClass *klass)
@@ -174,24 +204,13 @@ lsm_svg_mask_element_class_init (LsmSvgMaskElementClass *klass)
 
 	d_node_class->get_node_name = _mask_element_get_node_name;
 
-	s_element_class->update = _mask_element_update;
-	s_element_class->render_paint = _mask_element_render_paint;
-	s_element_class->render = NULL;
+	s_element_class->render = lsm_svg_mask_element_render;
+	s_element_class->enable_rendering = lsm_svg_mask_element_enable_rendering;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x",
-					     offsetof (LsmSvgMaskElement, x));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y",
-					     offsetof (LsmSvgMaskElement, y));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "width",
-					     offsetof (LsmSvgMaskElement, width));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "height",
-					     offsetof (LsmSvgMaskElement, height));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "maskUnits",
-					     offsetof (LsmSvgMaskElement, units));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "maskContentUnits",
-					     offsetof (LsmSvgMaskElement, content_units));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_mask_element_attribute_infos),
+					      lsm_svg_mask_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgMaskElement, lsm_svg_mask_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgMaskElement, lsm_svg_mask_element, LSM_TYPE_SVG_ELEMENT)

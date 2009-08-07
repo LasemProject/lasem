@@ -39,10 +39,10 @@ typedef struct _LsmSvgLinearGradientElementClass LsmSvgLinearGradientElementClas
 struct _LsmSvgLinearGradientElement {
 	LsmSvgGradientElement gradient;
 
-	LsmSvgAnimatedLengthAttribute	x1;
-	LsmSvgAnimatedLengthAttribute	y1;
-	LsmSvgAnimatedLengthAttribute	x2;
-	LsmSvgAnimatedLengthAttribute	y2;
+	LsmSvgLengthAttribute	x1;
+	LsmSvgLengthAttribute	y1;
+	LsmSvgLengthAttribute	x2;
+	LsmSvgLengthAttribute	y2;
 };
 
 struct _LsmSvgLinearGradientElementClass {

@@ -23,7 +23,7 @@
 #define LSM_SVG_SVG_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,9 +37,9 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgSvgElementClass LsmSvgSvgElementClass;
 
 struct _LsmSvgSvgElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgStyle *default_style;
+//        LsmSvgStyle *default_style;
 
 	LsmSvgLengthAttribute	x;
 	LsmSvgLengthAttribute	y;
@@ -53,15 +53,13 @@ struct _LsmSvgSvgElement {
 };
 
 struct _LsmSvgSvgElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_svg_element_get_type (void);
 
 LsmDomNode *		lsm_svg_svg_element_new 		(void);
 
-LsmSvgStyle * 		lsm_svg_svg_element_get_default_style 	(LsmSvgSvgElement *svg_element);
-void 			lsm_svg_svg_element_update 		(LsmSvgSvgElement *svg_element);
 void 			lsm_svg_svg_element_measure 		(LsmSvgSvgElement *self, double *width, double *height);
 void 			lsm_svg_svg_element_render 		(LsmSvgSvgElement *svg_element, LsmSvgView *view);
 

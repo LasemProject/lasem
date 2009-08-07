@@ -28,7 +28,7 @@
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgclippathelement.h>
 #include <lsmsvgmaskelement.h>
-#include <lsmsvgutils.h>
+#include <lsmstr.h>
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
 
@@ -58,11 +58,8 @@ lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, Lsm
 	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), 0.0);
 
 	/* TODO cache font size */
-	if (view->text_stack != NULL && view->viewbox_stack != NULL) {
-		LsmSvgTextAttributeBag *text;
-
-		text = view->text_stack->data;
-		font_size = lsm_svg_length_normalize (&text->font_size.length, view->viewbox_stack->data,
+	if (view->viewbox_stack != NULL && view->style != NULL) {
+		font_size = lsm_svg_length_normalize (&view->style->font_size->length, view->viewbox_stack->data,
 						      0.0, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 	} else
 		font_size = 0.0;
@@ -120,6 +117,7 @@ _set_pattern (LsmSvgView *view, cairo_pattern_t *pattern)
 	g_return_if_fail (view->pattern_data->pattern == NULL);
 
 	view->pattern_data->pattern = pattern;
+	view->last_stop_offset = 0.0;
 }
 
 void
@@ -144,15 +142,37 @@ lsm_svg_view_create_linear_gradient (LsmSvgView *view,
 }
 
 void
-lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset, const LsmSvgColor *color, double opacity)
+lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset)
 {
+	const LsmSvgStyle *style;
+	const LsmSvgColor *color;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->pattern_data->pattern != NULL);
-	g_return_if_fail (color != NULL);
+
+	if (offset > 1.0)
+		offset = 1.0;
+
+	if (offset < view->last_stop_offset)
+		offset = view->last_stop_offset;
+	else
+		view->last_stop_offset = offset;
+
+	style = view->style;
+
+	lsm_debug ("[LsmSvgView::add_gradient_color_stop] opacity = %g", style->stop_opacity->value);
+
+	color = &style->stop_color->value;
+
+	if (color->red < 0.0 || color->blue < 0.0 || color->green < 0.0)
+		color = &style->color->value;
 
 	cairo_pattern_add_color_stop_rgba (view->pattern_data->pattern, offset,
-					   color->red, color->green, color->blue, opacity);
+					   color->red,
+					   color->green,
+					   color->blue,
+					   style->stop_opacity->value);
 }
 
 void
@@ -198,13 +218,6 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	y = viewport->y;
 	width = viewport->width;
 	height = viewport->height;
-
-/*        if (units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {*/
-/*                x *= view->pattern_data->extents.width;*/
-/*                y *= view->pattern_data->extents.height;*/
-/*                width *= view->pattern_data->extents.width;*/
-/*                height *= view->pattern_data->extents.height;*/
-/*        }*/
 
 	lsm_debug ("[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g",
 		   width, height, x, y);
@@ -474,7 +487,7 @@ static void
 _emit_function_1 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double))
 {
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 1, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 1, ctxt->values))
 		cairo_func (ctxt->cr, ctxt->values[0]);
 }
 
@@ -484,12 +497,12 @@ _emit_function_2 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func_b) (cairo_t *, double, double))
 {
 
-	if (lsm_svg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+	if (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
 		cairo_func_a (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 
 		/* Why oh why does the specification say Line is implied here ? */
 
-		while (lsm_svg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
+		while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
 			cairo_func_b (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 	}
 }
@@ -498,7 +511,7 @@ static void
 _emit_function_4 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double, double))
 {
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 4, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values))
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2], ctxt->values[3]);
 }
 
@@ -530,7 +543,7 @@ _emit_smooth_curve (LsmSvgPathContext *ctxt, gboolean relative)
 		default: x = x0; y = y0; break;
 	}
 
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 4, ctxt->values)) {
+	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values)) {
 		if (relative) {
 			cairo_get_current_point (ctxt->cr, &x0, &y0);
 			cairo_curve_to (ctxt->cr,
@@ -571,7 +584,7 @@ _emit_smooth_quadratic_curve (LsmSvgPathContext *ctxt, gboolean relative)
 		default: ctxt->last_cp_x = x0; ctxt->last_cp_y = y0; break;
 	}
 
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+	while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
 		x = 2 * x0 - ctxt->last_cp_x;
 		y = 2 * y0 - ctxt->last_cp_y;
 		if (relative) {
@@ -590,7 +603,7 @@ static void
 _emit_function_6 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
 {
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 6, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 6, ctxt->values))
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
 			              ctxt->values[3], ctxt->values[4], ctxt->values[5]);
 }
@@ -599,7 +612,7 @@ static void
 _emit_function_7 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double ,gboolean, gboolean, double, double))
 {
-	while (lsm_svg_str_parse_double_list (&ctxt->ptr, 7, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 7, ctxt->values))
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
 			              ctxt->values[3], ctxt->values[4], ctxt->values[5],
 				      ctxt->values[6]);
@@ -624,14 +637,14 @@ _emit_svg_path (cairo_t *cr, char const *path)
 	ctxt.values[2] = ctxt.values[4] = ctxt.values[0];
 	ctxt.values[3] = ctxt.values[5] = ctxt.values[1];
 
-	lsm_svg_str_skip_spaces (&ctxt.ptr);
+	lsm_str_skip_spaces (&ctxt.ptr);
 
 	while (*ctxt.ptr != '\0') {
 		char command;
 
 		command = *ctxt.ptr;
 		ctxt.ptr++;
-		lsm_svg_str_skip_spaces (&ctxt.ptr);
+		lsm_str_skip_spaces (&ctxt.ptr);
 
 		if (!cairo_has_current_point (cr)) {
 			cairo_move_to (cr, 0, 0);
@@ -694,7 +707,7 @@ _paint_uri (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *ur
 
 	_start_pattern (view, &extents);
 
-	lsm_svg_element_render_paint (LSM_SVG_ELEMENT (element), view);
+	lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 
 	cairo = view->pattern_data->old_cairo;
 
@@ -765,6 +778,13 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 					       paint->color.blue,
 					       opacity);
 			break;
+		case LSM_SVG_PAINT_TYPE_CURRENT_COLOR:
+			cairo_set_source_rgba (cairo,
+					       view->style->color->value.red,
+					       view->style->color->value.green,
+					       view->style->color->value.blue,
+					       opacity);
+			break;
 		case LSM_SVG_PAINT_TYPE_URI:
 		case LSM_SVG_PAINT_TYPE_URI_RGB_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_CURRENT_COLOR:
@@ -781,33 +801,24 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 static void
 paint (LsmSvgView *view)
 {
-	LsmSvgFillAttributeBag *fill;
-	LsmSvgStrokeAttributeBag *stroke;
-	LsmSvgGraphic *graphic;
+	LsmSvgElement *element;
+	const LsmSvgStyle *style;
 	cairo_t *cairo;
 	gboolean use_group;
 	double group_opacity;
 
-	g_return_if_fail (view->fill_stack != NULL);
-	g_return_if_fail (view->stroke_stack != NULL);
-	g_return_if_fail (view->element_stack != NULL);
+	element = view->element_stack->data;
 
-	graphic = view->element_stack->data;
-
-	g_return_if_fail (LSM_IS_SVG_GRAPHIC (graphic));
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
 	cairo = view->dom_view.cairo;
-	fill = view->fill_stack->data;
-	stroke = view->stroke_stack->data;
+	style = view->style;
 
-	if (view->mask_stack != NULL && view->mask_stack->data == graphic->mask) {
-		LsmSvgMaskAttributeBag *mask;
+	if (style->opacity != NULL) {
+		group_opacity = style->opacity->value;
 
-		mask = view->mask_stack->data;
-		group_opacity = mask->opacity.value;
-
-		use_group = fill->paint.paint.type != LSM_SVG_PAINT_TYPE_NONE &&
-			stroke->paint.paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+		use_group = style->fill->paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+			style->stroke->paint.type != LSM_SVG_PAINT_TYPE_NONE &&
 			group_opacity < 1.0;
 	} else {
 		use_group = FALSE;
@@ -818,18 +829,22 @@ paint (LsmSvgView *view)
 	if (use_group)
 		cairo_push_group (cairo);
 
-	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_FILL,
-			&fill->paint.paint, fill->opacity.value * (use_group ? 1.0 : group_opacity))) {
-		cairo_set_fill_rule (cairo, fill->rule.value == LSM_SVG_FILL_RULE_EVEN_ODD ?
+	if (_set_color (view,
+			LSM_SVG_VIEW_PAINT_OPERATION_FILL,
+			&style->fill->paint,
+			style->fill_opacity->value * (use_group ? 1.0 : group_opacity))) {
+		cairo_set_fill_rule (cairo, style->fill_rule->value == LSM_SVG_FILL_RULE_EVEN_ODD ?
 				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
 		cairo_fill_preserve (cairo);
 	}
 
-	if (_set_color (view, LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
-			&stroke->paint.paint, stroke->opacity.value * (use_group ? 1.0 : group_opacity))) {
+	if (_set_color (view,
+			LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
+			&style->stroke->paint,
+			style->stroke_opacity->value * (use_group ? 1.0 : group_opacity))) {
 		double line_width;
 
-		switch (stroke->line_join.value) {
+		switch (style->stroke_line_join->value) {
 			case LSM_SVG_LINE_JOIN_MITER:
 				cairo_set_line_join (cairo, CAIRO_LINE_JOIN_MITER);
 				break;
@@ -840,7 +855,7 @@ paint (LsmSvgView *view)
 				cairo_set_line_join (cairo,CAIRO_LINE_JOIN_BEVEL);
 		}
 
-		switch (stroke->line_cap.value) {
+		switch (style->stroke_line_cap->value) {
 			case LSM_SVG_LINE_CAP_BUTT:
 				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_BUTT);
 				break;
@@ -851,31 +866,26 @@ paint (LsmSvgView *view)
 				cairo_set_line_cap (cairo, CAIRO_LINE_CAP_SQUARE);
 		}
 
-		line_width = lsm_svg_view_normalize_length (view, &stroke->width.length,
+		line_width = lsm_svg_view_normalize_length (view, &style->stroke_width->length,
 							    LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-		cairo_set_miter_limit (cairo, stroke->miter_limit.value);
+		cairo_set_miter_limit (cairo, style->stroke_miter_limit->value);
 		cairo_set_line_width (cairo, line_width);
 
-		if (stroke->dash_array.value != NULL &&
-		    stroke->dash_array.value->n_dashes > 0) {
+		if (style->stroke_dash_array->value.n_dashes > 0) {
 			double dash_offset;
 			double *dashes;
 			unsigned int i;
 
-			dash_offset = lsm_svg_view_normalize_length (view, &stroke->dash_offset.length,
+			dash_offset = lsm_svg_view_normalize_length (view, &style->stroke_dash_offset->length,
 								     LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
-			dashes = g_new(double, stroke->dash_array.value->n_dashes);
-			for (i = 0; i < stroke->dash_array.value->n_dashes; i++)
+			dashes = g_new (double, style->stroke_dash_array->value.n_dashes);
+			for (i = 0; i < style->stroke_dash_array->value.n_dashes; i++)
 				dashes[i] = lsm_svg_view_normalize_length (view,
-									   &stroke->dash_array.value->dashes[i],
+									   &style->stroke_dash_array->value.dashes[i],
 									   LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-			cairo_set_dash (cairo,
-					dashes,
-					stroke->dash_array.value->n_dashes,
-					dash_offset);
-
+			cairo_set_dash (cairo, dashes, style->stroke_dash_array->value.n_dashes, dash_offset);
 			g_free (dashes);
 		} else
 			cairo_set_dash (cairo, NULL, 0, 0.0);
@@ -894,11 +904,10 @@ paint (LsmSvgView *view)
 static void
 process_path (LsmSvgView *view)
 {
-	if (view->is_clipping) {
-		LsmSvgMaskAttributeBag *mask;
+	g_return_if_fail (view->style != NULL);
 
-		mask = view->mask_stack->data;
-		cairo_set_fill_rule (view->dom_view.cairo, mask->clip_rule.value);
+	if (view->is_clipping) {
+		cairo_set_fill_rule (view->dom_view.cairo, view->style->clip_rule->value);
 	} else
 		paint (view);
 }
@@ -1018,9 +1027,9 @@ lsm_svg_view_show_polyline (LsmSvgView *view, const char *points)
 
 	str = (char *) points;
 
-	if (lsm_svg_str_parse_double_list (&str, 2, values)) {
+	if (lsm_str_parse_double_list (&str, 2, values)) {
 		cairo_move_to (view->dom_view.cairo, values[0], values[1]);
-		while (lsm_svg_str_parse_double_list (&str, 2, values))
+		while (lsm_str_parse_double_list (&str, 2, values))
 			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
 	}
 
@@ -1037,9 +1046,9 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 
 	str = (char *) points;
 
-	if (lsm_svg_str_parse_double_list (&str, 2, values)) {
+	if (lsm_str_parse_double_list (&str, 2, values)) {
 		cairo_move_to (view->dom_view.cairo, values[0], values[1]);
-		while (lsm_svg_str_parse_double_list (&str, 2, values))
+		while (lsm_str_parse_double_list (&str, 2, values))
 			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
 	}
 
@@ -1051,11 +1060,11 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 void
 lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y)
 {
+	const LsmSvgStyle *style;
 	PangoLayout *pango_layout;
 	PangoFontDescription *font_description;
 	PangoLayoutIter *iter;
 	PangoRectangle ink_rect;
-	LsmSvgTextAttributeBag *text;
 	double font_size;
 	int baseline;
 
@@ -1064,15 +1073,15 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
-	text = view->text_stack->data;
-	g_return_if_fail (text != NULL);
+	style = view->style;
 
 	pango_layout = view->dom_view.pango_layout;
 	font_description = view->dom_view.font_description;
 
-	font_size = lsm_svg_view_normalize_length (view, &text->font_size.length, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	font_size = lsm_svg_view_normalize_length (view, &style->font_size->length,
+						   LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-	pango_font_description_set_family (font_description, text->font_family.value);
+	pango_font_description_set_family (font_description, style->font_family->value);
 	pango_font_description_set_size (font_description, font_size * PANGO_SCALE);
 
 	pango_layout_set_text (pango_layout, string, -1);
@@ -1227,7 +1236,7 @@ lsm_svg_view_pop_viewport (LsmSvgView *view)
 }
 
 void
-lsm_svg_view_push_matrix (LsmSvgView *view, LsmSvgMatrix *matrix)
+lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 {
 	cairo_matrix_t cr_matrix;
 	cairo_matrix_t *ctm;
@@ -1273,25 +1282,29 @@ lsm_svg_view_pop_matrix (LsmSvgView *view)
 }
 
 void
-lsm_svg_view_push_element (LsmSvgView *view, const LsmSvgElement *element)
+lsm_svg_view_push_group_opacity (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+	g_return_if_fail (view->style != NULL);
 
-	view->element_stack = g_slist_prepend (view->element_stack, (void *) element);
+	if (view->style->opacity->value < 1.0)
+		cairo_push_group (view->dom_view.cairo);
 }
 
 void
-lsm_svg_view_pop_element (LsmSvgView *view)
+lsm_svg_view_pop_group_opacity (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->element_stack != NULL);
+	g_return_if_fail (view->style != NULL);
 
-	view->element_stack = g_slist_delete_link (view->element_stack, view->element_stack);
+	if (view->style->opacity->value < 1.0) {
+		cairo_pop_group_to_source (view->dom_view.cairo);
+		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
+	}
 }
 
 static void
-lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_rule)
+lsm_svg_view_push_clip (LsmSvgView *view)
 {
 	LsmDomElement *element;
 	LsmExtents extents;
@@ -1302,9 +1315,9 @@ lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_r
 
 	lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
 
-	uri = clip_path;
+	uri = view->style->clip_path->value;
 
-	lsm_debug ("[LsmSvgView::push_clip] Using '%s'", clip_path);
+	lsm_debug ("[LsmSvgView::push_clip] Using '%s'", uri);
 
 	cairo_save (view->dom_view.cairo);
 
@@ -1326,7 +1339,7 @@ lsm_svg_view_push_clip (LsmSvgView *view, char *clip_path, LsmSvgFillRule clip_r
 
 		if (element != NULL && LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
 			view->is_clipping = TRUE;
-			lsm_svg_element_render_clip (LSM_SVG_ELEMENT (element), view);
+			lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 			cairo_clip (view->dom_view.cairo);
 			view->is_clipping = FALSE;
 		}
@@ -1341,194 +1354,152 @@ lsm_svg_view_pop_clip (LsmSvgView *view)
 	cairo_restore (view->dom_view.cairo);
 }
 
-void
-lsm_svg_view_push_group_opacity (LsmSvgView *view)
+static void
+lsm_svg_view_push_mask (LsmSvgView *view)
 {
-	LsmSvgMaskAttributeBag *mask;
-
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->mask_stack != NULL);
 
-	mask = view->mask_stack->data;
-
-	if (mask->opacity.value < 1.0)
-		cairo_push_group (view->dom_view.cairo);
+	cairo_push_group (view->dom_view.cairo);
 }
 
-void
-lsm_svg_view_pop_group_opacity (LsmSvgView *view)
-{
-	LsmSvgMaskAttributeBag *mask;
-
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->mask_stack != NULL);
-
-	mask = view->mask_stack->data;
-
-	if (mask->opacity.value < 1.0) {
-		cairo_pop_group_to_source (view->dom_view.cairo);
-		cairo_paint_with_alpha (view->dom_view.cairo, mask->opacity.value);
-	}
-}
-
-void
-lsm_svg_view_push_mask_attributes (LsmSvgView *view, const LsmSvgMaskAttributeBag *mask)
+static void
+lsm_svg_view_pop_mask (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (mask != NULL);
 
-	view->mask_stack = g_slist_prepend (view->mask_stack, (void *) mask);
+	if (strncmp (view->style->mask->value, "url(#", 5) == 0) {
+		LsmDomElement *mask_element;
+		char *end;
+		char *uri;
 
-	if (mask->clip_path.value != NULL)
-		lsm_svg_view_push_clip (view, mask->clip_path.value, mask->clip_rule.value);
+		uri = g_strdup (view->style->mask->value + 5);
+		for (end = uri; *end != '\0' && *end != ')'; end++);
+		*end = '\0';
 
-	if (mask->mask.value != NULL)
-		cairo_push_group (view->dom_view.cairo);
-}
+		mask_element = lsm_dom_document_get_element_by_id (view->dom_view.document, uri);
 
-void
-lsm_svg_view_pop_mask_attributes (LsmSvgView *view)
-{
-	LsmSvgMaskAttributeBag *mask;
+		if (LSM_IS_SVG_MASK_ELEMENT (mask_element)) {
+			LsmExtents extents;
+			LsmBox mask_extents;
+			cairo_t *cairo;
 
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->mask_stack != NULL);
+			lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
 
-	mask = view->mask_stack->data;
+			mask_extents.x = extents.x1;
+			mask_extents.y = extents.y1;
+			mask_extents.width = extents.x2 - extents.x1;
+			mask_extents.height = extents.y2 - extents.y1;
 
-	if (mask->clip_path.value != NULL)
-		lsm_svg_view_pop_clip (view);
+			cairo = view->dom_view.cairo;
 
-	if (mask->mask.value != NULL) {
-		if (strncmp (mask->mask.value, "url(#", 5) == 0) {
-			LsmDomElement *mask_element;
-			char *end;
-			char *uri;
+			_start_pattern (view, &mask_extents);
 
-			uri = g_strdup (mask->mask.value + 5);
-			for (end = uri; *end != '\0' && *end != ')'; end++);
-			*end = '\0';
+			lsm_svg_element_force_render (LSM_SVG_ELEMENT (mask_element), view);
 
-			mask_element = lsm_dom_document_get_element_by_id (view->dom_view.document, uri);
+			cairo_pop_group_to_source (cairo);
+			if (view->pattern_data->pattern != NULL) {
+				cairo_surface_t *surface;
+				int width, height, row, i, stride;
+				unsigned char *pixels;
 
-			if (LSM_IS_SVG_MASK_ELEMENT (mask_element)) {
-				LsmExtents extents;
-				LsmBox mask_extents;
-				cairo_t *cairo;
+				cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
+				pixels = cairo_image_surface_get_data (surface);
+				height = cairo_image_surface_get_height (surface);
+				width = cairo_image_surface_get_width (surface);
+				stride = cairo_image_surface_get_stride (surface);
 
-				lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
-
-				mask_extents.x = extents.x1;
-				mask_extents.y = extents.y1;
-				mask_extents.width = extents.x2 - extents.x1;
-				mask_extents.height = extents.y2 - extents.y1;
-
-				cairo = view->dom_view.cairo;
-
-				_start_pattern (view, &mask_extents);
-
-				lsm_svg_element_render_paint (LSM_SVG_ELEMENT (mask_element), view);
-
-				cairo_pop_group_to_source (cairo);
-				if (view->pattern_data->pattern != NULL) {
-					cairo_surface_t *surface;
-					int width, height, row, i, stride;
-					unsigned char *pixels;
-
-					cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
-					pixels = cairo_image_surface_get_data (surface);
-					height = cairo_image_surface_get_height (surface);
-					width = cairo_image_surface_get_width (surface);
-					stride = cairo_image_surface_get_stride (surface);
-
-					for (row = 0; row < height; row++) {
-						guint8 *row_data = (pixels + (row * stride));
-						for (i = 0; i < width; i++) {
-							guint32 *pixel = (guint32 *) row_data + i;
-							*pixel = ((((*pixel & 0x00ff0000) >> 16) * 13817 +
-								   ((*pixel & 0x0000ff00) >> 8) * 46518 +
-								   ((*pixel & 0x000000ff)) * 4688) * 0xff
-								  /* * opacity */);
-						}
+				for (row = 0; row < height; row++) {
+					guint8 *row_data = (pixels + (row * stride));
+					for (i = 0; i < width; i++) {
+						guint32 *pixel = (guint32 *) row_data + i;
+						*pixel = ((((*pixel & 0x00ff0000) >> 16) * 13817 +
+							   ((*pixel & 0x0000ff00) >> 8) * 46518 +
+							   ((*pixel & 0x000000ff)) * 4688) * 0xff
+							  /* * opacity */);
 					}
-
-					cairo_pattern_set_matrix (view->pattern_data->pattern,
-								  &view->pattern_data->matrix);
-					cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
-#if 0
-					cairo_surface_write_to_png (surface, "mask.png");
-#endif
-					cairo_mask (cairo, view->pattern_data->pattern);
-				} else {
-					cairo_paint (cairo);
 				}
 
-				_end_pattern (view);
+				cairo_pattern_set_matrix (view->pattern_data->pattern,
+							  &view->pattern_data->matrix);
+				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
+#if 0
+				cairo_surface_write_to_png (surface, "mask.png");
+#endif
+				cairo_mask (cairo, view->pattern_data->pattern);
 			} else {
-				cairo_pop_group_to_source (view->dom_view.cairo);
-				cairo_paint (view->dom_view.cairo);
+				cairo_paint (cairo);
 			}
+
+			_end_pattern (view);
 		} else {
 			cairo_pop_group_to_source (view->dom_view.cairo);
 			cairo_paint (view->dom_view.cairo);
 		}
+	} else {
+		cairo_pop_group_to_source (view->dom_view.cairo);
+		cairo_paint (view->dom_view.cairo);
+	}
+}
+
+void
+lsm_svg_view_push_element (LsmSvgView *view, const LsmSvgElement *element)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+
+	view->element_stack = g_slist_prepend (view->element_stack, (void *) element);
+}
+
+void
+lsm_svg_view_pop_element (LsmSvgView *view)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (view->element_stack != NULL);
+
+	view->element_stack = g_slist_delete_link (view->element_stack, view->element_stack);
+}
+
+void
+lsm_svg_view_push_style	(LsmSvgView *view, const LsmSvgStyle *style)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (style != NULL);
+
+	view->style_stack = g_slist_prepend (view->style_stack, (void *) style);
+	view->style = style;
+
+	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
+		lsm_debug ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
+		lsm_svg_view_push_clip (view);
 	}
 
-	view->mask_stack = g_slist_delete_link (view->mask_stack, view->mask_stack);
+	if (g_strcmp0 (style->mask->value, "none") != 0) {
+		lsm_debug ("[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
+		lsm_svg_view_push_mask (view);
+	}
 }
 
-void
-lsm_svg_view_push_fill_attributes (LsmSvgView *view, const LsmSvgFillAttributeBag *fill)
+void lsm_svg_view_pop_style (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (fill != NULL);
+	g_return_if_fail (view->style_stack != NULL);
 
-	view->fill_stack = g_slist_prepend (view->fill_stack, (void *) fill);
+	if (g_strcmp0 (view->style->mask->value, "none") != 0)
+		lsm_svg_view_pop_mask (view);
+
+	if (g_strcmp0 (view->style->clip_path->value, "none") != 0)
+		lsm_svg_view_pop_clip (view);
+
+	view->style_stack = g_slist_delete_link (view->style_stack, view->style_stack);
+	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
 }
 
-void
-lsm_svg_view_pop_fill_attributes (LsmSvgView *view)
+const LsmSvgStyle *
+lsm_svg_view_get_current_style (LsmSvgView *view)
 {
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->fill_stack != NULL);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), NULL);
 
-	view->fill_stack = g_slist_delete_link (view->fill_stack, view->fill_stack);
-}
-
-void
-lsm_svg_view_push_stroke_attributes (LsmSvgView *view, const LsmSvgStrokeAttributeBag *stroke)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (stroke != NULL);
-
-	view->stroke_stack = g_slist_prepend (view->stroke_stack, (void *) stroke);
-}
-
-void
-lsm_svg_view_pop_stroke_attributes (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->stroke_stack != NULL);
-
-	view->stroke_stack = g_slist_delete_link (view->stroke_stack, view->stroke_stack);
-}
-
-void
-lsm_svg_view_push_text_attributes (LsmSvgView *view, const LsmSvgTextAttributeBag *text)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (text != NULL);
-
-	view->text_stack = g_slist_prepend (view->text_stack, (void *) text);
-}
-
-void
-lsm_svg_view_pop_text_attributes (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->text_stack != NULL);
-
-	view->text_stack = g_slist_delete_link (view->text_stack, view->text_stack);
+	return view->style;
 }
 
 const LsmBox *
@@ -1562,8 +1533,6 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height)
 	if (svg_element == NULL)
 		return;
 
-	lsm_svg_svg_element_update (svg_element);
-
 	lsm_svg_svg_element_measure (svg_element, width, height);
 }
 
@@ -1579,14 +1548,9 @@ lsm_svg_view_render (LsmDomView *view)
 	if (svg_element == NULL)
 		return;
 
-	lsm_svg_svg_element_update (svg_element);
-
+	svg_view->style_stack = NULL;
 	svg_view->element_stack = NULL;
 	svg_view->viewbox_stack = NULL;
-	svg_view->mask_stack = NULL;
-	svg_view->fill_stack = NULL;
-	svg_view->stroke_stack = NULL;
-	svg_view->text_stack = NULL;
 	svg_view->matrix_stack = NULL;
 
 	svg_view->is_clipping = FALSE;
@@ -1608,30 +1572,15 @@ lsm_svg_view_render (LsmDomView *view)
 		g_slist_free (svg_view->viewbox_stack);
 		svg_view->viewbox_stack = NULL;
 	}
-	if (svg_view->fill_stack != NULL) {
-		g_warning ("[LsmSvgView::render] Dangling fill attributes in stack");
-		g_slist_free (svg_view->fill_stack);
-		svg_view->fill_stack = NULL;
-	}
-	if (svg_view->stroke_stack != NULL) {
-		g_warning ("[LsmSvgView::render] Dangling stroke attributes in stack");
-		g_slist_free (svg_view->stroke_stack);
-		svg_view->stroke_stack = NULL;
-	}
-	if (svg_view->mask_stack != NULL) {
-		g_warning ("[LsmSvgView::render] Dangling mask attributes in stack");
-		g_slist_free (svg_view->mask_stack);
-		svg_view->mask_stack = NULL;
-	}
-	if (svg_view->text_stack != NULL) {
-		g_warning ("[LsmSvgView::render] Dangling text attribute in stack");
-		g_slist_free (svg_view->text_stack);
-		svg_view->text_stack = NULL;
-	}
 	if (svg_view->element_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling element in stack");
 		g_slist_free (svg_view->element_stack);
 		svg_view->element_stack = NULL;
+	}
+	if (svg_view->style_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling style in stack");
+		g_slist_free (svg_view->style_stack);
+		svg_view->style_stack = NULL;
 	}
 }
 

@@ -22,6 +22,12 @@
 #include <lsmsvgmatrix.h>
 #include <math.h>
 
+gboolean
+lsm_svg_matrix_is_identity (const LsmSvgMatrix *matrix)
+{
+	return ((matrix->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0);
+}
+
 void
 lsm_svg_matrix_init (LsmSvgMatrix *matrix, double a, double b, double c, double d, double e, double f)
 {
@@ -31,12 +37,14 @@ lsm_svg_matrix_init (LsmSvgMatrix *matrix, double a, double b, double c, double 
 	matrix->d = d;
 	matrix->e = e;
 	matrix->f = f;
+	matrix->flags = 0;
 }
 
 void
 lsm_svg_matrix_init_identity (LsmSvgMatrix *matrix)
 {
 	lsm_svg_matrix_init (matrix, 1, 0, 0, 1, 0, 0);
+	matrix->flags |= LSM_SVG_MATRIX_FLAGS_IDENTITY;
 }
 
 void
@@ -125,6 +133,15 @@ lsm_svg_matrix_multiply (LsmSvgMatrix *result, const LsmSvgMatrix *a, const LsmS
 {
 	LsmSvgMatrix r;
 
+	if ((a->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0) {
+		*result = *b;
+		return;
+	}
+	if ((b->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0) {
+		*result = *a;
+		return;
+	}
+
 	r.a = a->a * b->a + a->b * b->c;
 	r.b = a->a * b->b + a->b * b->d;
 
@@ -134,6 +151,8 @@ lsm_svg_matrix_multiply (LsmSvgMatrix *result, const LsmSvgMatrix *a, const LsmS
 	r.e = a->e * b->a + a->f * b->c + b->e;
 	r.f = a->e * b->b + a->f * b->d + b->f;
 
+	r.flags = 0;
+
 	*result = r;
 }
 
@@ -142,6 +161,9 @@ lsm_svg_matrix_transform_point (const LsmSvgMatrix *matrix, double *x, double *y
 {
 	double new_x;
 	double new_y;
+
+	if ((matrix->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0)
+		return;
 
 	new_x = (matrix->a * *x + matrix->c * *y) + matrix->e;
 	new_y = (matrix->b * *x + matrix->d * *y) + matrix->f;
@@ -155,6 +177,9 @@ lsm_svg_matrix_transform_bounding_box (const LsmSvgMatrix *matrix, double *x1, d
 {
 	double x12, y12, x21, y21;
 	double x_min, y_min, x_max, y_max;
+
+	if ((matrix->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0)
+		return;
 
 	x12 = *x1;
 	y12 = *y2;

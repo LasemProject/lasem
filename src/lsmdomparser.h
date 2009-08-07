@@ -26,8 +26,13 @@
 
 G_BEGIN_DECLS
 
-LsmDomDocument * 	lsm_dom_document_new_from_file 	(const char *filename);
-LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const char *buffer);
+typedef enum {
+	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
+} LsmDomDocumentError;
+
+LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const char *buffer, gsize size, GError *error);
+LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError *error);
+LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError *error);
 
 G_END_DECLS
 

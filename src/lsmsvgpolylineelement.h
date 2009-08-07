@@ -23,7 +23,7 @@
 #define LSM_SVG_POLYLINE_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,13 +37,13 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgPolylineElementClass LsmSvgPolylineElementClass;
 
 struct _LsmSvgPolylineElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmDomAttribute	points;
+	LsmAttribute	points;
 };
 
 struct _LsmSvgPolylineElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_polyline_element_get_type (void);

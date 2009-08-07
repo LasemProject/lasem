@@ -90,6 +90,9 @@ lsm_dom_view_render (LsmDomView *view, double x, double y)
 		view_class->render (view);
 
 	cairo_restore (view->cairo);
+
+	lsm_debug ("[LsmDomView::render] cairo status = %s",
+		   cairo_status_to_string (cairo_status (view->cairo)));
 }
 
 void

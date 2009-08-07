@@ -51,12 +51,11 @@ struct _LsmSvgView {
 
 	double resolution_ppi;
 
+	const LsmSvgStyle *style;
+
+	GSList *style_stack;
 	GSList *element_stack;
 	GSList *viewbox_stack;
-	GSList *mask_stack;
-	GSList *fill_stack;
-	GSList *stroke_stack;
-	GSList *text_stack;
 	GSList *matrix_stack;
 
 	LsmSvgViewPatternData *pattern_data;
@@ -65,6 +64,8 @@ struct _LsmSvgView {
 
 	gboolean is_clipping;
 	LsmBox clip_extents;
+
+	double last_stop_offset;
 };
 
 struct _LsmSvgViewClass {
@@ -85,8 +86,7 @@ void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double
 							                   double r, double fx, double fy);
 void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
 							                   double x2, double y2);
-void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset,
-							 const LsmSvgColor *color, double opacity);
+void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset);
 void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgSpreadMethod method,
 							 LsmSvgPatternUnits units,
@@ -116,7 +116,7 @@ void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
 							 const LsmBox *viewbox,
 							 const LsmSvgPreserveAspectRatio *aspect_ratio);
 void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
-void 		lsm_svg_view_push_matrix		(LsmSvgView *view, LsmSvgMatrix *matrix);
+void 		lsm_svg_view_push_matrix		(LsmSvgView *view, const LsmSvgMatrix *matrix);
 void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
 
 void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);
@@ -125,14 +125,10 @@ void		lsm_svg_view_pop_element		(LsmSvgView *view);
 void 		lsm_svg_view_push_group_opacity 	(LsmSvgView *view);
 void 		lsm_svg_view_pop_group_opacity 		(LsmSvgView *view);
 
-void		lsm_svg_view_push_mask_attributes	(LsmSvgView *view, const LsmSvgMaskAttributeBag *mask);
-void		lsm_svg_view_pop_mask_attributes	(LsmSvgView *view);
-void 		lsm_svg_view_push_fill_attributes 	(LsmSvgView *view, const LsmSvgFillAttributeBag *fill);
-void 		lsm_svg_view_pop_fill_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_stroke_attributes 	(LsmSvgView *view, const LsmSvgStrokeAttributeBag *stroke);
-void 		lsm_svg_view_pop_stroke_attributes 	(LsmSvgView *view);
-void 		lsm_svg_view_push_text_attributes 	(LsmSvgView *view, const LsmSvgTextAttributeBag *text);
-void 		lsm_svg_view_pop_text_attributes 	(LsmSvgView *view);
+void		lsm_svg_view_push_style			(LsmSvgView *view, const LsmSvgStyle *style);
+void		lsm_svg_view_pop_style			(LsmSvgView *view);
+
+const LsmSvgStyle *	lsm_svg_view_get_current_style	(LsmSvgView *view);
 
 G_END_DECLS
 

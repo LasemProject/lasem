@@ -20,27 +20,12 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-
 #ifndef LSM_DOM_H
 #define LSM_DOM_H
 
-#include <glib-object.h>
+#include <lsm.h>
 
 G_BEGIN_DECLS
-
-typedef struct {
-	double x1;
-	double y1;
-	double x2;
-	double y2;
-} LsmExtents;
-
-typedef struct {
-	double x;
-	double y;
-	double width;
-	double height;
-} LsmBox;
 
 typedef struct _LsmDomNode LsmDomNode;
 typedef struct _LsmDomElement LsmDomElement;

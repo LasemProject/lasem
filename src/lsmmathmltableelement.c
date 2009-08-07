@@ -457,6 +457,8 @@ lsm_mathml_table_element_finalize (GObject *object)
 	table->widths = NULL;
 	table->heights = NULL;
 	table->depths = NULL;
+
+	parent_class->finalize (object);
 }
 
 /* LsmMathmlTableElement class */

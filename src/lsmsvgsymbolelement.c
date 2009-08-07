@@ -37,12 +37,6 @@ lsm_svg_symbol_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
-static void
-lsm_svg_symbol_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
 /* LsmSvgGraphic implementation */
 
 /* LsmSvgSymbolElement implementation */
@@ -64,15 +58,10 @@ static void
 lsm_svg_symbol_element_class_init (LsmSvgSymbolElementClass *klass)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
-	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
 	d_node_class->get_node_name = lsm_svg_symbol_element_get_node_name;
-
-	s_element_class->update = lsm_svg_symbol_element_update;
-
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
 }
 
-G_DEFINE_TYPE (LsmSvgSymbolElement, lsm_svg_symbol_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgSymbolElement, lsm_svg_symbol_element, LSM_TYPE_SVG_ELEMENT)

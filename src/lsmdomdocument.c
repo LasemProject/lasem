@@ -21,8 +21,13 @@
 
 #include <lsmdomdocument.h>
 #include <lsmdomelement.h>
+#include <lsmstr.h>
 #include <lsmdebug.h>
 #include <lsmdomtext.h>
+#include <gio/gio.h>
+#include <string.h>
+
+static GObjectClass *parent_class;
 
 /* LsmDomNode implementation */
 
@@ -185,6 +190,76 @@ lsm_dom_document_register_element (LsmDomDocument *self, LsmDomElement *element,
 	}
 }
 
+const char *
+lsm_dom_document_get_url (LsmDomDocument *self)
+{
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
+
+	return self->url;
+}
+
+void
+lsm_dom_document_set_path (LsmDomDocument *self, const char *path)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+
+	g_free (self->url);
+
+	if (path == NULL) {
+		self->url = NULL;
+		return;
+	}
+
+	self->url = lsm_str_to_uri (path);
+}
+
+void
+lsm_dom_document_set_url (LsmDomDocument *self, const char *url)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
+	g_return_if_fail (url == NULL || lsm_str_is_uri (url));
+
+	g_free (self->url);
+	self->url = g_strdup (url);
+}
+
+void *
+lsm_dom_document_get_href_data (LsmDomDocument *self, const char *href, gsize *size)
+{
+	GFile *file;
+	char *data = NULL;
+
+	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
+	g_return_val_if_fail (href != NULL, NULL);
+
+	if (strncmp (href, "data:", 5) == 0) {
+		while (*href != '\0' && *href != ',')
+			href++;
+		return g_base64_decode (href, size);
+	}
+
+	file = g_file_new_for_uri (href);
+
+	if (!g_file_load_contents (file, NULL, &data, size, NULL, NULL) && self->url != NULL) {
+		GFile *document_file;
+		GFile *parent_file;
+
+		g_object_unref (file);
+
+		document_file = g_file_new_for_uri (self->url);
+		parent_file = g_file_get_parent (document_file);
+		file = g_file_resolve_relative_path (parent_file, href);
+		g_object_unref (document_file);
+		g_object_unref (parent_file);
+
+		g_file_load_contents (file, NULL, &data, size, NULL, NULL);
+	}
+
+	g_object_unref (file);
+
+	return data;
+}
+
 static void
 lsm_dom_document_init (LsmDomDocument *document)
 {
@@ -205,6 +280,10 @@ lsm_dom_document_finalize (GObject *object)
 
 	g_hash_table_unref (document->elements);
 	g_hash_table_unref (document->ids);
+
+	g_free (document->url);
+
+	parent_class->finalize (object);
 }
 
 /* LsmDomDocument class */
@@ -214,6 +293,8 @@ lsm_dom_document_class_init (LsmDomDocumentClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	LsmDomNodeClass *node_class = LSM_DOM_NODE_CLASS (klass);
+
+	parent_class = g_type_class_peek_parent (klass);
 
 	object_class->finalize = lsm_dom_document_finalize;
 

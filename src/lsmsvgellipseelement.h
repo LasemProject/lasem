@@ -23,7 +23,7 @@
 #define LSM_SVG_ELLIPSE_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,16 +37,16 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgEllipseElementClass LsmSvgEllipseElementClass;
 
 struct _LsmSvgEllipseElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	cx;
-	LsmSvgAnimatedLengthAttribute	cy;
-	LsmSvgAnimatedLengthAttribute	rx;
-	LsmSvgAnimatedLengthAttribute	ry;
+	LsmSvgLengthAttribute	cx;
+	LsmSvgLengthAttribute	cy;
+	LsmSvgLengthAttribute	rx;
+	LsmSvgLengthAttribute	ry;
 };
 
 struct _LsmSvgEllipseElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_ellipse_element_get_type (void);

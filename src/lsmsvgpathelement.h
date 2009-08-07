@@ -23,7 +23,7 @@
 #define LSM_SVG_PATH_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,14 +37,14 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgPathElementClass LsmSvgPathElementClass;
 
 struct _LsmSvgPathElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmDomAttribute d;
-	LsmDomDoubleAttribute path_length;
+	LsmAttribute 		d;
+	LsmSvgDoubleAttribute 	path_length;
 };
 
 struct _LsmSvgPathElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_path_element_get_type (void);

@@ -38,95 +38,94 @@ lsm_svg_gradient_element_can_append_child (LsmDomNode *parent, LsmDomNode *child
 /* LsmSvgElement implementation */
 
 static void
-_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
+lsm_svg_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgGradientElement *gradient = LSM_SVG_GRADIENT_ELEMENT (self);
-	LsmSvgPatternUnits units;
-	LsmSvgSpreadMethod method;
+	LsmSvgGradientElementClass *gradient_class = LSM_SVG_GRADIENT_ELEMENT_GET_CLASS (self);
 
-	units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
-	method = LSM_SVG_SPREAD_METHOD_PAD;
+	if (!gradient->enable_rendering)
+		return;
 
-	lsm_svg_pattern_units_attribute_parse (&gradient->units, &units);
-	lsm_svg_spread_method_attribute_parse (&gradient->spread_method, &method);
-	lsm_svg_transform_attribute_parse (&gradient->transform);
+	gradient->enable_rendering = FALSE;
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
+	g_return_if_fail (gradient_class->create_gradient != NULL);
 
-static void
-_gradient_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
-{
-	LsmSvgGradientElement *gradient = LSM_SVG_GRADIENT_ELEMENT (self);
-	LsmDomNode *iter;
-	double last_offset = 0.0;
-
-	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
-		if (LSM_IS_SVG_STOP_ELEMENT (iter)) {
-			LsmSvgStopElement *stop;
-			const LsmSvgColor *color;
-			double offset;
-			double opacity;
-
-			stop = LSM_SVG_STOP_ELEMENT (iter);
-
-			offset = lsm_svg_stop_element_get_offset (stop);
-			color = lsm_svg_stop_element_get_color (stop);
-			opacity = lsm_svg_stop_element_get_opacity (stop);
-
-			if (offset < last_offset)
-				offset = last_offset;
-			else
-				last_offset = offset;
-
-			lsm_debug ("[LsmSvgGradientElement::render] Add stop at %g (%g,%g,%g,%g)",
-				    offset, color->red, color->green, color->blue, opacity);
-
-			lsm_svg_view_add_gradient_color_stop (view, offset, color, opacity);
-		}
-	}
+	gradient_class->create_gradient (self, view);
 
 	lsm_svg_view_set_gradient_properties (view,
 					      gradient->spread_method.value,
 					      gradient->units.value,
 					      &gradient->transform.matrix);
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+}
+
+static void
+lsm_svg_gradient_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_GRADIENT_ELEMENT (element)->enable_rendering = TRUE;
 }
 
 /* LsmSvgGradientElement implementation */
 
+static const LsmSvgPatternUnits units_default = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
+static const LsmSvgSpreadMethod spread_method_default = LSM_SVG_SPREAD_METHOD_PAD;
+static const LsmSvgMatrix matrix_default = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY};
+
 static void
 lsm_svg_gradient_element_init (LsmSvgGradientElement *self)
 {
+	self->enable_rendering = FALSE;
+	self->units.value = units_default;
+	self->spread_method.value = spread_method_default;
+	lsm_svg_matrix_init_identity (&self->transform.matrix);
 }
 
 /* LsmSvgGradientElement class */
+
+static const LsmAttributeInfos lsm_svg_gradient_element_attribute_infos[] = {
+	{
+		.name = "gradientUnits",
+		.attribute_offset = offsetof (LsmSvgGradientElement, units),
+		.trait_class = &lsm_svg_pattern_units_trait_class,
+		.trait_default = &units_default
+	},
+	{
+		.name = "gradientTransform",
+		.attribute_offset = offsetof (LsmSvgGradientElement, transform),
+		.trait_class = &lsm_svg_matrix_trait_class,
+		.trait_default = &matrix_default
+	},
+	{
+		.name = "spreadMethod",
+		.attribute_offset = offsetof (LsmSvgGradientElement, spread_method),
+		.trait_class = &lsm_svg_spread_method_trait_class,
+		.trait_default = &spread_method_default
+	},
+	{
+		.name = "xlink:href",
+		.attribute_offset = offsetof (LsmSvgGradientElement, href),
+		.trait_class = &lsm_null_trait_class
+	}
+};
 
 static void
 lsm_svg_gradient_element_class_init (LsmSvgGradientElementClass *klass)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (klass);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
 	d_node_class->can_append_child = lsm_svg_gradient_element_can_append_child;
 
-	s_element_class->update = _gradient_element_update;
-	s_element_class->render_paint = s_element_class->render;
-	s_element_class->render = NULL;
-	s_graphic_class->graphic_render = _gradient_element_graphic_render;
+	s_element_class->render = lsm_svg_gradient_element_render;
+	s_element_class->enable_rendering = lsm_svg_gradient_element_enable_rendering;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "gradientUnits",
-					  offsetof (LsmSvgGradientElement, units));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "gradientTransform",
-					  offsetof (LsmSvgGradientElement, transform));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "spreadMethod",
-					  offsetof (LsmSvgGradientElement, spread_method));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "xlink:href",
-					  offsetof (LsmSvgGradientElement, href));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_gradient_element_attribute_infos),
+					      lsm_svg_gradient_element_attribute_infos);
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmSvgGradientElement, lsm_svg_gradient_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_ABSTRACT_TYPE (LsmSvgGradientElement, lsm_svg_gradient_element, LSM_TYPE_SVG_ELEMENT)

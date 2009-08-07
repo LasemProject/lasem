@@ -23,7 +23,7 @@
 #define LSM_SVG_IMAGE_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
@@ -38,14 +38,14 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgImageElementClass LsmSvgImageElementClass;
 
 struct _LsmSvgImageElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
-	LsmSvgAnimatedLengthAttribute	x;
-	LsmSvgAnimatedLengthAttribute	y;
-	LsmSvgAnimatedLengthAttribute	width;
-	LsmSvgAnimatedLengthAttribute	height;
+	LsmSvgLengthAttribute	x;
+	LsmSvgLengthAttribute	y;
+	LsmSvgLengthAttribute	width;
+	LsmSvgLengthAttribute	height;
 
-	LsmDomAttribute		href;
+	LsmAttribute		href;
 
 	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
 
@@ -53,7 +53,7 @@ struct _LsmSvgImageElement {
 };
 
 struct _LsmSvgImageElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_image_element_get_type (void);

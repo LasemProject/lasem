@@ -37,22 +37,21 @@ _clip_path_element_get_node_name (LsmDomNode *node)
 /* LsmSvgElement implementation */
 
 static void
-_clip_path_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgClipPathElement *pattern = LSM_SVG_CLIP_PATH_ELEMENT (self);
-	LsmSvgPatternUnits units;
-
-	units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
-	lsm_svg_pattern_units_attribute_parse (&pattern->units, &units);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-}
-
-static void
-_clip_path_element_render_clip (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_clip_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgClipPathElement *clip = LSM_SVG_CLIP_PATH_ELEMENT (self);
 	gboolean is_object_bounding_box;
+	LsmSvgStyle *style;
+
+	if (!clip->enable_rendering) {
+		lsm_debug ("[LsmSvgClipPathElement::render] Direct rendering not allowed");
+		return;
+	} else {
+		clip->enable_rendering = FALSE;
+	}
+
+	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
+	lsm_svg_view_push_style (view, style);
 
 	is_object_bounding_box = (clip->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -73,6 +72,15 @@ _clip_path_element_render_clip (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_matrix (view);
 		lsm_svg_view_pop_viewbox (view);
 	}
+
+	lsm_svg_view_pop_style (view);
+	lsm_svg_style_free (style);
+}
+
+static void
+lsm_svg_clip_path_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_CLIP_PATH_ELEMENT (element)->enable_rendering  = TRUE;
 }
 
 LsmDomNode *
@@ -81,21 +89,25 @@ lsm_svg_clip_path_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_CLIP_PATH_ELEMENT, NULL);
 }
 
+static const LsmSvgPatternUnits units_default = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
+
 static void
 lsm_svg_clip_path_element_init (LsmSvgClipPathElement *self)
 {
-	/* Hack - Force the creation of the attribute bags,
-	   making sure the properties will be inherited from the
-	   pattern element ancestor, not the referencing one. */
-
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "fill", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stroke", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "transform", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "font-family", NULL);
-	lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (self), "stop-color", NULL);
+	self->enable_rendering = FALSE;
+	self->units.value = units_default;
 }
 
 /* LsmSvgClipPathElement class */
+
+static const LsmAttributeInfos lsm_svg_clip_path_element_attribute_infos[] = {
+	{
+		.name = "clipPathUnits",
+		.trait_class = &lsm_svg_pattern_units_trait_class,
+		.attribute_offset = offsetof (LsmSvgClipPathElement, units),
+		.trait_default = &units_default
+	}
+};
 
 static void
 lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
@@ -107,14 +119,14 @@ lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
 
 	d_node_class->get_node_name = _clip_path_element_get_node_name;
 
-	s_element_class->update = _clip_path_element_update;
-	s_element_class->render_clip = _clip_path_element_render_clip;
-	s_element_class->render = NULL;
+	s_element_class->render = lsm_svg_clip_path_element_render;
+	s_element_class->enable_rendering = lsm_svg_clip_path_element_enable_rendering;
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "clipPathUnits",
-					     offsetof (LsmSvgClipPathElement, units));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_clip_path_element_attribute_infos),
+					      lsm_svg_clip_path_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgClipPathElement, lsm_svg_clip_path_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgClipPathElement, lsm_svg_clip_path_element, LSM_TYPE_SVG_ELEMENT)

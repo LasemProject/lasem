@@ -37,32 +37,7 @@ lsm_svg_linear_gradient_element_get_node_name (LsmDomNode *node)
 /* GLinearGradientElement implementation */
 
 static void
-_linear_gradient_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
-{
-	LsmSvgLinearGradientElement *linear = LSM_SVG_LINEAR_GRADIENT_ELEMENT (self);
-	LsmSvgLength length;
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->x1, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->y1, &length);
-
-	length.value_unit = 100.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->x2, &length);
-
-	length.value_unit = 0.0;
-	length.type = LSM_SVG_LENGTH_TYPE_PERCENTAGE;
-	lsm_svg_animated_length_attribute_parse (&linear->y2, &length);
-}
-
-static void
-_linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_linear_gradient_element_create_gradient (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgLinearGradientElement *linear = LSM_SVG_LINEAR_GRADIENT_ELEMENT (self);
 	gboolean is_object_bounding_box;
@@ -77,10 +52,10 @@ _linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 	}
 
-	x1 = lsm_svg_view_normalize_length (view, &linear->x1.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y1 = lsm_svg_view_normalize_length (view, &linear->y1.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	x2 = lsm_svg_view_normalize_length (view, &linear->x2.length.base, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y2 = lsm_svg_view_normalize_length (view, &linear->y2.length.base, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x1 = lsm_svg_view_normalize_length (view, &linear->x1.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y1 = lsm_svg_view_normalize_length (view, &linear->y1.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x2 = lsm_svg_view_normalize_length (view, &linear->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y2 = lsm_svg_view_normalize_length (view, &linear->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_debug ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
 		    x1, y1, x2, y2);
@@ -89,8 +64,6 @@ _linear_gradient_element_render_paint (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_viewbox (view);
 
 	lsm_svg_view_create_linear_gradient (view, x1, y1, x2, y2);
-
-	LSM_SVG_ELEMENT_CLASS (parent_class)->render_paint (self, view);
 }
 
 /* LsmSvgLinearGradientElement implementation */
@@ -101,18 +74,52 @@ lsm_svg_linear_gradient_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_LINEAR_GRADIENT_ELEMENT, NULL);
 }
 
+static const LsmSvgLength x1_y1_y2_default = 	{ .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
+static const LsmSvgLength x2_default =		{ .value_unit = 100.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
+
 static void
 lsm_svg_linear_gradient_element_init (LsmSvgLinearGradientElement *self)
 {
-
+	self->x1.length = x1_y1_y2_default;
+	self->y1.length = x1_y1_y2_default;
+	self->x2.length = x2_default;
+	self->y2.length = x1_y1_y2_default;
 }
 
 static void
 lsm_svg_linear_gradient_element_finalize (GObject *object)
 {
+	parent_class->finalize (object);
 }
 
 /* LsmSvgLinearGradientElement class */
+
+static const LsmAttributeInfos lsm_svg_linear_gradient_element_attribute_infos[] = {
+	{
+		.name = "x1",
+		.attribute_offset = offsetof (LsmSvgLinearGradientElement, x1),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x1_y1_y2_default
+	},
+	{
+		.name = "y1",
+		.attribute_offset = offsetof (LsmSvgLinearGradientElement, y1),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x1_y1_y2_default
+	},
+	{
+		.name = "x2",
+		.attribute_offset = offsetof (LsmSvgLinearGradientElement, x2),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x2_default
+	},
+	{
+		.name = "y2",
+		.attribute_offset = offsetof (LsmSvgLinearGradientElement, y2),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &x1_y1_y2_default
+	}
+};
 
 static void
 lsm_svg_linear_gradient_element_class_init (LsmSvgLinearGradientElementClass *s_svg_class)
@@ -120,6 +127,7 @@ lsm_svg_linear_gradient_element_class_init (LsmSvgLinearGradientElementClass *s_
 	GObjectClass *object_class = G_OBJECT_CLASS (s_svg_class);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_svg_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_svg_class);
+	LsmSvgGradientElementClass *s_gradient_class = LSM_SVG_GRADIENT_ELEMENT_CLASS (s_svg_class);
 
 	parent_class = g_type_class_peek_parent (s_svg_class);
 
@@ -127,19 +135,13 @@ lsm_svg_linear_gradient_element_class_init (LsmSvgLinearGradientElementClass *s_
 
 	d_node_class->get_node_name = lsm_svg_linear_gradient_element_get_node_name;
 
-	s_element_class->update = _linear_gradient_element_update;
-	s_element_class->render_paint = _linear_gradient_element_render_paint;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_linear_gradient_element_attribute_infos),
+					      lsm_svg_linear_gradient_element_attribute_infos);
 
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x1",
-					  offsetof (LsmSvgLinearGradientElement, x1));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y1",
-					  offsetof (LsmSvgLinearGradientElement, y1));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "x2",
-					  offsetof (LsmSvgLinearGradientElement, x2));
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "y2",
-					  offsetof (LsmSvgLinearGradientElement, y2));
+	s_gradient_class->create_gradient = lsm_svg_linear_gradient_element_create_gradient;
 }
 
 G_DEFINE_TYPE (LsmSvgLinearGradientElement, lsm_svg_linear_gradient_element, LSM_TYPE_SVG_GRADIENT_ELEMENT)

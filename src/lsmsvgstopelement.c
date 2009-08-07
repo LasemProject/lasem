@@ -38,51 +38,22 @@ lsm_svg_stop_element_get_node_name (LsmDomNode *node)
 /* LsmSvgElement implementation */
 
 static void
-_stop_element_update (LsmSvgElement *self, LsmSvgStyle *parent_style)
+lsm_svg_stop_element_render (LsmSvgElement *element, LsmSvgView *view)
 {
-	LsmSvgStopElement *stop = LSM_SVG_STOP_ELEMENT (self);
-	LsmSvgLength length;
+	LsmSvgStopElement *stop = LSM_SVG_STOP_ELEMENT (element);
+	double offset;
 
-	length.type = LSM_SVG_LENGTH_TYPE_NUMBER;
-	lsm_svg_length_attribute_parse (&stop->offset, &length);
+	if (stop->offset.length.type == LSM_SVG_LENGTH_TYPE_PERCENTAGE)
+		offset = stop->offset.length.value_unit / 100.0;
+	else
+		offset = stop->offset.length.value_unit;
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->update (self, parent_style);
+	lsm_debug ("[LsmSvgStopElement::render] Add stop at %g", offset);
+
+	lsm_svg_view_add_gradient_color_stop (view, offset);
 }
 
 /* LsmSvgStopElement implementation */
-
-double
-lsm_svg_stop_element_get_offset (LsmSvgStopElement *self)
-{
-	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 0.0);
-
-	if (self->offset.length.type == LSM_SVG_LENGTH_TYPE_PERCENTAGE)
-		return self->offset.length.value_unit / 100.0;
-	else
-		return self->offset.length.value_unit;
-}
-
-const LsmSvgColor *
-lsm_svg_stop_element_get_color (LsmSvgStopElement *self)
-{
-	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), &lsm_svg_color_null);
-
-	if (LSM_SVG_GRAPHIC(self)->stop != NULL)
-		return &(LSM_SVG_GRAPHIC (self)->stop->color.value);
-	else
-		return &lsm_svg_color_null;
-}
-
-double
-lsm_svg_stop_element_get_opacity (LsmSvgStopElement *self)
-{
-	g_return_val_if_fail (LSM_IS_SVG_STOP_ELEMENT (self), 1.0);
-
-	if (LSM_SVG_GRAPHIC(self)->stop != NULL)
-		return LSM_SVG_GRAPHIC (self)->stop->opacity.value;
-	else
-		return 1.0;
-}
 
 LsmDomNode *
 lsm_svg_stop_element_new (void)
@@ -90,12 +61,24 @@ lsm_svg_stop_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_STOP_ELEMENT, NULL);
 }
 
+static const LsmSvgLength length_default = 	{ .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_NUMBER};
+
 static void
 lsm_svg_stop_element_init (LsmSvgStopElement *self)
 {
+	self->offset.length = length_default;
 }
 
 /* LsmSvgStopElement class */
+
+static const LsmAttributeInfos lsm_svg_stop_element_attribute_infos[] = {
+	{
+		.name = "offset",
+		.attribute_offset = offsetof (LsmSvgStopElement, offset),
+		.trait_class = &lsm_svg_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
 static void
 lsm_svg_stop_element_class_init (LsmSvgStopElementClass *klass)
@@ -107,12 +90,13 @@ lsm_svg_stop_element_class_init (LsmSvgStopElementClass *klass)
 
 	d_node_class->get_node_name = lsm_svg_stop_element_get_node_name;
 
-	s_element_class->update = _stop_element_update;
+	s_element_class->render = lsm_svg_stop_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_stop_element_attribute_infos),
+					      lsm_svg_stop_element_attribute_infos);
 
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "offset",
-					  offsetof (LsmSvgStopElement, offset));
 }
 
-G_DEFINE_TYPE (LsmSvgStopElement, lsm_svg_stop_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgStopElement, lsm_svg_stop_element, LSM_TYPE_SVG_ELEMENT)

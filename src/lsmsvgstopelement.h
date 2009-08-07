@@ -23,7 +23,7 @@
 #define LSM_SVG_STOP_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvggraphic.h>
+#include <lsmsvgelement.h>
 
 G_BEGIN_DECLS
 
@@ -37,22 +37,18 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgStopElementClass LsmSvgStopElementClass;
 
 struct _LsmSvgStopElement {
-	LsmSvgGraphic graphic;
+	LsmSvgElement element;
 
 	LsmSvgLengthAttribute offset;
 };
 
 struct _LsmSvgStopElementClass {
-	LsmSvgGraphicClass  parent_class;
+	LsmSvgElementClass  element_class;
 };
 
 GType lsm_svg_stop_element_get_type (void);
 
 LsmDomNode * lsm_svg_stop_element_new (void);
-
-double 			lsm_svg_stop_element_get_offset 	(LsmSvgStopElement *self);
-const LsmSvgColor *	lsm_svg_stop_element_get_color 		(LsmSvgStopElement *self);
-double 			lsm_svg_stop_element_get_opacity 	(LsmSvgStopElement *self);
 
 G_END_DECLS
 

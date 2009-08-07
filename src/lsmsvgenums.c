@@ -38,7 +38,7 @@ lsm_svg_value_from_string (const char *string, const char **strings, unsigned in
 }
 
 static const char *lsm_svg_length_type_strings[] = {
-	"",
+	"?",
 	"",
 	"%",
 	"em",

@@ -45,8 +45,10 @@ typedef struct _LsmDomDocumentClass LsmDomDocumentClass;
 struct _LsmDomDocument {
 	LsmDomNode node;
 
-	GHashTable *		ids;
-	GHashTable *		elements;
+	GHashTable *	ids;
+	GHashTable *	elements;
+
+	char *		url;
 
 	/* Not really a document property, but that simplifies things greatly */
 	double resolution_ppi;
@@ -81,6 +83,12 @@ void 		lsm_dom_document_set_viewport 		(LsmDomDocument *self, const LsmBox *view
 void 		lsm_dom_document_set_viewport_px 	(LsmDomDocument *self, const LsmBox *viewport);
 LsmBox 		lsm_dom_document_get_viewport 		(LsmDomDocument *self);
 LsmBox 		lsm_dom_document_get_viewport_px 	(LsmDomDocument *self);
+
+const char * 	lsm_dom_document_get_url 		(LsmDomDocument *self);
+void		lsm_dom_document_set_url		(LsmDomDocument *self, const char *url);
+void 		lsm_dom_document_set_path 		(LsmDomDocument *self, const char *path);
+
+void * 		lsm_dom_document_get_href_data 		(LsmDomDocument *self, const char *href, gsize *size);
 
 G_END_DECLS
 

@@ -37,7 +37,7 @@ lsm_svg_polygon_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_polygon_element_graphic_render (LsmSvgElement *self, LsmSvgView *view)
+lsm_svg_polygon_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgPolygonElement *polygon = LSM_SVG_POLYGON_ELEMENT (self);
 
@@ -59,23 +59,30 @@ lsm_svg_polygon_element_init (LsmSvgPolygonElement *self)
 
 /* LsmSvgPolygonElement class */
 
+static const LsmAttributeInfos lsm_svg_polygon_element_attribute_infos[] = {
+	{
+		.name = "points",
+		.attribute_offset = offsetof (LsmSvgPolygonElement, points),
+		.trait_class = &lsm_null_trait_class
+	}
+};
+
 static void
 lsm_svg_polygon_element_class_init (LsmSvgPolygonElementClass *s_rect_class)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
-	LsmSvgGraphicClass *s_graphic_class = LSM_SVG_GRAPHIC_CLASS (s_rect_class);
 
 	parent_class = g_type_class_peek_parent (s_rect_class);
 
 	d_node_class->get_node_name = lsm_svg_polygon_element_get_node_name;
 
-	s_graphic_class->graphic_render = lsm_svg_polygon_element_graphic_render;
+	s_element_class->render = lsm_svg_polygon_element_render;
+	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	s_element_class->attributes = lsm_dom_attribute_map_duplicate (s_element_class->attributes);
-
-	lsm_dom_attribute_map_add_attribute (s_element_class->attributes, "points",
-					  offsetof (LsmSvgPolygonElement, points));
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_polygon_element_attribute_infos),
+					      lsm_svg_polygon_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgPolygonElement, lsm_svg_polygon_element, LSM_TYPE_SVG_GRAPHIC)
+G_DEFINE_TYPE (LsmSvgPolygonElement, lsm_svg_polygon_element, LSM_TYPE_SVG_ELEMENT)

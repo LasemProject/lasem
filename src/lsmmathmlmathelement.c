@@ -181,6 +181,8 @@ lsm_mathml_math_element_finalize (GObject *object)
 	LsmMathmlMathElement *math_element = LSM_MATHML_MATH_ELEMENT (object);
 
 	lsm_mathml_style_free (math_element->default_style);
+
+	parent_class->finalize (object);
 }
 
 /* LsmMathmlMathElement class */
