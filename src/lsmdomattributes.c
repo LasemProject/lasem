@@ -294,6 +294,9 @@ lsm_dom_attribute_finalize_cb (gpointer key,
 		g_free (attribute->value);
 		g_free (attribute->css_value);
 
+		attribute->value = NULL;
+		attribute->css_value = NULL;
+
 		if (attribute_infos->attribute_class != NULL &&
 		    attribute_infos->attribute_class->finalize != NULL)
 			attribute_infos->attribute_class->finalize (attribute);

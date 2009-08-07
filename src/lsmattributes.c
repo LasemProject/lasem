@@ -189,8 +189,11 @@ lsm_attribute_manager_clean_attributes (LsmAttributeManager *manager,
 		attribute_infos = value;
 		trait_class = attribute_infos->trait_class;
 
+		attribute = (void *)(instance + attribute_infos->attribute_offset);
+		g_free (attribute->value);
+		attribute->value = NULL;
+
 		if (trait_class->finalize) {
-			attribute = (void *)(instance + attribute_infos->attribute_offset);
 			trait_class->finalize (ATTRIBUTE_TRAIT (attribute));
 		}
 	}

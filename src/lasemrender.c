@@ -159,9 +159,20 @@ int main(int argc, char **argv)
 		g_free (directory);
 	}
 
-	document = lsm_dom_document_new_from_path (input_filename, NULL);
-	if (document == NULL)
-		document = lsm_dom_document_new_from_url (input_filename, NULL);
+	document = lsm_dom_document_new_from_path (input_filename,
+						   NULL);
+	if (document == NULL) {
+		document = lsm_dom_document_new_from_url (input_filename,
+							  NULL);
+		if (document == NULL) {
+			document = LSM_DOM_DOCUMENT (lsm_mathml_document_new_from_itex_path (input_filename,
+											     NULL));
+			if (document == NULL) {
+				document = LSM_DOM_DOCUMENT (lsm_mathml_document_new_from_itex_url (input_filename,
+												    NULL));
+			}
+		}
+	}
 
 	if (document != NULL) {
 		lsm_dom_document_set_resolution (document, option_ppi);

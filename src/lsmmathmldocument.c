@@ -42,6 +42,8 @@
 #include <lsmmathmlalignmarkelement.h>
 #include <lsmmathmlaligngroupelement.h>
 #include <lsmmathmlview.h>
+#include <lsmdebug.h>
+#include <gio/gio.h>
 #include <string.h>
 
 #include <lsmdomparser.h>
@@ -168,31 +170,113 @@ lsm_mathml_document_class_init (LsmMathmlDocumentClass *m_document_class)
 
 G_DEFINE_TYPE (LsmMathmlDocument, lsm_mathml_document, LSM_TYPE_DOM_DOCUMENT)
 
-#if 0
-static void
-_dummy_error (const char *msg)
+static GQuark
+lsm_mathml_document_error_quark (void)
 {
+	static GQuark q = 0;
+
+        if (q == 0) {
+                q = g_quark_from_static_string ("lsm-mathml-error-quark");
+        }
+
+        return q;
 }
 
+#define LSM_MATHML_DOCUMENT_ERROR lsm_mathml_document_error_quark ()
+
+typedef enum {
+	LSM_MATHML_DOCUMENT_ERROR_INVALID_ITEX
+} LsmMathmlDocumentError;
+
 LsmMathmlDocument *
-lsm_mathml_document_new_from_itex (const char *itex)
+lsm_mathml_document_new_from_itex (const char *itex, int size, GError **error)
 {
-	LsmMathmlDocument *document;
-	char *mathml;
+	LsmDomDocument *document;
+	char *xml;
 
 	g_return_val_if_fail (itex != NULL, NULL);
 
-	itex2MML_error = _dummy_error;
+	xml = itex2MML_parse (itex, size);
 
-	mathml = itex2MML_parse (itex, strlen (itex));
-	document = LSM_MATHML_DOCUMENT (lsm_dom_document_new_from_memory (mathml));
-	itex2MML_free_string (mathml);
+	if (xml == NULL) {
+		lsm_debug ("[LsmMathmlDocument::new_from_itex] invalid document");
 
-	if (document != NULL && !LSM_IS_MATHML_DOCUMENT (document)) {
+		g_set_error (error,
+			     LSM_MATHML_DOCUMENT_ERROR,
+			     LSM_MATHML_DOCUMENT_ERROR_INVALID_ITEX,
+			     "Invalid itex document.");
+
+		return NULL;
+	}
+
+	document = lsm_dom_document_new_from_memory (xml, -1, error);
+
+	itex2MML_free_string (xml);
+
+	if (document == NULL)
+		return NULL;
+
+	if (!LSM_IS_MATHML_DOCUMENT (document)) {
 		g_object_unref (document);
 		return NULL;
 	}
 
+	return LSM_MATHML_DOCUMENT (document);
+}
+
+static LsmMathmlDocument *
+lsm_mathml_document_new_from_itex_file (GFile *file, GError **error)
+{
+	LsmMathmlDocument *document;
+	gsize size = 0;
+	char *contents = NULL;
+
+	if (!g_file_load_contents (file, NULL, &contents, &size, NULL, error))
+		return NULL;
+
+	document = lsm_mathml_document_new_from_itex (contents, size, error);
+
+	g_free (contents);
+
 	return document;
 }
-#endif
+
+LsmMathmlDocument *
+lsm_mathml_document_new_from_itex_path (const char *path, GError **error)
+{
+	LsmMathmlDocument *document;
+	GFile *file;
+
+	g_return_val_if_fail (path != NULL, NULL);
+
+	file = g_file_new_for_path (path);
+
+	document = lsm_mathml_document_new_from_itex_file (file, error);
+
+	g_object_unref (file);
+
+	if (document != NULL)
+		lsm_dom_document_set_path (LSM_DOM_DOCUMENT (document), path);
+
+	return document;
+}
+
+LsmMathmlDocument *
+lsm_mathml_document_new_from_itex_url (const char *url, GError **error)
+{
+	LsmMathmlDocument *document;
+	GFile *file;
+
+	g_return_val_if_fail (url != NULL, NULL);
+
+	file = g_file_new_for_uri (url);
+
+	document = lsm_mathml_document_new_from_itex_file (file, error);
+
+	g_object_unref (file);
+
+	if (document != NULL)
+		lsm_dom_document_set_url (LSM_DOM_DOCUMENT (document), url);
+
+	return document;
+}

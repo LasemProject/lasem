@@ -103,10 +103,7 @@ lsm_dom_parser_start_element(void *user_data,
 
 	node = LSM_DOM_NODE (lsm_dom_document_create_element (LSM_DOM_DOCUMENT (state->document), (char *) name));
 
-	if (LSM_IS_DOM_NODE (node)) {
-
-		lsm_dom_node_append_child (state->current_node, node);
-
+	if (LSM_IS_DOM_NODE (node) && lsm_dom_node_append_child (state->current_node, node) != NULL) {
 		if (attrs != NULL)
 			for (i = 0; attrs[i] != NULL && attrs[i+1] != NULL; i += 2)
 				lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (node),
@@ -117,6 +114,9 @@ lsm_dom_parser_start_element(void *user_data,
 		state->is_error = FALSE;
 		state->error_depth = 0;
 	} else {
+		if (node != NULL)
+			g_object_unref (node);
+
 		state->is_error = TRUE;
 		state->error_depth = 1;
 	}
@@ -265,7 +265,7 @@ lsm_dom_document_error_quark (void)
 	static GQuark q = 0;
 
         if (q == 0) {
-                q = g_quark_from_static_string ("mrp-error-quark");
+                q = g_quark_from_static_string ("lsm-dom-error-quark");
         }
 
         return q;
@@ -277,34 +277,19 @@ typedef enum {
 	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
 } LsmDomDocumentError;
 
-static void
-_dummy_error (const char *msg)
-{
-}
-
-static LsmDomDocument *
-lsm_dom_document_new_from_contents (const char *contents, gsize size, GError **error)
+LsmDomDocument *
+lsm_dom_document_new_from_memory (const char *buffer, int size, GError **error)
 {
 	static LsmDomSaxParserState state;
-	char *mime;
-	char *xml;
+
+	g_return_val_if_fail (buffer != NULL, NULL);
 
 	state.document = NULL;
 
-	mime = g_content_type_guess (NULL, (guchar *) contents, size, NULL);
-	lsm_debug ("[LsmDomDocument::new_from_contents] mime = '%s'", mime);
-	if (g_strcmp0 (mime, "image/svg+xml") == 0 ||
-	    g_strcmp0 (mime, "text/mathml") == 0 ||
-	    g_strcmp0 (mime, "application/xml") == 0) {
-		xml = (char *) contents;
-	} else {
-		itex2MML_error = _dummy_error;
+	if (size < 0)
+		size = strlen (buffer);
 
-		xml = itex2MML_parse (contents, size);
-		size = strlen (contents);
-	}
-
-	if (xmlSAXUserParseMemory (&sax_handler, &state, xml, size) < 0) {
+	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, size) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
 		state.document = NULL;
@@ -317,21 +302,7 @@ lsm_dom_document_new_from_contents (const char *contents, gsize size, GError **e
 			     "Invalid document.");
 	}
 
-	if (xml != contents)
-		itex2MML_free_string (xml);
-
 	return state.document;
-}
-
-LsmDomDocument *
-lsm_dom_document_new_from_memory (const char *buffer, gsize size, GError **error)
-{
-	g_return_val_if_fail (buffer != NULL, NULL);
-
-	if (size < 1)
-		size = strlen (buffer);
-
-	return lsm_dom_document_new_from_contents (buffer, size, error);
 }
 
 static LsmDomDocument *
@@ -344,7 +315,7 @@ lsm_dom_document_new_from_file (GFile *file, GError **error)
 	if (!g_file_load_contents (file, NULL, &contents, &size, NULL, error))
 		return NULL;
 
-	document = lsm_dom_document_new_from_contents (contents, size, error);
+	document = lsm_dom_document_new_from_memory (contents, size, error);
 
 	g_free (contents);
 

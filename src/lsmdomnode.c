@@ -20,9 +20,10 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <glib/gprintf.h>
 #include <lsmdomnode.h>
 #include <lsmdomdocument.h>
+#include <lsmdebug.h>
+#include <glib/gprintf.h>
 #include <stdio.h>
 
 static GObjectClass *parent_class = NULL;
@@ -201,14 +202,20 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 	return old_child;
 }
 
-LsmDomNode*
+LsmDomNode *
 lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 {
 	LsmDomNodeClass *node_class;
 
 	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
-	g_return_val_if_fail (LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child), NULL);
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
+
+	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
+		lsm_debug ("[LsmDomNode::append_child] Can't append '%s' to '%s'",
+			   lsm_dom_node_get_node_name (new_child),
+			   lsm_dom_node_get_node_name (self));
+		return NULL;
+	}
 
 	if (self->first_child == NULL)
 		self->first_child = new_child;

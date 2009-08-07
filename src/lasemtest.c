@@ -29,12 +29,13 @@
 #include <unistd.h>
 #endif
 
+#include <lsmdebug.h>
+#include <lsmmathmldocument.h>
+#include <lsmdomparser.h>
+#include <lsmdomdocument.h>
 #include <glib/gregex.h>
 #include <glib/gprintf.h>
 #include <gio/gio.h>
-#include <lsmdebug.h>
-#include <lsmdomparser.h>
-#include <lsmdomdocument.h>
 
 #include <libxml/parser.h>
 
@@ -45,6 +46,7 @@
 static gboolean option_debug = FALSE;
 static char **option_input_filenames = NULL;
 double option_ppi = 72.0;
+static gboolean fatal_warning = FALSE;
 
 static const GOptionEntry entries[] =
 {
@@ -54,6 +56,8 @@ static const GOptionEntry entries[] =
 		&option_ppi, 			"Pixel per inch", NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_NONE,
 		&option_debug, 			"Debug mode", NULL },
+	{ "fatal-warning", 	'f', 0, G_OPTION_ARG_NONE,
+		&fatal_warning,			"Make warning fatal", NULL },
 	{ NULL }
 };
 
@@ -111,16 +115,17 @@ lasem_test_render (char const *filename)
 	success = g_file_get_contents (filename, &buffer, &size, NULL);
 	if (success) {
 		LsmBox viewport;
-		char *xml = NULL;
+		char *xml;
 
 		if (is_xml)
 			xml = buffer;
 		else {
 			xml = itex2MML_parse (buffer, size);
-			size = 0;
+			size = -1;
 		}
 
 		document = lsm_dom_document_new_from_memory (xml, size, NULL);
+
 		lsm_dom_document_set_path (document, filename);
 
 		view = lsm_dom_document_create_view (document);
@@ -315,6 +320,9 @@ main (int argc, char **argv)
 
 	if (option_debug)
 		lsm_debug_enable ();
+
+	if (fatal_warning)
+		g_log_set_fatal_mask ("Lasem", G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING);
 
 	timer = g_timer_new ();
 
