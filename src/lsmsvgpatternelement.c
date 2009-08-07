@@ -43,6 +43,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	gboolean is_object_bounding_box;
 	gboolean is_viewbox_defined;
 	LsmBox viewport;
+	LsmBox image_box;
 	const LsmBox *pattern_extents;
 	LsmSvgStyle *style;
 
@@ -76,13 +77,15 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	viewport.height = lsm_svg_view_normalize_length (view, &pattern->height.length,
 							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
+	image_box = viewport;
+
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_viewbox (view);
 
-		viewport.x *= pattern_extents->width;
-		viewport.y *= pattern_extents->height;
-		viewport.width *= pattern_extents->width;
-		viewport.height *= pattern_extents->height;
+		image_box.x *= pattern_extents->width;
+		image_box.y *= pattern_extents->height;
+		image_box.width *= pattern_extents->width;
+		image_box.height *= pattern_extents->height;
 	}
 
 	if (viewport.width <= 0.0 || viewport.height <= 0.0)
@@ -91,7 +94,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_debug ("[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
-	lsm_svg_view_create_surface_pattern (view, &viewport,
+	lsm_svg_view_create_surface_pattern (view, &image_box,
 					     pattern->units.value,
 					     pattern->content_units.value,
 					     &pattern->transform.matrix,
