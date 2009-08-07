@@ -29,11 +29,11 @@
 
 G_BEGIN_DECLS
 
-#define LSM_MATHML_SPACE_EM_VERY_VERY_THIN		0.055556
+#define LSM_MATHML_SPACE_EM_VERY_VERY_THIN	0.055556
 #define LSM_MATHML_SPACE_EM_VERY_THIN		0.111111
-#define LSM_MATHML_SPACE_EM_THIN			0.166667
-#define LSM_MATHML_SPACE_EM_MEDIUM		 	0.222222
-#define LSM_MATHML_SPACE_EM_THICK			0.277778
+#define LSM_MATHML_SPACE_EM_THIN		0.166667
+#define LSM_MATHML_SPACE_EM_MEDIUM	 	0.222222
+#define LSM_MATHML_SPACE_EM_THICK		0.277778
 #define LSM_MATHML_SPACE_EM_VERY_THICK		0.333333
 #define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
 
@@ -59,7 +59,7 @@ typedef struct {
 	LsmMathmlSpace *spaces;
 } LsmMathmlSpaceList;
 
-double 	lsm_mathml_length_compute 		(const LsmMathmlLength *length, double default_value, double font_size);
+double 	lsm_mathml_length_compute 	(const LsmMathmlLength *length, double default_value, double font_size);
 
 typedef struct {
 	LsmDomAttribute attr;
@@ -91,7 +91,7 @@ typedef struct {
 
 void 		lsm_mathml_script_level_attribute_parse	(LsmMathmlScriptLevelAttribute *attribute,
 							 int *default_value);
-void 		lsm_mathml_mode_attribute_parse 		(LsmDomEnumAttribute *attribute,
+void 		lsm_mathml_mode_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void 		lsm_mathml_display_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
@@ -105,12 +105,12 @@ void 		lsm_mathml_variant_attribute_parse 	(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
 void		lsm_mathml_line_attribute_parse		(LsmDomEnumAttribute *attribute,
 							 unsigned int *style_value);
-void		lsm_mathml_color_attribute_parse		(LsmMathmlColorAttribute *attribute,
+void		lsm_mathml_color_attribute_parse	(LsmMathmlColorAttribute *attribute,
 							 LsmMathmlColor *default_color);
-void 		lsm_mathml_length_attribute_parse 		(LsmMathmlLengthAttribute *attribute,
+void 		lsm_mathml_length_attribute_parse 	(LsmMathmlLengthAttribute *attribute,
 							 LsmMathmlLength *style_value,
 							 double font_size);
-void 		lsm_mathml_space_attribute_parse 		(LsmMathmlSpaceAttribute *attribute,
+void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,
 							 LsmMathmlSpace *style_value,
 							 LsmMathmlStyle *style);
 
@@ -122,7 +122,7 @@ void 		lsm_mathml_space_list_attribute_parse 	(LsmMathmlSpaceListAttribute *attr
 							 LsmMathmlSpaceList *style_value,
 							 const LsmMathmlStyle *style);
 
-void 	lsm_mathml_row_align_list_attribute_parse 		(LsmDomEnumListAttribute *attribute,
+void 	lsm_mathml_row_align_list_attribute_parse 	(LsmDomEnumListAttribute *attribute,
 							 LsmDomEnumList *style_value);
 void 	lsm_mathml_column_align_list_attribute_parse 	(LsmDomEnumListAttribute *attribute,
 							 LsmDomEnumList *style_value);
