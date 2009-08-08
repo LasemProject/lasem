@@ -36,6 +36,7 @@ typedef struct _LsmSvgDefsElement LsmSvgDefsElement;
 typedef struct _LsmSvgUseElement LsmSvgUseElement;
 typedef struct _LsmSvgImageElement LsmSvgImageElement;
 typedef struct _LsmSvgSymbolElement LsmSvgSymbolElement;
+typedef struct _LsmSvgMarkerElement LsmSvgMarkerElement;
 typedef struct _LsmSvgRectElement LsmSvgRectElement;
 typedef struct _LsmSvgCircleElement LsmSvgCircleElement;
 typedef struct _LsmSvgEllipseElement LsmSvgEllipseElement;

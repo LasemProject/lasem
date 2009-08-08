@@ -60,6 +60,11 @@ typedef struct {
 	LsmSvgMeetOrSlice meet_or_slice;
 } LsmSvgPreserveAspectRatio;
 
+typedef struct {
+	LsmSvgAngleType type;
+	double angle;
+} LsmSvgAngle;
+
 extern const LsmTraitClass lsm_svg_length_trait_class;
 extern const LsmTraitClass lsm_svg_matrix_trait_class;
 extern const LsmTraitClass lsm_svg_paint_trait_class;
@@ -69,8 +74,10 @@ extern const LsmTraitClass lsm_svg_line_cap_trait_class;
 extern const LsmTraitClass lsm_svg_dash_array_trait_class;
 extern const LsmTraitClass lsm_svg_color_trait_class;
 extern const LsmTraitClass lsm_svg_pattern_units_trait_class;
+extern const LsmTraitClass lsm_svg_marker_units_trait_class;
 extern const LsmTraitClass lsm_svg_preserve_aspect_ratio_trait_class;
 extern const LsmTraitClass lsm_svg_spread_method_trait_class;
+extern const LsmTraitClass lsm_svg_angle_trait_class;
 
 G_END_DECLS
 

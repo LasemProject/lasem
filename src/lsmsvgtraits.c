@@ -577,6 +577,28 @@ const LsmTraitClass lsm_svg_color_trait_class = {
 };
 
 static void
+lsm_svg_marker_units_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgMarkerUnits *trait = (LsmSvgMarkerUnits *) abstract_trait;
+
+	*trait = lsm_svg_marker_units_from_string (string);
+}
+
+char *
+lsm_svg_marker_units_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgMarkerUnits *trait = (LsmSvgMarkerUnits *) abstract_trait;
+
+	return g_strdup (lsm_svg_marker_units_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_marker_units_trait_class = {
+	.size = sizeof (LsmSvgMarkerUnits),
+	.from_string = lsm_svg_marker_units_trait_from_string,
+	.to_string = lsm_svg_marker_units_trait_to_string
+};
+
+static void
 lsm_svg_pattern_units_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgPatternUnits *trait = (LsmSvgPatternUnits *) abstract_trait;
@@ -664,3 +686,33 @@ const LsmTraitClass lsm_svg_spread_method_trait_class = {
 	.to_string = lsm_svg_spread_method_trait_to_string
 };
 
+static void
+lsm_svg_angle_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgAngle *trait = (LsmSvgAngle *) abstract_trait;
+
+	if (g_strcmp0 (string, "auto")) {
+		trait->type = LSM_SVG_ANGLE_TYPE_AUTO;
+		trait->angle = 0.0;
+	} else {
+		trait->type = LSM_SVG_ANGLE_TYPE_FIXED;
+		trait->angle = g_strtod (string, NULL);
+	}
+}
+
+static char *
+lsm_svg_angle_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgAngle *trait = (LsmSvgAngle *) abstract_trait;
+
+	if (trait->type == LSM_SVG_ANGLE_TYPE_AUTO)
+		return g_strdup ("auto");
+
+	return g_strdup_printf ("%g", trait->angle);
+}
+
+const LsmTraitClass lsm_svg_angle_trait_class = {
+	.size = sizeof (LsmSvgAngle),
+	.from_string = lsm_svg_angle_trait_from_string,
+	.to_string = lsm_svg_angle_trait_to_string
+};

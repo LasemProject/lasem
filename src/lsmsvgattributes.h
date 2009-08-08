@@ -88,6 +88,16 @@ typedef struct {
 	LsmSvgPatternUnits value;
 } LsmSvgPatternUnitsAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	LsmSvgMarkerUnits value;
+} LsmSvgMarkerUnitsAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	LsmSvgAngle value;
+} LsmSvgAngleAttribute;
+
 G_END_DECLS
 
 #endif

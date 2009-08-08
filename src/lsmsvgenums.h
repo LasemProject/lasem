@@ -27,6 +27,11 @@
 G_BEGIN_DECLS
 
 typedef enum {
+	LSM_SVG_ANGLE_TYPE_AUTO,
+	LSM_SVG_ANGLE_TYPE_FIXED
+} LsmSvgAngleType;
+
+typedef enum {
 	LSM_SVG_PAINT_TYPE_UNKNOWN = 0,
 	LSM_SVG_PAINT_TYPE_RGB_COLOR,
 	LSM_SVG_PAINT_TYPE_RGB_COLOR_ICC_COLOR,
@@ -105,6 +110,14 @@ typedef enum {
 
 const char * 		lsm_svg_pattern_units_to_string 		(LsmSvgPatternUnits units);
 LsmSvgPatternUnits	lsm_svg_pattern_units_from_string		(const char *string);
+
+typedef enum {
+	LSM_SVG_MARKER_UNITS_USER_SPACE_ON_USE,
+	LSM_SVG_MARKER_UNITS_STROKE_WIDTH
+} LsmSvgMarkerUnits;
+
+const char * 		lsm_svg_marker_units_to_string 			(LsmSvgMarkerUnits units);
+LsmSvgMarkerUnits	lsm_svg_marker_units_from_string		(const char *string);
 
 typedef enum {
 	LSM_SVG_SPREAD_METHOD_PAD,
