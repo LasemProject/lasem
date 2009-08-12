@@ -45,6 +45,16 @@ struct _LsmSvgMarkerElement {
 	LsmSvgLengthAttribute width;
 	LsmSvgLengthAttribute height;
 	LsmSvgAngleAttribute orientation;
+
+	LsmSvgViewboxAttribute	viewbox;
+	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
+
+	gboolean enable_rendering;
+
+	double stroke_width;
+	double vertex_angle;
+
+	LsmSvgStyle *style;
 };
 
 struct _LsmSvgMarkerElementClass {
@@ -54,6 +64,8 @@ struct _LsmSvgMarkerElementClass {
 GType lsm_svg_marker_element_get_type (void);
 
 LsmDomNode *		lsm_svg_marker_element_new 		(void);
+void 			lsm_svg_marker_element_render 		(LsmSvgMarkerElement *marker, LsmSvgView *view,
+								 double stroke_width, double vertex_angle);
 
 G_END_DECLS
 

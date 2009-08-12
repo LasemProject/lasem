@@ -67,7 +67,6 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (id == NULL)
 		return;
 
-	/* TODO Ugly hack */
 	if (*id == '#')
 		id++;
 

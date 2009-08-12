@@ -40,11 +40,93 @@ lsm_svg_marker_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
-lsm_svg_marker_element_render (LsmSvgElement *self, LsmSvgView *view)
+_marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
+	LsmSvgMarkerElement *marker = LSM_SVG_MARKER_ELEMENT (self);
+	LsmSvgStyle *style;
+	LsmSvgMatrix matrix;
+	LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+	LsmBox viewport;
+	double ref_x, ref_y;
+
+	if (!marker->enable_rendering) {
+		if (marker->style)
+			lsm_svg_style_free (marker->style);
+		/* FIXME Use reference counting for LsmSvgStyle */
+		marker->style = lsm_svg_style_duplicate (lsm_svg_view_get_current_style (view));
+
+		lsm_debug ("[LsmSvgMarkerElement::render] Direct rendering not allowed");
+		return;
+	} else {
+		marker->enable_rendering = FALSE;
+	}
+
+	style = lsm_svg_style_new_inherited (marker->style, &self->property_bag);
+	lsm_svg_view_push_style (view, style);
+
+	viewport.x = 0.0;
+	viewport.y = 0.0;
+
+	viewport.width = lsm_svg_view_normalize_length (view, &marker->width.length,
+							LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &marker->height.length,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
+					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	ref_y = lsm_svg_view_normalize_length (view, &marker->ref_y.length,
+					       LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_svg_matrix_init_translate (&matrix, -ref_x, -ref_y);
+
+	if (marker->units.value == LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
+		lsm_svg_matrix_scale (&matrix, marker->stroke_width, marker->stroke_width);
+	}
+
+	lsm_svg_view_push_viewbox (view, &viewbox);
+	lsm_svg_view_push_matrix (view, &matrix);
+
+	lsm_debug ("[LsmSvgMarkerElement::render] stroke_width scale = %g",
+		   marker->stroke_width);
+
+	lsm_svg_view_push_viewport (view, &viewport, &marker->viewbox.value,
+				    &marker->preserve_aspect_ratio.value);
+
+	lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
+	lsm_svg_view_push_matrix (view, &matrix);
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	lsm_svg_view_pop_matrix (view);
+
+	lsm_svg_view_pop_viewport (view);
+
+	lsm_svg_view_pop_matrix (view);
+	lsm_svg_view_pop_viewbox (view);
+
+	lsm_svg_view_pop_style (view);
+	lsm_svg_style_free (style);
 }
 
 /* LsmSvgMarkerElement implementation */
+
+void
+lsm_svg_marker_element_render (LsmSvgMarkerElement *marker, LsmSvgView *view,
+			       double stroke_width, double vertex_angle)
+{
+	g_return_if_fail (LSM_IS_SVG_MARKER_ELEMENT (marker));
+
+	marker->stroke_width = stroke_width;
+	marker->vertex_angle = vertex_angle;
+
+	lsm_svg_element_force_render (LSM_SVG_ELEMENT (marker), view);
+}
+
+static void
+lsm_svg_marker_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_MARKER_ELEMENT (element)->enable_rendering  = TRUE;
+}
 
 LsmDomNode *
 lsm_svg_marker_element_new (void)
@@ -56,14 +138,33 @@ static const LsmSvgMarkerUnits units_default =   LSM_SVG_MARKER_UNITS_STROKE_WID
 static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_NUMBER};
 static const LsmSvgLength width_default = 	 { .value_unit =   3.0, .type = LSM_SVG_LENGTH_TYPE_NUMBER};
 static const LsmSvgAngle orientation_default =	 { .angle =        0.0, .type = LSM_SVG_ANGLE_TYPE_FIXED};
+static const LsmBox viewbox_default =		{0.0, 0.0, 0.0, 0.0};
+static const LsmSvgPreserveAspectRatio preserve_aspect_ratio_default = {
+	.defer = FALSE,
+	.align = LSM_SVG_ALIGN_X_MID_Y_MID,
+	.meet_or_slice = LSM_SVG_MEET_OR_SLICE_MEET
+};
 
 static void
 lsm_svg_marker_element_init (LsmSvgMarkerElement *self)
 {
+	self->enable_rendering = FALSE;
 	self->ref_x.length = length_default;
 	self->ref_y.length = length_default;
 	self->width.length = width_default;
 	self->height.length = width_default;
+	self->preserve_aspect_ratio.value = preserve_aspect_ratio_default;
+}
+
+static void
+lsm_svg_marker_element_finalize (GObject *object)
+{
+	LsmSvgMarkerElement *marker = LSM_SVG_MARKER_ELEMENT (object);
+
+	if (marker->style)
+		lsm_svg_style_free (marker->style);
+
+	parent_class->finalize (object);
 }
 
 /* LsmSvgMarkerElement class */
@@ -88,13 +189,13 @@ static const LsmAttributeInfos lsm_svg_marker_element_attribute_infos[] = {
 		.trait_default = &length_default
 	},
 	{
-		.name = "width",
+		.name = "markerWidth",
 		.attribute_offset = offsetof (LsmSvgMarkerElement, width),
 		.trait_class = &lsm_svg_length_trait_class,
 		.trait_default = &width_default
 	},
 	{
-		.name = "height",
+		.name = "markerHeight",
 		.attribute_offset = offsetof (LsmSvgMarkerElement, height),
 		.trait_class = &lsm_svg_length_trait_class,
 		.trait_default = &width_default
@@ -104,20 +205,36 @@ static const LsmAttributeInfos lsm_svg_marker_element_attribute_infos[] = {
 		.attribute_offset = offsetof (LsmSvgMarkerElement, orientation),
 		.trait_class = &lsm_svg_angle_trait_class,
 		.trait_default = &orientation_default
+	},
+	{
+		.name = "viewBox",
+		.attribute_offset = offsetof (LsmSvgMarkerElement, viewbox),
+		.trait_class = &lsm_box_trait_class,
+		.trait_default = &viewbox_default
+	},
+	{
+		.name = "preserveAspectRatio",
+		.attribute_offset = offsetof (LsmSvgMarkerElement, preserve_aspect_ratio),
+		.trait_class = &lsm_svg_preserve_aspect_ratio_trait_class,
+		.trait_default = &preserve_aspect_ratio_default
 	}
 };
 
 static void
 lsm_svg_marker_element_class_init (LsmSvgMarkerElementClass *klass)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (klass);
 
 	parent_class = g_type_class_peek_parent (klass);
 
+	object_class->finalize = lsm_svg_marker_element_finalize;
+
 	d_node_class->get_node_name = lsm_svg_marker_element_get_node_name;
 
-	s_element_class->render = lsm_svg_marker_element_render;
+	s_element_class->render = _marker_element_render;
+	s_element_class->enable_rendering = lsm_svg_marker_element_enable_rendering;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,

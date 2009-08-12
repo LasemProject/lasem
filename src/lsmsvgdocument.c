@@ -55,6 +55,29 @@ lsm_svg_document_can_append_child (LsmDomNode *self, LsmDomNode *child)
 
 /* LsmDomDocument implementation */
 
+LsmSvgElement *
+lsm_svg_document_get_element_by_url (LsmSvgDocument *document, const char *url)
+{
+	LsmDomElement *element;
+	char *end;
+	char *id;
+
+	g_return_val_if_fail (LSM_IS_SVG_DOCUMENT (document), NULL);
+
+	if (url == NULL || strncmp (url, "url(#", 5) != 0)
+		return NULL;
+
+	id = g_strdup (url + 5);
+	for (end = id; *end != '\0' && *end != ')'; end++);
+	*end = '\0';
+
+	element = lsm_dom_document_get_element_by_id (LSM_DOM_DOCUMENT (document), id);
+
+	g_free (id);
+
+	return LSM_SVG_ELEMENT (element);
+}
+
 static LsmDomElement *
 lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 {

@@ -54,7 +54,6 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		pattern->enable_rendering = FALSE;
 	}
 
-
 	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
 	lsm_svg_view_push_style (view, style);
 

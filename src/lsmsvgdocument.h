@@ -48,6 +48,7 @@ GType lsm_svg_document_get_type (void);
 
 LsmSvgDocument *	lsm_svg_document_new 			(void);
 LsmSvgSvgElement * 	lsm_svg_document_get_root_element 	(const LsmSvgDocument *document);
+LsmSvgElement * 	lsm_svg_document_get_element_by_url 	(LsmSvgDocument *document, const char *url);
 
 G_END_DECLS
 

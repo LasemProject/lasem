@@ -152,6 +152,7 @@ LsmSvgStyle * 		lsm_svg_style_new 			(void);
 void 			lsm_svg_style_free 			(LsmSvgStyle *style);
 LsmSvgStyle *		lsm_svg_style_new_inherited 		(const LsmSvgStyle *parent_style,
 								 LsmPropertyBag *property_bag);
+LsmSvgStyle * 		lsm_svg_style_duplicate 		(const LsmSvgStyle *origin);
 
 G_END_DECLS
 

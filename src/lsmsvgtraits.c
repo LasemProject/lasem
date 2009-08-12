@@ -300,30 +300,29 @@ lsm_svg_paint_trait_from_string (LsmTrait *abstract_trait, char *string)
 	LsmSvgPaint *paint = (LsmSvgPaint *) abstract_trait;
 	LsmSvgPaintType paint_type;
 
-	g_free (paint->uri);
+	g_free (paint->url);
 
 	if (strncmp (string, "url(#", 5) == 0) {
 		unsigned int length;
 
-		string += 5;
-		length = 0;
+		length = 5;
 		while (string[length] != ')')
 			length++;
 		length++;
 
-		paint->uri = g_new (char, length);
-		if (paint->uri != NULL) {
-			memcpy (paint->uri, string, length - 1);
-			paint->uri[length - 1] = '\0';
+		paint->url = g_new (char, length);
+		if (paint->url != NULL) {
+			memcpy (paint->url, string, length - 1);
+			paint->url[length - 1] = '\0';
 		}
 		string += length;
 	} else {
-		paint->uri = NULL;
+		paint->url = NULL;
 	}
 
 	string = _parse_color (string, &paint->color, &paint_type);
 
-	if (paint->uri != NULL)
+	if (paint->url != NULL)
 		switch (paint_type) {
 			case LSM_SVG_PAINT_TYPE_RGB_COLOR:
 				paint_type = LSM_SVG_PAINT_TYPE_URI_RGB_COLOR;
@@ -353,8 +352,9 @@ lsm_svg_paint_trait_to_string (LsmTrait *abstract_trait)
 	if (paint->color.red < 0.0 || paint->color.green < 0.0 || paint->color.blue < 0.0)
 		return g_strdup ("currentColor");
 
-	if (paint->uri != NULL)
-		g_strdup_printf ("url(#%s)", paint->uri);
+	/* FIXME */
+	if (paint->url != NULL)
+		return g_strdup (paint->url);
 
 	return g_strdup_printf ("rgb(%g%%,%g%%,%g%%)",
 				100.0 * paint->color.red,

@@ -50,7 +50,7 @@ void			lsm_svg_dash_array_copy		(LsmSvgDashArray *to, const LsmSvgDashArray *fro
 
 typedef struct {
 	LsmSvgPaintType type;
-	char *uri;
+	char *url;
 	LsmSvgColor color;
 } LsmSvgPaint;
 

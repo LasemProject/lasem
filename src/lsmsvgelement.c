@@ -27,6 +27,7 @@
 #include <lsmsvgpatternelement.h>
 #include <lsmsvggradientelement.h>
 #include <lsmsvgclippathelement.h>
+#include <lsmsvgmarkerelement.h>
 #include <lsmsvgmaskelement.h>
 #include <lsmsvgview.h>
 #include <string.h>
@@ -161,7 +162,8 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 	g_return_if_fail (LSM_IS_SVG_PATTERN_ELEMENT (element) ||
 			  LSM_IS_SVG_GRADIENT_ELEMENT (element) ||
 			  LSM_IS_SVG_MASK_ELEMENT (element) ||
-			  LSM_IS_SVG_CLIP_PATH_ELEMENT (element));
+			  LSM_IS_SVG_CLIP_PATH_ELEMENT (element) ||
+			  LSM_IS_SVG_MARKER_ELEMENT (element));
 
 	lsm_svg_element_enable_rendering (element);
 	lsm_svg_element_render (element, view);
