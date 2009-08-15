@@ -45,7 +45,6 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgMarkerElement *marker = LSM_SVG_MARKER_ELEMENT (self);
 	LsmSvgStyle *style;
 	LsmSvgMatrix matrix;
-	LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
 	LsmBox viewport;
 	double ref_x, ref_y;
 
@@ -64,6 +63,11 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	style = lsm_svg_style_new_inherited (marker->style, &self->property_bag);
 	lsm_svg_view_push_style (view, style);
 
+	ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
+					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	ref_y = lsm_svg_view_normalize_length (view, &marker->ref_y.length,
+					       LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
 	viewport.x = 0.0;
 	viewport.y = 0.0;
 
@@ -72,37 +76,30 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	viewport.height = lsm_svg_view_normalize_length (view, &marker->height.length,
 							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
-	ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
-					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	ref_y = lsm_svg_view_normalize_length (view, &marker->ref_y.length,
-					       LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-
-	lsm_svg_matrix_init_translate (&matrix, -ref_x, -ref_y);
 
 	if (marker->units.value == LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
-		lsm_svg_matrix_scale (&matrix, marker->stroke_width, marker->stroke_width);
+		viewport.width *= marker->stroke_width;
+		viewport.height *= marker->stroke_width;
 	}
 
-	lsm_svg_view_push_viewbox (view, &viewbox);
-	lsm_svg_view_push_matrix (view, &matrix);
+	lsm_svg_view_viewbox_to_viewport (view, &viewport, &marker->viewbox.value,
+					  &marker->preserve_aspect_ratio.value, &ref_x, &ref_y);
 
 	lsm_debug ("[LsmSvgMarkerElement::render] stroke_width scale = %g",
 		   marker->stroke_width);
 
+	lsm_svg_matrix_init_translate (&matrix, -ref_x, -ref_y);
+	lsm_svg_matrix_rotate (&matrix, marker->vertex_angle);
+	lsm_svg_view_push_matrix (view, &matrix);
+
 	lsm_svg_view_push_viewport (view, &viewport, &marker->viewbox.value,
 				    &marker->preserve_aspect_ratio.value);
 
-	lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
-	lsm_svg_view_push_matrix (view, &matrix);
-
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
-
-	lsm_svg_view_pop_matrix (view);
 
 	lsm_svg_view_pop_viewport (view);
 
 	lsm_svg_view_pop_matrix (view);
-	lsm_svg_view_pop_viewbox (view);
 
 	lsm_svg_view_pop_style (view);
 	lsm_svg_style_free (style);
