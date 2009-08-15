@@ -139,9 +139,9 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 void
 lsm_svg_svg_element_render (LsmSvgSvgElement *svg, LsmSvgView *view)
 {
-	lsm_svg_view_push_viewbox (view, &svg->svg_box);
+	lsm_svg_view_push_viewport (view, &svg->svg_box, NULL, NULL);
 	lsm_svg_element_render (LSM_SVG_ELEMENT (svg), view);
-	lsm_svg_view_pop_viewbox (view);
+	lsm_svg_view_pop_viewport (view);
 }
 
 LsmDomNode *
