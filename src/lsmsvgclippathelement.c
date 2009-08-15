@@ -56,21 +56,18 @@ lsm_svg_clip_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 	is_object_bounding_box = (clip->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
 	if (is_object_bounding_box) {
-		LsmSvgMatrix matrix;
-		const LsmBox *viewbox;
+		const LsmBox *viewport;
+		const static LsmBox viewbox = {.x = 0.0, .y = 0.0, .width = 1.0, .height = 1.0};
 
-		viewbox = lsm_svg_view_get_clip_extents (view);
-		lsm_svg_matrix_init_translate (&matrix, viewbox->x, viewbox->y);
-		lsm_svg_matrix_scale (&matrix, viewbox->width, viewbox->height);
-		lsm_svg_view_push_viewbox (view, viewbox);
-		lsm_svg_view_push_matrix (view, &matrix);
+		viewport = lsm_svg_view_get_clip_extents (view);
+
+		lsm_svg_view_push_viewport (view, viewport, &viewbox, NULL);
 	}
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 
 	if (is_object_bounding_box) {
-		lsm_svg_view_pop_matrix (view);
-		lsm_svg_view_pop_viewbox (view);
+		lsm_svg_view_pop_viewport (view);
 	}
 
 	lsm_svg_view_pop_style (view);
