@@ -1204,89 +1204,110 @@ lsm_svg_view_pop_viewbox (LsmSvgView *view)
 	view->viewbox_stack = g_slist_delete_link (view->viewbox_stack, view->viewbox_stack);
 }
 
-void
-lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmBox *viewbox,
-			    const LsmSvgPreserveAspectRatio *aspect_ratio)
+static const LsmBox *
+_compute_viewbox_scale (const LsmBox *viewport, const LsmBox *viewbox,
+			const LsmSvgPreserveAspectRatio *aspect_ratio,
+			double *x_offset, double *y_offset,
+			double *x_scale, double *y_scale)
 {
-	cairo_t *cairo;
-	double x_ratio, x_scale;
-	double y_ratio, y_scale;
-	double x, y;
-
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (viewport != NULL);
-	g_return_if_fail (aspect_ratio != NULL);
-
-	x = viewport->x;
-	y = viewport->y;
-
 	if (viewbox != NULL) {
+		double x, y;
+		double x_ratio;
+		double y_ratio;
+
 		x_ratio = viewbox->width  > 0.0 ? viewport->width  / viewbox->width  : 0.0;
 		y_ratio = viewbox->height > 0.0 ? viewport->height / viewbox->height : 0.0;
 
-		if (aspect_ratio->align > LSM_SVG_ALIGN_NONE) {
+		if (aspect_ratio != NULL && aspect_ratio->align > LSM_SVG_ALIGN_NONE) {
 			if (aspect_ratio->meet_or_slice == LSM_SVG_MEET_OR_SLICE_MEET) {
-				x_scale = MIN (x_ratio, y_ratio);
-				y_scale = x_scale;
+				*x_scale = MIN (x_ratio, y_ratio);
+				*y_scale = *x_scale;
 			} else {
-				x_scale = MAX (x_ratio, y_ratio);
-				y_scale = x_scale;
+				*x_scale = MAX (x_ratio, y_ratio);
+				*y_scale = *x_scale;
 			}
 
-			x -= viewbox->x;
-			y -= viewbox->y;
+			x = -viewbox->x * *x_scale;
+			y = -viewbox->y * *y_scale;
 
 			switch (aspect_ratio->align) {
 				case LSM_SVG_ALIGN_X_MIN_Y_MIN:
 					break;
 				case LSM_SVG_ALIGN_X_MIN_Y_MID:
-					y += (viewport->height- viewbox->height * y_scale) * 0.5;
+					y += (viewport->height- viewbox->height * *y_scale) * 0.5;
 					break;
 				case LSM_SVG_ALIGN_X_MIN_Y_MAX:
-					y += (viewport->height - viewbox->height * y_scale);
+					y += (viewport->height - viewbox->height * *y_scale);
 					break;
 				case LSM_SVG_ALIGN_X_MID_Y_MIN:
-					x += (viewport->width - viewbox->width * x_scale) * 0.5;
+					x += (viewport->width - viewbox->width * *x_scale) * 0.5;
 					break;
 				case LSM_SVG_ALIGN_X_MID_Y_MID:
-					x += (viewport->width - viewbox->width * x_scale) * 0.5;
-					y += (viewport->height- viewbox->height * y_scale) * 0.5;
+					x += (viewport->width - viewbox->width * *x_scale) * 0.5;
+					y += (viewport->height- viewbox->height * *y_scale) * 0.5;
 					break;
 				case LSM_SVG_ALIGN_X_MID_Y_MAX:
-					x += (viewport->width - viewbox->width * x_scale) * 0.5;
-					y += (viewport->height - viewbox->height * y_scale);
+					x += (viewport->width - viewbox->width * *x_scale) * 0.5;
+					y += (viewport->height - viewbox->height * *y_scale);
 					break;
 				case LSM_SVG_ALIGN_X_MAX_Y_MIN:
-					x += (viewport->width - viewbox->width * x_scale);
+					x += (viewport->width - viewbox->width * *x_scale);
 					break;
 				case LSM_SVG_ALIGN_X_MAX_Y_MID:
-					x += (viewport->width - viewbox->width * x_scale);
-					y += (viewport->height- viewbox->height * y_scale) * 0.5;
+					x += (viewport->width - viewbox->width * *x_scale);
+					y += (viewport->height- viewbox->height * *y_scale) * 0.5;
 					break;
 				case LSM_SVG_ALIGN_X_MAX_Y_MAX:
-					x += (viewport->width - viewbox->width * x_scale);
-					y += (viewport->height - viewbox->height * y_scale);
+					x += (viewport->width - viewbox->width * *x_scale);
+					y += (viewport->height - viewbox->height * *y_scale);
 					break;
 				default:
 					break;
 			}
+
+			*x_offset = x;
+			*y_offset = y;
+
 		} else {
-			x_scale = x_ratio;
-			y_scale = y_ratio;
+			*x_scale = x_ratio;
+			*y_scale = y_ratio;
+
+			*x_offset = -viewbox->x * *x_scale;
+			*y_offset = -viewbox->y * *y_scale;
 		}
 
-		lsm_debug ("[LsmSvgView::push_viewport] scale = %g, %g", x_scale, y_scale);
+		lsm_debug ("[LsmSvgView::_compute_viewbox_scale] scale = %g, %g", x_scale, y_scale);
 
-		lsm_svg_view_push_viewbox (view, viewbox);
-
-	} else {
-		x_scale = y_scale = 1.0;
-		lsm_svg_view_push_viewbox (view, viewport);
+		return viewbox;
 	}
+
+	*x_scale = *y_scale = 1.0;
+	*x_offset = 0.0;
+	*y_offset = 0.0;
+
+	return viewport;
+}
+
+void
+lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmBox *viewbox,
+			    const LsmSvgPreserveAspectRatio *aspect_ratio)
+{
+	cairo_t *cairo;
+	const LsmBox *actual_viewbox;
+	double x_offset, y_offset;
+	double x_scale, y_scale;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (viewport != NULL);
+
+	actual_viewbox = _compute_viewbox_scale (viewport, viewbox, aspect_ratio,
+						 &x_offset, &y_offset, &x_scale, &y_scale);
+	lsm_svg_view_push_viewbox (view, actual_viewbox);
 
 	cairo = view->dom_view.cairo;
 
 	cairo_save (cairo);
+#if 0
 	if (view->dom_view.debug) {
 		cairo_save (cairo);
 		cairo_set_line_width (cairo, 1.0);
@@ -1295,9 +1316,10 @@ lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmB
 		cairo_stroke (cairo);
 		cairo_restore (cairo);
 	}
+#endif
 	cairo_rectangle (cairo, viewport->x, viewport->y, viewport->width, viewport->height);
 	cairo_clip (cairo);
-	cairo_translate (cairo, x, y);
+	cairo_translate (cairo, viewport->x + x_offset, viewport->y + y_offset);
 	cairo_scale (cairo, x_scale, y_scale);
 }
 
@@ -1307,6 +1329,27 @@ lsm_svg_view_pop_viewport (LsmSvgView *view)
 	cairo_restore (view->dom_view.cairo);
 
 	lsm_svg_view_pop_viewbox (view);
+}
+
+void
+lsm_svg_view_viewbox_to_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmBox *viewbox,
+				  const LsmSvgPreserveAspectRatio *aspect_ratio,
+				  double *x, double *y)
+{
+	double x_offset, y_offset;
+	double x_scale, y_scale;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (viewport != NULL);
+
+	_compute_viewbox_scale (viewport, viewbox, aspect_ratio,
+				&x_offset, &y_offset, &x_scale, &y_scale);
+
+	if (x != NULL)
+		*x = *x * x_scale - x_offset;
+
+	if (y != NULL)
+		*y = *y * y_scale - y_offset;
 }
 
 void
