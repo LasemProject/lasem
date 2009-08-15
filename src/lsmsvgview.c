@@ -800,6 +800,27 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 }
 
 static void
+render_marker (LsmSvgView *view, LsmSvgMarkerElement *marker,
+	       double x, double y,
+	       double stroke_width, double vertex_angle)
+{
+	cairo_t *cairo;
+
+	if (marker == NULL)
+		return;
+
+	cairo = view->dom_view.cairo;
+
+	cairo_save (cairo);
+
+	cairo_translate (cairo, x, y);
+
+	lsm_svg_marker_element_render (marker, view,
+				       stroke_width, vertex_angle);
+	cairo_restore (cairo);
+}
+
+static void
 paint (LsmSvgView *view)
 {
 	LsmSvgElement *element;
@@ -904,6 +925,7 @@ paint (LsmSvgView *view)
 		LsmSvgElement *marker_end;
 		cairo_path_t *path;
 		cairo_path_data_t *data;
+		cairo_path_data_t *next_data;
 		double stroke_width;
 		int i;
 
@@ -928,41 +950,47 @@ paint (LsmSvgView *view)
 		path = cairo_copy_path (cairo);
 		cairo_new_path (cairo);
 
-		for (i = 0; i < path->num_data; i += path->data[i].header.length) {
-			data = &path->data[i];
-#if 0
-			switch (data->header.type) {
-				case CAIRO_PATH_MOVE_TO:
-					break;
-				case CAIRO_PATH_LINE_TO:
-					break;
-				case CAIRO_PATH_CURVE_TO:
-					break;
-				case CAIRO_PATH_CLOSE_PATH:
-					break;
-			}
-#endif
-			if (i == 0)
-				marker = marker_start;
-			else if (i + path->data[i].header.length >= path->num_data)
-				marker = marker_end;
-			else
-				marker = marker_mid;
+		if (path->num_data > 0) {
+			next_data = &path->data[0];
 
-			if (marker != NULL) {
-				double x, y;
-				cairo_save (cairo);
+				for (i = 0; i < path->num_data; i += path->data[i].header.length) {
 
-				x = data[1].point.x;
-				y = data[1].point.y;
-				cairo_translate (cairo, x, y);
-				lsm_svg_marker_element_render (LSM_SVG_MARKER_ELEMENT (marker), view,
-							       stroke_width, 0.0);
-				cairo_restore (cairo);
-			}
+					data = next_data;
+
+					if (i + path->data[i].header.length < path->num_data)
+						next_data = &path->data[i + path->data[i].header.length];
+					else
+						next_data = NULL;
+
+					if (data->header.type == CAIRO_PATH_CLOSE_PATH) {
+						marker = NULL;
+					} else if (next_data == NULL ||
+						   next_data->header.type == CAIRO_PATH_MOVE_TO) {
+						marker = marker_end;
+					} else if (data->header.type == CAIRO_PATH_MOVE_TO) {
+						marker = marker_start;
+					} else {
+						marker = marker_mid;
+					}
+
+					if (marker != NULL) {
+						double x, y;
+
+						if (data->header.type == CAIRO_PATH_CURVE_TO) {
+							x = data[3].point.x;
+							y = data[3].point.y;
+						} else {
+							x = data[1].point.x;
+							y = data[1].point.y;
+						}
+
+						render_marker (view, LSM_SVG_MARKER_ELEMENT (marker),
+							       x, y, stroke_width, 0.0);
+					}
+				}
+
+			cairo_path_destroy (path);
 		}
-
-		cairo_path_destroy (path);
 	} else
 		cairo_new_path (cairo);
 
