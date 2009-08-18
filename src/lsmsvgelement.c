@@ -140,7 +140,7 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	if (!lsm_svg_matrix_is_identity (&element->transform.matrix))
 		lsm_svg_view_pop_matrix (view);
 
-	lsm_svg_style_free (style);
+	lsm_svg_style_unref (style);
 }
 
 static void

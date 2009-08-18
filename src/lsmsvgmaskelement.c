@@ -119,7 +119,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	lsm_svg_view_pop_style (view);
-	lsm_svg_style_free (style);
+	lsm_svg_style_unref (style);
 }
 
 static void

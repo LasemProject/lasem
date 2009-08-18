@@ -441,6 +441,12 @@ lsm_svg_property_bag_serialize (LsmPropertyBag *property_bag)
 	return lsm_property_manager_serialize (property_manager, property_bag);
 }
 
+typedef struct {
+	LsmSvgStyle base;
+
+	volatile gint ref_count;
+} LsmSvgRealStyle;
+
 static const LsmSvgStyle *
 lsm_svg_get_default_style (void)
 {
@@ -450,7 +456,7 @@ lsm_svg_get_default_style (void)
 	if (style != NULL)
 		return style;
 
-	style = g_new (LsmSvgStyle, 1);
+	style = lsm_svg_style_new ();
 
 	lsm_property_manager_init_default_style (property_manager, style);
 
@@ -460,30 +466,49 @@ lsm_svg_get_default_style (void)
 LsmSvgStyle *
 lsm_svg_style_new (void)
 {
-	LsmSvgStyle *style;
+	LsmSvgRealStyle *style;
 
-	style = g_new0 (LsmSvgStyle, 1);
+	style = g_slice_new0 (LsmSvgRealStyle);
+	style->ref_count = 1;
+
+	return (LsmSvgStyle *) style;
+}
+
+LsmSvgStyle *
+lsm_svg_style_ref (LsmSvgStyle *style)
+{
+	LsmSvgRealStyle *real_style = (LsmSvgRealStyle *) style;
+
+	g_return_val_if_fail (real_style != NULL, style);
+	g_return_val_if_fail (g_atomic_int_get (&real_style->ref_count) > 0, style);
+	g_atomic_int_inc (&real_style->ref_count);
 
 	return style;
 }
 
 void
-lsm_svg_style_free (LsmSvgStyle *style)
+lsm_svg_style_unref (LsmSvgStyle *style)
 {
-	g_return_if_fail (style != NULL);
+	LsmSvgRealStyle *real_style = (LsmSvgRealStyle *) style;
 
-	g_free (style);
+	 g_return_if_fail (g_atomic_int_get (&real_style->ref_count) > 0);
+	 if (g_atomic_int_dec_and_test (&real_style->ref_count))
+		 g_slice_free (LsmSvgRealStyle, real_style);
 }
 
 LsmSvgStyle *
 lsm_svg_style_new_inherited (const LsmSvgStyle *parent_style, LsmPropertyBag *property_bag)
 {
+	LsmSvgRealStyle *real_style;
 	LsmSvgStyle *style;
 	const LsmSvgStyle *default_style;
 
 	default_style = lsm_svg_get_default_style ();
 
-	style = g_new (LsmSvgStyle, 1);
+	real_style = g_slice_new (LsmSvgRealStyle);
+	real_style->ref_count = 1;
+
+	style = &real_style->base;
 
 	if (parent_style != NULL) {
 		LsmPropertyManager *property_manager = lsm_svg_get_property_manager ();

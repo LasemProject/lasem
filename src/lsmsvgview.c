@@ -1660,12 +1660,12 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
 }
 
-const LsmSvgStyle *
+LsmSvgStyle *
 lsm_svg_view_get_current_style (LsmSvgView *view)
 {
 	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), NULL);
 
-	return view->style;
+	return (LsmSvgStyle *) view->style;
 }
 
 const LsmBox *

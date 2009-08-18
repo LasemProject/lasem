@@ -50,10 +50,8 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (!marker->enable_rendering) {
 		if (marker->style)
-			lsm_svg_style_free (marker->style);
-		/* FIXME Use reference counting for LsmSvgStyle */
-		marker->style = lsm_svg_style_duplicate (lsm_svg_view_get_current_style (view));
-
+			lsm_svg_style_unref (marker->style);
+		marker->style = lsm_svg_style_ref (lsm_svg_view_get_current_style (view));
 		lsm_debug ("[LsmSvgMarkerElement::render] Direct rendering not allowed");
 		return;
 	} else {
@@ -108,7 +106,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_pop_matrix (view);
 
 	lsm_svg_view_pop_style (view);
-	lsm_svg_style_free (style);
+	lsm_svg_style_unref (style);
 }
 
 /* LsmSvgMarkerElement implementation */
@@ -166,7 +164,7 @@ lsm_svg_marker_element_finalize (GObject *object)
 	LsmSvgMarkerElement *marker = LSM_SVG_MARKER_ELEMENT (object);
 
 	if (marker->style)
-		lsm_svg_style_free (marker->style);
+		lsm_svg_style_unref (marker->style);
 
 	parent_class->finalize (object);
 }
