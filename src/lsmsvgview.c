@@ -1416,10 +1416,10 @@ lsm_svg_view_viewbox_to_viewport (LsmSvgView *view, const LsmBox *viewport, cons
 				&x_offset, &y_offset, &x_scale, &y_scale);
 
 	if (x != NULL)
-		*x = *x * x_scale - x_offset;
+		*x = *x * x_scale + x_offset;
 
 	if (y != NULL)
-		*y = *y * y_scale - y_offset;
+		*y = *y * y_scale + y_offset;
 }
 
 void
