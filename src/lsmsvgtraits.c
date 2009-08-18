@@ -691,7 +691,7 @@ lsm_svg_angle_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgAngle *trait = (LsmSvgAngle *) abstract_trait;
 
-	if (g_strcmp0 (string, "auto")) {
+	if (g_strcmp0 (string, "auto") == 0) {
 		trait->type = LSM_SVG_ANGLE_TYPE_AUTO;
 		trait->angle = 0.0;
 	} else {
