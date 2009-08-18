@@ -800,27 +800,6 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 }
 
 static void
-render_marker (LsmSvgView *view, LsmSvgMarkerElement *marker,
-	       double x, double y,
-	       double stroke_width, double vertex_angle)
-{
-	cairo_t *cairo;
-
-	if (marker == NULL)
-		return;
-
-	cairo = view->dom_view.cairo;
-
-	cairo_save (cairo);
-
-	cairo_translate (cairo, x, y);
-
-	lsm_svg_marker_element_render (marker, view,
-				       stroke_width, vertex_angle);
-	cairo_restore (cairo);
-}
-
-static void
 paint (LsmSvgView *view)
 {
 	LsmSvgElement *element;
@@ -927,6 +906,12 @@ paint (LsmSvgView *view)
 		cairo_path_data_t *data;
 		cairo_path_data_t *next_data;
 		double stroke_width;
+		double prev_x, prev_y;
+		double x, y;
+		double next_x, next_y;
+		cairo_path_data_type_t type;
+		cairo_path_data_type_t next_type;
+		double angle;
 		int i;
 
 		marker = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
@@ -952,42 +937,99 @@ paint (LsmSvgView *view)
 
 		if (path->num_data > 0) {
 			next_data = &path->data[0];
+			next_type = next_data->header.type;
 
-				for (i = 0; i < path->num_data; i += path->data[i].header.length) {
+			if (next_type == CAIRO_PATH_CURVE_TO) {
+				next_x = next_data[3].point.x;
+				next_y = next_data[3].point.y;
+			} else {
+				next_x = next_data[1].point.x;
+				next_y = next_data[1].point.y;
+			}
 
-					data = next_data;
+			for (i = 0; i < path->num_data; i += path->data[i].header.length) {
+				data = next_data;
 
-					if (i + path->data[i].header.length < path->num_data)
-						next_data = &path->data[i + path->data[i].header.length];
-					else
-						next_data = NULL;
+				prev_x = x;
+				prev_y = y;
+				x = next_x;
+				y = next_y;
+				type = next_type;
 
-					if (data->header.type == CAIRO_PATH_CLOSE_PATH) {
-						marker = NULL;
-					} else if (next_data == NULL ||
-						   next_data->header.type == CAIRO_PATH_MOVE_TO) {
-						marker = marker_end;
-					} else if (data->header.type == CAIRO_PATH_MOVE_TO) {
-						marker = marker_start;
+				if (i + path->data[i].header.length < path->num_data) {
+					next_data = &path->data[i + path->data[i].header.length];
+					next_type = next_data->header.type;
+
+					if (next_type == CAIRO_PATH_CURVE_TO) {
+						next_x = next_data[3].point.x;
+						next_y = next_data[3].point.y;
 					} else {
-						marker = marker_mid;
+						next_x = next_data[1].point.x;
+						next_y = next_data[1].point.y;
 					}
-
-					if (marker != NULL) {
-						double x, y;
-
-						if (data->header.type == CAIRO_PATH_CURVE_TO) {
-							x = data[3].point.x;
-							y = data[3].point.y;
-						} else {
-							x = data[1].point.x;
-							y = data[1].point.y;
-						}
-
-						render_marker (view, LSM_SVG_MARKER_ELEMENT (marker),
-							       x, y, stroke_width, 0.0);
-					}
+				} else {
+					next_data = NULL;
+					next_type = CAIRO_PATH_MOVE_TO;
+					next_x = 0.0;
+					next_y = 0.0;
 				}
+
+				if (data->header.type == CAIRO_PATH_CLOSE_PATH) {
+					marker = NULL;
+				} else if (next_data == NULL ||
+					   next_data->header.type == CAIRO_PATH_MOVE_TO) {
+					marker = marker_end;
+					if (type == CAIRO_PATH_CURVE_TO)
+						angle = atan2 (y - data[2].point.y,
+							       x - data[2].point.x);
+					else
+						angle = atan2 (y - prev_y, x - prev_x);
+				} else if (data->header.type == CAIRO_PATH_MOVE_TO) {
+					marker = marker_start;
+					if (next_type == CAIRO_PATH_CURVE_TO)
+						angle = atan2 (data[1].point.y - y,
+							       data[1].point.x - x);
+					else
+						angle = atan2 (next_y - y, next_x - x);
+				} else {
+					double xdifin, ydifin, xdifout, ydifout, intot, outtot;
+
+					marker = marker_mid;
+
+					if (type == CAIRO_PATH_CURVE_TO) {
+						xdifin = x - data[2].point.x;
+						ydifin = y - data[2].point.y;
+					} else {
+						xdifin = x - prev_x;
+						ydifin = y - prev_y;
+					}
+					if (next_type == CAIRO_PATH_CURVE_TO) {
+						xdifout = data[3].point.x - x;
+						ydifout = data[3].point.y - y;
+					} else {
+						xdifout = next_x - x;
+						ydifout = next_y - y;
+					}
+
+					intot = sqrt (xdifin * xdifin + ydifin * ydifin);
+					outtot = sqrt (xdifout * xdifout + ydifout * ydifout);
+
+					xdifin /= intot;
+					ydifin /= intot;
+					xdifout /= outtot;
+					ydifout /= outtot;
+
+					angle = atan2 ((ydifin + ydifout) / 2, (xdifin + xdifout) / 2);
+				}
+
+				if (marker != NULL) {
+					cairo_save (cairo);
+					cairo_translate (cairo, x, y);
+					lsm_svg_marker_element_render (LSM_SVG_MARKER_ELEMENT (marker), view,
+								       stroke_width, angle);
+					cairo_restore (cairo);
+				}
+			}
 
 			cairo_path_destroy (path);
 		}

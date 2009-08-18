@@ -88,8 +88,14 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_debug ("[LsmSvgMarkerElement::render] stroke_width scale = %g",
 		   marker->stroke_width);
 
-	lsm_svg_matrix_init_translate (&matrix, -ref_x, -ref_y);
-	lsm_svg_matrix_rotate (&matrix, marker->vertex_angle);
+	if (marker->orientation.value.type == LSM_SVG_ANGLE_TYPE_FIXED) {
+		lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle);
+		lsm_debug ("[LsmSvgMarkerElement::render] fixed angle = %g", marker->orientation.value.angle);
+	} else {
+		lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
+		lsm_debug ("[LsmSvgMarkerElement::render] auto angle = %g", marker->vertex_angle);
+	}
+	lsm_svg_matrix_translate (&matrix, -ref_x, -ref_y);
 	lsm_svg_view_push_matrix (view, &matrix);
 
 	lsm_svg_view_push_viewport (view, &viewport, &marker->viewbox.value,
@@ -151,6 +157,7 @@ lsm_svg_marker_element_init (LsmSvgMarkerElement *self)
 	self->width.length = width_default;
 	self->height.length = width_default;
 	self->preserve_aspect_ratio.value = preserve_aspect_ratio_default;
+	self->orientation.value = orientation_default;
 }
 
 static void
