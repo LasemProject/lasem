@@ -68,8 +68,6 @@ make distcheck again.
 
 * Increment the version number in configure.ac, and push the change.
 
-* Edit the lasem bugzilla product and add the new version numbers.
-
 * Send a message to gnome-announce-list@gnome.org to announce the new
   release adding the excerpt from NEWS, your signature, followed
   by the standard "What is lasem" and "Where to get more information
