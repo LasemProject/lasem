@@ -41,3 +41,10 @@ src/Makefile
 po/Makefile.in
 lasem.pc
 ])
+
+echo ""
+echo "Configuration:"
+echo ""
+echo "	Compiler:		${CC}"
+echo "	Compiler flags:		${LASEM_CFLAGS}"
+echo ""
