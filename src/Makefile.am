@@ -19,7 +19,7 @@ liblasem_la_LIBADD = 				\
 	$(LASEM_LIBS)
 
 liblasem_la_SOURCES =				\
-	lsmenumtypes.c			\
+	lsmenumtypes.c				\
 	lsmdebug.c				\
 	lsmstr.c				\
 	lsmtraits.c				\
@@ -100,10 +100,8 @@ liblasem_la_SOURCES =				\
 	lsmsvgpatternelement.c			\
 	lsmsvgmaskelement.c
 
-liblasem_ladir = $(includedir)/lasem
-liblasem_la_HEADERS = \
+LASEM_HDRS = \
 	lsm.h					\
-	lsmenumtypes.h			\
 	lsmstr.h				\
 	lsmdebug.h				\
 	lsmtraits.h				\
@@ -188,10 +186,14 @@ liblasem_la_HEADERS = \
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h
 
-lsmenumtypes.h: lsmenumtypes.h.template $(liblasem_la_HEADERS) $(GLIB_MKENUMS)
+liblasem_ladir = $(includedir)/lasem
+liblasem_la_HEADERS = $(LASEM_HDRS)
+liblasem_la_HEADERS += lsmenumtypes.h
+
+lsmenumtypes.h: lsmenumtypes.h.template $(LASEM_HDRS) $(GLIB_MKENUMS)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.h.template $(liblasem_la_HEADERS)) > $@
 
-lsmenumtypes.c: lsmenumtypes.c.template $(liblasem_la_HEADERS) $(GLIB_MKENUMS)
+lsmenumtypes.c: lsmenumtypes.c.template $(LASEM_HDRS) $(GLIB_MKENUMS)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_la_HEADERS)) > $@
 
 bin_PROGRAMS = lasemtest lasemrender
