@@ -73,7 +73,7 @@ lsm_mathml_math_element_set_default_style (LsmMathmlMathElement *math_element, L
 	}
 
 	lsm_mathml_style_free (math_element->default_style);
-	math_element->default_style = style;
+	math_element->default_style = lsm_mathml_style_duplicate (style);
 
 	lsm_dom_node_changed (LSM_DOM_NODE (math_element));
 }
