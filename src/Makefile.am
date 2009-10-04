@@ -12,11 +12,14 @@ AM_CFLAGS =\
 
 lib_LTLIBRARIES = liblasem.la
 
+BUILT_SOURCES = lsmenumtypes.c lsmenumtypes.h
+
 liblasem_la_LIBADD = 				\
 	../itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
 
 liblasem_la_SOURCES =				\
+	lsmenumtypes.c			\
 	lsmdebug.c				\
 	lsmstr.c				\
 	lsmtraits.c				\
@@ -100,6 +103,7 @@ liblasem_la_SOURCES =				\
 liblasem_ladir = $(includedir)/lasem
 liblasem_la_HEADERS = \
 	lsm.h					\
+	lsmenumtypes.h			\
 	lsmstr.h				\
 	lsmdebug.h				\
 	lsmtraits.h				\
@@ -184,6 +188,12 @@ liblasem_la_HEADERS = \
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h
 
+lsmenumtypes.h: lsmenumtypes.h.template $(liblasem_la_HEADERS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.h.template $(liblasem_la_HEADERS)) > $@
+
+lsmenumtypes.c: lsmenumtypes.c.template $(liblasem_la_HEADERS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_la_HEADERS)) > $@
+
 bin_PROGRAMS = lasemtest lasemrender
 
 lasemrender_SOURCES = 				\
@@ -199,3 +209,5 @@ lasemtest_SOURCES = 				\
 lasemtest_LDFLAGS =
 
 lasemtest_LDADD = $(LASEM_LIBS) liblasem.la ../itex2mml/libitex2mml.la
+
+CLEAN_FILES = $(BUILT_SOURCES)

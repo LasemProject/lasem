@@ -34,6 +34,8 @@ PKG_CHECK_MODULES(LASEM, [gobject-2.0 glib-2.0 gio-2.0 gdk-pixbuf-2.0 >= 2.16 gd
 AC_SUBST(LASEM_CFLAGS)
 AC_SUBST(LASEM_LIBS)
 
+AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
+
 AC_OUTPUT([
 Makefile
 itex2mml/Makefile
