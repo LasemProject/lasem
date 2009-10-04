@@ -24,6 +24,17 @@
 #include <stdio.h>
 #include <math.h>
 
+GType
+lsm_mathml_style_get_type (void)
+{
+    static GType our_type = 0;
+    if (our_type == 0)
+        our_type = g_boxed_type_register_static("LsmMathmlStyle",
+                                                (GBoxedCopyFunc) lsm_mathml_style_duplicate,
+                                                (GBoxedFreeFunc) lsm_mathml_style_free);
+    return our_type;
+}
+
 LsmMathmlStyle *
 lsm_mathml_style_new (void)
 {

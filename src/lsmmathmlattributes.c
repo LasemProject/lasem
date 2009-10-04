@@ -26,7 +26,92 @@
 #include <stdlib.h>
 #include <glib/gmem.h>
 #include <glib/ghash.h>
+#include <glib-object.h>
 #include <math.h>
+
+static LsmMathmlColor *
+lsm_mathml_color_copy (LsmMathmlColor *color)
+{
+	LsmMathmlColor *copy;
+
+	copy = g_new (LsmMathmlColor, 1);
+	memcpy (copy, color, sizeof (LsmMathmlColor));
+
+	return copy;
+}
+
+GType
+lsm_mathml_color_get_type (void)
+{
+	static GType our_type = 0;
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlColor",
+			 (GBoxedCopyFunc) lsm_mathml_color_copy,
+			 (GBoxedFreeFunc) g_free);
+	return our_type;
+}
+
+static LsmMathmlLength *
+lsm_mathml_length_copy (LsmMathmlLength *length)
+{
+	LsmMathmlLength *copy;
+
+	copy = g_new (LsmMathmlLength, 1);
+	memcpy (copy, length, sizeof (LsmMathmlLength));
+
+	return copy;
+}
+
+GType
+lsm_mathml_length_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlLength",
+			 (GBoxedCopyFunc) lsm_mathml_length_copy,
+			 (GBoxedFreeFunc) g_free);
+	return our_type;
+}
+
+static LsmMathmlSpace *
+lsm_mathml_space_copy (LsmMathmlSpace *space)
+{
+	LsmMathmlSpace *copy;
+
+	copy = g_new (LsmMathmlSpace, 1);
+	memcpy (copy, space, sizeof (LsmMathmlSpace));
+
+	return copy;
+}
+
+GType
+lsm_mathml_space_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlSpace",
+			 (GBoxedCopyFunc) lsm_mathml_space_copy,
+			 (GBoxedFreeFunc) g_free);
+	return our_type;
+}
+
+GType
+lsm_mathml_space_list_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlSpaceList",
+			 (GBoxedCopyFunc) lsm_mathml_space_list_duplicate,
+			 (GBoxedFreeFunc) lsm_mathml_space_list_free);
+	return our_type;
+}
 
 double
 lsm_mathml_length_compute (const LsmMathmlLength *length, double default_value, double font_size)
@@ -171,8 +256,8 @@ lsm_mathml_line_attribute_parse (LsmDomEnumAttribute *attribute,
 
 void
 lsm_mathml_length_attribute_parse (LsmMathmlLengthAttribute *attribute,
-				LsmMathmlLength *style_value,
-				double font_size)
+				   LsmMathmlLength *style_value,
+				   double font_size)
 {
 	const char *string;
 	char *unit_str;
@@ -527,4 +612,3 @@ lsm_dom_attribute_map_add_space_list (LsmDomAttributeMap *map,
 {
 	lsm_dom_attribute_map_add_attribute_full (map, name, offset, &space_list_attribute_class);
 }
-

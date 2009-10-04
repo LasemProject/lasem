@@ -37,6 +37,10 @@ G_BEGIN_DECLS
 #define LSM_MATHML_SPACE_EM_VERY_THICK		0.333333
 #define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
 
+GType lsm_mathml_color_get_type (void);
+
+#define LSM_TYPE_MATHML_COLOR (lsm_mathml_color_get_type())
+
 typedef struct {
 	double red;
 	double green;
@@ -44,15 +48,27 @@ typedef struct {
 	double alpha;
 } LsmMathmlColor;
 
+GType lsm_mathml_length_get_type (void);
+
+#define LSM_TYPE_MATHML_LENGTH (lsm_mathml_length_get_type())
+
 typedef struct {
 	double value;
 	LsmMathmlUnit unit;
 } LsmMathmlLength;
 
+GType lsm_mathml_space_get_type (void);
+
+#define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
+
 typedef struct {
 	LsmMathmlSpaceName name;
 	LsmMathmlLength length;
 } LsmMathmlSpace;
+
+GType lsm_mathml_space_list_get_type (void);
+
+#define LSM_TYPE_MATHML_SPACE_LIST (lsm_mathml_space_list_get_type())
 
 typedef struct {
 	unsigned int n_spaces;

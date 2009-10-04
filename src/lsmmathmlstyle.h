@@ -27,6 +27,10 @@
 
 G_BEGIN_DECLS
 
+GType lsm_mathml_style_get_type (void);
+
+#define LSM_TYPE_MATHML_STYLE (lsm_mathml_style_get_type())
+
 struct _LsmMathmlStyle {
 	double math_size_value;
 	/* mstyle */
@@ -75,7 +79,6 @@ void 		lsm_mathml_style_set_math_family 		(LsmMathmlStyle *style, const char *ma
 void 		lsm_mathml_style_set_math_variant		(LsmMathmlStyle *style, LsmMathmlVariant math_variant);
 void 		lsm_mathml_style_set_math_color 		(LsmMathmlStyle *style,
 							 double red, double green, double blue, double alpha);
-void 		lsm_mathml_style_dump 			(const LsmMathmlStyle *style);
 
 G_END_DECLS
 
