@@ -6,3 +6,5 @@
 lasemrender
 lasemtest
 *.swp
+lsmenumtypes.c
+lsmenumtypes.h
