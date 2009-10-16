@@ -71,14 +71,15 @@ struct _LsmMathmlStyle {
 };
 
 LsmMathmlStyle *	lsm_mathml_style_new 			(void);
-void		lsm_mathml_style_free 			(LsmMathmlStyle *style);
+void			lsm_mathml_style_free 			(LsmMathmlStyle *style);
 LsmMathmlStyle *	lsm_mathml_style_duplicate 		(const LsmMathmlStyle *from);
-void 		lsm_mathml_style_change_script_level 	(LsmMathmlStyle *style, int increment);
-void 		lsm_mathml_style_set_math_size_pt 		(LsmMathmlStyle *style, double math_size);
-void 		lsm_mathml_style_set_math_family 		(LsmMathmlStyle *style, const char *math_family);
-void 		lsm_mathml_style_set_math_variant		(LsmMathmlStyle *style, LsmMathmlVariant math_variant);
-void 		lsm_mathml_style_set_math_color 		(LsmMathmlStyle *style,
-							 double red, double green, double blue, double alpha);
+
+void 			lsm_mathml_style_change_script_level 	(LsmMathmlStyle *style, int increment);
+void 			lsm_mathml_style_set_math_size_pt 	(LsmMathmlStyle *style, double math_size);
+void 			lsm_mathml_style_set_math_family 	(LsmMathmlStyle *style, const char *math_family);
+void 			lsm_mathml_style_set_math_variant	(LsmMathmlStyle *style, LsmMathmlVariant math_variant);
+void 			lsm_mathml_style_set_math_color 	(LsmMathmlStyle *style,
+								 double red, double green, double blue, double alpha);
 
 G_END_DECLS
 
