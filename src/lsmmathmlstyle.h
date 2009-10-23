@@ -75,7 +75,9 @@ void			lsm_mathml_style_free 			(LsmMathmlStyle *style);
 LsmMathmlStyle *	lsm_mathml_style_duplicate 		(const LsmMathmlStyle *from);
 
 void 			lsm_mathml_style_change_script_level 	(LsmMathmlStyle *style, int increment);
+
 void 			lsm_mathml_style_set_math_size_pt 	(LsmMathmlStyle *style, double math_size);
+void 			lsm_mathml_style_set_script_min_size_pt	(LsmMathmlStyle *style, double script_min_size);
 void 			lsm_mathml_style_set_math_family 	(LsmMathmlStyle *style, const char *math_family);
 void 			lsm_mathml_style_set_math_variant	(LsmMathmlStyle *style, LsmMathmlVariant math_variant);
 void 			lsm_mathml_style_set_math_color 	(LsmMathmlStyle *style,

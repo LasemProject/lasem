@@ -93,7 +93,14 @@ lsm_mathml_style_set_math_size_pt (LsmMathmlStyle *style, double math_size)
 	style->math_size_value = math_size;
 	style->math_size.value = math_size;
 	style->math_size.unit = LSM_MATHML_UNIT_PT;
-	style->script_min_size.value = math_size;
+}
+
+void
+lsm_mathml_style_set_script_min_size_pt (LsmMathmlStyle *style, double script_min_size)
+{
+	g_return_if_fail (style != NULL);
+
+	style->script_min_size.value = script_min_size;
 	style->script_min_size.unit = LSM_MATHML_UNIT_PT;
 }
 
