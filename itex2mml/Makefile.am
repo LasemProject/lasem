@@ -29,7 +29,7 @@ DISTCLEANFILES = \
 	$(Y_TAB_H)
 
 $(Y_TAB_C):	itex2MML.y
-		$(YACC) -p $(YYPREFIX) -d $<
+		$(YACC) -v -p $(YYPREFIX) -d $<
 
 $(LEX_YY_C):	itex2MML.l
 		$(LEX) -P$(YYPREFIX) -o$@ $<
