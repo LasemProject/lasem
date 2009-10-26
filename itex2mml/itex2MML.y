@@ -2,6 +2,8 @@
  *   itex2MML.y last modified 10/11/2009
  */
 
+%expect 218
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -264,7 +266,7 @@
    {
 #define ENTITY_LENGTH 10
      char * entity = (char *) malloc(ENTITY_LENGTH);
-     sprintf(entity, "&#x%05x;", code);
+     sprintf(entity, "&#x%05lx;", code);
      return entity;
    }
 
