@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.2
- *   itex2MML.y last modified 11/10/2007
+/*             itex2MML 1.3.15
+ *   itex2MML.y last modified 10/11/2009
  */
 
 %{
@@ -41,9 +41,8 @@
    {
      if (buffer)
        {
-         size_t count;
 	 if (length)
-	   count = fwrite (buffer, 1, length, stdout);
+	   fwrite (buffer, 1, length, stdout);
 	 else
 	   fputs (buffer, stdout);
        }
@@ -259,6 +258,16 @@
      return copy ? copy : itex2MML_empty_string;
    }
 
+ /* Create a hex character reference string corresponding to code
+  */
+ char * itex2MML_character_reference (unsigned long int code)
+   {
+#define ENTITY_LENGTH 10
+     char * entity = (char *) malloc(ENTITY_LENGTH);
+     sprintf(entity, "&#x%05x;", code);
+     return entity;
+   }
+
  void itex2MML_free_string (char * str)
    {
      if (str && str != itex2MML_empty_string)
@@ -268,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC MATHOP MOP MOL MOLL MOF PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM UNDER OVER OVERBRACE UNDERBRACE UNDEROVER TENSOR MULTI ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR CALCHAR FRAKCHAR CAL FRAK ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR
 
 %%
 
@@ -281,7 +290,7 @@ xmlmmlTermList:
 | xmlmmlTermList char {/* all proc. in body*/}
 | xmlmmlTermList expression {/* all proc. in body*/};
 
-char: CHAR {};
+char: CHAR {printf("%s", $1);};
 
 expression: STARTMATH ENDMATH {/* empty math group - ignore*/}
 | STARTDMATH ENDMATH {/* ditto */}
@@ -527,12 +536,18 @@ closedTerm: array
 | hat
 | dot
 | ddot
+| dddot
+| ddddot
 | check
 | tilde
 | moverbrace
 | munderbrace
+| munderline
 | munderover
 | emptymrow
+| mathclap
+| mathllap
+| mathrlap
 | displaystyle
 | textstyle
 | textsize
@@ -782,9 +797,29 @@ mo: mob
   $$ = itex2MML_copy3("<mo lspace=\"0em\" rspace=\"thinmathspace\">", $1, "</mo>");
   itex2MML_free_string($1);
 }
-| MATHOP TEXTSTRING {
+| MOR {
+  itex2MML_rowposn = 2;
+  $$ = itex2MML_copy3("<mo lspace=\"verythinmathspace\">", $1, "</mo>");
+  itex2MML_free_string($1);
+}
+| OPERATORNAME TEXTSTRING {
   itex2MML_rowposn = 2;
   $$ = itex2MML_copy3("<mo lspace=\"0em\" rspace=\"thinmathspace\">", $2, "</mo>");
+  itex2MML_free_string($2);
+}
+| MATHOP TEXTSTRING {
+  itex2MML_rowposn = 2;
+  $$ = itex2MML_copy3("<mo lspace=\"thinmathspace\" rspace=\"thinmathspace\">", $2, "</mo>");
+  itex2MML_free_string($2);
+}
+| MATHBIN TEXTSTRING {
+  itex2MML_rowposn = 2;
+  $$ = itex2MML_copy3("<mo lspace=\"mediummathspace\" rspace=\"mediummathspace\">", $2, "</mo>");
+  itex2MML_free_string($2);
+}
+| MATHREL TEXTSTRING {
+  itex2MML_rowposn = 2;
+  $$ = itex2MML_copy3("<mo lspace=\"thickmathspace\" rspace=\"thickmathspace\">", $2, "</mo>");
   itex2MML_free_string($2);
 };
 
@@ -850,6 +885,21 @@ color: COLOR ATTRLIST compoundTermList {
   itex2MML_free_string($3);
 };
 
+mathrlap: RLAP closedTerm {
+  $$ = itex2MML_copy3("<mpadded width=\"0\">", $2, "</mpadded>");
+  itex2MML_free_string($2);
+};
+
+mathllap: LLAP closedTerm {
+  $$ = itex2MML_copy3("<mpadded width=\"0\" lspace=\"-100%width\">", $2, "</mpadded>");
+  itex2MML_free_string($2);
+};
+
+mathclap: CLAP closedTerm {
+  $$ = itex2MML_copy3("<mpadded width=\"0\" lspace=\"-50%width\">", $2, "</mpadded>");
+  itex2MML_free_string($2);
+};
+
 textstring: TEXTBOX TEXTSTRING {
   $$ = itex2MML_copy3("<mtext>", $2, "</mtext>");
   itex2MML_free_string($2);
@@ -910,27 +960,34 @@ rmchars: RMCHAR {
   itex2MML_free_string($2);
 };
 
-bbold: BB ST bbletters END {
+bbold: BB ST bbchars END {
   $$ = itex2MML_copy3("<mi>", $3, "</mi>");
   itex2MML_free_string($3);
 };
 
-bbletters: bbletter {
+bbchars: bbchar {
   $$ = itex2MML_copy_string($1);
   itex2MML_free_string($1);
 }
-| bbletters bbletter {
+| bbchars bbchar {
   $$ = itex2MML_copy2($1, $2);
   itex2MML_free_string($1);
   itex2MML_free_string($2);
 };
 
-bbletter: BBLOWERCHAR {
+bbchar: BBLOWERCHAR {
   $$ = itex2MML_copy3("&", $1, "opf;");
   itex2MML_free_string($1);
 }
 | BBUPPERCHAR {
   $$ = itex2MML_copy3("&", $1, "opf;");
+  itex2MML_free_string($1);
+}
+| BBDIGIT {
+  /* Blackboard digits 0-9 correspond to Unicode characters 0x1D7D8-0x1D7E1 */
+  char * end = $1 + 1;
+  int code = 0x1D7D8 + strtoul($1, &end, 10);
+  $$ = itex2MML_character_reference(code);
   itex2MML_free_string($1);
 };
 
@@ -1156,6 +1213,11 @@ munderbrace: UNDERBRACE closedTerm {
   itex2MML_free_string($2);
 };
 
+munderline: UNDERLINE closedTerm {
+  $$ = itex2MML_copy3("<munder>", $2, "<mo>&UnderBar;</mo></munder>");
+  itex2MML_free_string($2);
+};
+
 moverbrace: OVERBRACE closedTerm {
   $$ = itex2MML_copy3("<mover>", $2, "<mo>&OverBrace;</mo></mover>");
   itex2MML_free_string($2);
@@ -1189,6 +1251,16 @@ ddot: DDOT closedTerm {
   itex2MML_free_string($2);
 };
 
+dddot: DDDOT closedTerm {
+  $$ = itex2MML_copy3("<mover>", $2, "<mo>&tdot;</mo></mover>");
+  itex2MML_free_string($2);
+};
+
+ddddot: DDDDOT closedTerm {
+  $$ = itex2MML_copy3("<mover>", $2, "<mo>&DotDot;</mo></mover>");
+  itex2MML_free_string($2);
+};
+
 tilde: TILDE closedTerm {
   $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&tilde;</mo></mover>");
   itex2MML_free_string($2);
@@ -1216,19 +1288,7 @@ hat: HAT closedTerm {
   itex2MML_free_string($2);
 };
 
-msqrt: SQRT "[" closedTerm "]" closedTerm {
-  if ($2[0] == '[' && $4[0] == ']')
-  {
-    char * s1 = itex2MML_copy3("<mroot>", $5, $3);
-    $$ = itex2MML_copy2(s1, "</mroot>");
-    itex2MML_free_string(s1);
-  }
-  itex2MML_free_string($2);
-  itex2MML_free_string($3);
-  itex2MML_free_string($4);
-  itex2MML_free_string($5);
-}
-| SQRT closedTerm {
+msqrt: SQRT closedTerm {
   $$ = itex2MML_copy3("<msqrt>", $2, "</msqrt>");
   itex2MML_free_string($2);
 };

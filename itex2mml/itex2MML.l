@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.6
- *   itex2MML.l last modified 9/5/2008
+/*             itex2MML 1.3.14
+ *   itex2MML.l last modified 10/11/2009
  */
 
 %{
@@ -71,6 +71,9 @@ int itex2MML_displaymode = 0;
 "\\biggl" {return BIGGL;}
 "\\Biggl" {return BBIGGL;}
 
+"\\mathrlap"  {return RLAP;}
+"\\mathllap"  {return LLAP;}
+"\\mathclap"  {return CLAP;}
 "\\rlap" |
 "\\llap" |
 "\\ulap" |
@@ -89,7 +92,7 @@ int itex2MML_displaymode = 0;
 
 [a-zA-Z]+       {yylval=itex2MML_copy_string(yytext); return MI;}
 
-[0-9,.]*[0-9]+          {yylval=itex2MML_copy2(yytext, " "); return MN;}
+[0-9,.]*[0-9]+          {yylval=itex2MML_copy_string(yytext); return MN;}
 "\\infty"   |
 "\\infinity"     {yylval=itex2MML_copy_string("&infin;"); return MN;}
 
@@ -324,21 +327,45 @@ int itex2MML_displaymode = 0;
 
 "\\leftsquigarrow"       {yylval=itex2MML_copy_string("&#x21DC;"); return MOL;}
 "\\rightsquigarrow"      {yylval=itex2MML_copy_string("&zigrarr;"); return MOL;}
-"\\leftrightsquigarrow"  {yylval=itex2MML_copy_string("&leftrightsquigarrow;"); return MOL;}
-"\\upuparrows"           {yylval=itex2MML_copy_string("&upuparrows;"); return MOL;}
-"\\rightleftarrows"      {yylval=itex2MML_copy_string("&rightleftarrows;"); return MOL;}
-"\\rightrightarrows"     {yylval=itex2MML_copy_string("&rightrightarrows;"); return MOL;}
 "\\dashleftarrow"        {yylval=itex2MML_copy_string("&#x290E;"); return MOL;}
 "\\dashrightarrow"       {yylval=itex2MML_copy_string("&#x290F;"); return MOL;}
-"\\curvearrowleft"       {yylval=itex2MML_copy_string("&#x293A;"); return MOL;}
 "\\curvearrowbotright"   {yylval=itex2MML_copy_string("&#x293B;"); return MOL;}
-"\\downdownarrows"       {yylval=itex2MML_copy_string("&downdownarrows;"); return MOL;}
-"\\leftleftarrows"       {yylval=itex2MML_copy_string("&leftleftarrows;"); return MOL;}
-"\\leftrightarrows"      {yylval=itex2MML_copy_string("&leftrightarrows;"); return MOL;}
 "\\righttoleftarrow"     {yylval=itex2MML_copy_string("&#x27F2;"); return MOL;}
 "\\lefttorightarrow"     {yylval=itex2MML_copy_string("&#x27F3;"); return MOL;}
-"\\circlearrowleft"      {yylval=itex2MML_copy_string("&circlearrowleft;"); return MOL;}
-"\\circlearrowright"     {yylval=itex2MML_copy_string("&circlearrowright;"); return MOL;}
+"\\leftrightsquigarrow" |
+"\\upuparrows"          |
+"\\rightleftarrows"     |
+"\\rightrightarrows"    |
+"\\curvearrowleft"      |
+"\\curvearrowright"     |
+"\\downdownarrows"      |
+"\\leftarrowtail"       |
+"\\rightarrowtail"      |
+"\\leftleftarrows"      |
+"\\leftrightarrows"     |
+"\\Lleftarrow"          |
+"\\Rrightarrow"         |
+"\\looparrowleft"       |
+"\\looparrowright"      |
+"\\Lsh"                 |
+"\\Rsh"                 |
+"\\circlearrowleft"     |
+"\\circlearrowright"    |
+"\\twoheadleftarrow"    |
+"\\twoheadrightarrow"   |
+"\\nLeftarrow"          |
+"\\nleftarrow"          |
+"\\nLeftrightarrow"     |
+"\\nleftrightarrow"     |
+"\\nRightarrow"         |
+"\\nrightarrow"         |
+"\\downharpoonleft"     |
+"\\downharpoonright"    |
+"\\leftrightharpoons"   |
+"\\rightleftharpoons"   |
+"\\upharpoonleft"       |
+"\\upharpoonright"   {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MOL;}
+
 
 "\\dots" |
 "\\ldots"  {yylval=itex2MML_copy_string("&hellip;"); return MO;}
@@ -346,6 +373,7 @@ int itex2MML_displaymode = 0;
 "\\ddots"   {yylval=itex2MML_copy_string("&dtdot;"); return MO;}
 "\\udots"   {yylval=itex2MML_copy_string("&utdot;"); return MO;}
 "\\vdots"   {yylval=itex2MML_copy_string("&vellip;"); return MO;}
+"\\colon"   {yylval=itex2MML_copy_string("&colon;"); return MOR;}
 
 "\\cup"  |
 "\&union;" |
@@ -362,6 +390,23 @@ int itex2MML_displaymode = 0;
 "\\Intersection"       {yylval=itex2MML_copy_string("&Intersection;"); return MOB;}
 
 "\\in"           {yylval=itex2MML_copy_string("&Element;"); return MOL;}
+
+ /* For some reason, Firefox does not put in the right spacing around some of these operators
+  * unless we ask for it, explicitly.
+  */
+"\\coloneqq"     {yylval=itex2MML_copy_string("&colone;"); return MOL;}
+"\\Coloneqq"     {yylval=itex2MML_copy_string("&Colone;"); return MOS;}
+"\\coloneq"      {yylval=itex2MML_copy_string("&#x2236;&#x2212;"); return MOS;}
+"\\Coloneq"      {yylval=itex2MML_copy_string("&#x2237;&#x2212;"); return MOS;}
+"\\eqqcolon"     {yylval=itex2MML_copy_string("&ecolon;"); return MOS;}
+"\\Eqqcolon"     {yylval=itex2MML_copy_string("&#x003d;&#x2237;"); return MOS;}
+"\\eqcolon"      {yylval=itex2MML_copy_string("&#x2239;"); return MOS;}
+"\\Eqcolon"      {yylval=itex2MML_copy_string("&#x2212;&#x2237;"); return MOS;}
+"\\colonapprox"  {yylval=itex2MML_copy_string("&#x2236;&#x2248;"); return MOS;}
+"\\Colonapprox"  {yylval=itex2MML_copy_string("&#x2237;&#x2248;"); return MOS;}
+"\\colonsim"     {yylval=itex2MML_copy_string("&#x2236;&#x223C;"); return MOS;}
+"\\Colonsim"     {yylval=itex2MML_copy_string("&#x2237;&#x223C;"); return MOS;}
+"\\dblcolon"     {yylval=itex2MML_copy_string("&Colon;"); return MOL;}
 
 "\\gt"   |
 "\\lt"   |
@@ -654,6 +699,9 @@ int itex2MML_displaymode = 0;
 "\\Vee"  |
 "\\bigvee"       {yylval=itex2MML_copy_string("&bigvee;"); return MOB;}
 
+"\\invamp"  |
+"\\parr"       {yylval=itex2MML_copy_string("&#8523;"); return MOL;}
+
 "\\frac"         {return FRAC;}
 "\\tfrac"         {return TFRAC;}
 
@@ -667,6 +715,8 @@ int itex2MML_displaymode = 0;
 
 "\\underbrace"   {return UNDERBRACE;}
 
+"\\underline"   {return UNDERLINE;}
+
 "\\bar"          {return BAR;}
 "\\overline" |
 "\\closure" |
@@ -676,8 +726,9 @@ int itex2MML_displaymode = 0;
 "\\widevec"   {return WIDEVEC;}
 
 "\\dot"       {return DOT;}
-
 "\\ddot"      {return DDOT;}
+"\\dddot"      {return DDDOT;}
+"\\ddddot"      {return DDDDOT;}
 
 "\\tilde"       {return TILDE;} 
 "\\widetilde"   {return WIDETILDE;}
@@ -804,8 +855,10 @@ int itex2MML_displaymode = 0;
 
 "\\href"        {BEGIN(PLAINTEXT); return HREF;}
 
-"\\operatorname" |
-"\\mathop"       {BEGIN(PLAINTEXT); return MATHOP;}
+"\\operatorname"  {BEGIN(PLAINTEXT); return OPERATORNAME;}
+"\\mathop"        {BEGIN(PLAINTEXT); return MATHOP;}
+"\\mathbin"       {BEGIN(PLAINTEXT); return MATHBIN;}
+"\\mathrel"       {BEGIN(PLAINTEXT); return MATHREL;}
 
 "\\includegraphics"(\[[^\]]*\])?\{[^}]*\}	;
 
@@ -857,6 +910,7 @@ int itex2MML_displaymode = 0;
 "\}"  {BEGIN(MATH); return END;}
 [a-z] {yylval=itex2MML_copy_string(yytext); return BBLOWERCHAR;}
 [A-Z]   {yylval=itex2MML_copy_string(yytext); return BBUPPERCHAR;}
+[0-9]   {yylval=itex2MML_copy_string(yytext); return BBDIGIT;}
 [\t\n\r ]+       ;
 .           {return yytext[0];}
 }
@@ -878,7 +932,7 @@ int itex2MML_displaymode = 0;
 }
 
 <PLAINTEXT>{
-\{[^\}]*\}  {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
+\{[^\}]*?\}  {yylval=itex2MML_copy_string(yytext+1); if ((yyleng > 1) && (yylval != itex2MML_empty_string)) yylval[yyleng-2]='\0'; BEGIN(MATH); return TEXTSTRING;}
 }
 
 <INT1>{ 
