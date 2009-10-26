@@ -18,3 +18,9 @@ files in a directory, and generate an html file which displays the browser
 rendering, lasem rendering, and if present the reference output. The html
 filename is lasemtest.xml. It's main use is the rendering of the sample files
 in the samples directory, by invoking "cd test && ../src/lasemtest".
+
+Requirements:
+
+gobject, glib, gio, gdk-pixbuf, gdk, cairo, pangocairo, libxml, bison, flex
+
+For the runtime, the following fonts should be installed: cmr10, cmmi10, cmex10 and cmsy10.
