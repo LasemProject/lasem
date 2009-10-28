@@ -286,19 +286,20 @@ lsm_mathml_view_show_text (LsmMathmlView *view,
 
 static void
 lsm_mathml_view_update_layout_for_operator (LsmMathmlView *view,
-					 const LsmMathmlElementStyle *style,
-					 const char *text,
-					 gboolean large,
-					 PangoLayout *pango_layout,
-					 PangoRectangle *ink_rect,
-					 PangoRectangle *rect,
-					 int *baseline)
+					    const LsmMathmlElementStyle *style,
+					    const char *text,
+					    gboolean large,
+					    PangoLayout *pango_layout,
+					    PangoRectangle *ink_rect,
+					    PangoRectangle *rect,
+					    int *baseline)
 {
 	PangoFontDescription *font_description;
 
 	font_description = view->dom_view.font_description;
 
 	pango_font_description_set_family (font_description, LSM_MATHML_FONT_SERIF);
+	pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 	pango_font_description_set_size (font_description,
 					 style->math_size * PANGO_SCALE * (large ? LSM_MATHML_LARGE_OP_SCALE : 1.0));
 	pango_layout_set_text (pango_layout, text, -1);
@@ -487,7 +488,7 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 	glyph = lsm_mathml_glyph_table_find_operator_glyph (text);
 	if (glyph == NULL) {
 		lsm_mathml_view_update_layout_for_operator (view, style, text, large,
-							 pango_layout, &ink_rect, &rect, &baseline);
+							    pango_layout, &ink_rect, &rect, &baseline);
 	} else {
 		PangoLayoutIter *iter;
 		unsigned int i;
@@ -545,8 +546,9 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 		pango_layout_iter_free (iter);
 	}
 
-	lsm_debug ("[LsmMathmlView::show_operator] '%s' at %g, %g (size = %g) %s",
+	lsm_debug ("[LsmMathmlView::show_operator] '%s' at %g, %g (size = %g) %s - %s",
 		    text, x, y, style->math_size,
+		    style->math_family,
 		    lsm_mathml_variant_to_string (style->math_variant));
 
 	if (ink_rect.width == 0 || ink_rect.height == 0)
