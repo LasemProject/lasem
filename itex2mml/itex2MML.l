@@ -869,7 +869,7 @@ int itex2MML_displaymode = 0;
 "\&#x"[a-fA-F0-9]+";"  {yylval=itex2MML_copy_string(yytext); return MI;}
 
 "\n"             itex2MML_lineno++;
-[\t ]+           ;
+[\r\t ]+         ;
 
 
 .              {return UNKNOWNCHAR;}
