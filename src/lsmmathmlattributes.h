@@ -29,17 +29,10 @@
 
 G_BEGIN_DECLS
 
-typedef enum {
-	LSM_DOM_CSS_TYPE_USER,
-	LSM_DOM_CSS_TYPE_AUTHOR,
-	LSM_DOM_CSS_TYPE_AUTHOR_IMPORTANT,
-	LSM_DOM_CSS_TYPE_USER_IMPORTANT
-} LsmDomCssType;
-
 typedef struct {
 	char *value;
 	char *css_value;
-	LsmDomCssType css_type;
+	LsmMathmlCssType css_type;
 } LsmMathmlAttribute;
 
 typedef struct {
@@ -93,7 +86,7 @@ gboolean	lsm_mathml_attribute_map_set_css_attribute	(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value,
-								 LsmDomCssType css_type);
+								 LsmMathmlCssType css_type);
 gboolean	lsm_mathml_attribute_map_is_attribute_defined	(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name);

@@ -213,7 +213,7 @@ lsm_mathml_attribute_map_set_css_attribute (LsmMathmlAttributeMap *map,
 					    void *instance,
 					    const char *name,
 					    const char *value,
-					    LsmDomCssType type)
+					    LsmMathmlCssType type)
 {
 	LsmMathmlAttribute *attribute;
 
@@ -340,7 +340,7 @@ lsm_mathml_attribute_get_value (const LsmMathmlAttribute *attribute)
 	g_return_val_if_fail (attribute != NULL, NULL);
 
 	if (attribute->css_value != NULL &&
-	    attribute->css_type >= LSM_DOM_CSS_TYPE_AUTHOR)
+	    attribute->css_type >= LSM_MATHML_CSS_TYPE_AUTHOR)
 		return attribute->css_value;
 
 	return attribute->value;
