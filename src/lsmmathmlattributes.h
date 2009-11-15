@@ -40,89 +40,89 @@ typedef struct {
 	char *value;
 	char *css_value;
 	LsmDomCssType css_type;
-} LsmDomAttribute;
+} LsmMathmlAttribute;
 
 typedef struct {
 	GHashTable *attribute_hash;
 	GHashTable *bag_hash;
-} LsmDomAttributeMap;
+} LsmMathmlAttributeMap;
 
 typedef struct {
-} LsmDomAttributeBag;
+} LsmMathmlAttributeBag;
 
 typedef struct {
 	void * 			(*init) 	(void);
 	void 			(*finalize) 	(void *bag);
-} LsmDomAttributeBagClass;
+} LsmMathmlAttributeBagClass;
 
 typedef struct {
 	void (*finalize) (void *attribute);
-} LsmDomAttributeClass;
+} LsmMathmlAttributeClass;
 
-typedef void (*LsmDomAttributeFinalizeFunc) (void *);
+typedef void (*LsmMathmlAttributeFinalizeFunc) (void *);
 
-LsmDomAttributeMap *	lsm_dom_attribute_map_new 		(void);
-LsmDomAttributeMap *	lsm_dom_attribute_map_duplicate		(const LsmDomAttributeMap *from);
-void			lsm_dom_attribute_map_free		(LsmDomAttributeMap *map);
+LsmMathmlAttributeMap *	lsm_mathml_attribute_map_new 		(void);
+LsmMathmlAttributeMap *	lsm_mathml_attribute_map_duplicate		(const LsmMathmlAttributeMap *from);
+void			lsm_mathml_attribute_map_free		(LsmMathmlAttributeMap *map);
 
-void 		lsm_dom_attribute_map_add_bag_attribute  	(LsmDomAttributeMap *map,
+void 		lsm_mathml_attribute_map_add_bag_attribute  	(LsmMathmlAttributeMap *map,
 								 const char *name,
 								 ptrdiff_t attribute_offset,
-								 const LsmDomAttributeClass *attribute_class,
+								 const LsmMathmlAttributeClass *attribute_class,
 								 ptrdiff_t bag_offset,
-								 const LsmDomAttributeBagClass *bag_class);
-void		lsm_dom_attribute_map_add_attribute_full	(LsmDomAttributeMap *map,
+								 const LsmMathmlAttributeBagClass *bag_class);
+void		lsm_mathml_attribute_map_add_attribute_full	(LsmMathmlAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset,
-								 const LsmDomAttributeClass *attribute_class);
-void		lsm_dom_attribute_map_add_attribute 		(LsmDomAttributeMap *map,
+								 const LsmMathmlAttributeClass *attribute_class);
+void		lsm_mathml_attribute_map_add_attribute 		(LsmMathmlAttributeMap *map,
 								 char const *name,
 								 ptrdiff_t offset);
 
-void		lsm_dom_attribute_map_free_attributes 		(LsmDomAttributeMap *map,
+void		lsm_mathml_attribute_map_free_attributes 	(LsmMathmlAttributeMap *map,
 								 void *instance);
 
-gboolean	lsm_dom_attribute_map_set_attribute		(LsmDomAttributeMap *map,
+gboolean	lsm_mathml_attribute_map_set_attribute		(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value);
-char const *	lsm_dom_attribute_map_get_attribute		(LsmDomAttributeMap *map,
+char const *	lsm_mathml_attribute_map_get_attribute		(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name);
-gboolean	lsm_dom_attribute_map_set_css_attribute		(LsmDomAttributeMap *map,
+gboolean	lsm_mathml_attribute_map_set_css_attribute	(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name,
 								 char const *value,
 								 LsmDomCssType css_type);
-gboolean	lsm_dom_attribute_map_is_attribute_defined	(LsmDomAttributeMap *map,
+gboolean	lsm_mathml_attribute_map_is_attribute_defined	(LsmMathmlAttributeMap *map,
 								 void *instance,
 								 char const *name);
 
-gboolean 	lsm_dom_attribute_is_defined 			(const LsmDomAttribute *attribute);
-char const * 	lsm_dom_attribute_get_value 			(const LsmDomAttribute *attribute);
+gboolean 	lsm_mathml_attribute_is_defined 		(const LsmMathmlAttribute *attribute);
+char const * 	lsm_mathml_attribute_get_value 			(const LsmMathmlAttribute *attribute);
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	gboolean value;
 } LsmDomBooleanAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	unsigned int value;
 } LsmDomUnsignedAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	double value;
 } LsmDomDoubleAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	char *value;
 } LsmDomStringAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	unsigned int value;
 } LsmDomEnumAttribute;
 
@@ -132,7 +132,7 @@ typedef struct {
 } LsmDomEnumList;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	unsigned int n_values;
 	unsigned int *values;
 } LsmDomEnumListAttribute;
@@ -158,10 +158,10 @@ void	lsm_dom_string_attribute_finalize	(void *abstract);
 void 	lsm_dom_enum_list_attribute_finalize 	(void *abstract);
 
 
-void 	lsm_dom_attribute_map_add_string 	(LsmDomAttributeMap *map,
+void 	lsm_mathml_attribute_map_add_string 	(LsmMathmlAttributeMap *map,
 						 char const *name,
 						 ptrdiff_t offset);
-void 	lsm_dom_attribute_map_add_enum_list 	(LsmDomAttributeMap *map,
+void 	lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 						 char const *name,
 						 ptrdiff_t offset);
 
@@ -214,29 +214,29 @@ typedef struct {
 double 	lsm_mathml_length_compute 	(const LsmMathmlLength *length, double default_value, double font_size);
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	int value;
 } LsmMathmlScriptLevelAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	LsmMathmlColor color;
 } LsmMathmlColorAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	LsmMathmlLength length;
 	double value;
 } LsmMathmlLengthAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	LsmMathmlSpace space;
 	double value;
 } LsmMathmlSpaceAttribute;
 
 typedef struct {
-	LsmDomAttribute attr;
+	LsmMathmlAttribute attr;
 	LsmMathmlSpaceList *space_list;
 	double *values;
 } LsmMathmlSpaceListAttribute;
@@ -281,7 +281,7 @@ void 	lsm_mathml_column_align_list_attribute_parse 	(LsmDomEnumListAttribute *at
 void 	lsm_mathml_line_list_attribute_parse 		(LsmDomEnumListAttribute *attribute,
 							 LsmDomEnumList *style_value);
 
-void 	lsm_dom_attribute_map_add_space_list 		(LsmDomAttributeMap *map,
+void 	lsm_mathml_attribute_map_add_space_list 		(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);
 G_END_DECLS

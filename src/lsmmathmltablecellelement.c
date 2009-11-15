@@ -109,11 +109,11 @@ lsm_mathml_table_cell_element_class_init (LsmMathmlTableCellElementClass *table_
 	m_element_class->measure = lsm_mathml_table_cell_element_measure;
 	m_element_class->layout = lsm_mathml_table_cell_element_layout;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "rowspan",
 					  offsetof (LsmMathmlTableCellElement, row_span));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "columnspan",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "columnspan",
 					  offsetof (LsmMathmlTableCellElement, column_span));
 }
 

@@ -483,27 +483,27 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 	m_element_class->render = lsm_mathml_table_element_render;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "rowalign",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowalign",
 					   offsetof (LsmMathmlTableElement, row_align));
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "columnalign",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnalign",
 					   offsetof (LsmMathmlTableElement, column_align));
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "rowspacing",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowspacing",
 					   offsetof (LsmMathmlTableElement, row_spacing));
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "columnspacing",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnspacing",
 					   offsetof (LsmMathmlTableElement, column_spacing));
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "rowlines",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowlines",
 					   offsetof (LsmMathmlTableElement, row_lines));
-	lsm_dom_attribute_map_add_enum_list (m_element_class->attributes, "columnlines",
+	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnlines",
 					   offsetof (LsmMathmlTableElement, column_lines));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "frame",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "frame",
 					  offsetof (LsmMathmlTableElement, frame));
-	lsm_dom_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
+	lsm_mathml_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
 					   offsetof (LsmMathmlTableElement, frame_spacing));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
 					  offsetof (LsmMathmlTableElement, equal_rows));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
 					  offsetof (LsmMathmlTableElement, equal_columns));
 }
 

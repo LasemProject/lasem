@@ -216,11 +216,11 @@ lsm_mathml_fraction_element_class_init (LsmMathmlFractionElementClass *fraction_
 	m_element_class->get_embellished_core = lsm_mathml_fraction_element_get_embellished_core;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
 					  offsetof (LsmMathmlFractionElement, line_thickness));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "bevelled",
 					  offsetof (LsmMathmlFractionElement, bevelled));
 }
 

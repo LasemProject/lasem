@@ -236,31 +236,31 @@ lsm_mathml_operator_element_class_init (LsmMathmlOperatorElementClass *operator_
 	m_element_class->render = lsm_mathml_operator_element_render;
 	m_element_class->get_embellished_core = lsm_mathml_operator_element_get_embellished_core;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "form",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "form",
 					  offsetof (LsmMathmlOperatorElement, form));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "fence",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fence",
 					  offsetof (LsmMathmlOperatorElement, fence));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "separator",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "separator",
 					  offsetof (LsmMathmlOperatorElement, separator));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "lspace",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "lspace",
 					  offsetof (LsmMathmlOperatorElement, left_space));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "rspace",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "rspace",
 					  offsetof (LsmMathmlOperatorElement, right_space));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
 					  offsetof (LsmMathmlOperatorElement, stretchy));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
 					  offsetof (LsmMathmlOperatorElement, symmetric));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "accent",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
 					  offsetof (LsmMathmlOperatorElement, accent));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "minsize",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "minsize",
 					  offsetof (LsmMathmlOperatorElement, min_size));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
 					  offsetof (LsmMathmlOperatorElement, max_size));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "largeop",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",
 					  offsetof (LsmMathmlOperatorElement, large_op));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
 					  offsetof (LsmMathmlOperatorElement, movable_limits));
 }
 

@@ -51,9 +51,9 @@ typedef struct _LsmMathmlElementClass LsmMathmlElementClass;
 struct _LsmMathmlElement {
 	LsmDomElement	element;
 
-	LsmDomAttribute class_name;
-	LsmDomAttribute id;
-	LsmDomAttribute href;
+	LsmMathmlAttribute class_name;
+	LsmMathmlAttribute id;
+	LsmMathmlAttribute href;
 
 	LsmMathmlElementStyle style;
 
@@ -71,7 +71,7 @@ struct _LsmMathmlElement {
 struct _LsmMathmlElementClass {
 	LsmDomElementClass  parent_class;
 
-	LsmDomAttributeMap *attributes;
+	LsmMathmlAttributeMap *attributes;
 
 	void				(*update)		(LsmMathmlElement *element, LsmMathmlStyle *style);
 	gboolean			(*update_children)	(LsmMathmlElement *element, LsmMathmlStyle *style);

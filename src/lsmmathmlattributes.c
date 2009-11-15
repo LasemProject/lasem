@@ -32,21 +32,21 @@
 
 typedef struct {
 	ptrdiff_t bag_offset;
-	const LsmDomAttributeBagClass *bag_class;
-} LsmDomAttributeBagInfos;
+	const LsmMathmlAttributeBagClass *bag_class;
+} LsmMathmlAttributeBagInfos;
 
 typedef struct {
 	ptrdiff_t attribute_offset;
-	const LsmDomAttributeClass *attribute_class;
-	LsmDomAttributeBagInfos *bag_infos;
-} LsmDomAttributeInfos;
+	const LsmMathmlAttributeClass *attribute_class;
+	LsmMathmlAttributeBagInfos *bag_infos;
+} LsmMathmlAttributeInfos;
 
-LsmDomAttributeMap *
-lsm_dom_attribute_map_new (void)
+LsmMathmlAttributeMap *
+lsm_mathml_attribute_map_new (void)
 {
-	LsmDomAttributeMap *map;
+	LsmMathmlAttributeMap *map;
 
-	map = g_new0 (LsmDomAttributeMap, 1);
+	map = g_new0 (LsmMathmlAttributeMap, 1);
 	g_return_val_if_fail (map != NULL,  NULL);
 
 	map->attribute_hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
@@ -55,15 +55,15 @@ lsm_dom_attribute_map_new (void)
 	return map;
 }
 
-LsmDomAttributeMap *
-lsm_dom_attribute_map_duplicate (const LsmDomAttributeMap *from)
+LsmMathmlAttributeMap *
+lsm_mathml_attribute_map_duplicate (const LsmMathmlAttributeMap *from)
 {
-	LsmDomAttributeMap *map;
+	LsmMathmlAttributeMap *map;
 	GHashTableIter iter;
 	void *key;
 	void *value;
 
-	map = lsm_dom_attribute_map_new ();
+	map = lsm_mathml_attribute_map_new ();
 	g_return_val_if_fail (map != NULL, NULL);
 
 	g_hash_table_iter_init (&iter, from->attribute_hash);
@@ -78,7 +78,7 @@ lsm_dom_attribute_map_duplicate (const LsmDomAttributeMap *from)
 }
 
 void
-lsm_dom_attribute_map_free (LsmDomAttributeMap *map)
+lsm_mathml_attribute_map_free (LsmMathmlAttributeMap *map)
 {
 	g_return_if_fail (map != NULL);
 
@@ -88,26 +88,26 @@ lsm_dom_attribute_map_free (LsmDomAttributeMap *map)
 }
 
 void
-lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
-				       const char *name,
-				       ptrdiff_t attribute_offset,
-				       const LsmDomAttributeClass *attribute_class,
-				       ptrdiff_t bag_offset,
-				       const LsmDomAttributeBagClass *bag_class)
+lsm_mathml_attribute_map_add_bag_attribute  (LsmMathmlAttributeMap *map,
+					     const char *name,
+					     ptrdiff_t attribute_offset,
+					     const LsmMathmlAttributeClass *attribute_class,
+					     ptrdiff_t bag_offset,
+					     const LsmMathmlAttributeBagClass *bag_class)
 {
-	LsmDomAttributeInfos *attribute_infos;
-	LsmDomAttributeBagInfos *bag_infos;
+	LsmMathmlAttributeInfos *attribute_infos;
+	LsmMathmlAttributeBagInfos *bag_infos;
 
 	g_return_if_fail (map != NULL);
 	g_return_if_fail (name != NULL);
 	g_return_if_fail (attribute_offset >= 0);
 
 	if (g_hash_table_lookup (map->attribute_hash, name) != NULL) {
-		g_warning ("[LsmDomAttributeMap::add_attribute] %s already defined", name);
+		g_warning ("[LsmMathmlAttributeMap::add_attribute] %s already defined", name);
 		return;
 	}
 
-	attribute_infos = g_new (LsmDomAttributeInfos, 1);
+	attribute_infos = g_new (LsmMathmlAttributeInfos, 1);
 	attribute_infos->attribute_offset = attribute_offset;
 	attribute_infos->attribute_class = attribute_class;
 
@@ -116,7 +116,7 @@ lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
 	if (bag_class != NULL) {
 		bag_infos = g_hash_table_lookup (map->bag_hash, bag_class);
 		if (bag_infos == NULL) {
-			bag_infos = g_new (LsmDomAttributeBagInfos, 1);
+			bag_infos = g_new (LsmMathmlAttributeBagInfos, 1);
 			bag_infos->bag_offset = bag_offset;
 			bag_infos->bag_class = bag_class;
 
@@ -129,49 +129,49 @@ lsm_dom_attribute_map_add_bag_attribute  (LsmDomAttributeMap *map,
 }
 
 void
-lsm_dom_attribute_map_add_attribute_full (LsmDomAttributeMap *map,
-					  const char *name,
-					  ptrdiff_t offset,
-					  const LsmDomAttributeClass *attribute_class)
+lsm_mathml_attribute_map_add_attribute_full (LsmMathmlAttributeMap *map,
+					     const char *name,
+					     ptrdiff_t offset,
+					     const LsmMathmlAttributeClass *attribute_class)
 {
-	lsm_dom_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
+	lsm_mathml_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
 }
 
 void
-lsm_dom_attribute_map_add_attribute_full_width_default (LsmDomAttributeMap *map,
-						     const char *name,
-						     ptrdiff_t offset,
-						     const LsmDomAttributeClass *attribute_class)
+lsm_mathml_attribute_map_add_attribute_full_width_default (LsmMathmlAttributeMap *map,
+							   const char *name,
+							   ptrdiff_t offset,
+							   const LsmMathmlAttributeClass *attribute_class)
 {
-	lsm_dom_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
+	lsm_mathml_attribute_map_add_bag_attribute (map, name, offset, attribute_class, 0, NULL);
 }
 
 void
-lsm_dom_attribute_map_add_attribute (LsmDomAttributeMap *map,
-				  const char *name,
-				  ptrdiff_t offset)
+lsm_mathml_attribute_map_add_attribute (LsmMathmlAttributeMap *map,
+					const char *name,
+					ptrdiff_t offset)
 {
-	lsm_dom_attribute_map_add_bag_attribute (map, name, offset, NULL, 0, NULL);
+	lsm_mathml_attribute_map_add_bag_attribute (map, name, offset, NULL, 0, NULL);
 }
 
-static LsmDomAttribute *
-_get_attribute (LsmDomAttributeMap *map,
+static LsmMathmlAttribute *
+_get_attribute (LsmMathmlAttributeMap *map,
 		void *instance,
 		const char *name)
 {
-	LsmDomAttributeInfos *attribute_infos;
-	LsmDomAttribute *attribute;
+	LsmMathmlAttributeInfos *attribute_infos;
+	LsmMathmlAttribute *attribute;
 
 	attribute_infos = g_hash_table_lookup (map->attribute_hash, name);
 	if (attribute_infos == NULL) {
-		lsm_debug ("[LsmDomAttribute] Attribute not found (%s)", name);
+		lsm_debug ("[LsmMathmlAttribute] Attribute not found (%s)", name);
 		return NULL;
 	}
 
 	if (attribute_infos->bag_infos == NULL)
 		attribute = (void *)(instance + attribute_infos->attribute_offset);
 	else {
-		LsmDomAttributeBag **bag_ptr;
+		LsmMathmlAttributeBag **bag_ptr;
 
 		bag_ptr = (void *)(instance + attribute_infos->bag_infos->bag_offset);
 		g_return_val_if_fail (bag_ptr != NULL, FALSE);
@@ -189,12 +189,12 @@ _get_attribute (LsmDomAttributeMap *map,
 }
 
 gboolean
-lsm_dom_attribute_map_set_attribute (LsmDomAttributeMap *map,
-				     void *instance,
-				     const char *name,
-				     const char *value)
+lsm_mathml_attribute_map_set_attribute (LsmMathmlAttributeMap *map,
+					void *instance,
+					const char *name,
+					const char *value)
 {
-	LsmDomAttribute *attribute;
+	LsmMathmlAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
@@ -209,13 +209,13 @@ lsm_dom_attribute_map_set_attribute (LsmDomAttributeMap *map,
 }
 
 gboolean
-lsm_dom_attribute_map_set_css_attribute (LsmDomAttributeMap *map,
-				      void *instance,
-				      const char *name,
-				      const char *value,
-				      LsmDomCssType type)
+lsm_mathml_attribute_map_set_css_attribute (LsmMathmlAttributeMap *map,
+					    void *instance,
+					    const char *name,
+					    const char *value,
+					    LsmDomCssType type)
 {
-	LsmDomAttribute *attribute;
+	LsmMathmlAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
@@ -231,12 +231,12 @@ lsm_dom_attribute_map_set_css_attribute (LsmDomAttributeMap *map,
 }
 
 char const *
-lsm_dom_attribute_map_get_attribute (LsmDomAttributeMap *map,
-				     void *instance,
-				     const char *name)
+lsm_mathml_attribute_map_get_attribute (LsmMathmlAttributeMap *map,
+					void *instance,
+					const char *name)
 {
-	LsmDomAttributeInfos *attribute_infos;
-	LsmDomAttribute *attribute;
+	LsmMathmlAttributeInfos *attribute_infos;
+	LsmMathmlAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, NULL);
 
@@ -247,7 +247,7 @@ lsm_dom_attribute_map_get_attribute (LsmDomAttributeMap *map,
 	if (attribute_infos->bag_infos == NULL)
 		attribute = (void *)(instance + attribute_infos->attribute_offset);
 	else {
-		LsmDomAttributeBag **bag_ptr;
+		LsmMathmlAttributeBag **bag_ptr;
 
 		bag_ptr = (void *)(instance + attribute_infos->bag_infos->bag_offset);
 		g_return_val_if_fail (bag_ptr != NULL, NULL);
@@ -261,12 +261,12 @@ lsm_dom_attribute_map_get_attribute (LsmDomAttributeMap *map,
 }
 
 gboolean
-lsm_dom_attribute_map_is_attribute_defined (LsmDomAttributeMap *map,
-					 void *instance,
-					 const char *name)
+lsm_mathml_attribute_map_is_attribute_defined (LsmMathmlAttributeMap *map,
+					       void *instance,
+					       const char *name)
 {
-	LsmDomAttributeInfos *attribute_infos;
-	LsmDomAttribute *attribute;
+	LsmMathmlAttributeInfos *attribute_infos;
+	LsmMathmlAttribute *attribute;
 
 	g_return_val_if_fail (map != NULL, FALSE);
 
@@ -281,18 +281,18 @@ lsm_dom_attribute_map_is_attribute_defined (LsmDomAttributeMap *map,
 }
 
 gboolean
-lsm_dom_attribute_is_defined (const LsmDomAttribute *attribute)
+lsm_mathml_attribute_is_defined (const LsmMathmlAttribute *attribute)
 {
 	return (attribute != NULL && attribute->value != NULL);
 }
 
 static void
-lsm_dom_attribute_finalize_cb (gpointer key,
-			    gpointer value,
-			    gpointer instance)
+lsm_mathml_attribute_finalize_cb (gpointer key,
+				  gpointer value,
+				  gpointer instance)
 {
-	LsmDomAttributeInfos *attribute_infos = value;
-	LsmDomAttribute *attribute;
+	LsmMathmlAttributeInfos *attribute_infos = value;
+	LsmMathmlAttribute *attribute;
 
 	attribute = (void *)(instance + attribute_infos->attribute_offset);
 	if (attribute != NULL) {
@@ -309,12 +309,12 @@ lsm_dom_attribute_finalize_cb (gpointer key,
 }
 
 static void
-lsm_dom_attribute_bag_finalize_cb (gpointer key,
-				gpointer value,
-				gpointer instance)
+lsm_mathml_attribute_bag_finalize_cb (gpointer key,
+				      gpointer value,
+				      gpointer instance)
 {
-	LsmDomAttributeBagInfos *bag_infos = value;
-	LsmDomAttributeBag **bag_ptr;
+	LsmMathmlAttributeBagInfos *bag_infos = value;
+	LsmMathmlAttributeBag **bag_ptr;
 
 	bag_ptr = (void *)(instance + bag_infos->bag_offset);
 	if (*bag_ptr != NULL) {
@@ -326,16 +326,16 @@ lsm_dom_attribute_bag_finalize_cb (gpointer key,
 }
 
 void
-lsm_dom_attribute_map_free_attributes (LsmDomAttributeMap *map, void *instance)
+lsm_mathml_attribute_map_free_attributes (LsmMathmlAttributeMap *map, void *instance)
 {
 	g_return_if_fail (map != NULL);
 
-	g_hash_table_foreach (map->attribute_hash, lsm_dom_attribute_finalize_cb, instance);
-	g_hash_table_foreach (map->bag_hash, lsm_dom_attribute_bag_finalize_cb, instance);
+	g_hash_table_foreach (map->attribute_hash, lsm_mathml_attribute_finalize_cb, instance);
+	g_hash_table_foreach (map->bag_hash, lsm_mathml_attribute_bag_finalize_cb, instance);
 }
 
 char const *
-lsm_dom_attribute_get_value (const LsmDomAttribute *attribute)
+lsm_mathml_attribute_get_value (const LsmMathmlAttribute *attribute)
 {
 	g_return_val_if_fail (attribute != NULL, NULL);
 
@@ -348,14 +348,14 @@ lsm_dom_attribute_get_value (const LsmDomAttribute *attribute)
 
 void
 lsm_dom_boolean_attribute_parse (LsmDomBooleanAttribute *attribute,
-			      gboolean *style_value)
+				 gboolean *style_value)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -367,14 +367,14 @@ lsm_dom_boolean_attribute_parse (LsmDomBooleanAttribute *attribute,
 
 void
 lsm_dom_unsigned_attribute_parse (LsmDomUnsignedAttribute *attribute,
-			       unsigned int *style_value)
+				  unsigned int *style_value)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -386,14 +386,14 @@ lsm_dom_unsigned_attribute_parse (LsmDomUnsignedAttribute *attribute,
 
 void
 lsm_dom_double_attribute_parse (LsmDomDoubleAttribute *attribute,
-			     double *style_value)
+				double *style_value)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -413,7 +413,7 @@ lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
 	g_return_if_fail (style_value != NULL);
 	g_return_if_fail (*style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		g_free (attribute->value);
 		attribute->value = g_strdup (*style_value);
@@ -427,15 +427,15 @@ lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
 
 void
 lsm_dom_enum_attribute_parse (LsmDomEnumAttribute *attribute,
-			    unsigned int *style_value,
-			    LsmDomNamedConvert convert)
+			      unsigned int *style_value,
+			      LsmDomNamedConvert convert)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -447,8 +447,8 @@ lsm_dom_enum_attribute_parse (LsmDomEnumAttribute *attribute,
 
 void
 lsm_dom_enum_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-				 LsmDomEnumList *style_value,
-				 LsmDomNamedConvert convert)
+				   LsmDomEnumList *style_value,
+				   LsmDomNamedConvert convert)
 {
 	const char *string;
 	char **items;
@@ -460,7 +460,7 @@ lsm_dom_enum_list_attribute_parse (LsmDomEnumListAttribute *attribute,
 	g_free (attribute->values);
 	attribute->n_values = 0;
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		if (style_value->n_values > 0) {
 			attribute->values = g_new (unsigned int, style_value->n_values);
@@ -506,28 +506,28 @@ lsm_dom_enum_list_attribute_finalize (void *abstract)
 	attribute->values = NULL;
 }
 
-static const LsmDomAttributeClass string_attribute_class = {
+static const LsmMathmlAttributeClass string_attribute_class = {
 	.finalize = lsm_dom_string_attribute_finalize
 };
 
 void
-lsm_dom_attribute_map_add_string (LsmDomAttributeMap *map,
-			       char const *name,
-			       ptrdiff_t offset)
+lsm_mathml_attribute_map_add_string (LsmMathmlAttributeMap *map,
+				     char const *name,
+				     ptrdiff_t offset)
 {
-	lsm_dom_attribute_map_add_attribute_full (map, name, offset, &string_attribute_class);
+	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &string_attribute_class);
 }
 
-static const LsmDomAttributeClass enum_list_attribute_class = {
+static const LsmMathmlAttributeClass enum_list_attribute_class = {
 	.finalize = lsm_dom_enum_list_attribute_finalize
 };
 
 void
-lsm_dom_attribute_map_add_enum_list (LsmDomAttributeMap *map,
-				   char const *name,
-				   ptrdiff_t offset)
+lsm_mathml_attribute_map_add_enum_list (LsmMathmlAttributeMap *map,
+					char const *name,
+					ptrdiff_t offset)
 {
-	lsm_dom_attribute_map_add_attribute_full (map, name, offset, &enum_list_attribute_class);
+	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &enum_list_attribute_class);
 }
 
 static LsmMathmlColor *
@@ -647,7 +647,7 @@ lsm_mathml_length_compute (const LsmMathmlLength *length, double default_value, 
 
 void
 lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribute,
-				      int *style_value)
+					 int *style_value)
 {
 	const char *string;
 	int value;
@@ -655,7 +655,7 @@ lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribut
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->value = *style_value;
 		return;
@@ -673,14 +673,14 @@ lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribut
 
 void
 lsm_mathml_color_attribute_parse (LsmMathmlColorAttribute *attribute,
-			       LsmMathmlColor *style_color)
+				  LsmMathmlColor *style_color)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_color != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->color.red = style_color->red;
 		attribute->color.green = style_color->green;
@@ -708,49 +708,49 @@ lsm_mathml_color_attribute_parse (LsmMathmlColorAttribute *attribute,
 
 void
 lsm_mathml_mode_attribute_parse (LsmDomEnumAttribute *attribute,
-			      unsigned int *style_value)
+				 unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_mode_from_string);
 }
 
 void
 lsm_mathml_display_attribute_parse (LsmDomEnumAttribute *attribute,
-				 unsigned int *style_value)
+				    unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_display_from_string);
 }
 
 void
 lsm_mathml_form_attribute_parse (LsmDomEnumAttribute *attribute,
-			      unsigned int *style_value)
+				 unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_form_from_string);
 }
 
 void
 lsm_mathml_font_style_attribute_parse (LsmDomEnumAttribute *attribute,
-				    unsigned int *style_value)
+				       unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_font_style_from_string);
 }
 
 void
 lsm_mathml_font_weight_attribute_parse (LsmDomEnumAttribute *attribute,
-				     unsigned int *style_value)
+					unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_font_weight_from_string);
 }
 
 void
 lsm_mathml_variant_attribute_parse (LsmDomEnumAttribute *attribute,
-				 unsigned int *style_value)
+				    unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_variant_from_string);
 }
 
 void
 lsm_mathml_line_attribute_parse (LsmDomEnumAttribute *attribute,
-			      unsigned int *style_value)
+				 unsigned int *style_value)
 {
 	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
 }
@@ -766,7 +766,7 @@ lsm_mathml_length_attribute_parse (LsmMathmlLengthAttribute *attribute,
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style_value != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->length = *style_value;
 	} else {
@@ -804,15 +804,15 @@ lsm_mathml_length_attribute_parse (LsmMathmlLengthAttribute *attribute,
 
 void
 lsm_mathml_space_attribute_parse (LsmMathmlSpaceAttribute *attribute,
-			       LsmMathmlSpace *style_value,
-			       LsmMathmlStyle *style)
+				  LsmMathmlSpace *style_value,
+				  LsmMathmlStyle *style)
 {
 	const char *string;
 
 	g_return_if_fail (attribute != NULL);
 	g_return_if_fail (style != NULL);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->space = *style_value;
 	} else {
@@ -955,8 +955,8 @@ lsm_mathml_space_list_attribute_finalize (void *abstract)
 
 void
 lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
-				    LsmMathmlSpaceList *style_value,
-				    const LsmMathmlStyle *style)
+				       LsmMathmlSpaceList *style_value,
+				       const LsmMathmlStyle *style)
 {
 	unsigned int i;
 	const char *string;
@@ -966,7 +966,7 @@ lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
 
 	lsm_mathml_space_list_attribute_finalize (attribute);
 
-	string = lsm_dom_attribute_get_value ((LsmDomAttribute *) attribute);
+	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
 	if (string == NULL) {
 		attribute->space_list = lsm_mathml_space_list_duplicate (style_value);
 	} else {
@@ -1083,33 +1083,33 @@ lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
 
 void
 lsm_mathml_row_align_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-					LsmDomEnumList *style_value)
+					   LsmDomEnumList *style_value)
 {
 	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_row_align_from_string);
 }
 
 void
 lsm_mathml_column_align_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-					   LsmDomEnumList *style_value)
+					      LsmDomEnumList *style_value)
 {
 	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_column_align_from_string);
 }
 
 void
 lsm_mathml_line_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-				   LsmDomEnumList *style_value)
+				      LsmDomEnumList *style_value)
 {
 	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
 }
 
-static const LsmDomAttributeClass space_list_attribute_class = {
+static const LsmMathmlAttributeClass space_list_attribute_class = {
 	.finalize = lsm_mathml_space_list_attribute_finalize
 };
 
 void
-lsm_dom_attribute_map_add_space_list (LsmDomAttributeMap *map,
-				   char const *name,
-				   ptrdiff_t offset)
+lsm_mathml_attribute_map_add_space_list (LsmMathmlAttributeMap *map,
+					 char const *name,
+					 ptrdiff_t offset)
 {
-	lsm_dom_attribute_map_add_attribute_full (map, name, offset, &space_list_attribute_class);
+	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &space_list_attribute_class);
 }

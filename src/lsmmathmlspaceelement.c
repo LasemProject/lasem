@@ -117,13 +117,13 @@ lsm_mathml_space_element_class_init (LsmMathmlSpaceElementClass *space_class)
 	m_element_class->layout = lsm_mathml_space_element_layout;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "width",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "width",
 					  offsetof (LsmMathmlSpaceElement, width));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "height",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "height",
 					  offsetof (LsmMathmlSpaceElement, height));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "depth",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "depth",
 					  offsetof (LsmMathmlSpaceElement, depth));
 }
 

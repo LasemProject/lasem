@@ -463,11 +463,11 @@ lsm_mathml_under_over_element_class_init (LsmMathmlUnderOverElementClass *under_
 	m_element_class->get_embellished_core = lsm_mathml_under_over_element_get_embellished_core;
 	m_element_class->is_inferred_row = NULL;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "accent",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
 					  offsetof (LsmMathmlUnderOverElement, accent));
-	lsm_dom_attribute_map_add_attribute (m_element_class->attributes, "accentunder",
+	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "accentunder",
 					  offsetof (LsmMathmlUnderOverElement, accent_under));
 }
 

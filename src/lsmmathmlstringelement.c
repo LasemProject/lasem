@@ -103,11 +103,11 @@ lsm_mathml_string_element_class_init (LsmMathmlStringElementClass *string_class)
 
 	m_token_class->get_text = lsm_mathml_string_element_get_text;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_string (m_element_class->attributes, "lquote",
+	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "lquote",
 				       offsetof (LsmMathmlStringElement, left_quote));
-	lsm_dom_attribute_map_add_string (m_element_class->attributes, "rquote",
+	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "rquote",
 				       offsetof (LsmMathmlStringElement, right_quote));
 }
 

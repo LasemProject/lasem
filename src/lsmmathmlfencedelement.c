@@ -159,13 +159,13 @@ lsm_mathml_fenced_element_class_init (LsmMathmlFencedElementClass *m_fenced_elem
 	m_element_class->layout =  lsm_mathml_fenced_element_layout;
 	m_element_class->render =  lsm_mathml_fenced_element_render;
 
-	m_element_class->attributes = lsm_dom_attribute_map_duplicate (m_element_class->attributes);
+	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_dom_attribute_map_add_string (m_element_class->attributes, "open",
+	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "open",
 				       offsetof (LsmMathmlFencedElement, open));
-	lsm_dom_attribute_map_add_string (m_element_class->attributes, "close",
+	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "close",
 				       offsetof (LsmMathmlFencedElement, close));
-	lsm_dom_attribute_map_add_string (m_element_class->attributes, "separators",
+	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "separators",
 				       offsetof (LsmMathmlFencedElement, separators));
 }
 
