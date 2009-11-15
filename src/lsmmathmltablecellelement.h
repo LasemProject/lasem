@@ -40,8 +40,8 @@ typedef struct _LsmMathmlTableCellElementClass LsmMathmlTableCellElementClass;
 struct _LsmMathmlTableCellElement {
 	LsmMathmlElement	element;
 
-	LsmDomUnsignedAttribute row_span;
-	LsmDomUnsignedAttribute column_span;
+	LsmMathmlUnsignedAttribute row_span;
+	LsmMathmlUnsignedAttribute column_span;
 };
 
 struct _LsmMathmlTableCellElementClass {

@@ -156,7 +156,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 				    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
 
-		lsm_dom_boolean_attribute_parse (&under_over->accent_under, &accent_under);
+		lsm_mathml_boolean_attribute_parse (&under_over->accent_under, &accent_under);
 
 		if (!under_over->accent_under.value)
 			lsm_mathml_style_change_script_level (style, +1);
@@ -177,7 +177,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 					    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
 
-		lsm_dom_boolean_attribute_parse (&under_over->accent, &accent);
+		lsm_mathml_boolean_attribute_parse (&under_over->accent, &accent);
 
 		if (!under_over->accent.value)
 			lsm_mathml_style_change_script_level (overscript_style, +1);

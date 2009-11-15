@@ -44,11 +44,11 @@ lsm_mathml_string_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LSM_MATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 
 	default_quote = g_strdup ("\"");
-	lsm_dom_string_attribute_parse (&string_element->left_quote, &default_quote);
+	lsm_mathml_string_attribute_parse (&string_element->left_quote, &default_quote);
 	g_free (default_quote);
 
 	default_quote = g_strdup ("\"");
-	lsm_dom_string_attribute_parse (&string_element->right_quote, &default_quote);
+	lsm_mathml_string_attribute_parse (&string_element->right_quote, &default_quote);
 	g_free (default_quote);
 }
 

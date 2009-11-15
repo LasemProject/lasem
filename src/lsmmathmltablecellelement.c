@@ -41,10 +41,10 @@ lsm_mathml_table_cell_element_update (LsmMathmlElement *self, LsmMathmlStyle *st
 	unsigned int span;
 
 	span = 1;
-	lsm_dom_unsigned_attribute_parse (&cell->row_span, &span);
+	lsm_mathml_unsigned_attribute_parse (&cell->row_span, &span);
 
 	span = 1;
-	lsm_dom_unsigned_attribute_parse (&cell->column_span, &span);
+	lsm_mathml_unsigned_attribute_parse (&cell->column_span, &span);
 }
 
 static const LsmMathmlBbox *

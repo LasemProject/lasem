@@ -50,7 +50,7 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlTableElement *table = LSM_MATHML_TABLE_ELEMENT (self);
 	LsmMathmlSpaceList *space_list;
-	LsmDomEnumList enum_list;
+	LsmMathmlEnumList enum_list;
 	unsigned int enum_attribute;
 	gboolean flag;
 
@@ -102,13 +102,13 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_space_list_free (space_list);
 
 	flag = FALSE;
-	lsm_dom_boolean_attribute_parse (&table->equal_rows, &flag);
+	lsm_mathml_boolean_attribute_parse (&table->equal_rows, &flag);
 
 	flag = FALSE;
-	lsm_dom_boolean_attribute_parse (&table->equal_columns, &flag);
+	lsm_mathml_boolean_attribute_parse (&table->equal_columns, &flag);
 
 	flag = FALSE;
-	lsm_dom_boolean_attribute_parse (&table->display_style, &flag);
+	lsm_mathml_boolean_attribute_parse (&table->display_style, &flag);
 }
 
 static const LsmMathmlBbox *

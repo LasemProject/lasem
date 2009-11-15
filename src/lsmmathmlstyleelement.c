@@ -46,10 +46,10 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
 
 	display_style = style->display == LSM_MATHML_DISPLAY_BLOCK;
-	lsm_dom_boolean_attribute_parse (&style_element->display_style, &display_style);
+	lsm_mathml_boolean_attribute_parse (&style_element->display_style, &display_style);
 	style->display = display_style ? LSM_MATHML_DISPLAY_BLOCK : LSM_MATHML_DISPLAY_INLINE;
 
-	lsm_dom_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
+	lsm_mathml_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
 	lsm_mathml_length_attribute_parse (&style_element->script_min_size,
 					&style->script_min_size,
@@ -68,7 +68,7 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_variant_set_font_style (&style->math_variant, font_style);
 	lsm_mathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	lsm_dom_string_attribute_parse (&style_element->math_family, &style->math_family);
+	lsm_mathml_string_attribute_parse (&style_element->math_family, &style->math_family);
 	lsm_mathml_length_attribute_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&style_element->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);

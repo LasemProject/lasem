@@ -40,17 +40,17 @@ typedef struct _LsmMathmlTableElementClass LsmMathmlTableElementClass;
 struct _LsmMathmlTableElement {
 	LsmMathmlElement	element;
 
-	LsmDomEnumListAttribute row_align;
-	LsmDomEnumListAttribute column_align;
+	LsmMathmlEnumListAttribute row_align;
+	LsmMathmlEnumListAttribute column_align;
 	LsmMathmlSpaceListAttribute row_spacing;
 	LsmMathmlSpaceListAttribute column_spacing;
-	LsmDomEnumListAttribute row_lines;
-	LsmDomEnumListAttribute column_lines;
-	LsmDomEnumAttribute frame;
+	LsmMathmlEnumListAttribute row_lines;
+	LsmMathmlEnumListAttribute column_lines;
+	LsmMathmlEnumAttribute frame;
 	LsmMathmlSpaceListAttribute frame_spacing;
-	LsmDomBooleanAttribute equal_rows;
-	LsmDomBooleanAttribute equal_columns;
-	LsmDomBooleanAttribute display_style;
+	LsmMathmlBooleanAttribute equal_rows;
+	LsmMathmlBooleanAttribute equal_columns;
+	LsmMathmlBooleanAttribute display_style;
 
 	/* View data */
 

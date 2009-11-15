@@ -41,7 +41,7 @@ struct _LsmMathmlFractionElement {
 	LsmMathmlElement presentation_container;
 
 	LsmMathmlLengthAttribute line_thickness;
-	LsmDomBooleanAttribute bevelled;
+	LsmMathmlBooleanAttribute bevelled;
 
 	LsmMathmlDisplay display;
 	double axis_offset;

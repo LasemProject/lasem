@@ -46,8 +46,8 @@ typedef struct _LsmMathmlUnderOverElementClass LsmMathmlUnderOverElementClass;
 struct _LsmMathmlUnderOverElement {
 	LsmMathmlElement	element;
 
-	LsmDomBooleanAttribute accent;
-	LsmDomBooleanAttribute accent_under;
+	LsmMathmlBooleanAttribute accent;
+	LsmMathmlBooleanAttribute accent_under;
 
 	LsmMathmlUnderOverElementType type;
 

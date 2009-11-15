@@ -48,16 +48,16 @@ struct _LsmMathmlPresentationToken {
 
 	LsmMathmlPresentationTokenType type;
 
-	LsmDomStringAttribute	math_family;
-	LsmDomEnumAttribute	math_variant;
+	LsmMathmlStringAttribute	math_family;
+	LsmMathmlEnumAttribute	math_variant;
 	LsmMathmlLengthAttribute	math_size;
 	LsmMathmlColorAttribute	math_color;
 	LsmMathmlColorAttribute	math_background;
 
 	/* Deprecated style attributes */
 
-	LsmDomEnumAttribute font_weight;
-	LsmDomEnumAttribute font_style;
+	LsmMathmlEnumAttribute font_weight;
+	LsmMathmlEnumAttribute font_style;
 };
 
 struct _LsmMathmlPresentationTokenClass {

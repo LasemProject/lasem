@@ -39,8 +39,8 @@ typedef struct _LsmMathmlStringElementClass LsmMathmlStringElementClass;
 struct _LsmMathmlStringElement {
 	LsmMathmlPresentationToken presentation_token;
 
-	LsmDomStringAttribute left_quote;
-	LsmDomStringAttribute right_quote;
+	LsmMathmlStringAttribute left_quote;
+	LsmMathmlStringAttribute right_quote;
 };
 
 struct _LsmMathmlStringElementClass {

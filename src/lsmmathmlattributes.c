@@ -347,7 +347,7 @@ lsm_mathml_attribute_get_value (const LsmMathmlAttribute *attribute)
 }
 
 void
-lsm_dom_boolean_attribute_parse (LsmDomBooleanAttribute *attribute,
+lsm_mathml_boolean_attribute_parse (LsmMathmlBooleanAttribute *attribute,
 				 gboolean *style_value)
 {
 	const char *string;
@@ -366,7 +366,7 @@ lsm_dom_boolean_attribute_parse (LsmDomBooleanAttribute *attribute,
 }
 
 void
-lsm_dom_unsigned_attribute_parse (LsmDomUnsignedAttribute *attribute,
+lsm_mathml_unsigned_attribute_parse (LsmMathmlUnsignedAttribute *attribute,
 				  unsigned int *style_value)
 {
 	const char *string;
@@ -385,7 +385,7 @@ lsm_dom_unsigned_attribute_parse (LsmDomUnsignedAttribute *attribute,
 }
 
 void
-lsm_dom_double_attribute_parse (LsmDomDoubleAttribute *attribute,
+lsm_mathml_double_attribute_parse (LsmMathmlDoubleAttribute *attribute,
 				double *style_value)
 {
 	const char *string;
@@ -404,7 +404,7 @@ lsm_dom_double_attribute_parse (LsmDomDoubleAttribute *attribute,
 }
 
 void
-lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
+lsm_mathml_string_attribute_parse (LsmMathmlStringAttribute *attribute,
 				char **style_value)
 {
 	const char *string;
@@ -426,7 +426,7 @@ lsm_dom_string_attribute_parse (LsmDomStringAttribute *attribute,
 }
 
 void
-lsm_dom_enum_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_enum_attribute_parse (LsmMathmlEnumAttribute *attribute,
 			      unsigned int *style_value,
 			      LsmDomNamedConvert convert)
 {
@@ -446,8 +446,8 @@ lsm_dom_enum_attribute_parse (LsmDomEnumAttribute *attribute,
 }
 
 void
-lsm_dom_enum_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-				   LsmDomEnumList *style_value,
+lsm_mathml_enum_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
+				   LsmMathmlEnumList *style_value,
 				   LsmDomNamedConvert convert)
 {
 	const char *string;
@@ -484,9 +484,9 @@ lsm_dom_enum_list_attribute_parse (LsmDomEnumListAttribute *attribute,
 }
 
 void
-lsm_dom_string_attribute_finalize (void *abstract)
+lsm_mathml_string_attribute_finalize (void *abstract)
 {
-	LsmDomStringAttribute *attribute = abstract;
+	LsmMathmlStringAttribute *attribute = abstract;
 
 	g_return_if_fail (attribute != NULL);
 
@@ -495,9 +495,9 @@ lsm_dom_string_attribute_finalize (void *abstract)
 }
 
 void
-lsm_dom_enum_list_attribute_finalize (void *abstract)
+lsm_mathml_enum_list_attribute_finalize (void *abstract)
 {
-	LsmDomEnumListAttribute *attribute = abstract;
+	LsmMathmlEnumListAttribute *attribute = abstract;
 
 	g_return_if_fail (attribute != NULL);
 
@@ -507,7 +507,7 @@ lsm_dom_enum_list_attribute_finalize (void *abstract)
 }
 
 static const LsmMathmlAttributeClass string_attribute_class = {
-	.finalize = lsm_dom_string_attribute_finalize
+	.finalize = lsm_mathml_string_attribute_finalize
 };
 
 void
@@ -519,7 +519,7 @@ lsm_mathml_attribute_map_add_string (LsmMathmlAttributeMap *map,
 }
 
 static const LsmMathmlAttributeClass enum_list_attribute_class = {
-	.finalize = lsm_dom_enum_list_attribute_finalize
+	.finalize = lsm_mathml_enum_list_attribute_finalize
 };
 
 void
@@ -707,52 +707,52 @@ lsm_mathml_color_attribute_parse (LsmMathmlColorAttribute *attribute,
 }
 
 void
-lsm_mathml_mode_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_mode_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				 unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_mode_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_mode_from_string);
 }
 
 void
-lsm_mathml_display_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_display_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				    unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_display_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_display_from_string);
 }
 
 void
-lsm_mathml_form_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_form_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				 unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_form_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_form_from_string);
 }
 
 void
-lsm_mathml_font_style_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_font_style_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				       unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_font_style_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_font_style_from_string);
 }
 
 void
-lsm_mathml_font_weight_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_font_weight_attribute_parse (LsmMathmlEnumAttribute *attribute,
 					unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_font_weight_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_font_weight_from_string);
 }
 
 void
-lsm_mathml_variant_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_variant_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				    unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_variant_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_variant_from_string);
 }
 
 void
-lsm_mathml_line_attribute_parse (LsmDomEnumAttribute *attribute,
+lsm_mathml_line_attribute_parse (LsmMathmlEnumAttribute *attribute,
 				 unsigned int *style_value)
 {
-	return lsm_dom_enum_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
+	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
 }
 
 void
@@ -1082,24 +1082,24 @@ lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
 }
 
 void
-lsm_mathml_row_align_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-					   LsmDomEnumList *style_value)
+lsm_mathml_row_align_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
+					   LsmMathmlEnumList *style_value)
 {
-	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_row_align_from_string);
+	lsm_mathml_enum_list_attribute_parse (attribute, style_value, lsm_mathml_row_align_from_string);
 }
 
 void
-lsm_mathml_column_align_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-					      LsmDomEnumList *style_value)
+lsm_mathml_column_align_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
+					      LsmMathmlEnumList *style_value)
 {
-	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_column_align_from_string);
+	lsm_mathml_enum_list_attribute_parse (attribute, style_value, lsm_mathml_column_align_from_string);
 }
 
 void
-lsm_mathml_line_list_attribute_parse (LsmDomEnumListAttribute *attribute,
-				      LsmDomEnumList *style_value)
+lsm_mathml_line_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
+				      LsmMathmlEnumList *style_value)
 {
-	lsm_dom_enum_list_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
+	lsm_mathml_enum_list_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
 }
 
 static const LsmMathmlAttributeClass space_list_attribute_class = {

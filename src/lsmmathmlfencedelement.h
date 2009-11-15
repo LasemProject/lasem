@@ -40,9 +40,9 @@ typedef struct _LsmMathmlFencedElementClass LsmMathmlFencedElementClass;
 struct _LsmMathmlFencedElement {
 	LsmMathmlPresentationContainer presentation_container;
 
-	LsmDomStringAttribute open;
-	LsmDomStringAttribute close;
-	LsmDomStringAttribute separators;
+	LsmMathmlStringAttribute open;
+	LsmMathmlStringAttribute close;
+	LsmMathmlStringAttribute separators;
 
 	/* View properties */
 

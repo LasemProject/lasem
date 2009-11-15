@@ -40,18 +40,18 @@ typedef struct _LsmMathmlOperatorElementClass LsmMathmlOperatorElementClass;
 struct _LsmMathmlOperatorElement {
 	LsmMathmlPresentationToken presentation_token;
 
-	LsmDomEnumAttribute form;
-	LsmDomBooleanAttribute fence;
-	LsmDomBooleanAttribute separator;
+	LsmMathmlEnumAttribute form;
+	LsmMathmlBooleanAttribute fence;
+	LsmMathmlBooleanAttribute separator;
 	LsmMathmlSpaceAttribute left_space;
 	LsmMathmlSpaceAttribute right_space;
-	LsmDomBooleanAttribute stretchy;
-	LsmDomBooleanAttribute symmetric;
+	LsmMathmlBooleanAttribute stretchy;
+	LsmMathmlBooleanAttribute symmetric;
 	LsmMathmlSpaceAttribute max_size;
 	LsmMathmlSpaceAttribute min_size;
-	LsmDomBooleanAttribute large_op;
-	LsmDomBooleanAttribute movable_limits;
-	LsmDomBooleanAttribute accent;
+	LsmMathmlBooleanAttribute large_op;
+	LsmMathmlBooleanAttribute movable_limits;
+	LsmMathmlBooleanAttribute accent;
 
 	gboolean is_large_op;
 };

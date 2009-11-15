@@ -49,7 +49,7 @@ lsm_mathml_fraction_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	LsmMathmlFractionElement *fraction = LSM_MATHML_FRACTION_ELEMENT (self);
 
 	lsm_mathml_length_attribute_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
-	lsm_dom_boolean_attribute_parse (&fraction->bevelled, &style->bevelled);
+	lsm_mathml_boolean_attribute_parse (&fraction->bevelled, &style->bevelled);
 
 	fraction->display = style->display;
 }

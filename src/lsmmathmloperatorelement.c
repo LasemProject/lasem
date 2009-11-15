@@ -85,11 +85,11 @@ lsm_mathml_operator_element_post_new_child (LsmDomNode *self, LsmDomNode *child)
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	flag = entry->stretchy;
-	lsm_dom_boolean_attribute_parse (&operator_element->stretchy, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	lsm_dom_boolean_attribute_parse (&operator_element->fence, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	lsm_dom_boolean_attribute_parse (&operator_element->accent, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);
 }
 
 /* LsmMathmlElement implementation */
@@ -114,27 +114,27 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	space = entry->right_space;
 	lsm_mathml_space_attribute_parse (&operator_element->right_space, &space, style);
 	flag = entry->stretchy;
-	lsm_dom_boolean_attribute_parse (&operator_element->stretchy, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);
 	flag = entry->fence;
-	lsm_dom_boolean_attribute_parse (&operator_element->fence, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);
 	flag = entry->accent;
-	lsm_dom_boolean_attribute_parse (&operator_element->accent, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);
 
 	if (operator_element->accent.value)
 		lsm_debug ("[OperatorElement::update] Is accent");
 
 	flag = entry->large_op;
-	lsm_dom_boolean_attribute_parse (&operator_element->large_op, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->large_op, &flag);
 	flag = entry->movable_limits;
-	lsm_dom_boolean_attribute_parse (&operator_element->movable_limits, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->movable_limits, &flag);
 	flag = entry->separator;
-	lsm_dom_boolean_attribute_parse (&operator_element->separator, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->separator, &flag);
 	space = entry->min_size;
 	lsm_mathml_space_attribute_parse (&operator_element->min_size, &space, style);
 	space = entry->max_size;
 	lsm_mathml_space_attribute_parse (&operator_element->max_size, &space, style);
 	flag = entry->symmetric;
-	lsm_dom_boolean_attribute_parse (&operator_element->symmetric, &flag);
+	lsm_mathml_boolean_attribute_parse (&operator_element->symmetric, &flag);
 
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == LSM_MATHML_DISPLAY_BLOCK);

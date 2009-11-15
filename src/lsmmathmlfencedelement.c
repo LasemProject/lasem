@@ -42,15 +42,15 @@ lsm_mathml_fenced_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	char *default_string;
 
 	default_string = g_strdup ("(");
-	lsm_dom_string_attribute_parse (&fenced->open, &default_string);
+	lsm_mathml_string_attribute_parse (&fenced->open, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (")");
-	lsm_dom_string_attribute_parse (&fenced->close, &default_string);
+	lsm_mathml_string_attribute_parse (&fenced->close, &default_string);
 	g_free (default_string);
 
 	default_string = g_strdup (",");
-	lsm_dom_string_attribute_parse (&fenced->separators, &default_string);
+	lsm_mathml_string_attribute_parse (&fenced->separators, &default_string);
 	g_free (default_string);
 }
 

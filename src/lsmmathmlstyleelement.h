@@ -42,9 +42,9 @@ struct _LsmMathmlStyleElement {
 
 	/* Style attributes */
 
-	LsmDomBooleanAttribute display_style;
+	LsmMathmlBooleanAttribute display_style;
 	LsmMathmlScriptLevelAttribute script_level;
-	LsmDomDoubleAttribute script_size_multiplier;
+	LsmMathmlDoubleAttribute script_size_multiplier;
 	LsmMathmlLengthAttribute script_min_size;
 	LsmMathmlLengthAttribute very_very_thin_math_space;
 	LsmMathmlLengthAttribute very_thin_math_space;
@@ -56,13 +56,13 @@ struct _LsmMathmlStyleElement {
 
 	/* Deprecated style attributes */
 
-	LsmDomEnumAttribute font_weight;
-	LsmDomEnumAttribute font_style;
+	LsmMathmlEnumAttribute font_weight;
+	LsmMathmlEnumAttribute font_style;
 
 	/* Presentation token attribute */
 
-	LsmDomStringAttribute math_family;
-	LsmDomEnumAttribute  math_variant;
+	LsmMathmlStringAttribute math_family;
+	LsmMathmlEnumAttribute  math_variant;
 	LsmMathmlLengthAttribute math_size;
 	LsmMathmlColorAttribute  math_color;
 	LsmMathmlColorAttribute  math_background;

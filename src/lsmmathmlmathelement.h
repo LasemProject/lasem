@@ -49,8 +49,8 @@ struct _LsmMathmlMathElement {
 
 	LsmMathmlStyle *default_style;
 
-	LsmDomEnumAttribute mode;
-	LsmDomEnumAttribute display;
+	LsmMathmlEnumAttribute mode;
+	LsmMathmlEnumAttribute display;
 };
 
 struct _LsmMathmlMathElementClass {
