@@ -31,7 +31,6 @@ liblasem_la_SOURCES =				\
 	lsmdomelement.c				\
 	lsmdomcharacterdata.c			\
 	lsmdomtext.c				\
-	lsmdomattributes.c			\
 	lsmdomview.c				\
 	lsmdomparser.c				\
 	lsmdomimplementation.c			\
@@ -114,7 +113,6 @@ LASEM_HDRS = \
 	lsmdomelement.h				\
 	lsmdomcharacterdata.h			\
 	lsmdomtext.h				\
-	lsmdomattributes.h			\
 	lsmdomview.h				\
 	lsmdomparser.h				\
 	lsmdomimplementation.h			\
