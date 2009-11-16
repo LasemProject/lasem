@@ -20,11 +20,11 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmdebug.h>
 #include <lsmmathmlelement.h>
 #include <lsmmathmlspaceelement.h>
 #include <lsmmathmloperatorelement.h>
 #include <lsmmathmlview.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -68,14 +68,22 @@ lsm_mathml_element_set_attribute (LsmDomElement *self, const char* name, const c
 {
 	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS(self);
 
-	lsm_mathml_attribute_map_set_attribute (m_element_class->attributes, self,
-					     name, value);
+	if (!lsm_attribute_manager_set_attribute (m_element_class->attribute_manager,
+						  self, name, value))
+		lsm_mathml_attribute_map_set_attribute (m_element_class->attributes, self,
+							name, value);
 }
 
 const char *
 lsm_mathml_element_get_attribute (LsmDomElement *self, const char *name)
 {
 	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS(self);
+	const char *value;
+
+	value = lsm_attribute_manager_get_attribute (m_element_class->attribute_manager,
+						     self, name);
+	if (value != NULL)
+		return value;
 
 	return lsm_mathml_attribute_map_get_attribute (m_element_class->attributes, self, name);
 }
@@ -422,6 +430,24 @@ lsm_mathml_element_finalize (GObject *object)
 
 /* LsmMathmlElement class */
 
+static const LsmAttributeInfos lsm_svg_attribute_infos[] = {
+	{
+		.name = "id",
+		.trait_class = &lsm_null_trait_class,
+		.attribute_offset = offsetof (LsmMathmlElement, id)
+	},
+	{
+		.name = "class",
+		.trait_class = &lsm_null_trait_class,
+		.attribute_offset = offsetof (LsmMathmlElement, class_name)
+	},
+	{
+		.name = "href",
+		.trait_class = &lsm_null_trait_class,
+		.attribute_offset = offsetof (LsmMathmlElement, href)
+	}
+};
+
 static void
 lsm_mathml_element_class_init (LsmMathmlElementClass *m_element_class)
 {
@@ -450,12 +476,8 @@ lsm_mathml_element_class_init (LsmMathmlElementClass *m_element_class)
 
 	m_element_class->attributes = lsm_mathml_attribute_map_new ();
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "class",
-					  offsetof (LsmMathmlElement, class_name));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "id",
-					  offsetof (LsmMathmlElement, id));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "href",
-					  offsetof (LsmMathmlElement, href));
+	m_element_class->attribute_manager = lsm_attribute_manager_new (G_N_ELEMENTS (lsm_svg_attribute_infos),
+									lsm_svg_attribute_infos);
 }
 
 G_DEFINE_ABSTRACT_TYPE (LsmMathmlElement, lsm_mathml_element, LSM_TYPE_DOM_ELEMENT)

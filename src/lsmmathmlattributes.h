@@ -22,12 +22,23 @@
 #ifndef LSM_MATHML_ATTRIBUTES_H
 #define LSM_MATHML_ATTRIBUTES_H
 
+#include <lsmattributes.h>
 #include <lsmdom.h>
 #include <lsmmathml.h>
 #include <lsmmathmlenums.h>
+#include <lsmmathmltraits.h>
 #include <pango/pango-attributes.h>
 
 G_BEGIN_DECLS
+
+typedef struct {
+	LsmAttribute base;
+	gboolean value;
+} LsmMathmlBooleanAttribute;
+
+void		lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboolean value);
+
+/*******************************/
 
 typedef struct {
 	char *value;
@@ -104,10 +115,12 @@ typedef unsigned int (*LsmDomNamedConvert) (const char *string);
 #define LSM_MATHML_SPACE_EM_VERY_THICK		0.333333
 #define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
 
+#if 0
 typedef struct {
 	LsmMathmlAttribute attr;
 	gboolean value;
 } LsmMathmlBooleanAttribute;
+#endif
 
 typedef struct {
 	LsmMathmlAttribute attr;
@@ -208,8 +221,10 @@ typedef struct {
 	double *values;
 } LsmMathmlSpaceListAttribute;
 
+#if 0
 void 		lsm_mathml_boolean_attribute_parse	(LsmMathmlBooleanAttribute *attribute,
 							 gboolean *default_value);
+#endif
 void 		lsm_mathml_unsigned_attribute_parse	(LsmMathmlUnsignedAttribute *attribute,
 							 unsigned *default_value);
 void 		lsm_mathml_double_attribute_parse	(LsmMathmlDoubleAttribute *attribute,

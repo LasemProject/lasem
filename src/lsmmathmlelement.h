@@ -23,10 +23,11 @@
 #ifndef LSM_MATHML_ELEMENT_H
 #define LSM_MATHML_ELEMENT_H
 
+#include <lsmdomelement.h>
 #include <lsmmathml.h>
 #include <lsmmathmlutils.h>
 #include <lsmmathmlstyle.h>
-#include <lsmdomelement.h>
+#include <lsmmathmlattributes.h>
 #include <cairo.h>
 
 G_BEGIN_DECLS
@@ -51,9 +52,9 @@ typedef struct _LsmMathmlElementClass LsmMathmlElementClass;
 struct _LsmMathmlElement {
 	LsmDomElement	element;
 
-	LsmMathmlAttribute class_name;
-	LsmMathmlAttribute id;
-	LsmMathmlAttribute href;
+	LsmAttribute class_name;
+	LsmAttribute id;
+	LsmAttribute href;
 
 	LsmMathmlElementStyle style;
 
@@ -71,6 +72,7 @@ struct _LsmMathmlElement {
 struct _LsmMathmlElementClass {
 	LsmDomElementClass  parent_class;
 
+	LsmAttributeManager *attribute_manager;
 	LsmMathmlAttributeMap *attributes;
 
 	void				(*update)		(LsmMathmlElement *element, LsmMathmlStyle *style);

@@ -1,5 +1,4 @@
-/* lsmdom.h
- *
+/*
  * Copyright © 2009 Emmanuel Pacaud
  *
  * This program is free software; you can redistribute it and/or modify

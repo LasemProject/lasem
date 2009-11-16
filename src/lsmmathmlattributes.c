@@ -30,6 +30,15 @@
 #include <glib-object.h>
 #include <math.h>
 
+void
+lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboolean value)
+{
+	if (attribute->base.value == NULL)
+		attribute->value = value;
+}
+
+/**************************/
+
 typedef struct {
 	ptrdiff_t bag_offset;
 	const LsmMathmlAttributeBagClass *bag_class;
@@ -346,6 +355,7 @@ lsm_mathml_attribute_get_value (const LsmMathmlAttribute *attribute)
 	return attribute->value;
 }
 
+#if 0
 void
 lsm_mathml_boolean_attribute_parse (LsmMathmlBooleanAttribute *attribute,
 				 gboolean *style_value)
@@ -364,6 +374,7 @@ lsm_mathml_boolean_attribute_parse (LsmMathmlBooleanAttribute *attribute,
 	attribute->value = (strcmp (string, "true") == 0);
 	*style_value = attribute->value;
 }
+#endif
 
 void
 lsm_mathml_unsigned_attribute_parse (LsmMathmlUnsignedAttribute *attribute,

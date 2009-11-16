@@ -48,6 +48,7 @@ struct _LsmMathmlTableElement {
 	LsmMathmlEnumListAttribute column_lines;
 	LsmMathmlEnumAttribute frame;
 	LsmMathmlSpaceListAttribute frame_spacing;
+
 	LsmMathmlBooleanAttribute equal_rows;
 	LsmMathmlBooleanAttribute equal_columns;
 	LsmMathmlBooleanAttribute display_style;

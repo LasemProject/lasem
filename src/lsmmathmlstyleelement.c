@@ -46,8 +46,9 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
 
 	display_style = style->display == LSM_MATHML_DISPLAY_BLOCK;
-	lsm_mathml_boolean_attribute_parse (&style_element->display_style, &display_style);
-	style->display = display_style ? LSM_MATHML_DISPLAY_BLOCK : LSM_MATHML_DISPLAY_INLINE;
+/*        lsm_mathml_boolean_attribute_parse (&style_element->display_style, &display_style);*/
+	lsm_mathml_boolean_attribute_inherit (&style_element->display_style, display_style);
+	style->display = style_element->display_style.value ? LSM_MATHML_DISPLAY_BLOCK : LSM_MATHML_DISPLAY_INLINE;
 
 	lsm_mathml_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
@@ -123,6 +124,14 @@ lsm_mathml_style_element_init (LsmMathmlStyleElement *self)
 
 /* LsmMathmlStyleElement class */
 
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "displaystyle",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, display_style),
+		.trait_class = &lsm_mathml_boolean_trait_class
+	}
+};
+
 static void
 lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 {
@@ -134,13 +143,18 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 	node_class->get_node_name = lsm_mathml_style_element_get_node_name;
 
 	m_element_class->update = lsm_mathml_style_element_update;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
+
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
 					  offsetof (LsmMathmlStyleElement, script_level));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",
-					  offsetof (LsmMathmlStyleElement, display_style));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",*/
+/*                                          offsetof (LsmMathmlStyleElement, display_style));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
 					  offsetof (LsmMathmlStyleElement, script_size_multiplier));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",

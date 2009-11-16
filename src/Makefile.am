@@ -35,6 +35,8 @@ liblasem_la_SOURCES =				\
 	lsmdomparser.c				\
 	lsmdomimplementation.c			\
 	lsmmathmlenums.c			\
+	lsmmathmltraits.c			\
+	lsmmathmlattributes.c			\
 	lsmmathmlentitydictionary.c		\
 	lsmmathmloperatordictionary.c		\
 	lsmmathmldocument.c			\
@@ -59,7 +61,6 @@ liblasem_la_SOURCES =				\
 	lsmmathmlpaddedelement.c		\
 	lsmmathmlerrorelement.c			\
 	lsmmathmlactionelement.c		\
-	lsmmathmlattributes.c			\
 	lsmmathmlstyle.c			\
 	lsmmathmlview.c				\
 	lsmmathmlglyphtableams.c		\
@@ -117,6 +118,9 @@ LASEM_HDRS = \
 	lsmdomparser.h				\
 	lsmdomimplementation.h			\
 	lsmmathml.h				\
+	lsmmathmlenums.h			\
+	lsmmathmltraits.h			\
+	lsmmathmlattributes.h			\
 	lsmmathmlentitydictionary.h		\
 	lsmmathmloperatordictionary.h		\
 	lsmmathmldocument.h			\
@@ -141,13 +145,11 @@ LASEM_HDRS = \
 	lsmmathmlpaddedelement.h		\
 	lsmmathmlerrorelement.h			\
 	lsmmathmlactionelement.h		\
-	lsmmathmlattributes.h			\
 	lsmmathmlstyle.h			\
 	lsmmathmlview.h				\
 	lsmmathmlglyphtableams.h		\
 	lsmmathmlalignmarkelement.h		\
 	lsmmathmlaligngroupelement.h		\
-	lsmmathmlenums.h			\
 	lsmmathmlutils.h			\
 	lsmmathmllayoututils.h			\
 	lsmsvg.h				\

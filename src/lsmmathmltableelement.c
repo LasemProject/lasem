@@ -52,7 +52,7 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LsmMathmlSpaceList *space_list;
 	LsmMathmlEnumList enum_list;
 	unsigned int enum_attribute;
-	gboolean flag;
+/*        gboolean flag;*/
 
 	enum_list.n_values = 1;
 	enum_list.values = &enum_attribute;
@@ -101,14 +101,14 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	lsm_mathml_space_list_free (space_list);
 
-	flag = FALSE;
-	lsm_mathml_boolean_attribute_parse (&table->equal_rows, &flag);
+/*        flag = FALSE;*/
+/*        lsm_mathml_boolean_attribute_parse (&table->equal_rows, &flag);*/
 
-	flag = FALSE;
-	lsm_mathml_boolean_attribute_parse (&table->equal_columns, &flag);
+/*        flag = FALSE;*/
+/*        lsm_mathml_boolean_attribute_parse (&table->equal_columns, &flag);*/
 
-	flag = FALSE;
-	lsm_mathml_boolean_attribute_parse (&table->display_style, &flag);
+/*        flag = FALSE;*/
+/*        lsm_mathml_boolean_attribute_parse (&table->display_style, &flag);*/
 }
 
 static const LsmMathmlBbox *
@@ -435,6 +435,8 @@ lsm_mathml_table_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_TABLE_ELEMENT, NULL);
 }
 
+static const gboolean equal_default = FALSE;
+
 static void
 lsm_mathml_table_element_init (LsmMathmlTableElement *table)
 {
@@ -444,6 +446,9 @@ lsm_mathml_table_element_init (LsmMathmlTableElement *table)
 	table->n_columns = 0;
 	table->n_rows = 0;
 	table->line_width = 0;
+
+	table->equal_columns.value = equal_default;
+	table->equal_rows.value = equal_default;
 }
 
 static void
@@ -462,6 +467,21 @@ lsm_mathml_table_element_finalize (GObject *object)
 }
 
 /* LsmMathmlTableElement class */
+
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "equalrows",
+		.attribute_offset = offsetof (LsmMathmlTableElement, equal_rows),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+		.trait_default = &equal_default
+	},
+	{
+		.name = "equalcolumns",
+		.attribute_offset = offsetof (LsmMathmlTableElement, equal_columns),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+		.trait_default = &equal_default
+	}
+};
 
 static void
 lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
@@ -482,6 +502,11 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 	m_element_class->layout = lsm_mathml_table_element_layout;
 	m_element_class->render = lsm_mathml_table_element_render;
 	m_element_class->is_inferred_row = NULL;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
+
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
@@ -501,10 +526,10 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 					  offsetof (LsmMathmlTableElement, frame));
 	lsm_mathml_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
 					   offsetof (LsmMathmlTableElement, frame_spacing));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",
-					  offsetof (LsmMathmlTableElement, equal_rows));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",
-					  offsetof (LsmMathmlTableElement, equal_columns));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",*/
+/*                                          offsetof (LsmMathmlTableElement, equal_rows));*/
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",*/
+/*                                          offsetof (LsmMathmlTableElement, equal_columns));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlTableElement, lsm_mathml_table_element, LSM_TYPE_MATHML_ELEMENT)

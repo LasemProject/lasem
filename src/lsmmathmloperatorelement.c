@@ -77,19 +77,23 @@ lsm_mathml_operator_element_post_new_child (LsmDomNode *self, LsmDomNode *child)
 {
 	LsmMathmlOperatorElement *operator_element = LSM_MATHML_OPERATOR_ELEMENT (self);
 	const LsmMathmlOperatorDictionaryEntry *entry;
-	gboolean flag;
+/*        gboolean flag;*/
 
 	entry = lsm_mathml_operator_element_dictionary_lookup (operator_element);
 
 	lsm_debug ("[OperatorElement::post_new_child] found %s %s",
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
-	flag = entry->stretchy;
-	lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);
-	flag = entry->fence;
-	lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);
-	flag = entry->accent;
-	lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);
+/*        flag = entry->stretchy;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);*/
+/*        flag = entry->fence;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);*/
+/*        flag = entry->accent;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);*/
+
+	lsm_mathml_boolean_attribute_inherit (&operator_element->stretchy, entry->stretchy);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->fence, entry->fence);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->accent, entry->accent);
 }
 
 /* LsmMathmlElement implementation */
@@ -100,7 +104,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	LsmMathmlOperatorElement *operator_element = LSM_MATHML_OPERATOR_ELEMENT (self);
 	const LsmMathmlOperatorDictionaryEntry *entry;
 	LsmMathmlSpace space;
-	gboolean flag;
+/*        gboolean flag;*/
 
 	LSM_MATHML_ELEMENT_CLASS (parent_class)->update (self, style);
 
@@ -113,28 +117,36 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	lsm_mathml_space_attribute_parse (&operator_element->left_space, &space, style);
 	space = entry->right_space;
 	lsm_mathml_space_attribute_parse (&operator_element->right_space, &space, style);
-	flag = entry->stretchy;
-	lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);
-	flag = entry->fence;
-	lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);
-	flag = entry->accent;
-	lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);
+/*        flag = entry->stretchy;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->stretchy, &flag);*/
+/*        flag = entry->fence;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->fence, &flag);*/
+/*        flag = entry->accent;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->accent, &flag);*/
+/*        flag = entry->stretchy;*/
+	lsm_mathml_boolean_attribute_inherit (&operator_element->stretchy, entry->stretchy);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->fence, entry->fence);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->accent, entry->accent);
 
 	if (operator_element->accent.value)
 		lsm_debug ("[OperatorElement::update] Is accent");
 
-	flag = entry->large_op;
-	lsm_mathml_boolean_attribute_parse (&operator_element->large_op, &flag);
-	flag = entry->movable_limits;
-	lsm_mathml_boolean_attribute_parse (&operator_element->movable_limits, &flag);
-	flag = entry->separator;
-	lsm_mathml_boolean_attribute_parse (&operator_element->separator, &flag);
+/*        flag = entry->large_op;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->large_op, &flag);*/
+/*        flag = entry->movable_limits;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->movable_limits, &flag);*/
+/*        flag = entry->separator;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->separator, &flag);*/
+	lsm_mathml_boolean_attribute_inherit (&operator_element->large_op, entry->large_op);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->movable_limits, entry->movable_limits);
+	lsm_mathml_boolean_attribute_inherit (&operator_element->separator, entry->separator);
 	space = entry->min_size;
 	lsm_mathml_space_attribute_parse (&operator_element->min_size, &space, style);
 	space = entry->max_size;
 	lsm_mathml_space_attribute_parse (&operator_element->max_size, &space, style);
-	flag = entry->symmetric;
-	lsm_mathml_boolean_attribute_parse (&operator_element->symmetric, &flag);
+/*        flag = entry->symmetric;*/
+/*        lsm_mathml_boolean_attribute_parse (&operator_element->symmetric, &flag);*/
+	lsm_mathml_boolean_attribute_inherit (&operator_element->symmetric, entry->symmetric);
 
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == LSM_MATHML_DISPLAY_BLOCK);
@@ -220,6 +232,44 @@ lsm_mathml_operator_element_init (LsmMathmlOperatorElement *self)
 
 /* LsmMathmlOperatorElement class */
 
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "fence",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, fence),
+		.trait_class = &lsm_mathml_boolean_trait_class
+	},
+	{
+		.name = "separator",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, separator),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	},
+	{
+		.name = "stretchy",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, stretchy),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	},
+	{
+		.name = "symmetric",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, symmetric),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	},
+	{
+		.name = "large_op",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, large_op),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	},
+	{
+		.name = "movable_limits",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, movable_limits),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	},
+	{
+		.name = "accent",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, accent),
+		.trait_class = &lsm_mathml_boolean_trait_class,
+	}
+};
+
 static void
 lsm_mathml_operator_element_class_init (LsmMathmlOperatorElementClass *operator_class)
 {
@@ -235,33 +285,38 @@ lsm_mathml_operator_element_class_init (LsmMathmlOperatorElementClass *operator_
 	m_element_class->measure = lsm_mathml_operator_element_measure;
 	m_element_class->render = lsm_mathml_operator_element_render;
 	m_element_class->get_embellished_core = lsm_mathml_operator_element_get_embellished_core;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
+
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "form",
 					  offsetof (LsmMathmlOperatorElement, form));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fence",
-					  offsetof (LsmMathmlOperatorElement, fence));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "separator",
-					  offsetof (LsmMathmlOperatorElement, separator));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fence",*/
+/*                                          offsetof (LsmMathmlOperatorElement, fence));*/
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "separator",*/
+/*                                          offsetof (LsmMathmlOperatorElement, separator));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "lspace",
 					  offsetof (LsmMathmlOperatorElement, left_space));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "rspace",
 					  offsetof (LsmMathmlOperatorElement, right_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "stretchy",
-					  offsetof (LsmMathmlOperatorElement, stretchy));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",
-					  offsetof (LsmMathmlOperatorElement, symmetric));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "accent",
-					  offsetof (LsmMathmlOperatorElement, accent));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "stretchy",*/
+/*                                          offsetof (LsmMathmlOperatorElement, stretchy));*/
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "symmetric",*/
+/*                                          offsetof (LsmMathmlOperatorElement, symmetric));*/
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "accent",*/
+/*                                          offsetof (LsmMathmlOperatorElement, accent));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "minsize",
 					  offsetof (LsmMathmlOperatorElement, min_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
 					  offsetof (LsmMathmlOperatorElement, max_size));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",
-					  offsetof (LsmMathmlOperatorElement, large_op));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",
-					  offsetof (LsmMathmlOperatorElement, movable_limits));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "largeop",*/
+/*                                          offsetof (LsmMathmlOperatorElement, large_op));*/
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "movablelimits",*/
+/*                                          offsetof (LsmMathmlOperatorElement, movable_limits));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlOperatorElement, lsm_mathml_operator_element, LSM_TYPE_MATHML_PRESENTATION_TOKEN)
