@@ -30,11 +30,22 @@
 #include <glib-object.h>
 #include <math.h>
 
-void
+gboolean
 lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboolean value)
 {
 	if (attribute->base.value == NULL)
 		attribute->value = value;
+
+	return attribute->value;
+}
+
+double
+lsm_mathml_double_attribute_inherit (LsmMathmlDoubleAttribute *attribute, double value)
+{
+	if (attribute->base.value == NULL)
+		attribute->value = value;
+
+	return attribute->value;
 }
 
 /**************************/
@@ -374,7 +385,6 @@ lsm_mathml_boolean_attribute_parse (LsmMathmlBooleanAttribute *attribute,
 	attribute->value = (strcmp (string, "true") == 0);
 	*style_value = attribute->value;
 }
-#endif
 
 void
 lsm_mathml_unsigned_attribute_parse (LsmMathmlUnsignedAttribute *attribute,
@@ -413,6 +423,8 @@ lsm_mathml_double_attribute_parse (LsmMathmlDoubleAttribute *attribute,
 	attribute->value = atof (string);
 	*style_value = attribute->value;
 }
+
+#endif
 
 void
 lsm_mathml_string_attribute_parse (LsmMathmlStringAttribute *attribute,

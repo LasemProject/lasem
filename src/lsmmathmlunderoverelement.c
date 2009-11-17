@@ -157,7 +157,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		}
 
 /*                lsm_mathml_boolean_attribute_parse (&under_over->accent_under, &accent_under);*/
-		lsm_mathml_boolean_attribute_inherit (&under_over->accent_under, accent_under);
+		accent_under = lsm_mathml_boolean_attribute_inherit (&under_over->accent_under, accent_under);
 
 		if (!under_over->accent_under.value)
 			lsm_mathml_style_change_script_level (style, +1);
@@ -179,7 +179,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		}
 
 /*                lsm_mathml_boolean_attribute_parse (&under_over->accent, &accent);*/
-		lsm_mathml_boolean_attribute_inherit (&under_over->accent, accent);
+		accent = lsm_mathml_boolean_attribute_inherit (&under_over->accent, accent);
 
 		if (!under_over->accent.value)
 			lsm_mathml_style_change_script_level (overscript_style, +1);
@@ -200,10 +200,10 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		}
 	}
 
-/*        under_over->under_space = accent_under ? accent_v_space : v_space;*/
-/*        under_over->over_space  = accent       ? accent_v_space : v_space;*/
-	under_over->under_space = under_over->accent_under.value ? accent_v_space : v_space;
-	under_over->over_space  = under_over->accent.value       ? accent_v_space : v_space;
+	under_over->under_space = accent_under ? accent_v_space : v_space;
+	under_over->over_space  = accent       ? accent_v_space : v_space;
+/*        under_over->under_space = under_over->accent_under.value ? accent_v_space : v_space;*/
+/*        under_over->over_space  = under_over->accent.value       ? accent_v_space : v_space;*/
 
 	under_over->as_script = under_over->display == LSM_MATHML_DISPLAY_INLINE && movable_limits;
 

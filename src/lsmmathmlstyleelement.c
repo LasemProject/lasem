@@ -50,7 +50,9 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_boolean_attribute_inherit (&style_element->display_style, display_style);
 	style->display = style_element->display_style.value ? LSM_MATHML_DISPLAY_BLOCK : LSM_MATHML_DISPLAY_INLINE;
 
-	lsm_mathml_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);
+/*        lsm_mathml_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);*/
+	style->script_size_multiplier = lsm_mathml_double_attribute_inherit (&style_element->script_size_multiplier,
+									     style->script_size_multiplier);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
 	lsm_mathml_length_attribute_parse (&style_element->script_min_size,
 					&style->script_min_size,
@@ -129,6 +131,11 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.name = "displaystyle",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, display_style),
 		.trait_class = &lsm_mathml_boolean_trait_class
+	},
+	{
+		.name = "scriptsizemultiplier",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, script_size_multiplier),
+		.trait_class = &lsm_mathml_double_trait_class
 	}
 };
 
@@ -155,8 +162,8 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 					  offsetof (LsmMathmlStyleElement, script_level));
 /*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",*/
 /*                                          offsetof (LsmMathmlStyleElement, display_style));*/
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",
-					  offsetof (LsmMathmlStyleElement, script_size_multiplier));
+/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",*/
+/*                                          offsetof (LsmMathmlStyleElement, script_size_multiplier));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
 					  offsetof (LsmMathmlStyleElement, script_min_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "background",

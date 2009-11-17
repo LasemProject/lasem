@@ -22,6 +22,7 @@
 #include <lsmmathmltraits.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 static void
 lsm_mathml_boolean_trait_from_string (LsmTrait *abstract_trait, char *string)
@@ -43,4 +44,48 @@ const LsmTraitClass lsm_mathml_boolean_trait_class = {
 	.size = sizeof (gboolean),
 	.from_string = lsm_mathml_boolean_trait_from_string,
 	.to_string = lsm_mathml_boolean_trait_to_string
+};
+
+static void
+lsm_mathml_unsigned_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	unsigned int *value = (unsigned int *) abstract_trait;
+
+	*value = atoi (string);
+}
+
+static char *
+lsm_mathml_unsigned_trait_to_string (LsmTrait *abstract_trait)
+{
+	unsigned int *value = (unsigned int *) abstract_trait;
+
+	return g_strdup_printf ("%u", *value);
+}
+
+const LsmTraitClass lsm_mathml_unsigned_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_unsigned_trait_from_string,
+	.to_string = lsm_mathml_unsigned_trait_to_string
+};
+
+static void
+lsm_mathml_double_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	double *value = (double *) abstract_trait;
+
+	*value = atof (string);
+}
+
+static char *
+lsm_mathml_double_trait_to_string (LsmTrait *abstract_trait)
+{
+	double *value = (double *) abstract_trait;
+
+	return g_strdup_printf ("%g", *value);
+}
+
+const LsmTraitClass lsm_mathml_double_trait_class = {
+	.size = sizeof (double),
+	.from_string = lsm_mathml_double_trait_from_string,
+	.to_string = lsm_mathml_double_trait_to_string
 };

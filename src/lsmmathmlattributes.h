@@ -36,7 +36,18 @@ typedef struct {
 	gboolean value;
 } LsmMathmlBooleanAttribute;
 
-void		lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboolean value);
+typedef struct {
+	LsmAttribute base;
+	unsigned int value;
+} LsmMathmlUnsignedAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	double value;
+} LsmMathmlDoubleAttribute;
+
+gboolean	lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attribute, gboolean value);
+double 		lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute, double value);
 
 /*******************************/
 
@@ -120,7 +131,6 @@ typedef struct {
 	LsmMathmlAttribute attr;
 	gboolean value;
 } LsmMathmlBooleanAttribute;
-#endif
 
 typedef struct {
 	LsmMathmlAttribute attr;
@@ -132,6 +142,7 @@ typedef struct {
 	double value;
 } LsmMathmlDoubleAttribute;
 
+#endif
 typedef struct {
 	LsmMathmlAttribute attr;
 	char *value;
@@ -224,11 +235,11 @@ typedef struct {
 #if 0
 void 		lsm_mathml_boolean_attribute_parse	(LsmMathmlBooleanAttribute *attribute,
 							 gboolean *default_value);
-#endif
 void 		lsm_mathml_unsigned_attribute_parse	(LsmMathmlUnsignedAttribute *attribute,
 							 unsigned *default_value);
 void 		lsm_mathml_double_attribute_parse	(LsmMathmlDoubleAttribute *attribute,
 							 double *default_value);
+#endif
 void		lsm_mathml_string_attribute_parse	(LsmMathmlStringAttribute *attribute,
 							 char **default_value);
 void 		lsm_mathml_enum_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
