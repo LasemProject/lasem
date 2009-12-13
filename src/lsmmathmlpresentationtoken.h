@@ -49,10 +49,10 @@ struct _LsmMathmlPresentationToken {
 	LsmMathmlPresentationTokenType type;
 
 	LsmMathmlStringAttribute	math_family;
-	LsmMathmlEnumAttribute	math_variant;
+	LsmMathmlEnumAttribute		math_variant;
 	LsmMathmlLengthAttribute	math_size;
-	LsmMathmlColorAttribute	math_color;
-	LsmMathmlColorAttribute	math_background;
+	LsmMathmlColorAttribute		math_color;
+	LsmMathmlColorAttribute		math_background;
 
 	/* Deprecated style attributes */
 

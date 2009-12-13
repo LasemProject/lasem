@@ -48,6 +48,17 @@ lsm_mathml_double_attribute_inherit (LsmMathmlDoubleAttribute *attribute, double
 	return attribute->value;
 }
 
+const char *
+lsm_mathml_string_attribute_inherit (LsmMathmlStringAttribute *attribute, const char *string)
+{
+	if (attribute->base.value == NULL) {
+		g_free (attribute->value);
+		attribute->value = g_strdup (string);
+	}
+
+	return attribute->value;
+}
+
 /**************************/
 
 typedef struct {
@@ -424,7 +435,6 @@ lsm_mathml_double_attribute_parse (LsmMathmlDoubleAttribute *attribute,
 	*style_value = attribute->value;
 }
 
-#endif
 
 void
 lsm_mathml_string_attribute_parse (LsmMathmlStringAttribute *attribute,
@@ -447,6 +457,8 @@ lsm_mathml_string_attribute_parse (LsmMathmlStringAttribute *attribute,
 		attribute->value = g_strdup (string);
 	}
 }
+
+#endif
 
 void
 lsm_mathml_enum_attribute_parse (LsmMathmlEnumAttribute *attribute,
@@ -506,6 +518,7 @@ lsm_mathml_enum_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
 	g_strfreev (items);
 }
 
+#if 0
 void
 lsm_mathml_string_attribute_finalize (void *abstract)
 {
@@ -516,6 +529,7 @@ lsm_mathml_string_attribute_finalize (void *abstract)
 	g_free (attribute->value);
 	attribute->value = NULL;
 }
+#endif
 
 void
 lsm_mathml_enum_list_attribute_finalize (void *abstract)
@@ -533,6 +547,7 @@ static const LsmMathmlAttributeClass string_attribute_class = {
 	.finalize = lsm_mathml_string_attribute_finalize
 };
 
+#if 0
 void
 lsm_mathml_attribute_map_add_string (LsmMathmlAttributeMap *map,
 				     char const *name,
@@ -540,6 +555,7 @@ lsm_mathml_attribute_map_add_string (LsmMathmlAttributeMap *map,
 {
 	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &string_attribute_class);
 }
+#endif
 
 static const LsmMathmlAttributeClass enum_list_attribute_class = {
 	.finalize = lsm_mathml_enum_list_attribute_finalize

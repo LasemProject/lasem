@@ -35,6 +35,7 @@ lsm_mathml_fenced_element_get_node_name (LsmDomNode *node)
 
 /* LsmMathmlElement implementation */
 
+#if 0
 static void
 lsm_mathml_fenced_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
@@ -53,6 +54,7 @@ lsm_mathml_fenced_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_string_attribute_parse (&fenced->separators, &default_string);
 	g_free (default_string);
 }
+#endif
 
 static const LsmMathmlBbox *
 lsm_mathml_fenced_element_measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox)
@@ -131,6 +133,10 @@ lsm_mathml_fenced_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 
 /* LsmMathmlFencedElement implementation */
 
+static const char *open_default = "(";
+static const char *close_default = ")";
+static const char *separators_default = ",";
+
 LsmDomNode *
 lsm_mathml_fenced_element_new (void)
 {
@@ -138,11 +144,35 @@ lsm_mathml_fenced_element_new (void)
 }
 
 static void
-lsm_mathml_fenced_element_init (LsmMathmlFencedElement *element)
+lsm_mathml_fenced_element_init (LsmMathmlFencedElement *self)
 {
+	self->open.value = g_strdup (open_default);
+	self->close.value = g_strdup (close_default);
+	self->separators.value = g_strdup (separators_default);
 }
 
 /* LsmMathmlFencedElement class */
+
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "open",
+		.attribute_offset = offsetof (LsmMathmlFencedElement, open),
+		.trait_class = &lsm_mathml_string_trait_class,
+		.trait_default = &open_default
+	},
+	{
+		.name = "close",
+		.attribute_offset = offsetof (LsmMathmlFencedElement, close),
+		.trait_class = &lsm_mathml_string_trait_class,
+		.trait_default = &close_default
+	},
+	{
+		.name = "separators",
+		.attribute_offset = offsetof (LsmMathmlFencedElement, separators),
+		.trait_class = &lsm_mathml_string_trait_class,
+		.trait_default = &separators_default
+	}
+};
 
 static void
 lsm_mathml_fenced_element_class_init (LsmMathmlFencedElementClass *m_fenced_element_class)
@@ -154,19 +184,24 @@ lsm_mathml_fenced_element_class_init (LsmMathmlFencedElementClass *m_fenced_elem
 
 	d_node_class->get_node_name = lsm_mathml_fenced_element_get_node_name;
 
-	m_element_class->update =  lsm_mathml_fenced_element_update;
+/*        m_element_class->update =  lsm_mathml_fenced_element_update;*/
 	m_element_class->measure = lsm_mathml_fenced_element_measure;
 	m_element_class->layout =  lsm_mathml_fenced_element_layout;
 	m_element_class->render =  lsm_mathml_fenced_element_render;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
 
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 
-	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "open",
-				       offsetof (LsmMathmlFencedElement, open));
-	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "close",
-				       offsetof (LsmMathmlFencedElement, close));
-	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "separators",
-				       offsetof (LsmMathmlFencedElement, separators));
+/*        m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);*/
+
+/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "open",*/
+/*                                       offsetof (LsmMathmlFencedElement, open));*/
+/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "close",*/
+/*                                       offsetof (LsmMathmlFencedElement, close));*/
+/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "separators",*/
+/*                                       offsetof (LsmMathmlFencedElement, separators));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlFencedElement, lsm_mathml_fenced_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

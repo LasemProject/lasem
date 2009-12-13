@@ -89,3 +89,36 @@ const LsmTraitClass lsm_mathml_double_trait_class = {
 	.from_string = lsm_mathml_double_trait_from_string,
 	.to_string = lsm_mathml_double_trait_to_string
 };
+
+static void
+lsm_mathml_string_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	char **value = (char **) abstract_trait;
+
+	g_free (*value);
+	*value = g_strdup (string);
+}
+
+static char *
+lsm_mathml_string_trait_to_string (LsmTrait *abstract_trait)
+{
+	char **value = (char **) abstract_trait;
+
+	return g_strdup (*value);
+}
+
+static void
+lsm_mathml_string_trait_finalize (LsmTrait *abstract_trait)
+{
+	char **value = (char **) abstract_trait;
+
+	g_free (*value);
+	*value = NULL;
+}
+
+const LsmTraitClass lsm_mathml_string_trait_class = {
+	.size = sizeof (char *),
+	.from_string = lsm_mathml_string_trait_from_string,
+	.to_string = lsm_mathml_string_trait_to_string,
+	.finalize = lsm_mathml_string_trait_finalize
+};

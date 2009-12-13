@@ -46,8 +46,14 @@ typedef struct {
 	double value;
 } LsmMathmlDoubleAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	char *value;
+} LsmMathmlStringAttribute;
+
 gboolean	lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attribute, gboolean value);
 double 		lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute, double value);
+const char *	lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute, const char *string);
 
 /*******************************/
 
@@ -143,10 +149,6 @@ typedef struct {
 } LsmMathmlDoubleAttribute;
 
 #endif
-typedef struct {
-	LsmMathmlAttribute attr;
-	char *value;
-} LsmMathmlStringAttribute;
 
 typedef struct {
 	LsmMathmlAttribute attr;
@@ -239,9 +241,9 @@ void 		lsm_mathml_unsigned_attribute_parse	(LsmMathmlUnsignedAttribute *attribut
 							 unsigned *default_value);
 void 		lsm_mathml_double_attribute_parse	(LsmMathmlDoubleAttribute *attribute,
 							 double *default_value);
-#endif
 void		lsm_mathml_string_attribute_parse	(LsmMathmlStringAttribute *attribute,
 							 char **default_value);
+#endif
 void 		lsm_mathml_enum_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
 							 unsigned int *default_value,
 							 LsmDomNamedConvert convert);
@@ -253,9 +255,11 @@ void		lsm_mathml_string_attribute_finalize	(void *abstract);
 void 		lsm_mathml_enum_list_attribute_finalize	(void *abstract);
 
 
+#if 0
 void 		lsm_mathml_attribute_map_add_string 	(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);
+#endif
 void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);

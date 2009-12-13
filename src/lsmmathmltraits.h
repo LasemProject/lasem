@@ -29,6 +29,7 @@ G_BEGIN_DECLS
 extern const LsmTraitClass lsm_mathml_boolean_trait_class;
 extern const LsmTraitClass lsm_mathml_unsigned_trait_class;
 extern const LsmTraitClass lsm_mathml_double_trait_class;
+extern const LsmTraitClass lsm_mathml_string_trait_class;
 
 G_END_DECLS
 

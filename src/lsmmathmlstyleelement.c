@@ -71,7 +71,11 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_variant_set_font_style (&style->math_variant, font_style);
 	lsm_mathml_variant_set_font_weight (&style->math_variant, font_weight);
 
-	lsm_mathml_string_attribute_parse (&style_element->math_family, &style->math_family);
+
+	lsm_mathml_style_set_math_family (style,
+					  lsm_mathml_string_attribute_inherit (&style_element->math_family,
+									       style->math_family));
+/*        lsm_mathml_string_attribute_parse (&style_element->math_family, &style->math_family);*/
 	lsm_mathml_length_attribute_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&style_element->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
@@ -136,6 +140,17 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.name = "scriptsizemultiplier",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, script_size_multiplier),
 		.trait_class = &lsm_mathml_double_trait_class
+	},
+	{
+		.name = "mathfamily",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, math_family),
+		.trait_class = &lsm_mathml_string_trait_class
+	},
+	/* Deprecated attributes */
+	{
+		.name = "fontfamily",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, math_family),
+		.trait_class = &lsm_mathml_string_trait_class
 	}
 };
 
@@ -183,8 +198,8 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
 					  offsetof (LsmMathmlStyleElement, very_very_thick_math_space));
 
-	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "mathfamily",
-				       offsetof (LsmMathmlStyleElement, math_family));
+/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "mathfamily",*/
+/*                                       offsetof (LsmMathmlStyleElement, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					  offsetof (LsmMathmlStyleElement, math_variant));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -199,8 +214,8 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 
 	/* Deprecated attributes */
 
-	lsm_mathml_attribute_map_add_string (m_element_class->attributes, "fontfamily",
-				       offsetof (LsmMathmlStyleElement, math_family));
+/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "fontfamily",*/
+/*                                       offsetof (LsmMathmlStyleElement, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					  offsetof (LsmMathmlStyleElement, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
