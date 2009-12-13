@@ -34,21 +34,6 @@ lsm_mathml_table_cell_get_node_name (LsmDomNode *node)
 
 /* LsmMathmlElement implementation */
 
-#if 0
-static void
-lsm_mathml_table_cell_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
-{
-	LsmMathmlTableCellElement *cell = LSM_MATHML_TABLE_CELL_ELEMENT (self);
-	unsigned int span;
-
-	span = 1;
-	lsm_mathml_unsigned_attribute_parse (&cell->row_span, &span);
-
-	span = 1;
-	lsm_mathml_unsigned_attribute_parse (&cell->column_span, &span);
-}
-#endif
-
 static const LsmMathmlBbox *
 lsm_mathml_table_cell_element_measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox)
 {
@@ -124,7 +109,6 @@ lsm_mathml_table_cell_element_class_init (LsmMathmlTableCellElementClass *table_
 
 	d_node_class->get_node_name = lsm_mathml_table_cell_get_node_name;
 
-/*        m_element_class->update = lsm_mathml_table_cell_element_update;*/
 	m_element_class->measure = lsm_mathml_table_cell_element_measure;
 	m_element_class->layout = lsm_mathml_table_cell_element_layout;
 	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
@@ -132,13 +116,6 @@ lsm_mathml_table_cell_element_class_init (LsmMathmlTableCellElementClass *table_
 	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
 					      G_N_ELEMENTS (_attribute_infos),
 					      _attribute_infos);
-
-/*        m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);*/
-
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "rowspan",*/
-/*                                          offsetof (LsmMathmlTableCellElement, row_span));*/
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "columnspan",*/
-/*                                          offsetof (LsmMathmlTableCellElement, column_span));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlTableCellElement, lsm_mathml_table_cell_element, LSM_TYPE_MATHML_ELEMENT)

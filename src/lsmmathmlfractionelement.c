@@ -49,7 +49,6 @@ lsm_mathml_fraction_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	LsmMathmlFractionElement *fraction = LSM_MATHML_FRACTION_ELEMENT (self);
 
 	lsm_mathml_length_attribute_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
-/*        lsm_mathml_boolean_attribute_parse (&fraction->bevelled, &style->bevelled);*/
 
 	fraction->display = style->display;
 }
@@ -238,8 +237,6 @@ lsm_mathml_fraction_element_class_init (LsmMathmlFractionElementClass *fraction_
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
 					  offsetof (LsmMathmlFractionElement, line_thickness));
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "bevelled",*/
-/*                                          offsetof (LsmMathmlFractionElement, bevelled));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlFractionElement, lsm_mathml_fraction_element, LSM_TYPE_MATHML_ELEMENT)

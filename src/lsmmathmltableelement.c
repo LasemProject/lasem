@@ -52,7 +52,6 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LsmMathmlSpaceList *space_list;
 	LsmMathmlEnumList enum_list;
 	unsigned int enum_attribute;
-/*        gboolean flag;*/
 
 	enum_list.n_values = 1;
 	enum_list.values = &enum_attribute;
@@ -100,15 +99,6 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_space_list_attribute_parse (&table->frame_spacing, space_list, style);
 
 	lsm_mathml_space_list_free (space_list);
-
-/*        flag = FALSE;*/
-/*        lsm_mathml_boolean_attribute_parse (&table->equal_rows, &flag);*/
-
-/*        flag = FALSE;*/
-/*        lsm_mathml_boolean_attribute_parse (&table->equal_columns, &flag);*/
-
-/*        flag = FALSE;*/
-/*        lsm_mathml_boolean_attribute_parse (&table->display_style, &flag);*/
 }
 
 static const LsmMathmlBbox *
@@ -526,10 +516,6 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 					  offsetof (LsmMathmlTableElement, frame));
 	lsm_mathml_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
 					   offsetof (LsmMathmlTableElement, frame_spacing));
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalrows",*/
-/*                                          offsetof (LsmMathmlTableElement, equal_rows));*/
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "equalcolumns",*/
-/*                                          offsetof (LsmMathmlTableElement, equal_columns));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlTableElement, lsm_mathml_table_element, LSM_TYPE_MATHML_ELEMENT)

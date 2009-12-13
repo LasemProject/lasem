@@ -38,21 +38,7 @@ lsm_mathml_string_element_get_node_name (LsmDomNode *node)
 static void
 lsm_mathml_string_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
-/*        LsmMathmlStringElement *string_element = LSM_MATHML_STRING_ELEMENT (self);*/
-/*        char *default_quote;*/
-
 	LSM_MATHML_ELEMENT_CLASS (parent_class)->update (self, style);
-
-/*        default_quote = g_strdup ("\"");*/
-/*        lsm_mathml_string_attribute_parse (&string_element->left_quote, &default_quote);*/
-/*        g_free (default_quote);*/
-
-/*        default_quote = g_strdup ("\"");*/
-/*        lsm_mathml_string_attribute_parse (&string_element->right_quote, &default_quote);*/
-/*        g_free (default_quote);*/
-
-/*        lsm_mathml_string_attribute_inherit (&string_element->left_quote, "\"");*/
-/*        lsm_mathml_string_attribute_inherit (&string_element->right_quote, "\"");*/
 }
 
 /* LsmMathmlPresentationToken implementation */
@@ -129,13 +115,6 @@ lsm_mathml_string_element_class_init (LsmMathmlStringElementClass *string_class)
 					      _attribute_infos);
 
 	m_token_class->get_text = lsm_mathml_string_element_get_text;
-
-/*        m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);*/
-
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "lquote",*/
-/*                                       offsetof (LsmMathmlStringElement, left_quote));*/
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "rquote",*/
-/*                                       offsetof (LsmMathmlStringElement, right_quote));*/
 }
 
 G_DEFINE_TYPE (LsmMathmlStringElement, lsm_mathml_string_element, LSM_TYPE_MATHML_PRESENTATION_TOKEN)

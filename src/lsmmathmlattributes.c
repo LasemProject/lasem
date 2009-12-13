@@ -377,89 +377,6 @@ lsm_mathml_attribute_get_value (const LsmMathmlAttribute *attribute)
 	return attribute->value;
 }
 
-#if 0
-void
-lsm_mathml_boolean_attribute_parse (LsmMathmlBooleanAttribute *attribute,
-				 gboolean *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = (strcmp (string, "true") == 0);
-	*style_value = attribute->value;
-}
-
-void
-lsm_mathml_unsigned_attribute_parse (LsmMathmlUnsignedAttribute *attribute,
-				  unsigned int *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = atoi (string);
-	*style_value = attribute->value;
-}
-
-void
-lsm_mathml_double_attribute_parse (LsmMathmlDoubleAttribute *attribute,
-				double *style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	attribute->value = atof (string);
-	*style_value = attribute->value;
-}
-
-
-void
-lsm_mathml_string_attribute_parse (LsmMathmlStringAttribute *attribute,
-				char **style_value)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-	g_return_if_fail (*style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		g_free (attribute->value);
-		attribute->value = g_strdup (*style_value);
-	} else {
-		g_free (*style_value);
-		*style_value = g_strdup (string);
-		g_free (attribute->value);
-		attribute->value = g_strdup (string);
-	}
-}
-
-#endif
-
 void
 lsm_mathml_enum_attribute_parse (LsmMathmlEnumAttribute *attribute,
 			      unsigned int *style_value,
@@ -518,19 +435,6 @@ lsm_mathml_enum_list_attribute_parse (LsmMathmlEnumListAttribute *attribute,
 	g_strfreev (items);
 }
 
-#if 0
-void
-lsm_mathml_string_attribute_finalize (void *abstract)
-{
-	LsmMathmlStringAttribute *attribute = abstract;
-
-	g_return_if_fail (attribute != NULL);
-
-	g_free (attribute->value);
-	attribute->value = NULL;
-}
-#endif
-
 void
 lsm_mathml_enum_list_attribute_finalize (void *abstract)
 {
@@ -546,16 +450,6 @@ lsm_mathml_enum_list_attribute_finalize (void *abstract)
 static const LsmMathmlAttributeClass string_attribute_class = {
 	.finalize = lsm_mathml_string_attribute_finalize
 };
-
-#if 0
-void
-lsm_mathml_attribute_map_add_string (LsmMathmlAttributeMap *map,
-				     char const *name,
-				     ptrdiff_t offset)
-{
-	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &string_attribute_class);
-}
-#endif
 
 static const LsmMathmlAttributeClass enum_list_attribute_class = {
 	.finalize = lsm_mathml_enum_list_attribute_finalize

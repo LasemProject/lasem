@@ -132,24 +132,6 @@ typedef unsigned int (*LsmDomNamedConvert) (const char *string);
 #define LSM_MATHML_SPACE_EM_VERY_THICK		0.333333
 #define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
 
-#if 0
-typedef struct {
-	LsmMathmlAttribute attr;
-	gboolean value;
-} LsmMathmlBooleanAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	unsigned int value;
-} LsmMathmlUnsignedAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	double value;
-} LsmMathmlDoubleAttribute;
-
-#endif
-
 typedef struct {
 	LsmMathmlAttribute attr;
 	unsigned int value;
@@ -234,16 +216,6 @@ typedef struct {
 	double *values;
 } LsmMathmlSpaceListAttribute;
 
-#if 0
-void 		lsm_mathml_boolean_attribute_parse	(LsmMathmlBooleanAttribute *attribute,
-							 gboolean *default_value);
-void 		lsm_mathml_unsigned_attribute_parse	(LsmMathmlUnsignedAttribute *attribute,
-							 unsigned *default_value);
-void 		lsm_mathml_double_attribute_parse	(LsmMathmlDoubleAttribute *attribute,
-							 double *default_value);
-void		lsm_mathml_string_attribute_parse	(LsmMathmlStringAttribute *attribute,
-							 char **default_value);
-#endif
 void 		lsm_mathml_enum_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
 							 unsigned int *default_value,
 							 LsmDomNamedConvert convert);
@@ -255,11 +227,6 @@ void		lsm_mathml_string_attribute_finalize	(void *abstract);
 void 		lsm_mathml_enum_list_attribute_finalize	(void *abstract);
 
 
-#if 0
-void 		lsm_mathml_attribute_map_add_string 	(LsmMathmlAttributeMap *map,
-							 char const *name,
-							 ptrdiff_t offset);
-#endif
 void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);

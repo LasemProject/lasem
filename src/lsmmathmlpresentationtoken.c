@@ -115,7 +115,6 @@ lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *st
 	lsm_mathml_style_set_math_family (style,
 					  lsm_mathml_string_attribute_inherit (&token->math_family,
 									       style->math_family));
-/*        lsm_mathml_string_attribute_parse (&token->math_family, &style->math_family);*/
 	lsm_mathml_variant_attribute_parse (&token->math_variant, &style->math_variant);
 	lsm_mathml_length_attribute_parse (&token->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&token->math_color, &style->math_color);
@@ -247,8 +246,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "mathfamily",*/
-/*                                          offsetof (LsmMathmlPresentationToken, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					     offsetof (LsmMathmlPresentationToken, math_variant));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -260,8 +257,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	/* Deprecated attributes */
 
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "fontfamily",*/
-/*                                          offsetof (LsmMathmlPresentationToken, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					     offsetof (LsmMathmlPresentationToken, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",

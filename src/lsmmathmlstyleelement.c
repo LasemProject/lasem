@@ -46,11 +46,9 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
 
 	display_style = style->display == LSM_MATHML_DISPLAY_BLOCK;
-/*        lsm_mathml_boolean_attribute_parse (&style_element->display_style, &display_style);*/
 	lsm_mathml_boolean_attribute_inherit (&style_element->display_style, display_style);
 	style->display = style_element->display_style.value ? LSM_MATHML_DISPLAY_BLOCK : LSM_MATHML_DISPLAY_INLINE;
 
-/*        lsm_mathml_double_attribute_parse (&style_element->script_size_multiplier, &style->script_size_multiplier);*/
 	style->script_size_multiplier = lsm_mathml_double_attribute_inherit (&style_element->script_size_multiplier,
 									     style->script_size_multiplier);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
@@ -75,7 +73,6 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_style_set_math_family (style,
 					  lsm_mathml_string_attribute_inherit (&style_element->math_family,
 									       style->math_family));
-/*        lsm_mathml_string_attribute_parse (&style_element->math_family, &style->math_family);*/
 	lsm_mathml_length_attribute_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&style_element->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
@@ -175,10 +172,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
 					  offsetof (LsmMathmlStyleElement, script_level));
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "displaystyle",*/
-/*                                          offsetof (LsmMathmlStyleElement, display_style));*/
-/*        lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptsizemultiplier",*/
-/*                                          offsetof (LsmMathmlStyleElement, script_size_multiplier));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
 					  offsetof (LsmMathmlStyleElement, script_min_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "background",
@@ -198,8 +191,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
 					  offsetof (LsmMathmlStyleElement, very_very_thick_math_space));
 
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "mathfamily",*/
-/*                                       offsetof (LsmMathmlStyleElement, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					  offsetof (LsmMathmlStyleElement, math_variant));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
@@ -214,8 +205,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 
 	/* Deprecated attributes */
 
-/*        lsm_mathml_attribute_map_add_string (m_element_class->attributes, "fontfamily",*/
-/*                                       offsetof (LsmMathmlStyleElement, math_family));*/
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
 					  offsetof (LsmMathmlStyleElement, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
