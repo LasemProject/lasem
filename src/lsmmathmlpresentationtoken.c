@@ -116,11 +116,10 @@ lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *st
 					  lsm_mathml_string_attribute_inherit (&token->math_family,
 									       style->math_family));
 	lsm_mathml_variant_attribute_parse (&token->math_variant, &style->math_variant);
-	lsm_mathml_length_attribute_parse (&token->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&token->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&token->math_background, &style->math_background);
-
-	style->math_size_value = token->math_size.value;
+	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size, style->math_size,
+								  style->math_size);
 }
 
 static const LsmMathmlBbox *
@@ -198,9 +197,12 @@ lsm_mathml_text_element_new (void)
 	return node;
 }
 
+static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+
 static void
 lsm_mathml_presentation_token_init (LsmMathmlPresentationToken *token)
 {
+	token->math_size.length = length_default;
 }
 
 /* LsmMathmlPresentationToken class */
@@ -211,11 +213,23 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_family),
 		.trait_class = &lsm_mathml_string_trait_class
 	},
+	{
+		.name = "mathsize",
+		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_size),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
 	/* Deprecated attributes */
 	{
 		.name = "fontfamily",
 		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_family),
 		.trait_class = &lsm_mathml_string_trait_class
+	},
+	{
+		.name = "fontsize",
+		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_size),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
 	}
 };
 
@@ -248,8 +262,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					     offsetof (LsmMathmlPresentationToken, math_variant));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					     offsetof (LsmMathmlPresentationToken, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
 					     offsetof (LsmMathmlPresentationToken, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
@@ -257,8 +269,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	/* Deprecated attributes */
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					     offsetof (LsmMathmlPresentationToken, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					     offsetof (LsmMathmlPresentationToken, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",

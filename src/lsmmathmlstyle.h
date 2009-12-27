@@ -32,42 +32,33 @@ GType lsm_mathml_style_get_type (void);
 #define LSM_TYPE_MATHML_STYLE (lsm_mathml_style_get_type())
 
 struct _LsmMathmlStyle {
-	double math_size_value;
 	/* mstyle */
 	LsmMathmlDisplay display;
 
 	int script_level;
 	double script_size_multiplier;
-	LsmMathmlLength script_min_size;
+	double script_min_size;
 
-	LsmMathmlLength very_very_thin_math_space;
-	LsmMathmlLength very_thin_math_space;
-	LsmMathmlLength thin_math_space;
-	LsmMathmlLength medium_math_space;
-	LsmMathmlLength thick_math_space;
-	LsmMathmlLength very_thick_math_space;
-	LsmMathmlLength very_very_thick_math_space;
-
-	double very_very_thin_math_space_value;
-	double very_thin_math_space_value;
-	double thin_math_space_value;
-	double medium_math_space_value;
-	double thick_math_space_value;
-	double very_thick_math_space_value;
-	double very_very_thick_math_space_value;
+	double very_very_thin_math_space;
+	double very_thin_math_space;
+	double thin_math_space;
+	double medium_math_space;
+	double thick_math_space;
+	double very_thick_math_space;
+	double very_very_thick_math_space;
 	/* tokens */
 	char *math_family;
 	LsmMathmlVariant math_variant;
-	LsmMathmlLength math_size;
+	double math_size;
 	LsmMathmlColor math_color;
 	LsmMathmlColor math_background;
 	/* mfrac */
 	gboolean bevelled;
 	/* msubsup */
-	LsmMathmlLength subscript_shift;
-	LsmMathmlLength superscript_shift;
+	double subscript_shift;
+	double superscript_shift;
 	/* mfrac */
-	LsmMathmlLength line_thickness;
+	double line_thickness;
 };
 
 LsmMathmlStyle *	lsm_mathml_style_new 			(void);

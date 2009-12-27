@@ -113,8 +113,12 @@ lsm_mathml_script_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlScriptElement *script = LSM_MATHML_SCRIPT_ELEMENT (self);
 
-	lsm_mathml_length_attribute_parse (&script->superscript_shift, &style->superscript_shift, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&script->subscript_shift, &style->subscript_shift, style->math_size_value);
+	style->superscript_shift = lsm_mathml_length_attribute_normalize (&script->superscript_shift,
+									  style->superscript_shift,
+									  style->math_size);
+	style->subscript_shift = lsm_mathml_length_attribute_normalize (&script->subscript_shift,
+									style->subscript_shift,
+									style->math_size);
 
 	script->display = style->display;
 }
@@ -149,13 +153,13 @@ lsm_mathml_script_element_measure (LsmMathmlElement *element, LsmMathmlView *vie
 	LsmMathmlScriptElement *script = LSM_MATHML_SCRIPT_ELEMENT (element);
 
 	lsm_mathml_measure_sub_sup (element,view,
-				 script->base,
-				 script->subscript,
-				 script->superscript,
-				 script->subscript_shift.value,
-				 script->superscript_shift.value,
-				 script->display, stretch_bbox, &element->bbox,
-				 &script->subscript_offset, &script->superscript_offset);
+				    script->base,
+				    script->subscript,
+				    script->superscript,
+				    script->subscript_shift.value,
+				    script->superscript_shift.value,
+				    script->display, stretch_bbox, &element->bbox,
+				    &script->subscript_offset, &script->superscript_offset);
 
 	return &element->bbox;
 }
@@ -220,12 +224,31 @@ lsm_mathml_sub_sup_element_new (void)
 	return node;
 }
 
+static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+
 static void
 lsm_mathml_script_element_init (LsmMathmlScriptElement *self)
 {
+	self->subscript_shift.length = length_default;
+	self->superscript_shift.length = length_default;
 }
 
 /* LsmMathmlScriptElement class */
+
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "subscriptshift",
+		.attribute_offset = offsetof (LsmMathmlScriptElement, subscript_shift),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "superscriptshift",
+		.attribute_offset = offsetof (LsmMathmlScriptElement, superscript_shift),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	}
+};
 
 static void
 lsm_mathml_script_element_class_init (LsmMathmlScriptElementClass *script_class)
@@ -243,6 +266,11 @@ lsm_mathml_script_element_class_init (LsmMathmlScriptElementClass *script_class)
 	m_element_class->layout = lsm_mathml_script_element_layout;
 	m_element_class->get_embellished_core = lsm_mathml_script_element_get_embellished_core;
 	m_element_class->is_inferred_row = NULL;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
+
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 }
 
 G_DEFINE_TYPE (LsmMathmlScriptElement, lsm_mathml_script_element, LSM_TYPE_MATHML_ELEMENT)

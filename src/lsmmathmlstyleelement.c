@@ -52,9 +52,9 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	style->script_size_multiplier = lsm_mathml_double_attribute_inherit (&style_element->script_size_multiplier,
 									     style->script_size_multiplier);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
-	lsm_mathml_length_attribute_parse (&style_element->script_min_size,
-					&style->script_min_size,
-					style->math_size_value);
+	style->script_min_size = lsm_mathml_length_attribute_normalize (&style_element->script_min_size,
+								       style->script_min_size,
+								       style->math_size);
 
 	lsm_mathml_script_level_attribute_parse (&style_element->script_level, &style->script_level);
 
@@ -73,43 +73,42 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_style_set_math_family (style,
 					  lsm_mathml_string_attribute_inherit (&style_element->math_family,
 									       style->math_family));
-	lsm_mathml_length_attribute_parse (&style_element->math_size, &style->math_size, style->math_size_value);
 	lsm_mathml_color_attribute_parse (&style_element->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
 	lsm_mathml_variant_attribute_parse (&style_element->math_variant, &style->math_variant);
-
-	style->math_size_value = style_element->math_size.value;
+	style->math_size = lsm_mathml_length_attribute_normalize (&style_element->math_size,
+								  style->math_size,
+								  style->math_size);
 
 	/* mstyle */
 
-	lsm_mathml_length_attribute_parse (&style_element->very_very_thin_math_space,
-					&style->very_very_thin_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->very_thin_math_space,
-					&style->very_thin_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->thin_math_space,
-					&style->thin_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->medium_math_space,
-					&style->medium_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->thick_math_space,
-					&style->thick_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->very_thick_math_space,
-					&style->very_thick_math_space, style->math_size_value);
-	lsm_mathml_length_attribute_parse (&style_element->very_very_thick_math_space,
-					&style->very_very_thick_math_space, style->math_size_value);
-
-	style->very_very_thin_math_space_value = style_element->very_very_thin_math_space.value;
-	style->very_thin_math_space_value = style_element->very_thin_math_space.value;
-	style->thin_math_space_value = style_element->thin_math_space.value;
-	style->medium_math_space_value = style_element->medium_math_space.value;
-	style->thick_math_space_value = style_element->thick_math_space.value;
-	style->very_thick_math_space_value = style_element->very_thick_math_space.value;
-	style->very_very_thick_math_space_value = style_element->very_very_thick_math_space.value;
+	style->very_very_thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->very_very_thin_math_space,
+						       style->very_very_thin_math_space, style->math_size);
+	style->very_thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->very_thin_math_space,
+						       style->very_thin_math_space, style->math_size);
+	style->thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->thin_math_space,
+						       style->thin_math_space, style->math_size);
+	style->medium_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->medium_math_space,
+						       style->medium_math_space, style->math_size);
+	style->thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->thick_math_space,
+						       style->thick_math_space, style->math_size);
+	style->very_thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->very_thick_math_space,
+						       style->very_thick_math_space, style->math_size);
+	style->very_very_thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->very_very_thick_math_space,
+						       style->very_very_thick_math_space, style->math_size);
 
 	/* mfrac */
 
-	lsm_mathml_length_attribute_parse (&style_element->line_thickness,
-					&style->line_thickness,
-					style->math_size_value);
+	style->line_thickness = lsm_mathml_length_attribute_normalize (&style_element->line_thickness,
+								       style->line_thickness,
+								       style->math_size);
 }
 
 /* LsmMathmlStyleElement implementation */
@@ -120,9 +119,21 @@ lsm_mathml_style_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_STYLE_ELEMENT, NULL);
 }
 
+static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+
 static void
 lsm_mathml_style_element_init (LsmMathmlStyleElement *self)
 {
+	self->script_min_size.length = length_default;
+	self->very_very_thin_math_space.length = length_default;
+	self->very_thin_math_space.length = length_default;
+	self->thin_math_space.length = length_default;
+	self->medium_math_space.length = length_default;
+	self->thick_math_space.length = length_default;
+	self->very_thick_math_space.length = length_default;
+	self->very_very_thick_math_space.length = length_default;
+	self->math_size.length = length_default;
+	self->line_thickness.length = length_default;
 }
 
 /* LsmMathmlStyleElement class */
@@ -134,14 +145,74 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.trait_class = &lsm_mathml_boolean_trait_class
 	},
 	{
+		.name = "scriptminsize",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, script_min_size),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
 		.name = "scriptsizemultiplier",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, script_size_multiplier),
 		.trait_class = &lsm_mathml_double_trait_class
 	},
 	{
+		.name = "veryverythinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, very_very_thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "verythinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, very_thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "thinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "mediummathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, medium_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "thickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "verythickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, very_thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "veryverythickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, very_very_thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
 		.name = "mathfamily",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, math_family),
 		.trait_class = &lsm_mathml_string_trait_class
+	},
+	{
+		.name = "mathsize",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, math_size),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "linethickness",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, line_thickness),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
 	},
 	/* Deprecated attributes */
 	{
@@ -172,41 +243,18 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
 					  offsetof (LsmMathmlStyleElement, script_level));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptminsize",
-					  offsetof (LsmMathmlStyleElement, script_min_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "background",
 					  offsetof (LsmMathmlStyleElement, math_background));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythinmathspace",
-					  offsetof (LsmMathmlStyleElement, very_very_thin_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "verythinmathspace",
-					  offsetof (LsmMathmlStyleElement, very_thin_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "thinmathspace",
-					  offsetof (LsmMathmlStyleElement, thin_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mediummathspace",
-					  offsetof (LsmMathmlStyleElement, medium_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "thickmathspace",
-					  offsetof (LsmMathmlStyleElement, thick_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "verythickmathspace",
-					  offsetof (LsmMathmlStyleElement, very_thick_math_space));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "veryverythickmathspace",
-					  offsetof (LsmMathmlStyleElement, very_very_thick_math_space));
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
 					  offsetof (LsmMathmlStyleElement, math_variant));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathsize",
-					  offsetof (LsmMathmlStyleElement, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
 					  offsetof (LsmMathmlStyleElement, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
 					  offsetof (LsmMathmlStyleElement, math_background));
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
-					  offsetof (LsmMathmlStyleElement, line_thickness));
-
 	/* Deprecated attributes */
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontsize",
-					  offsetof (LsmMathmlStyleElement, math_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					  offsetof (LsmMathmlStyleElement, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",

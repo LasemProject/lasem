@@ -55,6 +55,15 @@ gboolean	lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attri
 double 		lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute, double value);
 const char *	lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute, const char *string);
 
+typedef struct {
+	LsmAttribute base;
+	LsmMathmlLength length;
+        double value;
+} LsmMathmlLengthAttribute;
+
+double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *atribute, double default_value,
+							 double font_size);
+
 /*******************************/
 
 typedef struct {
@@ -164,15 +173,6 @@ GType lsm_mathml_length_get_type (void);
 #define LSM_TYPE_MATHML_LENGTH (lsm_mathml_length_get_type())
 
 typedef struct {
-	double value;
-	LsmMathmlUnit unit;
-} LsmMathmlLength;
-
-GType lsm_mathml_space_get_type (void);
-
-#define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
-
-typedef struct {
 	LsmMathmlSpaceName name;
 	LsmMathmlLength length;
 } LsmMathmlSpace;
@@ -186,8 +186,6 @@ typedef struct {
 	LsmMathmlSpace *spaces;
 } LsmMathmlSpaceList;
 
-double 	lsm_mathml_length_compute 	(const LsmMathmlLength *length, double default_value, double font_size);
-
 typedef struct {
 	LsmMathmlAttribute attr;
 	int value;
@@ -197,12 +195,6 @@ typedef struct {
 	LsmMathmlAttribute attr;
 	LsmMathmlColor color;
 } LsmMathmlColorAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	LsmMathmlLength length;
-	double value;
-} LsmMathmlLengthAttribute;
 
 typedef struct {
 	LsmMathmlAttribute attr;
@@ -249,9 +241,6 @@ void		lsm_mathml_line_attribute_parse		(LsmMathmlEnumAttribute *attribute,
 							 unsigned int *style_value);
 void		lsm_mathml_color_attribute_parse	(LsmMathmlColorAttribute *attribute,
 							 LsmMathmlColor *default_color);
-void 		lsm_mathml_length_attribute_parse 	(LsmMathmlLengthAttribute *attribute,
-							 LsmMathmlLength *style_value,
-							 double font_size);
 void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,
 							 LsmMathmlSpace *style_value,
 							 LsmMathmlStyle *style);

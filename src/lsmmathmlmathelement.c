@@ -121,42 +121,24 @@ lsm_mathml_math_element_init (LsmMathmlMathElement *self)
 	self->default_style = style;
 	g_return_if_fail (style != NULL);
 
-	style->math_size_value = 12.0;
+	style->math_size = 12.0;
 
 	style->display = LSM_MATHML_DISPLAY_INLINE;
 
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
-	style->script_min_size.value = 8.0;
-	style->script_min_size.unit = LSM_MATHML_UNIT_PT;
+	style->script_min_size = 8.0;
 
-	style->very_very_thin_math_space.value = 	LSM_MATHML_SPACE_EM_VERY_VERY_THIN;
-	style->very_very_thin_math_space.unit = 	LSM_MATHML_UNIT_EM;
-	style->very_thin_math_space.value = 		LSM_MATHML_SPACE_EM_VERY_THIN;
-	style->very_thin_math_space.unit = 		LSM_MATHML_UNIT_EM;
-	style->thin_math_space.value = 			LSM_MATHML_SPACE_EM_THIN;
-	style->thin_math_space.unit = 			LSM_MATHML_UNIT_EM;
-	style->medium_math_space.value = 		LSM_MATHML_SPACE_EM_MEDIUM;
-	style->medium_math_space.unit = 		LSM_MATHML_UNIT_EM;
-	style->thick_math_space.value = 		LSM_MATHML_SPACE_EM_THICK;
-	style->thick_math_space.unit = 			LSM_MATHML_UNIT_EM;
-	style->very_thick_math_space.value = 		LSM_MATHML_SPACE_EM_VERY_THICK;
-	style->very_thick_math_space.unit = 		LSM_MATHML_UNIT_EM;
-	style->very_very_thick_math_space.value = 	LSM_MATHML_SPACE_EM_VERY_VERY_THICK;
-	style->very_very_thick_math_space.unit = 	LSM_MATHML_UNIT_EM;
-
-	style->very_very_thin_math_space_value = 	LSM_MATHML_SPACE_EM_VERY_VERY_THIN * style->math_size_value;
-	style->very_thin_math_space_value = 		LSM_MATHML_SPACE_EM_VERY_THIN * style->math_size_value;
-	style->thin_math_space_value = 			LSM_MATHML_SPACE_EM_THIN * style->math_size_value;
-	style->medium_math_space_value = 		LSM_MATHML_SPACE_EM_MEDIUM * style->math_size_value;
-	style->thick_math_space_value = 		LSM_MATHML_SPACE_EM_THICK * style->math_size_value;
-	style->very_thick_math_space_value = 		LSM_MATHML_SPACE_EM_VERY_THICK * style->math_size_value;
-	style->very_very_thick_math_space_value = 	LSM_MATHML_SPACE_EM_VERY_VERY_THICK * style->math_size_value;
+	style->very_very_thin_math_space = 	LSM_MATHML_SPACE_EM_VERY_VERY_THIN * style->math_size;
+	style->very_thin_math_space = 		LSM_MATHML_SPACE_EM_VERY_THIN * style->math_size;
+	style->thin_math_space = 		LSM_MATHML_SPACE_EM_THIN * style->math_size;
+	style->medium_math_space = 		LSM_MATHML_SPACE_EM_MEDIUM * style->math_size;
+	style->thick_math_space = 		LSM_MATHML_SPACE_EM_THICK * style->math_size;
+	style->very_thick_math_space = 		LSM_MATHML_SPACE_EM_VERY_THICK * style->math_size;
+	style->very_very_thick_math_space = 	LSM_MATHML_SPACE_EM_VERY_VERY_THICK * style->math_size;
 
 	style->math_family = g_strdup ("Serif");
 	style->math_variant = LSM_MATHML_VARIANT_NORMAL;
-	style->math_size.value = 12.0;
-	style->math_size.unit = LSM_MATHML_UNIT_PT;
 	style->math_color.red = 0;
 	style->math_color.green = 0;
 	style->math_color.blue = 0;
@@ -166,13 +148,10 @@ lsm_mathml_math_element_init (LsmMathmlMathElement *self)
 	style->math_background.blue = 0;
 	style->math_background.alpha = 0;
 
-	style->subscript_shift.value = 0;
-	style->subscript_shift.unit = LSM_MATHML_UNIT_PT;
-	style->superscript_shift.value = 0;
-	style->superscript_shift.unit = LSM_MATHML_UNIT_PT;
+	style->subscript_shift = 0;
+	style->superscript_shift = 0;
 
-	style->line_thickness.value = 0.1;
-	style->line_thickness.unit = LSM_MATHML_UNIT_EM;
+	style->line_thickness = 0.1 * style->math_size;
 }
 
 static void

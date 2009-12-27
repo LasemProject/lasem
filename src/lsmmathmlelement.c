@@ -131,12 +131,12 @@ lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_
 	lsm_debug ("[Element::update] update %s (%s-%g)",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)),
 		    style->math_family != NULL ? style->math_family : "undefined" ,
-		    style->math_size_value);
+		    style->math_size);
 
 	g_free (self->style.math_family);
 	self->style.math_family = g_strdup (style->math_family);
 	self->style.math_variant = style->math_variant;
-	self->style.math_size = style->math_size_value;
+	self->style.math_size = style->math_size;
 	self->style.math_color = style->math_color;
 	self->style.math_background = style->math_background;
 

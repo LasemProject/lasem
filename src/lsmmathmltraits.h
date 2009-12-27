@@ -22,6 +22,7 @@
 #ifndef LSM_MATHML_TRAITS_H
 #define LSM_MATHML_TRAITS_H
 
+#include <lsmmathmlenums.h>
 #include <lsmtraits.h>
 
 G_BEGIN_DECLS
@@ -30,6 +31,19 @@ extern const LsmTraitClass lsm_mathml_boolean_trait_class;
 extern const LsmTraitClass lsm_mathml_unsigned_trait_class;
 extern const LsmTraitClass lsm_mathml_double_trait_class;
 extern const LsmTraitClass lsm_mathml_string_trait_class;
+
+typedef struct {
+	double value;
+	LsmMathmlUnit unit;
+} LsmMathmlLength;
+
+GType lsm_mathml_space_get_type (void);
+
+#define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
+
+extern const LsmTraitClass lsm_mathml_length_trait_class;
+
+double 	lsm_mathml_length_normalize 	(const LsmMathmlLength *length, double default_value, double font_size);
 
 G_END_DECLS
 

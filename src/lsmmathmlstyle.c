@@ -75,14 +75,11 @@ lsm_mathml_style_change_script_level (LsmMathmlStyle *style, int increment)
 {
 	g_return_if_fail (style != NULL);
 
-	style->math_size_value = style->math_size_value * pow (style->script_size_multiplier, increment);
+	style->math_size = style->math_size * pow (style->script_size_multiplier, increment);
 	style->script_level += increment;
 
-	if (style->math_size_value < style->script_min_size.value)
-		style->math_size_value = style->script_min_size.value;
-
-	style->math_size.value = style->math_size_value;
-	style->math_size.unit = LSM_MATHML_UNIT_PT;
+	if (style->math_size < style->script_min_size)
+		style->math_size = style->script_min_size;
 }
 
 void
@@ -90,9 +87,7 @@ lsm_mathml_style_set_math_size_pt (LsmMathmlStyle *style, double math_size)
 {
 	g_return_if_fail (style != NULL);
 
-	style->math_size_value = math_size;
-	style->math_size.value = math_size;
-	style->math_size.unit = LSM_MATHML_UNIT_PT;
+	style->math_size = math_size;
 }
 
 void
@@ -100,8 +95,7 @@ lsm_mathml_style_set_script_min_size_pt (LsmMathmlStyle *style, double script_mi
 {
 	g_return_if_fail (style != NULL);
 
-	style->script_min_size.value = script_min_size;
-	style->script_min_size.unit = LSM_MATHML_UNIT_PT;
+	style->script_min_size = script_min_size;
 }
 
 void

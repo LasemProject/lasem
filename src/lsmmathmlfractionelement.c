@@ -48,7 +48,9 @@ lsm_mathml_fraction_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 {
 	LsmMathmlFractionElement *fraction = LSM_MATHML_FRACTION_ELEMENT (self);
 
-	lsm_mathml_length_attribute_parse (&fraction->line_thickness, &style->line_thickness, style->math_size_value);
+	style->line_thickness = lsm_mathml_length_attribute_normalize (&fraction->line_thickness,
+								       style->line_thickness,
+								       style->math_size);
 
 	fraction->display = style->display;
 }
@@ -190,12 +192,15 @@ lsm_mathml_fraction_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_FRACTION_ELEMENT, NULL);
 }
 
+static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+
 static void
 lsm_mathml_fraction_element_init (LsmMathmlFractionElement *self)
 {
 	self->axis_offset = 0.0;
 
 	self->bevelled.value = bevelled_default;
+	self->line_thickness.length = length_default;
 }
 
 /* LsmMathmlFractionElement class */
@@ -206,7 +211,13 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlFractionElement, bevelled),
 		.trait_class = &lsm_mathml_boolean_trait_class,
 		.trait_default = &bevelled_default
-	}
+	},
+	{
+		.name = "linethickness",
+		.attribute_offset = offsetof (LsmMathmlFractionElement, line_thickness),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
 };
 
 static void
@@ -232,11 +243,6 @@ lsm_mathml_fraction_element_class_init (LsmMathmlFractionElementClass *fraction_
 	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
 					      G_N_ELEMENTS (_attribute_infos),
 					      _attribute_infos);
-
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
-
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "linethickness",
-					  offsetof (LsmMathmlFractionElement, line_thickness));
 }
 
 G_DEFINE_TYPE (LsmMathmlFractionElement, lsm_mathml_fraction_element, LSM_TYPE_MATHML_ELEMENT)

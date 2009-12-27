@@ -20,15 +20,6 @@
  */
 
 #include <lsmmathmlattributes.h>
-#include <lsmmathmlstyle.h>
-#include <lsmdebug.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <glib/gmem.h>
-#include <glib/ghash.h>
-#include <glib-object.h>
-#include <math.h>
 
 gboolean
 lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboolean value)
@@ -58,6 +49,26 @@ lsm_mathml_string_attribute_inherit (LsmMathmlStringAttribute *attribute, const 
 
 	return attribute->value;
 }
+
+double
+lsm_mathml_length_attribute_normalize (LsmMathmlLengthAttribute *attribute, double default_value, double font_size)
+{
+	g_return_val_if_fail (attribute != NULL, 0.0);
+
+	attribute->value = lsm_mathml_length_normalize (&attribute->length, default_value, font_size);
+
+	return attribute->value;
+}
+
+#include <lsmmathmlstyle.h>
+#include <lsmdebug.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <glib/gmem.h>
+#include <glib/ghash.h>
+#include <glib-object.h>
+#include <math.h>
 
 /**************************/
 
@@ -486,30 +497,6 @@ lsm_mathml_color_get_type (void)
 	return our_type;
 }
 
-static LsmMathmlLength *
-lsm_mathml_length_copy (LsmMathmlLength *length)
-{
-	LsmMathmlLength *copy;
-
-	copy = g_new (LsmMathmlLength, 1);
-	memcpy (copy, length, sizeof (LsmMathmlLength));
-
-	return copy;
-}
-
-GType
-lsm_mathml_length_get_type (void)
-{
-	static GType our_type = 0;
-
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static
-			("LsmMathmlLength",
-			 (GBoxedCopyFunc) lsm_mathml_length_copy,
-			 (GBoxedFreeFunc) g_free);
-	return our_type;
-}
-
 static LsmMathmlSpace *
 lsm_mathml_space_copy (LsmMathmlSpace *space)
 {
@@ -546,37 +533,6 @@ lsm_mathml_space_list_get_type (void)
 			 (GBoxedFreeFunc) lsm_mathml_space_list_free);
 	return our_type;
 }
-
-double
-lsm_mathml_length_compute (const LsmMathmlLength *length, double default_value, double font_size)
-{
-	g_return_val_if_fail (length != NULL, 0.0);
-
-	switch (length->unit) {
-		case LSM_MATHML_UNIT_PX:
-		case LSM_MATHML_UNIT_PT:
-			return length->value;
-		case LSM_MATHML_UNIT_PC:
-			return length->value * 72.0 / 6.0;
-		case LSM_MATHML_UNIT_CM:
-			return length->value * 72.0 / 2.54;
-		case LSM_MATHML_UNIT_MM:
-			return length->value * 72.0 / 25.4;
-		case LSM_MATHML_UNIT_IN:
-			return length->value * 72.0;
-		case LSM_MATHML_UNIT_EM:
-			return length->value * font_size;
-		case LSM_MATHML_UNIT_EX:
-			return length->value * font_size * 0.5;
-		case LSM_MATHML_UNIT_PERCENT:
-			return default_value * length->value / 100.0;
-		case LSM_MATHML_UNIT_NONE:
-			return default_value * length->value;
-	}
-
-	return 0.0;
-}
-
 
 void
 lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribute,
@@ -689,53 +645,6 @@ lsm_mathml_line_attribute_parse (LsmMathmlEnumAttribute *attribute,
 }
 
 void
-lsm_mathml_length_attribute_parse (LsmMathmlLengthAttribute *attribute,
-				   LsmMathmlLength *style_value,
-				   double font_size)
-{
-	const char *string;
-	char *unit_str;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->length = *style_value;
-	} else {
-		LsmMathmlUnit unit;
-		double value;
-
-		value = g_strtod (string, &unit_str);
-		unit = lsm_mathml_unit_from_string (unit_str);
-
-		if (unit == LSM_MATHML_UNIT_NONE) {
-			unit = style_value->unit;
-			if (unit_str[0] != '\0') {
-				if (strcmp (unit_str, "big") == 0) {
-					value = 1.5;
-				} else if (strcmp (unit_str, "small") == 0) {
-					value = 0.75;
-				} else if (strcmp (unit_str, "normal") == 0) {
-					value = 1.0;
-				}
-			}
-			value *= style_value->value;
-		} else if (unit == LSM_MATHML_UNIT_PERCENT) {
-			unit = style_value->unit;
-			value *= style_value->value / 100.0;
-		}
-
-		attribute->length.unit = unit;
-		attribute->length.value = value;
-
-		*style_value = attribute->length;
-	}
-
-	attribute->value = lsm_mathml_length_compute (&attribute->length, style_value->value, font_size);
-}
-
-void
 lsm_mathml_space_attribute_parse (LsmMathmlSpaceAttribute *attribute,
 				  LsmMathmlSpace *style_value,
 				  LsmMathmlStyle *style)
@@ -778,48 +687,34 @@ lsm_mathml_space_attribute_parse (LsmMathmlSpaceAttribute *attribute,
 
 	switch (attribute->space.name) {
 		case LSM_MATHML_SPACE_NAME_VERY_VERY_THIN:
-			attribute->value = lsm_mathml_length_compute (&style->very_very_thin_math_space,
-								   style->very_very_thin_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->very_very_thin_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_VERY_THIN:
-			attribute->value = lsm_mathml_length_compute (&style->very_thin_math_space,
-								   style->very_thin_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->very_thin_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_THIN:
-			attribute->value = lsm_mathml_length_compute (&style->thin_math_space,
-								   style->thin_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->thin_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_MEDIUM:
-			attribute->value = lsm_mathml_length_compute (&style->medium_math_space,
-								   style->medium_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->medium_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_THICK:
-			attribute->value = lsm_mathml_length_compute (&style->thick_math_space,
-								   style->thick_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->thick_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_VERY_THICK:
-			attribute->value = lsm_mathml_length_compute (&style->very_thick_math_space,
-								   style->very_thick_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->very_thick_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_VERY_VERY_THICK:
-			attribute->value = lsm_mathml_length_compute (&style->very_very_thick_math_space,
-								   style->very_very_thick_math_space_value,
-								   style->math_size_value);
+			attribute->value = style->very_very_thick_math_space;
 			break;
 		case LSM_MATHML_SPACE_NAME_INFINITY:
 			attribute->value = G_MAXDOUBLE;
 			break;
 		case LSM_MATHML_SPACE_NAME_ERROR:
 		default:
-			attribute->value = lsm_mathml_length_compute (&attribute->space.length,
-								   style_value->length.value,
-								   style->math_size_value);
+			attribute->value = lsm_mathml_length_normalize (&attribute->space.length,
+									style_value->length.value,
+									style->math_size);
 	}
 }
 
@@ -960,39 +855,25 @@ lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
 	for (i = 0; i < attribute->space_list->n_spaces; i++) {
 		switch (attribute->space_list->spaces[i].name) {
 			case LSM_MATHML_SPACE_NAME_VERY_VERY_THIN:
-				attribute->values[i] = lsm_mathml_length_compute (&style->very_very_thin_math_space,
-									       style->very_very_thin_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->very_very_thin_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_VERY_THIN:
-				attribute->values[i] = lsm_mathml_length_compute (&style->very_thin_math_space,
-									       style->very_thin_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->very_thin_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_THIN:
-				attribute->values[i] = lsm_mathml_length_compute (&style->thin_math_space,
-									       style->thin_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->thin_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_MEDIUM:
-				attribute->values[i] = lsm_mathml_length_compute (&style->medium_math_space,
-									       style->medium_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->medium_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_THICK:
-				attribute->values[i] = lsm_mathml_length_compute (&style->thick_math_space,
-									       style->thick_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->thick_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_VERY_THICK:
-				attribute->values[i] = lsm_mathml_length_compute (&style->very_thick_math_space,
-									       style->very_thick_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->very_thick_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_VERY_VERY_THICK:
-				attribute->values[i] = lsm_mathml_length_compute (&style->very_very_thick_math_space,
-									       style->very_very_thick_math_space_value,
-									       style->math_size_value);
+				attribute->values[i] = style->very_very_thick_math_space;
 				break;
 			case LSM_MATHML_SPACE_NAME_ERROR:
 			default:
@@ -1001,15 +882,15 @@ lsm_mathml_space_list_attribute_parse (LsmMathmlSpaceListAttribute *attribute,
 
 					index = MIN (i, style_value->n_spaces - 1);
 
-					attribute->values[i] = lsm_mathml_length_compute
+					attribute->values[i] = lsm_mathml_length_normalize
 						(&attribute->space_list->spaces[i].length,
 						 style_value->spaces[index].length.value,
-						 style->math_size_value);
+						 style->math_size);
 				} else
-					attribute->values[i] = lsm_mathml_length_compute
+					attribute->values[i] = lsm_mathml_length_normalize
 						(&attribute->space_list->spaces[i].length,
 						 0.0,
-						 style->math_size_value);
+						 style->math_size);
 		}
 	}
 }
