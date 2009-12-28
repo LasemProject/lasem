@@ -40,15 +40,15 @@ static void
 _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlMathElement *math_element = LSM_MATHML_MATH_ELEMENT (self);
-	LsmMathmlMode default_mode = (style->display == LSM_MATHML_DISPLAY_INLINE) ?
-		LSM_MATHML_MODE_INLINE : LSM_MATHML_MODE_DISPLAY;
+	LsmMathmlMode default_mode;
 
-	lsm_mathml_mode_attribute_parse (&math_element->mode, &default_mode);
+	default_mode = lsm_mathml_enum_attribute_inherit (&math_element->mode,
+							  (style->display == LSM_MATHML_DISPLAY_INLINE) ?
+							  LSM_MATHML_MODE_INLINE : LSM_MATHML_MODE_DISPLAY);
 
-	style->display = (default_mode == LSM_MATHML_MODE_INLINE) ?
-		LSM_MATHML_DISPLAY_INLINE : LSM_MATHML_DISPLAY_BLOCK;
-
-	lsm_mathml_display_attribute_parse (&math_element->display, &style->display);
+	style->display = lsm_mathml_enum_attribute_inherit (&math_element->display,
+							    (default_mode == LSM_MATHML_MODE_INLINE) ?
+							    LSM_MATHML_DISPLAY_INLINE : LSM_MATHML_DISPLAY_BLOCK);
 }
 
 /* LsmMathmlMathElement implementation */
@@ -166,6 +166,19 @@ lsm_mathml_math_element_finalize (GObject *object)
 
 /* LsmMathmlMathElement class */
 
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "display",
+		.attribute_offset = offsetof (LsmMathmlMathElement, display),
+		.trait_class = &lsm_mathml_display_trait_class,
+	},
+	{
+		.name = "mode",
+		.attribute_offset = offsetof (LsmMathmlMathElement, mode),
+		.trait_class = &lsm_mathml_mode_trait_class,
+	}
+};
+
 static void
 lsm_mathml_math_element_class_init (LsmMathmlMathElementClass *math_class)
 {
@@ -180,13 +193,11 @@ lsm_mathml_math_element_class_init (LsmMathmlMathElementClass *math_class)
 	d_node_class->get_node_name = lsm_mathml_math_element_get_node_name;
 
 	m_element_class->update = _update;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
 
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
-
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mode",
-					  offsetof (LsmMathmlMathElement, mode));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "display",
-					  offsetof (LsmMathmlMathElement, display));
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 }
 
 G_DEFINE_TYPE (LsmMathmlMathElement, lsm_mathml_math_element, LSM_TYPE_MATHML_ELEMENT)

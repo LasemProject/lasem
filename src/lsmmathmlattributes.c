@@ -30,6 +30,15 @@ lsm_mathml_boolean_attribute_inherit (LsmMathmlBooleanAttribute *attribute, gboo
 	return attribute->value;
 }
 
+unsigned int
+lsm_mathml_enum_attribute_inherit (LsmMathmlEnumAttribute *attribute, unsigned int value)
+{
+	if (attribute->base.value == NULL)
+		attribute->value = value;
+
+	return attribute->value;
+}
+
 double
 lsm_mathml_double_attribute_inherit (LsmMathmlDoubleAttribute *attribute, double value)
 {
@@ -593,55 +602,6 @@ lsm_mathml_color_attribute_parse (LsmMathmlColorAttribute *attribute,
 		attribute->color.blue = color.blue / 65535.0;
 	}
 	*style_color = attribute->color;
-}
-
-void
-lsm_mathml_mode_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				 unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_mode_from_string);
-}
-
-void
-lsm_mathml_display_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				    unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_display_from_string);
-}
-
-void
-lsm_mathml_form_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				 unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_form_from_string);
-}
-
-void
-lsm_mathml_font_style_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				       unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_font_style_from_string);
-}
-
-void
-lsm_mathml_font_weight_attribute_parse (LsmMathmlEnumAttribute *attribute,
-					unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_font_weight_from_string);
-}
-
-void
-lsm_mathml_variant_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				    unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_variant_from_string);
-}
-
-void
-lsm_mathml_line_attribute_parse (LsmMathmlEnumAttribute *attribute,
-				 unsigned int *style_value)
-{
-	return lsm_mathml_enum_attribute_parse (attribute, style_value, lsm_mathml_line_from_string);
 }
 
 void

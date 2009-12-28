@@ -92,8 +92,6 @@ lsm_mathml_presentation_token_get_text (LsmMathmlPresentationToken *self)
 static void
 lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
-	LsmMathmlFontStyle font_style;
-	LsmMathmlFontWeight font_weight;
 	LsmMathmlPresentationToken *token = LSM_MATHML_PRESENTATION_TOKEN (self);
 
 	if (token->type == LSM_MATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER) {
@@ -103,19 +101,13 @@ lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *st
 		g_free (text);
 	}
 
-	font_style = LSM_MATHML_FONT_STYLE_ERROR;
-	lsm_mathml_font_style_attribute_parse (&token->font_style, &font_style);
-
-	font_weight = LSM_MATHML_FONT_WEIGHT_ERROR;
-	lsm_mathml_font_weight_attribute_parse (&token->font_weight, &font_weight);
-
-	lsm_mathml_variant_set_font_style (&style->math_variant, font_style);
-	lsm_mathml_variant_set_font_weight (&style->math_variant, font_weight);
+	lsm_mathml_variant_set_font_style (&style->math_variant, token->font_style.value);
+	lsm_mathml_variant_set_font_weight (&style->math_variant, token->font_weight.value);
 
 	lsm_mathml_style_set_math_family (style,
 					  lsm_mathml_string_attribute_inherit (&token->math_family,
 									       style->math_family));
-	lsm_mathml_variant_attribute_parse (&token->math_variant, &style->math_variant);
+	style->math_variant = lsm_mathml_enum_attribute_inherit (&token->math_variant, style->math_variant);
 	lsm_mathml_color_attribute_parse (&token->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&token->math_background, &style->math_background);
 	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size, style->math_size,
@@ -198,11 +190,16 @@ lsm_mathml_text_element_new (void)
 }
 
 static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+static const LsmMathmlFontStyle font_style_default = LSM_MATHML_FONT_STYLE_ERROR;
+static const LsmMathmlFontWeight font_weight_default = LSM_MATHML_FONT_WEIGHT_ERROR;
 
 static void
-lsm_mathml_presentation_token_init (LsmMathmlPresentationToken *token)
+lsm_mathml_presentation_token_init (LsmMathmlPresentationToken *self)
 {
-	token->math_size.length = length_default;
+	self->math_size.length = length_default;
+
+	self->font_weight.value = font_weight_default;
+	self->font_style.value = font_style_default;
 }
 
 /* LsmMathmlPresentationToken class */
@@ -219,6 +216,11 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.trait_class = &lsm_mathml_length_trait_class,
 		.trait_default = &length_default
 	},
+	{
+		.name = "mathvariant",
+		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_variant),
+		.trait_class = &lsm_mathml_variant_trait_class,
+	},
 	/* Deprecated attributes */
 	{
 		.name = "fontfamily",
@@ -230,6 +232,18 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlPresentationToken, math_size),
 		.trait_class = &lsm_mathml_length_trait_class,
 		.trait_default = &length_default
+	},
+	{
+		.name = "fontstyle",
+		.attribute_offset = offsetof (LsmMathmlPresentationToken, font_style),
+		.trait_class = &lsm_mathml_font_style_trait_class,
+		.trait_default = &font_style_default
+	},
+	{
+		.name = "fontweight",
+		.attribute_offset = offsetof (LsmMathmlPresentationToken, font_weight),
+		.trait_class = &lsm_mathml_font_weight_trait_class,
+		.trait_default = &font_weight_default
 	}
 };
 
@@ -260,8 +274,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					     offsetof (LsmMathmlPresentationToken, math_variant));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
 					     offsetof (LsmMathmlPresentationToken, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
@@ -271,10 +283,6 @@ lsm_mathml_presentation_token_class_init (LsmMathmlPresentationTokenClass *m_tok
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					     offsetof (LsmMathmlPresentationToken, math_color));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
-					     offsetof (LsmMathmlPresentationToken, font_weight));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
-					     offsetof (LsmMathmlPresentationToken, font_style));
 }
 
 G_DEFINE_TYPE (LsmMathmlPresentationToken, lsm_mathml_presentation_token, LSM_TYPE_MATHML_ELEMENT)

@@ -128,25 +128,39 @@ lsm_mathml_unit_from_string (const char *string)
 static const char *lsm_mathml_font_style_strings[] = {
 	"normal",
 	"italic",
+	""
 };
+
+const char *
+lsm_mathml_font_style_to_string (LsmMathmlFontStyle font_style)
+{
+	return lsm_mathml_font_style_strings[CLAMP (font_style, 0, LSM_MATHML_FONT_STYLE_ERROR)];
+}
 
 LsmMathmlFontStyle
 lsm_mathml_font_style_from_string (const char *string)
 {
 	return lsm_mathml_value_from_string (string, lsm_mathml_font_style_strings,
-					  G_N_ELEMENTS (lsm_mathml_font_style_strings));
+					     G_N_ELEMENTS (lsm_mathml_font_style_strings));
 }
 
 static const char *lsm_mathml_font_weight_strings[] = {
 	"normal",
 	"bold",
+	""
 };
+
+const char *
+lsm_mathml_font_weight_to_string (LsmMathmlFontWeight font_weight)
+{
+	return lsm_mathml_font_weight_strings[CLAMP (font_weight, 0, LSM_MATHML_FONT_WEIGHT_ERROR)];
+}
 
 LsmMathmlFontWeight
 lsm_mathml_font_weight_from_string (const char *string)
 {
 	return lsm_mathml_value_from_string (string, lsm_mathml_font_weight_strings,
-					  G_N_ELEMENTS (lsm_mathml_font_weight_strings));
+					     G_N_ELEMENTS (lsm_mathml_font_weight_strings));
 }
 
 static const char *lsm_mathml_variant_strings[] = {

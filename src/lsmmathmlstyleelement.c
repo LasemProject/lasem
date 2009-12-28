@@ -39,8 +39,6 @@ lsm_mathml_style_element_get_node_name (LsmDomNode *node)
 static void
 lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
-	LsmMathmlFontStyle font_style;
-	LsmMathmlFontWeight font_weight;
 	gboolean display_style;
 
 	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
@@ -60,14 +58,8 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	/* token */
 
-	font_style = LSM_MATHML_FONT_STYLE_ERROR;
-	lsm_mathml_font_style_attribute_parse (&style_element->font_style, &font_style);
-
-	font_weight = LSM_MATHML_FONT_WEIGHT_ERROR;
-	lsm_mathml_font_weight_attribute_parse (&style_element->font_weight, &font_weight);
-
-	lsm_mathml_variant_set_font_style (&style->math_variant, font_style);
-	lsm_mathml_variant_set_font_weight (&style->math_variant, font_weight);
+	lsm_mathml_variant_set_font_style (&style->math_variant, style_element->font_style.value);
+	lsm_mathml_variant_set_font_weight (&style->math_variant, style_element->font_weight.value);
 
 
 	lsm_mathml_style_set_math_family (style,
@@ -75,7 +67,7 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 									       style->math_family));
 	lsm_mathml_color_attribute_parse (&style_element->math_color, &style->math_color);
 	lsm_mathml_color_attribute_parse (&style_element->math_background, &style->math_background);
-	lsm_mathml_variant_attribute_parse (&style_element->math_variant, &style->math_variant);
+	style->math_variant = lsm_mathml_enum_attribute_inherit (&style_element->math_variant, style->math_variant);
 	style->math_size = lsm_mathml_length_attribute_normalize (&style_element->math_size,
 								  style->math_size,
 								  style->math_size);
@@ -120,6 +112,8 @@ lsm_mathml_style_element_new (void)
 }
 
 static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+static const LsmMathmlFontStyle font_style_default = LSM_MATHML_FONT_STYLE_ERROR;
+static const LsmMathmlFontWeight font_weight_default = LSM_MATHML_FONT_WEIGHT_ERROR;
 
 static void
 lsm_mathml_style_element_init (LsmMathmlStyleElement *self)
@@ -134,6 +128,9 @@ lsm_mathml_style_element_init (LsmMathmlStyleElement *self)
 	self->very_very_thick_math_space.length = length_default;
 	self->math_size.length = length_default;
 	self->line_thickness.length = length_default;
+
+	self->font_weight.value = font_weight_default;
+	self->font_style.value = font_style_default;
 }
 
 /* LsmMathmlStyleElement class */
@@ -209,6 +206,11 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.trait_default = &length_default
 	},
 	{
+		.name = "mathvariant",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, math_variant),
+		.trait_class = &lsm_mathml_variant_trait_class,
+	},
+	{
 		.name = "linethickness",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, line_thickness),
 		.trait_class = &lsm_mathml_length_trait_class,
@@ -219,6 +221,18 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.name = "fontfamily",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, math_family),
 		.trait_class = &lsm_mathml_string_trait_class
+	},
+	{
+		.name = "fontstyle",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, font_style),
+		.trait_class = &lsm_mathml_font_style_trait_class,
+		.trait_default = &font_style_default
+	},
+	{
+		.name = "fontweight",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, font_weight),
+		.trait_class = &lsm_mathml_font_weight_trait_class,
+		.trait_default = &font_weight_default
 	}
 };
 
@@ -246,8 +260,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "background",
 					  offsetof (LsmMathmlStyleElement, math_background));
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathvariant",
-					  offsetof (LsmMathmlStyleElement, math_variant));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathcolor",
 					  offsetof (LsmMathmlStyleElement, math_color));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "mathbackground",
@@ -257,10 +269,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "color",
 					  offsetof (LsmMathmlStyleElement, math_color));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontweight",
-					  offsetof (LsmMathmlStyleElement, font_weight));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "fontstyle",
-					  offsetof (LsmMathmlStyleElement, font_style));
 }
 
 G_DEFINE_TYPE (LsmMathmlStyleElement, lsm_mathml_style_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

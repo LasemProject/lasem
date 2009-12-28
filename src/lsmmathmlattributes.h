@@ -43,6 +43,11 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	unsigned int value;
+} LsmMathmlEnumAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	double value;
 } LsmMathmlDoubleAttribute;
 
@@ -51,9 +56,14 @@ typedef struct {
 	char *value;
 } LsmMathmlStringAttribute;
 
-gboolean	lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attribute, gboolean value);
-double 		lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute, double value);
-const char *	lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute, const char *string);
+gboolean		lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attribute,
+								 gboolean value);
+unsigned int		lsm_mathml_enum_attribute_inherit	(LsmMathmlEnumAttribute *attribute,
+								 unsigned int value);
+double 			lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute,
+								 double value);
+const char *		lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute,
+								 const char *string);
 
 typedef struct {
 	LsmAttribute base;
@@ -142,11 +152,6 @@ typedef unsigned int (*LsmDomNamedConvert) (const char *string);
 #define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
 
 typedef struct {
-	LsmMathmlAttribute attr;
-	unsigned int value;
-} LsmMathmlEnumAttribute;
-
-typedef struct {
 	unsigned int n_values;
 	unsigned int *values;
 } LsmMathmlEnumList;
@@ -208,9 +213,6 @@ typedef struct {
 	double *values;
 } LsmMathmlSpaceListAttribute;
 
-void 		lsm_mathml_enum_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *default_value,
-							 LsmDomNamedConvert convert);
 void 		lsm_mathml_enum_list_attribute_parse 	(LsmMathmlEnumListAttribute *attribute,
 							 LsmMathmlEnumList *style_value,
 							 LsmDomNamedConvert convert);
@@ -225,20 +227,6 @@ void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 
 void 		lsm_mathml_script_level_attribute_parse	(LsmMathmlScriptLevelAttribute *attribute,
 							 int *default_value);
-void 		lsm_mathml_mode_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_mathml_display_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_mathml_form_attribute_parse	 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_mathml_font_style_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_mathml_font_weight_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void 		lsm_mathml_variant_attribute_parse 	(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
-void		lsm_mathml_line_attribute_parse		(LsmMathmlEnumAttribute *attribute,
-							 unsigned int *style_value);
 void		lsm_mathml_color_attribute_parse	(LsmMathmlColorAttribute *attribute,
 							 LsmMathmlColor *default_color);
 void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,

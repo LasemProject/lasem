@@ -69,6 +69,160 @@ const LsmTraitClass lsm_mathml_unsigned_trait_class = {
 };
 
 static void
+lsm_mathml_display_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlDisplay *value = (LsmMathmlDisplay *) abstract_trait;
+
+	*value = lsm_mathml_display_from_string (string);
+}
+
+static char *
+lsm_mathml_display_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlDisplay *value = (LsmMathmlDisplay *) abstract_trait;
+
+	return g_strdup (lsm_mathml_display_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_display_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_display_trait_from_string,
+	.to_string = lsm_mathml_display_trait_to_string
+};
+
+static void
+lsm_mathml_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlMode *value = (LsmMathmlMode *) abstract_trait;
+
+	*value = lsm_mathml_mode_from_string (string);
+}
+
+static char *
+lsm_mathml_mode_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlMode *value = (LsmMathmlMode *) abstract_trait;
+
+	return g_strdup (lsm_mathml_mode_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_mode_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_mode_trait_from_string,
+	.to_string = lsm_mathml_mode_trait_to_string
+};
+
+static void
+lsm_mathml_line_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlLine *value = (LsmMathmlLine *) abstract_trait;
+
+	*value = lsm_mathml_line_from_string (string);
+}
+
+static char *
+lsm_mathml_line_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlLine *value = (LsmMathmlLine *) abstract_trait;
+
+	return g_strdup (lsm_mathml_line_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_line_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_line_trait_from_string,
+	.to_string = lsm_mathml_line_trait_to_string
+};
+
+static void
+lsm_mathml_font_style_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlFontStyle *value = (LsmMathmlFontStyle *) abstract_trait;
+
+	*value = lsm_mathml_font_style_from_string (string);
+}
+
+static char *
+lsm_mathml_font_style_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlFontStyle *value = (LsmMathmlFontStyle *) abstract_trait;
+
+	return g_strdup (lsm_mathml_font_style_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_font_style_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_font_style_trait_from_string,
+	.to_string = lsm_mathml_font_style_trait_to_string
+};
+
+static void
+lsm_mathml_font_weight_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlFontWeight *value = (LsmMathmlFontWeight *) abstract_trait;
+
+	*value = lsm_mathml_font_weight_from_string (string);
+}
+
+static char *
+lsm_mathml_font_weight_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlFontWeight *value = (LsmMathmlFontWeight *) abstract_trait;
+
+	return g_strdup (lsm_mathml_font_weight_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_font_weight_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_font_weight_trait_from_string,
+	.to_string = lsm_mathml_font_weight_trait_to_string
+};
+
+static void
+lsm_mathml_variant_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlVariant *value = (LsmMathmlVariant *) abstract_trait;
+
+	*value = lsm_mathml_variant_from_string (string);
+}
+
+static char *
+lsm_mathml_variant_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlVariant *value = (LsmMathmlVariant *) abstract_trait;
+
+	return g_strdup (lsm_mathml_variant_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_variant_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_variant_trait_from_string,
+	.to_string = lsm_mathml_variant_trait_to_string
+};
+
+static void
+lsm_mathml_form_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlForm *value = (LsmMathmlForm *) abstract_trait;
+
+	*value = lsm_mathml_form_from_string (string);
+}
+
+static char *
+lsm_mathml_form_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlForm *value = (LsmMathmlForm *) abstract_trait;
+
+	return g_strdup (lsm_mathml_form_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_form_trait_class = {
+	.size = sizeof (unsigned),
+	.from_string = lsm_mathml_form_trait_from_string,
+	.to_string = lsm_mathml_form_trait_to_string
+};
+
+static void
 lsm_mathml_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	double *value = (double *) abstract_trait;

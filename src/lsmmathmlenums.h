@@ -78,7 +78,7 @@ typedef enum {
 	LSM_MATHML_UNIT_PERCENT
 } LsmMathmlUnit;
 
-const char * 		lsm_mathml_unit_to_string 			(LsmMathmlUnit unit);
+const char * 		lsm_mathml_unit_to_string 		(LsmMathmlUnit unit);
 LsmMathmlUnit 		lsm_mathml_unit_from_string 		(const char *string);
 
 typedef enum {
@@ -87,7 +87,8 @@ typedef enum {
 	LSM_MATHML_FONT_STYLE_ERROR
 } LsmMathmlFontStyle;
 
-LsmMathmlFontStyle 	lsm_mathml_font_style_from_string 		(const char *string);
+const char * 		lsm_mathml_font_style_to_string 	(LsmMathmlFontStyle font_style);
+LsmMathmlFontStyle 	lsm_mathml_font_style_from_string 	(const char *string);
 
 typedef enum {
 	LSM_MATHML_FONT_WEIGHT_NORMAL,
@@ -95,6 +96,7 @@ typedef enum {
 	LSM_MATHML_FONT_WEIGHT_ERROR
 } LsmMathmlFontWeight;
 
+const char * 		lsm_mathml_font_weight_to_string 	(LsmMathmlFontWeight font_weight);
 LsmMathmlFontWeight 	lsm_mathml_font_weight_from_string 	(const char *string);
 
 /* Keep in sync with lsm_mathml_pango_options in lsm_mathml_view */
@@ -116,8 +118,8 @@ typedef enum {
 	LSM_MATHML_VARIANT_ERROR
 } LsmMathmlVariant;
 
-const char * 		lsm_mathml_variant_to_string 	(LsmMathmlVariant variant);
-LsmMathmlVariant 		lsm_mathml_variant_from_string 	(const char *string);
+const char * 		lsm_mathml_variant_to_string 		(LsmMathmlVariant variant);
+LsmMathmlVariant 	lsm_mathml_variant_from_string 		(const char *string);
 void	 		lsm_mathml_variant_set_font_style	(LsmMathmlVariant *variant, LsmMathmlFontStyle style);
 void 			lsm_mathml_variant_set_font_weight	(LsmMathmlVariant *variant, LsmMathmlFontWeight weight);
 

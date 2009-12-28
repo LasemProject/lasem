@@ -29,6 +29,13 @@ G_BEGIN_DECLS
 
 extern const LsmTraitClass lsm_mathml_boolean_trait_class;
 extern const LsmTraitClass lsm_mathml_unsigned_trait_class;
+extern const LsmTraitClass lsm_mathml_display_trait_class;
+extern const LsmTraitClass lsm_mathml_mode_trait_class;
+extern const LsmTraitClass lsm_mathml_line_trait_class;
+extern const LsmTraitClass lsm_mathml_font_style_trait_class;
+extern const LsmTraitClass lsm_mathml_font_weight_trait_class;
+extern const LsmTraitClass lsm_mathml_variant_trait_class;
+extern const LsmTraitClass lsm_mathml_form_trait_class;
 extern const LsmTraitClass lsm_mathml_double_trait_class;
 extern const LsmTraitClass lsm_mathml_string_trait_class;
 

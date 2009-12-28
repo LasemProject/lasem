@@ -84,9 +84,6 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	enum_attribute = LSM_MATHML_LINE_NONE;
 	lsm_mathml_line_list_attribute_parse (&table->column_lines, &enum_list);
 
-	enum_attribute = LSM_MATHML_LINE_NONE;
-	lsm_mathml_line_attribute_parse (&table->frame, &enum_attribute);
-
 	space_list = lsm_mathml_space_list_new (2);
 
 	space_list->spaces[0].length.value = 0.4;
@@ -426,6 +423,7 @@ lsm_mathml_table_element_new (void)
 }
 
 static const gboolean equal_default = FALSE;
+static const LsmMathmlLine frame_default = LSM_MATHML_LINE_NONE;
 
 static void
 lsm_mathml_table_element_init (LsmMathmlTableElement *table)
@@ -439,6 +437,7 @@ lsm_mathml_table_element_init (LsmMathmlTableElement *table)
 
 	table->equal_columns.value = equal_default;
 	table->equal_rows.value = equal_default;
+	table->frame.value = frame_default;
 }
 
 static void
@@ -470,6 +469,12 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlTableElement, equal_columns),
 		.trait_class = &lsm_mathml_boolean_trait_class,
 		.trait_default = &equal_default
+	},
+	{
+		.name = "frame",
+		.attribute_offset = offsetof (LsmMathmlTableElement, frame),
+		.trait_class = &lsm_mathml_line_trait_class,
+		.trait_default = &frame_default
 	}
 };
 
@@ -512,8 +517,6 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 					   offsetof (LsmMathmlTableElement, row_lines));
 	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnlines",
 					   offsetof (LsmMathmlTableElement, column_lines));
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "frame",
-					  offsetof (LsmMathmlTableElement, frame));
 	lsm_mathml_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
 					   offsetof (LsmMathmlTableElement, frame_spacing));
 }

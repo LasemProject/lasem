@@ -63,7 +63,7 @@ lsm_mathml_operator_element_dictionary_lookup (LsmMathmlOperatorElement *operato
 	} else
 		form = LSM_MATHML_FORM_INFIX;
 
-	lsm_mathml_form_attribute_parse (&operator->form, &form);
+	form = lsm_mathml_enum_attribute_inherit (&operator->form, form);
 
 	entry = lsm_mathml_operator_dictionary_lookup (text, form);
 
@@ -210,6 +210,11 @@ lsm_mathml_operator_element_init (LsmMathmlOperatorElement *self)
 
 static const LsmAttributeInfos _attribute_infos[] = {
 	{
+		.name = "form",
+		.attribute_offset = offsetof (LsmMathmlOperatorElement, form),
+		.trait_class = &lsm_mathml_form_trait_class
+	},
+	{
 		.name = "fence",
 		.attribute_offset = offsetof (LsmMathmlOperatorElement, fence),
 		.trait_class = &lsm_mathml_boolean_trait_class
@@ -269,16 +274,14 @@ lsm_mathml_operator_element_class_init (LsmMathmlOperatorElementClass *operator_
 
 	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
 
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "form",
-					  offsetof (LsmMathmlOperatorElement, form));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "lspace",
-					  offsetof (LsmMathmlOperatorElement, left_space));
+						offsetof (LsmMathmlOperatorElement, left_space));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "rspace",
-					  offsetof (LsmMathmlOperatorElement, right_space));
+						offsetof (LsmMathmlOperatorElement, right_space));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "minsize",
-					  offsetof (LsmMathmlOperatorElement, min_size));
+						offsetof (LsmMathmlOperatorElement, min_size));
 	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "maxsize",
-					  offsetof (LsmMathmlOperatorElement, max_size));
+						offsetof (LsmMathmlOperatorElement, max_size));
 }
 
 G_DEFINE_TYPE (LsmMathmlOperatorElement, lsm_mathml_operator_element, LSM_TYPE_MATHML_PRESENTATION_TOKEN)
