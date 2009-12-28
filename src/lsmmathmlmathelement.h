@@ -30,7 +30,7 @@ G_BEGIN_DECLS
 
 #define LSM_MATHML_FONT_SERIF		"Serif"
 #define LSM_MATHML_FONT_SANS		"Sans"
-#define LSM_MATHML_FONT_MONOSPACE		"Monospace"
+#define LSM_MATHML_FONT_MONOSPACE	"Monospace"
 #define LSM_MATHML_FONT_FRAKTUR		"Serif"
 #define LSM_MATHML_FONT_SCRIPT		"cmsy10"
 #define LSM_MATHML_FONT_DOUBLE_STRUCK	"msbm10"

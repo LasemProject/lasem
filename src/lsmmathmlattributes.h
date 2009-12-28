@@ -149,14 +149,6 @@ char const * 	lsm_mathml_attribute_get_value 			(const LsmMathmlAttribute *attri
 
 typedef unsigned int (*LsmDomNamedConvert) (const char *string);
 
-#define LSM_MATHML_SPACE_EM_VERY_VERY_THIN	0.055556
-#define LSM_MATHML_SPACE_EM_VERY_THIN		0.111111
-#define LSM_MATHML_SPACE_EM_THIN		0.166667
-#define LSM_MATHML_SPACE_EM_MEDIUM	 	0.222222
-#define LSM_MATHML_SPACE_EM_THICK		0.277778
-#define LSM_MATHML_SPACE_EM_VERY_THICK		0.333333
-#define LSM_MATHML_SPACE_EM_VERY_VERY_THICK	0.388889
-
 typedef struct {
 	unsigned int n_values;
 	unsigned int *values;
