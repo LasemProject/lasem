@@ -48,6 +48,15 @@ lsm_mathml_double_attribute_inherit (LsmMathmlDoubleAttribute *attribute, double
 	return attribute->value;
 }
 
+LsmMathmlColor
+lsm_mathml_color_attribute_inherit (LsmMathmlColorAttribute *attribute, LsmMathmlColor value)
+{
+	if (attribute->base.value == NULL)
+		attribute->color = value;
+
+	return attribute->color;
+}
+
 const char *
 lsm_mathml_string_attribute_inherit (LsmMathmlStringAttribute *attribute, const char *string)
 {
@@ -483,66 +492,6 @@ lsm_mathml_attribute_map_add_enum_list (LsmMathmlAttributeMap *map,
 	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &enum_list_attribute_class);
 }
 
-static LsmMathmlColor *
-lsm_mathml_color_copy (LsmMathmlColor *color)
-{
-	LsmMathmlColor *copy;
-
-	copy = g_new (LsmMathmlColor, 1);
-	memcpy (copy, color, sizeof (LsmMathmlColor));
-
-	return copy;
-}
-
-GType
-lsm_mathml_color_get_type (void)
-{
-	static GType our_type = 0;
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static
-			("LsmMathmlColor",
-			 (GBoxedCopyFunc) lsm_mathml_color_copy,
-			 (GBoxedFreeFunc) g_free);
-	return our_type;
-}
-
-static LsmMathmlSpace *
-lsm_mathml_space_copy (LsmMathmlSpace *space)
-{
-	LsmMathmlSpace *copy;
-
-	copy = g_new (LsmMathmlSpace, 1);
-	memcpy (copy, space, sizeof (LsmMathmlSpace));
-
-	return copy;
-}
-
-GType
-lsm_mathml_space_get_type (void)
-{
-	static GType our_type = 0;
-
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static
-			("LsmMathmlSpace",
-			 (GBoxedCopyFunc) lsm_mathml_space_copy,
-			 (GBoxedFreeFunc) g_free);
-	return our_type;
-}
-
-GType
-lsm_mathml_space_list_get_type (void)
-{
-	static GType our_type = 0;
-
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static
-			("LsmMathmlSpaceList",
-			 (GBoxedCopyFunc) lsm_mathml_space_list_duplicate,
-			 (GBoxedFreeFunc) lsm_mathml_space_list_free);
-	return our_type;
-}
-
 void
 lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribute,
 					 int *style_value)
@@ -567,41 +516,6 @@ lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribut
 	else
 		attribute->value = value;
 	*style_value = attribute->value;
-}
-
-void
-lsm_mathml_color_attribute_parse (LsmMathmlColorAttribute *attribute,
-				  LsmMathmlColor *style_color)
-{
-	const char *string;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_color != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->color.red = style_color->red;
-		attribute->color.green = style_color->green;
-		attribute->color.blue = style_color->blue;
-		attribute->color.alpha = style_color->alpha;
-		return;
-	}
-
-	if (strcmp (string, "transparent") == 0) {
-		attribute->color.red = 0.0;
-		attribute->color.green = 0.0;
-		attribute->color.blue = 0.0;
-		attribute->color.alpha = 0.0;
-	} else {
-		PangoColor color;
-
-		pango_color_parse (&color, string);
-		attribute->color.alpha = 1.0;
-		attribute->color.red = color.red / 65535.0;
-		attribute->color.green = color.green / 65535.0;
-		attribute->color.blue = color.blue / 65535.0;
-	}
-	*style_color = attribute->color;
 }
 
 void
@@ -676,56 +590,6 @@ lsm_mathml_space_attribute_parse (LsmMathmlSpaceAttribute *attribute,
 									style_value->length.value,
 									style->math_size);
 	}
-}
-
-LsmMathmlSpaceList *
-lsm_mathml_space_list_new (unsigned int n_spaces)
-{
-	LsmMathmlSpaceList *space_list;
-
-	space_list = g_new (LsmMathmlSpaceList, 1);
-	if (space_list == NULL)
-		return NULL;
-
-	space_list->n_spaces = n_spaces;
-
-	if (n_spaces > 0) {
-		space_list->spaces = g_new (LsmMathmlSpace, n_spaces);
-
-		if (space_list->spaces == NULL) {
-			g_free (space_list);
-			return NULL;
-		}
-	} else
-		space_list->spaces = NULL;
-
-	return space_list;
-}
-
-void
-lsm_mathml_space_list_free (LsmMathmlSpaceList *space_list)
-{
-	if (space_list == NULL)
-		return;
-
-	space_list->n_spaces = 0;
-
-	g_free (space_list->spaces);
-	g_free (space_list);
-}
-
-LsmMathmlSpaceList *
-lsm_mathml_space_list_duplicate (const LsmMathmlSpaceList *space_list)
-{
-	LsmMathmlSpaceList *new_space_list;
-
-	g_return_val_if_fail (space_list != NULL, NULL);
-
-	new_space_list = lsm_mathml_space_list_new (space_list->n_spaces);
-	memcpy (new_space_list->spaces, space_list->spaces,
-		sizeof (LsmMathmlSpace) * space_list->n_spaces);
-
-	return new_space_list;
 }
 
 static void
@@ -887,3 +751,4 @@ lsm_mathml_attribute_map_add_space_list (LsmMathmlAttributeMap *map,
 {
 	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &space_list_attribute_class);
 }
+

@@ -19,6 +19,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+#include <pango/pango-attributes.h>
 #include <lsmmathmltraits.h>
 #include <math.h>
 #include <string.h>
@@ -244,6 +245,72 @@ const LsmTraitClass lsm_mathml_double_trait_class = {
 	.to_string = lsm_mathml_double_trait_to_string
 };
 
+static LsmMathmlColor *
+lsm_mathml_color_copy (LsmMathmlColor *color)
+{
+	LsmMathmlColor *copy;
+
+	copy = g_new (LsmMathmlColor, 1);
+	memcpy (copy, color, sizeof (LsmMathmlColor));
+
+	return copy;
+}
+
+GType
+lsm_mathml_color_get_type (void)
+{
+	static GType our_type = 0;
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlColor",
+			 (GBoxedCopyFunc) lsm_mathml_color_copy,
+			 (GBoxedFreeFunc) g_free);
+	return our_type;
+}
+
+static void
+lsm_mathml_color_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlColor *color = (LsmMathmlColor *) abstract_trait;
+
+	if (strcmp (string, "transparent") == 0) {
+		color->red = 0.0;
+		color->green = 0.0;
+		color->blue = 0.0;
+		color->alpha = 0.0;
+	} else {
+		PangoColor pango_color;
+
+		pango_color_parse (&pango_color, string);
+		color->alpha = 1.0;
+		color->red = pango_color.red / 65535.0;
+		color->green = pango_color.green / 65535.0;
+		color->blue = pango_color.blue / 65535.0;
+	}
+}
+
+static char *
+lsm_mathml_color_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlColor *color = (LsmMathmlColor *) abstract_trait;
+	PangoColor pango_color;
+
+	if (color->alpha <= 0.0)
+		return g_strdup ("transparent");
+
+	pango_color.red = ((int) ((double) 0.5 + 65535.0 * color->red));
+	pango_color.blue = ((int) ((double) 0.5 + 65535.0 * color->blue));
+	pango_color.green = ((int) ((double) 0.5 + 65535.0 * color->green));
+
+	return pango_color_to_string (&pango_color);
+}
+
+const LsmTraitClass lsm_mathml_color_trait_class = {
+	.size = sizeof (LsmMathmlColor),
+	.from_string = lsm_mathml_color_trait_from_string,
+	.to_string = lsm_mathml_color_trait_to_string
+};
+
 static void
 lsm_mathml_string_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
@@ -370,3 +437,91 @@ lsm_mathml_length_normalize (const LsmMathmlLength *length, double default_value
 
 	return value;
 }
+
+static LsmMathmlSpace *
+lsm_mathml_space_copy (LsmMathmlSpace *space)
+{
+	LsmMathmlSpace *copy;
+
+	copy = g_new (LsmMathmlSpace, 1);
+	memcpy (copy, space, sizeof (LsmMathmlSpace));
+
+	return copy;
+}
+
+GType
+lsm_mathml_space_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlSpace",
+			 (GBoxedCopyFunc) lsm_mathml_space_copy,
+			 (GBoxedFreeFunc) g_free);
+	return our_type;
+}
+
+GType
+lsm_mathml_space_list_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static
+			("LsmMathmlSpaceList",
+			 (GBoxedCopyFunc) lsm_mathml_space_list_duplicate,
+			 (GBoxedFreeFunc) lsm_mathml_space_list_free);
+	return our_type;
+}
+
+LsmMathmlSpaceList *
+lsm_mathml_space_list_new (unsigned int n_spaces)
+{
+	LsmMathmlSpaceList *space_list;
+
+	space_list = g_new (LsmMathmlSpaceList, 1);
+	if (space_list == NULL)
+		return NULL;
+
+	space_list->n_spaces = n_spaces;
+
+	if (n_spaces > 0) {
+		space_list->spaces = g_new (LsmMathmlSpace, n_spaces);
+
+		if (space_list->spaces == NULL) {
+			g_free (space_list);
+			return NULL;
+		}
+	} else
+		space_list->spaces = NULL;
+
+	return space_list;
+}
+
+void
+lsm_mathml_space_list_free (LsmMathmlSpaceList *space_list)
+{
+	if (space_list == NULL)
+		return;
+
+	space_list->n_spaces = 0;
+
+	g_free (space_list->spaces);
+	g_free (space_list);
+}
+
+LsmMathmlSpaceList *
+lsm_mathml_space_list_duplicate (const LsmMathmlSpaceList *space_list)
+{
+	LsmMathmlSpaceList *new_space_list;
+
+	g_return_val_if_fail (space_list != NULL, NULL);
+
+	new_space_list = lsm_mathml_space_list_new (space_list->n_spaces);
+	memcpy (new_space_list->spaces, space_list->spaces,
+		sizeof (LsmMathmlSpace) * space_list->n_spaces);
+
+	return new_space_list;
+}
+

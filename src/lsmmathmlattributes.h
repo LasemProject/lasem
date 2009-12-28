@@ -27,7 +27,6 @@
 #include <lsmmathml.h>
 #include <lsmmathmlenums.h>
 #include <lsmmathmltraits.h>
-#include <pango/pango-attributes.h>
 
 G_BEGIN_DECLS
 
@@ -53,6 +52,11 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	LsmMathmlColor color;
+} LsmMathmlColorAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	char *value;
 } LsmMathmlStringAttribute;
 
@@ -62,6 +66,8 @@ unsigned int		lsm_mathml_enum_attribute_inherit	(LsmMathmlEnumAttribute *attribu
 								 unsigned int value);
 double 			lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute,
 								 double value);
+LsmMathmlColor		lsm_mathml_color_attribute_inherit 	(LsmMathmlColorAttribute *attribute,
+								 LsmMathmlColor value);
 const char *		lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute,
 								 const char *string);
 
@@ -162,44 +168,10 @@ typedef struct {
 	unsigned int *values;
 } LsmMathmlEnumListAttribute;
 
-GType lsm_mathml_color_get_type (void);
-
-#define LSM_TYPE_MATHML_COLOR (lsm_mathml_color_get_type())
-
-typedef struct {
-	double red;
-	double green;
-	double blue;
-	double alpha;
-} LsmMathmlColor;
-
-GType lsm_mathml_length_get_type (void);
-
-#define LSM_TYPE_MATHML_LENGTH (lsm_mathml_length_get_type())
-
-typedef struct {
-	LsmMathmlSpaceName name;
-	LsmMathmlLength length;
-} LsmMathmlSpace;
-
-GType lsm_mathml_space_list_get_type (void);
-
-#define LSM_TYPE_MATHML_SPACE_LIST (lsm_mathml_space_list_get_type())
-
-typedef struct {
-	unsigned int n_spaces;
-	LsmMathmlSpace *spaces;
-} LsmMathmlSpaceList;
-
 typedef struct {
 	LsmMathmlAttribute attr;
 	int value;
 } LsmMathmlScriptLevelAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	LsmMathmlColor color;
-} LsmMathmlColorAttribute;
 
 typedef struct {
 	LsmMathmlAttribute attr;
@@ -227,15 +199,9 @@ void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 
 void 		lsm_mathml_script_level_attribute_parse	(LsmMathmlScriptLevelAttribute *attribute,
 							 int *default_value);
-void		lsm_mathml_color_attribute_parse	(LsmMathmlColorAttribute *attribute,
-							 LsmMathmlColor *default_color);
 void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,
 							 LsmMathmlSpace *style_value,
 							 LsmMathmlStyle *style);
-
-LsmMathmlSpaceList *	lsm_mathml_space_list_new  	(unsigned int n_spaces);
-void 			lsm_mathml_space_list_free 	(LsmMathmlSpaceList *space_list);
-LsmMathmlSpaceList *	lsm_mathml_space_list_duplicate	(const LsmMathmlSpaceList *space_list);
 
 void 		lsm_mathml_space_list_attribute_parse 	(LsmMathmlSpaceListAttribute *attribute,
 							 LsmMathmlSpaceList *style_value,
