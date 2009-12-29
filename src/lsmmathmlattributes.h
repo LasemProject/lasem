@@ -184,7 +184,6 @@ void 		lsm_mathml_enum_list_attribute_parse 	(LsmMathmlEnumListAttribute *attrib
 							 LsmMathmlEnumList *style_value,
 							 LsmDomNamedConvert convert);
 
-void		lsm_mathml_string_attribute_finalize	(void *abstract);
 void 		lsm_mathml_enum_list_attribute_finalize	(void *abstract);
 
 

@@ -493,10 +493,6 @@ lsm_mathml_enum_list_attribute_finalize (void *abstract)
 	attribute->values = NULL;
 }
 
-static const LsmMathmlAttributeClass string_attribute_class = {
-	.finalize = lsm_mathml_string_attribute_finalize
-};
-
 static const LsmMathmlAttributeClass enum_list_attribute_class = {
 	.finalize = lsm_mathml_enum_list_attribute_finalize
 };
