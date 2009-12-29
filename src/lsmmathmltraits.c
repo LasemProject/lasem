@@ -224,6 +224,37 @@ const LsmTraitClass lsm_mathml_form_trait_class = {
 };
 
 static void
+lsm_mathml_script_level_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlScriptLevel *value = (LsmMathmlScriptLevel *) abstract_trait;
+
+	value->level = atoi (string);
+	if (string[0] == '+')
+		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_PLUS;
+	else if (string[0] == '-')
+		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_MINUS;
+	else
+		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_NONE;
+}
+
+static char *
+lsm_mathml_script_level_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlScriptLevel *value = (LsmMathmlScriptLevel *) abstract_trait;
+
+	if (value->sign == LSM_MATHML_SCRIPT_LEVEL_SIGN_PLUS)
+			return g_strdup_printf ("+%d", value->level);
+
+	return g_strdup_printf ("%d", value->level);
+}
+
+const LsmTraitClass lsm_mathml_script_level_trait_class = {
+	.size = sizeof (int),
+	.from_string = lsm_mathml_script_level_trait_from_string,
+	.to_string = lsm_mathml_script_level_trait_to_string
+};
+
+static void
 lsm_mathml_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	double *value = (double *) abstract_trait;

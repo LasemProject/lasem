@@ -68,6 +68,23 @@ lsm_mathml_string_attribute_inherit (LsmMathmlStringAttribute *attribute, const 
 	return attribute->value;
 }
 
+int
+lsm_mathml_script_level_attribute_apply	(LsmMathmlScriptLevelAttribute *attribute,
+					 int script_level)
+{
+	if (attribute->base.value == NULL) {
+		attribute->value.level = script_level;
+		attribute->value.sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_NONE;
+
+		return script_level;
+	}
+
+	if (attribute->value.sign == LSM_MATHML_SCRIPT_LEVEL_SIGN_NONE)
+		return attribute->value.level;
+
+	return script_level + attribute->value.level;
+}
+
 double
 lsm_mathml_length_attribute_normalize (LsmMathmlLengthAttribute *attribute, double default_value, double font_size)
 {
@@ -490,32 +507,6 @@ lsm_mathml_attribute_map_add_enum_list (LsmMathmlAttributeMap *map,
 					ptrdiff_t offset)
 {
 	lsm_mathml_attribute_map_add_attribute_full (map, name, offset, &enum_list_attribute_class);
-}
-
-void
-lsm_mathml_script_level_attribute_parse (LsmMathmlScriptLevelAttribute *attribute,
-					 int *style_value)
-{
-	const char *string;
-	int value;
-
-	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (style_value != NULL);
-
-	string = lsm_mathml_attribute_get_value ((LsmMathmlAttribute *) attribute);
-	if (string == NULL) {
-		attribute->value = *style_value;
-		return;
-	}
-
-	value = atoi (string);
-	if (string[0] == '+')
-		attribute->value = value + *style_value;
-	else if (string[0] == '-')
-		attribute->value = value - *style_value;
-	else
-		attribute->value = value;
-	*style_value = attribute->value;
 }
 
 void

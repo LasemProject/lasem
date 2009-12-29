@@ -163,6 +163,12 @@ typedef enum {
 const char *		lsm_mathml_line_to_string			(LsmMathmlLine line);
 LsmMathmlLine		lsm_mathml_line_from_string		(const char *string);
 
+typedef enum {
+	LSM_MATHML_SCRIPT_LEVEL_SIGN_NONE,
+	LSM_MATHML_SCRIPT_LEVEL_SIGN_PLUS,
+	LSM_MATHML_SCRIPT_LEVEL_SIGN_MINUS
+} LsmMathmlScriptLevelSign;
+
 G_END_DECLS
 
 #endif

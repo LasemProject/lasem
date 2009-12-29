@@ -40,6 +40,7 @@ static void
 lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	gboolean display_style;
+	int new_script_level;
 
 	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
 
@@ -53,7 +54,10 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 								       style->script_min_size,
 								       style->math_size);
 
-	lsm_mathml_script_level_attribute_parse (&style_element->script_level, &style->script_level);
+	new_script_level = lsm_mathml_script_level_attribute_apply (&style_element->script_level,
+								    style->script_level);
+
+	lsm_mathml_style_change_script_level (style, new_script_level - style->script_level);
 
 	/* token */
 
@@ -141,6 +145,11 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.name = "displaystyle",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, display_style),
 		.trait_class = &lsm_mathml_boolean_trait_class
+	},
+	{
+		.name = "scriptlevel",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, script_level),
+		.trait_class = &lsm_mathml_script_level_trait_class
 	},
 	{
 		.name = "scriptminsize",
@@ -273,11 +282,6 @@ lsm_mathml_style_element_class_init (LsmMathmlStyleElementClass *style_class)
 	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
 					      G_N_ELEMENTS (_attribute_infos),
 					      _attribute_infos);
-
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
-
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "scriptlevel",
-					  offsetof (LsmMathmlStyleElement, script_level));
 }
 
 G_DEFINE_TYPE (LsmMathmlStyleElement, lsm_mathml_style_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

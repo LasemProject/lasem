@@ -52,6 +52,11 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	LsmMathmlScriptLevel value;
+} LsmMathmlScriptLevelAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	LsmMathmlColor color;
 } LsmMathmlColorAttribute;
 
@@ -70,6 +75,9 @@ LsmMathmlColor		lsm_mathml_color_attribute_inherit 	(LsmMathmlColorAttribute *at
 								 LsmMathmlColor value);
 const char *		lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *attribute,
 								 const char *string);
+
+int			lsm_mathml_script_level_attribute_apply	(LsmMathmlScriptLevelAttribute *attribute,
+								 int script_level);
 
 typedef struct {
 	LsmAttribute base;
@@ -162,11 +170,6 @@ typedef struct {
 
 typedef struct {
 	LsmMathmlAttribute attr;
-	int value;
-} LsmMathmlScriptLevelAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
 	LsmMathmlSpace space;
 	double value;
 } LsmMathmlSpaceAttribute;
@@ -189,8 +192,6 @@ void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);
 
-void 		lsm_mathml_script_level_attribute_parse	(LsmMathmlScriptLevelAttribute *attribute,
-							 int *default_value);
 void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,
 							 LsmMathmlSpace *style_value,
 							 LsmMathmlStyle *style);

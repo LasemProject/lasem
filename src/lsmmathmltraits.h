@@ -56,6 +56,11 @@ typedef struct {
 GType lsm_mathml_length_get_type (void);
 double 	lsm_mathml_length_normalize 	(const LsmMathmlLength *length, double default_value, double font_size);
 
+typedef struct {
+	LsmMathmlScriptLevelSign sign;
+	int level;
+} LsmMathmlScriptLevel;
+
 #define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
 
 typedef struct {
@@ -87,6 +92,8 @@ extern const LsmTraitClass lsm_mathml_font_style_trait_class;
 extern const LsmTraitClass lsm_mathml_font_weight_trait_class;
 extern const LsmTraitClass lsm_mathml_variant_trait_class;
 extern const LsmTraitClass lsm_mathml_form_trait_class;
+
+extern const LsmTraitClass lsm_mathml_script_level_trait_class;
 
 extern const LsmTraitClass lsm_mathml_double_trait_class;
 extern const LsmTraitClass lsm_mathml_string_trait_class;
