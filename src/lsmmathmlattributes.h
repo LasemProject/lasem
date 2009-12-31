@@ -85,8 +85,19 @@ typedef struct {
         double value;
 } LsmMathmlLengthAttribute;
 
-double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *atribute, double default_value,
-							 double font_size);
+double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *atribute,
+							 const LsmMathmlLength *default_value,
+							 const LsmMathmlStyle *style);
+
+typedef struct {
+	LsmAttribute base;
+	LsmMathmlSpace space;
+	double value;
+} LsmMathmlSpaceAttribute;
+
+double 		lsm_mathml_space_attribute_normalize 	(LsmMathmlSpaceAttribute *attribute,
+							 const LsmMathmlSpace *default_value,
+							 const LsmMathmlStyle *style);
 
 /*******************************/
 
@@ -170,12 +181,6 @@ typedef struct {
 
 typedef struct {
 	LsmMathmlAttribute attr;
-	LsmMathmlSpace space;
-	double value;
-} LsmMathmlSpaceAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
 	LsmMathmlSpaceList *space_list;
 	double *values;
 } LsmMathmlSpaceListAttribute;
@@ -190,10 +195,6 @@ void 		lsm_mathml_enum_list_attribute_finalize	(void *abstract);
 void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
 							 char const *name,
 							 ptrdiff_t offset);
-
-void 		lsm_mathml_space_attribute_parse 	(LsmMathmlSpaceAttribute *attribute,
-							 LsmMathmlSpace *style_value,
-							 LsmMathmlStyle *style);
 
 void 		lsm_mathml_space_list_attribute_parse 	(LsmMathmlSpaceListAttribute *attribute,
 							 LsmMathmlSpaceList *style_value,

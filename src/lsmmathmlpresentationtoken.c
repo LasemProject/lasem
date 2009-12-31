@@ -93,11 +93,13 @@ static void
 lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlPresentationToken *token = LSM_MATHML_PRESENTATION_TOKEN (self);
+	LsmMathmlLength length;
 
 	if (token->type == LSM_MATHML_PRESENTATION_TOKEN_TYPE_IDENTIFIER) {
 		char *text;
 		text = lsm_mathml_presentation_token_get_text (token);
-		style->math_variant = g_utf8_strlen (text, -1) > 1 ? LSM_MATHML_VARIANT_NORMAL : LSM_MATHML_VARIANT_ITALIC;
+		style->math_variant = g_utf8_strlen (text, -1) > 1 ?
+			LSM_MATHML_VARIANT_NORMAL : LSM_MATHML_VARIANT_ITALIC;
 		g_free (text);
 	}
 
@@ -110,8 +112,10 @@ lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *st
 	style->math_variant = lsm_mathml_enum_attribute_inherit (&token->math_variant, style->math_variant);
 	style->math_color = lsm_mathml_color_attribute_inherit (&token->math_color, style->math_color);
 	style->math_background = lsm_mathml_color_attribute_inherit (&token->math_background, style->math_background);
-	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size, style->math_size,
-								  style->math_size);
+
+	length.unit = LSM_MATHML_UNIT_PT;
+	length.value = style->math_size;
+	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size, &length, style);
 }
 
 static const LsmMathmlBbox *

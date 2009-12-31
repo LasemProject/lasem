@@ -45,16 +45,13 @@ static void
 lsm_mathml_space_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlSpaceElement *space_element = LSM_MATHML_SPACE_ELEMENT (self);
-	LsmMathmlSpace space;
+	static LsmMathmlSpace space = {.name = LSM_MATHML_SPACE_NAME_ERROR,
+		{ .unit = LSM_MATHML_UNIT_PX, .value = 0.0}};
+	static LsmMathmlLength length = {.unit = LSM_MATHML_UNIT_PX, .value = 0.0};
 
-	space.length.unit = LSM_MATHML_UNIT_EM;
-	space.length.value = 0;
-	space.name = LSM_MATHML_SPACE_NAME_ERROR;
-
-	lsm_mathml_space_attribute_parse (&space_element->width, &space, style);
-
-	lsm_mathml_length_attribute_normalize (&space_element->height, 0.0, style->math_size);
-	lsm_mathml_length_attribute_normalize (&space_element->depth, 0.0, style->math_size);
+	lsm_mathml_space_attribute_normalize (&space_element->width, &space, style);
+	lsm_mathml_length_attribute_normalize (&space_element->height, &length, style);
+	lsm_mathml_length_attribute_normalize (&space_element->depth, &length, style);
 }
 
 static const LsmMathmlBbox *
@@ -85,11 +82,13 @@ lsm_mathml_space_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_SPACE_ELEMENT, NULL);
 }
 
+static const LsmMathmlSpace space_default = {LSM_MATHML_SPACE_NAME_ERROR, {0.0, LSM_MATHML_UNIT_EM}};
 static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
 
 static void
 lsm_mathml_space_element_init (LsmMathmlSpaceElement *self)
 {
+	self->width.space = space_default;
 	self->height.length = length_default;
 	self->depth.length = length_default;
 }
@@ -98,14 +97,20 @@ lsm_mathml_space_element_init (LsmMathmlSpaceElement *self)
 
 static const LsmAttributeInfos _attribute_infos[] = {
 	{
-		.name = "height",
-		.attribute_offset = offsetof (LsmMathmlSpaceElement, height),
-		.trait_class = &lsm_mathml_length_trait_class,
-		.trait_default = &length_default
+		.name = "width",
+		.attribute_offset = offsetof (LsmMathmlSpaceElement, width),
+		.trait_class = &lsm_mathml_space_trait_class,
+		.trait_default = &space_default
 	},
 	{
 		.name = "depth",
 		.attribute_offset = offsetof (LsmMathmlSpaceElement, depth),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "height",
+		.attribute_offset = offsetof (LsmMathmlSpaceElement, height),
 		.trait_class = &lsm_mathml_length_trait_class,
 		.trait_default = &length_default
 	}
@@ -131,11 +136,6 @@ lsm_mathml_space_element_class_init (LsmMathmlSpaceElementClass *space_class)
 	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
 					      G_N_ELEMENTS (_attribute_infos),
 					      _attribute_infos);
-
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
-
-	lsm_mathml_attribute_map_add_attribute (m_element_class->attributes, "width",
-					  offsetof (LsmMathmlSpaceElement, width));
 }
 
 G_DEFINE_TYPE (LsmMathmlSpaceElement, lsm_mathml_space_element, LSM_TYPE_MATHML_ELEMENT)

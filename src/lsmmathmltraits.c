@@ -427,7 +427,9 @@ const LsmTraitClass lsm_mathml_length_trait_class = {
 };
 
 double
-lsm_mathml_length_normalize (const LsmMathmlLength *length, double default_value, double font_size)
+lsm_mathml_length_normalize (const LsmMathmlLength *length,
+			     const LsmMathmlLength *default_length,
+			     double font_size)
 {
 	double value;
 
@@ -457,10 +459,10 @@ lsm_mathml_length_normalize (const LsmMathmlLength *length, double default_value
 			value = length->value * font_size * 0.5;
 			break;
 		case LSM_MATHML_UNIT_PERCENT:
-			value = default_value * length->value / 100.0;
+			value = length->value * lsm_mathml_length_normalize (default_length, NULL, font_size) / 100.0;
 			break;
 		case LSM_MATHML_UNIT_NONE:
-			value = default_value * length->value;
+			value = length->value * lsm_mathml_length_normalize (default_length, NULL, font_size);
 			break;
 		default:
 			value = 0;
@@ -492,6 +494,42 @@ lsm_mathml_space_get_type (void)
 			 (GBoxedFreeFunc) g_free);
 	return our_type;
 }
+
+
+static void
+lsm_mathml_space_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlSpace *space = (LsmMathmlSpace *) abstract_trait;
+	char *unit_str;
+
+	space->name = lsm_mathml_space_name_from_string (string);
+	if (space->name == LSM_MATHML_SPACE_NAME_ERROR) {
+		space->length.value = g_strtod (string, &unit_str);
+		space->length.unit = lsm_mathml_unit_from_string (unit_str);
+	} else {
+		space->length.value = 0.0;
+		space->length.unit = LSM_MATHML_UNIT_PX;
+	}
+}
+
+static char *
+lsm_mathml_space_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlSpace *space = (LsmMathmlSpace *) abstract_trait;
+
+	if (space->name != LSM_MATHML_SPACE_NAME_ERROR)
+		return g_strdup (lsm_mathml_space_name_to_string (space->name));
+
+	return g_strdup_printf ("%g %s", space->length.value,
+				lsm_mathml_unit_to_string (space->length.unit));
+}
+
+const LsmTraitClass lsm_mathml_space_trait_class = {
+	.size = sizeof (char *),
+	.from_string = lsm_mathml_space_trait_from_string,
+	.to_string = lsm_mathml_space_trait_to_string
+};
+
 
 GType
 lsm_mathml_space_list_get_type (void)

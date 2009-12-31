@@ -39,10 +39,12 @@ lsm_mathml_style_element_get_node_name (LsmDomNode *node)
 static void
 lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
+	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
+	LsmMathmlLength length;
 	gboolean display_style;
 	int new_script_level;
 
-	LsmMathmlStyleElement *style_element = LSM_MATHML_STYLE_ELEMENT (self);
+	length.unit = LSM_MATHML_UNIT_PT;
 
 	display_style = style->display == LSM_MATHML_DISPLAY_BLOCK;
 	lsm_mathml_boolean_attribute_inherit (&style_element->display_style, display_style);
@@ -50,9 +52,9 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	style->script_size_multiplier = lsm_mathml_double_attribute_inherit (&style_element->script_size_multiplier,
 									     style->script_size_multiplier);
+	length.value = style->script_min_size;
 	style->script_min_size = lsm_mathml_length_attribute_normalize (&style_element->script_min_size,
-								       style->script_min_size,
-								       style->math_size);
+								        &length, style);
 
 	new_script_level = lsm_mathml_script_level_attribute_apply (&style_element->script_level,
 								    style->script_level);
@@ -73,39 +75,46 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	style->math_background = lsm_mathml_color_attribute_inherit (&style_element->math_background,
 								     style->math_background);
 	style->math_variant = lsm_mathml_enum_attribute_inherit (&style_element->math_variant, style->math_variant);
+	length.value = style->math_size;
 	style->math_size = lsm_mathml_length_attribute_normalize (&style_element->math_size,
-								  style->math_size,
-								  style->math_size);
+								  &length, style);
 
 	/* mstyle */
 
+	length.value = style->very_very_thin_math_space;
 	style->very_very_thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_very_thin_math_space,
-						       style->very_very_thin_math_space, style->math_size);
+						       &length, style);
+	length.value = style->very_thin_math_space;
 	style->very_thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_thin_math_space,
-						       style->very_thin_math_space, style->math_size);
+						       &length, style);
+	length.value = style->thin_math_space;
 	style->thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->thin_math_space,
-						       style->thin_math_space, style->math_size);
+						       &length, style);
+	length.value = style->medium_math_space;
 	style->medium_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->medium_math_space,
-						       style->medium_math_space, style->math_size);
+						       &length, style);
+	length.value = style->thick_math_space;
 	style->thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->thick_math_space,
-						       style->thick_math_space, style->math_size);
+						       &length, style);
+	length.value = style->very_thick_math_space;
 	style->very_thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_thick_math_space,
-						       style->very_thick_math_space, style->math_size);
+						       &length, style);
+	length.value = style->very_very_thick_math_space;
 	style->very_very_thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_very_thick_math_space,
-						       style->very_very_thick_math_space, style->math_size);
+						       &length, style);
 
 	/* mfrac */
 
+	length.value = style->line_thickness;
 	style->line_thickness = lsm_mathml_length_attribute_normalize (&style_element->line_thickness,
-								       style->line_thickness,
-								       style->math_size);
+								       &length, style);
 }
 
 /* LsmMathmlStyleElement implementation */

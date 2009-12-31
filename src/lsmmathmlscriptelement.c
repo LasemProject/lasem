@@ -112,13 +112,14 @@ static void
 lsm_mathml_script_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlScriptElement *script = LSM_MATHML_SCRIPT_ELEMENT (self);
+	LsmMathmlLength length;
 
-	style->superscript_shift = lsm_mathml_length_attribute_normalize (&script->superscript_shift,
-									  style->superscript_shift,
-									  style->math_size);
-	style->subscript_shift = lsm_mathml_length_attribute_normalize (&script->subscript_shift,
-									style->subscript_shift,
-									style->math_size);
+	length.unit = LSM_MATHML_UNIT_PT;
+
+	length.value = style->superscript_shift;
+	style->superscript_shift = lsm_mathml_length_attribute_normalize (&script->superscript_shift, &length, style);
+	length.value = style->subscript_shift;
+	style->subscript_shift = lsm_mathml_length_attribute_normalize (&script->subscript_shift, &length, style);
 
 	script->display = style->display;
 }
