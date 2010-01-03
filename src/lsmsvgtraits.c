@@ -441,15 +441,10 @@ lsm_svg_dash_array_new (unsigned int n_dashes)
 	g_return_val_if_fail (n_dashes > 0, (LsmSvgDashArray *) &lsm_svg_dash_array_null);
 
 	array = g_new (LsmSvgDashArray, 1);
-	if (array != NULL) {
-		array->n_dashes = n_dashes;
-		array->dashes = g_new (LsmSvgLength, n_dashes);
-		if (array->dashes != NULL)
-			return array;
-		g_free (array);
-	}
+	array->n_dashes = n_dashes;
+	array->dashes = g_new (LsmSvgLength, n_dashes);
 
-	return (LsmSvgDashArray *) &lsm_svg_dash_array_null;
+	return array;
 }
 
 void
