@@ -236,9 +236,11 @@ lsm_svg_element_init (LsmSvgElement *element)
 static void
 lsm_svg_element_finalize (GObject *object)
 {
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS (object);
 	LsmSvgElement *svg_element = LSM_SVG_ELEMENT (object);
 
 	lsm_svg_property_bag_clean (&svg_element->property_bag);
+	lsm_attribute_manager_clean_attributes (s_element_class->attribute_manager, svg_element);
 
 	parent_class->finalize (object);
 }
