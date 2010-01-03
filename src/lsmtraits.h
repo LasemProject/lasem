@@ -26,11 +26,11 @@
 
 G_BEGIN_DECLS
 
-typedef void * LsmTrait;
+typedef void LsmTrait;
 
 typedef struct {
 	size_t		size;
-	void 		(*init)			(LsmTrait *abstract_trait, const void *trait_default);
+	void 		(*init)			(LsmTrait *abstract_trait, const LsmTrait *trait_default);
 	void 		(*finalize)		(LsmTrait *abstract_trait);
 	void		(*from_string)		(LsmTrait *abstract_trait, char *string);
 	char * 		(*to_string)		(LsmTrait *abstract_trait);
