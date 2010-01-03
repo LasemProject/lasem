@@ -39,7 +39,7 @@ typedef enum {
 	LSM_MATHML_MODE_INLINE
 } LsmMathmlMode;
 
-const char *		lsm_mathml_mode_to_string			(LsmMathmlMode mode);
+const char *		lsm_mathml_mode_to_string		(LsmMathmlMode mode);
 LsmMathmlMode		lsm_mathml_mode_from_string		(const char *string);
 
 typedef enum {
@@ -48,7 +48,7 @@ typedef enum {
 } LsmMathmlDisplay;
 
 const char *		lsm_mathml_display_to_string		(LsmMathmlDisplay display);
-LsmMathmlDisplay		lsm_mathml_display_from_string		(const char *string);
+LsmMathmlDisplay	lsm_mathml_display_from_string		(const char *string);
 
 typedef enum {
 	LSM_MATHML_SPACE_NAME_ERROR,

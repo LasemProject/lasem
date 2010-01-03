@@ -63,6 +63,11 @@ typedef struct {
 	int level;
 } LsmMathmlScriptLevel;
 
+typedef struct {
+	unsigned int n_values;
+	unsigned int *values;
+} LsmMathmlEnumList;
+
 #define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
 
 typedef struct {
@@ -72,21 +77,18 @@ typedef struct {
 
 GType 	lsm_mathml_space_get_type 	(void);
 
-#define LSM_TYPE_MATHML_SPACE_LIST (lsm_mathml_space_list_get_type())
-
 typedef struct {
 	unsigned int n_spaces;
 	LsmMathmlSpace *spaces;
 } LsmMathmlSpaceList;
 
-GType 			lsm_mathml_space_list_get_type 	(void);
-LsmMathmlSpaceList *	lsm_mathml_space_list_new  	(unsigned int n_spaces);
-void 			lsm_mathml_space_list_free 	(LsmMathmlSpaceList *space_list);
-LsmMathmlSpaceList *	lsm_mathml_space_list_duplicate	(const LsmMathmlSpaceList *space_list);
+void lsm_mathml_enum_list_init  (LsmMathmlEnumList *enum_list, const LsmMathmlEnumList *enum_list_default);
+void lsm_mathml_space_list_init (LsmMathmlSpaceList *space_list, const LsmMathmlSpaceList *space_list_default);
 
 extern const LsmTraitClass lsm_mathml_boolean_trait_class;
 
 extern const LsmTraitClass lsm_mathml_unsigned_trait_class;
+
 extern const LsmTraitClass lsm_mathml_display_trait_class;
 extern const LsmTraitClass lsm_mathml_mode_trait_class;
 extern const LsmTraitClass lsm_mathml_line_trait_class;
@@ -95,12 +97,18 @@ extern const LsmTraitClass lsm_mathml_font_weight_trait_class;
 extern const LsmTraitClass lsm_mathml_variant_trait_class;
 extern const LsmTraitClass lsm_mathml_form_trait_class;
 
+extern const LsmTraitClass lsm_mathml_row_align_list_trait_class;
+extern const LsmTraitClass lsm_mathml_column_align_list_trait_class;
+extern const LsmTraitClass lsm_mathml_line_list_trait_class;
+
 extern const LsmTraitClass lsm_mathml_script_level_trait_class;
 
 extern const LsmTraitClass lsm_mathml_double_trait_class;
 extern const LsmTraitClass lsm_mathml_string_trait_class;
 extern const LsmTraitClass lsm_mathml_length_trait_class;
+
 extern const LsmTraitClass lsm_mathml_space_trait_class;
+extern const LsmTraitClass lsm_mathml_space_list_trait_class;
 
 extern const LsmTraitClass lsm_mathml_color_trait_class;
 

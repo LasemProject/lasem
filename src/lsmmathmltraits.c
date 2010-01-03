@@ -223,6 +223,143 @@ const LsmTraitClass lsm_mathml_form_trait_class = {
 	.to_string = lsm_mathml_form_trait_to_string
 };
 
+typedef unsigned int (*LsmMathmlEnumFromString) (const char *string);
+typedef char * (*LsmMathmlEnumToString) (unsigned int value);
+
+static void
+lsm_mathml_enum_list_trait_from_string (LsmMathmlEnumList *enum_list,
+					LsmMathmlEnumFromString from_string,
+					char *string)
+{
+	char **items;
+	unsigned int i;
+
+	g_free (enum_list->values);
+
+	items = g_strsplit_set (string, " ", -1);
+	enum_list->n_values = g_strv_length (items);
+
+	enum_list->values = g_new (unsigned int, enum_list->n_values);
+	for (i = 0; i < enum_list->n_values; i++)
+		enum_list->values[i] = from_string (items[i]);
+
+	g_strfreev (items);
+}
+
+static char *
+lsm_mathml_enum_list_trait_to_string (LsmMathmlEnumList *enum_list,
+				      LsmMathmlEnumToString to_string)
+{
+	return g_strdup ("FIXME");
+}
+
+static void
+lsm_mathml_enum_list_trait_init (LsmTrait *abstract_trait,
+				 const LsmTrait *abstract_default)
+{
+	LsmMathmlEnumList *enum_list = (LsmMathmlEnumList *) abstract_trait;
+	LsmMathmlEnumList *enum_list_defaut = (LsmMathmlEnumList *) abstract_default;
+
+	enum_list->n_values = enum_list_defaut->n_values;
+	if (enum_list->n_values == 0)
+		enum_list->values = NULL;
+	else {
+		enum_list->values = g_new (unsigned int, enum_list->n_values);
+		memcpy (enum_list->values, enum_list_defaut->values, sizeof (unsigned int) * enum_list->n_values);
+	}
+}
+
+void
+lsm_mathml_enum_list_init (LsmMathmlEnumList *enum_list, const LsmMathmlEnumList *enum_list_default)
+{
+	g_return_if_fail (enum_list != NULL);
+	g_return_if_fail (enum_list_default != NULL);
+
+	lsm_mathml_enum_list_trait_init (enum_list, enum_list_default);
+}
+
+static void
+lsm_mathml_enum_list_trait_finalize (LsmTrait *abstract_trait)
+{
+	LsmMathmlEnumList *enum_list = (LsmMathmlEnumList *) abstract_trait;
+
+	g_free (enum_list->values);
+	enum_list->values = NULL;
+	enum_list->n_values = 0;
+}
+
+static void
+lsm_mathml_row_align_list_trait_from_string (LsmTrait *abstract_trait,
+					     char *string)
+{
+	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						(LsmMathmlEnumFromString) lsm_mathml_row_align_from_string,
+						string);
+}
+
+static char *
+lsm_mathml_row_align_list_trait_to_string (LsmTrait *abstract_trait)
+{
+	return lsm_mathml_enum_list_trait_to_string ((LsmMathmlEnumList *) abstract_trait,
+						     (LsmMathmlEnumToString) lsm_mathml_row_align_to_string);
+}
+
+const LsmTraitClass lsm_mathml_row_align_list_trait_class = {
+	.size = sizeof (LsmMathmlEnumList),
+	.from_string = lsm_mathml_row_align_list_trait_from_string,
+	.to_string = lsm_mathml_row_align_list_trait_to_string,
+	.init = lsm_mathml_enum_list_trait_init,
+	.finalize = lsm_mathml_enum_list_trait_finalize
+};
+
+static void
+lsm_mathml_column_align_list_trait_from_string (LsmTrait *abstract_trait,
+					     char *string)
+{
+	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						(LsmMathmlEnumFromString) lsm_mathml_column_align_from_string,
+						string);
+}
+
+static char *
+lsm_mathml_column_align_list_trait_to_string (LsmTrait *abstract_trait)
+{
+	return lsm_mathml_enum_list_trait_to_string ((LsmMathmlEnumList *) abstract_trait,
+						     (LsmMathmlEnumToString) lsm_mathml_column_align_to_string);
+}
+
+const LsmTraitClass lsm_mathml_column_align_list_trait_class = {
+	.size = sizeof (LsmMathmlEnumList),
+	.from_string = lsm_mathml_column_align_list_trait_from_string,
+	.to_string = lsm_mathml_column_align_list_trait_to_string,
+	.init = lsm_mathml_enum_list_trait_init,
+	.finalize = lsm_mathml_enum_list_trait_finalize
+};
+
+static void
+lsm_mathml_line_list_trait_from_string (LsmTrait *abstract_trait,
+					     char *string)
+{
+	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						(LsmMathmlEnumFromString) lsm_mathml_line_from_string,
+						string);
+}
+
+static char *
+lsm_mathml_line_list_trait_to_string (LsmTrait *abstract_trait)
+{
+	return lsm_mathml_enum_list_trait_to_string ((LsmMathmlEnumList *) abstract_trait,
+						     (LsmMathmlEnumToString) lsm_mathml_line_to_string);
+}
+
+const LsmTraitClass lsm_mathml_line_list_trait_class = {
+	.size = sizeof (LsmMathmlEnumList),
+	.from_string = lsm_mathml_line_list_trait_from_string,
+	.to_string = lsm_mathml_line_list_trait_to_string,
+	.init = lsm_mathml_enum_list_trait_init,
+	.finalize = lsm_mathml_enum_list_trait_finalize
+};
+
 static void
 lsm_mathml_script_level_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
@@ -360,6 +497,16 @@ lsm_mathml_string_trait_to_string (LsmTrait *abstract_trait)
 }
 
 static void
+lsm_mathml_string_trait_init (LsmTrait *abstract_trait,
+			      const LsmTrait *abstract_default)
+{
+	char **value = (char **) abstract_trait;
+	char **default_value = (char **) abstract_default;
+
+	*value = g_strdup (*default_value);
+}
+
+static void
 lsm_mathml_string_trait_finalize (LsmTrait *abstract_trait)
 {
 	char **value = (char **) abstract_trait;
@@ -372,6 +519,7 @@ const LsmTraitClass lsm_mathml_string_trait_class = {
 	.size = sizeof (char *),
 	.from_string = lsm_mathml_string_trait_from_string,
 	.to_string = lsm_mathml_string_trait_to_string,
+	.init = lsm_mathml_string_trait_init,
 	.finalize = lsm_mathml_string_trait_finalize
 };
 
@@ -530,67 +678,70 @@ const LsmTraitClass lsm_mathml_space_trait_class = {
 	.to_string = lsm_mathml_space_trait_to_string
 };
 
-
-GType
-lsm_mathml_space_list_get_type (void)
+void
+lsm_mathml_space_list_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
-	static GType our_type = 0;
+	LsmMathmlSpaceList *space_list = (LsmMathmlSpaceList *) abstract_trait;
+	char **items;
+	unsigned int i;
 
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static
-			("LsmMathmlSpaceList",
-			 (GBoxedCopyFunc) lsm_mathml_space_list_duplicate,
-			 (GBoxedFreeFunc) lsm_mathml_space_list_free);
-	return our_type;
+	g_free (space_list->spaces);
+
+	items = g_strsplit_set (string, " ", -1);
+	space_list->n_spaces = g_strv_length (items);
+
+	space_list->spaces = g_new (LsmMathmlSpace, space_list->n_spaces);
+	for (i = 0; i < space_list->n_spaces; i++)
+		lsm_mathml_space_trait_from_string (&space_list->spaces[i], items[i]);
+
+	g_strfreev (items);
 }
 
-LsmMathmlSpaceList *
-lsm_mathml_space_list_new (unsigned int n_spaces)
+static char *
+lsm_mathml_space_list_trait_to_string (LsmTrait *abstract_trait)
 {
-	LsmMathmlSpaceList *space_list;
+	return g_strdup ("FIXME");
+}
 
-	space_list = g_new (LsmMathmlSpaceList, 1);
-	if (space_list == NULL)
-		return NULL;
+static void
+lsm_mathml_space_list_trait_init (LsmTrait *abstract_trait,
+				  const LsmTrait *abstract_default)
+{
+	LsmMathmlSpaceList *space_list = (LsmMathmlSpaceList *) abstract_trait;
+	LsmMathmlSpaceList *space_list_defaut = (LsmMathmlSpaceList *) abstract_default;
 
-	space_list->n_spaces = n_spaces;
-
-	if (n_spaces > 0) {
-		space_list->spaces = g_new (LsmMathmlSpace, n_spaces);
-
-		if (space_list->spaces == NULL) {
-			g_free (space_list);
-			return NULL;
-		}
-	} else
+	space_list->n_spaces = space_list_defaut->n_spaces;
+	if (space_list->n_spaces == 0)
 		space_list->spaces = NULL;
+	else {
+		space_list->spaces = g_new (LsmMathmlSpace, space_list->n_spaces);
+		memcpy (space_list->spaces, space_list_defaut->spaces, sizeof (LsmMathmlSpace) * space_list->n_spaces);
+	}
+}
 
-	return space_list;
+static void
+lsm_mathml_space_list_trait_finalize (LsmTrait *abstract_trait)
+{
+	LsmMathmlSpaceList *space_list = (LsmMathmlSpaceList *) abstract_trait;
+
+	g_free (space_list->spaces);
+	space_list->spaces = NULL;
+	space_list->n_spaces = 0;
 }
 
 void
-lsm_mathml_space_list_free (LsmMathmlSpaceList *space_list)
+lsm_mathml_space_list_init (LsmMathmlSpaceList *space_list, const LsmMathmlSpaceList *space_list_default)
 {
-	if (space_list == NULL)
-		return;
+	g_return_if_fail (space_list != NULL);
+	g_return_if_fail (space_list_default != NULL);
 
-	space_list->n_spaces = 0;
-
-	g_free (space_list->spaces);
-	g_free (space_list);
+	lsm_mathml_space_list_trait_init (space_list, space_list_default);
 }
 
-LsmMathmlSpaceList *
-lsm_mathml_space_list_duplicate (const LsmMathmlSpaceList *space_list)
-{
-	LsmMathmlSpaceList *new_space_list;
-
-	g_return_val_if_fail (space_list != NULL, NULL);
-
-	new_space_list = lsm_mathml_space_list_new (space_list->n_spaces);
-	memcpy (new_space_list->spaces, space_list->spaces,
-		sizeof (LsmMathmlSpace) * space_list->n_spaces);
-
-	return new_space_list;
-}
-
+const LsmTraitClass lsm_mathml_space_list_trait_class = {
+	.size = sizeof (LsmMathmlSpaceList),
+	.from_string = lsm_mathml_space_list_trait_from_string,
+	.to_string = lsm_mathml_space_list_trait_to_string,
+	.init = lsm_mathml_space_list_trait_init,
+	.finalize = lsm_mathml_space_list_trait_finalize
+};

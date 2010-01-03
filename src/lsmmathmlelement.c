@@ -68,24 +68,17 @@ lsm_mathml_element_set_attribute (LsmDomElement *self, const char* name, const c
 {
 	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS(self);
 
-	if (!lsm_attribute_manager_set_attribute (m_element_class->attribute_manager,
-						  self, name, value))
-		lsm_mathml_attribute_map_set_attribute (m_element_class->attributes, self,
-							name, value);
+	lsm_attribute_manager_set_attribute (m_element_class->attribute_manager,
+					     self, name, value);
 }
 
 const char *
 lsm_mathml_element_get_attribute (LsmDomElement *self, const char *name)
 {
 	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS(self);
-	const char *value;
 
-	value = lsm_attribute_manager_get_attribute (m_element_class->attribute_manager,
-						     self, name);
-	if (value != NULL)
-		return value;
-
-	return lsm_mathml_attribute_map_get_attribute (m_element_class->attributes, self, name);
+	return lsm_attribute_manager_get_attribute (m_element_class->attribute_manager,
+						    self, name);
 }
 
 /* LsmMathmlElement implementation */
@@ -421,9 +414,9 @@ lsm_mathml_element_finalize (GObject *object)
 	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS (object);
 	LsmMathmlElement *m_element = LSM_MATHML_ELEMENT (object);
 
-	lsm_mathml_attribute_map_free_attributes (m_element_class->attributes, object);
-
 	g_free (m_element->style.math_family);
+
+	lsm_attribute_manager_clean_attributes (m_element_class->attribute_manager, m_element);
 
 	parent_class->finalize (object);
 }
@@ -473,9 +466,6 @@ lsm_mathml_element_class_init (LsmMathmlElementClass *m_element_class)
 	m_element_class->render = _render;
 	m_element_class->get_embellished_core = _get_embellished_core;
 	m_element_class->is_inferred_row = _is_inferred_row;
-
-	m_element_class->attributes = lsm_mathml_attribute_map_new ();
-
 	m_element_class->attribute_manager = lsm_attribute_manager_new (G_N_ELEMENTS (lsm_svg_attribute_infos),
 									lsm_svg_attribute_infos);
 }

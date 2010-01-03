@@ -67,8 +67,6 @@ typedef struct {
 
 gboolean		lsm_mathml_boolean_attribute_inherit 	(LsmMathmlBooleanAttribute *attribute,
 								 gboolean value);
-unsigned int		lsm_mathml_enum_attribute_inherit	(LsmMathmlEnumAttribute *attribute,
-								 unsigned int value);
 double 			lsm_mathml_double_attribute_inherit 	(LsmMathmlDoubleAttribute *attribute,
 								 double value);
 LsmMathmlColor		lsm_mathml_color_attribute_inherit 	(LsmMathmlColorAttribute *attribute,
@@ -78,6 +76,14 @@ const char *		lsm_mathml_string_attribute_inherit	(LsmMathmlStringAttribute *att
 
 int			lsm_mathml_script_level_attribute_apply	(LsmMathmlScriptLevelAttribute *attribute,
 								 int script_level);
+
+unsigned int		lsm_mathml_enum_attribute_inherit	(LsmMathmlEnumAttribute *attribute,
+								 unsigned int value);
+
+typedef struct {
+	LsmAttribute base;
+	LsmMathmlEnumList enum_list;
+} LsmMathmlEnumListAttribute;
 
 typedef struct {
 	LsmAttribute base;
@@ -99,117 +105,16 @@ double 		lsm_mathml_space_attribute_normalize 	(LsmMathmlSpaceAttribute *attribu
 							 const LsmMathmlSpace *default_value,
 							 const LsmMathmlStyle *style);
 
-/*******************************/
-
 typedef struct {
-	char *value;
-	char *css_value;
-	LsmMathmlCssType css_type;
-} LsmMathmlAttribute;
-
-typedef struct {
-	GHashTable *attribute_hash;
-	GHashTable *bag_hash;
-} LsmMathmlAttributeMap;
-
-typedef struct {
-} LsmMathmlAttributeBag;
-
-typedef struct {
-	void * 			(*init) 	(void);
-	void 			(*finalize) 	(void *bag);
-} LsmMathmlAttributeBagClass;
-
-typedef struct {
-	void (*finalize) (void *attribute);
-} LsmMathmlAttributeClass;
-
-typedef void (*LsmMathmlAttributeFinalizeFunc) (void *);
-
-LsmMathmlAttributeMap *	lsm_mathml_attribute_map_new 		(void);
-LsmMathmlAttributeMap *	lsm_mathml_attribute_map_duplicate		(const LsmMathmlAttributeMap *from);
-void			lsm_mathml_attribute_map_free		(LsmMathmlAttributeMap *map);
-
-void 		lsm_mathml_attribute_map_add_bag_attribute  	(LsmMathmlAttributeMap *map,
-								 const char *name,
-								 ptrdiff_t attribute_offset,
-								 const LsmMathmlAttributeClass *attribute_class,
-								 ptrdiff_t bag_offset,
-								 const LsmMathmlAttributeBagClass *bag_class);
-void		lsm_mathml_attribute_map_add_attribute_full	(LsmMathmlAttributeMap *map,
-								 char const *name,
-								 ptrdiff_t offset,
-								 const LsmMathmlAttributeClass *attribute_class);
-void		lsm_mathml_attribute_map_add_attribute 		(LsmMathmlAttributeMap *map,
-								 char const *name,
-								 ptrdiff_t offset);
-
-void		lsm_mathml_attribute_map_free_attributes 	(LsmMathmlAttributeMap *map,
-								 void *instance);
-
-gboolean	lsm_mathml_attribute_map_set_attribute		(LsmMathmlAttributeMap *map,
-								 void *instance,
-								 char const *name,
-								 char const *value);
-char const *	lsm_mathml_attribute_map_get_attribute		(LsmMathmlAttributeMap *map,
-								 void *instance,
-								 char const *name);
-gboolean	lsm_mathml_attribute_map_set_css_attribute	(LsmMathmlAttributeMap *map,
-								 void *instance,
-								 char const *name,
-								 char const *value,
-								 LsmMathmlCssType css_type);
-gboolean	lsm_mathml_attribute_map_is_attribute_defined	(LsmMathmlAttributeMap *map,
-								 void *instance,
-								 char const *name);
-
-gboolean 	lsm_mathml_attribute_is_defined 		(const LsmMathmlAttribute *attribute);
-char const * 	lsm_mathml_attribute_get_value 			(const LsmMathmlAttribute *attribute);
-
-typedef unsigned int (*LsmDomNamedConvert) (const char *string);
-
-typedef struct {
-	unsigned int n_values;
-	unsigned int *values;
-} LsmMathmlEnumList;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	unsigned int n_values;
-	unsigned int *values;
-} LsmMathmlEnumListAttribute;
-
-typedef struct {
-	LsmMathmlAttribute attr;
-	LsmMathmlSpaceList *space_list;
+	LsmAttribute base;
+	LsmMathmlSpaceList space_list;
 	double *values;
 } LsmMathmlSpaceListAttribute;
 
-void 		lsm_mathml_enum_list_attribute_parse 	(LsmMathmlEnumListAttribute *attribute,
-							 LsmMathmlEnumList *style_value,
-							 LsmDomNamedConvert convert);
+void 		lsm_mathml_space_list_attribute_normalize 	(LsmMathmlSpaceListAttribute *attribute,
+								 const LsmMathmlSpaceList *default_value,
+								 const LsmMathmlStyle *style);
 
-void 		lsm_mathml_enum_list_attribute_finalize	(void *abstract);
-
-
-void 		lsm_mathml_attribute_map_add_enum_list 	(LsmMathmlAttributeMap *map,
-							 char const *name,
-							 ptrdiff_t offset);
-
-void 		lsm_mathml_space_list_attribute_parse 	(LsmMathmlSpaceListAttribute *attribute,
-							 LsmMathmlSpaceList *style_value,
-							 const LsmMathmlStyle *style);
-
-void 	lsm_mathml_row_align_list_attribute_parse 	(LsmMathmlEnumListAttribute *attribute,
-							 LsmMathmlEnumList *style_value);
-void 	lsm_mathml_column_align_list_attribute_parse 	(LsmMathmlEnumListAttribute *attribute,
-							 LsmMathmlEnumList *style_value);
-void 	lsm_mathml_line_list_attribute_parse 		(LsmMathmlEnumListAttribute *attribute,
-							 LsmMathmlEnumList *style_value);
-
-void 	lsm_mathml_attribute_map_add_space_list 	(LsmMathmlAttributeMap *map,
-							 char const *name,
-							 ptrdiff_t offset);
 G_END_DECLS
 
 #endif

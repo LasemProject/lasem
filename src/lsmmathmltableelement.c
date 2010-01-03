@@ -27,6 +27,28 @@
 
 #define LSM_MATHML_TABLE_ELEMENT_LINE_WIDTH 1 /* 1 pt */
 
+static const gboolean equal_default = FALSE;
+static const LsmMathmlLine frame_default = LSM_MATHML_LINE_NONE;
+static unsigned int row_align_values[1] = {LSM_MATHML_ROW_ALIGN_BASELINE};
+static const LsmMathmlEnumList row_align_default = {.n_values = 1, .values = row_align_values};
+static unsigned int column_align_values[1] = {LSM_MATHML_COLUMN_ALIGN_CENTER};
+static const LsmMathmlEnumList column_align_default = {.n_values = 1, .values = column_align_values};
+static LsmMathmlSpace row_spacing_values[1] = {
+	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EX, .value = 1.0}}
+};
+static const LsmMathmlSpaceList row_spacing_default = {.n_spaces = 1, .spaces = row_spacing_values};
+static LsmMathmlSpace column_spacing_values[1] = {
+	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EM, .value = 0.8}}
+};
+static const LsmMathmlSpaceList column_spacing_default = {.n_spaces = 1, .spaces = column_spacing_values};
+static unsigned int lines_values[1] = {LSM_MATHML_LINE_NONE};
+static const LsmMathmlEnumList lines_default = {.n_values = 1, .values = lines_values};
+static LsmMathmlSpace frame_spacing_values[2] = {
+	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EM, .value = 0.4}},
+	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EX, .value = 0.5}}
+};
+static const LsmMathmlSpaceList frame_spacing_default = {.n_spaces = 2, .spaces = frame_spacing_values};
+
 static GObjectClass *parent_class;
 
 /* GdomNode implementation */
@@ -49,53 +71,10 @@ static void
 lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlTableElement *table = LSM_MATHML_TABLE_ELEMENT (self);
-	LsmMathmlSpaceList *space_list;
-	LsmMathmlEnumList enum_list;
-	unsigned int enum_attribute;
 
-	enum_list.n_values = 1;
-	enum_list.values = &enum_attribute;
-
-	enum_attribute = LSM_MATHML_ROW_ALIGN_BASELINE;
-	lsm_mathml_row_align_list_attribute_parse (&table->row_align, &enum_list);
-
-	enum_attribute = LSM_MATHML_COLUMN_ALIGN_CENTER;
-	lsm_mathml_column_align_list_attribute_parse (&table->column_align, &enum_list);
-
-	space_list = lsm_mathml_space_list_new (1);
-
-	space_list->spaces[0].length.value = 1.0;
-	space_list->spaces[0].length.unit = LSM_MATHML_UNIT_EX;
-	space_list->spaces[0].name = LSM_MATHML_SPACE_NAME_ERROR;
-
-	lsm_mathml_space_list_attribute_parse (&table->row_spacing, space_list, style);
-
-	space_list->spaces[0].length.value = 0.8;
-	space_list->spaces[0].length.unit = LSM_MATHML_UNIT_EM;
-	space_list->spaces[0].name = LSM_MATHML_SPACE_NAME_ERROR;
-
-	lsm_mathml_space_list_attribute_parse (&table->column_spacing, space_list, style);
-
-	lsm_mathml_space_list_free (space_list);
-
-	enum_attribute = LSM_MATHML_LINE_NONE;
-	lsm_mathml_line_list_attribute_parse (&table->row_lines, &enum_list);
-
-	enum_attribute = LSM_MATHML_LINE_NONE;
-	lsm_mathml_line_list_attribute_parse (&table->column_lines, &enum_list);
-
-	space_list = lsm_mathml_space_list_new (2);
-
-	space_list->spaces[0].length.value = 0.4;
-	space_list->spaces[0].length.unit = LSM_MATHML_UNIT_EM;
-	space_list->spaces[0].name = LSM_MATHML_SPACE_NAME_ERROR;
-	space_list->spaces[1].length.value = 0.5;
-	space_list->spaces[1].length.unit = LSM_MATHML_UNIT_EX;
-	space_list->spaces[1].name = LSM_MATHML_SPACE_NAME_ERROR;
-
-	lsm_mathml_space_list_attribute_parse (&table->frame_spacing, space_list, style);
-
-	lsm_mathml_space_list_free (space_list);
+	lsm_mathml_space_list_attribute_normalize (&table->row_spacing, &row_spacing_default, style);
+	lsm_mathml_space_list_attribute_normalize (&table->column_spacing, &column_spacing_default, style);
+	lsm_mathml_space_list_attribute_normalize (&table->frame_spacing, &frame_spacing_default, style);
 }
 
 static const LsmMathmlBbox *
@@ -207,7 +186,7 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 		for (column = 0; column < table->n_columns; column++)
 			table->widths[column] = max_width;
 
-	max_index = table->column_spacing.space_list->n_spaces -  1;
+	max_index = table->column_spacing.space_list.n_spaces -  1;
 	for (column = 0; column < table->n_columns; column++) {
 		self->bbox.width += table->widths[column];
 		if (column < table->n_columns - 1)
@@ -216,7 +195,7 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 
 	height = 0.0;
 
-	max_index = table->row_spacing.space_list->n_spaces -  1;
+	max_index = table->row_spacing.space_list.n_spaces -  1;
 	for (row = 0; row < table->n_rows; row++) {
 		height += table->heights[row] + table->depths[row];
 		if (row < table->n_rows - 1)
@@ -291,8 +270,8 @@ lsm_mathml_table_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
 
-	max_column = table->column_spacing.space_list->n_spaces -  1;
-	max_row = table->row_spacing.space_list->n_spaces -  1;
+	max_column = table->column_spacing.space_list.n_spaces -  1;
+	max_row = table->row_spacing.space_list.n_spaces -  1;
 
 	y_offset = -self->bbox.height;
         y_offset += table->frame_spacing.values[1];
@@ -310,7 +289,8 @@ lsm_mathml_table_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 		     cell_node = cell_node->next_sibling) {
 			bbox = lsm_mathml_element_get_bbox (LSM_MATHML_ELEMENT (cell_node));
 
-			switch (table->row_align.values[MIN (row, table->row_align.n_values - 1)]) {
+			switch (table->row_align.enum_list.values[MIN (row,
+								       table->row_align.enum_list.n_values - 1)]) {
 				case LSM_MATHML_ROW_ALIGN_TOP:
 					y_cell = y + y_offset + bbox->height;
 					break;
@@ -328,7 +308,9 @@ lsm_mathml_table_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 					y_cell = y + y_offset + table->heights[row];
 			}
 
-			switch (table->column_align.values[MIN (column, table->column_align.n_values - 1)]) {
+			switch (table->column_align.enum_list.values[MIN (column,
+									  table->column_align.enum_list.n_values
+									  - 1)]) {
 				case LSM_MATHML_COLUMN_ALIGN_LEFT:
 					x_cell = x + x_offset;
 					break;
@@ -387,11 +369,13 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 
 	for (i = 0; i < table->n_rows - 1; i++) {
 		position += table->heights[i] + table->depths[i];
-		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list->n_spaces - 1)];
+		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list.n_spaces - 1)];
 		y = position + (0.5 * spacing) + table->line_width * 0.5;
 		lsm_mathml_view_show_line (view, &self->style,
 					x0, y, x1, y,
-					table->row_lines.values[MIN (i, table->row_lines.n_values - 1)],
+					table->row_lines.enum_list.values[MIN (i,
+									       table->row_lines.enum_list.n_values
+									       - 1)],
 					table->line_width);
 		position += spacing + table->line_width;
 	}
@@ -402,11 +386,13 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 
 	for (i = 0; i < table->n_columns - 1; i++) {
 		position += table->widths[i];
-		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list->n_spaces - 1)];
+		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list.n_spaces - 1)];
 		x = position + 0.5 * (spacing + table->line_width);
 		lsm_mathml_view_show_line (view, &self->style,
 					x, y0, x, y1,
-					table->column_lines.values[MIN (i, table->column_lines.n_values - 1)],
+					table->column_lines.enum_list.values[MIN (i,
+										  table->column_lines.enum_list.n_values
+										  - 1)],
 					table->line_width);
 		position += spacing + table->line_width;
 	}
@@ -422,9 +408,6 @@ lsm_mathml_table_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_TABLE_ELEMENT, NULL);
 }
 
-static const gboolean equal_default = FALSE;
-static const LsmMathmlLine frame_default = LSM_MATHML_LINE_NONE;
-
 static void
 lsm_mathml_table_element_init (LsmMathmlTableElement *table)
 {
@@ -438,6 +421,11 @@ lsm_mathml_table_element_init (LsmMathmlTableElement *table)
 	table->equal_columns.value = equal_default;
 	table->equal_rows.value = equal_default;
 	table->frame.value = frame_default;
+
+	lsm_mathml_enum_list_init (&table->row_align.enum_list, &row_align_default);
+	lsm_mathml_enum_list_init (&table->column_align.enum_list, &column_align_default);
+	lsm_mathml_enum_list_init (&table->row_lines.enum_list, &lines_default);
+	lsm_mathml_enum_list_init (&table->column_lines.enum_list, &lines_default);
 }
 
 static void
@@ -451,6 +439,13 @@ lsm_mathml_table_element_finalize (GObject *object)
 	table->widths = NULL;
 	table->heights = NULL;
 	table->depths = NULL;
+
+	g_free (table->row_spacing.values);
+	g_free (table->column_spacing.values);
+	g_free (table->frame_spacing.values);
+	table->row_spacing.values = NULL;
+	table->column_spacing.values = NULL;
+	table->frame_spacing.values = NULL;
 
 	parent_class->finalize (object);
 }
@@ -475,6 +470,48 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlTableElement, frame),
 		.trait_class = &lsm_mathml_line_trait_class,
 		.trait_default = &frame_default
+	},
+	{
+		.name = "rowalign",
+		.attribute_offset = offsetof (LsmMathmlTableElement, row_align),
+		.trait_class = &lsm_mathml_row_align_list_trait_class,
+		.trait_default = &row_align_default
+	},
+	{
+		.name = "columnalign",
+		.attribute_offset = offsetof (LsmMathmlTableElement, column_align),
+		.trait_class = &lsm_mathml_column_align_list_trait_class,
+		.trait_default = &column_align_default
+	},
+	{
+		.name = "rowspacing",
+		.attribute_offset = offsetof (LsmMathmlTableElement, row_spacing),
+		.trait_class = &lsm_mathml_space_list_trait_class,
+		.trait_default = &row_spacing_default
+	},
+	{
+		.name = "columnspacing",
+		.attribute_offset = offsetof (LsmMathmlTableElement, column_spacing),
+		.trait_class = &lsm_mathml_space_list_trait_class,
+		.trait_default = &column_spacing_default
+	},
+	{
+		.name = "rowlines",
+		.attribute_offset = offsetof (LsmMathmlTableElement, row_lines),
+		.trait_class = &lsm_mathml_line_list_trait_class,
+		.trait_default = &lines_default
+	},
+	{
+		.name = "columnlines",
+		.attribute_offset = offsetof (LsmMathmlTableElement, column_lines),
+		.trait_class = &lsm_mathml_line_list_trait_class,
+		.trait_default = &lines_default
+	},
+	{
+		.name = "framespacing",
+		.attribute_offset = offsetof (LsmMathmlTableElement, frame_spacing),
+		.trait_class = &lsm_mathml_space_list_trait_class,
+		.trait_default = &frame_spacing_default
 	}
 };
 
@@ -502,23 +539,6 @@ lsm_mathml_table_element_class_init (LsmMathmlTableElementClass *table_class)
 	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
 					      G_N_ELEMENTS (_attribute_infos),
 					      _attribute_infos);
-
-	m_element_class->attributes = lsm_mathml_attribute_map_duplicate (m_element_class->attributes);
-
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowalign",
-					   offsetof (LsmMathmlTableElement, row_align));
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnalign",
-					   offsetof (LsmMathmlTableElement, column_align));
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowspacing",
-					   offsetof (LsmMathmlTableElement, row_spacing));
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnspacing",
-					   offsetof (LsmMathmlTableElement, column_spacing));
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "rowlines",
-					   offsetof (LsmMathmlTableElement, row_lines));
-	lsm_mathml_attribute_map_add_enum_list (m_element_class->attributes, "columnlines",
-					   offsetof (LsmMathmlTableElement, column_lines));
-	lsm_mathml_attribute_map_add_space_list (m_element_class->attributes, "framespacing",
-					   offsetof (LsmMathmlTableElement, frame_spacing));
 }
 
 G_DEFINE_TYPE (LsmMathmlTableElement, lsm_mathml_table_element, LSM_TYPE_MATHML_ELEMENT)

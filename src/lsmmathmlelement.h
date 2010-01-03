@@ -73,7 +73,6 @@ struct _LsmMathmlElementClass {
 	LsmDomElementClass  parent_class;
 
 	LsmAttributeManager *attribute_manager;
-	LsmMathmlAttributeMap *attributes;
 
 	void				(*update)		(LsmMathmlElement *element, LsmMathmlStyle *style);
 	gboolean			(*update_children)	(LsmMathmlElement *element, LsmMathmlStyle *style);
