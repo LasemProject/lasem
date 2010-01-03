@@ -142,7 +142,7 @@ lsm_attribute_manager_set_attribute (LsmAttributeManager *manager,
 		if (trait_class->init)
 			trait_class->init (ATTRIBUTE_TRAIT (attribute), attribute_infos->trait_default);
 		else
-			/* Simple memcpy for default init implementation, discarde by a NULL default value. */
+			/* Simple memcpy for default init implementation, discarded by a NULL default value. */
 			if (attribute_infos->trait_default != NULL)
 				memcpy (ATTRIBUTE_TRAIT (attribute),
 					attribute_infos->trait_default,
