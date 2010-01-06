@@ -121,7 +121,7 @@ lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
 
 	g_return_val_if_fail (space != NULL, 0.0);
 
-	switch (attribute->space.name) {
+	switch (space->name) {
 		case LSM_MATHML_SPACE_NAME_VERY_VERY_THIN:
 			attribute->value = style->very_very_thin_math_space;
 			break;
