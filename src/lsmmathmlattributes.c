@@ -88,27 +88,38 @@ lsm_mathml_script_level_attribute_apply	(LsmMathmlScriptLevelAttribute *attribut
 
 double
 lsm_mathml_length_attribute_normalize (LsmMathmlLengthAttribute *attribute,
+				       double base,
 				       const LsmMathmlLength *default_value,
 				       const LsmMathmlStyle *style)
 {
-	g_return_val_if_fail (attribute != NULL, 0.0);
+	const LsmMathmlLength *length;
 
-	attribute->value = lsm_mathml_length_normalize (&attribute->length, default_value, style->math_size);
+	g_return_val_if_fail (attribute != NULL, 0.0);
+	g_return_val_if_fail (style != NULL, 0.0);
+
+	length = attribute->base.value != NULL ? &attribute->length : default_value;
+
+	g_return_val_if_fail (length != NULL, 0.0);
+
+	attribute->value = lsm_mathml_length_normalize (length, base, style->math_size);
 
 	return attribute->value;
 }
 
 double
 lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
+				      double base,
 				      const LsmMathmlSpace *default_value,
 				      const LsmMathmlStyle *style)
 {
+	const LsmMathmlSpace *space;
+
 	g_return_val_if_fail (attribute != NULL, 0.0);
-	g_return_val_if_fail (default_value != NULL, 0.0);
 	g_return_val_if_fail (style != NULL, 0.0);
 
-	if (attribute->base.value == NULL)
-		attribute->space = *default_value;
+	space = attribute->base.value != NULL ?	&attribute->space : default_value;
+
+	g_return_val_if_fail (space != NULL, 0.0);
 
 	switch (attribute->space.name) {
 		case LSM_MATHML_SPACE_NAME_VERY_VERY_THIN:
@@ -137,8 +148,8 @@ lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
 			break;
 		case LSM_MATHML_SPACE_NAME_ERROR:
 		default:
-			attribute->value = lsm_mathml_length_normalize (&attribute->space.length,
-									&default_value->length,
+			attribute->value = lsm_mathml_length_normalize (&space->length,
+									base,
 									style->math_size);
 	}
 
@@ -147,23 +158,26 @@ lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
 
 void
 lsm_mathml_space_list_attribute_normalize (LsmMathmlSpaceListAttribute *attribute,
+					   double base,
 					   const LsmMathmlSpaceList *default_value,
 					   const LsmMathmlStyle *style)
 {
 	LsmMathmlSpaceAttribute space_attribute;
+	const LsmMathmlSpaceList *space_list;
 	unsigned int i;
 
 	g_return_if_fail (attribute != NULL);
-	g_return_if_fail (default_value != NULL);
 	g_return_if_fail (style != NULL);
+
+	space_list = attribute->base.value != NULL ? &attribute->space_list : default_value;
+
+	g_return_if_fail (space_list != NULL);
 
 	g_free (attribute->values);
 	attribute->values = NULL;
+	attribute->n_values = 0;
 
-	if (attribute->base.value == NULL)
-		lsm_mathml_space_list_init (&attribute->space_list, default_value);
-
-	if (attribute->space_list.n_spaces == 0) {
+	if (space_list->n_spaces == 0) {
 		attribute->values = g_new (double, 1);
 		attribute->values[0] = 0.0;
 		return;
@@ -171,12 +185,12 @@ lsm_mathml_space_list_attribute_normalize (LsmMathmlSpaceListAttribute *attribut
 
 	space_attribute.base.value = "";
 
-	attribute->values = g_new (double, attribute->space_list.n_spaces);
-	for (i = 0; i < attribute->space_list.n_spaces; i++) {
-		space_attribute.space = attribute->space_list.spaces[i];
-		lsm_mathml_space_attribute_normalize (&space_attribute,
-						      &default_value->spaces[MIN(i, default_value->n_spaces - 1)],
-						      style);
+	attribute->values = g_new (double, space_list->n_spaces);
+	attribute->n_values = space_list->n_spaces;
+
+	for (i = 0; i < space_list->n_spaces; i++) {
+		space_attribute.space = space_list->spaces[i];
+		lsm_mathml_space_attribute_normalize (&space_attribute, base, NULL, style);
 		attribute->values[i] = space_attribute.value;
 	}
 }

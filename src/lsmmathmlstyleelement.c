@@ -54,6 +54,7 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 									     style->script_size_multiplier);
 	length.value = style->script_min_size;
 	style->script_min_size = lsm_mathml_length_attribute_normalize (&style_element->script_min_size,
+									style->script_min_size,
 								        &length, style);
 
 	new_script_level = lsm_mathml_script_level_attribute_apply (&style_element->script_level,
@@ -77,6 +78,7 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	style->math_variant = lsm_mathml_enum_attribute_inherit (&style_element->math_variant, style->math_variant);
 	length.value = style->math_size;
 	style->math_size = lsm_mathml_length_attribute_normalize (&style_element->math_size,
+								  style->math_size,
 								  &length, style);
 
 	/* mstyle */
@@ -84,36 +86,44 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	length.value = style->very_very_thin_math_space;
 	style->very_very_thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_very_thin_math_space,
+						       style->very_very_thin_math_space,
 						       &length, style);
 	length.value = style->very_thin_math_space;
 	style->very_thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_thin_math_space,
+						       style->very_thin_math_space,
 						       &length, style);
 	length.value = style->thin_math_space;
 	style->thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->thin_math_space,
+						       style->thin_math_space,
 						       &length, style);
 	length.value = style->medium_math_space;
 	style->medium_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->medium_math_space,
+						       style->medium_math_space,
 						       &length, style);
 	length.value = style->thick_math_space;
 	style->thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->thick_math_space,
+						       style->thick_math_space,
 						       &length, style);
 	length.value = style->very_thick_math_space;
 	style->very_thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_thick_math_space,
+						       style->very_thick_math_space,
 						       &length, style);
 	length.value = style->very_very_thick_math_space;
 	style->very_very_thick_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_very_thick_math_space,
+						       style->very_very_thick_math_space,
 						       &length, style);
 
 	/* mfrac */
 
 	length.value = style->line_thickness;
 	style->line_thickness = lsm_mathml_length_attribute_normalize (&style_element->line_thickness,
+								       style->line_thickness,
 								       &length, style);
 }
 

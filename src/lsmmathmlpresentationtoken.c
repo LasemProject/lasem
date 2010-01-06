@@ -115,7 +115,9 @@ lsm_mathml_presentation_token_update (LsmMathmlElement *self, LsmMathmlStyle *st
 
 	length.unit = LSM_MATHML_UNIT_PT;
 	length.value = style->math_size;
-	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size, &length, style);
+	style->math_size = lsm_mathml_length_attribute_normalize (&token->math_size,
+								  style->math_size,
+								  &length, style);
 }
 
 static const LsmMathmlBbox *

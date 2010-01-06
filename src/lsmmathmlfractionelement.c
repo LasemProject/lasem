@@ -52,7 +52,9 @@ lsm_mathml_fraction_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	length.unit = LSM_MATHML_UNIT_PT;
 
 	length.value = style->line_thickness;
-	style->line_thickness = lsm_mathml_length_attribute_normalize (&fraction->line_thickness, &length, style);
+	style->line_thickness = lsm_mathml_length_attribute_normalize (&fraction->line_thickness,
+								       style->line_thickness,
+								       &length, style);
 
 	fraction->display = style->display;
 }

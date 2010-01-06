@@ -53,9 +53,9 @@ typedef struct {
 	LsmMathmlUnit unit;
 } LsmMathmlLength;
 
-GType lsm_mathml_length_get_type (void);
+GType 	lsm_mathml_length_get_type 	(void);
 double 	lsm_mathml_length_normalize 	(const LsmMathmlLength *length,
-					 const LsmMathmlLength *default_length,
+					 double base,
 					 double font_size);
 
 typedef struct {

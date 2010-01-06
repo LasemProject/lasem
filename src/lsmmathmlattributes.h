@@ -92,6 +92,7 @@ typedef struct {
 } LsmMathmlLengthAttribute;
 
 double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *atribute,
+							 double base,
 							 const LsmMathmlLength *default_value,
 							 const LsmMathmlStyle *style);
 
@@ -102,16 +103,19 @@ typedef struct {
 } LsmMathmlSpaceAttribute;
 
 double 		lsm_mathml_space_attribute_normalize 	(LsmMathmlSpaceAttribute *attribute,
+							 double base,
 							 const LsmMathmlSpace *default_value,
 							 const LsmMathmlStyle *style);
 
 typedef struct {
 	LsmAttribute base;
 	LsmMathmlSpaceList space_list;
+	unsigned int n_values;
 	double *values;
 } LsmMathmlSpaceListAttribute;
 
 void 		lsm_mathml_space_list_attribute_normalize 	(LsmMathmlSpaceListAttribute *attribute,
+								 double base,
 								 const LsmMathmlSpaceList *default_value,
 								 const LsmMathmlStyle *style);
 

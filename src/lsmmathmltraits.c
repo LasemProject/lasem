@@ -576,7 +576,7 @@ const LsmTraitClass lsm_mathml_length_trait_class = {
 
 double
 lsm_mathml_length_normalize (const LsmMathmlLength *length,
-			     const LsmMathmlLength *default_length,
+			     double base,
 			     double font_size)
 {
 	double value;
@@ -607,10 +607,10 @@ lsm_mathml_length_normalize (const LsmMathmlLength *length,
 			value = length->value * font_size * 0.5;
 			break;
 		case LSM_MATHML_UNIT_PERCENT:
-			value = length->value * lsm_mathml_length_normalize (default_length, NULL, font_size) / 100.0;
+			value = length->value * base / 100.0;
 			break;
 		case LSM_MATHML_UNIT_NONE:
-			value = length->value * lsm_mathml_length_normalize (default_length, NULL, font_size);
+			value = length->value * base;
 			break;
 		default:
 			value = 0;
@@ -642,7 +642,6 @@ lsm_mathml_space_get_type (void)
 			 (GBoxedFreeFunc) g_free);
 	return our_type;
 }
-
 
 static void
 lsm_mathml_space_trait_from_string (LsmTrait *abstract_trait, char *string)

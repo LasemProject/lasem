@@ -72,9 +72,9 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlTableElement *table = LSM_MATHML_TABLE_ELEMENT (self);
 
-	lsm_mathml_space_list_attribute_normalize (&table->row_spacing, &row_spacing_default, style);
-	lsm_mathml_space_list_attribute_normalize (&table->column_spacing, &column_spacing_default, style);
-	lsm_mathml_space_list_attribute_normalize (&table->frame_spacing, &frame_spacing_default, style);
+	lsm_mathml_space_list_attribute_normalize (&table->row_spacing, 0.0, &row_spacing_default, style);
+	lsm_mathml_space_list_attribute_normalize (&table->column_spacing, 0.0, &column_spacing_default, style);
+	lsm_mathml_space_list_attribute_normalize (&table->frame_spacing, 0.0, &frame_spacing_default, style);
 }
 
 static const LsmMathmlBbox *
@@ -186,7 +186,7 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 		for (column = 0; column < table->n_columns; column++)
 			table->widths[column] = max_width;
 
-	max_index = table->column_spacing.space_list.n_spaces -  1;
+	max_index = table->column_spacing.n_values -  1;
 	for (column = 0; column < table->n_columns; column++) {
 		self->bbox.width += table->widths[column];
 		if (column < table->n_columns - 1)
@@ -195,7 +195,7 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 
 	height = 0.0;
 
-	max_index = table->row_spacing.space_list.n_spaces -  1;
+	max_index = table->row_spacing.n_values -  1;
 	for (row = 0; row < table->n_rows; row++) {
 		height += table->heights[row] + table->depths[row];
 		if (row < table->n_rows - 1)
@@ -270,8 +270,8 @@ lsm_mathml_table_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 	if (table->n_rows < 1 || table->n_columns < 1)
 		return;
 
-	max_column = table->column_spacing.space_list.n_spaces -  1;
-	max_row = table->row_spacing.space_list.n_spaces -  1;
+	max_column = table->column_spacing.n_values -  1;
+	max_row = table->row_spacing.n_values -  1;
 
 	y_offset = -self->bbox.height;
         y_offset += table->frame_spacing.values[1];
@@ -369,7 +369,7 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 
 	for (i = 0; i < table->n_rows - 1; i++) {
 		position += table->heights[i] + table->depths[i];
-		spacing = table->row_spacing.values[MIN (i, table->row_spacing.space_list.n_spaces - 1)];
+		spacing = table->row_spacing.values[MIN (i, table->row_spacing.n_values - 1)];
 		y = position + (0.5 * spacing) + table->line_width * 0.5;
 		lsm_mathml_view_show_line (view, &self->style,
 					x0, y, x1, y,
@@ -386,7 +386,7 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 
 	for (i = 0; i < table->n_columns - 1; i++) {
 		position += table->widths[i];
-		spacing = table->column_spacing.values[MIN (i, table->column_spacing.space_list.n_spaces - 1)];
+		spacing = table->column_spacing.values[MIN (i, table->column_spacing.n_values - 1)];
 		x = position + 0.5 * (spacing + table->line_width);
 		lsm_mathml_view_show_line (view, &self->style,
 					x, y0, x, y1,

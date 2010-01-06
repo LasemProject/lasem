@@ -105,9 +105,9 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	space = entry->left_space;
-	lsm_mathml_space_attribute_normalize (&operator_element->left_space, &space, style);
+	lsm_mathml_space_attribute_normalize (&operator_element->left_space, 0.0, &space, style);
 	space = entry->right_space;
-	lsm_mathml_space_attribute_normalize (&operator_element->right_space, &space, style);
+	lsm_mathml_space_attribute_normalize (&operator_element->right_space, 0.0, &space, style);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->stretchy, entry->stretchy);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->fence, entry->fence);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->accent, entry->accent);
@@ -119,9 +119,9 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	lsm_mathml_boolean_attribute_inherit (&operator_element->movable_limits, entry->movable_limits);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->separator, entry->separator);
 	space = entry->min_size;
-	lsm_mathml_space_attribute_normalize (&operator_element->min_size, &space, style);
+	lsm_mathml_space_attribute_normalize (&operator_element->min_size, 0.0, &space, style);
 	space = entry->max_size;
-	lsm_mathml_space_attribute_normalize (&operator_element->max_size, &space, style);
+	lsm_mathml_space_attribute_normalize (&operator_element->max_size, 0.0, &space, style);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->symmetric, entry->symmetric);
 
 	operator_element->is_large_op = operator_element->large_op.value &&

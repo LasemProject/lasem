@@ -49,9 +49,9 @@ lsm_mathml_space_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 		{ .unit = LSM_MATHML_UNIT_PX, .value = 0.0}};
 	static LsmMathmlLength length = {.unit = LSM_MATHML_UNIT_PX, .value = 0.0};
 
-	lsm_mathml_space_attribute_normalize (&space_element->width, &space, style);
-	lsm_mathml_length_attribute_normalize (&space_element->height, &length, style);
-	lsm_mathml_length_attribute_normalize (&space_element->depth, &length, style);
+	lsm_mathml_space_attribute_normalize (&space_element->width, 0.0, &space, style);
+	lsm_mathml_length_attribute_normalize (&space_element->height, 0.0, &length, style);
+	lsm_mathml_length_attribute_normalize (&space_element->depth, 0.0, &length, style);
 }
 
 static const LsmMathmlBbox *
