@@ -51,7 +51,7 @@ lsm_mathml_under_over_element_can_append_child (LsmDomNode *self, LsmDomNode *ch
 {
 	LsmMathmlUnderOverElement *under_over = LSM_MATHML_UNDER_OVER_ELEMENT (self);
 
-	if (!LSM_MATHML_ELEMENT (child))
+	if (!LSM_IS_MATHML_ELEMENT (child))
 		return FALSE;
 
 	if (self->first_child == NULL ||

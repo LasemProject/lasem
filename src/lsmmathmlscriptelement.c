@@ -48,7 +48,7 @@ lsm_mathml_script_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
 	LsmMathmlScriptElement *script = LSM_MATHML_SCRIPT_ELEMENT (self);
 
-	if (!LSM_MATHML_ELEMENT (child))
+	if (!LSM_IS_MATHML_ELEMENT (child))
 		return FALSE;
 
 	if (self->first_child == NULL ||
