@@ -53,6 +53,8 @@ typedef struct _LsmMathmlActionElement LsmMathmlActionElement;
 typedef struct _LsmMathmlAlignMarkElement LsmMathmlAlignMarkElement;
 typedef struct _LsmMathmlAlignGroupElement LsmMathmlAlignGroupElement;
 
+typedef struct _LsmMathmlItexElement LsmMathmlItexElement;
+
 typedef struct _LsmMathmlView LsmMathmlView;
 
 typedef struct _LsmMathmlStyle LsmMathmlStyle;

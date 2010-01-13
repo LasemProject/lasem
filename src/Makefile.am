@@ -66,6 +66,7 @@ liblasem_la_SOURCES =				\
 	lsmmathmlglyphtableams.c		\
 	lsmmathmlalignmarkelement.c		\
 	lsmmathmlaligngroupelement.c		\
+	lsmmathmlitexelement.c			\
 	lsmmathmlutils.c			\
 	lsmmathmllayoututils.c			\
 	lsmsvgenums.c				\
@@ -150,6 +151,7 @@ LASEM_HDRS = \
 	lsmmathmlglyphtableams.h		\
 	lsmmathmlalignmarkelement.h		\
 	lsmmathmlaligngroupelement.h		\
+	lsmmathmlitexelement.h			\
 	lsmmathmlutils.h			\
 	lsmmathmllayoututils.h			\
 	lsmsvg.h				\

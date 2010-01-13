@@ -41,6 +41,7 @@
 #include <lsmmathmlstyleelement.h>
 #include <lsmmathmlalignmarkelement.h>
 #include <lsmmathmlaligngroupelement.h>
+#include <lsmmathmlitexelement.h>
 #include <lsmmathmlview.h>
 #include <lsmdebug.h>
 #include <gio/gio.h>
@@ -123,6 +124,10 @@ lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_na
 		node = lsm_mathml_align_mark_element_new ();
 	else if (strcmp (tag_name, "maligngroup") == 0)
 		node = lsm_mathml_align_group_element_new ();
+	else if (strcmp (tag_name, "lasem:itex") == 0)
+		node = lsm_mathml_itex_element_new ();
+	else
+		lsm_debug ("[MathmlDocument::create_element] Unknown tag (%s)", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
 }

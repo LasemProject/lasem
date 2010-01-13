@@ -1,0 +1,12 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:lasem="lasem.dtd">
+<mstyle mathsize="20pt">
+	<mfrac>
+	<lasem:itex> $f(x)=\sqrt{\frac{x-1}{x+1}}$ </lasem:itex>
+	<mrow>
+	<mi>a</mi>
+	<mo>+</mo>
+	<lasem:itex>$$\sqrt{2}$$</lasem:itex>
+	</mrow>
+	</mfrac>
+	</mstyle>
+</math>
