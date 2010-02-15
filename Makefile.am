@@ -24,5 +24,7 @@ dist-hook:
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = lasem-@LASEM_API_VERSION@.pc
 
+CLEANFILES = $(pkgconfig_DATA)
+
 %-@LASEM_API_VERSION@.pc: %.pc
 	cp $< $@
