@@ -5,14 +5,19 @@ m4_define([lasem_version_minor], [1])
 m4_define([lasem_version_micro], [4])
 m4_define([lasem_version], [lasem_version_major.lasem_version_minor.lasem_version_micro])
 
+m4_define([lasem_libtool_current], m4_eval(100 * lasem_version_major + lasem_version_minor))
+
 AC_INIT([lasem],[lasem_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=lasem],[lasem])
 
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([-Wno-portability])
 AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
 AC_CONFIG_MACRO_DIR([m4])
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+
+AC_SUBST([LASEM_API_VERSION], [0.2])
+AC_SUBST([LASEM_LIBTOOL_VERSION], [lasem_libtool_current:lasem_version_micro:0])
 
 AC_SEARCH_LIBS([strerror],[cposix])
 AC_PROG_CC

@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = itex2mml src po
 
-lasemdocdir = ${prefix}/doc/lasem
+lasemdocdir = ${prefix}/doc/lasem-@LASEM_API_VERSION@
 lasemdoc_DATA = 	\
 	README		\
 	COPYING		\
@@ -22,4 +22,7 @@ dist-hook:
 	done
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = lasem.pc
+pkgconfig_DATA = lasem-@LASEM_API_VERSION@.pc
+
+%-@LASEM_API_VERSION@.pc: %.pc
+	cp $< $@

@@ -10,18 +10,18 @@ AM_CFLAGS =\
 	 -g \
 	 -O0
 
-lib_LTLIBRARIES = liblasem.la
+lib_LTLIBRARIES = liblasem-@LASEM_API_VERSION@.la
 
 BUILT_SOURCES = lsmenumtypes.c lsmenumtypes.h
 
 EXTRA_DIST = lsmenumtypes.c.template \
 	     lsmenumtypes.h.template
 
-liblasem_la_LIBADD = 				\
+liblasem_@LASEM_API_VERSION@_la_LIBADD = 				\
 	../itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
 
-liblasem_la_SOURCES =				\
+liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmenumtypes.c				\
 	lsmdebug.c				\
 	lsmstr.c				\
@@ -191,15 +191,16 @@ LASEM_HDRS = \
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h
 
-liblasem_ladir = $(includedir)/lasem
-liblasem_la_HEADERS = $(LASEM_HDRS)
-liblasem_la_HEADERS += lsmenumtypes.h
+liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
+liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_HDRS)
+liblasem_@LASEM_API_VERSION@_la_HEADERS += lsmenumtypes.h
+liblasem_@LASEM_API_VERSION@_la_LDFLAGS = -version-info $(LASEM_LIBTOOL_VERSION)
 
 lsmenumtypes.h: lsmenumtypes.h.template $(LASEM_HDRS) $(GLIB_MKENUMS)
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.h.template $(liblasem_la_HEADERS)) > $@
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.h.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
 
 lsmenumtypes.c: lsmenumtypes.c.template $(LASEM_HDRS) $(GLIB_MKENUMS)
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_la_HEADERS)) > $@
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
 
 bin_PROGRAMS = lasemtest lasemrender
 
@@ -208,13 +209,13 @@ lasemrender_SOURCES = 				\
 
 lasemrender_LDFLAGS =
 
-lasemrender_LDADD = $(LASEM_LIBS) liblasem.la ../itex2mml/libitex2mml.la
+lasemrender_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
 
 lasemtest_SOURCES = 				\
 	lasemtest.c
 
 lasemtest_LDFLAGS =
 
-lasemtest_LDADD = $(LASEM_LIBS) liblasem.la ../itex2mml/libitex2mml.la
+lasemtest_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
 
 CLEAN_FILES = $(BUILT_SOURCES)

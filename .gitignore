@@ -22,6 +22,6 @@ tags
 *.lineno
 *.swp
 lasem.svg
-lasem.pc
+lasem*.pc
 lasemtest.xml
 manugen
