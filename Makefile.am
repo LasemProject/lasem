@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+
 SUBDIRS = itex2mml src po
 
 lasemdocdir = ${prefix}/doc/lasem
@@ -11,7 +13,7 @@ lasemdoc_DATA = 	\
 	INSTALL		\
 	NEWS
 
-EXTRA_DIST = $(lasemdoc_DATA)
+EXTRA_DIST = $(lasemdoc_DATA) m4/introspection.m4
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:

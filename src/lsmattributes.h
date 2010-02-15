@@ -35,7 +35,7 @@ gboolean	lsm_attribute_is_defined			(const LsmAttribute *attribute);
 
 typedef struct {
 	char const *		name;
-	ptrdiff_t 		attribute_offset;
+	int 			attribute_offset;
 	const LsmTraitClass *	trait_class;
 	const void *		trait_default;
 } LsmAttributeInfos;
