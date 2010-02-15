@@ -1,3 +1,8 @@
+-include $(INTROSPECTION_MAKEFILE)
+  INTROSPECTION_GIRS =
+  INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+  INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
@@ -218,4 +223,28 @@ lasemtest_LDFLAGS =
 
 lasemtest_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
 
-CLEAN_FILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES)
+
+if HAVE_INTROSPECTION
+
+introspection_files = $(liblasem_@LASEM_API_VERSION@_la_SOURCES) \
+		      $(liblasem_@LASEM_API_VERSION@_la_HEADERS)
+
+Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER)
+Lasem_0_4_gir_INCLUDES = GObject-2.0 cairo-1.0 Pango-1.0 GdkPixbuf-2.0
+Lasem_0_4_gir_SCANNERFLAGS = --strip-prefix=Lsm
+Lasem_0_4_gir_CFLAGS = $(INCLUDES)
+Lasem_0_4_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
+Lasem_0_4_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
+
+INTROSPECTION_GIRS += Lasem-@LASEM_API_VERSION@.gir
+
+girdir = $(datadir)/gir-1.0
+dist_gir_DATA = $(INTROSPECTION_GIRS)
+
+typelibdir = $(libdir)/girepositry-1.0
+typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+
+CLEANFILES += $(dist_gir_DATA) $(typelib_DATA)
+
+endif

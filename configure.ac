@@ -10,8 +10,9 @@ m4_define([lasem_libtool_current], m4_eval(100 * lasem_version_major + lasem_ver
 AC_INIT([lasem],[lasem_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=lasem],[lasem])
 
 AM_INIT_AUTOMAKE([-Wno-portability])
-AC_CONFIG_HEADERS([config.h])
 AM_MAINTAINER_MODE
+
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -33,7 +34,7 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
 AM_GLIB_GNU_GETTEXT
 IT_PROG_INTLTOOL([0.35.0])
 
-LT_INIT
+LT_INIT()
 
 PKG_CHECK_MODULES(LASEM, [gobject-2.0
 			  glib-2.0
@@ -47,6 +48,8 @@ AC_SUBST(LASEM_CFLAGS)
 AC_SUBST(LASEM_LIBS)
 
 AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
+
+GOBJECT_INTROSPECTION_CHECK([0.6.7])
 
 AC_CONFIG_FILES([
 Makefile
