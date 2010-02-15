@@ -229,7 +229,7 @@ if HAVE_INTROSPECTION
 introspection_files = $(liblasem_la_SOURCES) \
 		      $(liblasem_la_HEADERS)
 
-Lasem-1.0.gir: $(INTROSPECTION_SCANNER) liblasem.la Makefile
+Lasem-1.0.gir: $(INTROSPECTION_SCANNER)
 Lasem_1_0_gir_INCLUDES = GObject-2.0 cairo-1.0 Pango-1.0 GdkPixbuf-2.0
 Lasem_1_0_gir_SCANNERFLAGS = --strip-prefix=Lsm
 Lasem_1_0_gir_CFLAGS = $(INCLUDES)
