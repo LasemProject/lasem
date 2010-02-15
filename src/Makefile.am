@@ -14,6 +14,9 @@ lib_LTLIBRARIES = liblasem.la
 
 BUILT_SOURCES = lsmenumtypes.c lsmenumtypes.h
 
+EXTRA_DIST = lsmenumtypes.c.template \
+	     lsmenumtypes.h.template
+
 liblasem_la_LIBADD = 				\
 	../itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
