@@ -17,10 +17,10 @@ AM_CFLAGS =\
 
 lib_LTLIBRARIES = liblasem-@LASEM_API_VERSION@.la
 
-BUILT_SOURCES = lsmenumtypes.c lsmenumtypes.h
+BUILT_SOURCES = lsmenumtypes.h lsmenumtypes.c
 
-EXTRA_DIST = lsmenumtypes.c.template \
-	     lsmenumtypes.h.template
+EXTRA_DIST = lsmenumtypes.h.template \
+	     lsmenumtypes.c.template
 
 liblasem_@LASEM_API_VERSION@_la_LIBADD = 				\
 	../itex2mml/libitex2mml.la		\
