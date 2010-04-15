@@ -4,11 +4,7 @@ INCLUDES = \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\" $(LASEM_CFLAGS) \
 	-DG_LOG_DOMAIN=\"Lasem\"
 
-AM_CFLAGS =\
-	 -Wall\
-	 -Werror \
-	 -g \
-	 -O0
+AM_CFLAGS = -Wall
 
 lib_LTLIBRARIES = liblasem-@LASEM_API_VERSION@.la
 
