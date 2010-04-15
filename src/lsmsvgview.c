@@ -907,7 +907,8 @@ paint (LsmSvgView *view)
 		cairo_path_data_t *next_data;
 		double stroke_width;
 		double prev_x, prev_y;
-		double x, y;
+		double x = 0;
+		double y = 0;
 		double next_x, next_y;
 		cairo_path_data_type_t type;
 		cairo_path_data_type_t next_type;
