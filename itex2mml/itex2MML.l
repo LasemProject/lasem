@@ -1,5 +1,5 @@
-/*             itex2MML 1.3.14
- *   itex2MML.l last modified 10/11/2009
+/*             itex2MML 1.3.22
+ *   itex2MML.l last modified 4/18/2010
  */
 
 %{
@@ -181,13 +181,13 @@ int itex2MML_displaymode = 0;
 "\\psi"  |
 "\\omega" |
 "\\backepsilon"   |
-"\\varepsilon" |
 "\\varkappa" |
 "\\varpi" |
 "\\varrho" |
 "\\varsigma" |
 "\\vartheta"      {yylval=itex2MML_copy2(yytext, ";"); if (yylval != itex2MML_empty_string) yylval[0]='&'; return MI;}
 
+"\\varepsilon" {yylval=itex2MML_copy_string("&#x03B5;"); return MI;}
 "\\phi"  {yylval=itex2MML_copy_string("&#x03D5;"); return MI;}
 "\\varphi"  {yylval=itex2MML_copy_string("&#x03C6;"); return MI;}
 
@@ -408,11 +408,25 @@ int itex2MML_displaymode = 0;
 "\\Colonsim"     {yylval=itex2MML_copy_string("&#x2237;&#x223C;"); return MOS;}
 "\\dblcolon"     {yylval=itex2MML_copy_string("&Colon;"); return MOL;}
 
+"\\ast"  |
+"\\Cap"  |
+"\\Cup"  |
+"\\circledast"  |
+"\\circledcirc" |
+"\\curlyvee"    |
+"\\curlywedge"  |
+"\\divideontimes" |
+"\\dotplus" |
+"\\leftthreetimes" |
+"\\rightthreetimes" |
+"\\veebar" |
 "\\gt"   |
 "\\lt"   |
 "\\approxeq"   |
 "\\backsim"   |
 "\\backsimeq"   |
+"\\barwedge"    |
+"\\doublebarwedge" |
 "\\subset"  |
 "\\subseteq" |
 "\\subseteqq" |
@@ -589,7 +603,18 @@ int itex2MML_displaymode = 0;
 "\\lozenge" |
 "\\blacksquare" |
 "\\blacktriangle" |
+"\\blacktriangleleft" |
+"\\blacktriangleright" |
 "\\blacktriangledown" |
+"\\ntriangleleft" |
+"\\ntriangleright" |
+"\\ntrianglelefteq" |
+"\\ntrianglerighteq" |
+"\\trianglelefteq" |
+"\\trianglerighteq" |
+"\\triangleq" |
+"\\vartriangleleft" |
+"\\vartriangleright" |
 "\\forall" |
 "\\bigtriangleup" |
 "\\bigtriangledown" |
@@ -608,6 +633,7 @@ int itex2MML_displaymode = 0;
 
 "\\Perp" |
 "\\Vbar" {yylval=itex2MML_copy_string("&Vbar;"); return MOL;}
+"\\boxdot" {yylval=itex2MML_copy_string("&sdotb;"); return MOL;}
 "\\Box" |
 "\\square" {yylval=itex2MML_copy_string("&square;"); return MOL;}
 "\\emptyset" |
@@ -664,6 +690,10 @@ int itex2MML_displaymode = 0;
 "\\circleddash" |
 "\\odash"   {yylval=itex2MML_copy_string("&odash;"); return MOL;}
 
+"\\intercal"   {yylval=itex2MML_copy_string("&intcal;"); return MOL;}
+"\\smallfrown"   {yylval=itex2MML_copy_string("&sfrown;"); return MOL;}
+"\\smallsmile"   {yylval=itex2MML_copy_string("&ssmile;"); return MOL;}
+
 "\\boxminus" |
 "\\minusb"   {yylval=itex2MML_copy_string("&boxminus;"); return MOL;}
 "\\boxplus" |
@@ -683,6 +713,8 @@ int itex2MML_displaymode = 0;
 "\\Otimes"       {yylval=itex2MML_copy_string("&Otimes;"); return MOL;}
 "\\bigotimes"     {yylval=itex2MML_copy_string("&bigotimes;"); return MOL;}
 
+"\\ominus"       {yylval=itex2MML_copy_string("&ominus;"); return MOL;}
+"\\oslash"       {yylval=itex2MML_copy_string("&osol;"); return MOL;}
 
 "\\oplus"       {yylval=itex2MML_copy_string("&oplus;"); return MOL;}
 "\\Oplus"   |
@@ -760,6 +792,7 @@ int itex2MML_displaymode = 0;
 "\\text"          {BEGIN(PLAINTEXT); return TEXTBOX;}
 
 "\\statusline"    {BEGIN(PLAINTEXT); return STATLINE;}
+"\\tooltip"       {BEGIN(PLAINTEXT); return TOOLTIP;}
 
 "\\toggle"        {return TOGGLE;}
 
@@ -869,7 +902,7 @@ int itex2MML_displaymode = 0;
 "\&#x"[a-fA-F0-9]+";"  {yylval=itex2MML_copy_string(yytext); return MI;}
 
 "\n"             itex2MML_lineno++;
-[\r\t ]+         ;
+[\r\t ]+           ;
 
 
 .              {return UNKNOWNCHAR;}
