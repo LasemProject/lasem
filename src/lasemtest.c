@@ -106,7 +106,7 @@ lasem_test_render (char const *filename)
 	mime = g_content_type_guess (filename, NULL, 0, NULL);
 
 	is_svg = strcmp (mime, "image/svg+xml") == 0;
-	is_mathml = strcmp (mime, "text/mathml") == 0;
+	is_mathml = (strcmp (mime, "text/mathml") == 0) || (strcmp (mime, "application/mathml+xml") == 0);
 	is_xml = is_svg || is_mathml;
 
 	g_printf ("\trender %s (%s)\n", filename, mime);
