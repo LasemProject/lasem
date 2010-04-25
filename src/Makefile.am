@@ -203,7 +203,8 @@ lsmenumtypes.h: lsmenumtypes.h.template $(LASEM_HDRS) $(GLIB_MKENUMS)
 lsmenumtypes.c: lsmenumtypes.c.template $(LASEM_HDRS) $(GLIB_MKENUMS)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
 
-bin_PROGRAMS = lasemtest lasemrender
+bin_PROGRAMS = lasemrender
+noinst_PROGRAMS = lasemtest
 
 lasemrender_SOURCES = 				\
 	lasemrender.c
