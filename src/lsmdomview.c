@@ -217,7 +217,8 @@ lsm_dom_view_finalize (GObject *object)
 {
 	LsmDomView *view = LSM_DOM_VIEW (object);
 
-	g_object_unref (view->document);
+	if (view->document)
+		g_object_unref (view->document);
 
 	if (view->pango_layout != NULL)
 		g_object_unref (view->pango_layout);
