@@ -137,18 +137,32 @@ lsm_attribute_manager_set_attribute (LsmAttributeManager *manager,
 	attribute->value = g_strdup (value);
 
 	if (attribute->value != NULL) {
-		if (trait_class->from_string)
-			trait_class->from_string (ATTRIBUTE_TRAIT (attribute), (char *) value);
-	} else {
-		if (trait_class->init)
-			trait_class->init (ATTRIBUTE_TRAIT (attribute), attribute_infos->trait_default);
-		else
-			/* Simple memcpy for default init implementation, discarded by a NULL default value. */
-			if (attribute_infos->trait_default != NULL)
-				memcpy (ATTRIBUTE_TRAIT (attribute),
-					attribute_infos->trait_default,
-					trait_class->size);
+		if (trait_class->from_string) {
+			gboolean success;
+
+			success = trait_class->from_string (ATTRIBUTE_TRAIT (attribute), (char *) value);
+			if (success)
+				return TRUE;
+
+			if (trait_class->finalize)
+				trait_class->finalize (ATTRIBUTE_TRAIT (attribute));
+			g_free (attribute->value);
+			attribute->value = NULL;
+
+			lsm_debug ("[LsmAttributeManager::set_attribute] Invalid attribute value %s='%s'",
+				   name, value);
+		} else
+			return TRUE;
 	}
+
+	if (trait_class->init)
+		trait_class->init (ATTRIBUTE_TRAIT (attribute), attribute_infos->trait_default);
+	else
+		/* Simple memcpy for default init implementation, discarded by a NULL default value. */
+		if (attribute_infos->trait_default != NULL)
+			memcpy (ATTRIBUTE_TRAIT (attribute),
+				attribute_infos->trait_default,
+				trait_class->size);
 
 	return TRUE;
 }

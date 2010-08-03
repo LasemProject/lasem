@@ -104,8 +104,18 @@ _set_property (LsmPropertyManager *manager,
 	if (trait_class->init)
 		trait_class->init (PROPERTY_TRAIT (property), NULL);
 
-	if (property->value != NULL && trait_class->from_string)
-		trait_class->from_string (PROPERTY_TRAIT (property), (char *) value);
+	if (property->value != NULL && trait_class->from_string) {
+		gboolean success;
+
+		success = trait_class->from_string (PROPERTY_TRAIT (property), (char *) value);
+		if (!success) {
+			lsm_debug ("[LsmPropertyManager::set_property] Invalid property value %s='%s'",
+				   name, value);
+			property_free (property, property_infos->trait_class);
+
+			return FALSE;
+		}
+	}
 
 	property_bag->properties = g_slist_prepend (property_bag->properties, property);
 
