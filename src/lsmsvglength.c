@@ -66,6 +66,7 @@ lsm_svg_length_normalize (const LsmSvgLength *length,
 				case LSM_SVG_LENGTH_DIRECTION_VERTICAL:
 					return length->value_unit * viewbox->viewbox.height / 100.0;
 				case LSM_SVG_LENGTH_DIRECTION_DIAGONAL:
+				case LSM_SVG_LENGTH_DIRECTION_ERROR:
 					return length->value_unit * viewbox->diagonal / 100.0;
 			}
 			break;
