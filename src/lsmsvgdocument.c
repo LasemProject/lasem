@@ -38,6 +38,7 @@
 #include <lsmsvgpolygonelement.h>
 #include <lsmsvgpathelement.h>
 #include <lsmsvgtextelement.h>
+#include <lsmsvgtspanelement.h>
 #include <lsmsvglineargradientelement.h>
 #include <lsmsvgradialgradientelement.h>
 #include <lsmsvgstopelement.h>
@@ -104,6 +105,8 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_polygon_element_new ();
 	else if (strcmp (tag_name, "text") == 0)
 		node = lsm_svg_text_element_new ();
+	else if (strcmp (tag_name, "tspan") == 0)
+		node = lsm_svg_tspan_element_new ();
 	else if (strcmp (tag_name, "linearGradient") == 0)
 		node = lsm_svg_linear_gradient_element_new ();
 	else if (strcmp (tag_name, "radialGradient") == 0)
