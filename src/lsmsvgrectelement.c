@@ -91,7 +91,7 @@ lsm_svg_rect_element_new (void)
 }
 
 static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
-static const LsmSvgLength unset_length_default = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_UNKNOWN};
+static const LsmSvgLength unset_length_default = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR};
 
 static void
 lsm_svg_rect_element_init (LsmSvgRectElement *self)

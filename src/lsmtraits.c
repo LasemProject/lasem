@@ -1,16 +1,20 @@
 #include <lsmtraits.h>
 #include <lsmstr.h>
+#include <string.h>
 
 const LsmTraitClass lsm_null_trait_class = {
 	.size = 0
 };
 
-static void
+static gboolean
 lsm_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	double *trait = (double *) abstract_trait;
+	char *end_ptr;
 
-	*trait = g_strtod (string, NULL);
+	*trait = g_ascii_strtod (string, &end_ptr);
+
+	return end_ptr != string;
 }
 
 static char *
@@ -27,7 +31,7 @@ const LsmTraitClass lsm_double_trait_class = {
 	.to_string = lsm_double_trait_to_string
 };
 
-static void
+static gboolean
 lsm_box_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmBox *trait = (LsmBox *) abstract_trait;
@@ -47,13 +51,15 @@ lsm_box_trait_from_string (LsmTrait *abstract_trait, char *string)
 		trait->width = value[2];
 		trait->height = value[3];
 
-		return;
+		return TRUE;
 	}
 
 	trait->x =
 	trait->y =
 	trait->width =
 	trait->height = 0.0;
+
+	return FALSE;
 }
 
 char *
@@ -71,4 +77,19 @@ const LsmTraitClass lsm_box_trait_class = {
 	.from_string = lsm_box_trait_from_string,
 	.to_string = lsm_box_trait_to_string
 };
+
+int
+lsm_enum_value_from_string (const char *string, const char **strings, unsigned int n_strings)
+{
+	int i;
+
+	if (string == NULL)
+		return -1;
+
+	for (i = 0; i < n_strings; i++)
+		if (strcmp (string, strings[i]) == 0)
+			return i;
+
+	return -1;
+}
 

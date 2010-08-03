@@ -29,14 +29,16 @@
 const LsmSvgColor lsm_svg_color_null = {0.0, 0.0, 0.0};
 const LsmSvgDashArray lsm_svg_dash_array_null = {0, NULL};
 
-static void
+static gboolean
 lsm_svg_length_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLength *svg_length = (LsmSvgLength *) abstract_trait;
 	char *length_type_str;
 
-	svg_length->value_unit = g_strtod (string, &length_type_str);
+	svg_length->value_unit = g_ascii_strtod (string, &length_type_str);
 	svg_length->type = lsm_svg_length_type_from_string (length_type_str);
+
+	return length_type_str != string && svg_length->type >= 0;
 }
 
 static char *
@@ -119,7 +121,7 @@ _init_matrix (LsmSvgMatrix *matrix, LsmSvgTransformType transform, unsigned int 
 	lsm_svg_matrix_init_identity (matrix);
 }
 
-static void
+static gboolean
 lsm_svg_matrix_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgMatrix *matrix = (LsmSvgMatrix *) abstract_trait;
@@ -151,7 +153,7 @@ lsm_svg_matrix_trait_from_string (LsmTrait *abstract_trait, char *string)
 			transform = LSM_SVG_TRANSFORM_TYPE_SKEW_Y;
 			string += 5;
 		} else
-			break;
+			return FALSE;
 
 		lsm_str_skip_spaces (&string);
 
@@ -179,9 +181,13 @@ lsm_svg_matrix_trait_from_string (LsmTrait *abstract_trait, char *string)
 				_init_matrix (&new_matrix, transform, n_values, values);
 
 				lsm_svg_matrix_multiply (matrix, &new_matrix, matrix);
-			}
-		}
+			} else
+				return FALSE;
+		} else
+			return FALSE;
 	}
+
+	return TRUE;
 }
 
 static char *
@@ -294,7 +300,7 @@ _parse_color (char *string,
 	return string;
 }
 
-static void
+static gboolean
 lsm_svg_paint_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgPaint *paint = (LsmSvgPaint *) abstract_trait;
@@ -342,6 +348,10 @@ lsm_svg_paint_trait_from_string (LsmTrait *abstract_trait, char *string)
 		}
 
 	paint->type = paint_type;
+
+	/* TODO better syntax error check */
+
+	return TRUE;
 }
 
 char *
@@ -368,12 +378,14 @@ const LsmTraitClass lsm_svg_paint_trait_class = {
 	.to_string = lsm_svg_paint_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_fill_rule_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgFillRule *trait = (LsmSvgFillRule *) abstract_trait;
 
 	*trait = lsm_svg_fill_rule_from_string (string);
+
+	return *trait >= 0;
 }
 
 char *
@@ -390,12 +402,14 @@ const LsmTraitClass lsm_svg_fill_rule_trait_class = {
 	.to_string = lsm_svg_fill_rule_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_line_join_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLineJoin *trait = (LsmSvgLineJoin *) abstract_trait;
 
 	*trait = lsm_svg_line_join_from_string (string);
+
+	return *trait >= 0;
 }
 
 char *
@@ -412,12 +426,14 @@ const LsmTraitClass lsm_svg_line_join_trait_class = {
 	.to_string = lsm_svg_line_join_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_line_cap_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLineCap *trait = (LsmSvgLineCap *) abstract_trait;
 
 	*trait = lsm_svg_line_cap_from_string (string);
+
+	return *trait >= 0;
 }
 
 static char *
@@ -474,7 +490,7 @@ lsm_svg_dash_array_duplicate (const LsmSvgDashArray *origin)
 	return duplicate;
 }
 
-static void
+static gboolean
 lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgDashArray *dash_array = (LsmSvgDashArray *) abstract_trait;
@@ -517,6 +533,10 @@ lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 			}
 		}
 	}
+
+	/* TODO better syntax error check */
+
+	return TRUE;
 }
 
 static char *
@@ -542,13 +562,17 @@ const LsmTraitClass lsm_svg_dash_array_trait_class = {
 	.finalize = lsm_svg_dash_array_trait_finalize
 };
 
-static void
+static gboolean
 lsm_svg_color_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgColor *color = (LsmSvgColor *) abstract_trait;
 	LsmSvgPaintType paint_type;
 
 	_parse_color (string, color, &paint_type);
+
+	/* TODO Better error check */
+
+	return TRUE;
 }
 
 static char *
@@ -571,12 +595,14 @@ const LsmTraitClass lsm_svg_color_trait_class = {
 	.to_string = lsm_svg_color_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_marker_units_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgMarkerUnits *trait = (LsmSvgMarkerUnits *) abstract_trait;
 
 	*trait = lsm_svg_marker_units_from_string (string);
+
+	return *trait >= 0;
 }
 
 char *
@@ -593,12 +619,14 @@ const LsmTraitClass lsm_svg_marker_units_trait_class = {
 	.to_string = lsm_svg_marker_units_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_pattern_units_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgPatternUnits *trait = (LsmSvgPatternUnits *) abstract_trait;
 
 	*trait = lsm_svg_pattern_units_from_string (string);
+
+	return *trait >= 0;
 }
 
 char *
@@ -615,7 +643,7 @@ const LsmTraitClass lsm_svg_pattern_units_trait_class = {
 	.to_string = lsm_svg_pattern_units_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_preserve_aspect_ratio_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgPreserveAspectRatio *trait = (LsmSvgPreserveAspectRatio *) abstract_trait;
@@ -641,6 +669,10 @@ lsm_svg_preserve_aspect_ratio_trait_from_string (LsmTrait *abstract_trait, char 
 	} else trait->align = LSM_SVG_ALIGN_X_MID_Y_MID;
 
 	g_strfreev (tokens);
+
+	/* TODO Better error check */
+
+	return TRUE;
 }
 
 char *
@@ -659,12 +691,14 @@ const LsmTraitClass lsm_svg_preserve_aspect_ratio_trait_class = {
 	.to_string = lsm_svg_preserve_aspect_ratio_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_spread_method_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgSpreadMethod *trait = (LsmSvgSpreadMethod *) abstract_trait;
 
 	*trait = lsm_svg_spread_method_from_string (string);
+
+	return *trait >= 0;
 }
 
 static char *
@@ -681,18 +715,23 @@ const LsmTraitClass lsm_svg_spread_method_trait_class = {
 	.to_string = lsm_svg_spread_method_trait_to_string
 };
 
-static void
+static gboolean
 lsm_svg_angle_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgAngle *trait = (LsmSvgAngle *) abstract_trait;
+	char *end_ptr;
 
 	if (g_strcmp0 (string, "auto") == 0) {
 		trait->type = LSM_SVG_ANGLE_TYPE_AUTO;
 		trait->angle = 0.0;
-	} else {
-		trait->type = LSM_SVG_ANGLE_TYPE_FIXED;
-		trait->angle = g_strtod (string, NULL);
+
+		return TRUE;
 	}
+
+	trait->type = LSM_SVG_ANGLE_TYPE_FIXED;
+	trait->angle = g_ascii_strtod (string, &end_ptr);
+
+	return end_ptr != string;
 }
 
 static char *

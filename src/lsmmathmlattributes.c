@@ -147,7 +147,6 @@ lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
 		case LSM_MATHML_SPACE_NAME_INFINITY:
 			attribute->value = G_MAXDOUBLE;
 			break;
-		case LSM_MATHML_SPACE_NAME_ERROR:
 		default:
 			attribute->value = lsm_mathml_length_normalize (&space->length,
 									base,

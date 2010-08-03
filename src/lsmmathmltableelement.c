@@ -30,9 +30,9 @@
 
 static const gboolean equal_default = FALSE;
 static const LsmMathmlLine frame_default = LSM_MATHML_LINE_NONE;
-static unsigned int row_align_values[1] = {LSM_MATHML_ROW_ALIGN_BASELINE};
+static int row_align_values[1] = {LSM_MATHML_ROW_ALIGN_BASELINE};
 static const LsmMathmlEnumList row_align_default = {.n_values = 1, .values = row_align_values};
-static unsigned int column_align_values[1] = {LSM_MATHML_COLUMN_ALIGN_CENTER};
+static int column_align_values[1] = {LSM_MATHML_COLUMN_ALIGN_CENTER};
 static const LsmMathmlEnumList column_align_default = {.n_values = 1, .values = column_align_values};
 static LsmMathmlSpace row_spacing_values[1] = {
 	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EX, .value = 1.0}}
@@ -42,7 +42,7 @@ static LsmMathmlSpace column_spacing_values[1] = {
 	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EM, .value = 0.8}}
 };
 static const LsmMathmlSpaceList column_spacing_default = {.n_spaces = 1, .spaces = column_spacing_values};
-static unsigned int lines_values[1] = {LSM_MATHML_LINE_NONE};
+static int lines_values[1] = {LSM_MATHML_LINE_NONE};
 static const LsmMathmlEnumList lines_default = {.n_values = 1, .values = lines_values};
 static LsmMathmlSpace frame_spacing_values[2] = {
 	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EM, .value = 0.4}},

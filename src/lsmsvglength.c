@@ -56,7 +56,7 @@ lsm_svg_length_normalize (const LsmSvgLength *length,
 
 	switch (length->type) {
 		case LSM_SVG_LENGTH_TYPE_NUMBER:
-		case LSM_SVG_LENGTH_TYPE_UNKNOWN:
+		case LSM_SVG_LENGTH_TYPE_ERROR:
 		case LSM_SVG_LENGTH_TYPE_PX:
 			return length->value_unit;
 		case LSM_SVG_LENGTH_TYPE_PERCENTAGE:

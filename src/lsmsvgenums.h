@@ -28,11 +28,13 @@
 G_BEGIN_DECLS
 
 typedef enum {
+	LSM_SVG_ANGLE_TYPE_ERROR = -1,
 	LSM_SVG_ANGLE_TYPE_AUTO,
 	LSM_SVG_ANGLE_TYPE_FIXED
 } LsmSvgAngleType;
 
 typedef enum {
+	LSM_SVG_PAINT_TYPE_ERROR = -1,
 	LSM_SVG_PAINT_TYPE_UNKNOWN = 0,
 	LSM_SVG_PAINT_TYPE_RGB_COLOR,
 	LSM_SVG_PAINT_TYPE_RGB_COLOR_ICC_COLOR,
@@ -46,13 +48,14 @@ typedef enum {
 } LsmSvgPaintType;
 
 typedef enum {
+	LSM_SVG_LENGTH_DIRECTION_ERROR = -1,
 	LSM_SVG_LENGTH_DIRECTION_HORIZONTAL,
 	LSM_SVG_LENGTH_DIRECTION_VERTICAL,
 	LSM_SVG_LENGTH_DIRECTION_DIAGONAL
 } LsmSvgLengthDirection;
 
 typedef enum {
-	LSM_SVG_LENGTH_TYPE_UNKNOWN,
+	LSM_SVG_LENGTH_TYPE_ERROR = -1,
 	LSM_SVG_LENGTH_TYPE_NUMBER,
 	LSM_SVG_LENGTH_TYPE_PERCENTAGE,
 	LSM_SVG_LENGTH_TYPE_EMS,
@@ -69,6 +72,7 @@ const char * 		lsm_svg_length_type_to_string 		(LsmSvgLengthType length_type);
 LsmSvgLengthType	lsm_svg_length_type_from_string 	(const char *string);
 
 typedef enum {
+	LSM_SVG_FILL_RULE_ERROR = -1,
 	LSM_SVG_FILL_RULE_NON_ZERO,
 	LSM_SVG_FILL_RULE_EVEN_ODD
 } LsmSvgFillRule;
@@ -77,6 +81,7 @@ const char * 		lsm_svg_fill_rule_to_string 		(LsmSvgFillRule fill_rule);
 LsmSvgFillRule 		lsm_svg_fill_rule_from_string 		(const char *string);
 
 typedef enum {
+	LSM_SVG_LINE_JOIN_ERROR = -1,
 	LSM_SVG_LINE_JOIN_MITER,
 	LSM_SVG_LINE_JOIN_ROUND,
 	LSM_SVG_LINE_JOIN_BEVEL
@@ -86,6 +91,7 @@ const char * 		lsm_svg_line_join_to_string 		(LsmSvgLineJoin line_join);
 LsmSvgLineJoin 		lsm_svg_line_join_from_string 		(const char *string);
 
 typedef enum {
+	LSM_SVG_LINE_CAP_ERROR = -1,
 	LSM_SVG_LINE_CAP_BUTT,
 	LSM_SVG_LINE_CAP_ROUND,
 	LSM_SVG_LINE_CAP_SQUARE
@@ -95,7 +101,7 @@ const char * 		lsm_svg_line_cap_to_string 		(LsmSvgLineCap line_cap);
 LsmSvgLineCap		lsm_svg_line_cap_from_string 		(const char *string);
 
 typedef enum {
-	LSM_SVG_TRANSFORM_TYPE_UNKNOWN,
+	LSM_SVG_TRANSFORM_TYPE_ERROR = -1,
 	LSM_SVG_TRANSFORM_TYPE_MATRIX,
 	LSM_SVG_TRANSFORM_TYPE_TRANSLATE,
 	LSM_SVG_TRANSFORM_TYPE_SCALE,
@@ -105,6 +111,7 @@ typedef enum {
 } LsmSvgTransformType;
 
 typedef enum {
+	LSM_SVG_PATTERN_UNITS_ERROR = -1,
 	LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE,
 	LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX
 } LsmSvgPatternUnits;
@@ -113,6 +120,7 @@ const char * 		lsm_svg_pattern_units_to_string 		(LsmSvgPatternUnits units);
 LsmSvgPatternUnits	lsm_svg_pattern_units_from_string		(const char *string);
 
 typedef enum {
+	LSM_SVG_MARKER_UNITS_ERROR = -1,
 	LSM_SVG_MARKER_UNITS_USER_SPACE_ON_USE,
 	LSM_SVG_MARKER_UNITS_STROKE_WIDTH
 } LsmSvgMarkerUnits;
@@ -121,6 +129,7 @@ const char * 		lsm_svg_marker_units_to_string 			(LsmSvgMarkerUnits units);
 LsmSvgMarkerUnits	lsm_svg_marker_units_from_string		(const char *string);
 
 typedef enum {
+	LSM_SVG_SPREAD_METHOD_ERROR = -1,
 	LSM_SVG_SPREAD_METHOD_PAD,
 	LSM_SVG_SPREAD_METHOD_REFLECT,
 	LSM_SVG_SPREAD_METHOD_REPEAT
@@ -130,7 +139,7 @@ const char * 		lsm_svg_spread_method_to_string 		(LsmSvgSpreadMethod method);
 LsmSvgSpreadMethod	lsm_svg_spread_method_from_string		(const char *string);
 
 typedef enum {
-	LSM_SVG_ALIGN_UNKNOWN,
+	LSM_SVG_ALIGN_ERROR = -1,
 	LSM_SVG_ALIGN_NONE,
 	LSM_SVG_ALIGN_X_MIN_Y_MIN,
 	LSM_SVG_ALIGN_X_MID_Y_MIN,
@@ -147,7 +156,7 @@ const char * 		lsm_svg_align_to_string 		(LsmSvgAlign align);
 LsmSvgAlign		lsm_svg_align_from_string		(const char *string);
 
 typedef enum {
-	LSM_SVG_MEET_OR_SLICE_UNKNOWN,
+	LSM_SVG_MEET_OR_SLICE_ERROR = -1,
 	LSM_SVG_MEET_OR_SLICE_MEET,
 	LSM_SVG_MEET_OR_SLICE_SLICE
 } LsmSvgMeetOrSlice;

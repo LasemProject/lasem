@@ -33,13 +33,15 @@ typedef struct {
 	size_t		size;
 	void 		(*init)			(LsmTrait *abstract_trait, const LsmTrait *trait_default);
 	void 		(*finalize)		(LsmTrait *abstract_trait);
-	void		(*from_string)		(LsmTrait *abstract_trait, char *string);
+	gboolean	(*from_string)		(LsmTrait *abstract_trait, char *string);
 	char * 		(*to_string)		(LsmTrait *abstract_trait);
 } LsmTraitClass;
 
 extern const LsmTraitClass lsm_null_trait_class;
 extern const LsmTraitClass lsm_double_trait_class;
 extern const LsmTraitClass lsm_box_trait_class;
+
+int 	lsm_enum_value_from_string 	(const char *string, const char **strings, unsigned int n_strings);
 
 G_END_DECLS
 

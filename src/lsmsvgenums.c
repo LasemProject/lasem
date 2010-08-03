@@ -21,25 +21,10 @@
  */
 
 #include <lsmsvgenums.h>
+#include <lsmtraits.h>
 #include <string.h>
 
-static unsigned int
-lsm_svg_value_from_string (const char *string, const char **strings, unsigned int n_strings)
-{
-	int i;
-
-	if (string == NULL)
-		return 0;
-
-	for (i = 0; i < n_strings; i++)
-		if (strcmp (string, strings[i]) == 0)
-			return i;
-
-	return 0;
-}
-
 static const char *lsm_svg_length_type_strings[] = {
-	"?",
 	"",
 	"%",
 	"em",
@@ -55,14 +40,17 @@ static const char *lsm_svg_length_type_strings[] = {
 const char *
 lsm_svg_length_type_to_string (LsmSvgLengthType length_type)
 {
-	return lsm_svg_length_type_strings[CLAMP (length_type, 0, LSM_SVG_LENGTH_TYPE_PC)];
+	if (length_type < 0 || length_type > LSM_SVG_LENGTH_TYPE_PC)
+		return NULL;
+
+	return lsm_svg_length_type_strings[length_type];
 }
 
 LsmSvgLengthType
 lsm_svg_length_type_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_length_type_strings,
-				       G_N_ELEMENTS (lsm_svg_length_type_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_length_type_strings,
+					   G_N_ELEMENTS (lsm_svg_length_type_strings));
 }
 
 static const char *lsm_svg_fill_rule_strings[] = {
@@ -73,14 +61,17 @@ static const char *lsm_svg_fill_rule_strings[] = {
 const char *
 lsm_svg_fill_rule_to_string (LsmSvgFillRule fill_rule)
 {
-	return lsm_svg_fill_rule_strings[CLAMP (fill_rule, 0, LSM_SVG_FILL_RULE_EVEN_ODD)];
+	if (fill_rule < 0 || fill_rule > LSM_SVG_FILL_RULE_EVEN_ODD)
+		return NULL;
+
+	return lsm_svg_fill_rule_strings[fill_rule];
 }
 
 LsmSvgFillRule
 lsm_svg_fill_rule_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_fill_rule_strings,
-					  G_N_ELEMENTS (lsm_svg_fill_rule_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_fill_rule_strings,
+					   G_N_ELEMENTS (lsm_svg_fill_rule_strings));
 }
 
 static const char *lsm_svg_line_join_strings[] = {
@@ -92,14 +83,17 @@ static const char *lsm_svg_line_join_strings[] = {
 const char *
 lsm_svg_line_join_to_string (LsmSvgLineJoin line_join)
 {
-	return lsm_svg_line_join_strings[CLAMP (line_join, 0, LSM_SVG_LINE_JOIN_BEVEL)];
+	if (line_join < 0 || line_join > LSM_SVG_LINE_JOIN_BEVEL)
+		return NULL;
+
+	return lsm_svg_line_join_strings[line_join];
 }
 
 LsmSvgLineJoin
 lsm_svg_line_join_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_line_join_strings,
-					  G_N_ELEMENTS (lsm_svg_line_join_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_line_join_strings,
+					   G_N_ELEMENTS (lsm_svg_line_join_strings));
 }
 
 static const char *lsm_svg_line_cap_strings[] = {
@@ -111,14 +105,17 @@ static const char *lsm_svg_line_cap_strings[] = {
 const char *
 lsm_svg_line_cap_to_string (LsmSvgLineCap line_cap)
 {
-	return lsm_svg_line_cap_strings[CLAMP (line_cap, 0, LSM_SVG_LINE_CAP_SQUARE)];
+	if (line_cap < 0 || line_cap > LSM_SVG_LINE_CAP_SQUARE)
+		return NULL;
+
+	return lsm_svg_line_cap_strings[line_cap];
 }
 
 LsmSvgLineCap
 lsm_svg_line_cap_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_line_cap_strings,
-					  G_N_ELEMENTS (lsm_svg_line_cap_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_line_cap_strings,
+					   G_N_ELEMENTS (lsm_svg_line_cap_strings));
 }
 
 static const char *lsm_svg_pattern_units_strings[] = {
@@ -129,14 +126,17 @@ static const char *lsm_svg_pattern_units_strings[] = {
 const char *
 lsm_svg_pattern_units_to_string (LsmSvgPatternUnits units)
 {
-	return lsm_svg_pattern_units_strings[CLAMP (units, 0, LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX)];
+	if (units < 0 || units > LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX)
+		return NULL;
+
+	return lsm_svg_pattern_units_strings[units];
 }
 
 LsmSvgPatternUnits
 lsm_svg_pattern_units_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_pattern_units_strings,
-					  G_N_ELEMENTS (lsm_svg_pattern_units_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_pattern_units_strings,
+					   G_N_ELEMENTS (lsm_svg_pattern_units_strings));
 }
 
 static const char *lsm_svg_marker_units_strings[] = {
@@ -147,14 +147,17 @@ static const char *lsm_svg_marker_units_strings[] = {
 const char *
 lsm_svg_marker_units_to_string (LsmSvgMarkerUnits units)
 {
-	return lsm_svg_marker_units_strings[CLAMP (units, 0, LSM_SVG_MARKER_UNITS_STROKE_WIDTH)];
+	if (units < 0 || units > LSM_SVG_MARKER_UNITS_STROKE_WIDTH)
+		return NULL;
+
+	return lsm_svg_marker_units_strings[units];
 }
 
 LsmSvgMarkerUnits
 lsm_svg_marker_units_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_marker_units_strings,
-					  G_N_ELEMENTS (lsm_svg_marker_units_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_marker_units_strings,
+					   G_N_ELEMENTS (lsm_svg_marker_units_strings));
 }
 
 static const char *lsm_svg_spread_method_strings[] = {
@@ -166,18 +169,20 @@ static const char *lsm_svg_spread_method_strings[] = {
 const char *
 lsm_svg_spread_method_to_string (LsmSvgSpreadMethod units)
 {
-	return lsm_svg_spread_method_strings[CLAMP (units, 0, LSM_SVG_SPREAD_METHOD_REPEAT)];
+	if (units < 0 || units > LSM_SVG_SPREAD_METHOD_REPEAT)
+		return NULL;
+
+	return lsm_svg_spread_method_strings[units];
 }
 
 LsmSvgSpreadMethod
 lsm_svg_spread_method_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_spread_method_strings,
-				       G_N_ELEMENTS (lsm_svg_spread_method_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_spread_method_strings,
+					 G_N_ELEMENTS (lsm_svg_spread_method_strings));
 }
 
 static const char *lsm_svg_align_strings[] = {
-	"",
 	"none",
 	"xMinYMin",
 	"xMidYMin",
@@ -193,18 +198,20 @@ static const char *lsm_svg_align_strings[] = {
 const char *
 lsm_svg_align_to_string (LsmSvgAlign align)
 {
-	return lsm_svg_align_strings[CLAMP (align, 0, LSM_SVG_ALIGN_X_MAX_Y_MAX)];
+	if (align < 0 || align > LSM_SVG_ALIGN_X_MAX_Y_MAX)
+		return NULL;
+
+	return lsm_svg_align_strings[align];
 }
 
 LsmSvgAlign
 lsm_svg_align_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_align_strings,
-					  G_N_ELEMENTS (lsm_svg_align_strings));
+	return lsm_enum_value_from_string (string, lsm_svg_align_strings,
+					   G_N_ELEMENTS (lsm_svg_align_strings));
 }
 
 static const char *lsm_svg_meet_or_slice_strings[] = {
-	"",
 	"meet",
 	"slice"
 };
@@ -212,12 +219,15 @@ static const char *lsm_svg_meet_or_slice_strings[] = {
 const char *
 lsm_svg_meet_or_slice_to_string (LsmSvgMeetOrSlice meet_or_slice)
 {
-	return lsm_svg_meet_or_slice_strings[CLAMP (meet_or_slice, 0, LSM_SVG_MEET_OR_SLICE_SLICE)];
+	if (meet_or_slice < 0 || meet_or_slice > LSM_SVG_MEET_OR_SLICE_SLICE)
+		return NULL;
+
+	return lsm_svg_meet_or_slice_strings[meet_or_slice];
 }
 
 LsmSvgMeetOrSlice
 lsm_svg_meet_or_slice_from_string (const char *string)
 {
-	return lsm_svg_value_from_string (string, lsm_svg_meet_or_slice_strings,
+	return lsm_enum_value_from_string (string, lsm_svg_meet_or_slice_strings,
 					  G_N_ELEMENTS (lsm_svg_meet_or_slice_strings));
 }

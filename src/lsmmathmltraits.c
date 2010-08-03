@@ -26,12 +26,21 @@
 #include <string.h>
 #include <stdlib.h>
 
-static void
+static gboolean
 lsm_mathml_boolean_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	gboolean *value = (gboolean *) abstract_trait;
 
-	*value = (g_strcmp0 (string, "true") == 0);
+	if (g_strcmp0 (string, "true") == 0) {
+		*value = TRUE;
+		return TRUE;
+	} else if (g_strcmp0 (string, "false") == 0) {
+		*value = FALSE;
+		return TRUE;
+	}
+
+	*value = FALSE;
+	return FALSE;
 }
 
 static char *
@@ -48,12 +57,15 @@ const LsmTraitClass lsm_mathml_boolean_trait_class = {
 	.to_string = lsm_mathml_boolean_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_unsigned_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	unsigned int *value = (unsigned int *) abstract_trait;
+	char *end_ptr;
 
-	*value = atoi (string);
+	*value = strtol (string, &end_ptr, 10);
+
+	return end_ptr != string;
 }
 
 static char *
@@ -70,12 +82,14 @@ const LsmTraitClass lsm_mathml_unsigned_trait_class = {
 	.to_string = lsm_mathml_unsigned_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_display_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlDisplay *value = (LsmMathmlDisplay *) abstract_trait;
 
 	*value = lsm_mathml_display_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -87,17 +101,19 @@ lsm_mathml_display_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_display_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_display_trait_from_string,
 	.to_string = lsm_mathml_display_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlMode *value = (LsmMathmlMode *) abstract_trait;
 
 	*value = lsm_mathml_mode_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -109,17 +125,19 @@ lsm_mathml_mode_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_mode_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_mode_trait_from_string,
 	.to_string = lsm_mathml_mode_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_line_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlLine *value = (LsmMathmlLine *) abstract_trait;
 
 	*value = lsm_mathml_line_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -131,17 +149,19 @@ lsm_mathml_line_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_line_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_line_trait_from_string,
 	.to_string = lsm_mathml_line_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_font_style_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlFontStyle *value = (LsmMathmlFontStyle *) abstract_trait;
 
 	*value = lsm_mathml_font_style_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -153,17 +173,19 @@ lsm_mathml_font_style_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_font_style_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_font_style_trait_from_string,
 	.to_string = lsm_mathml_font_style_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_font_weight_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlFontWeight *value = (LsmMathmlFontWeight *) abstract_trait;
 
 	*value = lsm_mathml_font_weight_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -175,17 +197,19 @@ lsm_mathml_font_weight_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_font_weight_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_font_weight_trait_from_string,
 	.to_string = lsm_mathml_font_weight_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_variant_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlVariant *value = (LsmMathmlVariant *) abstract_trait;
 
 	*value = lsm_mathml_variant_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -197,17 +221,19 @@ lsm_mathml_variant_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_variant_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_variant_trait_from_string,
 	.to_string = lsm_mathml_variant_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_form_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlForm *value = (LsmMathmlForm *) abstract_trait;
 
 	*value = lsm_mathml_form_from_string (string);
+
+	return *value >= 0;
 }
 
 static char *
@@ -219,32 +245,45 @@ lsm_mathml_form_trait_to_string (LsmTrait *abstract_trait)
 }
 
 const LsmTraitClass lsm_mathml_form_trait_class = {
-	.size = sizeof (unsigned),
+	.size = sizeof (int),
 	.from_string = lsm_mathml_form_trait_from_string,
 	.to_string = lsm_mathml_form_trait_to_string
 };
 
-typedef unsigned int (*LsmMathmlEnumFromString) (const char *string);
+typedef int (*LsmMathmlEnumFromString) (const char *string);
 typedef char * (*LsmMathmlEnumToString) (unsigned int value);
 
-static void
+static gboolean
 lsm_mathml_enum_list_trait_from_string (LsmMathmlEnumList *enum_list,
 					LsmMathmlEnumFromString from_string,
 					char *string)
 {
 	char **items;
 	unsigned int i;
+	int enum_value;
 
 	g_free (enum_list->values);
 
 	items = g_strsplit_set (string, " ", -1);
 	enum_list->n_values = g_strv_length (items);
 
-	enum_list->values = g_new (unsigned int, enum_list->n_values);
-	for (i = 0; i < enum_list->n_values; i++)
-		enum_list->values[i] = from_string (items[i]);
+	enum_list->values = g_new (int, enum_list->n_values);
+	for (i = 0; i < enum_list->n_values; i++) {
+		enum_value = from_string (items[i]);
+		if (enum_value < 0) {
+			g_free (enum_list->values);
+			enum_list->values = NULL;
+			enum_list->n_values = 0;
+			g_strfreev (items);
+
+			return FALSE;
+		}
+		enum_list->values[i] = enum_value;
+	}
 
 	g_strfreev (items);
+
+	return TRUE;
 }
 
 static char *
@@ -265,8 +304,8 @@ lsm_mathml_enum_list_trait_init (LsmTrait *abstract_trait,
 	if (enum_list->n_values == 0)
 		enum_list->values = NULL;
 	else {
-		enum_list->values = g_new (unsigned int, enum_list->n_values);
-		memcpy (enum_list->values, enum_list_defaut->values, sizeof (unsigned int) * enum_list->n_values);
+		enum_list->values = g_new (int, enum_list->n_values);
+		memcpy (enum_list->values, enum_list_defaut->values, sizeof (int) * enum_list->n_values);
 	}
 }
 
@@ -289,13 +328,13 @@ lsm_mathml_enum_list_trait_finalize (LsmTrait *abstract_trait)
 	enum_list->n_values = 0;
 }
 
-static void
+static gboolean
 lsm_mathml_row_align_list_trait_from_string (LsmTrait *abstract_trait,
 					     char *string)
 {
-	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
-						(LsmMathmlEnumFromString) lsm_mathml_row_align_from_string,
-						string);
+	return lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						       (LsmMathmlEnumFromString) lsm_mathml_row_align_from_string,
+						       string);
 }
 
 static char *
@@ -313,13 +352,13 @@ const LsmTraitClass lsm_mathml_row_align_list_trait_class = {
 	.finalize = lsm_mathml_enum_list_trait_finalize
 };
 
-static void
+static gboolean
 lsm_mathml_column_align_list_trait_from_string (LsmTrait *abstract_trait,
 					     char *string)
 {
-	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
-						(LsmMathmlEnumFromString) lsm_mathml_column_align_from_string,
-						string);
+	return lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						       (LsmMathmlEnumFromString) lsm_mathml_column_align_from_string,
+						       string);
 }
 
 static char *
@@ -337,13 +376,13 @@ const LsmTraitClass lsm_mathml_column_align_list_trait_class = {
 	.finalize = lsm_mathml_enum_list_trait_finalize
 };
 
-static void
+static gboolean
 lsm_mathml_line_list_trait_from_string (LsmTrait *abstract_trait,
 					     char *string)
 {
-	lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
-						(LsmMathmlEnumFromString) lsm_mathml_line_from_string,
-						string);
+	return lsm_mathml_enum_list_trait_from_string ((LsmMathmlEnumList *) abstract_trait,
+						       (LsmMathmlEnumFromString) lsm_mathml_line_from_string,
+						       string);
 }
 
 static char *
@@ -361,18 +400,22 @@ const LsmTraitClass lsm_mathml_line_list_trait_class = {
 	.finalize = lsm_mathml_enum_list_trait_finalize
 };
 
-static void
+static gboolean
 lsm_mathml_script_level_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlScriptLevel *value = (LsmMathmlScriptLevel *) abstract_trait;
+	char *end_ptr;
 
-	value->level = atoi (string);
+	value->level = strtol (string, &end_ptr, 10);
+
 	if (string[0] == '+')
 		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_PLUS;
 	else if (string[0] == '-')
 		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_MINUS;
 	else
 		value->sign = LSM_MATHML_SCRIPT_LEVEL_SIGN_NONE;
+
+	return end_ptr != string;
 }
 
 static char *
@@ -392,12 +435,15 @@ const LsmTraitClass lsm_mathml_script_level_trait_class = {
 	.to_string = lsm_mathml_script_level_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	double *value = (double *) abstract_trait;
+	char *end_ptr;
 
-	*value = atof (string);
+	*value = g_ascii_strtod (string, &end_ptr);
+
+	return end_ptr != string;
 }
 
 static char *
@@ -437,25 +483,29 @@ lsm_mathml_color_get_type (void)
 	return our_type;
 }
 
-static void
+static gboolean
 lsm_mathml_color_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlColor *color = (LsmMathmlColor *) abstract_trait;
+	PangoColor pango_color;
+	gboolean result;
 
 	if (strcmp (string, "transparent") == 0) {
 		color->red = 0.0;
 		color->green = 0.0;
 		color->blue = 0.0;
 		color->alpha = 0.0;
-	} else {
-		PangoColor pango_color;
 
-		pango_color_parse (&pango_color, string);
-		color->alpha = 1.0;
-		color->red = pango_color.red / 65535.0;
-		color->green = pango_color.green / 65535.0;
-		color->blue = pango_color.blue / 65535.0;
+		return TRUE;
 	}
+
+	result = pango_color_parse (&pango_color, string);
+	color->alpha = 1.0;
+	color->red = pango_color.red / 65535.0;
+	color->green = pango_color.green / 65535.0;
+	color->blue = pango_color.blue / 65535.0;
+
+	return result;
 }
 
 static char *
@@ -480,13 +530,15 @@ const LsmTraitClass lsm_mathml_color_trait_class = {
 	.to_string = lsm_mathml_color_trait_to_string
 };
 
-static void
+static gboolean
 lsm_mathml_string_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	char **value = (char **) abstract_trait;
 
 	g_free (*value);
 	*value = g_strdup (string);
+
+	return TRUE;
 }
 
 static char *
@@ -548,16 +600,18 @@ lsm_mathml_length_get_type (void)
 	return our_type;
 }
 
-static void
+static gboolean
 lsm_mathml_length_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlLength *length = (LsmMathmlLength *) abstract_trait;
 	char *unit_str;
 
-	length->value = g_strtod (string, &unit_str);
+	length->value = g_ascii_strtod (string, &unit_str);
 	length->unit = lsm_mathml_unit_from_string (unit_str);
 
 	/* TODO Handle "big", "small", normal" sizes */
+
+	return unit_str != string && length->unit >= 0;
 }
 
 static char *
@@ -644,29 +698,36 @@ lsm_mathml_space_get_type (void)
 	return our_type;
 }
 
-static void
+static gboolean
 lsm_mathml_space_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlSpace *space = (LsmMathmlSpace *) abstract_trait;
 	char *unit_str;
 
 	space->name = lsm_mathml_space_name_from_string (string);
-	if (space->name == LSM_MATHML_SPACE_NAME_ERROR) {
-		space->length.value = g_strtod (string, &unit_str);
+
+	if (space->name < 0) {
+		space->length.value = g_ascii_strtod (string, &unit_str);
 		space->length.unit = lsm_mathml_unit_from_string (unit_str);
-	} else {
-		space->length.value = 0.0;
-		space->length.unit = LSM_MATHML_UNIT_PX;
+
+		return unit_str != string && space->length.unit >= 0;
 	}
+
+	space->length.value = 0.0;
+	space->length.unit = LSM_MATHML_UNIT_PX;
+
+	return TRUE;
 }
 
 static char *
 lsm_mathml_space_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmMathmlSpace *space = (LsmMathmlSpace *) abstract_trait;
+	const char *string;
 
-	if (space->name != LSM_MATHML_SPACE_NAME_ERROR)
-		return g_strdup (lsm_mathml_space_name_to_string (space->name));
+	string = lsm_mathml_space_name_to_string (space->name);
+	if (string != NULL)
+		return g_strdup (string);
 
 	return g_strdup_printf ("%g %s", space->length.value,
 				lsm_mathml_unit_to_string (space->length.unit));
@@ -678,7 +739,7 @@ const LsmTraitClass lsm_mathml_space_trait_class = {
 	.to_string = lsm_mathml_space_trait_to_string
 };
 
-void
+gboolean
 lsm_mathml_space_list_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmMathmlSpaceList *space_list = (LsmMathmlSpaceList *) abstract_trait;
@@ -691,10 +752,20 @@ lsm_mathml_space_list_trait_from_string (LsmTrait *abstract_trait, char *string)
 	space_list->n_spaces = g_strv_length (items);
 
 	space_list->spaces = g_new (LsmMathmlSpace, space_list->n_spaces);
-	for (i = 0; i < space_list->n_spaces; i++)
-		lsm_mathml_space_trait_from_string (&space_list->spaces[i], items[i]);
+	for (i = 0; i < space_list->n_spaces; i++) {
+		if (!lsm_mathml_space_trait_from_string (&space_list->spaces[i], items[i])) {
+			g_free (space_list->spaces);
+			space_list->spaces = NULL;
+			space_list->n_spaces = 0;
+			g_strfreev (items);
+
+			return FALSE;
+		}
+	}
 
 	g_strfreev (items);
+
+	return TRUE;
 }
 
 static char *

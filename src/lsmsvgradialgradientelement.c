@@ -98,7 +98,7 @@ lsm_svg_radial_gradient_element_new (void)
 }
 
 static const LsmSvgLength length_default = {.value_unit = 50.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
-static const LsmSvgLength unset_default  = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_UNKNOWN};
+static const LsmSvgLength unset_default  = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR};
 
 static void
 lsm_svg_radial_gradient_element_init (LsmSvgRadialGradientElement *self)

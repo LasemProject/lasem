@@ -66,7 +66,7 @@ typedef struct {
 
 typedef struct {
 	unsigned int n_values;
-	unsigned int *values;
+	int *values;
 } LsmMathmlEnumList;
 
 #define LSM_TYPE_MATHML_SPACE (lsm_mathml_space_get_type())
