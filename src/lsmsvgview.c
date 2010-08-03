@@ -1211,6 +1211,8 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
+	lsm_debug ("render", "[LsmSvgView::show_text] Show '%s' at %g,%g", string, x, y);
+
 	style = view->style;
 
 	pango_layout = view->dom_view.pango_layout;

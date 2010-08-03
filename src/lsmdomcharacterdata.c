@@ -22,6 +22,7 @@
  */
 
 #include <lsmdomcharacterdata.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class = NULL;
 
@@ -43,6 +44,8 @@ lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char* value)
 
 	g_free (self->data);
 	self->data = g_strdup (value);
+
+	lsm_debug ("dom", "[LsmDomCharacterData::set_data] Value = '%s'", value);
 
 	lsm_dom_node_changed (LSM_DOM_NODE (self));
 }
