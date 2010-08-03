@@ -44,7 +44,7 @@
 
 #define XML_FILENAME	"lasemtest.xml"
 
-static gboolean option_debug = FALSE;
+static char *option_debug_domains = NULL;
 static char **option_input_filenames = NULL;
 double option_ppi = 72.0;
 static gboolean fatal_warning = FALSE;
@@ -55,8 +55,8 @@ static const GOptionEntry entries[] =
 		&option_input_filenames, 	NULL, NULL},
 	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
 		&option_ppi, 			"Pixel per inch", NULL },
-	{ "debug", 		'd', 0, G_OPTION_ARG_NONE,
-		&option_debug, 			"Debug mode", NULL },
+	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
+		&option_debug_domains,		"Debug domains", NULL },
 	{ "fatal-warning", 	'f', 0, G_OPTION_ARG_NONE,
 		&fatal_warning,			"Make warning fatal", NULL },
 	{ NULL }
@@ -131,7 +131,7 @@ lasem_test_render (char const *filename)
 
 		view = lsm_dom_document_create_view (document);
 
-		lsm_dom_view_set_debug (view, option_debug);
+		lsm_dom_view_set_debug (view, lsm_debug_check ("view"));
 
 		viewport.x = 0.0;
 		viewport.y = 0.0;
@@ -321,8 +321,7 @@ main (int argc, char **argv)
 
 	g_option_context_free (context);
 
-	if (option_debug)
-		lsm_debug_enable ();
+	lsm_debug_enable (option_debug_domains);
 
 	if (fatal_warning)
 		g_log_set_fatal_mask ("Lasem", G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING);

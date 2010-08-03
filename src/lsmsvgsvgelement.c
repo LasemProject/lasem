@@ -98,7 +98,7 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *heig
 	self->svg_box.width = svg_width;
 	self->svg_box.height = svg_height;
 
-	lsm_debug ("[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
+	lsm_debug ("measure", "[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
 		   svg_x, svg_y, svg_width, svg_height);
 
 	lsm_svg_viewbox_free (svg_viewbox);
@@ -124,7 +124,7 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 				   svg->viewbox.value.height <= 0.0))
 		return;
 
-	lsm_debug ("[LsmSvgSvgElement::render] viewport %g, %g, %g, %g",
+	lsm_debug ("render", "[LsmSvgSvgElement::render] viewport %g, %g, %g, %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,

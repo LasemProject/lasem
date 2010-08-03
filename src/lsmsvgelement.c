@@ -57,7 +57,7 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS (self);
 	LsmSvgElement *s_element = LSM_SVG_ELEMENT (self);
 
-	lsm_debug ("[LsmSvgElement::set_attribute] node = %s, name = %s, value = %s",
+	lsm_debug ("dom", "[LsmSvgElement::set_attribute] node = %s, name = %s, value = %s",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)), name, value);
 
 	/* TODO Avoid double hash table lookup */
@@ -97,7 +97,7 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmDomNode *node;
 
-	lsm_debug ("[LsmSvgElement::_render");
+	lsm_debug ("render", "[LsmSvgElement::_render");
 
 	lsm_svg_view_push_group_opacity (view);
 
@@ -128,7 +128,7 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	if (element_class->render != NULL) {
-		lsm_debug ("[LsmSvgElement::render] Render %s (%s)",
+		lsm_debug ("render", "[LsmSvgElement::render] Render %s (%s)",
 			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 			    element->id.value != NULL ? element->id.value : "no id");
 
@@ -177,7 +177,7 @@ _get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
 	gboolean first_child = TRUE;
 	LsmExtents element_extents = {0.0, 0.0, 0.0, 0.0};
 
-	lsm_debug ("[LsmSvgGraphic::_graphic_get_extents]");
+	lsm_debug ("render", "[LsmSvgGraphic::_graphic_get_extents]");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_SVG_ELEMENT (node)) {
@@ -217,7 +217,7 @@ lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtent
 	if (element_class->get_extents != NULL) {
 		element_class->get_extents (element, view, extents);
 
-		lsm_debug ("LsmSvgElement::get_extents] Exents for '%s' = %g,%g %g,%g",
+		lsm_debug ("measure", "LsmSvgElement::get_extents] Exents for '%s' = %g,%g %g,%g",
 			   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 			   extents->x1, extents->y1, extents->x2, extents->y2);
 	} else {

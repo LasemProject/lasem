@@ -212,7 +212,7 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
-		lsm_debug ("[LsmDomNode::append_child] Can't append '%s' to '%s'",
+		lsm_debug ("dom", "[LsmDomNode::append_child] Can't append '%s' to '%s'",
 			   lsm_dom_node_get_node_name (new_child),
 			   lsm_dom_node_get_node_name (self));
 		return NULL;

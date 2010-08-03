@@ -92,7 +92,7 @@ lsm_dom_view_render (LsmDomView *view, double x, double y)
 
 	cairo_restore (view->cairo);
 
-	lsm_debug ("[LsmDomView::render] cairo status = %s",
+	lsm_debug ("render", "[LsmDomView::render] cairo status = %s",
 		   cairo_status_to_string (cairo_status (view->cairo)));
 }
 

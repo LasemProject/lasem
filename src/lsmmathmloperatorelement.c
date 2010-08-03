@@ -81,7 +81,7 @@ lsm_mathml_operator_element_post_new_child (LsmDomNode *self, LsmDomNode *child)
 
 	entry = lsm_mathml_operator_element_dictionary_lookup (operator_element);
 
-	lsm_debug ("[OperatorElement::post_new_child] found %s %s",
+	lsm_debug ("dom", "[OperatorElement::post_new_child] found %s %s",
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	lsm_mathml_boolean_attribute_inherit (&operator_element->stretchy, entry->stretchy);
@@ -102,7 +102,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 
 	entry = lsm_mathml_operator_element_dictionary_lookup (operator_element);
 
-	lsm_debug ("[OperatorElement::update] found %s %s",
+	lsm_debug ("update", "[OperatorElement::update] found %s %s",
 		    lsm_mathml_form_to_string (entry->form), entry->name);
 
 	space = entry->left_space;
@@ -114,7 +114,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	lsm_mathml_boolean_attribute_inherit (&operator_element->accent, entry->accent);
 
 	if (operator_element->accent.value)
-		lsm_debug ("[OperatorElement::update] Is accent");
+		lsm_debug ("update", "[OperatorElement::update] Is accent");
 
 	lsm_mathml_boolean_attribute_inherit (&operator_element->large_op, entry->large_op);
 	lsm_mathml_boolean_attribute_inherit (&operator_element->movable_limits, entry->movable_limits);
@@ -128,7 +128,7 @@ lsm_mathml_operator_element_update (LsmMathmlElement *self, LsmMathmlStyle *styl
 	operator_element->is_large_op = operator_element->large_op.value &&
 		(style->display == LSM_MATHML_DISPLAY_BLOCK);
 	if (operator_element->is_large_op)
-		lsm_debug ("[OperatorElement::update] Large op");
+		lsm_debug ("update", "[OperatorElement::update] Large op");
 }
 
 static const LsmMathmlBbox *

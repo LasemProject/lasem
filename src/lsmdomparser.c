@@ -297,7 +297,7 @@ lsm_dom_document_new_from_memory (const char *buffer, int size, GError **error)
 			g_object_unref (state.document);
 		state.document = NULL;
 
-		lsm_debug ("[LsmDomParser::from_memory] invalid document");
+		lsm_debug ("dom", "[LsmDomParser::from_memory] Invalid document");
 
 		g_set_error (error,
 			     LSM_DOM_DOCUMENT_ERROR,

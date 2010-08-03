@@ -161,7 +161,7 @@ lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
 	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
 	g_return_val_if_fail (id != NULL, NULL);
 
-	lsm_debug ("[LsmDomDocument::get_element_by_id] Lookup '%s'", id);
+	lsm_debug ("dom", "[LsmDomDocument::get_element_by_id] Lookup '%s'", id);
 
 	return g_hash_table_lookup (self->ids, id);
 }
@@ -175,7 +175,7 @@ lsm_dom_document_register_element (LsmDomDocument *self, LsmDomElement *element,
 
 	old_id = g_hash_table_lookup (self->elements, element);
 	if (old_id != NULL) {
-		lsm_debug ("[LsmDomDocument::register_element] Unregister '%s'", old_id);
+		lsm_debug ("dom", "[LsmDomDocument::register_element] Unregister '%s'", old_id);
 
 		g_hash_table_remove (self->elements, element);
 		g_hash_table_remove (self->ids, old_id);
@@ -184,7 +184,7 @@ lsm_dom_document_register_element (LsmDomDocument *self, LsmDomElement *element,
 	if (id != NULL) {
 		char *new_id = g_strdup (id);
 
-		lsm_debug ("[LsmDomDocument::register_element] Register '%s'", id);
+		lsm_debug ("dom", "[LsmDomDocument::register_element] Register '%s'", id);
 
 		g_hash_table_replace (self->ids, new_id, element);
 		g_hash_table_replace (self->elements, element, new_id);

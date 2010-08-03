@@ -58,7 +58,7 @@ lsm_svg_linear_gradient_element_create_gradient (LsmSvgElement *self, LsmSvgView
 	x2 = lsm_svg_view_normalize_length (view, &linear->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	y2 = lsm_svg_view_normalize_length (view, &linear->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_debug ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
+	lsm_debug ("render", "[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
 		    x1, y1, x2, y2);
 
 	if (is_object_bounding_box)

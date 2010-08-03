@@ -109,7 +109,7 @@ _set_property (LsmPropertyManager *manager,
 
 		success = trait_class->from_string (PROPERTY_TRAIT (property), (char *) value);
 		if (!success) {
-			lsm_debug ("[LsmPropertyManager::set_property] Invalid property value %s='%s'",
+			lsm_debug ("dom", "[LsmPropertyManager::set_property] Invalid property value %s='%s'",
 				   name, value);
 			property_free (property, property_infos->trait_class);
 
@@ -176,7 +176,7 @@ lsm_property_manager_set_property (LsmPropertyManager *manager,
 					old_char = *end_ptr;
 					*end_ptr = '\0';
 
-					lsm_debug ("[LsmPropertyManager::set_property] inline_style %s = %s",
+					lsm_debug ("dom", "[LsmPropertyManager::set_property] inline_style %s = %s",
 						   name, value);
 
 					_set_property (manager, property_bag, name, value);

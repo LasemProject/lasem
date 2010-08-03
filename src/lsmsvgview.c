@@ -72,7 +72,7 @@ lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, Lsm
 static void
 _start_pattern (LsmSvgView *view, const LsmBox *extents)
 {
-	lsm_debug ("[LsmSvgView::start_pattern]");
+	lsm_debug ("render", "[LsmSvgView::start_pattern]");
 
 	view->pattern_stack = g_slist_prepend (view->pattern_stack, view->pattern_data);
 
@@ -109,7 +109,7 @@ _end_pattern (LsmSvgView *view)
 	} else
 		view->pattern_data = NULL;
 
-	lsm_debug ("[LsmSvgView::end_pattern]");
+	lsm_debug ("render", "[LsmSvgView::end_pattern]");
 }
 
 static void
@@ -163,7 +163,7 @@ lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset)
 
 	style = view->style;
 
-	lsm_debug ("[LsmSvgView::add_gradient_color_stop] opacity = %g", style->stop_opacity->value);
+	lsm_debug ("render", "[LsmSvgView::add_gradient_color_stop] opacity = %g", style->stop_opacity->value);
 
 	color = &style->stop_color->value;
 
@@ -221,7 +221,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	width = viewport->width;
 	height = viewport->height;
 
-	lsm_debug ("[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g",
+	lsm_debug ("render", "[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g",
 		   width, height, x, y);
 
 	if (height < 1 || width < 1)
@@ -1256,7 +1256,7 @@ lsm_svg_view_push_viewbox (LsmSvgView *view, const LsmBox *viewbox)
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
-	lsm_debug ("[LsmSvgView::push_viewbox] viewbox = %g, %g, %g, %g",
+	lsm_debug ("render", "[LsmSvgView::push_viewbox] viewbox = %g, %g, %g, %g",
 		   viewbox->x, viewbox->y, viewbox->width, viewbox->height);
 
 	svg_viewbox = lsm_svg_viewbox_new (view->resolution_ppi, viewbox);
@@ -1270,7 +1270,7 @@ lsm_svg_view_pop_viewbox (LsmSvgView *view)
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->viewbox_stack != NULL);
 
-	lsm_debug ("[LsmSvgView::pop_viewbox]");
+	lsm_debug ("render", "[LsmSvgView::pop_viewbox]");
 
 	lsm_svg_viewbox_free (view->viewbox_stack->data);
 	view->viewbox_stack = g_slist_delete_link (view->viewbox_stack, view->viewbox_stack);
@@ -1348,7 +1348,7 @@ _compute_viewbox_scale (const LsmBox *viewport, const LsmBox *viewbox,
 			*y_offset = -viewbox->y * *y_scale;
 		}
 
-		lsm_debug ("[LsmSvgView::_compute_viewbox_scale] scale = %g, %g", x_scale, y_scale);
+		lsm_debug ("render", "[LsmSvgView::_compute_viewbox_scale] scale = %g, %g", x_scale, y_scale);
 
 		return viewbox;
 	}
@@ -1437,7 +1437,7 @@ lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 
 	view->matrix_stack = g_slist_prepend (view->matrix_stack, ctm);
 
-	lsm_debug ("[LsmSvgView::push_matrix] New transform %g, %g, %g, %g, %g, %g",
+	lsm_debug ("render", "[LsmSvgView::push_matrix] New transform %g, %g, %g, %g, %g, %g",
 		   matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
 
 	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
@@ -1447,7 +1447,7 @@ lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 		cairo_matrix_t current_ctm;
 		cairo_get_matrix (view->dom_view.cairo, &current_ctm);
 
-		lsm_debug ("[LsmSvgView::push_matrix] Current ctm %g, %g, %g, %g, %g, %g",
+		lsm_debug ("render", "[LsmSvgView::push_matrix] Current ctm %g, %g, %g, %g, %g, %g",
 			   current_ctm.xx, current_ctm.xy, current_ctm.yx, current_ctm.yy,
 			   current_ctm.x0, current_ctm.y0);
 	}
@@ -1506,7 +1506,7 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 
 	url = view->style->clip_path->value;
 
-	lsm_debug ("[LsmSvgView::push_clip] Using '%s'", url);
+	lsm_debug ("render", "[LsmSvgView::push_clip] Using '%s'", url);
 
 	cairo_save (view->dom_view.cairo);
 
@@ -1527,7 +1527,7 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 static void
 lsm_svg_view_pop_clip (LsmSvgView *view)
 {
-	lsm_debug ("[LsmSvgView::pop_clip");
+	lsm_debug ("render", "[LsmSvgView::pop_clip");
 
 	cairo_restore (view->dom_view.cairo);
 }
@@ -1637,12 +1637,12 @@ lsm_svg_view_push_style	(LsmSvgView *view, const LsmSvgStyle *style)
 	view->style = style;
 
 	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
-		lsm_debug ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
+		lsm_debug ("render", "[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
 	}
 
 	if (g_strcmp0 (style->mask->value, "none") != 0) {
-		lsm_debug ("[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
+		lsm_debug ("render", "[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
 		lsm_svg_view_push_mask (view);
 	}
 }

@@ -2,32 +2,49 @@
 #include <glib/gprintf.h>
 #include <stdlib.h>
 
-static gboolean debug_checked = FALSE;
-static gboolean debug_enabled = FALSE;
+static GHashTable *lsm_debug_domains = NULL;
 
-static gboolean
-_is_debug_enabled ()
+static void
+lsm_debug_initialize (const char *debug_var)
 {
-	const char *debug_var;
+	if (lsm_debug_domains != NULL)
+		return;
 
-	if (debug_checked)
-		return debug_enabled;
+	lsm_debug_domains = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
-	debug_var = g_getenv ("LSM_DEBUG");
+	if (debug_var != NULL) {
+		char **domains;
+		int i;
 
-	debug_enabled = debug_var != NULL ? atoi (debug_var) != 0 : FALSE;
+		domains = g_strsplit (debug_var, ":", -1);
+		for (i = 0; domains[i] != NULL; i++) {
+			char *debug_domain;
 
-	debug_checked = TRUE;
+			debug_domain = g_strdup (domains[i]);
+			g_hash_table_insert (lsm_debug_domains, debug_domain, debug_domain);
+		}
+		g_strfreev (domains);
+	}
+}
 
-	return debug_enabled;
+gboolean
+lsm_debug_check (const char *domain)
+{
+	if (domain == NULL)
+		return FALSE;
+
+	if (lsm_debug_domains == NULL)
+		lsm_debug_initialize (g_getenv ("LSM_DEBUG"));
+
+	return g_hash_table_lookup (lsm_debug_domains, domain) != NULL;
 }
 
 void
-lsm_debug (char const *format, ...)
+lsm_debug (const char *domain, char const *format, ...)
 {
 	va_list args;
 
-	if (!_is_debug_enabled())
+	if (!lsm_debug_check (domain))
 		return;
 
 	va_start (args, format);
@@ -37,8 +54,7 @@ lsm_debug (char const *format, ...)
 }
 
 void
-lsm_debug_enable (void)
+lsm_debug_enable (const char *domains)
 {
-	debug_enabled = TRUE;
-	debug_checked = TRUE;
+	lsm_debug_initialize (domains);
 }

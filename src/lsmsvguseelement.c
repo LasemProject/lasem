@@ -58,7 +58,7 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 	if (document == NULL) {
-		lsm_debug ("[LsmSvgUseElement::render] Owner document not found");
+		lsm_debug ("render", "[LsmSvgUseElement::render] Owner document not found");
 		return;
 	}
 
@@ -73,7 +73,7 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	element = lsm_dom_document_get_element_by_id (document, id);
 	if (!LSM_IS_SVG_ELEMENT (element)) {
-		lsm_debug ("[LsmSvgUseElement::render] Target '%s' not found", id);
+		lsm_debug ("render", "[LsmSvgUseElement::render] Target '%s' not found", id);
 		return;
 	}
 
@@ -82,7 +82,7 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	height = lsm_svg_view_normalize_length (view, &use_element->height.length,
 						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_debug ("[LsmSvgUseElement::render] Use '%s'", id);
+	lsm_debug ("render", "[LsmSvgUseElement::render] Use '%s'", id);
 
 	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
 					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);

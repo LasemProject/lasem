@@ -47,7 +47,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgStyle *style;
 
 	if (!mask->enable_rendering) {
-		lsm_debug ("[LsmSvgMaskElement::render] Direct rendering not allowed");
+		lsm_debug ("render", "[LsmSvgMaskElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		mask->enable_rendering = FALSE;
@@ -87,7 +87,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
 
-	lsm_debug ("[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
+	lsm_debug ("render", "[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	lsm_svg_view_create_surface_pattern (view, &viewport,
@@ -106,7 +106,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 
-		lsm_debug ("[LsmSvgMaskElement::render] object_bounding_box"
+		lsm_debug ("render", "[LsmSvgMaskElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
 			   mask_extents->width, mask_extents->height,
 			   mask_extents->x, mask_extents->y);

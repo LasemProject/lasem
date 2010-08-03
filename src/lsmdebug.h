@@ -5,8 +5,9 @@
 
 G_BEGIN_DECLS
 
-void lsm_debug 		(char const *format, ...);
-void lsm_debug_enable 	(void);
+void 		lsm_debug 			(const char *domain, char const *format, ...);
+gboolean 	lsm_debug_check 		(const char *domain);
+void 		lsm_debug_enable 		(const char *domains);
 
 G_END_DECLS
 

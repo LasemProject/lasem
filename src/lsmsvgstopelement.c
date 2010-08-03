@@ -49,7 +49,7 @@ lsm_svg_stop_element_render (LsmSvgElement *element, LsmSvgView *view)
 	else
 		offset = stop->offset.length.value_unit;
 
-	lsm_debug ("[LsmSvgStopElement::render] Add stop at %g", offset);
+	lsm_debug ("render", "[LsmSvgStopElement::render] Add stop at %g", offset);
 
 	lsm_svg_view_add_gradient_color_stop (view, offset);
 }

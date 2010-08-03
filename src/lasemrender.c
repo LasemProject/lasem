@@ -41,7 +41,7 @@
 
 #include <../itex2mml/itex2MML.h>
 
-static gboolean option_debug = FALSE;
+static char *option_debug_domains = NULL;
 static char *option_output_file_format = NULL;
 static char **option_input_filenames = NULL;
 static char *option_output_filename = NULL;
@@ -73,8 +73,8 @@ static const GOptionEntry entries[] =
 		&option_output_file_format, 	"Output format", NULL },
 	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
 		&option_ppi, 			"Pixel per inch", NULL },
-	{ "debug", 		'd', 0, G_OPTION_ARG_NONE,
-		&option_debug, 			"Debug mode", NULL },
+	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
+		&option_debug_domains,		"Debug domains", NULL },
 	{ NULL }
 };
 
@@ -106,8 +106,7 @@ int main(int argc, char **argv)
 
 	g_option_context_free (context);
 
-	if (option_debug)
-		lsm_debug_enable ();
+	lsm_debug_enable (option_debug_domains);
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
 		g_print ("One input file name is required\n");
@@ -180,7 +179,7 @@ int main(int argc, char **argv)
 
 		view = lsm_dom_document_create_view (document);
 
-		lsm_dom_view_set_debug (view, option_debug);
+		lsm_dom_view_set_debug (view, lsm_debug_check ("view"));
 
 		width_pt = 2.0;
 		height_pt = 2.0;
@@ -231,7 +230,7 @@ int main(int argc, char **argv)
 
 		g_object_unref (document);
 
-		lsm_debug ("width = %g pt, height = %g pt",  width_pt, height_pt);
+		lsm_debug ("render", "width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else
 		g_warning ("Can't load %s", input_filename);
 

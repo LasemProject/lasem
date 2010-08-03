@@ -49,7 +49,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgStyle *style;
 
 	if (!pattern->enable_rendering) {
-		lsm_debug ("[LsmSvgPatternElement::render] Direct rendering not allowed");
+		lsm_debug ("render", "[LsmSvgPatternElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		pattern->enable_rendering = FALSE;
@@ -91,7 +91,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
 
-	lsm_debug ("[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
+	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	lsm_svg_view_create_surface_pattern (view, &image_box,
@@ -111,7 +111,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 
-		lsm_debug ("[LsmSvgPatternElement::render] object_bounding_box"
+		lsm_debug ("render", "[LsmSvgPatternElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
 			   pattern_extents->width, pattern_extents->height,
 			   pattern_extents->x,     pattern_extents->y);

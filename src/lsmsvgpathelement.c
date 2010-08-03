@@ -43,7 +43,7 @@ lsm_svg_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	path = LSM_SVG_PATH_ELEMENT (self);
 
-	lsm_debug ("[LsmSvgPathElement::render]");
+	lsm_debug ("render", "[LsmSvgPathElement::render]");
 
 	lsm_svg_view_show_path (view, path->d.value);
 }

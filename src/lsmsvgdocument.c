@@ -128,7 +128,7 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_clip_path_element_new ();
 
 	if (node != NULL)
-		lsm_debug ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
+		lsm_debug ("dom", "[LsmSvgDocument::create_element] Create a %s element", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
 }

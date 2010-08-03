@@ -48,8 +48,7 @@ lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 	cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-	lsm_debug ("[LsmSvgCircleElement::render] cx = %g, cy = %g, r = %g",
-		   cx, cy, r);
+	lsm_debug ("render", "[LsmSvgCircleElement::render] cx = %g, cy = %g, r = %g", cx, cy, r);
 
 	lsm_svg_view_show_circle (view, cx, cy, r);
 }
