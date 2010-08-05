@@ -177,7 +177,7 @@ _get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
 	gboolean first_child = TRUE;
 	LsmExtents element_extents = {0.0, 0.0, 0.0, 0.0};
 
-	lsm_debug ("render", "[LsmSvgGraphic::_graphic_get_extents]");
+	lsm_debug ("render", "[LsmSvgElement::_get_extents]");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_SVG_ELEMENT (node)) {
