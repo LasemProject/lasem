@@ -2,6 +2,9 @@ All
 
 - garbage collection in lsm_property_manager
 - CSS support
+- gtk-doc support
+- single <lsm.h> include
+- multithread safety
 
 Mathml
 
