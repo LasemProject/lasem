@@ -1,3 +1,10 @@
+All
+
+- garbage collection in lsm_property_manager
+- CSS support
+
+Mathml
+
 - merge space and space list attribute.
 - may be merge space and lentgh attribute (for example by extending GMATHML_UNIT with the different GMATHML_NAMED_SPACE).
 - check memory allocation in gmathmlattributes.
@@ -11,5 +18,10 @@
 - handle correctly PT and PX units.
 - handle table alignment. Correctly compute axis position in a row.
 - merge attribute code in presentation_token and style_element.
+
+SVG
+
+- check for recursions
+- don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
 
 And many many more things to do...
