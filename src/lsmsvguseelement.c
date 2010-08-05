@@ -46,43 +46,46 @@ lsm_svg_use_can_append_child (LsmDomNode *node, LsmDomNode *child)
 
 /* LsmSvgGraphic implementation */
 
-static void
-lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
+static LsmDomElement *
+_get_used_element (LsmSvgUseElement *use_element, const char *domain)
 {
-	LsmSvgUseElement *use_element;
 	LsmDomDocument *document;
 	LsmDomElement *element;
-	LsmSvgMatrix matrix;
 	const char *id;
-	double x, y, width, height;
 
-	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
+	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (use_element));
 	if (document == NULL) {
-		lsm_debug ("render", "[LsmSvgUseElement::render] Owner document not found");
-		return;
+		lsm_debug (domain, "[LsmSvgUseElement::_get_used_element] Owner document not found");
+		return NULL;
 	}
-
-	use_element = LSM_SVG_USE_ELEMENT (self);
 
 	id = use_element->href.value;
 	if (id == NULL)
-		return;
+		return NULL;
 
 	if (*id == '#')
 		id++;
 
 	element = lsm_dom_document_get_element_by_id (document, id);
 	if (!LSM_IS_SVG_ELEMENT (element)) {
-		lsm_debug ("render", "[LsmSvgUseElement::render] Target '%s' not found", id);
-		return;
+		lsm_debug (domain, "[LsmSvgUseElement::_get_used_element] Target '%s' not found", id);
+		return NULL;
 	}
 
-	width = lsm_svg_view_normalize_length (view, &use_element->width.length,
-					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	height = lsm_svg_view_normalize_length (view, &use_element->height.length,
-						LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	return element;
+}
 
-	lsm_debug ("render", "[LsmSvgUseElement::render] Use '%s'", id);
+static void
+lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
+{
+	LsmSvgUseElement *use_element = LSM_SVG_USE_ELEMENT (self);
+	LsmDomElement *element;
+	LsmSvgMatrix matrix;
+	double x, y;
+
+	element = _get_used_element (use_element, "render");
+	if (element == NULL)
+		return;
 
 	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
 					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
@@ -93,6 +96,36 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_push_matrix (view, &matrix);
 
 	lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
+
+	lsm_svg_view_pop_matrix (view);
+}
+
+static void
+lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgUseElement *use_element = LSM_SVG_USE_ELEMENT (self);
+	LsmDomElement *element;
+	LsmSvgMatrix matrix;
+	double x, y;
+
+	element = _get_used_element (use_element, "render");
+	if (element == NULL) {
+		extents->x1 = 0;
+		extents->y1 = 0;
+		extents->x2 = 0;
+		extents->y2 = 0;
+		return;
+	}
+
+	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
+					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &use_element->y.length,
+					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_svg_matrix_init_translate (&matrix, x, y);
+	lsm_svg_view_push_matrix (view, &matrix);
+
+	lsm_svg_element_get_extents (LSM_SVG_ELEMENT (element), view, extents);
 
 	lsm_svg_view_pop_matrix (view);
 }
@@ -162,6 +195,7 @@ lsm_svg_use_element_class_init (LsmSvgUseElementClass *klass)
 	d_node_class->can_append_child = lsm_svg_use_can_append_child;
 
 	s_element_class->render = lsm_svg_use_element_render;
+	s_element_class->get_extents = lsm_svg_use_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
