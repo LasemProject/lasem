@@ -65,7 +65,8 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 						  self, name, value))
 		lsm_svg_property_bag_set_property (&s_element->property_bag, name, value);
 
-	if (g_strcmp0 (name, "id") == 0) {
+	if (g_strcmp0 (name, "id") == 0 ||
+	    g_strcmp0 (name, "xml:id") == 0) {
 		LsmDomDocument *document;
 
 		document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
@@ -262,6 +263,11 @@ static const LsmSvgMatrix matrix_default =	 { 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_
 static const LsmAttributeInfos lsm_svg_attribute_infos[] = {
 	{
 		.name = "id",
+		.trait_class = &lsm_null_trait_class,
+		.attribute_offset = offsetof (LsmSvgElement, id)
+	},
+	{
+		.name = "xml:id",
 		.trait_class = &lsm_null_trait_class,
 		.attribute_offset = offsetof (LsmSvgElement, id)
 	},

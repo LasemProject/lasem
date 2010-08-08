@@ -700,6 +700,8 @@ _paint_url (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *ur
 	    !LSM_IS_SVG_PATTERN_ELEMENT (element))
 		return;
 
+	lsm_debug ("render", "[LsmSvgView::_paint_url] Paint using '%s'", url);
+
 	cairo_path_extents (view->dom_view.cairo, &x1, &y1, &x2, &y2);
 
 	extents.x = x1;
