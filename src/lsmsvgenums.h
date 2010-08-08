@@ -164,6 +164,37 @@ typedef enum {
 const char * 		lsm_svg_meet_or_slice_to_string 	(LsmSvgMeetOrSlice meet_or_slice);
 LsmSvgMeetOrSlice	lsm_svg_meet_or_slice_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_COMP_OP_ERROR = -1,
+	LSM_SVG_COMP_OP_CLEAR,
+	LSM_SVG_COMP_OP_SRC,
+	LSM_SVG_COMP_OP_DST,
+	LSM_SVG_COMP_OP_SRC_OVER,
+	LSM_SVG_COMP_OP_DST_OVER,
+	LSM_SVG_COMP_OP_SRC_IN,
+	LSM_SVG_COMP_OP_DST_IN,
+	LSM_SVG_COMP_OP_SRC_OUT,
+	LSM_SVG_COMP_OP_DST_OUT,
+	LSM_SVG_COMP_OP_SRC_ATOP,
+	LSM_SVG_COMP_OP_DST_ATOP,
+	LSM_SVG_COMP_OP_XOR,
+	LSM_SVG_COMP_OP_PLUS,
+	LSM_SVG_COMP_OP_MULTIPLY,
+	LSM_SVG_COMP_OP_SCREEN,
+	LSM_SVG_COMP_OP_OVERLAY,
+	LSM_SVG_COMP_OP_DARKEN,
+	LSM_SVG_COMP_OP_LIGHTEN,
+	LSM_SVG_COMP_OP_COLOR_DODGE,
+	LSM_SVG_COMP_OP_COLOR_BURN,
+	LSM_SVG_COMP_OP_HARD_LIGHT,
+	LSM_SVG_COMP_OP_SOFT_LIGHT,
+	LSM_SVG_COMP_OP_DIFFERENCE,
+	LSM_SVG_COMP_OP_EXCLUSION
+} LsmSvgCompOp;
+
+const char * 		lsm_svg_comp_op_to_string 	(LsmSvgCompOp comp_op);
+LsmSvgCompOp		lsm_svg_comp_op_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

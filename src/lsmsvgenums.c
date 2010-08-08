@@ -231,3 +231,47 @@ lsm_svg_meet_or_slice_from_string (const char *string)
 	return lsm_enum_value_from_string (string, lsm_svg_meet_or_slice_strings,
 					  G_N_ELEMENTS (lsm_svg_meet_or_slice_strings));
 }
+
+static const char *lsm_svg_comp_op_strings[] = {
+	"clear",
+	"src",
+	"dst",
+	"src-over",
+	"dst-over",
+	"src-in",
+	"dst-in",
+	"src-out",
+	"dst-out",
+	"src-atop",
+	"dst-atop",
+	"xor",
+	"plus",
+	"multiply",
+	"screen",
+	"overlay",
+	"darken",
+	"lighten",
+	"color-dodge",
+	"color-burn",
+	"hard-light",
+	"soft-light",
+	"difference",
+	"exclusion"
+};
+
+const char *
+lsm_svg_comp_op_to_string (LsmSvgCompOp comp_op)
+{
+	if (comp_op < 0 || comp_op > LSM_SVG_COMP_OP_EXCLUSION)
+		return NULL;
+
+	return lsm_svg_comp_op_strings[comp_op];
+}
+
+LsmSvgCompOp
+lsm_svg_comp_op_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_comp_op_strings,
+					  G_N_ELEMENTS (lsm_svg_comp_op_strings));
+}
+
