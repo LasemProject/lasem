@@ -83,6 +83,10 @@ double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *
 const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
 const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
 
+void		lsm_svg_view_calculate_path_extents	(LsmSvgView *view, const char *path,
+							 double *x1, double *y1,
+							 double *x2, double *y2);
+
 void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
 							                   double r, double fx, double fy);
 void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,

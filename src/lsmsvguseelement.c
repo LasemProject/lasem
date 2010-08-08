@@ -122,10 +122,19 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 	y = lsm_svg_view_normalize_length (view, &use_element->y.length,
 					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
+	lsm_svg_element_get_extents (LSM_SVG_ELEMENT (element), view, extents);
+
+	if (!lsm_svg_matrix_is_identity (&LSM_SVG_ELEMENT (element)->transform.matrix))
+		lsm_svg_matrix_transform_bounding_box (&LSM_SVG_ELEMENT (element)->transform.matrix,
+						       &extents->x1, &extents->y1,
+						       &extents->x2, &extents->y2);
+
 	lsm_svg_matrix_init_translate (&matrix, x, y);
 	lsm_svg_view_push_matrix (view, &matrix);
 
-	lsm_svg_element_get_extents (LSM_SVG_ELEMENT (element), view, extents);
+	lsm_svg_matrix_transform_bounding_box (&matrix,
+					       &extents->x1, &extents->y1,
+					       &extents->x2, &extents->y2);
 
 	lsm_svg_view_pop_matrix (view);
 }

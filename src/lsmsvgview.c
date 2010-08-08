@@ -1151,6 +1151,31 @@ lsm_svg_view_show_path (LsmSvgView *view,
 }
 
 void
+lsm_svg_view_calculate_path_extents (LsmSvgView *view,
+				     const char *path,
+				     double *x1, double *y1,
+				     double *x2, double *y2)
+{
+	double xx1, yy1, xx2, yy2;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	cairo_new_path (view->dom_view.cairo);
+	_emit_svg_path (view->dom_view.cairo, path);
+	cairo_path_extents (view->dom_view.cairo, &xx1, &yy1, &xx2, &yy2);
+	cairo_new_path (view->dom_view.cairo);
+
+	if (x1 != NULL)
+		*x1 = xx1;
+	if (y1 != NULL)
+		*y1 = yy1;
+	if (x2 != NULL)
+		*x2 = xx2;
+	if (y2 != NULL)
+		*y2 = yy2;
+}
+
+void
 lsm_svg_view_show_line (LsmSvgView *view, double x1, double y1, double x2, double y2)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));

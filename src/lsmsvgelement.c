@@ -171,7 +171,7 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 }
 
 static void
-_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 {
 	LsmDomNode *node;
 	gboolean first_child = TRUE;
@@ -179,16 +179,20 @@ _get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
 
 	lsm_debug ("render", "[LsmSvgElement::_get_extents]");
 
-	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
+	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_SVG_ELEMENT (node)) {
 			LsmExtents child_extents;
+			LsmSvgElement *child_element;
 
-			lsm_svg_element_get_extents (LSM_SVG_ELEMENT (node), view, &child_extents);
+			child_element = LSM_SVG_ELEMENT (node);
 
-			if (!lsm_svg_matrix_is_identity (&self->transform.matrix))
-				lsm_svg_matrix_transform_bounding_box (&self->transform.matrix,
-								       &child_extents.x1, &child_extents.y1,
-								       &child_extents.x2, &child_extents.y2);
+			lsm_svg_element_get_extents (child_element, view, &child_extents);
+
+			if (!lsm_svg_matrix_is_identity (&child_element->transform.matrix))
+				lsm_svg_matrix_transform_bounding_box (&child_element->transform.matrix,
+								       &extents->x1, &extents->y1,
+								       &extents->x2, &extents->y2);
+
 			if (first_child) {
 				element_extents = child_extents;
 				first_child = FALSE;
@@ -217,9 +221,14 @@ lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtent
 	if (element_class->get_extents != NULL) {
 		element_class->get_extents (element, view, extents);
 
-		lsm_debug ("measure", "LsmSvgElement::get_extents] Exents for '%s' = %g,%g %g,%g",
-			   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
-			   extents->x1, extents->y1, extents->x2, extents->y2);
+		if (element->id.value != NULL)
+			lsm_debug ("measure", "LsmSvgElement::get_extents] Extents for '%s' = %g,%g %g,%g",
+				   element->id.value,
+				   extents->x1, extents->y1, extents->x2, extents->y2);
+		else
+			lsm_debug ("measure", "LsmSvgElement::get_extents] Extents for <%s> = %g,%g %g,%g",
+				   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+				   extents->x1, extents->y1, extents->x2, extents->y2);
 	} else {
 		extents->x1 = 0.0;
 		extents->y1 = 0.0;

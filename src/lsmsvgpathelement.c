@@ -39,13 +39,21 @@ lsm_svg_path_element_get_node_name (LsmDomNode *node)
 static void
 lsm_svg_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
-	LsmSvgPathElement *path;
-
-	path = LSM_SVG_PATH_ELEMENT (self);
+	LsmSvgPathElement *path = LSM_SVG_PATH_ELEMENT (self);
 
 	lsm_debug ("render", "[LsmSvgPathElement::render]");
 
 	lsm_svg_view_show_path (view, path->d.value);
+}
+
+static void
+lsm_svg_path_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgPathElement *path = LSM_SVG_PATH_ELEMENT (self);
+
+	lsm_svg_view_calculate_path_extents (view, path->d.value,
+					     &extents->x1, &extents->y1,
+					     &extents->x2, &extents->y2);
 }
 
 /* LsmSvgPathElement implementation */
@@ -91,6 +99,7 @@ lsm_svg_path_element_class_init (LsmSvgPathElementClass *s_rect_class)
 	d_node_class->get_node_name = lsm_svg_path_element_get_node_name;
 
 	s_element_class->render = lsm_svg_path_element_render;
+	s_element_class->get_extents = lsm_svg_path_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
