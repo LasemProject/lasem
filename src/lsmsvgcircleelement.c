@@ -53,6 +53,22 @@ lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_show_circle (view, cx, cy, r);
 }
 
+static void
+lsm_svg_circle_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
+	double cx, cy, r;
+
+	cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	extents->x1 = cx - r;
+	extents->y1 = cy - r;
+	extents->x2 = cx + r;
+	extents->y2 = cy + r;
+}
+
 /* LsmSvgCircleElement implementation */
 
 LsmDomNode *
@@ -114,6 +130,7 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 	d_node_class->get_node_name = lsm_svg_circle_element_get_node_name;
 
 	s_element_class->render = lsm_svg_circle_element_render;
+	s_element_class->get_extents = lsm_svg_circle_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
