@@ -252,6 +252,8 @@ lsm_svg_pattern_element_class_init (LsmSvgPatternElementClass *klass)
 
 	d_node_class->get_node_name = _pattern_element_get_node_name;
 
+	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_CONTAINER;
+
 	s_element_class->render = lsm_svg_pattern_element_render;
 	s_element_class->enable_rendering = lsm_svg_pattern_element_enable_rendering;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);

@@ -91,6 +91,8 @@ lsm_svg_stop_element_class_init (LsmSvgStopElementClass *klass)
 
 	d_node_class->get_node_name = lsm_svg_stop_element_get_node_name;
 
+	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_NONE;
+
 	s_element_class->render = lsm_svg_stop_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 

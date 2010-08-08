@@ -118,6 +118,11 @@ lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
 
 	d_node_class->get_node_name = lsm_svg_ellipse_element_get_node_name;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS |
+		LSM_SVG_ELEMENT_CATEGORY_SHAPE |
+		LSM_SVG_ELEMENT_CATEGORY_BASIC_SHAPE;
+
 	s_element_class->render = lsm_svg_ellipse_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 

@@ -217,6 +217,10 @@ lsm_svg_image_element_class_init (LsmSvgImageElementClass *klass)
 
 	d_element_class->set_attribute = lsm_svg_image_element_set_attribute;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS |
+		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS_REFERENCING;
+
 	s_element_class->render = lsm_svg_image_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 

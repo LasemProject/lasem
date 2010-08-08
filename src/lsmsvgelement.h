@@ -57,12 +57,16 @@ struct _LsmSvgElementClass {
 
 	LsmAttributeManager *attribute_manager;
 
+	LsmSvgElementCategory category;
+
 	void		(*enable_rendering)	(LsmSvgElement *element);
 	void 		(*render)		(LsmSvgElement *element, LsmSvgView *view);
 	void 		(*get_extents)		(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 };
 
 GType lsm_svg_element_get_type (void);
+
+LsmSvgElementCategory	lsm_svg_element_get_category	(LsmSvgElement *element);
 
 void 		lsm_svg_element_render 		(LsmSvgElement *element, LsmSvgView *view);
 void 		lsm_svg_element_force_render 	(LsmSvgElement *element, LsmSvgView *view);

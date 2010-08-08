@@ -129,6 +129,10 @@ lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_text_class)
 	d_node_class->get_node_name = lsm_svg_text_element_get_node_name;
 	d_node_class->can_append_child = lsm_svg_text_element_can_append_child;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS |
+		LSM_SVG_ELEMENT_CATEGORY_TEXT_CONTENT;
+
 	s_element_class->render = lsm_svg_text_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 

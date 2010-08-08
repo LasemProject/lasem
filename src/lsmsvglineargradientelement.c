@@ -136,6 +136,8 @@ lsm_svg_linear_gradient_element_class_init (LsmSvgLinearGradientElementClass *s_
 
 	d_node_class->get_node_name = lsm_svg_linear_gradient_element_get_node_name;
 
+	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_GRADIENT;
+
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,

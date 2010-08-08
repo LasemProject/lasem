@@ -129,6 +129,11 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 
 	d_node_class->get_node_name = lsm_svg_circle_element_get_node_name;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS |
+		LSM_SVG_ELEMENT_CATEGORY_SHAPE |
+		LSM_SVG_ELEMENT_CATEGORY_BASIC_SHAPE;
+
 	s_element_class->render = lsm_svg_circle_element_render;
 	s_element_class->get_extents = lsm_svg_circle_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);

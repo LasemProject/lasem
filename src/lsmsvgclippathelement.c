@@ -117,6 +117,8 @@ lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
 
 	d_node_class->get_node_name = _clip_path_element_get_node_name;
 
+	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_NONE;
+
 	s_element_class->render = lsm_svg_clip_path_element_render;
 	s_element_class->enable_rendering = lsm_svg_clip_path_element_enable_rendering;
 

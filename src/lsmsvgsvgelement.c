@@ -231,6 +231,10 @@ lsm_svg_svg_element_class_init (LsmSvgSvgElementClass *s_svg_class)
 
 	d_node_class->get_node_name = lsm_svg_svg_element_get_node_name;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_CONTAINER |
+		LSM_SVG_ELEMENT_CATEGORY_STRUCTURAL;
+
 	s_element_class->render = _svg_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 

@@ -63,6 +63,10 @@ lsm_svg_defs_element_class_init (LsmSvgDefsElementClass *s_g_class)
 
 	d_node_class->get_node_name = lsm_svg_defs_element_get_node_name;
 
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_CONTAINER |
+		LSM_SVG_ELEMENT_CATEGORY_STRUCTURAL;
+
 	s_element_class->render = NULL;
 }
 

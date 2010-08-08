@@ -58,10 +58,15 @@ static void
 lsm_svg_g_element_class_init (LsmSvgGElementClass *s_g_class)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_g_class);
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_g_class);
 
 	parent_class = g_type_class_peek_parent (s_g_class);
 
 	d_node_class->get_node_name = lsm_svg_g_element_get_node_name;
+
+	s_element_class->category =
+		LSM_SVG_ELEMENT_CATEGORY_CONTAINER |
+		LSM_SVG_ELEMENT_CATEGORY_STRUCTURAL;
 }
 
 G_DEFINE_TYPE (LsmSvgGElement, lsm_svg_g_element, LSM_TYPE_SVG_ELEMENT)

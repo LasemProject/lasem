@@ -46,6 +46,12 @@ lsm_svg_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 static gboolean
 lsm_svg_element_child_changed (LsmDomNode *parent, LsmDomNode *child)
 {
+#if 0
+	if (LSM_IS_SVG_ELEMENT (child) &&
+	    lsm_svg_element_get_category (LSM_SVG_ELEMENT (child)) == 0)
+		g_warning ("Category not defined for '%s'", lsm_dom_node_get_node_name (child));
+#endif
+
 	return TRUE;
 }
 
@@ -92,6 +98,14 @@ lsm_svg_element_get_attribute (LsmDomElement *self, const char *name)
 }
 
 /* LsmSvgElement implementation */
+
+LsmSvgElementCategory
+lsm_svg_element_get_category (LsmSvgElement *element)
+{
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+
+	return s_element_class != NULL ? s_element_class->category : 0;
+}
 
 static void
 _render (LsmSvgElement *element, LsmSvgView *view)
@@ -300,6 +314,8 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 
 	d_element_class->get_attribute = lsm_svg_element_get_attribute;
 	d_element_class->set_attribute = lsm_svg_element_set_attribute;
+
+	s_element_class->category = 0;
 
 	s_element_class->render = _render;
 	s_element_class->get_extents = _get_extents;
