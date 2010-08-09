@@ -832,3 +832,28 @@ const LsmTraitClass lsm_svg_angle_trait_class = {
 	.from_string = lsm_svg_angle_trait_from_string,
 	.to_string = lsm_svg_angle_trait_to_string
 };
+
+static gboolean
+lsm_svg_text_anchor_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgTextAnchor *trait = (LsmSvgTextAnchor *) abstract_trait;
+
+	*trait = lsm_svg_text_anchor_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_text_anchor_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgTextAnchor *trait = (LsmSvgTextAnchor *) abstract_trait;
+
+	return g_strdup (lsm_svg_text_anchor_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_text_anchor_trait_class = {
+	.size = sizeof (LsmSvgTextAnchor),
+	.from_string = lsm_svg_text_anchor_trait_from_string,
+	.to_string = lsm_svg_text_anchor_trait_to_string
+};
+

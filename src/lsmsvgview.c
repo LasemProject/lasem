@@ -1342,6 +1342,18 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	x1 = x - pango_units_to_double (ink_rect.x);
 	y1 = y - pango_units_to_double (baseline);
 
+	switch (style->text_anchor->value) {
+		case LSM_SVG_TEXT_ANCHOR_END:
+			x1 -= pango_units_to_double (ink_rect.width);
+			break;
+		case LSM_SVG_TEXT_ANCHOR_MIDDLE:
+			x1 -= pango_units_to_double (ink_rect.width) / 2.0;
+			break;
+		case LSM_SVG_TEXT_ANCHOR_START:
+		default:
+			break;
+	}
+
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 
 	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);

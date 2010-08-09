@@ -368,7 +368,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "text-anchor",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, text_anchor),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_text_anchor_trait_class,
 		.trait_default = "start"
 	},
 	{

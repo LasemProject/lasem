@@ -360,3 +360,26 @@ lsm_svg_font_weight_from_string (const char *string)
 			return -1;
 	}
 }
+
+static const char *lsm_svg_text_anchor_strings[] = {
+	"start",
+	"middle",
+	"end"
+};
+
+const char *
+lsm_svg_text_anchor_to_string (LsmSvgTextAnchor text_anchor)
+{
+	if (text_anchor < 0 || text_anchor > LSM_SVG_TEXT_ANCHOR_MIDDLE)
+		return NULL;
+
+	return lsm_svg_text_anchor_strings[text_anchor];
+}
+
+LsmSvgTextAnchor
+lsm_svg_text_anchor_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_text_anchor_strings,
+					   G_N_ELEMENTS (lsm_svg_text_anchor_strings));
+}
+

@@ -88,6 +88,11 @@ typedef struct {
 	LsmSvgDashArray value;
 } LsmSvgDashArrayProperty;
 
+typedef struct {
+	LsmProperty base;
+	LsmSvgTextAnchor value;
+} LsmSvgTextAnchorProperty;
+
 struct _LsmSvgStyle {
 	/* Not inherited */
 
@@ -150,7 +155,7 @@ struct _LsmSvgStyle {
 	LsmSvgDoubleProperty *		stroke_miter_limit;
 	LsmSvgDoubleProperty *		stroke_opacity;
 	LsmSvgLengthProperty *		stroke_width;
-	LsmProperty *			text_anchor;
+	LsmSvgTextAnchorProperty *	text_anchor;
 	LsmProperty *			text_rendering;
 	LsmProperty *			visibility;
 	LsmProperty *			word_spacing;

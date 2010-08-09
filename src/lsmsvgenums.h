@@ -231,6 +231,16 @@ const char * 		lsm_svg_font_weight_to_string 	(LsmSvgFontWeight font_weight);
 LsmSvgFontWeight	lsm_svg_font_weight_from_string	(const char *string);
 
 typedef enum {
+	LSM_SVG_TEXT_ANCHOR_ERROR = -1,
+	LSM_SVG_TEXT_ANCHOR_START,
+	LSM_SVG_TEXT_ANCHOR_MIDDLE,
+	LSM_SVG_TEXT_ANCHOR_END
+} LsmSvgTextAnchor;
+
+const char * 		lsm_svg_text_anchor_to_string 		(LsmSvgTextAnchor text_anchor);
+LsmSvgTextAnchor	lsm_svg_text_anchor_from_string		(const char *string);
+
+typedef enum {
 	LSM_SVG_ELEMENT_CATEGORY_NONE			= 1 << 0,
 	LSM_SVG_ELEMENT_CATEGORY_DESCRIPTIVE		= 1 << 1,
 	LSM_SVG_ELEMENT_CATEGORY_CONTAINER		= 1 << 2,
