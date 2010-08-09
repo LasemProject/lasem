@@ -956,7 +956,7 @@ paint_markers (LsmSvgView *view)
 }
 
 static void
-paint (LsmSvgView *view)
+paint (LsmSvgView *view, gboolean is_text_path)
 {
 	const LsmSvgStyle *style;
 	LsmSvgElement *element;
@@ -990,9 +990,13 @@ paint (LsmSvgView *view)
 			LSM_SVG_VIEW_PAINT_OPERATION_FILL,
 			&style->fill->paint,
 			style->fill_opacity->value * (use_group ? 1.0 : group_opacity))) {
-		cairo_set_fill_rule (cairo, style->fill_rule->value == LSM_SVG_FILL_RULE_EVEN_ODD ?
-				     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
-		cairo_fill_preserve (cairo);
+		if (is_text_path)
+			pango_cairo_show_layout (cairo, view->dom_view.pango_layout);
+		else {
+			cairo_set_fill_rule (cairo, style->fill_rule->value == LSM_SVG_FILL_RULE_EVEN_ODD ?
+					     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
+			cairo_fill_preserve (cairo);
+		}
 	}
 
 	if (_set_color (view,
@@ -1061,14 +1065,26 @@ paint (LsmSvgView *view)
 }
 
 static void
-process_path (LsmSvgView *view)
+process_path (LsmSvgView *view, gboolean is_text_path)
 {
 	g_return_if_fail (view->style != NULL);
 
 	if (view->is_clipping) {
 		cairo_set_fill_rule (view->dom_view.cairo, view->style->clip_rule->value);
 	} else
-		paint (view);
+		paint (view, is_text_path);
+}
+
+static void
+process_shape_path (LsmSvgView *view)
+{
+	process_path (view, FALSE);
+}
+
+static void
+process_text_path (LsmSvgView *view)
+{
+	process_path (view, TRUE);
 }
 
 /*
@@ -1116,7 +1132,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 		cairo_close_path (cairo);
 	}
 
-	process_path (view);
+	process_shape_path (view);
 }
 
 void
@@ -1127,7 +1143,7 @@ lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 
 	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);
 
-	process_path (view);
+	process_shape_path (view);
 }
 
 #define LSM_SVG_ARC_MAGIC ((double) 0.5522847498) /* 4/3 * (1-cos 45)/sin 45 = 4/3 * sqrt(2) - 1 */
@@ -1151,7 +1167,7 @@ lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, do
 	cairo_curve_to (cairo, cx + LSM_SVG_ARC_MAGIC * rx, cy + ry, cx + rx, cy + LSM_SVG_ARC_MAGIC * ry, cx + rx, cy);
 	cairo_close_path (cairo);
 
-	process_path (view);
+	process_shape_path (view);
 }
 
 void
@@ -1162,7 +1178,7 @@ lsm_svg_view_show_path (LsmSvgView *view,
 
 	_emit_svg_path (view->dom_view.cairo, d);
 
-	process_path (view);
+	process_shape_path (view);
 
 }
 
@@ -1199,7 +1215,7 @@ lsm_svg_view_show_line (LsmSvgView *view, double x1, double y1, double x2, doubl
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 	cairo_line_to (view->dom_view.cairo, x2, y2);
 
-	process_path (view);
+	process_shape_path (view);
 }
 
 static void
@@ -1221,7 +1237,7 @@ _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 	if (close_path)
 		cairo_close_path (view->dom_view.cairo);
 
-	process_path (view);
+	process_shape_path (view);
 }
 
 void
@@ -1246,6 +1262,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	PangoRectangle ink_rect;
 	double font_size;
 	int baseline;
+	double x1, y1;
 
 	if (string == NULL)
 		return;
@@ -1273,13 +1290,16 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	baseline = pango_layout_iter_get_baseline (iter);
 	pango_layout_iter_free (iter);
 
-	cairo_move_to (view->dom_view.cairo,
-		       x - pango_units_to_double (ink_rect.x),
-		       y - pango_units_to_double (baseline));
+	x1 = x - pango_units_to_double (ink_rect.x);
+	y1 = y - pango_units_to_double (baseline);
+
+	cairo_move_to (view->dom_view.cairo, x1, y1);
 
 	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);
 
-	process_path (view);
+	cairo_move_to (view->dom_view.cairo, x1, y1);
+
+	process_text_path (view);
 }
 
 void
