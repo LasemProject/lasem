@@ -275,3 +275,88 @@ lsm_svg_comp_op_from_string (const char *string)
 					  G_N_ELEMENTS (lsm_svg_comp_op_strings));
 }
 
+static const char *lsm_svg_font_stretch_strings[] = {
+	"normal",
+	"ultra-condensed",
+	"extra-condensed",
+	"condensed",
+	"semi-condensed",
+	"semi-expanded",
+	"expanded",
+	"extra-expanded",
+	"ultra-expanded"
+};
+
+const char *
+lsm_svg_font_stretch_to_string (LsmSvgFontStretch font_stretch)
+{
+	if (font_stretch < 0 || font_stretch > LSM_SVG_FONT_STRETCH_ULTRA_EXPANDED)
+		return NULL;
+
+	return lsm_svg_font_stretch_strings[font_stretch];
+}
+
+LsmSvgFontStretch
+lsm_svg_font_stretch_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_font_stretch_strings,
+					  G_N_ELEMENTS (lsm_svg_font_stretch_strings));
+}
+
+static const char *lsm_svg_font_style_strings[] = {
+	"normal",
+	"oblique",
+	"italic"
+};
+
+const char *
+lsm_svg_font_style_to_string (LsmSvgFontStyle font_style)
+{
+	if (font_style < 0 || font_style > LSM_SVG_FONT_STYLE_ITALIC)
+		return NULL;
+
+	return lsm_svg_font_style_strings[font_style];
+}
+
+LsmSvgFontStyle
+lsm_svg_font_style_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_font_style_strings,
+					  G_N_ELEMENTS (lsm_svg_font_style_strings));
+}
+
+static const char *lsm_svg_font_weight_strings[] = {
+	"normal",
+	"bold"
+};
+
+const char *
+lsm_svg_font_weight_to_string (LsmSvgFontWeight font_weight)
+{
+	switch (font_weight) {
+		case LSM_SVG_FONT_WEIGHT_NORMAL:
+			return lsm_svg_font_weight_strings[0];
+		case LSM_SVG_FONT_WEIGHT_BOLD:
+			return lsm_svg_font_weight_strings[1];
+		default:
+			return NULL;
+	}
+}
+
+LsmSvgFontWeight
+lsm_svg_font_weight_from_string (const char *string)
+{
+	int index;
+
+	index = lsm_enum_value_from_string (string, lsm_svg_font_weight_strings,
+					   G_N_ELEMENTS (lsm_svg_font_weight_strings));
+
+	switch (index) {
+		case 0:
+			return LSM_SVG_FONT_WEIGHT_NORMAL;
+		case 1:
+			return LSM_SVG_FONT_WEIGHT_BOLD;
+		default:
+			return -1;
+	}
+}

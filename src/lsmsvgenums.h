@@ -196,6 +196,41 @@ const char * 		lsm_svg_comp_op_to_string 	(LsmSvgCompOp comp_op);
 LsmSvgCompOp		lsm_svg_comp_op_from_string	(const char *string);
 
 typedef enum {
+	LSM_SVG_FONT_STRETCH_ERROR = -1,
+	LSM_SVG_FONT_STRETCH_NORMAL,
+	LSM_SVG_FONT_STRETCH_ULTRA_CONDENSED,
+	LSM_SVG_FONT_STRETCH_EXTRA_CONDENSED,
+	LSM_SVG_FONT_STRETCH_CONDENSED,
+	LSM_SVG_FONT_STRETCH_SEMI_CONDENSED,
+	LSM_SVG_FONT_STRETCH_SEMI_EXPANDED,
+	LSM_SVG_FONT_STRETCH_EXPANDED,
+	LSM_SVG_FONT_STRETCH_EXTRA_EXPANDED,
+	LSM_SVG_FONT_STRETCH_ULTRA_EXPANDED
+} LsmSvgFontStretch;
+
+const char * 		lsm_svg_font_stretch_to_string 		(LsmSvgFontStretch font_stretch);
+LsmSvgFontStretch	lsm_svg_font_stretch_from_string	(const char *string);
+
+typedef enum {
+	LSM_SVG_FONT_STYLE_ERROR = -1,
+	LSM_SVG_FONT_STYLE_NORMAL,
+	LSM_SVG_FONT_STYLE_OBLIQUE,
+	LSM_SVG_FONT_STYLE_ITALIC
+} LsmSvgFontStyle;
+
+const char * 		lsm_svg_font_style_to_string 		(LsmSvgFontStyle font_style);
+LsmSvgFontStyle		lsm_svg_font_style_from_string		(const char *string);
+
+typedef enum {
+	LSM_SVG_FONT_WEIGHT_ERROR = -1,
+	LSM_SVG_FONT_WEIGHT_NORMAL = 400,
+	LSM_SVG_FONT_WEIGHT_BOLD = 700
+} LsmSvgFontWeight;
+
+const char * 		lsm_svg_font_weight_to_string 	(LsmSvgFontWeight font_weight);
+LsmSvgFontWeight	lsm_svg_font_weight_from_string	(const char *string);
+
+typedef enum {
 	LSM_SVG_ELEMENT_CATEGORY_NONE			= 1 << 0,
 	LSM_SVG_ELEMENT_CATEGORY_DESCRIPTIVE		= 1 << 1,
 	LSM_SVG_ELEMENT_CATEGORY_CONTAINER		= 1 << 2,

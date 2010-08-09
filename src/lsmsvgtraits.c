@@ -25,6 +25,7 @@
 #include <lsmsvgcolors.h>
 #include <math.h>
 #include <string.h>
+#include <stdlib.h>
 
 const LsmSvgColor lsm_svg_color_null = {0.0, 0.0, 0.0};
 const LsmSvgDashArray lsm_svg_dash_array_null = {0, NULL};
@@ -400,6 +401,87 @@ const LsmTraitClass lsm_svg_fill_rule_trait_class = {
 	.size = sizeof (LsmSvgFillRule),
 	.from_string = lsm_svg_fill_rule_trait_from_string,
 	.to_string = lsm_svg_fill_rule_trait_to_string
+};
+
+static gboolean
+lsm_svg_font_style_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgFontStyle *trait = (LsmSvgFontStyle *) abstract_trait;
+
+	*trait = lsm_svg_font_style_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_font_style_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgFontStyle *trait = (LsmSvgFontStyle *) abstract_trait;
+
+	return g_strdup (lsm_svg_font_style_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_font_style_trait_class = {
+	.size = sizeof (LsmSvgFontStyle),
+	.from_string = lsm_svg_font_style_trait_from_string,
+	.to_string = lsm_svg_font_style_trait_to_string
+};
+
+static gboolean
+lsm_svg_font_stretch_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgFontStretch *trait = (LsmSvgFontStretch *) abstract_trait;
+
+	*trait = lsm_svg_font_stretch_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_font_stretch_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgFontStretch *trait = (LsmSvgFontStretch *) abstract_trait;
+
+	return g_strdup (lsm_svg_font_stretch_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_font_stretch_trait_class = {
+	.size = sizeof (LsmSvgFontStretch),
+	.from_string = lsm_svg_font_stretch_trait_from_string,
+	.to_string = lsm_svg_font_stretch_trait_to_string
+};
+
+static gboolean
+lsm_svg_font_weight_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgFontWeight *trait = (LsmSvgFontWeight *) abstract_trait;
+
+	*trait = lsm_svg_font_weight_from_string (string);
+
+	if (*trait < 0)
+		*trait = strtol (string, NULL, 10);
+
+	return *trait >= 100 && *trait <= 1000;
+}
+
+char *
+lsm_svg_font_weight_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgFontWeight *trait = (LsmSvgFontWeight *) abstract_trait;
+	const char *string;
+
+	string = lsm_svg_font_weight_to_string (*trait);
+
+	if (string != NULL)
+		return g_strdup (string);
+
+	return g_strdup_printf ("%d", *trait);
+}
+
+const LsmTraitClass lsm_svg_font_weight_trait_class = {
+	.size = sizeof (LsmSvgFontWeight),
+	.from_string = lsm_svg_font_weight_trait_from_string,
+	.to_string = lsm_svg_font_weight_trait_to_string
 };
 
 static gboolean

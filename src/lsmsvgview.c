@@ -1258,6 +1258,8 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	const LsmSvgStyle *style;
 	PangoLayout *pango_layout;
 	PangoFontDescription *font_description;
+	PangoStretch font_stretch;
+	PangoStyle font_style;
 	PangoLayoutIter *iter;
 	PangoRectangle ink_rect;
 	double font_size;
@@ -1281,6 +1283,53 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	pango_font_description_set_family (font_description, style->font_family->value);
 	pango_font_description_set_size (font_description, font_size * PANGO_SCALE);
+	pango_font_description_set_weight (font_description, style->font_weight->value);
+
+	switch (style->font_stretch->value) {
+		case LSM_SVG_FONT_STRETCH_ULTRA_CONDENSED:
+			font_stretch = PANGO_STRETCH_ULTRA_CONDENSED;
+			break;
+		case LSM_SVG_FONT_STRETCH_EXTRA_CONDENSED:
+			font_stretch = PANGO_STRETCH_EXTRA_CONDENSED;
+			break;
+		case LSM_SVG_FONT_STRETCH_CONDENSED:
+			font_stretch = PANGO_STRETCH_CONDENSED;
+			break;
+		case LSM_SVG_FONT_STRETCH_SEMI_CONDENSED:
+			font_stretch = PANGO_STRETCH_SEMI_CONDENSED;
+			break;
+		case LSM_SVG_FONT_STRETCH_SEMI_EXPANDED:
+			font_stretch = PANGO_STRETCH_SEMI_EXPANDED;
+			break;
+		case LSM_SVG_FONT_STRETCH_EXPANDED:
+			font_stretch = PANGO_STRETCH_EXPANDED;
+			break;
+		case LSM_SVG_FONT_STRETCH_EXTRA_EXPANDED:
+			font_stretch = PANGO_STRETCH_EXTRA_EXPANDED;
+			break;
+		case LSM_SVG_FONT_STRETCH_ULTRA_EXPANDED:
+			font_stretch = PANGO_STRETCH_ULTRA_EXPANDED;
+			break;
+		case LSM_SVG_FONT_STRETCH_NORMAL:
+		default:
+			font_stretch = PANGO_STRETCH_NORMAL;
+			break;
+	}
+	pango_font_description_set_stretch (font_description, font_stretch);
+
+	switch (style->font_style->value) {
+		case LSM_SVG_FONT_STYLE_OBLIQUE:
+			font_style = PANGO_STYLE_OBLIQUE;
+			break;
+		case LSM_SVG_FONT_STYLE_ITALIC:
+			font_style = PANGO_STYLE_ITALIC;
+			break;
+		case LSM_SVG_FONT_STYLE_NORMAL:
+		default:
+			font_style = PANGO_STYLE_NORMAL;
+			break;
+	}
+	pango_font_description_set_style (font_description, font_style);
 
 	pango_layout_set_text (pango_layout, string, -1);
 	pango_layout_set_font_description (pango_layout, font_description);

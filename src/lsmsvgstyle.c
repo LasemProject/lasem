@@ -230,13 +230,13 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "font-stretch",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, font_stretch),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_font_stretch_trait_class,
 		.trait_default = "normal"
 	},
 	{
 		.name = "font-style",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, font_style),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_font_style_trait_class,
 		.trait_default = "normal"
 	},
 	{
@@ -248,7 +248,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "font-weight",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, font_weight),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_font_weight_trait_class,
 		.trait_default = "normal"
 	},
 	{

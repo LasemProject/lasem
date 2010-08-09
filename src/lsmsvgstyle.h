@@ -60,6 +60,21 @@ typedef struct {
 
 typedef struct {
 	LsmProperty base;
+	LsmSvgFontStretch value;
+} LsmSvgFontStretchProperty;
+
+typedef struct {
+	LsmProperty base;
+	LsmSvgFontStyle value;
+} LsmSvgFontStyleProperty;
+
+typedef struct {
+	LsmProperty base;
+	LsmSvgFontWeight value;
+} LsmSvgFontWeightProperty;
+
+typedef struct {
+	LsmProperty base;
 	LsmSvgLineJoin value;
 } LsmSvgLineJoinProperty;
 
@@ -112,10 +127,10 @@ struct _LsmSvgStyle {
 	LsmProperty *			font_family;
 	LsmSvgLengthProperty *		font_size;
 	LsmProperty *			font_size_adjust;
-	LsmProperty *			font_stretch;
-	LsmProperty *			font_style;
+	LsmSvgFontStretchProperty *	font_stretch;
+	LsmSvgFontStyleProperty *	font_style;
 	LsmProperty *			font_variant;
-	LsmProperty *			font_weight;
+	LsmSvgFontWeightProperty *	font_weight;
 	LsmProperty *			glyph_orientation_horizontal;
 	LsmProperty *			glyph_orientation_vertical;
 	LsmProperty *			image_rendering;
