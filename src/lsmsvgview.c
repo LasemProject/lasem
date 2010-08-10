@@ -39,6 +39,18 @@
 
 static GObjectClass *parent_class;
 
+typedef struct {
+	gboolean is_text_path;
+	gboolean is_extents_defined;
+	LsmExtents extents;
+} LsmSvgViewPathInfos;
+
+static LsmSvgViewPathInfos default_path_infos = {
+	.is_text_path = FALSE,
+	.is_extents_defined = FALSE,
+	.extents = {0.0, 0.0, 0.0, 0.0}
+};
+
 struct _LsmSvgViewPatternData {
 	cairo_t *old_cairo;
 
@@ -688,12 +700,14 @@ typedef enum {
 } LsmSvgViewPaintOperation;
 
 static void
-_paint_url (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *url)
+_paint_url (LsmSvgView *view,
+	    LsmSvgViewPathInfos *path_infos,
+	    LsmSvgViewPaintOperation operation,
+	    const char *url)
 {
 	cairo_t *cairo;
 	LsmSvgElement *element;
 	LsmBox extents;
-	double x1, x2, y1, y2;
 
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
 	if (!LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
@@ -702,12 +716,19 @@ _paint_url (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *ur
 
 	lsm_debug ("render", "[LsmSvgView::_paint_url] Paint using '%s'", url);
 
-	cairo_path_extents (view->dom_view.cairo, &x1, &y1, &x2, &y2);
+	if (!path_infos->is_extents_defined) {
+		cairo_path_extents (view->dom_view.cairo,
+				    &path_infos->extents.x1,
+				    &path_infos->extents.y1,
+				    &path_infos->extents.x2,
+				    &path_infos->extents.y2);
+		path_infos->is_extents_defined = TRUE;
+	}
 
-	extents.x = x1;
-	extents.y = y1;
-	extents.width = x2 - x1;
-	extents.height = y2 - y1;
+	extents.x = path_infos->extents.x1;
+	extents.y = path_infos->extents.y1;
+	extents.width =  path_infos->extents.x2 - extents.x;
+	extents.height = path_infos->extents.y2 - extents.y;
 
 	_start_pattern (view, &extents);
 
@@ -767,7 +788,9 @@ _paint_url (LsmSvgView *view, LsmSvgViewPaintOperation operation, const char *ur
 }
 
 static gboolean
-_set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
+_set_color (LsmSvgView *view,
+	    LsmSvgViewPathInfos *path_infos,
+	    LsmSvgViewPaintOperation operation,
 	    const LsmSvgPaint *paint, double opacity)
 {
 	cairo_t *cairo = view->dom_view.cairo;
@@ -793,7 +816,7 @@ _set_color (LsmSvgView *view, LsmSvgViewPaintOperation operation,
 		case LSM_SVG_PAINT_TYPE_URI_RGB_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_CURRENT_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_NONE:
-			_paint_url (view, operation, paint->url);
+			_paint_url (view, path_infos, operation, paint->url);
 			break;
 		default:
 			return FALSE;
@@ -956,7 +979,7 @@ paint_markers (LsmSvgView *view)
 }
 
 static void
-paint (LsmSvgView *view, gboolean is_text_path)
+paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 {
 	const LsmSvgStyle *style;
 	LsmSvgElement *element;
@@ -987,10 +1010,13 @@ paint (LsmSvgView *view, gboolean is_text_path)
 		cairo_push_group (cairo);
 
 	if (_set_color (view,
+			path_infos,
 			LSM_SVG_VIEW_PAINT_OPERATION_FILL,
 			&style->fill->paint,
 			style->fill_opacity->value * (use_group ? 1.0 : group_opacity))) {
-		if (is_text_path)
+
+		/* FIXME It doesn't work if a _set_color triggers a text output */
+		if (path_infos->is_text_path)
 			pango_cairo_show_layout (cairo, view->dom_view.pango_layout);
 		else {
 			cairo_set_fill_rule (cairo, style->fill_rule->value == LSM_SVG_FILL_RULE_EVEN_ODD ?
@@ -1000,10 +1026,15 @@ paint (LsmSvgView *view, gboolean is_text_path)
 	}
 
 	if (_set_color (view,
+			path_infos,
 			LSM_SVG_VIEW_PAINT_OPERATION_STROKE,
 			&style->stroke->paint,
 			style->stroke_opacity->value * (use_group ? 1.0 : group_opacity))) {
 		double line_width;
+
+		/* FIXME It doesn't work if a _set_color triggers a text output */
+		if (path_infos->is_text_path)
+			pango_cairo_layout_path (cairo, view->dom_view.pango_layout);
 
 		switch (style->stroke_line_join->value) {
 			case LSM_SVG_LINE_JOIN_MITER:
@@ -1065,26 +1096,14 @@ paint (LsmSvgView *view, gboolean is_text_path)
 }
 
 static void
-process_path (LsmSvgView *view, gboolean is_text_path)
+process_path (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 {
 	g_return_if_fail (view->style != NULL);
 
 	if (view->is_clipping) {
 		cairo_set_fill_rule (view->dom_view.cairo, view->style->clip_rule->value);
 	} else
-		paint (view, is_text_path);
-}
-
-static void
-process_shape_path (LsmSvgView *view)
-{
-	process_path (view, FALSE);
-}
-
-static void
-process_text_path (LsmSvgView *view)
-{
-	process_path (view, TRUE);
+		paint (view, path_infos);
 }
 
 /*
@@ -1105,6 +1124,7 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 			     double w, double h,
 			     double rx, double ry)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
 	cairo_t *cairo;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -1132,18 +1152,19 @@ lsm_svg_view_show_rectangle (LsmSvgView *view,
 		cairo_close_path (cairo);
 	}
 
-	process_shape_path (view);
+	process_path (view, &path_infos);
 }
 
 void
 lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_arc (view->dom_view.cairo, cx, cy, r, 0, 2 * M_PI);
 
-	process_shape_path (view);
+	process_path (view, &path_infos);
 }
 
 #define LSM_SVG_ARC_MAGIC ((double) 0.5522847498) /* 4/3 * (1-cos 45)/sin 45 = 4/3 * sqrt(2) - 1 */
@@ -1151,6 +1172,7 @@ lsm_svg_view_show_circle (LsmSvgView *view, double cx, double cy, double r)
 void
 lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, double ry)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
 	cairo_t *cairo;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -1167,19 +1189,20 @@ lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, do
 	cairo_curve_to (cairo, cx + LSM_SVG_ARC_MAGIC * rx, cy + ry, cx + rx, cy + LSM_SVG_ARC_MAGIC * ry, cx + rx, cy);
 	cairo_close_path (cairo);
 
-	process_shape_path (view);
+	process_path (view, &path_infos);
 }
 
 void
 lsm_svg_view_show_path (LsmSvgView *view,
 		     const char *d)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	_emit_svg_path (view->dom_view.cairo, d);
 
-	process_shape_path (view);
-
+	process_path (view, &path_infos);
 }
 
 void
@@ -1210,17 +1233,20 @@ lsm_svg_view_calculate_path_extents (LsmSvgView *view,
 void
 lsm_svg_view_show_line (LsmSvgView *view, double x1, double y1, double x2, double y2)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 	cairo_line_to (view->dom_view.cairo, x2, y2);
 
-	process_shape_path (view);
+	process_path (view, &path_infos);
 }
 
 static void
 _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
 	char *str;
 	double values[2];
 
@@ -1237,7 +1263,7 @@ _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 	if (close_path)
 		cairo_close_path (view->dom_view.cairo);
 
-	process_shape_path (view);
+	process_path (view, &path_infos);
 }
 
 void
@@ -1255,6 +1281,7 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 void
 lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y)
 {
+	LsmSvgViewPathInfos path_infos = default_path_infos;
 	const LsmSvgStyle *style;
 	PangoLayout *pango_layout;
 	PangoFontDescription *font_description;
@@ -1356,11 +1383,14 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	cairo_move_to (view->dom_view.cairo, x1, y1);
 
-	pango_cairo_layout_path (view->dom_view.cairo, pango_layout);
+	path_infos.is_text_path = TRUE;
+	path_infos.is_extents_defined = TRUE;
+	path_infos.extents.x1 = x1;
+	path_infos.extents.y1 = y1;
+	path_infos.extents.x2 = x1 + pango_units_to_double (ink_rect.width);
+	path_infos.extents.y2 = y1 + pango_units_to_double (ink_rect.height);
 
-	cairo_move_to (view->dom_view.cairo, x1, y1);
-
-	process_text_path (view);
+	process_path (view, &path_infos);
 }
 
 void
