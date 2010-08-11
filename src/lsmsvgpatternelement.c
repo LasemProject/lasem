@@ -96,14 +96,19 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		return;
 	}
 
+	if (!lsm_svg_view_create_surface_pattern (view, &image_box,
+						  pattern->units.value,
+						  pattern->content_units.value,
+						  &pattern->transform.matrix,
+						  LSM_SVG_VIEW_SURFACE_TYPE_AUTO)) {
+		lsm_debug ("render", "[LsmSvgPatternElement::render] Intermediate surface creation failed");
+		lsm_svg_view_pop_style (view);
+		lsm_svg_style_unref (style);
+		return;
+	}
+
 	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
-
-	lsm_svg_view_create_surface_pattern (view, &image_box,
-					     pattern->units.value,
-					     pattern->content_units.value,
-					     &pattern->transform.matrix,
-					     LSM_SVG_VIEW_SURFACE_TYPE_AUTO);
 
 	is_object_bounding_box = (pattern->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 

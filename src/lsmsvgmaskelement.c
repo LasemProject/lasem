@@ -92,13 +92,18 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 		return;
 	}
 
+	if (!lsm_svg_view_create_surface_pattern (view, &viewport,
+						  mask->units.value,
+						  mask->content_units.value, NULL,
+						  LSM_SVG_VIEW_SURFACE_TYPE_IMAGE)) {
+		lsm_debug ("render", "[LsmSvgMaskElement::render] Intermediate surface creation failed");
+		lsm_svg_view_pop_style (view);
+		lsm_svg_style_unref (style);
+		return;
+	}
+
 	lsm_debug ("render", "[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
-
-	lsm_svg_view_create_surface_pattern (view, &viewport,
-					     mask->units.value,
-					     mask->content_units.value, NULL,
-					     LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
 
 	is_object_bounding_box = (mask->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 

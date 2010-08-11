@@ -101,11 +101,11 @@ void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgPatternUnits units,
 							 const LsmSvgMatrix *matrix);
 
-void		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
+gboolean	lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
 							 LsmSvgPatternUnits units,
 							 LsmSvgPatternUnits content_units,
 							 const LsmSvgMatrix *matrix,
-							 LsmSvgViewSurfaceType surface_type);
+							 LsmSvgViewSurfaceType surface_type) G_GNUC_WARN_UNUSED_RESULT;
 
 void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
 						                   double width, double height,

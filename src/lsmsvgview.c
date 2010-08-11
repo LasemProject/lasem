@@ -213,7 +213,7 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 		cairo_matrix_init_identity (&view->pattern_data->matrix);
 }
 
-void
+gboolean
 lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 				     const LsmBox *viewport,
 				     LsmSvgPatternUnits units,
@@ -225,10 +225,10 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	cairo_pattern_t *pattern;
 	double width, height, x, y;
 
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (viewport != NULL);
-	g_return_if_fail (view->pattern_data != NULL);
-	g_return_if_fail (view->dom_view.cairo == NULL);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), FALSE);
+	g_return_val_if_fail (viewport != NULL, FALSE);
+	g_return_val_if_fail (view->pattern_data != NULL, FALSE);
+	g_return_val_if_fail (view->dom_view.cairo == NULL, FALSE);
 
 	x = viewport->x;
 	y = viewport->y;
@@ -239,7 +239,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		   width, height, x, y);
 
 	if (height < 1 || width < 1)
-		return;
+		return FALSE;
 
 	switch (surface_type) {
 		case LSM_SVG_VIEW_SURFACE_TYPE_AUTO:
@@ -273,6 +273,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	} else
 		cairo_matrix_init_translate (&view->pattern_data->matrix, -x, -y);
 
+	return TRUE;
 }
 
 typedef struct {
