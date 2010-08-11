@@ -88,8 +88,13 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		image_box.height *= pattern_extents->height;
 	}
 
-	if (viewport.width <= 0.0 || viewport.height <= 0.0)
+	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
+		lsm_debug ("render", "[LsmSvgPatternElement::render] Invalid viewport w = %g, h = %g",
+			   viewport.width, viewport.height);
+		lsm_svg_view_pop_style (view);
+		lsm_svg_style_unref (style);
 		return;
+	}
 
 	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
