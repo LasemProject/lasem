@@ -1106,6 +1106,8 @@ process_path (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 	g_return_if_fail (view->style != NULL);
 
 	if (view->is_clipping) {
+		if (path_infos->is_text_path)
+			pango_cairo_layout_path (view->dom_view.cairo, path_infos->pango_layout);
 		cairo_set_fill_rule (view->dom_view.cairo, view->style->clip_rule->value);
 	} else
 		paint (view, path_infos);
