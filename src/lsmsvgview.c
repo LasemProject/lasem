@@ -43,12 +43,14 @@ typedef struct {
 	gboolean is_text_path;
 	gboolean is_extents_defined;
 	LsmExtents extents;
+	PangoLayout *pango_layout;
 } LsmSvgViewPathInfos;
 
 static LsmSvgViewPathInfos default_path_infos = {
 	.is_text_path = FALSE,
 	.is_extents_defined = FALSE,
-	.extents = {0.0, 0.0, 0.0, 0.0}
+	.extents = {0.0, 0.0, 0.0, 0.0},
+	.pango_layout = NULL
 };
 
 struct _LsmSvgViewPatternData {
@@ -730,6 +732,9 @@ _paint_url (LsmSvgView *view,
 	extents.width =  path_infos->extents.x2 - extents.x;
 	extents.height = path_infos->extents.y2 - extents.y;
 
+	lsm_debug ("render", "[LsmSvgView::_paint_url] Pattern extents x = %g, y = %g, w = %g, h = %g",
+		   extents.x, extents.y, extents.width, extents.height);
+
 	_start_pattern (view, &extents);
 
 	lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
@@ -741,7 +746,7 @@ _paint_url (LsmSvgView *view,
 		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
 			char *filename;
 
-			filename = g_strdup_printf ("%s.png", uri);
+			filename = g_strdup_printf ("%s.png", url);
 			cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
 			g_free (filename);
 		}
@@ -1015,10 +1020,9 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 			&style->fill->paint,
 			style->fill_opacity->value * (use_group ? 1.0 : group_opacity))) {
 
-		/* FIXME It doesn't work if a _set_color triggers a text output */
-		if (path_infos->is_text_path)
-			pango_cairo_show_layout (cairo, view->dom_view.pango_layout);
-		else {
+		if (path_infos->is_text_path) {
+			pango_cairo_show_layout (cairo, path_infos->pango_layout);
+		} else {
 			cairo_set_fill_rule (cairo, style->fill_rule->value == LSM_SVG_FILL_RULE_EVEN_ODD ?
 					     CAIRO_FILL_RULE_EVEN_ODD : CAIRO_FILL_RULE_WINDING);
 			cairo_fill_preserve (cairo);
@@ -1032,9 +1036,9 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 			style->stroke_opacity->value * (use_group ? 1.0 : group_opacity))) {
 		double line_width;
 
-		/* FIXME It doesn't work if a _set_color triggers a text output */
-		if (path_infos->is_text_path)
-			pango_cairo_layout_path (cairo, view->dom_view.pango_layout);
+		if (path_infos->is_text_path) {
+			pango_cairo_layout_path (cairo, path_infos->pango_layout);
+		}
 
 		switch (style->stroke_line_join->value) {
 			case LSM_SVG_LINE_JOIN_MITER:
@@ -1288,7 +1292,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	PangoStretch font_stretch;
 	PangoStyle font_style;
 	PangoLayoutIter *iter;
-	PangoRectangle ink_rect;
+	PangoRectangle rectangle;
 	double font_size;
 	int baseline;
 	double x1, y1;
@@ -1302,7 +1306,18 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	style = view->style;
 
-	pango_layout = view->dom_view.pango_layout;
+	if (view->is_pango_layout_in_use) {
+		PangoContext *pango_context;
+
+		pango_context = pango_layout_get_context (view->pango_layout);
+		view->pango_layout_stack = g_slist_prepend (view->pango_layout_stack, view->pango_layout);
+		view->pango_layout = pango_layout_new (pango_context);
+
+		lsm_debug ("render", "[LsmSvgView::show_text] Create a new pango layout");
+	} else
+		view->is_pango_layout_in_use = TRUE;
+
+	pango_layout = view->pango_layout;
 	font_description = view->dom_view.font_description;
 
 	font_size = lsm_svg_view_normalize_length (view, &style->font_size->length,
@@ -1360,21 +1375,21 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	pango_layout_set_text (pango_layout, string, -1);
 	pango_layout_set_font_description (pango_layout, font_description);
-	pango_layout_get_extents (pango_layout, &ink_rect, NULL);
+	pango_layout_get_extents (pango_layout, &rectangle, NULL);
 
 	iter = pango_layout_get_iter (pango_layout);
 	baseline = pango_layout_iter_get_baseline (iter);
 	pango_layout_iter_free (iter);
 
-	x1 = x - pango_units_to_double (ink_rect.x);
+	x1 = x - pango_units_to_double (rectangle.x);
 	y1 = y - pango_units_to_double (baseline);
 
 	switch (style->text_anchor->value) {
 		case LSM_SVG_TEXT_ANCHOR_END:
-			x1 -= pango_units_to_double (ink_rect.width);
+			x1 -= pango_units_to_double (rectangle.width);
 			break;
 		case LSM_SVG_TEXT_ANCHOR_MIDDLE:
-			x1 -= pango_units_to_double (ink_rect.width) / 2.0;
+			x1 -= pango_units_to_double (rectangle.width) / 2.0;
 			break;
 		case LSM_SVG_TEXT_ANCHOR_START:
 		default:
@@ -1387,10 +1402,26 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	path_infos.is_extents_defined = TRUE;
 	path_infos.extents.x1 = x1;
 	path_infos.extents.y1 = y1;
-	path_infos.extents.x2 = x1 + pango_units_to_double (ink_rect.width);
-	path_infos.extents.y2 = y1 + pango_units_to_double (ink_rect.height);
+	path_infos.extents.x2 = x1 + pango_units_to_double (rectangle.width);
+	path_infos.extents.y2 = y1 + pango_units_to_double (rectangle.height);
+	path_infos.pango_layout = pango_layout;
 
 	process_path (view, &path_infos);
+
+	if (pango_layout != view->pango_layout) {
+		lsm_debug ("render", "[LsmSvgView::show_text] Free the child pango layout");
+
+		if (view->pango_layout != NULL) {
+			g_object_unref (view->pango_layout);
+
+			view->pango_layout = view->pango_layout_stack->data;
+			view->pango_layout_stack = g_slist_delete_link (view->pango_layout_stack,
+									view->pango_layout_stack);
+		} else
+			g_warning ("[LsmSvgView::show_text] Pango layout stack empty");
+	}
+
+	view->is_pango_layout_in_use = FALSE;
 }
 
 void
@@ -1874,15 +1905,27 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->element_stack = NULL;
 	svg_view->viewbox_stack = NULL;
 	svg_view->matrix_stack = NULL;
+	svg_view->pango_layout_stack = NULL;
 
 	svg_view->is_clipping = FALSE;
+	svg_view->is_pango_layout_in_use = FALSE;
+	svg_view->pango_layout = view->pango_layout;
 
 	svg_view->resolution_ppi = lsm_dom_document_get_resolution (view->document);
 
 	lsm_svg_svg_element_render  (svg_element, svg_view);
 
+	if (svg_view->is_pango_layout_in_use)
+		g_warning ("[LsmSvgView::render] Unfinished text redenring");
+
 	if (svg_view->is_clipping)
 		g_warning ("[LsmSvgView::render] Unfinished clipping");
+
+	if (svg_view->pango_layout_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling pango_layout in stack");
+		g_slist_free (svg_view->pango_layout_stack);
+		svg_view->pango_layout_stack = NULL;
+	}
 
 	if (svg_view->matrix_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling matrix in stack");

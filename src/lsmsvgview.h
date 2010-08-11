@@ -58,8 +58,12 @@ struct _LsmSvgView {
 	GSList *element_stack;
 	GSList *viewbox_stack;
 	GSList *matrix_stack;
+	GSList *pango_layout_stack;
+
+	gboolean is_pango_layout_in_use;
 
 	LsmSvgViewPatternData *pattern_data;
+	PangoLayout *pango_layout;
 
 	GSList *pattern_stack;
 
