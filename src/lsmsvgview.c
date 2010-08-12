@@ -25,7 +25,8 @@
 #include <lsmsvgdocument.h>
 #include <lsmsvgelement.h>
 #include <lsmsvgsvgelement.h>
-#include <lsmsvggradientelement.h>
+#include <lsmsvgradialgradientelement.h>
+#include <lsmsvglineargradientelement.h>
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgmarkerelement.h>
 #include <lsmsvgclippathelement.h>
@@ -742,7 +743,8 @@ _paint_url (LsmSvgView *view,
 	LsmBox extents;
 
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
-	if (!LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
+	if (!LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) &&
+	    !LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element) &&
 	    !LSM_IS_SVG_PATTERN_ELEMENT (element))
 		return;
 
@@ -782,7 +784,7 @@ _paint_url (LsmSvgView *view,
 		}
 #endif
 
-		if (LSM_IS_SVG_GRADIENT_ELEMENT (element) &&
+		if ((LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) || LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element)) &&
 		    view->pattern_data->units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {
 			cairo_matrix_t matrix;
 

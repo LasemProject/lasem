@@ -22,9 +22,32 @@
 
 #include <lsmsvgradialgradientelement.h>
 #include <lsmsvgview.h>
+#include <lsmdomdocument.h>
 #include <lsmdebug.h>
 #include <stdio.h>
 #include <math.h>
+
+typedef struct {
+	LsmSvgLength cx;
+	LsmSvgLength cy;
+	LsmSvgLength r;
+	LsmSvgLength fx;
+	LsmSvgLength fy;
+	LsmSvgMatrix transform;
+	LsmSvgPatternUnits units;
+	LsmSvgSpreadMethod spread_method;
+} LsmSvgRadialGradientElementAttributes;
+
+static const LsmSvgRadialGradientElementAttributes default_attributes = {
+	.cx = {.value_unit = 50.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
+	.cy = {.value_unit = 50.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
+	.r  = {.value_unit = 50.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
+	.fx = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR},
+	.fy = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR},
+	.transform = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY},
+	.units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX,
+	.spread_method = LSM_SVG_SPREAD_METHOD_PAD
+};
 
 static GObjectClass *parent_class;
 
@@ -38,16 +61,101 @@ lsm_svg_radial_gradient_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgRadialGradientElement implementation */
 
-static void
-lsm_svg_radial_gradient_element_create_gradient (LsmSvgElement *self, LsmSvgView *view)
+static LsmSvgRadialGradientElement *
+lsm_svg_radial_gradient_element_inherit_referenced (LsmDomDocument *owner,
+						    LsmSvgRadialGradientElement *gradient,
+						    LsmSvgRadialGradientElementAttributes *attributes)
 {
-	LsmSvgRadialGradientElement *radial = LSM_SVG_RADIAL_GRADIENT_ELEMENT (self);
+	LsmSvgRadialGradientElement *referenced_gradient = gradient;
+	LsmDomElement *element;
+
+	if (lsm_attribute_is_defined (&gradient->href)) {
+		char *id;
+
+		id = gradient->href.value;
+		if (id == NULL)
+			return NULL;
+		if (*id == '#')
+			id++;
+
+		element = lsm_dom_document_get_element_by_id (owner, id);
+		if (LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element)) {
+			lsm_debug ("render",
+				   "[LsmSvgRadialGradientElement::inherit_attributes]"
+				   " Found referenced element '%s'", id);
+
+			referenced_gradient = lsm_svg_radial_gradient_element_inherit_referenced
+				(owner,
+				 LSM_SVG_RADIAL_GRADIENT_ELEMENT (element),
+				 attributes);
+		} else {
+			lsm_debug ("render",
+				   "[LsmSvgRadialGradientElement::inherit_attributes]"
+				   " Referenced element '%s' not found", id);
+			referenced_gradient = NULL;
+		}
+	}
+
+	if (lsm_attribute_is_defined (&gradient->cx.base))
+		attributes->cx = gradient->cx.length;
+	if (lsm_attribute_is_defined (&gradient->cy.base))
+		attributes->cy = gradient->cy.length;
+	if (lsm_attribute_is_defined (&gradient->r.base))
+		attributes->r = gradient->r.length;
+	if (lsm_attribute_is_defined (&gradient->fx.base))
+		attributes->fx = gradient->fx.length;
+	if (lsm_attribute_is_defined (&gradient->fy.base))
+		attributes->fy = gradient->fy.length;
+	if (lsm_attribute_is_defined (&gradient->transform.base))
+		attributes->transform = gradient->transform.matrix;
+	if (lsm_attribute_is_defined (&gradient->units.base))
+		attributes->units = gradient->units.value;
+	if (lsm_attribute_is_defined (&gradient->spread_method.base))
+		attributes->spread_method = gradient->spread_method.value;
+
+	return referenced_gradient;
+}
+
+static void
+lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
+{
+	LsmSvgRadialGradientElement *gradient = LSM_SVG_RADIAL_GRADIENT_ELEMENT (self);
+	LsmSvgRadialGradientElement *referenced_gradient;
 	gboolean is_object_bounding_box;
 	double cx, cy, fx, fy, r;
 	double gradient_radius;
 
-	is_object_bounding_box = (LSM_SVG_GRADIENT_ELEMENT (self)->units.value ==
-				  LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+	if (!gradient->enable_rendering)
+		return;
+
+	gradient->enable_rendering = FALSE;
+
+	if (lsm_attribute_is_defined (&gradient->href)) {
+		LsmSvgRadialGradientElementAttributes attributes;
+		LsmDomDocument *owner;
+		attributes = default_attributes;
+
+		owner = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
+
+		referenced_gradient = lsm_svg_radial_gradient_element_inherit_referenced (owner, gradient, &attributes);
+
+		gradient->cx.length = attributes.cy;
+		gradient->cy.length = attributes.cy;
+		gradient->r.length = attributes.r;
+		gradient->fx.length = attributes.fx;
+		gradient->fy.length = attributes.fy;
+		gradient->transform.matrix = attributes.transform;
+		gradient->units.value = attributes.units;
+		gradient->spread_method.value = attributes.spread_method;
+	} else
+		referenced_gradient = gradient;
+
+	if (referenced_gradient == NULL)
+		return;
+
+	is_object_bounding_box = (gradient->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	g_message ("is_object_bounding_box = %s", is_object_bounding_box ? "TRUE" : "FALSE");
 
 	if (is_object_bounding_box) {
 		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
@@ -55,17 +163,17 @@ lsm_svg_radial_gradient_element_create_gradient (LsmSvgElement *self, LsmSvgView
 		lsm_svg_view_push_viewbox (view, &viewbox);
 	}
 
-	cx = lsm_svg_view_normalize_length (view, &radial->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &radial->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	r  = lsm_svg_view_normalize_length (view, &radial->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	cx = lsm_svg_view_normalize_length (view, &gradient->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	cy = lsm_svg_view_normalize_length (view, &gradient->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	r  = lsm_svg_view_normalize_length (view, &gradient->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-	if (lsm_attribute_is_defined (&radial->fx.base))
-		fx = lsm_svg_view_normalize_length (view, &radial->fx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	if (lsm_attribute_is_defined (&gradient->fx.base))
+		fx = lsm_svg_view_normalize_length (view, &gradient->fx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	else
 		fx = cx;
 
-	if (lsm_attribute_is_defined (&radial->fy.base))
-		fy = lsm_svg_view_normalize_length (view, &radial->fy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	if (lsm_attribute_is_defined (&gradient->fy.base))
+		fy = lsm_svg_view_normalize_length (view, &gradient->fy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	else
 		fy = cy;
 
@@ -87,6 +195,19 @@ lsm_svg_radial_gradient_element_create_gradient (LsmSvgElement *self, LsmSvgView
 		    cx, cy, r, fx, fy);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
+
+	lsm_svg_view_set_gradient_properties (view,
+					      gradient->spread_method.value,
+					      gradient->units.value,
+					      &gradient->transform.matrix);
+
+	LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_gradient), view);
+}
+
+static void
+lsm_svg_radial_gradient_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_RADIAL_GRADIENT_ELEMENT (element)->enable_rendering = TRUE;
 }
 
 /* LsmSvgRadialGradientElement implementation */
@@ -97,17 +218,19 @@ lsm_svg_radial_gradient_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_RADIAL_GRADIENT_ELEMENT, NULL);
 }
 
-static const LsmSvgLength length_default = {.value_unit = 50.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
-static const LsmSvgLength unset_default  = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR};
-
 static void
 lsm_svg_radial_gradient_element_init (LsmSvgRadialGradientElement *self)
 {
-	self->cx.length = length_default;
-	self->cy.length = length_default;
-	self->r.length = length_default;
-	self->fx.length = unset_default;
-	self->fy.length = unset_default;
+	self->enable_rendering = FALSE;
+
+	self->cx.length = default_attributes.cx;
+	self->cy.length = default_attributes.cy;
+	self->r.length = default_attributes.r;
+	self->fx.length = default_attributes.fx;
+	self->fy.length = default_attributes.fy;
+	self->transform.matrix = default_attributes.transform;
+	self->units.value = default_attributes.units;
+	self->spread_method.value = default_attributes.spread_method;
 }
 
 static void
@@ -123,31 +246,54 @@ static const LsmAttributeInfos lsm_svg_radial_gradient_element_attribute_infos[]
 		.name = "cx",
 		.attribute_offset = offsetof (LsmSvgRadialGradientElement, cx),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.cx
 	},
 	{
 		.name = "cy",
 		.attribute_offset = offsetof (LsmSvgRadialGradientElement, cy),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.cy
 	},
 	{
 		.name = "r",
 		.attribute_offset = offsetof (LsmSvgRadialGradientElement, r),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.r
 	},
 	{
 		.name = "fx",
 		.attribute_offset = offsetof (LsmSvgRadialGradientElement, fx),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &unset_default
+		.trait_default = &default_attributes.fx
 	},
 	{
 		.name = "fy",
 		.attribute_offset = offsetof (LsmSvgRadialGradientElement, fy),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &unset_default
+		.trait_default = &default_attributes.fy
+	},
+	{
+		.name = "gradientTransform",
+		.attribute_offset = offsetof (LsmSvgRadialGradientElement, transform),
+		.trait_class = &lsm_svg_matrix_trait_class,
+		.trait_default = &default_attributes.transform
+	},
+	{
+		.name = "gradientUnits",
+		.attribute_offset = offsetof (LsmSvgRadialGradientElement, units),
+		.trait_class = &lsm_svg_pattern_units_trait_class,
+		.trait_default = &default_attributes.units
+	},
+	{
+		.name = "spreadMethod",
+		.attribute_offset = offsetof (LsmSvgRadialGradientElement, spread_method),
+		.trait_class = &lsm_svg_spread_method_trait_class,
+		.trait_default = &default_attributes.spread_method
+	},
+	{
+		.name = "xlink:href",
+		.attribute_offset = offsetof (LsmSvgRadialGradientElement, href),
+		.trait_class = &lsm_null_trait_class
 	}
 };
 
@@ -157,7 +303,6 @@ lsm_svg_radial_gradient_element_class_init (LsmSvgRadialGradientElementClass *s_
 	GObjectClass *object_class = G_OBJECT_CLASS (s_svg_class);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_svg_class);
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_svg_class);
-	LsmSvgGradientElementClass *s_gradient_class = LSM_SVG_GRADIENT_ELEMENT_CLASS (s_svg_class);
 
 	parent_class = g_type_class_peek_parent (s_svg_class);
 
@@ -167,13 +312,13 @@ lsm_svg_radial_gradient_element_class_init (LsmSvgRadialGradientElementClass *s_
 
 	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_GRADIENT;
 
+	s_element_class->render = lsm_svg_radial_gradient_element_render;
+	s_element_class->enable_rendering = lsm_svg_radial_gradient_element_enable_rendering;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
 					      G_N_ELEMENTS (lsm_svg_radial_gradient_element_attribute_infos),
 					      lsm_svg_radial_gradient_element_attribute_infos);
-
-	s_gradient_class->create_gradient = lsm_svg_radial_gradient_element_create_gradient;
 }
 
-G_DEFINE_TYPE (LsmSvgRadialGradientElement, lsm_svg_radial_gradient_element, LSM_TYPE_SVG_GRADIENT_ELEMENT)
+G_DEFINE_TYPE (LsmSvgRadialGradientElement, lsm_svg_radial_gradient_element, LSM_TYPE_SVG_ELEMENT)

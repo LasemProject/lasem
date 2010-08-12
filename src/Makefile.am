@@ -99,7 +99,6 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmsvgpathelement.c			\
 	lsmsvgtextelement.c			\
 	lsmsvgtspanelement.c			\
-	lsmsvggradientelement.c			\
 	lsmsvglineargradientelement.c		\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
@@ -187,7 +186,6 @@ LASEM_HDRS = \
 	lsmsvgpolygonelement.h			\
 	lsmsvgtextelement.h			\
 	lsmsvgtspanelement.h			\
-	lsmsvggradientelement.h			\
 	lsmsvglineargradientelement.h		\
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
@@ -238,10 +236,10 @@ Lasem_0_4_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
 
 INTROSPECTION_GIRS += Lasem-@LASEM_API_VERSION@.gir
 
-girdir = $(datadir)/gir-1.0
+girdir = $(datadir)/gir-1.1
 dist_gir_DATA = $(INTROSPECTION_GIRS)
 
-typelibdir = $(libdir)/girepositry-1.0
+typelibdir = $(libdir)/girepositry-1.1
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(dist_gir_DATA) $(typelib_DATA)
