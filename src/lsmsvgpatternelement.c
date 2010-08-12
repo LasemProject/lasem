@@ -23,7 +23,36 @@
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgview.h>
 #include <lsmdebug.h>
+#include <lsmdomdocument.h>
 #include <stdio.h>
+
+typedef struct {
+	LsmSvgLength x;
+	LsmSvgLength y;
+	LsmSvgLength width;
+	LsmSvgLength height;
+	LsmSvgMatrix transform;
+	LsmSvgPatternUnits units;
+	LsmSvgPatternUnits content_units;
+	LsmBox viewbox;
+	LsmSvgPreserveAspectRatio preserve_aspect_ratio;
+} LsmSvgPatternElementAttributes;
+
+static LsmSvgPatternElementAttributes default_attributes = {
+	.x = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX},
+	.y = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX},
+	.width = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX},
+	.height = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX},
+	.transform = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY},
+	.units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX,
+	.content_units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE,
+	.viewbox = {0.0, 0.0, 0.0, 0.0},
+	.preserve_aspect_ratio = {
+		.defer = FALSE,
+		.align = LSM_SVG_ALIGN_X_MID_Y_MID,
+		.meet_or_slice = LSM_SVG_MEET_OR_SLICE_MEET
+	}
+};
 
 static GObjectClass *parent_class;
 
@@ -37,10 +66,66 @@ _pattern_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
+static LsmSvgPatternElement *
+lsm_svg_pattern_element_inherit_referenced (LsmDomDocument *owner,
+					    LsmSvgPatternElement *pattern,
+					    LsmSvgPatternElementAttributes *attributes)
+{
+	LsmSvgPatternElement *referenced_pattern = pattern;
+	LsmDomElement *element;
+
+	if (lsm_attribute_is_defined (&pattern->href)) {
+		char *id;
+
+		id = pattern->href.value;
+		if (id == NULL)
+			return NULL;
+		if (*id == '#')
+			id++;
+
+		element = lsm_dom_document_get_element_by_id (owner, id);
+		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
+			lsm_debug ("render",
+				   "[LsmSvgPatternElement::inherit_attributes] Found referenced element '%s'", id);
+
+			referenced_pattern = lsm_svg_pattern_element_inherit_referenced
+				(owner,
+				 LSM_SVG_PATTERN_ELEMENT (element),
+				 attributes);
+		} else {
+			lsm_debug ("render",
+				   "[LsmSvgPatternElement::inherit_attributes] Referenced element '%s' not found", id);
+			referenced_pattern = NULL;
+		}
+	}
+
+	if (lsm_attribute_is_defined (&pattern->x.base))
+		attributes->x = pattern->x.length;
+	if (lsm_attribute_is_defined (&pattern->y.base))
+		attributes->y = pattern->y.length;
+	if (lsm_attribute_is_defined (&pattern->width.base))
+		attributes->width = pattern->width.length;
+	if (lsm_attribute_is_defined (&pattern->height.base))
+		attributes->height = pattern->height.length;
+	if (lsm_attribute_is_defined (&pattern->transform.base))
+		attributes->transform = pattern->transform.matrix;
+	if (lsm_attribute_is_defined (&pattern->units.base))
+		attributes->units = pattern->units.value;
+	if (lsm_attribute_is_defined (&pattern->content_units.base))
+		attributes->content_units = pattern->content_units.value;
+	if (lsm_attribute_is_defined (&pattern->viewbox.base))
+		attributes->viewbox = pattern->viewbox.value;
+	if (lsm_attribute_is_defined (&pattern->preserve_aspect_ratio.base))
+		attributes->preserve_aspect_ratio = pattern->preserve_aspect_ratio.value;
+
+	return referenced_pattern;
+}
+
 static void
 lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgPatternElement *pattern = LSM_SVG_PATTERN_ELEMENT (self);
+	LsmSvgPatternElement *referenced_pattern;
 	gboolean is_object_bounding_box;
 	gboolean is_viewbox_defined;
 	LsmBox viewport;
@@ -54,6 +139,30 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	} else {
 		pattern->enable_rendering = FALSE;
 	}
+
+	if (lsm_attribute_is_defined (&pattern->href)) {
+		LsmSvgPatternElementAttributes attributes;
+		LsmDomDocument *owner;
+		attributes = default_attributes;
+
+		owner = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
+
+		referenced_pattern = lsm_svg_pattern_element_inherit_referenced (owner, pattern, &attributes);
+
+		pattern->x.length = attributes.x;
+		pattern->y.length = attributes.y;
+		pattern->width.length = attributes.width;
+		pattern->height.length = attributes.height;
+		pattern->transform.matrix = attributes.transform;
+		pattern->units.value = attributes.units;
+		pattern->content_units.value = attributes.content_units;
+		pattern->viewbox.value = attributes.viewbox;
+		pattern->preserve_aspect_ratio.value = attributes.preserve_aspect_ratio;
+	} else
+		referenced_pattern = pattern;
+
+	if (referenced_pattern == NULL)
+		return;
 
 	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
 	lsm_svg_view_push_style (view, style);
@@ -96,6 +205,9 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		return;
 	}
 
+	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
+		   viewport.x, viewport.y, viewport.width, viewport.height);
+
 	if (!lsm_svg_view_create_surface_pattern (view, &image_box,
 						  pattern->units.value,
 						  pattern->content_units.value,
@@ -106,9 +218,6 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_style_unref (style);
 		return;
 	}
-
-	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
-		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	is_object_bounding_box = (pattern->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
@@ -135,7 +244,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &pattern->viewbox.value : NULL,
 					    &pattern->preserve_aspect_ratio.value);
 
-		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+		LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_pattern), view);
 
 		lsm_svg_view_pop_viewport (view);
 	}
@@ -163,29 +272,18 @@ lsm_svg_pattern_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_PATTERN_ELEMENT, NULL);
 }
 
-static const LsmSvgLength length_default = 	{ .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
-static const LsmSvgMatrix matrix_default = 	{1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY};
-static const LsmBox viewbox_default =		{0.0, 0.0, 0.0, 0.0};
-static const LsmSvgPatternUnits units_default =  	LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX;
-static const LsmSvgPatternUnits content_units_default = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
-static const LsmSvgPreserveAspectRatio preserve_aspect_ratio_default = {
-	.defer = FALSE,
-	.align = LSM_SVG_ALIGN_X_MID_Y_MID,
-	.meet_or_slice = LSM_SVG_MEET_OR_SLICE_MEET
-};
-
 static void
 lsm_svg_pattern_element_init (LsmSvgPatternElement *self)
 {
 	self->enable_rendering = FALSE;
-	self->x.length = length_default;
-	self->y.length = length_default;
-	self->width.length = length_default;
-	self->height.length = length_default;
-	self->transform.matrix = matrix_default;
-	self->units.value = units_default;
-	self->content_units.value = content_units_default;
-	self->preserve_aspect_ratio.value = preserve_aspect_ratio_default;
+	self->x.length = default_attributes.x;
+	self->y.length = default_attributes.y;
+	self->width.length = default_attributes.width;
+	self->height.length = default_attributes.height;
+	self->transform.matrix = default_attributes.transform;
+	self->units.value = default_attributes.units;
+	self->content_units.value = default_attributes.content_units;
+	self->preserve_aspect_ratio.value = default_attributes.preserve_aspect_ratio;
 }
 
 /* LsmSvgPatternElement class */
@@ -195,43 +293,43 @@ static const LsmAttributeInfos lsm_svg_pattern_element_attribute_infos[] = {
 		.name = "x",
 		.attribute_offset = offsetof (LsmSvgPatternElement, x),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.x
 	},
 	{
 		.name = "y",
 		.attribute_offset = offsetof (LsmSvgPatternElement, y),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.y
 	},
 	{
 		.name = "width",
 		.attribute_offset = offsetof (LsmSvgPatternElement, width),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.width
 	},
 	{
 		.name = "height",
 		.attribute_offset = offsetof (LsmSvgPatternElement, height),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &default_attributes.height
 	},
 	{
 		.name = "patternUnits",
 		.attribute_offset = offsetof (LsmSvgPatternElement, units),
 		.trait_class = &lsm_svg_pattern_units_trait_class,
-		.trait_default = &units_default
+		.trait_default = &default_attributes.units
 	},
 	{
 		.name = "patternContentUnits",
 		.attribute_offset = offsetof (LsmSvgPatternElement, content_units),
 		.trait_class = &lsm_svg_pattern_units_trait_class,
-		.trait_default = &content_units_default
+		.trait_default = &default_attributes.content_units
 	},
 	{
 		.name = "patternTransform",
 		.attribute_offset = offsetof (LsmSvgPatternElement, transform),
 		.trait_class = &lsm_svg_matrix_trait_class,
-		.trait_default = &matrix_default
+		.trait_default = &default_attributes.transform
 	},
 	{
 		.name = "xlink:href",
@@ -242,13 +340,13 @@ static const LsmAttributeInfos lsm_svg_pattern_element_attribute_infos[] = {
 		.name = "viewBox",
 		.attribute_offset = offsetof (LsmSvgPatternElement, viewbox),
 		.trait_class = &lsm_box_trait_class,
-		.trait_default = &viewbox_default
+		.trait_default = &default_attributes.viewbox
 	},
 	{
 		.name = "preserveAspectRatio",
 		.attribute_offset = offsetof (LsmSvgPatternElement, preserve_aspect_ratio),
 		.trait_class = &lsm_svg_preserve_aspect_ratio_trait_class,
-		.trait_default = &preserve_aspect_ratio_default
+		.trait_default = &default_attributes.preserve_aspect_ratio
 	}
 };
 
