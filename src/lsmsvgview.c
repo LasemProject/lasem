@@ -223,33 +223,58 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 {
 	cairo_surface_t *surface;
 	cairo_pattern_t *pattern;
-	double width, height, x, y;
+	double x1, y1, x2, y2;
+	double device_width, device_height;
+	double x_scale, y_scale;
 
 	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), FALSE);
 	g_return_val_if_fail (viewport != NULL, FALSE);
 	g_return_val_if_fail (view->pattern_data != NULL, FALSE);
 	g_return_val_if_fail (view->dom_view.cairo == NULL, FALSE);
 
-	x = viewport->x;
-	y = viewport->y;
-	width = viewport->width;
-	height = viewport->height;
+	if (viewport->width <= 0.0 || viewport->height <= 0.0)
+		return FALSE;
 
-	lsm_debug ("render", "[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g",
-		   width, height, x, y);
+	x1 = viewport->x;
+	y1 = viewport->y;
+	x2 = viewport->x + viewport->width;
+	y2 = viewport->y;
 
-	if (height < 1 || width < 1)
+	cairo_user_to_device (view->pattern_data->old_cairo, &x1, &y1);
+	cairo_user_to_device (view->pattern_data->old_cairo, &x2, &y2);
+
+	device_width = sqrt ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+
+	x2 = viewport->x;
+	y2 = viewport->y + viewport->height;
+
+	cairo_user_to_device (view->pattern_data->old_cairo, &x2, &y2);
+
+	device_height = sqrt ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
+
+	if (surface_type == LSM_SVG_VIEW_SURFACE_TYPE_IMAGE) {
+		device_height = ceil (device_height);
+		device_width = ceil (device_width);
+	}
+
+	x_scale = device_height / viewport->height;
+	y_scale = device_width / viewport->width;
+
+	lsm_debug ("render", "[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g (scale %g x %g)",
+		   device_width, device_height, viewport->x, viewport->y, x_scale, y_scale);
+
+	if (device_height < 1.0 || device_width < 1.0)
 		return FALSE;
 
 	switch (surface_type) {
 		case LSM_SVG_VIEW_SURFACE_TYPE_AUTO:
 			surface = cairo_surface_create_similar (cairo_get_target (view->pattern_data->old_cairo),
 								CAIRO_CONTENT_COLOR_ALPHA,
-								width, height);
+								device_width, device_height);
 			break;
 		default:
 		case LSM_SVG_VIEW_SURFACE_TYPE_IMAGE:
-			surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+			surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, device_width, device_height);
 			break;
 	}
 
@@ -257,7 +282,8 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	view->dom_view.cairo = cairo_create (surface);
 	cairo_surface_destroy (surface);
 
-	cairo_translate (view->dom_view.cairo, -x, -y);
+	cairo_scale (view->dom_view.cairo, x_scale, y_scale);
+	cairo_translate (view->dom_view.cairo, -viewport->x, -viewport->y);
 
 	_set_pattern (view, pattern);
 
@@ -268,10 +294,13 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		cairo_matrix_init (&view->pattern_data->matrix,
 				   matrix->a, matrix->b,
 				   matrix->c, matrix->d,
-				   matrix->e + x, matrix->f + y);
+				   matrix->e + viewport->x, matrix->f + viewport->y);
+		cairo_matrix_scale (&view->pattern_data->matrix, 1.0 / x_scale, 1.0 / y_scale);
 		cairo_matrix_invert (&view->pattern_data->matrix);
-	} else
-		cairo_matrix_init_translate (&view->pattern_data->matrix, -x, -y);
+	} else {
+		cairo_matrix_init_translate (&view->pattern_data->matrix, -viewport->x, -viewport->y);
+		cairo_matrix_scale (&view->pattern_data->matrix, 1.0 / x_scale, 1.0 / y_scale);
+	}
 
 	return TRUE;
 }
@@ -1536,7 +1565,7 @@ _compute_viewbox_scale (const LsmBox *viewport, const LsmBox *viewbox,
 			*y_offset = -viewbox->y * *y_scale;
 		}
 
-		lsm_debug ("render", "[LsmSvgView::_compute_viewbox_scale] scale = %g, %g", x_scale, y_scale);
+		lsm_debug ("render", "[LsmSvgView::_compute_viewbox_scale] scale = %g, %g", *x_scale, *y_scale);
 
 		return viewbox;
 	}
@@ -1652,6 +1681,10 @@ lsm_svg_view_pop_matrix (LsmSvgView *view)
 		ctm = view->matrix_stack->data;
 
 		cairo_set_matrix (view->dom_view.cairo, ctm);
+
+		lsm_debug ("render", "[LsmSvgView::pop_matrix] Restore ctm %g, %g, %g, %g, %g, %g",
+			   ctm->xx, ctm->xy, ctm->yx, ctm->yy,
+			   ctm->x0, ctm->y0);
 
 		g_free (ctm);
 		view->matrix_stack = g_slist_delete_link (view->matrix_stack, view->matrix_stack);
