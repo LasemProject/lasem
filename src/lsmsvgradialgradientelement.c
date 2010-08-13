@@ -209,6 +209,13 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	lsm_debug ("render", "[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
 		    cx, cy, r, fx, fy);
+	lsm_debug ("render", "[LsmSvgRadialElement::render] transform %g, %g, %g, %g, %g, %g",
+		   gradient->transform.matrix.a,
+		   gradient->transform.matrix.b,
+		   gradient->transform.matrix.c,
+		   gradient->transform.matrix.d,
+		   gradient->transform.matrix.e,
+		   gradient->transform.matrix.f);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);
 
