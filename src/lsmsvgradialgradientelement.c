@@ -139,7 +139,7 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 		referenced_gradient = lsm_svg_radial_gradient_element_inherit_referenced (owner, gradient, &attributes);
 
-		gradient->cx.length = attributes.cy;
+		gradient->cx.length = attributes.cx;
 		gradient->cy.length = attributes.cy;
 		gradient->r.length = attributes.r;
 		gradient->fx.length = attributes.fx;
