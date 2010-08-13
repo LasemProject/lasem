@@ -129,6 +129,7 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgRadialGradientElement *gradient = LSM_SVG_RADIAL_GRADIENT_ELEMENT (self);
 	LsmSvgRadialGradientElement *referenced_gradient;
+	LsmDomNode *node;
 	gboolean is_object_bounding_box;
 	double cx, cy, fx, fy, r;
 	double gradient_radius;
@@ -216,7 +217,9 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 					      gradient->units.value,
 					      &gradient->transform.matrix);
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_gradient), view);
+	for (node = LSM_DOM_NODE (referenced_gradient)->first_child; node != NULL; node = node->next_sibling)
+		if (LSM_IS_SVG_ELEMENT (node))
+		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
 }
 
 static void
