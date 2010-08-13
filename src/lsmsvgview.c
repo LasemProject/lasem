@@ -794,14 +794,15 @@ _paint_url (LsmSvgView *view,
 				return;
 			}
 
-			cairo_matrix_init_scale (&matrix,
+			matrix = view->pattern_data->matrix;
+
+			cairo_matrix_scale (&matrix,
 						 1.0 / view->pattern_data->extents.width,
 						 1.0 / view->pattern_data->extents.height);
 			cairo_matrix_translate (&matrix,
 						-view->pattern_data->extents.x,
 						-view->pattern_data->extents.y);
 
-			cairo_matrix_multiply (&matrix, &view->pattern_data->matrix, &matrix);
 			cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
 		} else
 			cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
