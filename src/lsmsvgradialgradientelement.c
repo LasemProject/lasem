@@ -36,6 +36,8 @@ typedef struct {
 	LsmSvgMatrix transform;
 	LsmSvgPatternUnits units;
 	LsmSvgSpreadMethod spread_method;
+	gboolean is_fx_defined;
+	gboolean is_fy_defined;
 } LsmSvgRadialGradientElementAttributes;
 
 static const LsmSvgRadialGradientElementAttributes default_attributes = {
@@ -46,7 +48,9 @@ static const LsmSvgRadialGradientElementAttributes default_attributes = {
 	.fy = {.value_unit =  0.0, .type = LSM_SVG_LENGTH_TYPE_ERROR},
 	.transform = {1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY},
 	.units = LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX,
-	.spread_method = LSM_SVG_SPREAD_METHOD_PAD
+	.spread_method = LSM_SVG_SPREAD_METHOD_PAD,
+	.is_fx_defined = FALSE,
+	.is_fy_defined = FALSE
 };
 
 static GObjectClass *parent_class;
@@ -102,10 +106,14 @@ lsm_svg_radial_gradient_element_inherit_referenced (LsmDomDocument *owner,
 		attributes->cy = gradient->cy.length;
 	if (lsm_attribute_is_defined (&gradient->r.base))
 		attributes->r = gradient->r.length;
-	if (lsm_attribute_is_defined (&gradient->fx.base))
+	if (lsm_attribute_is_defined (&gradient->fx.base)) {
 		attributes->fx = gradient->fx.length;
-	if (lsm_attribute_is_defined (&gradient->fy.base))
+		attributes->is_fx_defined = TRUE;
+	}
+	if (lsm_attribute_is_defined (&gradient->fy.base)) {
 		attributes->fy = gradient->fy.length;
+		attributes->is_fy_defined = TRUE;
+	}
 	if (lsm_attribute_is_defined (&gradient->transform.base))
 		attributes->transform = gradient->transform.matrix;
 	if (lsm_attribute_is_defined (&gradient->units.base))
@@ -124,6 +132,8 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 	gboolean is_object_bounding_box;
 	double cx, cy, fx, fy, r;
 	double gradient_radius;
+	gboolean is_fx_defined;
+	gboolean is_fy_defined;
 
 	if (!gradient->enable_rendering)
 		return;
@@ -147,15 +157,20 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 		gradient->transform.matrix = attributes.transform;
 		gradient->units.value = attributes.units;
 		gradient->spread_method.value = attributes.spread_method;
-	} else
+
+		is_fx_defined = attributes.is_fx_defined;
+		is_fy_defined = attributes.is_fy_defined;
+	} else {
 		referenced_gradient = gradient;
+
+		is_fx_defined = lsm_attribute_is_defined (&gradient->fx.base);
+		is_fy_defined = lsm_attribute_is_defined (&gradient->fy.base);
+	}
 
 	if (referenced_gradient == NULL)
 		return;
 
 	is_object_bounding_box = (gradient->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
-
-	g_message ("is_object_bounding_box = %s", is_object_bounding_box ? "TRUE" : "FALSE");
 
 	if (is_object_bounding_box) {
 		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
@@ -167,12 +182,12 @@ lsm_svg_radial_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 	cy = lsm_svg_view_normalize_length (view, &gradient->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	r  = lsm_svg_view_normalize_length (view, &gradient->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 
-	if (lsm_attribute_is_defined (&gradient->fx.base))
+	if (is_fx_defined)
 		fx = lsm_svg_view_normalize_length (view, &gradient->fx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	else
 		fx = cx;
 
-	if (lsm_attribute_is_defined (&gradient->fy.base))
+	if (is_fy_defined)
 		fy = lsm_svg_view_normalize_length (view, &gradient->fy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	else
 		fy = cy;
