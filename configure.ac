@@ -7,7 +7,7 @@ m4_define([lasem_version], [lasem_version_major.lasem_version_minor.lasem_versio
 
 m4_define([lasem_libtool_current], m4_eval(100 * lasem_version_major + lasem_version_minor))
 
-AC_INIT([lasem],[lasem_version],[http://bugzilla.gnome.org/enter_bug.cgi?product=lasem],[lasem])
+AC_INIT([lasem], [lasem_version], [http://bugzilla.gnome.org/], [lasem])
 
 AM_INIT_AUTOMAKE([-Wno-portability])
 AM_MAINTAINER_MODE

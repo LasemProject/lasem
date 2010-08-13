@@ -99,6 +99,7 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmsvgpathelement.c			\
 	lsmsvgtextelement.c			\
 	lsmsvgtspanelement.c			\
+	lsmsvggradientelement.c			\
 	lsmsvglineargradientelement.c		\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
@@ -186,6 +187,7 @@ LASEM_HDRS = \
 	lsmsvgpolygonelement.h			\
 	lsmsvgtextelement.h			\
 	lsmsvgtspanelement.h			\
+	lsmsvggradientelement.h			\
 	lsmsvglineargradientelement.h		\
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\

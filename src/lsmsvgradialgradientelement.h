@@ -24,7 +24,7 @@
 #define LSM_SVG_RADIAL_GRADIENT_ELEMENT_H
 
 #include <lsmsvg.h>
-#include <lsmsvgelement.h>
+#include <lsmsvggradientelement.h>
 
 G_BEGIN_DECLS
 
@@ -38,23 +38,17 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgRadialGradientElementClass LsmSvgRadialGradientElementClass;
 
 struct _LsmSvgRadialGradientElement {
-	LsmSvgElement element;
+	LsmSvgGradientElement base;
 
 	LsmSvgLengthAttribute	cx;
 	LsmSvgLengthAttribute	cy;
 	LsmSvgLengthAttribute	r;
 	LsmSvgLengthAttribute	fx;
 	LsmSvgLengthAttribute	fy;
-	LsmSvgTransformAttribute transform;
-	LsmSvgPatternUnitsAttribute units;
-	LsmSvgSpreadMethodAtttribute spread_method;
-	LsmAttribute href;
-
-	gboolean enable_rendering;
 };
 
 struct _LsmSvgRadialGradientElementClass {
-	LsmSvgElementClass  parent_class;
+	LsmSvgGradientElementClass  parent_class;
 };
 
 GType lsm_svg_radial_gradient_element_get_type (void);
