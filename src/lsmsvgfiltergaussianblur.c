@@ -88,4 +88,4 @@ lsm_svg_filter_gaussian_blur_class_init (LsmSvgFilterGaussianBlurClass *s_rect_c
 					      lsm_svg_filter_gaussian_blur_attribute_infos);
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmSvgFilterGaussianBlur, lsm_svg_filter_gaussian_blur, LSM_TYPE_SVG_FILTER_PRIMITIVE)
+G_DEFINE_TYPE (LsmSvgFilterGaussianBlur, lsm_svg_filter_gaussian_blur, LSM_TYPE_SVG_FILTER_PRIMITIVE)
