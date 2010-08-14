@@ -44,6 +44,7 @@
 #include <lsmsvgstopelement.h>
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgmaskelement.h>
+#include <lsmsvgfilterelement.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -129,6 +130,8 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_marker_element_new ();
 	else if (strcmp (tag_name, "clipPath") == 0)
 		node = lsm_svg_clip_path_element_new ();
+	else if (strcmp (tag_name, "filter") == 0)
+		node = lsm_svg_filter_element_new ();
 
 	if (node != NULL)
 		lsm_debug ("dom", "[LsmSvgDocument::create_element] Create a %s element", tag_name);

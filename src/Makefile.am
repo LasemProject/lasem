@@ -104,7 +104,8 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
 	lsmsvgpatternelement.c			\
-	lsmsvgmaskelement.c
+	lsmsvgmaskelement.c			\
+	lsmsvgfilterelement.c
 
 LASEM_HDRS = \
 	lsm.h					\
@@ -192,7 +193,8 @@ LASEM_HDRS = \
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
 	lsmsvgpatternelement.h			\
-	lsmsvgmaskelement.h
+	lsmsvgmaskelement.h			\
+	lsmsvgfilterelement.h
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
 liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_HDRS)
