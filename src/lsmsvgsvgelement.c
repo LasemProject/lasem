@@ -24,7 +24,7 @@
 #include <lsmsvgstyle.h>
 #include <lsmsvgview.h>
 #include <lsmdebug.h>
-#include <lsmdomdocument.h>
+#include <lsmsvgdocument.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -46,6 +46,7 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *heig
 	LsmDomDocument *document;
 	LsmSvgViewbox *svg_viewbox;
 	LsmBox viewport;
+	gboolean is_outermost_svg;
 	double resolution_ppi;
 	double svg_x;
 	double svg_y;
@@ -64,13 +65,15 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *heig
 	svg_viewbox = lsm_svg_viewbox_new (resolution_ppi, &viewport);
 	font_size = 10 * resolution_ppi / 72.0;
 
-	if (lsm_attribute_is_defined (&self->x.base))
+	is_outermost_svg = LSM_IS_SVG_DOCUMENT (lsm_dom_node_get_parent_node (LSM_DOM_NODE (self)));
+
+	if (lsm_attribute_is_defined (&self->x.base) && !is_outermost_svg)
 		svg_x = lsm_svg_length_normalize (&self->x.length, svg_viewbox,
 						  font_size, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	else
 		svg_x = viewport.x;
 
-	if (lsm_attribute_is_defined (&self->y.base))
+	if (lsm_attribute_is_defined (&self->y.base) && !is_outermost_svg)
 		svg_y = lsm_svg_length_normalize (&self->y.length, svg_viewbox,
 						  font_size, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 	else
@@ -111,10 +114,19 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgSvgElement *svg = LSM_SVG_SVG_ELEMENT (self);
 	gboolean is_viewbox_defined;
+	gboolean is_outermost_svg;
 	LsmBox viewport;
 
-	viewport.x      = lsm_svg_view_normalize_length (view, &svg->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.y      = lsm_svg_view_normalize_length (view, &svg->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	is_outermost_svg = LSM_IS_SVG_DOCUMENT (lsm_dom_node_get_parent_node (LSM_DOM_NODE (self)));
+
+	if (is_outermost_svg) {
+		/* outermost svg - ignore x and y */
+		viewport.x = 0;
+		viewport.y = 0;
+	} else {
+		viewport.x = lsm_svg_view_normalize_length (view, &svg->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+		viewport.y = lsm_svg_view_normalize_length (view, &svg->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	}
 	viewport.width  = lsm_svg_view_normalize_length (view, &svg->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	viewport.height = lsm_svg_view_normalize_length (view, &svg->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 

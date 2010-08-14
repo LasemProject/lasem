@@ -72,7 +72,7 @@ struct _LsmDomNodeClass {
 	void 			(*set_node_value) 	(LsmDomNode* self, const char* new_value);
 	LsmDomNodeType 		(*get_node_type) 	(LsmDomNode* self);
 #if 0
-	LsmDomNodeList* 		(*get_child_nodes) (LsmDomNode* self);
+	LsmDomNodeList* 	(*get_child_nodes) (LsmDomNode* self);
 	LsmDomNamedNodeMap* 	(*get_attributes) (LsmDomNode* self);
 #endif
 
