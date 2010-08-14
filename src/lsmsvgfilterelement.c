@@ -36,7 +36,8 @@ lsm_svg_filter_element_get_node_name (LsmDomNode *node)
 static gboolean
 lsm_svg_filter_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 {
-	return (lsm_svg_element_get_category (LSM_SVG_ELEMENT (child)) == LSM_SVG_ELEMENT_CATEGORY_FILTER_PRIMITIVE);
+	return (LSM_IS_SVG_ELEMENT (child) &&
+		lsm_svg_element_get_category (LSM_SVG_ELEMENT (child)) == LSM_SVG_ELEMENT_CATEGORY_FILTER_PRIMITIVE);
 }
 
 /* LsmSvgElement implementation */
