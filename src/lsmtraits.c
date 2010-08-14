@@ -39,7 +39,7 @@ lsm_box_trait_from_string (LsmTrait *abstract_trait, char *string)
 	double value[4];
 
 	for (i = 0; i < 4 && *string != '\0'; i++) {
-		lsm_str_skip_semicolon_and_spaces (&string);
+		lsm_str_skip_comma_and_spaces (&string);
 
 		if (!lsm_str_parse_double (&string, &value[i]))
 			break;
