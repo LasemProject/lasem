@@ -241,6 +241,16 @@ const char * 		lsm_svg_text_anchor_to_string 		(LsmSvgTextAnchor text_anchor);
 LsmSvgTextAnchor	lsm_svg_text_anchor_from_string		(const char *string);
 
 typedef enum {
+	LSM_SVG_FILTER_INPUT_ERROR = -1,
+	LSM_SVG_FILTER_INPUT_SOURCE_GRAPHIC,
+	LSM_SVG_FILTER_INPUT_SOURCE_ALPHA,
+	LSM_SVG_FILTER_INPUT_BACKGROUND_IMAGE,
+	LSM_SVG_FILTER_INPUT_BACKGROUND_ALPHA,
+	LSM_SVG_FILTER_INPUT_FILL_PAINT,
+	LSM_SVG_FILTER_INPUT_STROKE_PAINT
+} LsmSvgFilterInput;
+
+typedef enum {
 	LSM_SVG_ELEMENT_CATEGORY_NONE			= 1 << 0,
 	LSM_SVG_ELEMENT_CATEGORY_DESCRIPTIVE		= 1 << 1,
 	LSM_SVG_ELEMENT_CATEGORY_CONTAINER		= 1 << 2,

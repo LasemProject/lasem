@@ -105,7 +105,9 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmsvgstopelement.c			\
 	lsmsvgpatternelement.c			\
 	lsmsvgmaskelement.c			\
-	lsmsvgfilterelement.c
+	lsmsvgfilterelement.c			\
+	lsmsvgfilterprimitive.c			\
+	lsmsvgfiltergaussianblur.c
 
 LASEM_HDRS = \
 	lsm.h					\
@@ -194,7 +196,9 @@ LASEM_HDRS = \
 	lsmsvgstopelement.h			\
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h			\
-	lsmsvgfilterelement.h
+	lsmsvgfilterelement.h			\
+	lsmsvgfilterprimitive.h			\
+	lsmsvgfiltergaussianblur.h
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
 liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_HDRS)

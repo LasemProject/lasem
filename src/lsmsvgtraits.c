@@ -857,3 +857,44 @@ const LsmTraitClass lsm_svg_text_anchor_trait_class = {
 	.to_string = lsm_svg_text_anchor_trait_to_string
 };
 
+static gboolean
+lsm_svg_one_or_two_double_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgOneOrTwoDouble *trait = (LsmSvgOneOrTwoDouble *) abstract_trait;
+	char *end_ptr;
+
+	trait->a = g_ascii_strtod (string, &end_ptr);
+	if (end_ptr == string) {
+		trait->b = 0.0;
+		return FALSE;
+	}
+
+	lsm_str_skip_spaces (&string);
+
+	if (string[0] == '\0') {
+		trait->b = trait->a;
+		return TRUE;
+	}
+
+	trait->b = g_ascii_strtod (string, &end_ptr);
+
+	return end_ptr != string;
+}
+
+static char *
+lsm_svg_one_or_two_double_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgOneOrTwoDouble *trait = (LsmSvgOneOrTwoDouble *) abstract_trait;
+
+	if (trait->a == trait->b)
+		return g_strdup_printf ("%g", trait->a);
+
+	return g_strdup_printf ("%g %g", trait->a, trait->b);
+}
+
+const LsmTraitClass lsm_svg_one_or_two_double_trait_class = {
+	.size = sizeof (double),
+	.from_string = lsm_svg_one_or_two_double_trait_from_string,
+	.to_string = lsm_svg_one_or_two_double_trait_to_string
+};
+

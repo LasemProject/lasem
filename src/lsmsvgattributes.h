@@ -41,6 +41,11 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	LsmSvgOneOrTwoDouble value;
+} LsmSvgOneOrTwoDoubleAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	LsmSvgDashArray *value;
 } LsmSvgDashArrayAttribute;
 
