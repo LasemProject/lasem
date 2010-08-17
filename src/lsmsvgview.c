@@ -1289,6 +1289,9 @@ _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 	char *str;
 	double values[2];
 
+	if (points == NULL)
+		return;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	str = (char *) points;
