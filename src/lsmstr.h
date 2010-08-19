@@ -28,11 +28,11 @@
 
 G_BEGIN_DECLS
 
-gboolean lsm_str_is_uri 		(const char *str);
-char *   lsm_str_to_uri 		(const char *str);
+gboolean 	lsm_str_is_uri 		(const char *str);
+char *   	lsm_str_to_uri 		(const char *str);
 
-gboolean lsm_str_parse_double 		(char **str, double *x);
-gboolean lsm_str_parse_double_list 	(char **str, unsigned int n_values, double *values);
+gboolean 	lsm_str_parse_double 		(char **str, double *x);
+unsigned int 	lsm_str_parse_double_list 	(char **str, unsigned int n_values, double *values);
 
 static inline void
 lsm_str_skip_spaces (char **str)

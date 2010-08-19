@@ -534,7 +534,7 @@ static void
 _emit_function_1 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double))
 {
-	while (lsm_str_parse_double_list (&ctxt->ptr, 1, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 1, ctxt->values) == 1)
 		cairo_func (ctxt->cr, ctxt->values[0]);
 }
 
@@ -544,12 +544,12 @@ _emit_function_2 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func_b) (cairo_t *, double, double))
 {
 
-	if (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+	if (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values) == 2) {
 		cairo_func_a (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 
 		/* Why oh why does the specification say Line is implied here ? */
 
-		while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values))
+		while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values) == 2)
 			cairo_func_b (ctxt->cr, ctxt->values[0], ctxt->values[1]);
 	}
 }
@@ -558,7 +558,7 @@ static void
 _emit_function_4 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double, double))
 {
-	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values) == 4)
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2], ctxt->values[3]);
 }
 
@@ -590,7 +590,7 @@ _emit_smooth_curve (LsmSvgPathContext *ctxt, gboolean relative)
 		default: x = x0; y = y0; break;
 	}
 
-	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values)) {
+	while (lsm_str_parse_double_list (&ctxt->ptr, 4, ctxt->values) == 4) {
 		if (relative) {
 			cairo_get_current_point (ctxt->cr, &x0, &y0);
 			cairo_curve_to (ctxt->cr,
@@ -631,7 +631,7 @@ _emit_smooth_quadratic_curve (LsmSvgPathContext *ctxt, gboolean relative)
 		default: ctxt->last_cp_x = x0; ctxt->last_cp_y = y0; break;
 	}
 
-	while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values)) {
+	while (lsm_str_parse_double_list (&ctxt->ptr, 2, ctxt->values) == 2) {
 		x = 2 * x0 - ctxt->last_cp_x;
 		y = 2 * y0 - ctxt->last_cp_y;
 		if (relative) {
@@ -650,7 +650,7 @@ static void
 _emit_function_6 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double ,double, double, double))
 {
-	while (lsm_str_parse_double_list (&ctxt->ptr, 6, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 6, ctxt->values) == 6)
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
 			              ctxt->values[3], ctxt->values[4], ctxt->values[5]);
 }
@@ -659,7 +659,7 @@ static void
 _emit_function_7 (LsmSvgPathContext *ctxt,
 		  void (*cairo_func) (cairo_t *, double, double, double ,gboolean, gboolean, double, double))
 {
-	while (lsm_str_parse_double_list (&ctxt->ptr, 7, ctxt->values))
+	while (lsm_str_parse_double_list (&ctxt->ptr, 7, ctxt->values) == 7)
 		cairo_func (ctxt->cr, ctxt->values[0], ctxt->values[1], ctxt->values[2],
 			              ctxt->values[3], ctxt->values[4], ctxt->values[5],
 				      ctxt->values[6]);
@@ -1288,6 +1288,8 @@ _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 	LsmSvgViewPathInfos path_infos = default_path_infos;
 	char *str;
 	double values[2];
+	unsigned int n_values;
+	unsigned int count = 0;
 
 	if (points == NULL)
 		return;
@@ -1296,11 +1298,19 @@ _show_points (LsmSvgView *view, const char *points, gboolean close_path)
 
 	str = (char *) points;
 
-	if (lsm_str_parse_double_list (&str, 2, values)) {
-		cairo_move_to (view->dom_view.cairo, values[0], values[1]);
-		while (lsm_str_parse_double_list (&str, 2, values))
-			cairo_line_to (view->dom_view.cairo, values[0], values[1]);
-	}
+	do {
+		n_values = lsm_str_parse_double_list (&str, 2, values);
+		if (n_values == 2) {
+			if (count == 0)
+				cairo_move_to (view->dom_view.cairo, values[0], values[1]);
+			else
+				cairo_line_to (view->dom_view.cairo, values[0], values[1]);
+		} else if (n_values != 0) {
+			cairo_new_path (view->dom_view.cairo);
+			return;
+		}
+		count++;
+	} while (n_values == 2);
 
 	if (close_path)
 		cairo_close_path (view->dom_view.cairo);

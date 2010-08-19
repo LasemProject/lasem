@@ -171,7 +171,7 @@ lsm_str_parse_double (char **str, double *x)
 	return TRUE;
 }
 
-gboolean
+unsigned int
 lsm_str_parse_double_list (char **str, unsigned int n_values, double *values)
 {
 	char *ptr = *str;
@@ -182,11 +182,11 @@ lsm_str_parse_double_list (char **str, unsigned int n_values, double *values)
 	for (i = 0; i < n_values; i++) {
 		if (!lsm_str_parse_double (str, &values[i])) {
 			*str = ptr;
-			return FALSE;
+			return i;
 		}
 		lsm_str_skip_comma_and_spaces (str);
 	}
 
-	return TRUE;
+	return i;
 }
 
