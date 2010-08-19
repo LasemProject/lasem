@@ -1222,10 +1222,10 @@ lsm_svg_view_show_ellipse (LsmSvgView *view, double cx, double cy, double rx, do
 	cairo = view->dom_view.cairo;
 
 	cairo_move_to (cairo, cx + rx, cy);
-	cairo_curve_to (cairo, cx + rx, cy - LSM_SVG_ARC_MAGIC * ry, cx + LSM_SVG_ARC_MAGIC * rx, cy - ry, cx, cy - ry);
-	cairo_curve_to (cairo, cx - LSM_SVG_ARC_MAGIC * rx, cy - ry, cx - rx, cy - LSM_SVG_ARC_MAGIC * ry, cx - rx, cy);
-	cairo_curve_to (cairo, cx - rx, cy + LSM_SVG_ARC_MAGIC * ry, cx - LSM_SVG_ARC_MAGIC * rx, cy + ry, cx, cy + ry);
-	cairo_curve_to (cairo, cx + LSM_SVG_ARC_MAGIC * rx, cy + ry, cx + rx, cy + LSM_SVG_ARC_MAGIC * ry, cx + rx, cy);
+	cairo_curve_to (cairo, cx + rx, cy + LSM_SVG_ARC_MAGIC * ry, cx + LSM_SVG_ARC_MAGIC * rx, cy + ry, cx, cy + ry);
+	cairo_curve_to (cairo, cx - LSM_SVG_ARC_MAGIC * rx, cy + ry, cx - rx, cy + LSM_SVG_ARC_MAGIC * ry, cx - rx, cy);
+	cairo_curve_to (cairo, cx - rx, cy - LSM_SVG_ARC_MAGIC * ry, cx - LSM_SVG_ARC_MAGIC * rx, cy - ry, cx, cy - ry);
+	cairo_curve_to (cairo, cx + LSM_SVG_ARC_MAGIC * rx, cy - ry, cx + rx, cy - LSM_SVG_ARC_MAGIC * ry, cx + rx, cy);
 	cairo_close_path (cairo);
 
 	process_path (view, &path_infos);
