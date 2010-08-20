@@ -265,6 +265,8 @@ _parse_color (char *string,
 
 		string += 4; /* strlen ("rgb(") */
 
+		lsm_str_skip_spaces (&string);
+
 		for (i = 0; i < 3; i++) {
 			if (!lsm_str_parse_double (&string, &value))
 				break;
