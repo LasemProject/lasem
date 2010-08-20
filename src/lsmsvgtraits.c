@@ -579,6 +579,9 @@ lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgDashArray *dash_array = (LsmSvgDashArray *) abstract_trait;
 	unsigned int n_dashes = 1;
+	double value;
+	double sum = 0.0;
+	gboolean is_error = FALSE;
 
 	g_free (dash_array->dashes);
 	dash_array->n_dashes = 0;
@@ -611,14 +614,27 @@ lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 						iter ++;
 				} else {
 					dash_array->dashes[i].value_unit = 0.0;
-					dash_array->dashes[i].value_unit = LSM_SVG_LENGTH_TYPE_NUMBER;
+					dash_array->dashes[i].type = LSM_SVG_LENGTH_TYPE_NUMBER;
 				}
 				lsm_str_skip_comma_and_spaces (&iter);
+
+				value = dash_array->dashes[i].value_unit;
+				if (value < 0.0) {
+					is_error = TRUE;
+					break;
+				}
+				sum += value;
 			}
 		}
 	}
 
-	/* TODO better syntax error check */
+	if (is_error || sum <= 0.0) {
+		g_free (dash_array->dashes);
+		dash_array->n_dashes = 0;
+		dash_array->dashes = NULL;
+
+		return !is_error;
+	}
 
 	return TRUE;
 }
