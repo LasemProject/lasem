@@ -262,7 +262,8 @@ lasem_test_process_dir (const char *name)
 	do {
 		entry = g_dir_read_name (directory);
 		if (entry != NULL &&
-		    strstr (entry, "ignore-") != entry)
+		    strstr (entry, "ignore-") != entry &&
+		    strcmp (entry, "images") != 0)
 		{
 			filename = g_build_filename (name, entry, NULL);
 
