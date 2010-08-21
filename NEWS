@@ -1,3 +1,26 @@
+Release 0.3.0
+=============
+
+All:
+	Add gobject-instrospection.
+	Switch to LGPLv2+ licence.
+
+itex2mml:
+	Update to 1.3.22.
+
+SVG:
+	Use pango_cairo_show_layout for text fill.
+	font-weight, font-style, font-stretch and text-anchor support.
+	<tspan> support.
+	Fix position of outermost <svg>.
+	href support for <pattern>.
+	href support for <radialGradient>.
+	href support for <lienarGradient>.
+	Allow commas in viewBox string.
+	Fix ellipse rendering direction.
+	Fix parsing of rgb() colors.
+	Don't send invalid dash array to cairo.
+
 Release 0.2.0
 =============
 
