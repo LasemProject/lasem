@@ -22,6 +22,7 @@
 
 #include <lsmsvgfilterelement.h>
 #include <lsmsvgview.h>
+#include <lsmdebug.h>
 
 static GObjectClass *parent_class;
 
@@ -41,6 +42,25 @@ lsm_svg_filter_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 }
 
 /* LsmSvgElement implementation */
+
+static void
+lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
+{
+	LsmSvgFilterElement *filter = LSM_SVG_FILTER_ELEMENT (self);
+
+	if (!filter->enable_rendering) {
+		lsm_debug ("render", "[LsmSvgFilterElement::render] Direct rendering not allowed");
+		return;
+	} else {
+		filter->enable_rendering = FALSE;
+	}
+}
+
+static void
+lsm_svg_filter_element_enable_rendering (LsmSvgElement *element)
+{
+	LSM_SVG_FILTER_ELEMENT (element)->enable_rendering  = TRUE;
+}
 
 /* LsmSvgGraphic implementation */
 
@@ -131,6 +151,8 @@ lsm_svg_filter_element_class_init (LsmSvgFilterElementClass *s_rect_class)
 
 	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_NONE;
 
+	s_element_class->render = lsm_svg_filter_element_render;
+	s_element_class->enable_rendering = lsm_svg_filter_element_enable_rendering;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,

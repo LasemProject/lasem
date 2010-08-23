@@ -46,6 +46,8 @@ struct _LsmSvgFilterElement {
 	LsmSvgLengthAttribute		height;
 	LsmSvgPatternUnitsAttribute	units;
 	LsmSvgPatternUnitsAttribute	primitive_units;
+
+	gboolean enable_rendering;
 };
 
 struct _LsmSvgFilterElementClass {
