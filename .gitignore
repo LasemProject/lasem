@@ -25,3 +25,5 @@ lasem.svg
 lasem*.pc
 lasemtest.xml
 manugen
+massif.out.*
+callgrind.out.*
