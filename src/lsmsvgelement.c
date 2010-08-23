@@ -31,6 +31,7 @@
 #include <lsmsvgclippathelement.h>
 #include <lsmsvgmarkerelement.h>
 #include <lsmsvgmaskelement.h>
+#include <lsmsvgfilterelement.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -130,31 +131,36 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	LsmSvgElementClass *element_class;
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
+	gboolean is_identity_transform;
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+	if (element_class->render == NULL)
+		return;
+
+	is_identity_transform = lsm_svg_matrix_is_identity (&element->transform.matrix);
 
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
 
-	if (!lsm_svg_matrix_is_identity (&element->transform.matrix))
+	if (!is_identity_transform)
 		lsm_svg_view_push_matrix (view, &element->transform.matrix);
 
 	lsm_svg_view_push_element (view, element);
 	lsm_svg_view_push_style (view, style);
 
-	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-	if (element_class->render != NULL) {
-		lsm_debug ("render", "[LsmSvgElement::render] Render %s (%s)",
-			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
-			    element->id.value != NULL ? element->id.value : "no id");
 
-		element_class->render (element, view);
-	}
+	lsm_debug ("render", "[LsmSvgElement::render] Render %s (%s)",
+		   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+		   element->id.value != NULL ? element->id.value : "no id");
+
+	element_class->render (element, view);
 
 	lsm_svg_view_pop_style (view);
 	lsm_svg_view_pop_element (view);
 
-	if (!lsm_svg_matrix_is_identity (&element->transform.matrix))
+	if (!is_identity_transform)
 		lsm_svg_view_pop_matrix (view);
 
 	lsm_svg_style_unref (style);
@@ -181,7 +187,8 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 			  LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element) ||
 			  LSM_IS_SVG_MASK_ELEMENT (element) ||
 			  LSM_IS_SVG_CLIP_PATH_ELEMENT (element) ||
-			  LSM_IS_SVG_MARKER_ELEMENT (element));
+			  LSM_IS_SVG_MARKER_ELEMENT (element) ||
+			  LSM_IS_SVG_FILTER_ELEMENT (element));
 
 	lsm_svg_element_enable_rendering (element);
 	lsm_svg_element_render (element, view);
