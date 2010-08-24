@@ -151,7 +151,8 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	lsm_svg_view_push_style (view, style);
 
 
-	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE) {
+	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
+	    style->display->value != LSM_SVG_DISPLAY_NONE) {
 		lsm_debug ("render", "[LsmSvgElement::render] Render %s (%s)",
 			   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 			   element->id.value != NULL ? element->id.value : "no id");

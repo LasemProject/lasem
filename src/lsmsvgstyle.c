@@ -182,7 +182,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "display",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, display),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_display_trait_class,
 		.trait_default = "inline"
 	},
 	{

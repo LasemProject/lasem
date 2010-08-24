@@ -95,6 +95,11 @@ typedef struct {
 
 typedef struct {
 	LsmProperty base;
+	LsmSvgDisplay value;
+} LsmSvgDisplayProperty;
+
+typedef struct {
+	LsmProperty base;
 	LsmSvgVisibility value;
 } LsmSvgVisibilityProperty;
 
@@ -129,7 +134,7 @@ struct _LsmSvgStyle {
 	LsmProperty *			color_rendering;
 	LsmProperty *			cursor;
 	LsmProperty *			direction;
-	LsmProperty *			display;
+	LsmSvgDisplayProperty *		display;
 	LsmSvgPaintProperty *		fill;
 	LsmSvgDoubleProperty *		fill_opacity;
 	LsmSvgFillRuleProperty *	fill_rule;

@@ -74,6 +74,7 @@ typedef struct {
 extern const LsmTraitClass lsm_svg_angle_trait_class;
 extern const LsmTraitClass lsm_svg_color_trait_class;
 extern const LsmTraitClass lsm_svg_dash_array_trait_class;
+extern const LsmTraitClass lsm_svg_display_trait_class;
 extern const LsmTraitClass lsm_svg_fill_rule_trait_class;
 extern const LsmTraitClass lsm_svg_font_stretch_trait_class;
 extern const LsmTraitClass lsm_svg_font_style_trait_class;

@@ -383,6 +383,42 @@ lsm_svg_text_anchor_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_text_anchor_strings));
 }
 
+static const char *lsm_svg_display_strings[] = {
+	"none",
+	"inline",
+	"block",
+	"list-item",
+	"run-in",
+	"compact",
+	"marker",
+	"table",
+	"inline-table",
+	"table-row-group",
+	"table-header-group",
+	"table-footer-group",
+	"table-row",
+	"table-column-group",
+	"table-column",
+	"table-cell",
+	"table-caption",
+};
+
+const char *
+lsm_svg_display_to_string (LsmSvgDisplay display)
+{
+	if (display < 0 || display > LSM_SVG_DISPLAY_TABLE_CAPTION)
+		return NULL;
+
+	return lsm_svg_display_strings[display];
+}
+
+LsmSvgDisplay
+lsm_svg_display_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_display_strings,
+					   G_N_ELEMENTS (lsm_svg_display_strings));
+}
+
 static const char *lsm_svg_visibility_strings[] = {
 	"visible",
 	"hidden",

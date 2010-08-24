@@ -663,6 +663,30 @@ const LsmTraitClass lsm_svg_dash_array_trait_class = {
 };
 
 static gboolean
+lsm_svg_display_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+
+	*trait = lsm_svg_display_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_display_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+
+	return g_strdup (lsm_svg_display_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_display_trait_class = {
+	.size = sizeof (LsmSvgDisplay),
+	.from_string = lsm_svg_display_trait_from_string,
+	.to_string = lsm_svg_display_trait_to_string
+};
+
+static gboolean
 lsm_svg_color_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgColor *color = (LsmSvgColor *) abstract_trait;
