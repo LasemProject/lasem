@@ -65,6 +65,8 @@ struct _LsmSvgViewPatternData {
 	LsmSvgPatternUnits units;
 	LsmSvgPatternUnits content_units;
 	LsmSvgSpreadMethod spread_method;
+
+	double opacity;
 };
 
 double
@@ -85,7 +87,7 @@ lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, Lsm
 }
 
 static void
-_start_pattern (LsmSvgView *view, const LsmBox *extents)
+_start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
 {
 	lsm_debug ("render", "[LsmSvgView::start_pattern]");
 
@@ -98,6 +100,7 @@ _start_pattern (LsmSvgView *view, const LsmBox *extents)
 	view->pattern_data->units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_REPEAT;
 	view->pattern_data->extents = *extents;
+	view->pattern_data->opacity = opacity;
 
 	view->dom_view.cairo = NULL;
 
@@ -185,11 +188,16 @@ lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset)
 	if (color->red < 0.0 || color->blue < 0.0 || color->green < 0.0)
 		color = &style->color->value;
 
+	lsm_debug ("render", "[LsmSvgView::add_gradient_color_stop] color = %2x%2x%2x",
+		   (int) (255.0 * color->red),
+		   (int) (255.0 * color->green),
+		   (int) (255.0 * color->blue));
+
 	cairo_pattern_add_color_stop_rgba (view->pattern_data->pattern, offset,
 					   color->red,
 					   color->green,
 					   color->blue,
-					   style->stop_opacity->value);
+					   style->stop_opacity->value * view->pattern_data->opacity);
 }
 
 void
@@ -736,7 +744,7 @@ static void
 _paint_url (LsmSvgView *view,
 	    LsmSvgViewPathInfos *path_infos,
 	    LsmSvgViewPaintOperation operation,
-	    const char *url)
+	    const char *url, double opacity)
 {
 	cairo_t *cairo;
 	LsmSvgElement *element;
@@ -767,7 +775,7 @@ _paint_url (LsmSvgView *view,
 	lsm_debug ("render", "[LsmSvgView::_paint_url] Pattern extents x = %g, y = %g, w = %g, h = %g",
 		   extents.x, extents.y, extents.width, extents.height);
 
-	_start_pattern (view, &extents);
+	_start_pattern (view, &extents, opacity);
 
 	lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 
@@ -854,7 +862,7 @@ _set_color (LsmSvgView *view,
 		case LSM_SVG_PAINT_TYPE_URI_RGB_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_CURRENT_COLOR:
 		case LSM_SVG_PAINT_TYPE_URI_NONE:
-			_paint_url (view, path_infos, operation, paint->url);
+			_paint_url (view, path_infos, operation, paint->url, opacity);
 			break;
 		default:
 			return FALSE;
@@ -1801,7 +1809,7 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 
 		cairo = view->dom_view.cairo;
 
-		_start_pattern (view, &mask_extents);
+		_start_pattern (view, &mask_extents, 1.0);
 
 		lsm_svg_element_force_render (LSM_SVG_ELEMENT (mask_element), view);
 
