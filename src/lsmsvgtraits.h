@@ -89,6 +89,7 @@ extern const LsmTraitClass lsm_svg_pattern_units_trait_class;
 extern const LsmTraitClass lsm_svg_preserve_aspect_ratio_trait_class;
 extern const LsmTraitClass lsm_svg_spread_method_trait_class;
 extern const LsmTraitClass lsm_svg_text_anchor_trait_class;
+extern const LsmTraitClass lsm_svg_visibility_trait_class;
 
 G_END_DECLS
 

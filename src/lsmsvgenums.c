@@ -383,3 +383,25 @@ lsm_svg_text_anchor_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_text_anchor_strings));
 }
 
+static const char *lsm_svg_visibility_strings[] = {
+	"visible",
+	"hidden",
+	"collapse"
+};
+
+const char *
+lsm_svg_visibility_to_string (LsmSvgVisibility visibility)
+{
+	if (visibility < 0 || visibility > LSM_SVG_VISIBILITY_HIDDEN)
+		return NULL;
+
+	return lsm_svg_visibility_strings[visibility];
+}
+
+LsmSvgVisibility
+lsm_svg_visibility_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_visibility_strings,
+					   G_N_ELEMENTS (lsm_svg_visibility_strings));
+}
+

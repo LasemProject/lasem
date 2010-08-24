@@ -876,6 +876,30 @@ const LsmTraitClass lsm_svg_text_anchor_trait_class = {
 };
 
 static gboolean
+lsm_svg_visibility_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgVisibility *trait = (LsmSvgVisibility *) abstract_trait;
+
+	*trait = lsm_svg_visibility_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_visibility_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgVisibility *trait = (LsmSvgVisibility *) abstract_trait;
+
+	return g_strdup (lsm_svg_visibility_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_visibility_trait_class = {
+	.size = sizeof (LsmSvgVisibility),
+	.from_string = lsm_svg_visibility_trait_from_string,
+	.to_string = lsm_svg_visibility_trait_to_string
+};
+
+static gboolean
 lsm_svg_one_or_two_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgOneOrTwoDouble *trait = (LsmSvgOneOrTwoDouble *) abstract_trait;

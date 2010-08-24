@@ -93,6 +93,11 @@ typedef struct {
 	LsmSvgTextAnchor value;
 } LsmSvgTextAnchorProperty;
 
+typedef struct {
+	LsmProperty base;
+	LsmSvgVisibility value;
+} LsmSvgVisibilityProperty;
+
 struct _LsmSvgStyle {
 	/* Not inherited */
 
@@ -157,7 +162,7 @@ struct _LsmSvgStyle {
 	LsmSvgLengthProperty *		stroke_width;
 	LsmSvgTextAnchorProperty *	text_anchor;
 	LsmProperty *			text_rendering;
-	LsmProperty *			visibility;
+	LsmSvgVisibilityProperty *	visibility;
 	LsmProperty *			word_spacing;
 	LsmProperty *			writing_mode;
 };

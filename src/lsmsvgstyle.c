@@ -380,7 +380,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "visibility",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, visibility),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_visibility_trait_class,
 		.trait_default = "visible"
 	},
 	{

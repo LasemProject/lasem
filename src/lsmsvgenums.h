@@ -251,6 +251,16 @@ typedef enum {
 } LsmSvgFilterInput;
 
 typedef enum {
+	LSM_SVG_VISIBILITY_ERROR = -1,
+	LSM_SVG_VISIBILITY_VISIBLE,
+	LSM_SVG_VISIBILITY_HIDDEN,
+	LSM_SVG_VISIBILITY_COLLAPSE
+} LsmSvgVisibility;
+
+const char * 		lsm_svg_visibility_to_string 		(LsmSvgVisibility visibility);
+LsmSvgVisibility	lsm_svg_visibility_from_string		(const char *string);
+
+typedef enum {
 	LSM_SVG_ELEMENT_CATEGORY_NONE			= 1 << 0,
 	LSM_SVG_ELEMENT_CATEGORY_DESCRIPTIVE		= 1 << 1,
 	LSM_SVG_ELEMENT_CATEGORY_CONTAINER		= 1 << 2,
