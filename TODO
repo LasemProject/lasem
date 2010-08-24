@@ -25,6 +25,11 @@ Mathml
 SVG
 
 - check for recursions
-- don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
+✓ don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
+- take group opacity into account when stroking or filling with pattern (like what was done for gradient)
+- really implement get_extents for all elements
+- don't ignore an element with visibility != visible when clipping
+- don't include extents of an element with display == none
+- don't use push_group when filling + stroking shapes with group opacity < 1.0
 
 And many many more things to do...
