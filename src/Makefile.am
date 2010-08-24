@@ -29,6 +29,7 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmtraits.c				\
 	lsmproperties.c				\
 	lsmattributes.c				\
+	lsmcairo.c				\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
 	lsmdomdocument.c			\
@@ -117,6 +118,7 @@ LASEM_HDRS = \
 	lsmproperties.h				\
 	lsmattributes.h				\
 	lsmdom.h				\
+	lsmcairo.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
 	lsmdomdocument.h			\
