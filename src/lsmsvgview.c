@@ -1761,7 +1761,7 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 	view->clip_extents.height = extents.y2 - extents.y1;
 
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
-	if (element != NULL && LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
+	if (LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
 		view->is_clipping = TRUE;
 		lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 		cairo_clip (view->dom_view.cairo);
