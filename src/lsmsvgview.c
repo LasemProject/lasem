@@ -786,7 +786,7 @@ _paint_url (LsmSvgView *view,
 		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
 			char *filename;
 
-			filename = g_strdup_printf ("%s.png", url);
+			filename = g_strdup_printf ("pattern-%s.png", url);
 			cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
 			g_free (filename);
 		}
@@ -1840,7 +1840,13 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 						  &view->pattern_data->matrix);
 			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
 #if 0
-			cairo_surface_write_to_png (surface, "mask.png");
+			{
+				char *filename;
+
+				filename = g_strdup_printf ("mask-%s.png", view->style->mask->value);
+				cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
+				g_free (filename);
+			}
 #endif
 			cairo_mask (cairo, view->pattern_data->pattern);
 		} else {
