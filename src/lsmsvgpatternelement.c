@@ -209,6 +209,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	if (!lsm_svg_view_create_surface_pattern (view, &image_box,
+						  pattern->units.value,
 						  &pattern->transform.matrix,
 						  LSM_SVG_VIEW_SURFACE_TYPE_AUTO)) {
 		lsm_debug ("render", "[LsmSvgPatternElement::render] Intermediate surface creation failed");

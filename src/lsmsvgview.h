@@ -102,6 +102,7 @@ void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 const LsmSvgMatrix *matrix);
 
 gboolean	lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
+							 LsmSvgPatternUnits units,
 							 const LsmSvgMatrix *matrix,
 							 LsmSvgViewSurfaceType surface_type) G_GNUC_WARN_UNUSED_RESULT;
 
