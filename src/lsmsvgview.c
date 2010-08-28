@@ -62,8 +62,6 @@ struct _LsmSvgViewPatternData {
 
 	LsmBox extents;
 
-	LsmSvgPatternUnits units;
-
 	double opacity;
 };
 
@@ -94,7 +92,6 @@ _start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
 	view->pattern_data = g_new (LsmSvgViewPatternData, 1);
 	view->pattern_data->old_cairo = view->dom_view.cairo;
 	view->pattern_data->pattern = NULL;
-	view->pattern_data->units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	view->pattern_data->extents = *extents;
 	view->pattern_data->opacity = opacity;
 
@@ -206,8 +203,6 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 	g_return_if_fail (view->pattern_data != NULL);
 	g_return_if_fail (view->pattern_data->pattern != NULL);
 
-	view->pattern_data->units = units;
-
 	if (matrix != NULL) {
 		cairo_matrix_init (&view->pattern_data->matrix,
 				   matrix->a, matrix->b,
@@ -228,6 +223,23 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_PAD);
 	}
 
+	if (units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX &&
+	    view->pattern_data->extents.width > 0.0 &&
+	    view->pattern_data->extents.height > 0.0) {
+		cairo_matrix_t matrix;
+
+		matrix = view->pattern_data->matrix;
+
+		cairo_matrix_scale (&matrix,
+				    1.0 / view->pattern_data->extents.width,
+				    1.0 / view->pattern_data->extents.height);
+		cairo_matrix_translate (&matrix,
+					-view->pattern_data->extents.x,
+					-view->pattern_data->extents.y);
+
+		cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
+	} else
+		cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
 }
 
 gboolean
@@ -303,8 +315,6 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 
 	_set_pattern (view, pattern);
 
-	view->pattern_data->units = units;
-
 	if (matrix != NULL) {
 		cairo_matrix_init (&view->pattern_data->matrix,
 				   matrix->a, matrix->b,
@@ -317,6 +327,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		cairo_matrix_scale (&view->pattern_data->matrix, 1.0 / x_scale, 1.0 / y_scale);
 	}
 
+	cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
 	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
 
 	return TRUE;
@@ -799,29 +810,6 @@ _paint_url (LsmSvgView *view,
 			g_free (filename);
 		}
 #endif
-
-		if ((LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) || LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element)) &&
-		    view->pattern_data->units == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX) {
-			cairo_matrix_t matrix;
-
-			if (view->pattern_data->extents.width <= 0.0 ||
-			    view->pattern_data->extents.height <= 0.0) {
-				_end_pattern (view);
-				return;
-			}
-
-			matrix = view->pattern_data->matrix;
-
-			cairo_matrix_scale (&matrix,
-						 1.0 / view->pattern_data->extents.width,
-						 1.0 / view->pattern_data->extents.height);
-			cairo_matrix_translate (&matrix,
-						-view->pattern_data->extents.x,
-						-view->pattern_data->extents.y);
-
-			cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
-		} else
-			cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
 
 		cairo_set_source (cairo, view->pattern_data->pattern);
 	} else
