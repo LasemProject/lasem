@@ -1839,6 +1839,63 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 }
 
 void
+lsm_svg_view_push_filter (LsmSvgView *view)
+{
+	LsmExtents extents;
+	LsmBox source_extents;
+	gboolean result;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (view->element_stack != NULL);
+
+	lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
+
+	source_extents.x = extents.x1;
+	source_extents.y = extents.y1;
+	source_extents.width = extents.x2 - extents.x1;
+	source_extents.height = extents.y2 - extents.y1;
+
+	_start_pattern (view, &source_extents, 1.0);
+
+	result = lsm_svg_view_create_surface_pattern (view,
+						      &source_extents,
+						      NULL,
+						      LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
+}
+
+void
+lsm_svg_view_pop_filter (LsmSvgView *view)
+{
+	LsmSvgElement *filter_element;
+	cairo_t *cairo;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	filter_element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
+							      view->style->filter->value);
+
+	cairo = view->pattern_data->old_cairo;
+
+#if 1
+	{
+		char *filename;
+		static int count = 0;
+
+		filename = g_strdup_printf ("filter-%04d-%s.png", count++, view->style->filter->value);
+		cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
+		g_free (filename);
+	}
+#endif
+
+#if 0
+	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
+	cairo_set_source (cairo, view->pattern_data->pattern);
+	cairo_paint (cairo);
+#endif
+	_end_pattern (view);
+}
+
+void
 lsm_svg_view_push_element (LsmSvgView *view, const LsmSvgElement *element)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -1865,6 +1922,11 @@ lsm_svg_view_push_style	(LsmSvgView *view, const LsmSvgStyle *style)
 	view->style_stack = g_slist_prepend (view->style_stack, (void *) style);
 	view->style = style;
 
+	if (g_strcmp0 (style->filter->value, "none") != 0) {
+		lsm_debug ("render", "[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
+		lsm_svg_view_push_filter (view);
+	}
+
 	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
 		lsm_debug ("render", "[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
@@ -1886,6 +1948,10 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 
 	if (g_strcmp0 (view->style->clip_path->value, "none") != 0)
 		lsm_svg_view_pop_clip (view);
+
+	if (g_strcmp0 (view->style->filter->value, "none") != 0) {
+		lsm_svg_view_pop_filter (view);
+	}
 
 	view->style_stack = g_slist_delete_link (view->style_stack, view->style_stack);
 	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
