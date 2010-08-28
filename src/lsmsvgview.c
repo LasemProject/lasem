@@ -240,7 +240,6 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 gboolean
 lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 				     const LsmBox *viewport,
-				     LsmSvgPatternUnits units,
 				     const LsmSvgMatrix *pattern_matrix,
 				     LsmSvgViewSurfaceType surface_type)
 {
