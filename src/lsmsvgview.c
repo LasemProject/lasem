@@ -280,8 +280,8 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		device_width = ceil (device_width);
 	}
 
-	x_scale = device_height / viewport->height;
-	y_scale = device_width / viewport->width;
+	x_scale = device_width / viewport->width;
+	y_scale = device_height / viewport->height;
 
 	lsm_debug ("render", "[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g (scale %g x %g)",
 		   device_width, device_height, viewport->x, viewport->y, x_scale, y_scale);
@@ -318,8 +318,8 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		cairo_matrix_scale (&matrix, 1.0 / x_scale, 1.0 / y_scale);
 		cairo_matrix_invert (&matrix);
 	} else {
-		cairo_matrix_init_translate (&matrix, -viewport->x, -viewport->y);
-		cairo_matrix_scale (&matrix, 1.0 / x_scale, 1.0 / y_scale);
+		cairo_matrix_init_scale (&matrix, x_scale, y_scale);
+		cairo_matrix_translate (&matrix, -viewport->x, -viewport->y);
 	}
 
 	cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
