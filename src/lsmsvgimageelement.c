@@ -123,6 +123,26 @@ lsm_svg_image_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_pop_viewport (view);
 }
 
+static void
+lsm_svg_image_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgImageElement *image;
+
+	image = LSM_SVG_IMAGE_ELEMENT (self);
+	double x, y;
+	double w, h;
+
+	x = lsm_svg_view_normalize_length (view, &image->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &image->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	w = lsm_svg_view_normalize_length (view, &image->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	h = lsm_svg_view_normalize_length (view, &image->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	extents->x1 = x;
+	extents->y1 = y;
+	extents->x2 = x + w;
+	extents->y2 = y + h;
+}
+
 /* LsmSvgImageElement implementation */
 
 LsmDomNode *
@@ -222,6 +242,7 @@ lsm_svg_image_element_class_init (LsmSvgImageElementClass *klass)
 		LSM_SVG_ELEMENT_CATEGORY_GRAPHICS_REFERENCING;
 
 	s_element_class->render = lsm_svg_image_element_render;
+	s_element_class->get_extents = lsm_svg_image_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
