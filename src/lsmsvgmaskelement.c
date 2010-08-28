@@ -94,7 +94,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (!lsm_svg_view_create_surface_pattern (view, &viewport,
 						  mask->units.value,
-						  mask->content_units.value, NULL,
+						  NULL,
 						  LSM_SVG_VIEW_SURFACE_TYPE_IMAGE)) {
 		lsm_debug ("render", "[LsmSvgMaskElement::render] Intermediate surface creation failed");
 		lsm_svg_view_pop_style (view);

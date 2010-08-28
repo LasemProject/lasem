@@ -63,7 +63,6 @@ struct _LsmSvgViewPatternData {
 	LsmBox extents;
 
 	LsmSvgPatternUnits units;
-	LsmSvgPatternUnits content_units;
 	LsmSvgSpreadMethod spread_method;
 
 	double opacity;
@@ -96,7 +95,6 @@ _start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
 	view->pattern_data = g_new (LsmSvgViewPatternData, 1);
 	view->pattern_data->old_cairo = view->dom_view.cairo;
 	view->pattern_data->pattern = NULL;
-	view->pattern_data->content_units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	view->pattern_data->units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
 	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_REPEAT;
 	view->pattern_data->extents = *extents;
@@ -226,7 +224,6 @@ gboolean
 lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 				     const LsmBox *viewport,
 				     LsmSvgPatternUnits units,
-				     LsmSvgPatternUnits content_units,
 				     const LsmSvgMatrix *matrix,
 				     LsmSvgViewSurfaceType surface_type)
 {
@@ -297,7 +294,6 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	_set_pattern (view, pattern);
 
 	view->pattern_data->units = units;
-	view->pattern_data->content_units = content_units;
 
 	if (matrix != NULL) {
 		cairo_matrix_init (&view->pattern_data->matrix,
