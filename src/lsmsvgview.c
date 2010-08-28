@@ -63,7 +63,6 @@ struct _LsmSvgViewPatternData {
 	LsmBox extents;
 
 	LsmSvgPatternUnits units;
-	LsmSvgSpreadMethod spread_method;
 
 	double opacity;
 };
@@ -96,7 +95,6 @@ _start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
 	view->pattern_data->old_cairo = view->dom_view.cairo;
 	view->pattern_data->pattern = NULL;
 	view->pattern_data->units = LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE;
-	view->pattern_data->spread_method = LSM_SVG_SPREAD_METHOD_REPEAT;
 	view->pattern_data->extents = *extents;
 	view->pattern_data->opacity = opacity;
 
@@ -206,9 +204,9 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->pattern_data != NULL);
+	g_return_if_fail (view->pattern_data->pattern != NULL);
 
 	view->pattern_data->units = units;
-	view->pattern_data->spread_method = method;
 
 	if (matrix != NULL) {
 		cairo_matrix_init (&view->pattern_data->matrix,
@@ -218,6 +216,18 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 		cairo_matrix_invert (&view->pattern_data->matrix);
 	} else
 		cairo_matrix_init_identity (&view->pattern_data->matrix);
+
+	switch (method) {
+		case LSM_SVG_SPREAD_METHOD_REFLECT:
+			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REFLECT);
+			break;
+		case LSM_SVG_SPREAD_METHOD_REPEAT:
+			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
+			break;
+		default:
+			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_PAD);
+	}
+
 }
 
 gboolean
@@ -306,6 +316,8 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 		cairo_matrix_init_translate (&view->pattern_data->matrix, -viewport->x, -viewport->y);
 		cairo_matrix_scale (&view->pattern_data->matrix, 1.0 / x_scale, 1.0 / y_scale);
 	}
+
+	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
 
 	return TRUE;
 }
@@ -810,17 +822,6 @@ _paint_url (LsmSvgView *view,
 			cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
 		} else
 			cairo_pattern_set_matrix (view->pattern_data->pattern, &view->pattern_data->matrix);
-
-		switch (view->pattern_data->spread_method) {
-			case LSM_SVG_SPREAD_METHOD_REFLECT:
-				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REFLECT);
-				break;
-			case LSM_SVG_SPREAD_METHOD_REPEAT:
-				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
-				break;
-			default:
-				cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_PAD);
-		}
 
 		cairo_set_source (cairo, view->pattern_data->pattern);
 	} else
