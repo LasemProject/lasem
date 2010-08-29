@@ -48,9 +48,15 @@ struct _LsmSvgFilterPrimitive {
 
 struct _LsmSvgFilterPrimitiveClass {
 	LsmSvgElementClass  element_class;
+
+	void (*apply)		(LsmSvgFilterPrimitive *self, LsmSvgView *view,
+				 const char *input, const char *output,
+				 double x, double y, double w, double h);
 };
 
-GType lsm_svg_filter_primitive_get_type (void);
+GType 	lsm_svg_filter_primitive_get_type 	(void);
+
+void 	lsm_svg_filter_primitive_apply 		(LsmSvgFilterPrimitive *self, LsmSvgView *view);
 
 G_END_DECLS
 

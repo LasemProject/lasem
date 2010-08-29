@@ -21,6 +21,7 @@
  */
 
 #include <lsmsvgfilterelement.h>
+#include <lsmsvgfilterprimitive.h>
 #include <lsmsvgview.h>
 #include <lsmdebug.h>
 
@@ -47,6 +48,10 @@ static void
 lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgFilterElement *filter = LSM_SVG_FILTER_ELEMENT (self);
+	LsmDomNode *node;
+	LsmBox viewport;
+	const LsmBox *filter_extents;
+	gboolean is_object_bounding_box;
 
 	if (!filter->enable_rendering) {
 		lsm_debug ("render", "[LsmSvgFilterElement::render] Direct rendering not allowed");
@@ -54,6 +59,58 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 	} else {
 		filter->enable_rendering = FALSE;
 	}
+
+	filter_extents = lsm_svg_view_get_pattern_extents (view);
+
+	is_object_bounding_box = (filter->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	viewport.x      = lsm_svg_view_normalize_length (view, &filter->x.length,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.y      = lsm_svg_view_normalize_length (view, &filter->y.length,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.width  = lsm_svg_view_normalize_length (view, &filter->width.length,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &filter->height.length,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_viewbox (view);
+
+		viewport.x = viewport.x * filter_extents->width + filter_extents->x;
+		viewport.y = viewport.y * filter_extents->height + filter_extents->y;
+		viewport.width *= filter_extents->width;
+		viewport.height *= filter_extents->height;
+	}
+
+	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
+		lsm_debug ("render", "[LsmSvgFilterElement::render] Invalid filter area w = %g, h = %g",
+			   viewport.width, viewport.height);
+		return;
+	}
+
+	lsm_debug ("render", "[LsmFilterElement::render] Render filter x = %g, y = %g, w = %g, h = %g",
+		   viewport.x, viewport.y, viewport.width, viewport.height);
+
+	is_object_bounding_box = (filter->primitive_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	for (node = LSM_DOM_NODE (filter)->first_child; node != NULL; node = node->next_sibling)
+		if (LSM_IS_SVG_FILTER_PRIMITIVE (node))
+		    lsm_svg_filter_primitive_apply (LSM_SVG_FILTER_PRIMITIVE (node), view);
+
+	if (is_object_bounding_box)
+		lsm_svg_view_pop_viewbox (view);
 }
 
 static void

@@ -35,6 +35,18 @@ lsm_svg_filter_gaussian_blur_get_node_name (LsmDomNode *node)
 
 /* LsmSvgElement implementation */
 
+static void
+lsm_svg_filter_gaussian_blur_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
+				     const char *input, const char *output,
+				     double x, double y, double w, double h)
+{
+	LsmSvgFilterGaussianBlur *blur = LSM_SVG_FILTER_GAUSSIAN_BLUR (self);
+
+	lsm_svg_view_apply_gaussian_blur (view, input, output, x, y, w, h,
+					  blur->std_deviation.value.a,
+					  blur->std_deviation.value.b);
+}
+
 /* LsmSvgFilterGaussianBlur implementation */
 
 static const LsmSvgOneOrTwoDouble std_deviation_default =  {.a = 0.0, .b = 0.0};
@@ -69,13 +81,14 @@ static const LsmAttributeInfos lsm_svg_filter_gaussian_blur_attribute_infos[] = 
 };
 
 static void
-lsm_svg_filter_gaussian_blur_class_init (LsmSvgFilterGaussianBlurClass *s_rect_class)
+lsm_svg_filter_gaussian_blur_class_init (LsmSvgFilterGaussianBlurClass *f_blur_class)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (s_rect_class);
-	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (s_rect_class);
-	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (s_rect_class);
+	GObjectClass *object_class = G_OBJECT_CLASS (f_blur_class);
+	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (f_blur_class);
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_CLASS (f_blur_class);
+	LsmSvgFilterPrimitiveClass *f_primitive_class = LSM_SVG_FILTER_PRIMITIVE_CLASS (f_blur_class);
 
-	parent_class = g_type_class_peek_parent (s_rect_class);
+	parent_class = g_type_class_peek_parent (f_blur_class);
 
 	object_class->finalize = lsm_svg_filter_gaussian_blur_finalize;
 
@@ -86,6 +99,8 @@ lsm_svg_filter_gaussian_blur_class_init (LsmSvgFilterGaussianBlurClass *s_rect_c
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
 					      G_N_ELEMENTS (lsm_svg_filter_gaussian_blur_attribute_infos),
 					      lsm_svg_filter_gaussian_blur_attribute_infos);
+
+	f_primitive_class->apply = lsm_svg_filter_gaussian_blur_apply;
 }
 
 G_DEFINE_TYPE (LsmSvgFilterGaussianBlur, lsm_svg_filter_gaussian_blur, LSM_TYPE_SVG_FILTER_PRIMITIVE)

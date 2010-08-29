@@ -37,6 +37,25 @@ lsm_svg_filter_primitive_can_append_child (LsmDomNode *self, LsmDomNode *child)
 
 /* LsmSvgFilterPrimitive implementation */
 
+void
+lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
+{
+	LsmSvgFilterPrimitiveClass *primitive_class;
+	double x, y, w, h;
+
+	g_return_if_fail (LSM_IS_SVG_FILTER_PRIMITIVE (self));
+
+	primitive_class = LSM_SVG_FILTER_PRIMITIVE_GET_CLASS (self);
+
+	x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &self->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	w = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	h = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	if (primitive_class->apply != NULL)
+		primitive_class->apply (self, view, NULL, NULL, x, y, w, h);
+}
+
 static const LsmSvgLength x_y_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
 static const LsmSvgLength width_height_default = { .value_unit = 100.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
 
@@ -98,7 +117,6 @@ lsm_svg_filter_primitive_class_init (LsmSvgFilterPrimitiveClass *s_rect_class)
 	d_node_class->can_append_child = lsm_svg_filter_primitive_can_append_child;
 
 	s_element_class->category = LSM_SVG_ELEMENT_CATEGORY_FILTER_PRIMITIVE;
-
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
