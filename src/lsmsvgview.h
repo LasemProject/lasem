@@ -71,6 +71,8 @@ struct _LsmSvgView {
 	LsmBox clip_extents;
 
 	double last_stop_offset;
+
+	GSList *filter_surfaces;
 };
 
 struct _LsmSvgViewClass {
@@ -141,6 +143,9 @@ void		lsm_svg_view_pop_style			(LsmSvgView *view);
 
 LsmSvgStyle *	lsm_svg_view_get_current_style	(LsmSvgView *view);
 
+void		lsm_svg_view_apply_gaussian_blur 	(LsmSvgView *view, const char *input, const char *output,
+							 double x, double y, double w, double h,
+							 double std_x, double std_y);
 G_END_DECLS
 
 #endif

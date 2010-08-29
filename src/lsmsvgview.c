@@ -31,6 +31,7 @@
 #include <lsmsvgmarkerelement.h>
 #include <lsmsvgclippathelement.h>
 #include <lsmsvgmaskelement.h>
+#include <lsmcairo.h>
 #include <lsmstr.h>
 #include <gdk/gdk.h>
 #include <glib/gprintf.h>
@@ -1867,7 +1868,10 @@ void
 lsm_svg_view_pop_filter (LsmSvgView *view)
 {
 	LsmSvgElement *filter_element;
+	LsmFilterSurface *filter_surface;
+	cairo_surface_t *surface;
 	cairo_t *cairo;
+	GSList *iter;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -1875,6 +1879,13 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 							      view->style->filter->value);
 
 	cairo = view->pattern_data->old_cairo;
+
+	view->filter_surfaces = NULL;
+
+	cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
+	filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", 0, 0, surface);
+
+	view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
 #if 1
 	{
@@ -1887,12 +1898,25 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	}
 #endif
 
-#if 0
+#if 1
 	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
 	cairo_set_source (cairo, view->pattern_data->pattern);
 	cairo_paint (cairo);
 #endif
+
+	for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
+		lsm_filter_surface_free (iter->data);
+	g_slist_free (view->filter_surfaces);
+	view->filter_surfaces = NULL;
+
 	_end_pattern (view);
+}
+
+void
+lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const char *output,
+				  double x, double y, double w, double h,
+				  double std_x, double std_y)
+{
 }
 
 void
