@@ -256,9 +256,6 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	g_return_val_if_fail (view->pattern_data != NULL, FALSE);
 	g_return_val_if_fail (view->dom_view.cairo == NULL, FALSE);
 
-	if (viewport->width <= 0.0 || viewport->height <= 0.0)
-		return FALSE;
-
 	x1 = viewport->x;
 	y1 = viewport->y;
 	x2 = viewport->x + viewport->width;
@@ -286,9 +283,6 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 
 	lsm_debug ("render", "[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g (scale %g x %g)",
 		   device_width, device_height, viewport->x, viewport->y, x_scale, y_scale);
-
-	if (device_height < 1.0 || device_width < 1.0)
-		return FALSE;
 
 	switch (surface_type) {
 		case LSM_SVG_VIEW_SURFACE_TYPE_AUTO:
