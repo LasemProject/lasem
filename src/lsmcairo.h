@@ -28,8 +28,19 @@
 
 G_BEGIN_DECLS
 
-void 	lsm_cairo_fast_blur 		(cairo_surface_t * in, cairo_surface_t * output,
-					 double sx, double sy, double x1, double y1, double x2, double y2);
+typedef struct _LsmFilterSurface LsmFilterSurface;
+
+LsmFilterSurface * 	lsm_filter_surface_new 			(const char *name,
+								 unsigned int x0, unsigned int y0,
+								 unsigned int x1, unsigned int y1);
+LsmFilterSurface * 	lsm_filter_surface_new_with_content 	(const char *name,
+								 unsigned int x0, unsigned int y0,
+								 cairo_surface_t *surface);
+void 			lsm_filter_surface_free 		(LsmFilterSurface *filter_surface);
+
+void 			lsm_filter_fast_blur 			(LsmFilterSurface *input,
+								 LsmFilterSurface *output,
+								 double sx, double sy);
 
 G_END_DECLS
 

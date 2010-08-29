@@ -25,28 +25,80 @@
 #include <lsmcairo.h>
 #include <math.h>
 
+struct _LsmFilterSurface {
+	char *name;
+	cairo_surface_t *surface;
+	unsigned int x0;
+	unsigned int y0;
+	unsigned int x1;
+	unsigned int y1;
+};
+
+LsmFilterSurface *
+lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1)
+{
+	cairo_surface_t *surface;
+
+	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, x1 - x0, y1 - y0);
+
+	return lsm_filter_surface_new_with_content (name, x0, y0, surface);
+}
+
+LsmFilterSurface *
+lsm_filter_surface_new_with_content (const char *name, unsigned int x0, unsigned int y0, cairo_surface_t *surface)
+{
+	LsmFilterSurface *filter_surface;
+
+	g_return_val_if_fail (surface != NULL, NULL);
+	g_return_val_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE, NULL);
+	g_return_val_if_fail (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32, NULL);
+
+	cairo_surface_reference (surface);
+
+	filter_surface = g_new (LsmFilterSurface, 1);
+	filter_surface->name = g_strdup (name);
+	filter_surface->x0 = x0;
+	filter_surface->y0 = y0;
+	filter_surface->x1 = x0 + cairo_image_surface_get_width (surface);
+	filter_surface->y1 = y0 + cairo_image_surface_get_height (surface);
+	filter_surface->surface  = surface;
+
+	return filter_surface;
+}
+
+void
+lsm_filter_surface_free (LsmFilterSurface *filter_surface)
+{
+	g_return_if_fail (filter_surface != NULL);
+
+	cairo_surface_destroy (filter_surface->surface);
+	g_free (filter_surface->name);
+	g_free (filter_surface);
+}
+
 static void
-box_blur (cairo_surface_t *in,
-	  cairo_surface_t *output,
+box_blur (LsmFilterSurface *input,
+	  LsmFilterSurface *output,
 	  guchar * intermediate,
-	  gint kw, gint kh, gint x1, gint y1, gint x2, gint y2)
+	  gint kw, gint kh)
 {
 	gint ch;
 	gint x, y;
-	gint rowstride, height, width;
-
+	gint rowstride;
+	gint x1, y1, x2, y2;
 	guchar *in_pixels;
 	guchar *output_pixels;
-
 	gint sum;
 
-	height = cairo_image_surface_get_height (in);
-	width = cairo_image_surface_get_width (in);
+	in_pixels = cairo_image_surface_get_data (input->surface);
+	output_pixels = cairo_image_surface_get_data (output->surface);
 
-	in_pixels = cairo_image_surface_get_data (in);
-	output_pixels = cairo_image_surface_get_data (output);
+	rowstride = cairo_image_surface_get_stride (input->surface);
 
-	rowstride = cairo_image_surface_get_stride (in);
+	x1 = input->x0;
+	y1 = input->y0;
+	x2 = input->x1;
+	y2 = input->y1;
 
 	if (kw > x2 - x1)
 		kw = x2 - x1;
@@ -141,20 +193,15 @@ box_blur (cairo_surface_t *in,
 }
 
 void
-lsm_cairo_fast_blur (cairo_surface_t * in, cairo_surface_t * output,
-		     double sx, double sy, double x1, double y1, double x2, double y2)
+lsm_filter_fast_blur (LsmFilterSurface *input,
+		      LsmFilterSurface *output,
+		      double sx, double sy)
 {
 	gint kx, ky;
 	guchar *intermediate;
 
-	g_return_if_fail (in != NULL);
+	g_return_if_fail (input != NULL);
 	g_return_if_fail (output != NULL);
-
-	g_return_if_fail (cairo_surface_get_type (in) == CAIRO_SURFACE_TYPE_IMAGE);
-	g_return_if_fail (cairo_surface_get_type (output) == CAIRO_SURFACE_TYPE_IMAGE);
-
-	g_return_if_fail (cairo_image_surface_get_format (in) == CAIRO_FORMAT_ARGB32);
-	g_return_if_fail (cairo_image_surface_get_format (output) == CAIRO_FORMAT_ARGB32);
 
 	kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
 	ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
@@ -164,9 +211,9 @@ lsm_cairo_fast_blur (cairo_surface_t * in, cairo_surface_t * output,
 
 	intermediate = g_new (guchar, MAX (kx, ky));
 
-	box_blur (in, output, intermediate, kx, ky, x1, y1, x2, y2);
-	box_blur (output, output, intermediate, kx, ky, x1, y1, x2, y2);
-	box_blur (output, output, intermediate, kx, ky, x1, y1, x2, y2);
+	box_blur (input, output, intermediate, kx, ky);
+	box_blur (output, output, intermediate, kx, ky);
+	box_blur (output, output, intermediate, kx, ky);
 
 	g_free (intermediate);
 }
