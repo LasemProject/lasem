@@ -1,6 +1,7 @@
 Lasem aims to be a C/Gobject based SVG/Mathml renderer and editor, supporting CSS
-style sheets. It uses cairo and pango as it's rendering abstraction layer, and
-then support numerous output formats: xlib, PNG, SVG, PDF, PS, EPS...
+style sheets (only rendering is implemented for now). It uses cairo and pango as
+it's rendering abstraction layer, and then support numerous output formats: xlib,
+PNG, SVG, PDF, PS, EPS...
 
 The API tries to follow the SVG and MathML DOM.
 
@@ -10,7 +11,7 @@ lasemrender, which takes a filename as argument and generates either a SVG, a PD
 or a PS file, depending on the output file extension. There's a debug mode option
 (-d) that displays the bounding boxes of elements as blue rectangles, the logical
 extents of text as red boxes and the ink extents of text as green boxes. It accepts
-either MathML, Latex maths and SVG input. For the latex input, gmathmlrender uses
+either MathML, Latex maths and SVG input. For the latex input, lasemrender uses
 the embedded itex2mml library for the conversion to MathML.
 
 lasemtest, which, if launched without argument, renders recursively all svg and mml
@@ -23,4 +24,5 @@ Requirements:
 
 gobject, glib, gio, gdk-pixbuf, gdk, cairo, pangocairo, libxml, bison, flex
 
-For the runtime, the following fonts should be installed: cmr10, cmmi10, cmex10 and cmsy10.
+For the runtime, the following ttf fonts should be installed: cmr10, cmmi10, cmex10 and cmsy10.
+They are provided by the lyx-fonts package in fedora, and the ttf-lyx package in debian/ubuntu.
