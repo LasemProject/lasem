@@ -211,9 +211,7 @@ int main(int argc, char **argv)
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		lsm_dom_view_set_cairo (view, cairo);
-
-		lsm_dom_view_render (view, 0, 0);
+		lsm_dom_view_render (view, cairo, 0, 0);
 
 		switch (format) {
 			case FORMAT_PNG:

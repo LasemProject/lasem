@@ -146,13 +146,11 @@ lasem_test_render (char const *filename)
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
 
-		lsm_dom_view_set_cairo (LSM_DOM_VIEW (view), cairo);
-
-		cairo_destroy (cairo);
-
-		lsm_dom_view_render (LSM_DOM_VIEW (view), 1, 1);
+		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
 
 		cairo_surface_write_to_png (surface, png_filename);
+
+		cairo_destroy (cairo);
 
 		g_object_unref (view);
 		g_object_unref (document);

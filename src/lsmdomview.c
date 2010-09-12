@@ -70,42 +70,8 @@ lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned in
 		*height = (double) (0.5 + height_pt * resolution_ppi / 72.0);
 }
 
-void
-lsm_dom_view_render (LsmDomView *view, double x, double y)
-{
-	LsmDomViewClass *view_class;
-	double resolution_ppi;
-
-	g_return_if_fail (LSM_IS_DOM_VIEW (view));
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (view->document));
-	g_return_if_fail (view->cairo != NULL);
-
-	resolution_ppi = lsm_dom_document_get_resolution (view->document);
-
-	cairo_save (view->cairo);
-
-	cairo_translate (view->cairo, x, y);
-
-	view_class = LSM_DOM_VIEW_GET_CLASS (view);
-	if (view_class->render != NULL)
-		view_class->render (view);
-
-	cairo_restore (view->cairo);
-
-	lsm_debug ("render", "[LsmDomView::render] cairo status = %s",
-		   cairo_status_to_string (cairo_status (view->cairo)));
-}
-
-void
-lsm_dom_view_set_debug (LsmDomView *view, gboolean debug)
-{
-	g_return_if_fail (LSM_IS_DOM_VIEW (view));
-
-	view->debug = debug;
-}
-
-void
-lsm_dom_view_set_cairo (LsmDomView *view, cairo_t *cairo)
+static void
+lsm_dom_view_set_cairo_context (LsmDomView *view, cairo_t *cairo)
 {
 	PangoContext *context;
 	PangoFontDescription *font_description;
@@ -156,6 +122,44 @@ lsm_dom_view_set_cairo (LsmDomView *view, cairo_t *cairo)
 	cairo_font_options_set_hint_metrics (font_options, CAIRO_HINT_METRICS_OFF);
 	pango_cairo_context_set_font_options (context, font_options);
 	cairo_font_options_destroy (font_options);
+}
+
+void
+lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
+{
+	LsmDomViewClass *view_class;
+	double resolution_ppi;
+
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (view->document));
+	g_return_if_fail (cairo != NULL);
+
+	lsm_dom_view_set_cairo_context (view, cairo);
+
+	resolution_ppi = lsm_dom_document_get_resolution (view->document);
+
+	cairo_save (view->cairo);
+
+	cairo_translate (view->cairo, x, y);
+
+	view_class = LSM_DOM_VIEW_GET_CLASS (view);
+	if (view_class->render != NULL)
+		view_class->render (view);
+
+	cairo_restore (view->cairo);
+
+	lsm_debug ("render", "[LsmDomView::render] cairo status = %s",
+		   cairo_status_to_string (cairo_status (view->cairo)));
+
+	lsm_dom_view_set_cairo_context (view, NULL);
+}
+
+void
+lsm_dom_view_set_debug (LsmDomView *view, gboolean debug)
+{
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+
+	view->debug = debug;
 }
 
 void
