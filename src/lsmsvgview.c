@@ -1836,6 +1836,7 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 void
 lsm_svg_view_push_filter (LsmSvgView *view)
 {
+#if 0
 	LsmExtents extents;
 	LsmBox source_extents;
 	gboolean result;
@@ -1856,11 +1857,13 @@ lsm_svg_view_push_filter (LsmSvgView *view)
 						      &source_extents,
 						      NULL,
 						      LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
+#endif
 }
 
 void
 lsm_svg_view_pop_filter (LsmSvgView *view)
 {
+#if 0
 	LsmSvgElement *filter_element;
 	LsmFilterSurface *filter_surface;
 	cairo_surface_t *surface;
@@ -1904,6 +1907,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	view->filter_surfaces = NULL;
 
 	_end_pattern (view);
+#endif
 }
 
 void
