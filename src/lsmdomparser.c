@@ -364,3 +364,77 @@ lsm_dom_document_new_from_url (const char *url, GError **error)
 
 	return document;
 }
+
+void
+lsm_dom_document_save_to_stream (LsmDomDocument *document, GOutputStream *stream, GError **error)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
+	g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
+
+	lsm_dom_node_write_to_stream (LSM_DOM_NODE (document), stream, error);
+}
+
+void
+lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, size_t *size, GError **error)
+{
+	GOutputStream *stream;
+
+	if (buffer != NULL)
+		*buffer = NULL;
+	if (size != NULL)
+		*size = 0;
+
+	g_return_if_fail (document != NULL);
+	g_return_if_fail (buffer != NULL);
+
+	stream = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+	if (stream == NULL) {
+		*buffer = NULL;
+		if (size != NULL)
+			*size = 0;
+		return;
+	}
+
+	lsm_dom_document_save_to_stream (document, G_OUTPUT_STREAM (stream), error);
+	g_output_stream_close (G_OUTPUT_STREAM (stream), NULL, error);
+
+	if (size != NULL)
+		*size = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (stream));
+	*buffer = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (stream));
+
+	g_object_unref (stream);
+}
+
+void
+lsm_dom_document_save_to_path (LsmDomDocument *document, const char *path, GError **error)
+{
+	GFile *file;
+	GFileOutputStream *stream;
+
+	g_return_if_fail (path != NULL);
+
+	file = g_file_new_for_path (path);
+	stream = g_file_create (file, G_FILE_CREATE_REPLACE_DESTINATION, NULL, error);
+	if (stream != NULL) {
+		lsm_dom_document_save_to_stream (document, G_OUTPUT_STREAM (stream), error);
+		g_object_unref (stream);
+	}
+	g_object_unref (file);
+}
+
+void
+lsm_dom_document_save_to_url (LsmDomDocument *document, const char *path, GError **error)
+{
+	GFile *file;
+	GFileOutputStream *stream;
+
+	g_return_if_fail (path != NULL);
+
+	file = g_file_new_for_uri (path);
+	stream = g_file_create (file, G_FILE_CREATE_REPLACE_DESTINATION, NULL, error);
+	if (stream != NULL) {
+		lsm_dom_document_save_to_stream (document, G_OUTPUT_STREAM (stream), error);
+		g_object_unref (stream);
+	}
+	g_object_unref (file);
+}

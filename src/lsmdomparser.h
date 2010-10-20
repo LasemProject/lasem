@@ -24,6 +24,7 @@
 #define LSM_DOM_PARSER_H
 
 #include <lsmdomdocument.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -31,9 +32,23 @@ typedef enum {
 	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
 } LsmDomDocumentError;
 
-LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const char *buffer, int size, GError **error);
+LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, size_t size, GError **error);
 LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError *error);
 LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError *error);
+
+void			lsm_dom_document_save_to_stream		(LsmDomDocument *document,
+								 GOutputStream *stream,
+								 GError **error);
+void			lsm_dom_document_save_to_memory		(LsmDomDocument *documennt,
+								 void **buffer,
+								 size_t *size,
+								 GError **error);
+void			lsm_dom_document_save_to_path		(LsmDomDocument *documennt,
+								 const char *path,
+								 GError **error);
+void			lsm_dom_document_save_to_url		(LsmDomDocument *documennt,
+								 const char *path,
+								 GError **error);
 
 G_END_DECLS
 

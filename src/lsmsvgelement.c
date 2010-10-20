@@ -99,6 +99,32 @@ lsm_svg_element_get_attribute (LsmDomElement *self, const char *name)
 	return lsm_svg_property_bag_get_property (&s_element->property_bag, name);
 }
 
+static char *
+lsm_svg_element_get_serialized_attributes (LsmDomElement *self)
+{
+	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS(self);
+	LsmSvgElement *s_element = LSM_SVG_ELEMENT (self);
+	char *properties;
+	char *attributes;
+	char *result;
+
+	properties = lsm_svg_property_bag_serialize (&s_element->property_bag);
+	attributes = lsm_attribute_manager_serialize (s_element_class->attribute_manager, self);
+
+	if (attributes == NULL)
+		return properties;
+
+	if (properties == NULL)
+		return attributes;
+
+	result = g_strconcat (attributes, " ", properties, NULL);
+
+	g_free (properties);
+	g_free (attributes);
+
+	return result;
+}
+
 /* LsmSvgElement implementation */
 
 LsmSvgElementCategory
@@ -326,6 +352,7 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 
 	d_element_class->get_attribute = lsm_svg_element_get_attribute;
 	d_element_class->set_attribute = lsm_svg_element_set_attribute;
+	d_element_class->get_serialized_attributes = lsm_svg_element_get_serialized_attributes;
 
 	s_element_class->category = 0;
 

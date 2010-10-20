@@ -45,8 +45,9 @@ struct _LsmDomElement {
 struct _LsmDomElementClass {
 	LsmDomNodeClass parent_class;
 
-	const char* 	(*get_attribute) (LsmDomElement* self, const char* name);
-	void 		(*set_attribute) (LsmDomElement* self, const char* name, const char* attribute_value);
+	const char* 	(*get_attribute) (LsmDomElement *self, const char *name);
+	void 		(*set_attribute) (LsmDomElement *self, const char *name, const char *attribute_value);
+	char *		(*get_serialized_attributes)	(LsmDomElement *self);
 };
 
 GType lsm_dom_element_get_type (void);

@@ -1,6 +1,6 @@
 /* lsmdomcharacterdata.c
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2010  Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,8 +23,20 @@
 
 #include <lsmdomcharacterdata.h>
 #include <lsmdebug.h>
+#include <string.h>
 
 static GObjectClass *parent_class = NULL;
+
+/* LsmDomNode implementation */
+
+static void
+lsm_dom_character_data_write_to_stream (LsmDomNode *self, GOutputStream *stream, GError **error)
+{
+	LsmDomCharacterData *character_data = LSM_DOM_CHARACTER_DATA (self);
+
+	if (character_data->data != NULL)
+		g_output_stream_write (stream, character_data->data, strlen (character_data->data), NULL, error);
+}
 
 /* LsmDomCharacterData implementation */
 
@@ -71,10 +83,13 @@ static void
 lsm_dom_character_data_class_init (LsmDomCharacterDataClass *character_data_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (character_data_class);
+	LsmDomNodeClass *node_class = LSM_DOM_NODE_CLASS (character_data_class);
 
 	parent_class = g_type_class_peek_parent (character_data_class);
 
 	object_class->finalize = lsm_dom_character_data_finalize;
+
+	node_class->write_to_stream = lsm_dom_character_data_write_to_stream;
 }
 
 G_DEFINE_ABSTRACT_TYPE (LsmDomCharacterData, lsm_dom_character_data, LSM_TYPE_DOM_NODE)

@@ -82,6 +82,14 @@ lsm_mathml_element_get_attribute (LsmDomElement *self, const char *name)
 						    self, name);
 }
 
+static char *
+lsm_mathml_element_get_serialized_attributes (LsmDomElement *self)
+{
+	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_GET_CLASS(self);
+
+	return lsm_attribute_manager_serialize (m_element_class->attribute_manager, self);
+}
+
 /* LsmMathmlElement implementation */
 
 static gboolean
@@ -459,6 +467,7 @@ lsm_mathml_element_class_init (LsmMathmlElementClass *m_element_class)
 
 	d_element_class->get_attribute = lsm_mathml_element_get_attribute;
 	d_element_class->set_attribute = lsm_mathml_element_set_attribute;
+	d_element_class->get_serialized_attributes = lsm_mathml_element_get_serialized_attributes;
 
 	m_element_class->update = NULL;
 	m_element_class->update_children = _update_children;

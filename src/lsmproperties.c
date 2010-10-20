@@ -256,6 +256,7 @@ lsm_property_manager_serialize (LsmPropertyManager *manager,
 	GSList *iter;
 	GString *string;
 	char *c_string;
+	gboolean attribute_found = FALSE;
 
 	g_return_val_if_fail (property_bag != NULL, NULL);
 	g_return_val_if_fail (manager != NULL, NULL);
@@ -273,7 +274,14 @@ lsm_property_manager_serialize (LsmPropertyManager *manager,
 						property_infos->name,
 						property->value,
 						iter->next != NULL ? " ": "");
+			if (!attribute_found)
+				attribute_found = TRUE;
 		}
+	}
+
+	if (!attribute_found) {
+		g_string_free (string, TRUE);
+		return NULL;
 	}
 
 	c_string = string->str;

@@ -239,7 +239,7 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 }
 
 static gboolean
-lsm_dom_node_can_append_child (LsmDomNode *self, LsmDomNode* new_child)
+lsm_dom_node_can_append_child_default (LsmDomNode *self, LsmDomNode* new_child)
 {
 	return FALSE;
 }
@@ -278,41 +278,26 @@ lsm_dom_node_has_child_nodes (LsmDomNode* self)
 	return self->first_child != NULL;
 }
 
-void
-lsm_dom_node_dump (LsmDomNode *self)
+static void
+lsm_dom_node_write_to_stream_default (LsmDomNode *self, GOutputStream *stream, GError **error)
 {
-	LsmDomNode *node;
-	LsmDomNodeType type;
-	const char *text;
+	LsmDomNode *child;
+
+	for (child = self->first_child; child != NULL; child = child->next_sibling)
+		lsm_dom_node_write_to_stream (child, stream, error);
+}
+
+void
+lsm_dom_node_write_to_stream (LsmDomNode *self, GOutputStream *stream, GError **error)
+{
+	LsmDomNodeClass *node_class;
 
 	g_return_if_fail (LSM_IS_DOM_NODE (self));
+	g_return_if_fail (G_IS_OUTPUT_STREAM (stream));
 
-	type = lsm_dom_node_get_node_type (self);
-
-	switch (type) {
-		case LSM_DOM_NODE_TYPE_ELEMENT_NODE:
-			g_printf ("<%s>", lsm_dom_node_get_node_name (self));
-			for (node = self->first_child;
-			     node != NULL;
-			     node = node->next_sibling)
-				lsm_dom_node_dump (node);
-			g_printf ("</%s>", lsm_dom_node_get_node_name (self));
-			break;
-		case LSM_DOM_NODE_TYPE_TEXT_NODE:
-			text = lsm_dom_node_get_node_value (self);
-			g_printf ("%s", text != NULL ? text : "null");
-			break;
-		case LSM_DOM_NODE_TYPE_DOCUMENT_NODE:
-			g_printf ("Mathml Document\n");
-			if (self->first_child != NULL) {
-				lsm_dom_node_dump (self->first_child);
-				g_printf ("\n");
-			}
-			break;
-		default:
-			g_printf ("Not supported\n");
-			break;
-	}
+	node_class = LSM_DOM_NODE_GET_CLASS (self);
+	if (node_class->write_to_stream != NULL)
+		node_class->write_to_stream (self, stream, error);
 }
 
 static void
@@ -347,7 +332,8 @@ lsm_dom_node_class_init (LsmDomNodeClass *node_class)
 
 	object_class->finalize = lsm_dom_node_finalize;
 
-	node_class->can_append_child = lsm_dom_node_can_append_child;
+	node_class->can_append_child = lsm_dom_node_can_append_child_default;
+	node_class->write_to_stream = lsm_dom_node_write_to_stream_default;
 }
 
 G_DEFINE_ABSTRACT_TYPE (LsmDomNode, lsm_dom_node, G_TYPE_OBJECT)

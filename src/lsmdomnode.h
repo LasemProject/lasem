@@ -25,6 +25,7 @@
 #define LSM_DOM_NODE_H
 
 #include <lsmdom.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
@@ -86,6 +87,8 @@ struct _LsmDomNodeClass {
 	void			(*pre_remove_child) 	(LsmDomNode *parent, LsmDomNode *child);
 	void			(*changed)		(LsmDomNode *self);
 	gboolean		(*child_changed)	(LsmDomNode *self, LsmDomNode *child);
+
+	void			(*write_to_stream)	(LsmDomNode *self, GOutputStream *stream, GError **error);
 };
 
 GType lsm_dom_node_get_type (void);
@@ -115,7 +118,8 @@ void 			lsm_dom_node_changed 			(LsmDomNode *self);
 
 LsmDomDocument*		lsm_dom_node_get_owner_document 	(LsmDomNode* self);
 
-void 			lsm_dom_node_dump 			(LsmDomNode *self);
+void			lsm_dom_node_write_to_stream		(LsmDomNode *self, GOutputStream *stream,
+								 GError **error);
 
 G_END_DECLS
 

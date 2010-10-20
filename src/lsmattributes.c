@@ -224,7 +224,7 @@ lsm_attribute_manager_serialize	(LsmAttributeManager *manager,
 	GHashTableIter iter;
 	char *c_string;
 	gpointer key, value;
-	gboolean is_first = TRUE;
+	gboolean attribute_found = FALSE;
 
 	g_return_val_if_fail (manager != NULL, NULL);
 
@@ -235,20 +235,26 @@ lsm_attribute_manager_serialize	(LsmAttributeManager *manager,
 		attribute_infos = value;
 		attribute = (void *)(instance + attribute_infos->attribute_offset);
 
-		if (is_first) {
-			g_string_append_printf (string, "%s=\"%s\"",
-						attribute_infos->name,
-						attribute->value);
-			is_first = FALSE;
-		} else {
-			g_string_append_printf (string, " %s=\"%s\"",
-						attribute_infos->name,
-						attribute->value);
+		if (attribute->value != NULL) {
+			if (!attribute_found) {
+				g_string_append_printf (string, "%s=\"%s\"",
+							attribute_infos->name,
+							attribute->value);
+				attribute_found = TRUE;
+			} else {
+				g_string_append_printf (string, " %s=\"%s\"",
+							attribute_infos->name,
+							attribute->value);
+			}
 		}
 	}
 
-	c_string = string->str;
+	if (!attribute_found) {
+		g_string_free (string, TRUE);
+		return NULL;
+	}
 
+	c_string = string->str;
 	g_string_free (string, FALSE);
 
 	return c_string;
