@@ -28,7 +28,7 @@
 G_BEGIN_DECLS
 
 #define LSM_PROPERTY_OFFSET_TO_ID(structure,member) offsetof (structure, member) / sizeof (void *)
-#define LSM_PROPERTY_ID_TO_OFFSET(id) id * sizeof (void *)
+#define LSM_PROPERTY_ID_TO_OFFSET(id) ((id) * sizeof (void *))
 
 typedef struct {
 	guint16	id;
