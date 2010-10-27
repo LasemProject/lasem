@@ -1,6 +1,6 @@
-/* lsmdomnode.c
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2010  Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,6 +36,15 @@ static GObjectClass *parent_class = NULL;
 
 /* LsmDomNode implementation */
 
+
+/**
+ * lsm_dom_node_get_node_name:
+ * @self: a #LsmDomNode
+ * Return value: the node name.
+ *
+ * Gets the node name.
+ */
+
 const char*
 lsm_dom_node_get_node_name (LsmDomNode* self)
 {
@@ -48,6 +57,14 @@ lsm_dom_node_get_node_name (LsmDomNode* self)
 
 	return NULL;
 }
+
+/**
+ * lsm_dom_node_get_node_value:
+ * @self: a #LsmDomNode
+ * Return value: the node value.
+ *
+ * Gets the node value.
+ */
 
 const char*
 lsm_dom_node_get_node_value (LsmDomNode* self)
