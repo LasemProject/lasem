@@ -21,6 +21,11 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+/**
+ * SECTION:lsmdomcharacterdata
+ * @short_description: Base class for DOM character data nodes
+ */
+
 #include <lsmdomcharacterdata.h>
 #include <lsmdebug.h>
 #include <string.h>

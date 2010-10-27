@@ -21,9 +21,13 @@ autom4te*
 tags
 *.lineno
 *.swp
+*.stamp
 lasem.svg
 lasem*.pc
 lasemtest.xml
 manugen
 massif.out.*
 callgrind.out.*
+gtk-doc.make
+gtk-doc.m4
+.libs

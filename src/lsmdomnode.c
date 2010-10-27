@@ -21,6 +21,11 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+/**
+ * SECTION:lsmdomnode
+ * @short_description: Base class for DOM nodes
+ */
+
 #include <lsmdomnode.h>
 #include <lsmdomdocument.h>
 #include <lsmdebug.h>

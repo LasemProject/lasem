@@ -50,12 +50,17 @@ AC_SUBST(LASEM_LIBS)
 AC_PATH_PROG(GLIB_MKENUMS, glib-mkenums)
 
 GOBJECT_INTROSPECTION_CHECK([0.6.7])
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
+AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
 
 AC_CONFIG_FILES([
 Makefile
 itex2mml/Makefile
 src/Makefile
 po/Makefile.in
+docs/Makefile
+docs/reference/Makefile
+docs/reference/lasem/Makefile
 lasem.pc
 ])
 AC_OUTPUT

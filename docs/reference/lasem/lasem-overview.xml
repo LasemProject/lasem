@@ -1,0 +1,58 @@
+<part id="lasem-overview">
+
+<title>Overview</title>
+
+<para>
+	Lasem is a GObject based library for the rendering and edition of Mathml and
+	SVG documents. It supports gobject-introspection,
+	making it usable directly from Python (<ulink type="http"
+		url="http://live.gnome.org/PyGI">PyGI</ulink>) , Javascript
+	(<ulink type="http" url="http://live.gnome.org/Gjs/">Gjs</ulink> or
+	<ulink type="http" url="http://live.gnome.org/Seed">Seed</ulink>) or
+	<ulink type="http"
+		url="http://live.gnome.org/Vala">Vala</ulink>.
+</para>
+
+<chapter id="lasem-building">
+	<title>Building and debugging Lasem</title>
+
+	<para>
+		On UNIX, Lasem uses the standard GNU build system, using
+		<application>autoconf</application> for package configuration
+		and resolving portability issues,
+		<application>automake</application> for building makefiles that
+		comply with the GNU Coding Standards, and
+		<application>libtool</application> for building shared
+		libraries on multiple platforms.  The normal sequence for
+		compiling and installing the Lasem library is thus:
+		<literallayout>
+			<userinput>./configure</userinput>
+			<userinput>make</userinput>
+			<userinput>make install</userinput>
+		</literallayout>
+	</para>
+
+	<para>
+		The standard options provided by <application>GNU
+			autoconf</application> may be passed to the
+		<command>configure</command> script.  Please see the
+		<application>autoconf</application> documentation or run
+		<command>./configure --help</command> for information about the
+		standard options.
+	</para>
+
+	<para>
+		The LSM_DEBUG environment variable can be set to a colon
+		separated list of debugging domains, which will make Lasem
+		print out different types of debugging informations to the
+		console. For example, the following command before running an
+		Lasem based application will make Lasem print out DOM
+		related informations:
+		<literallayout>
+			<userinput>export LSM_DEBUG=dom</userinput>
+		</literallayout>
+	</para>
+
+</chapter>
+
+</part>

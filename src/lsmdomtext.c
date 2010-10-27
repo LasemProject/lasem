@@ -21,6 +21,11 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+/**
+ * SECTION:lsmdomtext
+ * @short_description: Base class for DOM text nodes
+ */
+
 #include <lsmdomtext.h>
 
 /* LsmDomNode implementation */

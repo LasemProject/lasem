@@ -21,6 +21,11 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
+/**
+ * SECTION:lsmdomelement
+ * @short_description: Base class for DOM element nodes
+ */
+
 #include <lsmdomelement.h>
 #include <string.h>
 

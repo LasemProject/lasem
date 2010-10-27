@@ -1,8 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection --enable-gtk-doc
 
-SUBDIRS = itex2mml src po
+SUBDIRS = itex2mml src po docs
 
 lasemdocdir = ${prefix}/doc/lasem-@LASEM_API_VERSION@
 lasemdoc_DATA = 	\
