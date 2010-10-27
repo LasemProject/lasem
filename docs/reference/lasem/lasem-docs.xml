@@ -114,7 +114,6 @@
 			<xi:include href="xml/lsmsvgpolylineelement.xml"/>
 			<xi:include href="xml/lsmsvgdocument.xml"/>
 			<xi:include href="xml/lsmsvgpathelement.xml"/>
-			<xi:include href="xml/lsmsvgenums.xml"/>
 			<xi:include href="xml/lsmsvgcolors.xml"/>
 			<xi:include href="xml/lsmsvglength.xml"/>
 			<xi:include href="xml/lsmsvgstyle.xml"/>
@@ -124,9 +123,7 @@
 		</chapter>
 		<chapter>
 			<title>Miscellaneous</title>
-			<xi:include href="xml/lsm.xml"/>
 			<xi:include href="xml/lsmattributes.xml"/>
-			<xi:include href="xml/lsmenumtypes.xml"/>
 			<xi:include href="xml/lsmdebug.xml"/>
 			<xi:include href="xml/lsmproperties.xml"/>
 			<xi:include href="xml/lsmstr.xml"/>

@@ -1,5 +1,6 @@
-/*
- * Copyright © 2007-2009 Emmanuel Pacaud
+/* Lasem - SVG and Mathml library
+ *
+ * Copyright © 2007-2010 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +19,11 @@
  *
  * Author:
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
+ */
+
+/**
+ * SECTION:lsmdomdocument
+ * @short_description: Base class for DOM document nodes
  */
 
 #include <lsmdomdocument.h>
