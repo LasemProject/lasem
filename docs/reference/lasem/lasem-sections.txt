@@ -1145,47 +1145,6 @@ lsm_attribute_manager_serialize
 </SECTION>
 
 <SECTION>
-<FILE>lsmmathmlenums</FILE>
-LsmMathmlCssType
-LsmMathmlMode
-lsm_mathml_mode_to_string
-lsm_mathml_mode_from_string
-LsmMathmlDisplay
-lsm_mathml_display_to_string
-lsm_mathml_display_from_string
-LsmMathmlSpaceName
-lsm_mathml_space_name_to_string
-lsm_mathml_space_name_from_string
-LsmMathmlUnit
-lsm_mathml_unit_to_string
-lsm_mathml_unit_from_string
-LsmMathmlFontStyle
-lsm_mathml_font_style_to_string
-lsm_mathml_font_style_from_string
-LsmMathmlFontWeight
-lsm_mathml_font_weight_to_string
-lsm_mathml_font_weight_from_string
-LsmMathmlVariant
-lsm_mathml_variant_to_string
-lsm_mathml_variant_from_string
-lsm_mathml_variant_set_font_style
-lsm_mathml_variant_set_font_weight
-LsmMathmlForm
-lsm_mathml_form_to_string
-lsm_mathml_form_from_string
-LsmMathmlRowAlign
-lsm_mathml_row_align_to_string
-lsm_mathml_row_align_from_string
-LsmMathmlColumnAlign
-lsm_mathml_column_align_to_string
-lsm_mathml_column_align_from_string
-LsmMathmlLine
-lsm_mathml_line_to_string
-lsm_mathml_line_from_string
-LsmMathmlScriptLevelSign
-</SECTION>
-
-<SECTION>
 <FILE>lsmdebug</FILE>
 lsm_debug
 lsm_debug_check
@@ -1194,6 +1153,7 @@ lsm_debug_enable
 
 <SECTION>
 <FILE>lsmmathmlutils</FILE>
+<TITLE>Mathml Utilities</TITLE>
 LsmMathmlBbox
 lsm_mathml_bbox_add_horizontally
 lsm_mathml_bbox_add_over
@@ -1225,6 +1185,7 @@ lsm_property_bag_init
 
 <SECTION>
 <FILE>lsmstr</FILE>
+<TITLE>String Utilities</TITLE>
 lsm_str_is_uri
 lsm_str_to_uri
 lsm_str_parse_double
@@ -1238,6 +1199,7 @@ lsm_svg_color_from_string
 
 <SECTION>
 <FILE>lsmmathmlattributes</FILE>
+<TITLE>Mathml Attributes</TITLE>
 LsmMathmlBooleanAttribute
 LsmMathmlUnsignedAttribute
 LsmMathmlEnumAttribute
@@ -1262,12 +1224,14 @@ lsm_mathml_space_list_attribute_normalize
 
 <SECTION>
 <FILE>lsmmathmllayoututils</FILE>
+<TITLE>Mathml Layout Utilities</TITLE>
 lsm_mathml_measure_sub_sup
 lsm_mathml_layout_sub_sup
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvglength</FILE>
+<TITLE>LsmSvgLength</TITLE>
 LsmSvgViewbox
 lsm_svg_viewbox_new
 lsm_svg_viewbox_free
@@ -1278,6 +1242,7 @@ lsm_svg_length_normalize
 
 <SECTION>
 <FILE>lsmmathmlglyphtableams</FILE>
+<TITLE>Mathml Glyph Table AMS</TITLE>
 LSM_MATHML_RADICAL_UTF8
 LSM_MATHML_RADICAL_ORDER_X_OFFSET
 LSM_MATHML_RADICAL_ORDER_Y_OFFSET
@@ -1288,6 +1253,7 @@ lsm_mathml_glyph_table_get_operator_slant
 
 <SECTION>
 <FILE>lsmsvgstyle</FILE>
+<TITLE>LsmSvgStyle</TITLE>
 LsmSvgDoubleProperty
 LsmSvgLengthProperty
 LsmSvgPaintProperty
@@ -1316,6 +1282,7 @@ lsm_svg_style_new_inherited
 
 <SECTION>
 <FILE>lsmsvgmatrix</FILE>
+<TITLE>LsmSvgMatrix</TITLE>
 LsmSvgMatrixFlags
 LsmSvgMatrix
 lsm_svg_matrix_is_identity
@@ -1338,12 +1305,14 @@ lsm_svg_matrix_transform_bounding_box
 
 <SECTION>
 <FILE>lsmmathmloperatordictionary</FILE>
+<TITLE>Mathml Operator Dictionary</TITLE>
 LsmMathmlOperatorDictionaryEntry
 lsm_mathml_operator_dictionary_lookup
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvgtraits</FILE>
+<TITLE>SVG Traits</TITLE>
 LsmSvgAngle
 LsmSvgColor
 lsm_svg_color_null
@@ -1450,6 +1419,7 @@ lsm_mathml_style_set_math_color
 
 <SECTION>
 <FILE>lsmmathmltraits</FILE>
+<TITLE>Mathml Traits</TITLE>
 LSM_MATHML_SPACE_EM_VERY_VERY_THIN
 LSM_MATHML_SPACE_EM_VERY_THIN
 LSM_MATHML_SPACE_EM_THIN
@@ -1491,6 +1461,43 @@ lsm_mathml_length_trait_class
 lsm_mathml_space_trait_class
 lsm_mathml_space_list_trait_class
 lsm_mathml_color_trait_class
+LsmMathmlCssType
+LsmMathmlMode
+lsm_mathml_mode_to_string
+lsm_mathml_mode_from_string
+LsmMathmlDisplay
+lsm_mathml_display_to_string
+lsm_mathml_display_from_string
+LsmMathmlSpaceName
+lsm_mathml_space_name_to_string
+lsm_mathml_space_name_from_string
+LsmMathmlUnit
+lsm_mathml_unit_to_string
+lsm_mathml_unit_from_string
+LsmMathmlFontStyle
+lsm_mathml_font_style_to_string
+lsm_mathml_font_style_from_string
+LsmMathmlFontWeight
+lsm_mathml_font_weight_to_string
+lsm_mathml_font_weight_from_string
+LsmMathmlVariant
+lsm_mathml_variant_to_string
+lsm_mathml_variant_from_string
+lsm_mathml_variant_set_font_style
+lsm_mathml_variant_set_font_weight
+LsmMathmlForm
+lsm_mathml_form_to_string
+lsm_mathml_form_from_string
+LsmMathmlRowAlign
+lsm_mathml_row_align_to_string
+lsm_mathml_row_align_from_string
+LsmMathmlColumnAlign
+lsm_mathml_column_align_to_string
+lsm_mathml_column_align_from_string
+LsmMathmlLine
+lsm_mathml_line_to_string
+lsm_mathml_line_from_string
+LsmMathmlScriptLevelSign
 </SECTION>
 
 <SECTION>

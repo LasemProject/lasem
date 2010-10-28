@@ -73,7 +73,6 @@
 			<xi:include href="xml/lsmmathmlerrorelement.xml"/>
 			<xi:include href="xml/lsmmathmlspaceelement.xml"/>
 			<xi:include href="xml/lsmmathmltablerowelement.xml"/>
-			<xi:include href="xml/lsmmathmlenums.xml"/>
 			<xi:include href="xml/lsmmathmlutils.xml"/>
 			<xi:include href="xml/lsmmathmlattributes.xml"/>
 			<xi:include href="xml/lsmmathmllayoututils.xml"/>
