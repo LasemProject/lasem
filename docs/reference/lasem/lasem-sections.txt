@@ -1,10 +1,10 @@
 <SECTION>
 <FILE>lsmsvgradialgradientelement</FILE>
 <TITLE>LsmSvgRadialGradientElement</TITLE>
-LsmSvgRadialGradientElementClass
 LsmSvgRadialGradientElement
 lsm_svg_radial_gradient_element_new
 <SUBSECTION Standard>
+LsmSvgRadialGradientElementClass
 LSM_SVG_RADIAL_GRADIENT_ELEMENT
 LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT
 LSM_TYPE_SVG_RADIAL_GRADIENT_ELEMENT
@@ -17,12 +17,12 @@ LSM_SVG_RADIAL_GRADIENT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlradicalelement</FILE>
 <TITLE>LsmMathmlRadicalElement</TITLE>
-LsmMathmlRadicalElementType
-LsmMathmlRadicalElementClass
 LsmMathmlRadicalElement
 lsm_mathml_root_element_new
 lsm_mathml_sqrt_element_new
 <SUBSECTION Standard>
+LsmMathmlRadicalElementType
+LsmMathmlRadicalElementClass
 LSM_MATHML_RADICAL_ELEMENT
 LSM_IS_MATHML_RADICAL_ELEMENT
 LSM_TYPE_MATHML_RADICAL_ELEMENT
@@ -35,10 +35,10 @@ LSM_MATHML_RADICAL_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgtspanelement</FILE>
 <TITLE>LsmSvgTspanElement</TITLE>
-LsmSvgTspanElementClass
 LsmSvgTspanElement
 lsm_svg_tspan_element_new
 <SUBSECTION Standard>
+LsmSvgTspanElementClass
 LSM_SVG_TSPAN_ELEMENT
 LSM_IS_SVG_TSPAN_ELEMENT
 LSM_TYPE_SVG_TSPAN_ELEMENT
@@ -51,10 +51,10 @@ LSM_SVG_TSPAN_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvglineargradientelement</FILE>
 <TITLE>LsmSvgLinearGradientElement</TITLE>
-LsmSvgLinearGradientElementClass
 LsmSvgLinearGradientElement
 lsm_svg_linear_gradient_element_new
 <SUBSECTION Standard>
+LsmSvgLinearGradientElementClass
 LSM_SVG_LINEAR_GRADIENT_ELEMENT
 LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT
 LSM_TYPE_SVG_LINEAR_GRADIENT_ELEMENT
@@ -67,7 +67,6 @@ LSM_SVG_LINEAR_GRADIENT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmldocument</FILE>
 <TITLE>LsmMathmlDocument</TITLE>
-LsmMathmlDocumentClass
 LsmMathmlDocument
 lsm_mathml_document_new
 lsm_mathml_document_get_root_element
@@ -75,6 +74,7 @@ lsm_mathml_document_new_from_itex
 lsm_mathml_document_new_from_itex_path
 lsm_mathml_document_new_from_itex_url
 <SUBSECTION Standard>
+LsmMathmlDocumentClass
 LSM_MATHML_DOCUMENT
 LSM_IS_MATHML_DOCUMENT
 LSM_TYPE_MATHML_DOCUMENT
@@ -87,10 +87,10 @@ LSM_MATHML_DOCUMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgpatternelement</FILE>
 <TITLE>LsmSvgPatternElement</TITLE>
-LsmSvgPatternElementClass
 LsmSvgPatternElement
 lsm_svg_pattern_element_new
 <SUBSECTION Standard>
+LsmSvgPatternElementClass
 LSM_SVG_PATTERN_ELEMENT
 LSM_IS_SVG_PATTERN_ELEMENT
 LSM_TYPE_SVG_PATTERN_ELEMENT
@@ -103,10 +103,10 @@ LSM_SVG_PATTERN_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlactionelement</FILE>
 <TITLE>LsmMathmlActionElement</TITLE>
-LsmMathmlActionElementClass
 LsmMathmlActionElement
 lsm_mathml_action_element_new
 <SUBSECTION Standard>
+LsmMathmlActionElementClass
 LSM_MATHML_ACTION_ELEMENT
 LSM_IS_MATHML_ACTION_ELEMENT
 LSM_TYPE_MATHML_ACTION_ELEMENT
@@ -119,12 +119,6 @@ LSM_MATHML_ACTION_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlview</FILE>
 <TITLE>LsmMathmlView</TITLE>
-LsmMathmlGlyphFlags
-LsmMathmlFont
-LsmMathmlGlyph
-LsmMathmlOperatorGlyph
-LsmMathmlViewClass
-LsmMathmlViewPrivate
 LsmMathmlView
 lsm_mathml_view_new
 lsm_mathml_view_measure_axis_offset
@@ -143,6 +137,12 @@ lsm_mathml_view_show_fraction_line
 lsm_mathml_view_show_bbox
 lsm_mathml_view_draw_root
 <SUBSECTION Standard>
+LsmMathmlGlyphFlags
+LsmMathmlFont
+LsmMathmlGlyph
+LsmMathmlOperatorGlyph
+LsmMathmlViewClass
+LsmMathmlViewPrivate
 LSM_MATHML_VIEW
 LSM_IS_MATHML_VIEW
 LSM_TYPE_MATHML_VIEW
@@ -155,10 +155,10 @@ LSM_MATHML_VIEW_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlfractionelement</FILE>
 <TITLE>LsmMathmlFractionElement</TITLE>
-LsmMathmlFractionElementClass
 LsmMathmlFractionElement
 lsm_mathml_fraction_element_new
 <SUBSECTION Standard>
+LsmMathmlFractionElementClass
 LSM_MATHML_FRACTION_ELEMENT
 LSM_IS_MATHML_FRACTION_ELEMENT
 LSM_TYPE_MATHML_FRACTION_ELEMENT
@@ -171,10 +171,10 @@ LSM_MATHML_FRACTION_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgfilterelement</FILE>
 <TITLE>LsmSvgFilterElement</TITLE>
-LsmSvgFilterElementClass
 LsmSvgFilterElement
 lsm_svg_filter_element_new
 <SUBSECTION Standard>
+LsmSvgFilterElementClass
 LSM_SVG_FILTER_ELEMENT
 LSM_IS_SVG_FILTER_ELEMENT
 LSM_TYPE_SVG_FILTER_ELEMENT
@@ -187,10 +187,10 @@ LSM_SVG_FILTER_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgrectelement</FILE>
 <TITLE>LsmSvgRectElement</TITLE>
-LsmSvgRectElementClass
 LsmSvgRectElement
 lsm_svg_rect_element_new
 <SUBSECTION Standard>
+LsmSvgRectElementClass
 LSM_SVG_RECT_ELEMENT
 LSM_IS_SVG_RECT_ELEMENT
 LSM_TYPE_SVG_RECT_ELEMENT
@@ -203,10 +203,10 @@ LSM_SVG_RECT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgfiltergaussianblur</FILE>
 <TITLE>LsmSvgFilterGaussianBlur</TITLE>
-LsmSvgFilterGaussianBlurClass
 LsmSvgFilterGaussianBlur
 lsm_svg_filter_gaussian_blur_new
 <SUBSECTION Standard>
+LsmSvgFilterGaussianBlurClass
 LSM_SVG_FILTER_GAUSSIAN_BLUR
 LSM_IS_SVG_FILTER_GAUSSIAN_BLUR
 LSM_TYPE_SVG_FILTER_GAUSSIAN_BLUR
@@ -219,10 +219,10 @@ LSM_SVG_FILTER_GAUSSIAN_BLUR_GET_CLASS
 <SECTION>
 <FILE>lsmsvgpolygonelement</FILE>
 <TITLE>LsmSvgPolygonElement</TITLE>
-LsmSvgPolygonElementClass
 LsmSvgPolygonElement
 lsm_svg_polygon_element_new
 <SUBSECTION Standard>
+LsmSvgPolygonElementClass
 LSM_SVG_POLYGON_ELEMENT
 LSM_IS_SVG_POLYGON_ELEMENT
 LSM_TYPE_SVG_POLYGON_ELEMENT
@@ -235,10 +235,10 @@ LSM_SVG_POLYGON_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvggradientelement</FILE>
 <TITLE>LsmSvgGradientElement</TITLE>
-LsmSvgGradientElementAttributes
-LsmSvgGradientElementClass
 LsmSvgGradientElement
 <SUBSECTION Standard>
+LsmSvgGradientElementAttributes
+LsmSvgGradientElementClass
 LSM_SVG_GRADIENT_ELEMENT
 LSM_IS_SVG_GRADIENT_ELEMENT
 LSM_TYPE_SVG_GRADIENT_ELEMENT
@@ -251,10 +251,10 @@ LSM_SVG_GRADIENT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmdomtext</FILE>
 <TITLE>LsmDomText</TITLE>
-LsmDomTextClass
 LsmDomText
 lsm_dom_text_new
 <SUBSECTION Standard>
+LsmDomTextClass
 LSM_DOM_TEXT
 LSM_IS_DOM_TEXT
 LSM_TYPE_DOM_TEXT
@@ -267,11 +267,11 @@ LSM_DOM_TEXT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgmarkerelement</FILE>
 <TITLE>LsmSvgMarkerElement</TITLE>
-LsmSvgMarkerElementClass
 LsmSvgMarkerElement
 lsm_svg_marker_element_new
 lsm_svg_marker_element_render
 <SUBSECTION Standard>
+LsmSvgMarkerElementClass
 LSM_SVG_MARKER_ELEMENT
 LSM_IS_SVG_MARKER_ELEMENT
 LSM_TYPE_SVG_MARKER_ELEMENT
@@ -284,10 +284,10 @@ LSM_SVG_MARKER_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlfencedelement</FILE>
 <TITLE>LsmMathmlFencedElement</TITLE>
-LsmMathmlFencedElementClass
 LsmMathmlFencedElement
 lsm_mathml_fenced_element_new
 <SUBSECTION Standard>
+LsmMathmlFencedElementClass
 LSM_MATHML_FENCED_ELEMENT
 LSM_IS_MATHML_FENCED_ELEMENT
 LSM_TYPE_MATHML_FENCED_ELEMENT
@@ -300,10 +300,10 @@ LSM_MATHML_FENCED_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvglineelement</FILE>
 <TITLE>LsmSvgLineElement</TITLE>
-LsmSvgLineElementClass
 LsmSvgLineElement
 lsm_svg_line_element_new
 <SUBSECTION Standard>
+LsmSvgLineElementClass
 LSM_SVG_LINE_ELEMENT
 LSM_IS_SVG_LINE_ELEMENT
 LSM_TYPE_SVG_LINE_ELEMENT
@@ -322,7 +322,6 @@ LSM_MATHML_FONT_MONOSPACE
 LSM_MATHML_FONT_FRAKTUR
 LSM_MATHML_FONT_SCRIPT
 LSM_MATHML_FONT_DOUBLE_STRUCK
-LsmMathmlMathElementClass
 LsmMathmlMathElement
 lsm_mathml_math_element_new
 lsm_mathml_math_element_get_default_style
@@ -332,6 +331,7 @@ lsm_mathml_math_element_measure
 lsm_mathml_math_element_layout
 lsm_mathml_math_element_render
 <SUBSECTION Standard>
+LsmMathmlMathElementClass
 LSM_MATHML_MATH_ELEMENT
 LSM_IS_MATHML_MATH_ELEMENT
 LSM_TYPE_MATHML_MATH_ELEMENT
@@ -344,10 +344,10 @@ LSM_MATHML_MATH_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgmaskelement</FILE>
 <TITLE>LsmSvgMaskElement</TITLE>
-LsmSvgMaskElementClass
 LsmSvgMaskElement
 lsm_svg_mask_element_new
 <SUBSECTION Standard>
+LsmSvgMaskElementClass
 LSM_SVG_MASK_ELEMENT
 LSM_IS_SVG_MASK_ELEMENT
 LSM_TYPE_SVG_MASK_ELEMENT
@@ -360,8 +360,6 @@ LSM_SVG_MASK_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmdomnode</FILE>
 <TITLE>LsmDomNode</TITLE>
-LsmDomNodeType
-LsmDomNodeClass
 LsmDomNode
 lsm_dom_node_get_node_name
 lsm_dom_node_get_node_value
@@ -383,6 +381,8 @@ lsm_dom_node_changed
 lsm_dom_node_get_owner_document
 lsm_dom_node_write_to_stream
 <SUBSECTION Standard>
+LsmDomNodeType
+LsmDomNodeClass
 LSM_DOM_NODE
 LSM_IS_DOM_NODE
 LSM_TYPE_DOM_NODE
@@ -395,10 +395,10 @@ LSM_DOM_NODE_GET_CLASS
 <SECTION>
 <FILE>lsmsvgtextelement</FILE>
 <TITLE>LsmSvgTextElement</TITLE>
-LsmSvgTextElementClass
 LsmSvgTextElement
 lsm_svg_text_element_new
 <SUBSECTION Standard>
+LsmSvgTextElementClass
 LSM_SVG_TEXT_ELEMENT
 LSM_IS_SVG_TEXT_ELEMENT
 LSM_TYPE_SVG_TEXT_ELEMENT
@@ -411,10 +411,10 @@ LSM_SVG_TEXT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgsymbolelement</FILE>
 <TITLE>LsmSvgSymbolElement</TITLE>
-LsmSvgSymbolElementClass
 LsmSvgSymbolElement
 lsm_svg_symbol_element_new
 <SUBSECTION Standard>
+LsmSvgSymbolElementClass
 LSM_SVG_SYMBOL_ELEMENT
 LSM_IS_SVG_SYMBOL_ELEMENT
 LSM_TYPE_SVG_SYMBOL_ELEMENT
@@ -427,10 +427,6 @@ LSM_SVG_SYMBOL_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgview</FILE>
 <TITLE>LsmSvgView</TITLE>
-LsmSvgViewSurfaceType
-LsmSvgViewClass
-LsmSvgViewPrivate
-LsmSvgViewPatternData
 LsmSvgView
 lsm_svg_view_new
 lsm_svg_view_normalize_length
@@ -467,6 +463,10 @@ lsm_svg_view_pop_style
 lsm_svg_view_get_current_style
 lsm_svg_view_apply_gaussian_blur
 <SUBSECTION Standard>
+LsmSvgViewSurfaceType
+LsmSvgViewClass
+LsmSvgViewPrivate
+LsmSvgViewPatternData
 LSM_SVG_VIEW
 LSM_IS_SVG_VIEW
 LSM_TYPE_SVG_VIEW
@@ -474,15 +474,17 @@ lsm_svg_view_get_type
 LSM_SVG_VIEW_CLASS
 LSM_IS_SVG_VIEW_CLASS
 LSM_SVG_VIEW_GET_CLASS
+<SUBSECTION Private>
+GdkPixbuf
 </SECTION>
 
 <SECTION>
 <FILE>lsmmathmlalignmarkelement</FILE>
 <TITLE>LsmMathmlAlignMarkElement</TITLE>
-LsmMathmlAlignMarkElementClass
 LsmMathmlAlignMarkElement
 lsm_mathml_align_mark_element_new
 <SUBSECTION Standard>
+LsmMathmlAlignMarkElementClass
 LSM_MATHML_ALIGN_MARK_ELEMENT
 LSM_IS_MATHML_ALIGN_MARK_ELEMENT
 LSM_TYPE_MATHML_ALIGN_MARK_ELEMENT
@@ -495,10 +497,10 @@ LSM_MATHML_ALIGN_MARK_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvguseelement</FILE>
 <TITLE>LsmSvgUseElement</TITLE>
-LsmSvgUseElementClass
 LsmSvgUseElement
 lsm_svg_use_element_new
 <SUBSECTION Standard>
+LsmSvgUseElementClass
 LSM_SVG_USE_ELEMENT
 LSM_IS_SVG_USE_ELEMENT
 LSM_TYPE_SVG_USE_ELEMENT
@@ -511,14 +513,15 @@ LSM_SVG_USE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlpresentationtoken</FILE>
 <TITLE>LsmMathmlPresentationToken</TITLE>
-LsmMathmlPresentationTokenType
-LsmMathmlPresentationTokenClass
 LsmMathmlPresentationToken
 lsm_mathml_number_element_new
 lsm_mathml_identifier_element_new
 lsm_mathml_text_element_new
 lsm_mathml_presentation_token_get_text
 <SUBSECTION Standard>
+LsmMathmlNumberElement
+LsmMathmlPresentationTokenType
+LsmMathmlPresentationTokenClass
 LSM_MATHML_PRESENTATION_TOKEN
 LSM_IS_MATHML_PRESENTATION_TOKEN
 LSM_TYPE_MATHML_PRESENTATION_TOKEN
@@ -531,13 +534,13 @@ LSM_MATHML_PRESENTATION_TOKEN_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlunderoverelement</FILE>
 <TITLE>LsmMathmlUnderOverElement</TITLE>
-LsmMathmlUnderOverElementType
-LsmMathmlUnderOverElementClass
 LsmMathmlUnderOverElement
 lsm_mathml_under_element_new
 lsm_mathml_over_element_new
 lsm_mathml_under_over_element_new
 <SUBSECTION Standard>
+LsmMathmlUnderOverElementType
+LsmMathmlUnderOverElementClass
 LSM_MATHML_UNDER_OVER_ELEMENT
 LSM_IS_MATHML_UNDER_OVER_ELEMENT
 LSM_TYPE_MATHML_UNDER_OVER_ELEMENT
@@ -550,10 +553,10 @@ LSM_MATHML_UNDER_OVER_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlitexelement</FILE>
 <TITLE>LsmMathmlItexElement</TITLE>
-LsmMathmlItexElementClass
 LsmMathmlItexElement
 lsm_mathml_itex_element_new
 <SUBSECTION Standard>
+LsmMathmlItexElementClass
 LSM_MATHML_ITEX_ELEMENT
 LSM_IS_MATHML_ITEX_ELEMENT
 LSM_TYPE_MATHML_ITEX_ELEMENT
@@ -566,10 +569,10 @@ LSM_MATHML_ITEX_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgcircleelement</FILE>
 <TITLE>LsmSvgCircleElement</TITLE>
-LsmSvgCircleElementClass
 LsmSvgCircleElement
 lsm_svg_circle_element_new
 <SUBSECTION Standard>
+LsmSvgCircleElementClass
 LSM_SVG_CIRCLE_ELEMENT
 LSM_IS_SVG_CIRCLE_ELEMENT
 LSM_TYPE_SVG_CIRCLE_ELEMENT
@@ -582,13 +585,13 @@ LSM_SVG_CIRCLE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlscriptelement</FILE>
 <TITLE>LsmMathmlScriptElement</TITLE>
-LsmMathmlScriptElementType
-LsmMathmlScriptElementClass
 LsmMathmlScriptElement
 lsm_mathml_sub_element_new
 lsm_mathml_sup_element_new
 lsm_mathml_sub_sup_element_new
 <SUBSECTION Standard>
+LsmMathmlScriptElementType
+LsmMathmlScriptElementClass
 LSM_MATHML_SCRIPT_ELEMENT
 LSM_IS_MATHML_SCRIPT_ELEMENT
 LSM_TYPE_MATHML_SCRIPT_ELEMENT
@@ -601,10 +604,10 @@ LSM_MATHML_SCRIPT_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlrowelement</FILE>
 <TITLE>LsmMathmlRowElement</TITLE>
-LsmMathmlRowElementClass
 LsmMathmlRowElement
 lsm_mathml_row_element_new
 <SUBSECTION Standard>
+LsmMathmlRowElementClass
 LSM_MATHML_ROW_ELEMENT
 LSM_IS_MATHML_ROW_ELEMENT
 LSM_TYPE_MATHML_ROW_ELEMENT
@@ -617,10 +620,10 @@ LSM_MATHML_ROW_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvggelement</FILE>
 <TITLE>LsmSvgGElement</TITLE>
-LsmSvgGElementClass
 LsmSvgGElement
 lsm_svg_g_element_new
 <SUBSECTION Standard>
+LsmSvgGElementClass
 LSM_SVG_G_ELEMENT
 LSM_IS_SVG_G_ELEMENT
 LSM_TYPE_SVG_G_ELEMENT
@@ -633,10 +636,10 @@ LSM_SVG_G_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlphantomelement</FILE>
 <TITLE>LsmMathmlPhantomElement</TITLE>
-LsmMathmlPhantomElementClass
 LsmMathmlPhantomElement
 lsm_mathml_phantom_element_new
 <SUBSECTION Standard>
+LsmMathmlPhantomElementClass
 LSM_MATHML_PHANTOM_ELEMENT
 LSM_IS_MATHML_PHANTOM_ELEMENT
 LSM_TYPE_MATHML_PHANTOM_ELEMENT
@@ -649,11 +652,11 @@ LSM_MATHML_PHANTOM_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmltablecellelement</FILE>
 <TITLE>LsmMathmlTableCellElement</TITLE>
-LsmMathmlTableCellElementClass
 LsmMathmlTableCellElement
 lsm_mathml_table_cell_element_new
 lsm_mathml_table_cell_element_get_spans
 <SUBSECTION Standard>
+LsmMathmlTableCellElementClass
 LSM_MATHML_TABLE_CELL_ELEMENT
 LSM_IS_MATHML_TABLE_CELL_ELEMENT
 LSM_TYPE_MATHML_TABLE_CELL_ELEMENT
@@ -669,10 +672,8 @@ LSM_MATHML_TABLE_CELL_ELEMENT_GET_CLASS
 LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION
 LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_WIDTH
 LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_HEIGHT
-LsmDomDocumentClass
 LsmDomDocument
 lsm_dom_implementation_create_document
-LsmDomDocumentError
 lsm_dom_document_new_from_memory
 lsm_dom_document_new_from_path
 lsm_dom_document_new_from_url
@@ -697,6 +698,7 @@ lsm_dom_document_set_url
 lsm_dom_document_set_path
 lsm_dom_document_get_href_data
 <SUBSECTION Standard>
+LsmDomDocumentClass
 LSM_DOM_DOCUMENT
 LSM_IS_DOM_DOCUMENT
 LSM_TYPE_DOM_DOCUMENT
@@ -704,15 +706,17 @@ lsm_dom_document_get_type
 LSM_DOM_DOCUMENT_CLASS
 LSM_IS_DOM_DOCUMENT_CLASS
 LSM_DOM_DOCUMENT_GET_CLASS
+<SUBSECTION Private>
+LsmDomDocumentError
 </SECTION>
 
 <SECTION>
 <FILE>lsmmathmlstyleelement</FILE>
 <TITLE>LsmMathmlStyleElement</TITLE>
-LsmMathmlStyleElementClass
 LsmMathmlStyleElement
 lsm_mathml_style_element_new
 <SUBSECTION Standard>
+LsmMathmlStyleElementClass
 LSM_MATHML_STYLE_ELEMENT
 LSM_IS_MATHML_STYLE_ELEMENT
 LSM_TYPE_MATHML_STYLE_ELEMENT
@@ -725,10 +729,10 @@ LSM_MATHML_STYLE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgstopelement</FILE>
 <TITLE>LsmSvgStopElement</TITLE>
-LsmSvgStopElementClass
 LsmSvgStopElement
 lsm_svg_stop_element_new
 <SUBSECTION Standard>
+LsmSvgStopElementClass
 LSM_SVG_STOP_ELEMENT
 LSM_IS_SVG_STOP_ELEMENT
 LSM_TYPE_SVG_STOP_ELEMENT
@@ -741,10 +745,10 @@ LSM_SVG_STOP_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlpaddedelement</FILE>
 <TITLE>LsmMathmlPaddedElement</TITLE>
-LsmMathmlPaddedElementClass
 LsmMathmlPaddedElement
 lsm_mathml_padded_element_new
 <SUBSECTION Standard>
+LsmMathmlPaddedElementClass
 LSM_MATHML_PADDED_ELEMENT
 LSM_IS_MATHML_PADDED_ELEMENT
 LSM_TYPE_MATHML_PADDED_ELEMENT
@@ -757,10 +761,10 @@ LSM_MATHML_PADDED_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgellipseelement</FILE>
 <TITLE>LsmSvgEllipseElement</TITLE>
-LsmSvgEllipseElementClass
 LsmSvgEllipseElement
 lsm_svg_ellipse_element_new
 <SUBSECTION Standard>
+LsmSvgEllipseElementClass
 LSM_SVG_ELLIPSE_ELEMENT
 LSM_IS_SVG_ELLIPSE_ELEMENT
 LSM_TYPE_SVG_ELLIPSE_ELEMENT
@@ -773,11 +777,11 @@ LSM_SVG_ELLIPSE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmloperatorelement</FILE>
 <TITLE>LsmMathmlOperatorElement</TITLE>
-LsmMathmlOperatorElementClass
 LsmMathmlOperatorElement
 lsm_mathml_operator_element_new
 lsm_mathml_operator_element_get_slant
 <SUBSECTION Standard>
+LsmMathmlOperatorElementClass
 LSM_MATHML_OPERATOR_ELEMENT
 LSM_IS_MATHML_OPERATOR_ELEMENT
 LSM_TYPE_MATHML_OPERATOR_ELEMENT
@@ -790,10 +794,10 @@ LSM_MATHML_OPERATOR_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgdefselement</FILE>
 <TITLE>LsmSvgDefsElement</TITLE>
-LsmSvgDefsElementClass
 LsmSvgDefsElement
 lsm_svg_defs_element_new
 <SUBSECTION Standard>
+LsmSvgDefsElementClass
 LSM_SVG_DEFS_ELEMENT
 LSM_IS_SVG_DEFS_ELEMENT
 LSM_TYPE_SVG_DEFS_ELEMENT
@@ -806,10 +810,10 @@ LSM_SVG_DEFS_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgfilterprimitive</FILE>
 <TITLE>LsmSvgFilterPrimitive</TITLE>
-LsmSvgFilterPrimitiveClass
 LsmSvgFilterPrimitive
 lsm_svg_filter_primitive_apply
 <SUBSECTION Standard>
+LsmSvgFilterPrimitiveClass
 LSM_SVG_FILTER_PRIMITIVE
 LSM_IS_SVG_FILTER_PRIMITIVE
 LSM_TYPE_SVG_FILTER_PRIMITIVE
@@ -822,8 +826,6 @@ LSM_SVG_FILTER_PRIMITIVE_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlelement</FILE>
 <TITLE>LsmMathmlElement</TITLE>
-LsmMathmlElementStyle
-LsmMathmlElementClass
 LsmMathmlElement
 lsm_mathml_element_update
 lsm_mathml_element_measure
@@ -833,6 +835,7 @@ lsm_mathml_element_get_embellished_core
 lsm_mathml_element_get_bbox
 lsm_mathml_element_is_inferred_row
 <SUBSECTION Standard>
+LsmMathmlElementClass
 LSM_MATHML_ELEMENT
 LSM_IS_MATHML_ELEMENT
 LSM_TYPE_MATHML_ELEMENT
@@ -840,15 +843,17 @@ lsm_mathml_element_get_type
 LSM_MATHML_ELEMENT_CLASS
 LSM_IS_MATHML_ELEMENT_CLASS
 LSM_MATHML_ELEMENT_GET_CLASS
+<SUBSECTION Private>
+LsmMathmlElementStyle
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvgclippathelement</FILE>
 <TITLE>LsmSvgClipPathElement</TITLE>
-LsmSvgClipPathElementClass
 LsmSvgClipPathElement
 lsm_svg_clip_path_element_new
 <SUBSECTION Standard>
+LsmSvgClipPathElementClass
 LSM_SVG_CLIP_PATH_ELEMENT
 LSM_IS_SVG_CLIP_PATH_ELEMENT
 LSM_TYPE_SVG_CLIP_PATH_ELEMENT
@@ -861,10 +866,10 @@ LSM_SVG_CLIP_PATH_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlaligngroupelement</FILE>
 <TITLE>LsmMathmlAlignGroupElement</TITLE>
-LsmMathmlAlignGroupElementClass
 LsmMathmlAlignGroupElement
 lsm_mathml_align_group_element_new
 <SUBSECTION Standard>
+LsmMathmlAlignGroupElementClass
 LSM_MATHML_ALIGN_GROUP_ELEMENT
 LSM_IS_MATHML_ALIGN_GROUP_ELEMENT
 LSM_TYPE_MATHML_ALIGN_GROUP_ELEMENT
@@ -877,13 +882,13 @@ LSM_MATHML_ALIGN_GROUP_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgelement</FILE>
 <TITLE>LsmSvgElement</TITLE>
-LsmSvgElementClass
 LsmSvgElement
 lsm_svg_element_get_category
 lsm_svg_element_render
 lsm_svg_element_force_render
 lsm_svg_element_get_extents
 <SUBSECTION Standard>
+LsmSvgElementClass
 LSM_SVG_ELEMENT
 LSM_IS_SVG_ELEMENT
 LSM_TYPE_SVG_ELEMENT
@@ -891,16 +896,18 @@ lsm_svg_element_get_type
 LSM_SVG_ELEMENT_CLASS
 LSM_IS_SVG_ELEMENT_CLASS
 LSM_SVG_ELEMENT_GET_CLASS
+<SUBSECTION Private>
+LsmSvgGraphic
 </SECTION>
 
 <SECTION>
 <FILE>lsmdomelement</FILE>
 <TITLE>LsmDomElement</TITLE>
-LsmDomElementClass
 LsmDomElement
 lsm_dom_element_get_attribute
 lsm_dom_element_set_attribute
 <SUBSECTION Standard>
+LsmDomElementClass
 LSM_DOM_ELEMENT
 LSM_IS_DOM_ELEMENT
 LSM_TYPE_DOM_ELEMENT
@@ -913,10 +920,10 @@ LSM_DOM_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmltableelement</FILE>
 <TITLE>LsmMathmlTableElement</TITLE>
-LsmMathmlTableElementClass
 LsmMathmlTableElement
 lsm_mathml_table_element_new
 <SUBSECTION Standard>
+LsmMathmlTableElementClass
 LSM_MATHML_TABLE_ELEMENT
 LSM_IS_MATHML_TABLE_ELEMENT
 LSM_TYPE_MATHML_TABLE_ELEMENT
@@ -929,10 +936,10 @@ LSM_MATHML_TABLE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgimageelement</FILE>
 <TITLE>LsmSvgImageElement</TITLE>
-LsmSvgImageElementClass
 LsmSvgImageElement
 lsm_svg_image_element_new
 <SUBSECTION Standard>
+LsmSvgImageElementClass
 LSM_SVG_IMAGE_ELEMENT
 LSM_IS_SVG_IMAGE_ELEMENT
 LSM_TYPE_SVG_IMAGE_ELEMENT
@@ -945,12 +952,12 @@ LSM_SVG_IMAGE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgsvgelement</FILE>
 <TITLE>LsmSvgSvgElement</TITLE>
-LsmSvgSvgElementClass
 LsmSvgSvgElement
 lsm_svg_svg_element_new
 lsm_svg_svg_element_measure
 lsm_svg_svg_element_render
 <SUBSECTION Standard>
+LsmSvgSvgElementClass
 LSM_SVG_SVG_ELEMENT
 LSM_IS_SVG_SVG_ELEMENT
 LSM_TYPE_SVG_SVG_ELEMENT
@@ -963,9 +970,9 @@ LSM_SVG_SVG_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlpresentationcontainer</FILE>
 <TITLE>LsmMathmlPresentationContainer</TITLE>
-LsmMathmlPresentationContainerClass
 LsmMathmlPresentationContainer
 <SUBSECTION Standard>
+LsmMathmlPresentationContainerClass
 LSM_MATHML_PRESENTATION_CONTAINER
 LSM_IS_MATHML_PRESENTATION_CONTAINER
 LSM_TYPE_MATHML_PRESENTATION_CONTAINER
@@ -978,10 +985,10 @@ LSM_MATHML_PRESENTATION_CONTAINER_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlstringelement</FILE>
 <TITLE>LsmMathmlStringElement</TITLE>
-LsmMathmlStringElementClass
 LsmMathmlStringElement
 lsm_mathml_string_element_new
 <SUBSECTION Standard>
+LsmMathmlStringElementClass
 LSM_MATHML_STRING_ELEMENT
 LSM_IS_MATHML_STRING_ELEMENT
 LSM_TYPE_MATHML_STRING_ELEMENT
@@ -994,7 +1001,6 @@ LSM_MATHML_STRING_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmdomview</FILE>
 <TITLE>LsmDomView</TITLE>
-LsmDomViewClass
 LsmDomView
 lsm_dom_view_render
 lsm_dom_view_get_size
@@ -1002,6 +1008,7 @@ lsm_dom_view_get_size_pixels
 lsm_dom_view_set_document
 lsm_dom_view_set_debug
 <SUBSECTION Standard>
+LsmDomViewClass
 LSM_DOM_VIEW
 LSM_IS_DOM_VIEW
 LSM_TYPE_DOM_VIEW
@@ -1014,10 +1021,10 @@ LSM_DOM_VIEW_GET_CLASS
 <SECTION>
 <FILE>lsmsvgpolylineelement</FILE>
 <TITLE>LsmSvgPolylineElement</TITLE>
-LsmSvgPolylineElementClass
 LsmSvgPolylineElement
 lsm_svg_polyline_element_new
 <SUBSECTION Standard>
+LsmSvgPolylineElementClass
 LSM_SVG_POLYLINE_ELEMENT
 LSM_IS_SVG_POLYLINE_ELEMENT
 LSM_TYPE_SVG_POLYLINE_ELEMENT
@@ -1030,11 +1037,11 @@ LSM_SVG_POLYLINE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmdomcharacterdata</FILE>
 <TITLE>LsmDomCharacterData</TITLE>
-LsmDomCharacterDataClass
 LsmDomCharacterData
 lsm_dom_character_data_get_data
 lsm_dom_character_data_set_data
 <SUBSECTION Standard>
+LsmDomCharacterDataClass
 LSM_DOM_CHARACTER_DATA
 LSM_IS_DOM_CHARACTER_DATA
 LSM_TYPE_DOM_CHARACTER_DATA
@@ -1047,10 +1054,10 @@ LSM_DOM_CHARACTER_DATA_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlerrorelement</FILE>
 <TITLE>LsmMathmlErrorElement</TITLE>
-LsmMathmlErrorElementClass
 LsmMathmlErrorElement
 lsm_mathml_error_element_new
 <SUBSECTION Standard>
+LsmMathmlErrorElementClass
 LSM_MATHML_ERROR_ELEMENT
 LSM_IS_MATHML_ERROR_ELEMENT
 LSM_TYPE_MATHML_ERROR_ELEMENT
@@ -1063,10 +1070,10 @@ LSM_MATHML_ERROR_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmlspaceelement</FILE>
 <TITLE>LsmMathmlSpaceElement</TITLE>
-LsmMathmlSpaceElementClass
 LsmMathmlSpaceElement
 lsm_mathml_space_element_new
 <SUBSECTION Standard>
+LsmMathmlSpaceElementClass
 LSM_MATHML_SPACE_ELEMENT
 LSM_IS_MATHML_SPACE_ELEMENT
 LSM_TYPE_MATHML_SPACE_ELEMENT
@@ -1079,12 +1086,12 @@ LSM_MATHML_SPACE_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgdocument</FILE>
 <TITLE>LsmSvgDocument</TITLE>
-LsmSvgDocumentClass
 LsmSvgDocument
 lsm_svg_document_new
 lsm_svg_document_get_root_element
 lsm_svg_document_get_element_by_url
 <SUBSECTION Standard>
+LsmSvgDocumentClass
 LSM_SVG_DOCUMENT
 LSM_IS_SVG_DOCUMENT
 LSM_TYPE_SVG_DOCUMENT
@@ -1097,10 +1104,10 @@ LSM_SVG_DOCUMENT_GET_CLASS
 <SECTION>
 <FILE>lsmsvgpathelement</FILE>
 <TITLE>LsmSvgPathElement</TITLE>
-LsmSvgPathElementClass
 LsmSvgPathElement
 lsm_svg_path_element_new
 <SUBSECTION Standard>
+LsmSvgPathElementClass
 LSM_SVG_PATH_ELEMENT
 LSM_IS_SVG_PATH_ELEMENT
 LSM_TYPE_SVG_PATH_ELEMENT
@@ -1113,12 +1120,12 @@ LSM_SVG_PATH_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmmathmltablerowelement</FILE>
 <TITLE>LsmMathmlTableRowElement</TITLE>
-LsmMathmlTableRowElementType
-LsmMathmlTableRowElementClass
 LsmMathmlTableRowElement
 lsm_mathml_table_row_element_new
 lsm_mathml_labeled_table_row_element_new
 <SUBSECTION Standard>
+LsmMathmlTableRowElementType
+LsmMathmlTableRowElementClass
 LSM_MATHML_TABLE_ROW_ELEMENT
 LSM_IS_MATHML_TABLE_ROW_ELEMENT
 LSM_TYPE_MATHML_TABLE_ROW_ELEMENT
@@ -1130,10 +1137,8 @@ LSM_MATHML_TABLE_ROW_ELEMENT_GET_CLASS
 
 <SECTION>
 <FILE>lsmattributes</FILE>
-LsmAttribute
-lsm_attribute_is_defined
-LsmAttributeInfos
 LsmAttributeManager
+lsm_attribute_is_defined
 lsm_attribute_manager_new
 lsm_attribute_manager_free
 lsm_attribute_manager_add_attributes
@@ -1142,6 +1147,9 @@ lsm_attribute_manager_set_attribute
 lsm_attribute_manager_get_attribute
 lsm_attribute_manager_clean_attributes
 lsm_attribute_manager_serialize
+<SUBSECTION Private>
+LsmAttribute
+LsmAttributeInfos
 </SECTION>
 
 <SECTION>
@@ -1154,7 +1162,6 @@ lsm_debug_enable
 <SECTION>
 <FILE>lsmmathmlutils</FILE>
 <TITLE>Mathml Utilities</TITLE>
-LsmMathmlBbox
 lsm_mathml_bbox_add_horizontally
 lsm_mathml_bbox_add_over
 lsm_mathml_bbox_add_under
@@ -1162,15 +1169,14 @@ lsm_mathml_bbox_merge_vertically
 lsm_mathml_bbox_stretch
 lsm_mathml_bbox_stretch_vertically
 lsm_mathml_bbox_stretch_horizontally
+<SUBSECTION Private>
+LsmMathmlBbox
 </SECTION>
 
 <SECTION>
 <FILE>lsmproperties</FILE>
 LSM_PROPERTY_OFFSET_TO_ID
 LSM_PROPERTY_ID_TO_OFFSET
-LsmProperty
-LsmPropertyInfos
-LsmPropertyBag
 LsmPropertyManager
 lsm_property_manager_new
 lsm_property_manager_free
@@ -1181,6 +1187,10 @@ lsm_property_manager_serialize
 lsm_property_manager_apply_property_bag
 lsm_property_manager_init_default_style
 lsm_property_bag_init
+<SUBSECTION Private>
+LsmProperty
+LsmPropertyInfos
+LsmPropertyBag
 </SECTION>
 
 <SECTION>
@@ -1200,6 +1210,16 @@ lsm_svg_color_from_string
 <SECTION>
 <FILE>lsmmathmlattributes</FILE>
 <TITLE>Mathml Attributes</TITLE>
+lsm_mathml_boolean_attribute_inherit
+lsm_mathml_double_attribute_inherit
+lsm_mathml_color_attribute_inherit
+lsm_mathml_string_attribute_inherit
+lsm_mathml_script_level_attribute_apply
+lsm_mathml_enum_attribute_inherit
+lsm_mathml_length_attribute_normalize
+lsm_mathml_space_attribute_normalize
+lsm_mathml_space_list_attribute_normalize
+<SUBSECTION Private>
 LsmMathmlBooleanAttribute
 LsmMathmlUnsignedAttribute
 LsmMathmlEnumAttribute
@@ -1207,19 +1227,10 @@ LsmMathmlDoubleAttribute
 LsmMathmlScriptLevelAttribute
 LsmMathmlColorAttribute
 LsmMathmlStringAttribute
-lsm_mathml_boolean_attribute_inherit
-lsm_mathml_double_attribute_inherit
-lsm_mathml_color_attribute_inherit
-lsm_mathml_string_attribute_inherit
-lsm_mathml_script_level_attribute_apply
-lsm_mathml_enum_attribute_inherit
 LsmMathmlEnumListAttribute
 LsmMathmlLengthAttribute
-lsm_mathml_length_attribute_normalize
 LsmMathmlSpaceAttribute
-lsm_mathml_space_attribute_normalize
 LsmMathmlSpaceListAttribute
-lsm_mathml_space_list_attribute_normalize
 </SECTION>
 
 <SECTION>
@@ -1232,12 +1243,13 @@ lsm_mathml_layout_sub_sup
 <SECTION>
 <FILE>lsmsvglength</FILE>
 <TITLE>LsmSvgLength</TITLE>
-LsmSvgViewbox
 lsm_svg_viewbox_new
 lsm_svg_viewbox_free
+lsm_svg_length_normalize
+<SUBSECTION Private>
 LsmSvgLength
 LsmSvgAnimatedLength
-lsm_svg_length_normalize
+LsmSvgViewbox
 </SECTION>
 
 <SECTION>
@@ -1254,6 +1266,16 @@ lsm_mathml_glyph_table_get_operator_slant
 <SECTION>
 <FILE>lsmsvgstyle</FILE>
 <TITLE>LsmSvgStyle</TITLE>
+lsm_svg_property_bag_set_property
+lsm_svg_property_bag_get_property
+lsm_svg_property_bag_clean
+lsm_svg_property_bag_serialize
+lsm_svg_style_new
+lsm_svg_style_ref
+lsm_svg_style_unref
+lsm_svg_style_new_inherited
+<SUBSECTION Private>
+LsmSvgStyle
 LsmSvgDoubleProperty
 LsmSvgLengthProperty
 LsmSvgPaintProperty
@@ -1269,22 +1291,11 @@ LsmSvgDashArrayProperty
 LsmSvgTextAnchorProperty
 LsmSvgDisplayProperty
 LsmSvgVisibilityProperty
-LsmSvgStyle
-lsm_svg_property_bag_set_property
-lsm_svg_property_bag_get_property
-lsm_svg_property_bag_clean
-lsm_svg_property_bag_serialize
-lsm_svg_style_new
-lsm_svg_style_ref
-lsm_svg_style_unref
-lsm_svg_style_new_inherited
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvgmatrix</FILE>
 <TITLE>LsmSvgMatrix</TITLE>
-LsmSvgMatrixFlags
-LsmSvgMatrix
 lsm_svg_matrix_is_identity
 lsm_svg_matrix_init
 lsm_svg_matrix_init_identity
@@ -1301,30 +1312,28 @@ lsm_svg_matrix_skew_y
 lsm_svg_matrix_multiply
 lsm_svg_matrix_transform_point
 lsm_svg_matrix_transform_bounding_box
+<SUBSECTION Private>
+LsmSvgMatrixFlags
+LsmSvgMatrix
 </SECTION>
 
 <SECTION>
 <FILE>lsmmathmloperatordictionary</FILE>
 <TITLE>Mathml Operator Dictionary</TITLE>
-LsmMathmlOperatorDictionaryEntry
 lsm_mathml_operator_dictionary_lookup
+<SUBSECTION Private>
+LsmMathmlOperatorDictionaryEntry
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvgtraits</FILE>
 <TITLE>SVG Traits</TITLE>
-LsmSvgAngle
-LsmSvgColor
 lsm_svg_color_null
-LsmSvgDashArray
 lsm_svg_dash_array_null
 lsm_svg_dash_array_new
 lsm_svg_dash_array_free
 lsm_svg_dash_array_duplicate
 lsm_svg_dash_array_copy
-LsmSvgPaint
-LsmSvgPreserveAspectRatio
-LsmSvgOneOrTwoDouble
 lsm_svg_angle_trait_class
 lsm_svg_color_trait_class
 lsm_svg_dash_array_trait_class
@@ -1345,28 +1354,6 @@ lsm_svg_preserve_aspect_ratio_trait_class
 lsm_svg_spread_method_trait_class
 lsm_svg_text_anchor_trait_class
 lsm_svg_visibility_trait_class
-LsmSvgAlign
-LsmSvgAngleType
-LsmSvgCompOp
-LsmSvgDisplay
-LsmSvgElementCategory
-LsmSvgFillRule
-LsmSvgFilterInput
-LsmSvgFontStretch
-LsmSvgFontStyle
-LsmSvgFontWeight
-LsmSvgLengthDirection
-LsmSvgLengthType
-LsmSvgLineCap
-LsmSvgLineJoin
-LsmSvgMarkerUnits
-LsmSvgMeetOrSlice
-LsmSvgPaintType
-LsmSvgPatternUnits
-LsmSvgSpreadMethod
-LsmSvgTextAnchor
-LsmSvgTransformType
-LsmSvgVisibility
 lsm_svg_align_from_string
 lsm_svg_align_to_string
 lsm_svg_comp_op_from_string
@@ -1399,13 +1386,41 @@ lsm_svg_text_anchor_from_string
 lsm_svg_text_anchor_to_string
 lsm_svg_visibility_from_string
 lsm_svg_visibility_to_string
+<SUBSECTION Private>
+LsmSvgAngle
+LsmSvgColor
+LsmSvgDashArray
+LsmSvgPaint
+LsmSvgPreserveAspectRatio
+LsmSvgOneOrTwoDouble
+LsmSvgAlign
+LsmSvgAngleType
+LsmSvgCompOp
+LsmSvgDisplay
+LsmSvgElementCategory
+LsmSvgFillRule
+LsmSvgFilterInput
+LsmSvgFontStretch
+LsmSvgFontStyle
+LsmSvgFontWeight
+LsmSvgLengthDirection
+LsmSvgLengthType
+LsmSvgLineCap
+LsmSvgLineJoin
+LsmSvgMarkerUnits
+LsmSvgMeetOrSlice
+LsmSvgPaintType
+LsmSvgPatternUnits
+LsmSvgSpreadMethod
+LsmSvgTextAnchor
+LsmSvgTransformType
+LsmSvgVisibility
 </SECTION>
 
 <SECTION>
 <FILE>lsmmathmlstyle</FILE>
 lsm_mathml_style_get_type
 LSM_TYPE_MATHML_STYLE
-LsmMathmlStyle
 lsm_mathml_style_new
 lsm_mathml_style_free
 lsm_mathml_style_duplicate
@@ -1415,6 +1430,8 @@ lsm_mathml_style_set_script_min_size_pt
 lsm_mathml_style_set_math_family
 lsm_mathml_style_set_math_variant
 lsm_mathml_style_set_math_color
+<SUBSECTION Private>
+LsmMathmlStyle
 </SECTION>
 
 <SECTION>
@@ -1428,18 +1445,12 @@ LSM_MATHML_SPACE_EM_THICK
 LSM_MATHML_SPACE_EM_VERY_THICK
 LSM_MATHML_SPACE_EM_VERY_VERY_THICK
 LSM_TYPE_MATHML_COLOR
-LsmMathmlColor
 lsm_mathml_color_get_type
 LSM_TYPE_MATHML_LENGTH
-LsmMathmlLength
 lsm_mathml_length_get_type
 lsm_mathml_length_normalize
-LsmMathmlScriptLevel
-LsmMathmlEnumList
 LSM_TYPE_MATHML_SPACE
-LsmMathmlSpace
 lsm_mathml_space_get_type
-LsmMathmlSpaceList
 lsm_mathml_enum_list_init
 lsm_mathml_space_list_init
 lsm_mathml_boolean_trait_class
@@ -1461,47 +1472,55 @@ lsm_mathml_length_trait_class
 lsm_mathml_space_trait_class
 lsm_mathml_space_list_trait_class
 lsm_mathml_color_trait_class
-LsmMathmlCssType
-LsmMathmlMode
 lsm_mathml_mode_to_string
 lsm_mathml_mode_from_string
-LsmMathmlDisplay
 lsm_mathml_display_to_string
 lsm_mathml_display_from_string
-LsmMathmlSpaceName
 lsm_mathml_space_name_to_string
 lsm_mathml_space_name_from_string
-LsmMathmlUnit
 lsm_mathml_unit_to_string
 lsm_mathml_unit_from_string
-LsmMathmlFontStyle
 lsm_mathml_font_style_to_string
 lsm_mathml_font_style_from_string
-LsmMathmlFontWeight
 lsm_mathml_font_weight_to_string
 lsm_mathml_font_weight_from_string
-LsmMathmlVariant
 lsm_mathml_variant_to_string
 lsm_mathml_variant_from_string
 lsm_mathml_variant_set_font_style
 lsm_mathml_variant_set_font_weight
-LsmMathmlForm
 lsm_mathml_form_to_string
 lsm_mathml_form_from_string
-LsmMathmlRowAlign
 lsm_mathml_row_align_to_string
 lsm_mathml_row_align_from_string
-LsmMathmlColumnAlign
 lsm_mathml_column_align_to_string
 lsm_mathml_column_align_from_string
-LsmMathmlLine
 lsm_mathml_line_to_string
 lsm_mathml_line_from_string
+<SUBSECTION Private>
+LsmMathmlColor
+LsmMathmlLength
+LsmMathmlScriptLevel
+LsmMathmlEnumList
+LsmMathmlSpace
+LsmMathmlSpaceList
+LsmMathmlCssType
+LsmMathmlMode
+LsmMathmlDisplay
+LsmMathmlSpaceName
+LsmMathmlUnit
+LsmMathmlFontStyle
+LsmMathmlFontWeight
+LsmMathmlVariant
+LsmMathmlForm
+LsmMathmlRowAlign
+LsmMathmlColumnAlign
+LsmMathmlLine
 LsmMathmlScriptLevelSign
 </SECTION>
 
 <SECTION>
 <FILE>lsmsvgattributes</FILE>
+<SUBSECTION Private>
 LsmSvgDoubleAttribute
 LsmSvgOneOrTwoDoubleAttribute
 LsmSvgDashArrayAttribute
@@ -1522,11 +1541,14 @@ LsmSvgAngleAttribute
 <FILE>lsmtraits</FILE>
 <TITLE>LsmTrait</TITLE>
 LsmTrait
-LsmTraitClass
 lsm_null_trait_class
 lsm_double_trait_class
 lsm_box_trait_class
 lsm_enum_value_from_string
+<SUBSECTION Private>
+LsmTraitClass
+LsmBox
+LsmExtents
 </SECTION>
 
 <SECTION>
