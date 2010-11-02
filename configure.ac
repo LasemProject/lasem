@@ -57,6 +57,7 @@ AC_CONFIG_FILES([
 Makefile
 itex2mml/Makefile
 src/Makefile
+tests/Makefile
 po/Makefile.in
 docs/Makefile
 docs/reference/Makefile

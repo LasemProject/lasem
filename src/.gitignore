@@ -4,7 +4,6 @@
 *.la
 .libs
 lasemrender
-lasemtest
 *.swp
 lsmenumtypes.c
 lsmenumtypes.h

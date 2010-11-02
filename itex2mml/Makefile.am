@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 noinst_LTLIBRARIES = libitex2mml.la
 
 AM_CPPFLAGS =

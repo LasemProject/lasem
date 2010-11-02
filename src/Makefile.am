@@ -1,3 +1,5 @@
+include $(top_srcdir)/Makefile.decl
+
 -include $(INTROSPECTION_MAKEFILE)
   INTROSPECTION_GIRS =
   INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
@@ -214,7 +216,6 @@ lsmenumtypes.c: lsmenumtypes.c.template $(LASEM_HDRS) $(GLIB_MKENUMS)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
 
 bin_PROGRAMS = lasemrender
-noinst_PROGRAMS = lasemtest
 
 lasemrender_SOURCES = 				\
 	lasemrender.c
@@ -222,13 +223,6 @@ lasemrender_SOURCES = 				\
 lasemrender_LDFLAGS =
 
 lasemrender_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
-
-lasemtest_SOURCES = 				\
-	lasemtest.c
-
-lasemtest_LDFLAGS =
-
-lasemtest_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
 
 CLEANFILES = $(BUILT_SOURCES)
 

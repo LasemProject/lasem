@@ -19,6 +19,7 @@ mkinstalldirs
 stamp*
 autom4te*
 tags
+*.o
 *.lineno
 *.swp
 *.stamp
@@ -30,4 +31,5 @@ massif.out.*
 callgrind.out.*
 gtk-doc.make
 gtk-doc.m4
-.libs
+.libs/
+.deps/
