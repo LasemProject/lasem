@@ -12,9 +12,13 @@ noinst_PROGRAMS = lsm-test
 lsm_test_SOURCES = lsmtest.c
 lsm_test_LDADD = $(test_progs_ldadd)
 
-TEST_PROGS += dom
+TEST_PROGS += dom suite
 
 noinst_PROGRAMS += $(TEST_PROGS)
 
 dom_SOURCES = dom.c
 dom_LDADD = $(test_progs_ldadd)
+
+suite_SOURCES = suite.c
+suite_LDADD = $(test_progs_ldadd)
+suite_CFLAGS = -DSUITE_DATA_DIRECTORY="\"$(top_srcdir)/tests/data\""
