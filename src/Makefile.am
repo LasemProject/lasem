@@ -146,6 +146,7 @@ LASEM_DOM_HDRS = 				\
 
 LASEM_MATHML_HDRS =				\
 	lsmmathml.h				\
+	lsmmathmltypes.h			\
 	lsmmathmlenums.h			\
 	lsmmathmltraits.h			\
 	lsmmathmlattributes.h			\
@@ -184,6 +185,7 @@ LASEM_MATHML_HDRS =				\
 
 LASEM_SVG_HDRS =				\
 	lsmsvg.h				\
+	lsmsvgtypes.h				\
 	lsmsvgenums.h				\
 	lsmsvgtraits.h				\
 	lsmsvgattributes.h			\
