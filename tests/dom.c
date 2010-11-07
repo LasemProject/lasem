@@ -1,5 +1,5 @@
 #include <glib.h>
-#include <lsmdomimplementation.h>
+#include <lsmdom.h>
 
 static void
 create_document_test (void)

@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_OPERATOR_ELEMENT_H
 #define LSM_MATHML_OPERATOR_ELEMENT_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlpresentationtoken.h>
 
 G_BEGIN_DECLS

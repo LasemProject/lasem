@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_DOCUMENT_H
 #define LSM_MATHML_DOCUMENT_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmdomdocument.h>
 
 G_BEGIN_DECLS

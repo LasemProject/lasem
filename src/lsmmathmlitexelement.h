@@ -23,7 +23,7 @@
 #ifndef LSM_MATHML_ITEX_ELEMENT_H
 #define LSM_MATHML_ITEX_ELEMENT_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlelement.h>
 #include <lsmmathmldocument.h>
 

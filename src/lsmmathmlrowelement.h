@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_ROW_ELEMENT_H
 #define LSM_MATHML_ROW_ELEMENT_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlpresentationcontainer.h>
 
 G_BEGIN_DECLS

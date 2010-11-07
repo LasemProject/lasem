@@ -25,7 +25,7 @@
 #define LSM_MATHML_ELEMENT_H
 
 #include <lsmdomelement.h>
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlutils.h>
 #include <lsmmathmlstyle.h>
 #include <lsmmathmlattributes.h>

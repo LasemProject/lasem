@@ -31,12 +31,8 @@
 #include <unistd.h>
 #endif
 
-#include <lsmdebug.h>
-#include <lsmmathmldocument.h>
-#include <lsmdomparser.h>
-#include <lsmdomdocument.h>
-#include <glib/gregex.h>
-#include <glib/gprintf.h>
+#include <lsmmathml.h>
+#include <glib.h>
 #include <gio/gio.h>
 
 #include <libxml/parser.h>

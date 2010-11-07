@@ -1,6 +1,6 @@
 #include <glib.h>
 #include <string.h>
-#include <lsmdomparser.h>
+#include <lsmdom.h>
 
 static GSList *
 build_file_list (const char *path, GRegex *filename_regex)

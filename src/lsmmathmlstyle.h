@@ -23,7 +23,7 @@
 #ifndef LSM_MATHML_STYLE_H
 #define LSM_MATHML_STYLE_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlattributes.h>
 
 G_BEGIN_DECLS

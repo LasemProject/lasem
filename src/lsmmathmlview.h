@@ -25,7 +25,7 @@
 #define LSM_MATHML_VIEW_H
 
 #include <lsmdomview.h>
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlutils.h>
 #include <lsmmathmlelement.h>
 #include <lsmmathmlpresentationtoken.h>

@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_OPERATOR_DICTIONARY_H
 #define LSM_MATHML_OPERATOR_DICTIONARY_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlenums.h>
 #include <lsmmathmlattributes.h>
 

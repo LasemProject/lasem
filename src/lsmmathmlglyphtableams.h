@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_GLYPH_TABLE_AMS_H
 #define LSM_MATHML_GLYPH_TABLE_AMS_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlview.h>
 
 G_BEGIN_DECLS

@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_PRESENTATION_CONTAINER_H
 #define LSM_MATHML_PRESENTATION_CONTAINER_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlelement.h>
 
 G_BEGIN_DECLS

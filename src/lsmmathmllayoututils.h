@@ -23,7 +23,7 @@
 #ifndef LSM_MATHML_LAYOUT_UTILS_H
 #define LSM_MATHML_LAYOUT_UTILS_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlview.h>
 
 G_BEGIN_DECLS

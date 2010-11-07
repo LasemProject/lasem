@@ -24,7 +24,7 @@
 #ifndef LSM_MATHML_ENTITY_DICTIONARY_H
 #define LSM_MATHML_ENTITY_DICTIONARY_H
 
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 
 G_BEGIN_DECLS
 

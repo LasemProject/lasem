@@ -25,7 +25,7 @@
 
 #include <lsmattributes.h>
 #include <lsmdom.h>
-#include <lsmmathml.h>
+#include <lsmmathmltypes.h>
 #include <lsmmathmlenums.h>
 #include <lsmmathmltraits.h>
 

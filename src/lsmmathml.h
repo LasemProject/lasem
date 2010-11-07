@@ -1,6 +1,6 @@
-/* lsmmathml.h
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,40 +26,42 @@
 
 #include <lsmdom.h>
 
-G_BEGIN_DECLS
+#include <lsmmathmltypes.h>
 
-typedef struct _LsmMathmlDocument LsmMathmlDocument;
-typedef struct _LsmMathmlElement LsmMathmlElement;
-typedef struct _LsmMathmlPhantomElement LsmMathmlPhantomElement;
-typedef struct _LsmMathmlTableElement LsmMathmlTableElement;
-typedef struct _LsmMathmlTableRowElement LsmMathmlTableRowElement;
-typedef struct _LsmMathmlTableCellElement LsmMathmlTableCellElement;
-typedef struct _LsmMathmlSpaceElement LsmMathmlSpaceElement;
-typedef struct _LsmMathmlFractionElement LsmMathmlFractionElement;
-typedef struct _LsmMathmlUnderOverElement LsmMathmlUnderOverElement;
-typedef struct _LsmMathmlMathElement LsmMathmlMathElement;
-typedef struct _LsmMathmlRadicalElement LsmMathmlRadicalElement;
-typedef struct _LsmMathmlScriptElement LsmMathmlScriptElement;
-typedef struct _LsmMathmlPresentationToken LsmMathmlPresentationToken;
-typedef struct _LsmMathmlNumberElement LsmMathmlNumberElement;
-typedef struct _LsmMathmlOperatorElement LsmMathmlOperatorElement;
-typedef struct _LsmMathmlStringElement LsmMathmlStringElement;
-typedef struct _LsmMathmlPresentationContainer LsmMathmlPresentationContainer;
-typedef struct _LsmMathmlStyleElement LsmMathmlStyleElement;
-typedef struct _LsmMathmlRowElement LsmMathmlRowElement;
-typedef struct _LsmMathmlFencedElement LsmMathmlFencedElement;
-typedef struct _LsmMathmlPaddedElement LsmMathmlPaddedElement;
-typedef struct _LsmMathmlErrorElement LsmMathmlErrorElement;
-typedef struct _LsmMathmlActionElement LsmMathmlActionElement;
-typedef struct _LsmMathmlAlignMarkElement LsmMathmlAlignMarkElement;
-typedef struct _LsmMathmlAlignGroupElement LsmMathmlAlignGroupElement;
-
-typedef struct _LsmMathmlItexElement LsmMathmlItexElement;
-
-typedef struct _LsmMathmlView LsmMathmlView;
-
-typedef struct _LsmMathmlStyle LsmMathmlStyle;
-
-G_END_DECLS
+#include <lsmmathmlenums.h>
+#include <lsmmathmltraits.h>
+#include <lsmmathmlattributes.h>
+#include <lsmmathmlentitydictionary.h>
+#include <lsmmathmloperatordictionary.h>
+#include <lsmmathmldocument.h>
+#include <lsmmathmlelement.h>
+#include <lsmmathmlphantomelement.h>
+#include <lsmmathmlmathelement.h>
+#include <lsmmathmltableelement.h>
+#include <lsmmathmltablerowelement.h>
+#include <lsmmathmltablecellelement.h>
+#include <lsmmathmlspaceelement.h>
+#include <lsmmathmlradicalelement.h>
+#include <lsmmathmlscriptelement.h>
+#include <lsmmathmlfractionelement.h>
+#include <lsmmathmlunderoverelement.h>
+#include <lsmmathmlpresentationtoken.h>
+#include <lsmmathmloperatorelement.h>
+#include <lsmmathmlstringelement.h>
+#include <lsmmathmlpresentationcontainer.h>
+#include <lsmmathmlstyleelement.h>
+#include <lsmmathmlrowelement.h>
+#include <lsmmathmlfencedelement.h>
+#include <lsmmathmlpaddedelement.h>
+#include <lsmmathmlerrorelement.h>
+#include <lsmmathmlactionelement.h>
+#include <lsmmathmlstyle.h>
+#include <lsmmathmlview.h>
+#include <lsmmathmlglyphtableams.h>
+#include <lsmmathmlalignmarkelement.h>
+#include <lsmmathmlaligngroupelement.h>
+#include <lsmmathmlitexelement.h>
+#include <lsmmathmlutils.h>
+#include <lsmmathmllayoututils.h>
 
 #endif
