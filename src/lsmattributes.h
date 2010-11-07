@@ -23,7 +23,7 @@
 #ifndef LSM_ATTRIBUTES_H
 #define LSM_ATTRIBUTES_H
 
-#include <lsm.h>
+#include <lsmtypes.h>
 #include <lsmtraits.h>
 
 G_BEGIN_DECLS

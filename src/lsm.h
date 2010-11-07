@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2009 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -24,5 +25,11 @@
 #define LSM_H
 
 #include <lsmtypes.h>
+
+#include <lsmcairo.h>
+#include <lsmstr.h>
+#include <lsmdebug.h>
+#include <lsmtraits.h>
+#include <lsmattributes.h>
 
 #endif
