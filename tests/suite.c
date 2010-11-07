@@ -73,9 +73,10 @@ render_test (gconstpointer user_data)
 	cairo = cairo_create (surface);
 	cairo_surface_destroy (surface);
 
-	lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
-
-	g_assert (cairo_status (cairo) == CAIRO_STATUS_SUCCESS);
+	if (cairo_status (cairo) == CAIRO_STATUS_SUCCESS) {
+		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
+		g_assert (cairo_status (cairo) == CAIRO_STATUS_SUCCESS);
+	}
 
 	cairo_destroy (cairo);
 
