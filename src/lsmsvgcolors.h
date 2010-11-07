@@ -27,7 +27,7 @@
 #ifndef LSM_SVG_COLORS_H
 #define LSM_SVG_COLORS_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 
 G_BEGIN_DECLS
 

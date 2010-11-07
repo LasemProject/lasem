@@ -22,15 +22,13 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <lsmdebug.h>
-#include <lsmdomtext.h>
+#include <lsmdom.h>
 #include <lsmmathmloperatordictionary.h>
 #include <lsmmathmldocument.h>
 #include <lsmmathmlmathelement.h>
 #include <lsmmathmlfractionelement.h>
 #include <lsmmathmlrowelement.h>
 #include <lsmmathmlview.h>
-#include <lsmdomparser.h>
 #include <glib/gmessages.h>
 #include <glib/goption.h>
 #include <glib/gprintf.h>

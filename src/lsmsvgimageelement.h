@@ -23,7 +23,7 @@
 #ifndef LSM_SVG_IMAGE_ELEMENT_H
 #define LSM_SVG_IMAGE_ELEMENT_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvgelement.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 

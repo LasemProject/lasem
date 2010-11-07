@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -19,10 +20,11 @@
  * Author:
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
+
 #ifndef LSM_PROPERTIES_H
 #define LSM_PROPERTIES_H
 
-#include <lsm.h>
+#include <lsmtypes.h>
 #include <lsmtraits.h>
 
 G_BEGIN_DECLS

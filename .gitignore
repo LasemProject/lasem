@@ -20,6 +20,7 @@ stamp*
 autom4te*
 tags
 *.o
+*.lo
 *.lineno
 *.swp
 *.stamp

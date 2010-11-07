@@ -23,7 +23,7 @@
 #ifndef LSM_SVG_FILTER_GAUSSIAN_BLUR_H
 #define LSM_SVG_FILTER_GAUSSIAN_BLUR_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvgfilterprimitive.h>
 
 G_BEGIN_DECLS

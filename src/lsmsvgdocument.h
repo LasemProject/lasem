@@ -23,7 +23,7 @@
 #ifndef LSM_SVG_DOCUMENT_H
 #define LSM_SVG_DOCUMENT_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 #include <lsmdomdocument.h>
 
 G_BEGIN_DECLS

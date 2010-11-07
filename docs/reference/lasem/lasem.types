@@ -1,5 +1,4 @@
 lsm_dom_character_data_get_type
-lsm_dom_document_error_get_type
 lsm_dom_document_get_type
 lsm_dom_element_get_type
 lsm_dom_node_get_type

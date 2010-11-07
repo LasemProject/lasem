@@ -31,5 +31,6 @@
 #include <lsmdebug.h>
 #include <lsmtraits.h>
 #include <lsmattributes.h>
+#include <lsmproperties.h>
 
 #endif

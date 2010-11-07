@@ -1,6 +1,6 @@
-/* lsmmathmlenums.c
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,9 +24,8 @@
 #ifndef LSM_SVG_ATTRIBUTES_H
 #define LSM_SVG_ATTRIBUTES_H
 
-#include <lsmattributes.h>
-#include <lsmdomview.h>
-#include <lsmsvg.h>
+#include <lsmdom.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvgenums.h>
 #include <lsmsvgtraits.h>
 #include <lsmsvglength.h>

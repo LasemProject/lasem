@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2010 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or

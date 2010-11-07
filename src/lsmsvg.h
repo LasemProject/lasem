@@ -1,5 +1,6 @@
-/*
- * Copyright © 2009 Emmanuel Pacaud
+/* Lasem - SVG and Mathml library
+ *
+ * Copyright © 2009-10 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,41 +26,42 @@
 
 #include <lsmdom.h>
 
-G_BEGIN_DECLS
+#include <lsmsvgtypes.h>
 
-typedef struct _LsmSvgDocument LsmSvgDocument;
-typedef struct _LsmSvgElement LsmSvgElement;
-typedef struct _LsmSvgGraphic LsmSvgGraphic;
-typedef struct _LsmSvgClipPathElement LsmSvgClipPathElement;
-typedef struct _LsmSvgSvgElement LsmSvgSvgElement;
-typedef struct _LsmSvgGElement LsmSvgGElement;
-typedef struct _LsmSvgDefsElement LsmSvgDefsElement;
-typedef struct _LsmSvgUseElement LsmSvgUseElement;
-typedef struct _LsmSvgImageElement LsmSvgImageElement;
-typedef struct _LsmSvgSymbolElement LsmSvgSymbolElement;
-typedef struct _LsmSvgMarkerElement LsmSvgMarkerElement;
-typedef struct _LsmSvgRectElement LsmSvgRectElement;
-typedef struct _LsmSvgCircleElement LsmSvgCircleElement;
-typedef struct _LsmSvgEllipseElement LsmSvgEllipseElement;
-typedef struct _LsmSvgLineElement LsmSvgLineElement;
-typedef struct _LsmSvgPolylineElement LsmSvgPolylineElement;
-typedef struct _LsmSvgPolygonElement LsmSvgPolygonElement;
-typedef struct _LsmSvgPathElement LsmSvgPathElement;
-typedef struct _LsmSvgTextElement LsmSvgTextElement;
-typedef struct _LsmSvgTspanElement LsmSvgTspanElement;
-typedef struct _LsmSvgGradientElement LsmSvgGradientElement;
-typedef struct _LsmSvgLinearGradientElement LsmSvgLinearGradientElement;
-typedef struct _LsmSvgRadialGradientElement LsmSvgRadialGradientElement;
-typedef struct _LsmSvgStopElement LsmSvgStopElement;
-typedef struct _LsmSvgPatternElement LsmSvgPatternElement;
-typedef struct _LsmSvgMaskElement LsmSvgMaskElement;
-typedef struct _LsmSvgFilterElement LsmSvgFilterElement;
-typedef struct _LsmSvgFilterPrimitive LsmSvgFilterPrimitive;
-typedef struct _LsmSvgFilterGaussianBlur LsmSvgFilterGaussianBlur;
-
-typedef struct _LsmSvgView LsmSvgView;
-typedef struct _LsmSvgStyle LsmSvgStyle;
-
-G_END_DECLS
+#include <lsmsvgtraits.h>
+#include <lsmsvgattributes.h>
+#include <lsmsvgstyle.h>
+#include <lsmsvgcolors.h>
+#include <lsmsvglength.h>
+#include <lsmsvgview.h>
+#include <lsmsvgmatrix.h>
+#include <lsmsvgdocument.h>
+#include <lsmsvgelement.h>
+#include <lsmsvgclippathelement.h>
+#include <lsmsvgsvgelement.h>
+#include <lsmsvggelement.h>
+#include <lsmsvgdefselement.h>
+#include <lsmsvguseelement.h>
+#include <lsmsvgimageelement.h>
+#include <lsmsvgsymbolelement.h>
+#include <lsmsvgmarkerelement.h>
+#include <lsmsvgrectelement.h>
+#include <lsmsvgcircleelement.h>
+#include <lsmsvgellipseelement.h>
+#include <lsmsvglineelement.h>
+#include <lsmsvgpathelement.h>
+#include <lsmsvgpolylineelement.h>
+#include <lsmsvgpolygonelement.h>
+#include <lsmsvgtextelement.h>
+#include <lsmsvgtspanelement.h>
+#include <lsmsvggradientelement.h>
+#include <lsmsvglineargradientelement.h>
+#include <lsmsvgradialgradientelement.h>
+#include <lsmsvgstopelement.h>
+#include <lsmsvgpatternelement.h>
+#include <lsmsvgmaskelement.h>
+#include <lsmsvgfilterelement.h>
+#include <lsmsvgfilterprimitive.h>
+#include <lsmsvgfiltergaussianblur.h>
 
 #endif

@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2009 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -23,7 +24,7 @@
 #ifndef LSM_SVG_MATRIX_H
 #define LSM_SVG_MATRIX_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 
 typedef enum {
 	LSM_SVG_MATRIX_FLAGS_IDENTITY = 1 << 0

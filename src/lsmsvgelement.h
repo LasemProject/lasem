@@ -1,6 +1,6 @@
-/* lsmsvgelement.h
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,10 @@
 #ifndef LSM_SVG_ELEMENT_H
 #define LSM_SVG_ELEMENT_H
 
-#include <lsmsvg.h>
-#include <lsmattributes.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvgattributes.h>
 #include <lsmsvgstyle.h>
-#include <lsmdomelement.h>
+#include <lsmdom.h>
 #include <cairo.h>
 
 G_BEGIN_DECLS

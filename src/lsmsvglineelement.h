@@ -23,7 +23,7 @@
 #ifndef LSM_SVG_LINE_ELEMENT_H
 #define LSM_SVG_LINE_ELEMENT_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvgelement.h>
 
 G_BEGIN_DECLS

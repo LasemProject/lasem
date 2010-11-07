@@ -23,7 +23,7 @@
 #ifndef LSM_SVG_LINEAR_GRADIENT_ELEMENT_H
 #define LSM_SVG_LINEAR_GRADIENT_ELEMENT_H
 
-#include <lsmsvg.h>
+#include <lsmsvgtypes.h>
 #include <lsmsvggradientelement.h>
 
 G_BEGIN_DECLS
