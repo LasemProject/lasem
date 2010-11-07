@@ -1,4 +1,4 @@
-/* lsmmathmldocument.h
+/* Lasem - SVG and Mathml library
  *
  * Copyright © 2007-2008  Emmanuel Pacaud
  *

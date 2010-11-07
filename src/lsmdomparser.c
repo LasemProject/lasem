@@ -22,6 +22,7 @@
 
 #include <lsmdebug.h>
 #include <lsmdomimplementation.h>
+#include <lsmdomnode.h>
 #include <lsmmathmlpresentationtoken.h>
 #include <lsmmathmlentitydictionary.h>
 #include <lsmsvgtextelement.h>
@@ -281,7 +282,7 @@ typedef enum {
 } LsmDomDocumentError;
 
 LsmDomDocument *
-lsm_dom_document_new_from_memory (const char *buffer, int size, GError **error)
+lsm_dom_document_new_from_memory (const void *buffer, size_t size, GError **error)
 {
 	static LsmDomSaxParserState state;
 

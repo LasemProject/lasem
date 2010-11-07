@@ -1,6 +1,6 @@
-/* lsmdom.h
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,16 +26,17 @@
 
 #include <lsm.h>
 
-G_BEGIN_DECLS
+#include <lsmdomtypes.h>
 
-typedef struct _LsmDomNode LsmDomNode;
-typedef struct _LsmDomElement LsmDomElement;
-typedef struct _LsmDomDocument LsmDomDocument;
-typedef struct _LsmDomCharacterData LsmDomCharacterData;
-typedef struct _LsmDomText LsmDomText;
+#include <lsmdomnode.h>
+#include <lsmdomnodelist.h>
+#include <lsmdomdocument.h>
+#include <lsmdomelement.h>
+#include <lsmdomcharacterdata.h>
+#include <lsmdomtext.h>
+#include <lsmdomimplementation.h>
 
-typedef struct _LsmDomView LsmDomView;
-
-G_END_DECLS
+#include <lsmdomparser.h>
+#include <lsmdomview.h>
 
 #endif

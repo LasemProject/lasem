@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2007-2009 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -28,13 +29,9 @@
 
 G_BEGIN_DECLS
 
-typedef enum {
-	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
-} LsmDomDocumentError;
-
 LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, size_t size, GError **error);
-LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError *error);
-LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError *error);
+LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError **error);
+LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError **error);
 
 void			lsm_dom_document_save_to_stream		(LsmDomDocument *document,
 								 GOutputStream *stream,

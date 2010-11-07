@@ -1,4 +1,4 @@
-/* gcharacterdata.h
+/* Lasem - SVG and Mathml library
  *
  * Copyright © 2007-2008  Emmanuel Pacaud
  *
@@ -24,7 +24,6 @@
 #ifndef LSM_DOM_CHARACTER_DATA_H
 #define LSM_DOM_CHARACTER_DATA_H
 
-#include <lsmdom.h>
 #include <lsmdomnode.h>
 
 G_BEGIN_DECLS

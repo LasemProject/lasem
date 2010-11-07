@@ -133,6 +133,7 @@ LASEM_DOM_HDRS = 				\
 	lsmproperties.h				\
 	lsmattributes.h				\
 	lsmdom.h				\
+	lsmdomtypes.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
 	lsmdomdocument.h			\

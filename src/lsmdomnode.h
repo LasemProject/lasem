@@ -1,6 +1,6 @@
-/* lsmdomnode.h
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@
 #ifndef LSM_DOM_NODE_H
 #define LSM_DOM_NODE_H
 
-#include <lsmdom.h>
+#include <lsmdomtypes.h>
 #include <gio/gio.h>
 
 G_BEGIN_DECLS

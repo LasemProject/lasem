@@ -1,4 +1,4 @@
-/* lsmdomcharacterdata.c
+/* Lasem - SVG and Mathml library
  *
  * Copyright © 2007-2010  Emmanuel Pacaud
  *
