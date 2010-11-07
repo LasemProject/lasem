@@ -132,8 +132,11 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	is_viewbox_defined = lsm_attribute_is_defined ((LsmAttribute *) &svg->viewbox);
 
-	if (is_viewbox_defined && (svg->viewbox.value.width <= 0.0 ||
-				   svg->viewbox.value.height <= 0.0))
+	if (is_viewbox_defined && (svg->viewbox.value.width == 0.0 ||
+				   svg->viewbox.value.height == 0.0))
+		return;
+
+	if (viewport.width <= 0.0 || viewport.height <= 0.0)
 		return;
 
 	lsm_debug ("render", "[LsmSvgSvgElement::render] viewport %g, %g, %g, %g",
