@@ -23,6 +23,7 @@ tags
 *.lineno
 *.swp
 *.stamp
+*.bak
 lasem.svg
 lasem*.pc
 lasemtest.xml

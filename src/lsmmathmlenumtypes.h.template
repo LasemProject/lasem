@@ -1,6 +1,6 @@
 /*** BEGIN file-header ***/
-#ifndef LSM_ENUM_TYPES_H
-#define LSM_ENUM_TYPES_H
+#ifndef LSM_MATHML_ENUM_TYPES_H
+#define LSM_MATHML_ENUM_TYPES_H
 
 #include <glib-object.h>
 
@@ -22,5 +22,5 @@ GType @enum_name@_get_type	(void) G_GNUC_CONST;
 /*** BEGIN file-tail ***/
 G_END_DECLS
 
-#endif /* LSM_ENUM_TYPES_H */
+#endif /* LSM_MATHML_ENUM_TYPES_H */
 /*** END file-tail ***/

@@ -15,17 +15,26 @@ AM_CFLAGS = -Wall
 
 lib_LTLIBRARIES = liblasem-@LASEM_API_VERSION@.la
 
-BUILT_SOURCES = lsmenumtypes.h lsmenumtypes.c
+BUILT_SOURCES = lsmdomenumtypes.h	\
+		lsmdomenumtypes.c	\
+		lsmmathmlenumtypes.h	\
+		lsmmathmlenumtypes.c	\
+		lsmsvgenumtypes.h	\
+		lsmsvgenumtypes.c
 
-EXTRA_DIST = lsmenumtypes.h.template \
-	     lsmenumtypes.c.template
+EXTRA_DIST = lsmdomenumtypes.h.template 	\
+	     lsmdomenumtypes.c.template		\
+	     lsmmathmlenumtypes.h.template 	\
+	     lsmmathmlenumtypes.c.template	\
+	     lsmsvgenumtypes.h.template 	\
+	     lsmsvgenumtypes.c.template
 
-liblasem_@LASEM_API_VERSION@_la_LIBADD = 				\
+liblasem_@LASEM_API_VERSION@_la_LIBADD = 	\
 	../itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
 
-liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
-	lsmenumtypes.c				\
+liblasem_@LASEM_API_VERSION@_la_SOURCES =	\
+	lsmdomenumtypes.c			\
 	lsmdebug.c				\
 	lsmstr.c				\
 	lsmtraits.c				\
@@ -41,6 +50,7 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmdomview.c				\
 	lsmdomparser.c				\
 	lsmdomimplementation.c			\
+	lsmmathmlenumtypes.c			\
 	lsmmathmlenums.c			\
 	lsmmathmltraits.c			\
 	lsmmathmlattributes.c			\
@@ -76,6 +86,7 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmmathmlitexelement.c			\
 	lsmmathmlutils.c			\
 	lsmmathmllayoututils.c			\
+	lsmsvgenumtypes.c			\
 	lsmsvgenums.c				\
 	lsmsvgtraits.c				\
 	lsmsvgstyle.c				\
@@ -112,15 +123,16 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =				\
 	lsmsvgfilterprimitive.c			\
 	lsmsvgfiltergaussianblur.c
 
-LASEM_HDRS = \
+LASEM_DOM_HDRS = 				\
 	lsm.h					\
+	lsmtypes.h				\
+	lsmcairo.h				\
 	lsmstr.h				\
 	lsmdebug.h				\
 	lsmtraits.h				\
 	lsmproperties.h				\
 	lsmattributes.h				\
 	lsmdom.h				\
-	lsmcairo.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
 	lsmdomdocument.h			\
@@ -129,7 +141,9 @@ LASEM_HDRS = \
 	lsmdomtext.h				\
 	lsmdomview.h				\
 	lsmdomparser.h				\
-	lsmdomimplementation.h			\
+	lsmdomimplementation.h
+
+LASEM_MATHML_HDRS =				\
 	lsmmathml.h				\
 	lsmmathmlenums.h			\
 	lsmmathmltraits.h			\
@@ -165,7 +179,9 @@ LASEM_HDRS = \
 	lsmmathmlaligngroupelement.h		\
 	lsmmathmlitexelement.h			\
 	lsmmathmlutils.h			\
-	lsmmathmllayoututils.h			\
+	lsmmathmllayoututils.h
+
+LASEM_SVG_HDRS =				\
 	lsmsvg.h				\
 	lsmsvgenums.h				\
 	lsmsvgtraits.h				\
@@ -205,15 +221,27 @@ LASEM_HDRS = \
 	lsmsvgfiltergaussianblur.h
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
-liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_HDRS)
-liblasem_@LASEM_API_VERSION@_la_HEADERS += lsmenumtypes.h
+liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_DOM_HDRS) $(LASEM_MATHML_HDRS) $(LASEM_SVG_HDRS)
+liblasem_@LASEM_API_VERSION@_la_HEADERS += lsmdomenumtypes.h lsmmathmlenumtypes.h lsmsvgenumtypes.h
 liblasem_@LASEM_API_VERSION@_la_LDFLAGS = -version-info $(LASEM_LIBTOOL_VERSION)
 
-lsmenumtypes.h: lsmenumtypes.h.template $(LASEM_HDRS) $(GLIB_MKENUMS)
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.h.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
+lsmdomenumtypes.h: lsmdomenumtypes.h.template $(LASEM_DOM_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmdomenumtypes.h.template $(LASEM_DOM_HDRS)) > $@
 
-lsmenumtypes.c: lsmenumtypes.c.template $(LASEM_HDRS) $(GLIB_MKENUMS)
-	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmenumtypes.c.template $(liblasem_@LASEM_API_VERSION@_la_HEADERS)) > $@
+lsmdomenumtypes.c: lsmdomenumtypes.c.template $(LASEM_DOM_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmdomenumtypes.c.template $(LASEM_DOM_HDRS)) > $@
+
+lsmmathmlenumtypes.h: lsmmathmlenumtypes.h.template $(LASEM_MATHML_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmmathmlenumtypes.h.template $(LASEM_MATHML_HDRS)) > $@
+
+lsmmathmlenumtypes.c: lsmmathmlenumtypes.c.template $(LASEM_MATHML_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmmathmlenumtypes.c.template $(LASEM_MATHML_HDRS)) > $@
+
+lsmsvgenumtypes.h: lsmsvgenumtypes.h.template $(LASEM_SVG_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmsvgenumtypes.h.template $(LASEM_SVG_HDRS)) > $@
+
+lsmsvgenumtypes.c: lsmsvgenumtypes.c.template $(LASEM_SVG_HDRS) $(GLIB_MKENUMS)
+	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmsvgenumtypes.c.template $(LASEM_SVG_HDRS)) > $@
 
 bin_PROGRAMS = lasemrender
 

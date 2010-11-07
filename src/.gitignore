@@ -5,7 +5,7 @@
 .libs
 lasemrender
 *.swp
-lsmenumtypes.c
-lsmenumtypes.h
+*enumtypes.c
+*enumtypes.h
 *.gir
 *.typelib

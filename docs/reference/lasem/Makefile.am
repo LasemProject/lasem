@@ -61,7 +61,9 @@ EXTRA_HFILES=
 # Header files to ignore when scanning. Use base file name, no paths
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
-	lsmenumtypes.h 	\
+	lsmdomenumtypes.h 	\
+	lsmmathmlenumtypes.h 	\
+	lsmsvgenumtypes.h 	\
 	lsmconfig.h
 
 # Images to copy into HTML directory.
