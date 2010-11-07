@@ -12,7 +12,12 @@ build_file_list (const char *path, GRegex *filename_regex)
 	char *filename;
 
 	directory = g_dir_open (path, 0, &error);
-	g_assert (error == NULL);
+	if (error != NULL) {
+		if (directory != NULL)
+			g_dir_close (directory);
+		g_error_free (error);
+		return NULL;
+	}
 
 	do {
 		entry = g_dir_read_name (directory);
