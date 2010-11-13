@@ -36,7 +36,6 @@ lsm_dom_node_remove_child
 lsm_dom_node_has_child_nodes
 lsm_dom_node_changed
 lsm_dom_node_get_owner_document
-lsm_dom_node_write_to_stream
 <SUBSECTION Standard>
 LsmDomNodeType
 LsmDomNodeClass
@@ -47,6 +46,8 @@ lsm_dom_node_get_type
 LSM_DOM_NODE_CLASS
 LSM_IS_DOM_NODE_CLASS
 LSM_DOM_NODE_GET_CLASS
+<SUBSECTION Private>
+lsm_dom_node_write_to_stream
 </SECTION>
 
 <SECTION>
@@ -117,7 +118,6 @@ LsmDomView
 lsm_dom_view_render
 lsm_dom_view_get_size
 lsm_dom_view_get_size_pixels
-lsm_dom_view_set_document
 lsm_dom_view_set_debug
 <SUBSECTION Standard>
 LsmDomViewClass
@@ -128,6 +128,10 @@ lsm_dom_view_get_type
 LSM_DOM_VIEW_CLASS
 LSM_IS_DOM_VIEW_CLASS
 LSM_DOM_VIEW_GET_CLASS
+<SUBSECTION Private>
+lsm_dom_view_set_document
+LsmBox
+LsmExtents
 </SECTION>
 
 <SECTION>

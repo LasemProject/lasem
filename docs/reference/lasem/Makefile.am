@@ -66,7 +66,6 @@ IGNORE_HFILES=\
 	lsmsvgenumtypes.h 	\
 	lsmconfig.h		\
 	lsm.h					\
-	lsmtypes.h				\
 	lsmcairo.h				\
 	lsmstr.h				\
 	lsmdebug.h				\
