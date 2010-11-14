@@ -173,17 +173,60 @@ lsm_dom_node_get_owner_document (LsmDomNode* self)
 LsmDomNode*
 lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* ref_child)
 {
-	g_warning ("Not yet implemented");
+	LsmDomNodeClass *node_class;
 
-	return NULL;
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (ref_child), NULL);
+
+	if (ref_child->parent_node != self)
+		return NULL;
+
+	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
+		lsm_debug ("dom", "[LsmDomNode::insert_before] Can't append '%s' to '%s'",
+			   lsm_dom_node_get_node_name (new_child),
+			   lsm_dom_node_get_node_name (self));
+		return NULL;
+	}
+
+	new_child->parent_node = self;
+	new_child->next_sibling = ref_child;
+	new_child->previous_sibling = ref_child->previous_sibling;
+
+	if (ref_child->previous_sibling == NULL)
+		self->first_child = new_child;
+	else
+		ref_child->previous_sibling->next_sibling = new_child;
+
+	node_class = LSM_DOM_NODE_GET_CLASS (self);
+
+	if (node_class->post_new_child)
+		node_class->post_new_child (self, new_child);
+
+	lsm_dom_node_changed (self);
+
+	return new_child;
 }
 
 LsmDomNode*
 lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* old_child)
 {
-	g_warning ("Not yet implemented");
+	LsmDomNode *next_sibling;
 
-	return NULL;
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (old_child), NULL);
+
+	if (old_child->parent_node != self)
+		return NULL;
+
+	next_sibling = old_child->next_sibling;
+
+	lsm_dom_node_remove_child (self, old_child);
+
+	if (next_sibling == NULL)
+		return lsm_dom_node_append_child (self, new_child);
+	else
+		return lsm_dom_node_insert_before (self, new_child, next_sibling);
 }
 
 LsmDomNode*
@@ -199,7 +242,8 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 	     node != NULL && node != old_child;
 	     node = node->next_sibling);
 
-	g_return_val_if_fail (node != NULL, NULL);
+	if (node == NULL)
+		return NULL;
 
 	node_class = LSM_DOM_NODE_GET_CLASS (self);
 
