@@ -95,8 +95,11 @@ node_list_test (void)
 	g_assert (lsm_dom_node_list_get_item (childs, 0) == LSM_DOM_NODE (element));
 	g_assert (lsm_dom_node_list_get_item (childs, 1) == NULL);
 
-	g_object_unref (childs);
 	g_object_unref (document);
+
+	g_assert (lsm_dom_node_list_get_length (childs) == 0);
+
+	g_object_unref (childs);
 }
 
 int
