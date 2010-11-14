@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <lsm.h>
 #include <lsmmathml.h>
 #include <glib/gmessages.h>
 #include <glib/goption.h>

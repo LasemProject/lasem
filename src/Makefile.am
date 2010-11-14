@@ -33,14 +33,14 @@ liblasem_@LASEM_API_VERSION@_la_LIBADD = 	\
 	../itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
 
-liblasem_@LASEM_API_VERSION@_la_SOURCES =	\
-	lsmdomenumtypes.c			\
+LASEM_DOM_SRCS =				\
 	lsmdebug.c				\
 	lsmstr.c				\
 	lsmtraits.c				\
 	lsmproperties.c				\
 	lsmattributes.c				\
 	lsmcairo.c				\
+	lsmdomenumtypes.c			\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
 	lsmdomdocument.c			\
@@ -49,7 +49,9 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =	\
 	lsmdomtext.c				\
 	lsmdomview.c				\
 	lsmdomparser.c				\
-	lsmdomimplementation.c			\
+	lsmdomimplementation.c
+
+LASEM_MATHML_SRCS =				\
 	lsmmathmlenumtypes.c			\
 	lsmmathmlenums.c			\
 	lsmmathmltraits.c			\
@@ -85,7 +87,9 @@ liblasem_@LASEM_API_VERSION@_la_SOURCES =	\
 	lsmmathmlaligngroupelement.c		\
 	lsmmathmlitexelement.c			\
 	lsmmathmlutils.c			\
-	lsmmathmllayoututils.c			\
+	lsmmathmllayoututils.c
+
+LASEM_SVG_SRCS =				\
 	lsmsvgenumtypes.c			\
 	lsmsvgenums.c				\
 	lsmsvgtraits.c				\
@@ -224,6 +228,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfiltergaussianblur.h
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
+liblasem_@LASEM_API_VERSION@_la_SOURCES = $(LASEM_DOM_SRCS) $(LASEM_MATHML_SRCS) $(LASEM_SVG_SRCS)
 liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_DOM_HDRS) $(LASEM_MATHML_HDRS) $(LASEM_SVG_HDRS)
 liblasem_@LASEM_API_VERSION@_la_HEADERS += lsmdomenumtypes.h lsmmathmlenumtypes.h lsmsvgenumtypes.h
 liblasem_@LASEM_API_VERSION@_la_LDFLAGS = -version-info $(LASEM_LIBTOOL_VERSION)
@@ -263,8 +268,8 @@ introspection_files = $(liblasem_@LASEM_API_VERSION@_la_SOURCES) \
 		      $(liblasem_@LASEM_API_VERSION@_la_HEADERS)
 
 Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER)
-Lasem_0_4_gir_INCLUDES = GObject-2.0 cairo-1.0
-Lasem_0_4_gir_SCANNERFLAGS = --identifier-prefix=Lsm
+Lasem_0_4_gir_INCLUDES = GObject-2.0 cairo-1.0 Gio-2.0 Pango-1.0 GdkPixbuf-2.0
+Lasem_0_4_gir_SCANNERFLAGS = --strip-prefix=Lsm
 Lasem_0_4_gir_CFLAGS = $(INCLUDES)
 Lasem_0_4_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
 Lasem_0_4_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
