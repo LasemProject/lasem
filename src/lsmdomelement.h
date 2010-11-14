@@ -52,6 +52,7 @@ struct _LsmDomElementClass {
 
 GType lsm_dom_element_get_type (void);
 
+const char * 	lsm_dom_element_get_tag_name 	(LsmDomElement *self);
 const char* 	lsm_dom_element_get_attribute 	(LsmDomElement* self, const char* name);
 void 		lsm_dom_element_set_attribute 	(LsmDomElement* self, const char* name, const char* attribute_value);
 

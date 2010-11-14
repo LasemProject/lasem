@@ -94,6 +94,14 @@ lsm_dom_element_set_attribute (LsmDomElement* self, const char* name, const char
 	lsm_dom_node_changed (LSM_DOM_NODE (self));
 }
 
+const char *
+lsm_dom_element_get_tag_name (LsmDomElement *self)
+{
+	g_return_val_if_fail (LSM_IS_DOM_ELEMENT (self), NULL);
+
+	return lsm_dom_node_get_node_name (LSM_DOM_NODE (self));
+}
+
 static void
 lsm_dom_element_init (LsmDomElement *element)
 {
