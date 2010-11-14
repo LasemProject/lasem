@@ -223,6 +223,11 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 
 	lsm_dom_node_remove_child (self, old_child);
 
+	if (new_child == NULL)
+		return NULL;
+
+	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
+
 	if (next_sibling == NULL)
 		return lsm_dom_node_append_child (self, new_child);
 	else
