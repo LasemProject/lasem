@@ -115,7 +115,18 @@ lsm_dom_node_get_parent_node (LsmDomNode* self)
 LsmDomNodeList*
 lsm_dom_node_get_child_nodes (LsmDomNode* self)
 {
-	return lsm_dom_node_list_new (self);
+	LsmDomNodeList *list;
+
+	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+
+	list = g_object_get_data (G_OBJECT (self), "child-nodes");
+
+	if (list == NULL) {
+		list = lsm_dom_node_list_new (self);
+		g_object_set_data_full (G_OBJECT (self), "child-nodes", list, g_object_unref);
+	}
+
+	return list;
 }
 
 LsmDomNode*
@@ -180,8 +191,12 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
 	g_return_val_if_fail (LSM_IS_DOM_NODE (ref_child), NULL);
 
-	if (ref_child->parent_node != self)
+	if (ref_child->parent_node != self) {
+		lsm_debug ("dom", "[LsmDomNode::insert_before] Ref child '%s' doesn't belong to '%s'",
+			   lsm_dom_node_get_node_name (ref_child),
+			   lsm_dom_node_get_node_name (self));
 		return NULL;
+	}
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
 		lsm_debug ("dom", "[LsmDomNode::insert_before] Can't append '%s' to '%s'",
@@ -199,6 +214,8 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	else
 		ref_child->previous_sibling->next_sibling = new_child;
 
+	ref_child->previous_sibling = new_child;
+
 	node_class = LSM_DOM_NODE_GET_CLASS (self);
 
 	if (node_class->post_new_child)
@@ -213,6 +230,7 @@ LsmDomNode*
 lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* old_child)
 {
 	LsmDomNode *next_sibling;
+	LsmDomNode *node;
 
 	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 	g_return_val_if_fail (LSM_IS_DOM_NODE (old_child), NULL);
@@ -222,7 +240,9 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 
 	next_sibling = old_child->next_sibling;
 
-	lsm_dom_node_remove_child (self, old_child);
+	node = lsm_dom_node_remove_child (self, old_child);
+	if (node != old_child)
+		return NULL;
 
 	if (new_child == NULL)
 		return NULL;
@@ -230,9 +250,11 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
 
 	if (next_sibling == NULL)
-		return lsm_dom_node_append_child (self, new_child);
+		lsm_dom_node_append_child (self, new_child);
 	else
-		return lsm_dom_node_insert_before (self, new_child, next_sibling);
+		lsm_dom_node_insert_before (self, new_child, next_sibling);
+
+	return old_child;
 }
 
 LsmDomNode*

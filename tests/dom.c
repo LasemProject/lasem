@@ -95,11 +95,57 @@ node_list_test (void)
 	g_assert (lsm_dom_node_list_get_item (childs, 0) == LSM_DOM_NODE (element));
 	g_assert (lsm_dom_node_list_get_item (childs, 1) == NULL);
 
+	g_object_ref (childs);
 	g_object_unref (document);
 
 	g_assert (lsm_dom_node_list_get_length (childs) == 0);
 
 	g_object_unref (childs);
+}
+
+static void
+insert_before_test (void)
+{
+	LsmDomDocument *document;
+	LsmDomNode *node;
+	LsmDomNodeList *childs;
+	LsmDomElement *math;
+	LsmDomElement *mn1;
+	LsmDomElement *mn2;
+	LsmDomElement *mo1;
+	LsmDomElement *mo2;
+
+	document = lsm_dom_implementation_create_document ("math");
+	math = lsm_dom_document_create_element (document, "math");
+	lsm_dom_node_append_child (LSM_DOM_NODE (document), LSM_DOM_NODE (math));
+	mn1 = lsm_dom_document_create_element (document, "mn");
+	mn2 = lsm_dom_document_create_element (document, "mn");
+	mo1 = lsm_dom_document_create_element (document, "mo");
+
+	node = lsm_dom_node_append_child (LSM_DOM_NODE (math), LSM_DOM_NODE (mn2));
+	g_assert (node == LSM_DOM_NODE (mn2));
+	node = lsm_dom_node_insert_before (LSM_DOM_NODE (math), LSM_DOM_NODE (mn1), LSM_DOM_NODE (mn2));
+	g_assert (node == LSM_DOM_NODE (mn1));
+	node = lsm_dom_node_insert_before (LSM_DOM_NODE (math), LSM_DOM_NODE (mo1), LSM_DOM_NODE (mn2));
+	g_assert (node == LSM_DOM_NODE (mo1));
+
+	childs = lsm_dom_node_get_child_nodes (LSM_DOM_NODE (math));
+	g_assert (LSM_IS_DOM_NODE_LIST (childs));
+
+	g_assert (lsm_dom_node_list_get_item (childs, 0) == LSM_DOM_NODE (mn1));
+	g_assert (lsm_dom_node_list_get_item (childs, 1) == LSM_DOM_NODE (mo1));
+	g_assert (lsm_dom_node_list_get_item (childs, 2) == LSM_DOM_NODE (mn2));
+	g_assert (lsm_dom_node_list_get_length (childs) == 3);
+
+	mo2 = lsm_dom_document_create_element (document, "mo");
+	node = lsm_dom_node_replace_child (LSM_DOM_NODE (math), LSM_DOM_NODE (mo2), LSM_DOM_NODE (mo1));
+	g_assert (node == LSM_DOM_NODE (mo1));
+
+	g_assert (lsm_dom_node_list_get_item (childs, 1) == LSM_DOM_NODE (mo2));
+	g_assert (lsm_dom_node_list_get_length (childs) == 3);
+
+	g_object_unref (mo1);
+	g_object_unref (document);
 }
 
 int
@@ -113,6 +159,7 @@ main (int argc, char *argv[])
 	g_test_add_func ("/dom/create-element", create_document_test);
 	g_test_add_func ("/dom/add-remove-element", create_document_test);
 	g_test_add_func ("/dom/node-list", node_list_test);
+	g_test_add_func ("/dom/insert-before", insert_before_test);
 
 	g_type_init ();
 
