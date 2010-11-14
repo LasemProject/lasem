@@ -27,6 +27,7 @@
  */
 
 #include <lsmdomnode.h>
+#include <lsmdomnodelist.h>
 #include <lsmdomdocument.h>
 #include <lsmdebug.h>
 #include <glib/gprintf.h>
@@ -111,11 +112,11 @@ lsm_dom_node_get_parent_node (LsmDomNode* self)
 	return self->parent_node;
 }
 
-/*LsmDomNodeList**/
-/*lsm_dom_node_get_child_nodes (LsmDomNode* self)*/
-/*{*/
-/*        return LSM_DOM_NODE_GET_CLASS (self)->get_child_nodes (self);*/
-/*}*/
+LsmDomNodeList*
+lsm_dom_node_get_child_nodes (LsmDomNode* self)
+{
+	return lsm_dom_node_list_new (self);
+}
 
 LsmDomNode*
 lsm_dom_node_get_first_child (LsmDomNode* self)

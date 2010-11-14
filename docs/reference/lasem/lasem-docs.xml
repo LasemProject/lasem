@@ -39,6 +39,7 @@
 		<chapter>
 			<title>DOM</title>
 			<xi:include href="xml/lsmdomnode.xml"/>
+			<xi:include href="xml/lsmdomnodelist.xml"/>
 			<xi:include href="xml/lsmdomdocument.xml"/>
 			<xi:include href="xml/lsmdomelement.xml"/>
 			<xi:include href="xml/lsmdomcharacterdata.xml"/>

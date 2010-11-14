@@ -78,6 +78,27 @@ add_remove_element_test (void)
 	g_object_unref (document);
 }
 
+static void
+node_list_test (void)
+{
+	LsmDomDocument *document;
+	LsmDomElement *element;
+	LsmDomNodeList *childs;
+
+	document = lsm_dom_implementation_create_document ("svg");
+	element = lsm_dom_document_create_element (document, "svg");
+	lsm_dom_node_append_child (LSM_DOM_NODE (document), LSM_DOM_NODE (element));
+
+	childs = lsm_dom_node_get_child_nodes (LSM_DOM_NODE (document));
+	g_assert (LSM_IS_DOM_NODE_LIST (childs));
+	g_assert (lsm_dom_node_list_get_length (childs) == 1);
+	g_assert (lsm_dom_node_list_get_item (childs, 0) == LSM_DOM_NODE (element));
+	g_assert (lsm_dom_node_list_get_item (childs, 1) == NULL);
+
+	g_object_unref (childs);
+	g_object_unref (document);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -88,6 +109,7 @@ main (int argc, char *argv[])
 	g_test_add_func ("/dom/create-document", create_document_test);
 	g_test_add_func ("/dom/create-element", create_document_test);
 	g_test_add_func ("/dom/add-remove-element", create_document_test);
+	g_test_add_func ("/dom/node-list", node_list_test);
 
 	g_type_init ();
 

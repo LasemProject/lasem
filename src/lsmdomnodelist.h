@@ -1,6 +1,6 @@
-/* lsmdomnodelist.h
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2010 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,9 +24,35 @@
 #ifndef LSM_DOM_NODE_LIST_H
 #define LSM_DOM_NODE_LIST_H
 
-#include <lsmdom.h>
+#include <lsmdomtypes.h>
 
 G_BEGIN_DECLS
+
+#define LSM_TYPE_DOM_NODE_LIST             (lsm_dom_node_list_get_type ())
+#define LSM_DOM_NODE_LIST(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_NODE_LIST, LsmDomNodeList))
+#define LSM_DOM_NODE_LIST_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_NODE_LIST, LsmDomNodeListClass))
+#define LSM_IS_DOM_NODE_LIST(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_NODE_LIST))
+#define LSM_IS_DOM_NODE_LIST_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_NODE_LIST))
+#define LSM_DOM_NODE_LIST_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_NODE_LIST, LsmDomNodeListClass))
+
+typedef struct _LsmDomNodeListClass LsmDomNodeListClass;
+
+struct _LsmDomNodeList {
+	GObject	object;
+
+	LsmDomNode *parent_node;
+};
+
+struct _LsmDomNodeListClass {
+	GObjectClass parent_class;
+};
+
+GType lsm_dom_node_list_get_type (void);
+
+LsmDomNodeList *	lsm_dom_node_list_new			(LsmDomNode *parent_node);
+
+LsmDomNode *		lsm_dom_node_list_get_item 		(LsmDomNodeList *list, unsigned int index);
+unsigned int		lsm_dom_node_list_get_length		(LsmDomNodeList *list);
 
 G_END_DECLS
 

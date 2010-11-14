@@ -72,10 +72,6 @@ struct _LsmDomNodeClass {
 	const char* 		(*get_node_value) 	(LsmDomNode* self);
 	void 			(*set_node_value) 	(LsmDomNode* self, const char* new_value);
 	LsmDomNodeType 		(*get_node_type) 	(LsmDomNode* self);
-#if 0
-	LsmDomNodeList* 	(*get_child_nodes) (LsmDomNode* self);
-	LsmDomNamedNodeMap* 	(*get_attributes) (LsmDomNode* self);
-#endif
 
 	/* Validation virtuals */
 
@@ -93,30 +89,28 @@ struct _LsmDomNodeClass {
 
 GType lsm_dom_node_get_type (void);
 
-const char* 		lsm_dom_node_get_node_name 		(LsmDomNode* self);
-const char* 		lsm_dom_node_get_node_value 		(LsmDomNode* self);
+const char * 		lsm_dom_node_get_node_name 		(LsmDomNode* self);
+const char * 		lsm_dom_node_get_node_value 		(LsmDomNode* self);
 void 			lsm_dom_node_set_node_value 		(LsmDomNode* self, const char* new_value);
 LsmDomNodeType 		lsm_dom_node_get_node_type 		(LsmDomNode* self);
-LsmDomNode* 		lsm_dom_node_get_parent_node 		(LsmDomNode* self);
+LsmDomNode * 		lsm_dom_node_get_parent_node 		(LsmDomNode* self);
+LsmDomNodeList *	lsm_dom_node_get_child_nodes 		(LsmDomNode* self);
+LsmDomNode * 		lsm_dom_node_get_first_child 		(LsmDomNode* self);
+LsmDomNode * 		lsm_dom_node_get_last_child 		(LsmDomNode* self);
+LsmDomNode * 		lsm_dom_node_get_previous_sibling 	(LsmDomNode* self);
+LsmDomNode * 		lsm_dom_node_get_next_sibling 		(LsmDomNode* self);
 #if 0
-LsmDomNodeList* 		lsm_dom_node_get_child_nodes 	(LsmDomNode* self);
+LsmDomNamedNodeMap * 	lsm_dom_node_get_attributes 		(LsmDomNode* self);
 #endif
-LsmDomNode* 		lsm_dom_node_get_first_child 		(LsmDomNode* self);
-LsmDomNode* 		lsm_dom_node_get_last_child 		(LsmDomNode* self);
-LsmDomNode* 		lsm_dom_node_get_previous_sibling 	(LsmDomNode* self);
-LsmDomNode* 		lsm_dom_node_get_next_sibling 		(LsmDomNode* self);
-#if 0
-LsmDomNamedNodeMap* 	lsm_dom_node_get_attributes 	(LsmDomNode* self);
-#endif
-LsmDomNode* 		lsm_dom_node_insert_before		(LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* ref_child);
-LsmDomNode* 		lsm_dom_node_replace_child 		(LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* old_child);
-LsmDomNode* 		lsm_dom_node_append_child 		(LsmDomNode* self, LsmDomNode* new_child);
-LsmDomNode* 		lsm_dom_node_remove_child 		(LsmDomNode* self, LsmDomNode* old_child);
+LsmDomNode * 		lsm_dom_node_insert_before		(LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* ref_child);
+LsmDomNode * 		lsm_dom_node_replace_child 		(LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* old_child);
+LsmDomNode * 		lsm_dom_node_append_child 		(LsmDomNode* self, LsmDomNode* new_child);
+LsmDomNode * 		lsm_dom_node_remove_child 		(LsmDomNode* self, LsmDomNode* old_child);
 gboolean 		lsm_dom_node_has_child_nodes 		(LsmDomNode* self);
 
 void 			lsm_dom_node_changed 			(LsmDomNode *self);
 
-LsmDomDocument*		lsm_dom_node_get_owner_document 	(LsmDomNode* self);
+LsmDomDocument *	lsm_dom_node_get_owner_document 	(LsmDomNode* self);
 
 void			lsm_dom_node_write_to_stream		(LsmDomNode *self, GOutputStream *stream,
 								 GError **error);

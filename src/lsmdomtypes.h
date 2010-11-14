@@ -29,6 +29,7 @@
 G_BEGIN_DECLS
 
 typedef struct _LsmDomNode LsmDomNode;
+typedef struct _LsmDomNodeList LsmDomNodeList;
 typedef struct _LsmDomElement LsmDomElement;
 typedef struct _LsmDomDocument LsmDomDocument;
 typedef struct _LsmDomCharacterData LsmDomCharacterData;

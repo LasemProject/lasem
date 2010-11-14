@@ -51,6 +51,24 @@ lsm_dom_node_write_to_stream
 </SECTION>
 
 <SECTION>
+<FILE>lsmdomnodelist</FILE>
+<TITLE>LsmDomNodeList</TITLE>
+lsm_dom_node_list_get_item
+lsm_dom_node_list_get_length
+lsm_dom_node_list_get_type
+lsm_dom_node_list_new
+<SUBSECTION Standard>
+LsmDomNodeList
+LsmDomNodeListClass
+LSM_DOM_NODE_LIST
+LSM_DOM_NODE_LIST_CLASS
+LSM_DOM_NODE_LIST_GET_CLASS
+LSM_IS_DOM_NODE_LIST
+LSM_IS_DOM_NODE_LIST_CLASS
+LSM_TYPE_DOM_NODE_LIST
+</SECTION>
+
+<SECTION>
 <FILE>lsmdomdocument</FILE>
 <TITLE>LsmDomDocument</TITLE>
 LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION
