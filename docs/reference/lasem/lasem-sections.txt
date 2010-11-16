@@ -113,6 +113,22 @@ LsmDomDocumentError
 </SECTION>
 
 <SECTION>
+<FILE>lsmdomdocumentfragment</FILE>
+<TITLE>LsmDomDocumentFragment</TITLE>
+lsm_dom_document_fragment_new
+<SUBSECTION Standard>
+LSM_DOM_DOCUMENT_FRAGMENT
+LSM_DOM_DOCUMENT_FRAGMENT_CLASS
+LSM_DOM_DOCUMENT_FRAGMENT_GET_CLASS
+LSM_IS_DOM_DOCUMENT_FRAGMENT
+LSM_IS_DOM_DOCUMENT_FRAGMENT_CLASS
+LSM_TYPE_DOM_DOCUMENT_FRAGMENT
+LsmDomDocumentFragment
+LsmDomDocumentFragmentClass
+lsm_dom_document_fragment_get_type
+</SECTION>
+
+<SECTION>
 <FILE>lsmdomelement</FILE>
 <TITLE>LsmDomElement</TITLE>
 LsmDomElement
