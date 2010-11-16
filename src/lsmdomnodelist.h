@@ -39,17 +39,16 @@ typedef struct _LsmDomNodeListClass LsmDomNodeListClass;
 
 struct _LsmDomNodeList {
 	GObject	object;
-
-	LsmDomNode *parent_node;
 };
 
 struct _LsmDomNodeListClass {
 	GObjectClass parent_class;
+
+	LsmDomNode *	(*get_item) 		(LsmDomNodeList *list, unsigned int index);
+	unsigned int	(*get_length)		(LsmDomNodeList *list);
 };
 
 GType lsm_dom_node_list_get_type (void);
-
-LsmDomNodeList *	lsm_dom_node_list_new			(LsmDomNode *parent_node);
 
 LsmDomNode *		lsm_dom_node_list_get_item 		(LsmDomNodeList *list, unsigned int index);
 unsigned int		lsm_dom_node_list_get_length		(LsmDomNodeList *list);

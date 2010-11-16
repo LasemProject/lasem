@@ -1,6 +1,6 @@
 /* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2010  Emmanuel Pacaud
+ * Copyright © 2007-2010 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,124 @@
 #include <lsmdebug.h>
 #include <glib/gprintf.h>
 #include <stdio.h>
+
+/* LsmDomNodeChildList */
+
+
+#define LSM_TYPE_DOM_NODE_CHILD_LIST             (lsm_dom_node_child_list_get_type ())
+#define LSM_DOM_NODE_CHILD_LIST(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_NODE_CHILD_LIST, LsmDomNodeChildList))
+#define LSM_DOM_NODE_CHILD_LIST_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_NODE_CHILD_LIST, LsmDomNodeChildListClass))
+#define LSM_IS_DOM_NODE_CHILD_LIST(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), LSM_TYPE_DOM_NODE_CHILD_LIST))
+#define LSM_IS_DOM_NODE_CHILD_LIST_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), LSM_TYPE_DOM_NODE_CHILD_LIST))
+#define LSM_DOM_NODE_CHILD_LIST_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), LSM_TYPE_DOM_NODE_CHILD_LIST, LsmDomNodeChildListClass))
+
+typedef struct _LsmDomNodeChildListClass LsmDomNodeChildListClass;
+
+typedef struct {
+	LsmDomNodeList base;
+
+	LsmDomNode *parent_node;
+} LsmDomNodeChildList;
+
+struct _LsmDomNodeChildListClass {
+	LsmDomNodeListClass parent_class;
+};
+
+GType lsm_dom_node_child_list_get_type (void);
+
+static GObjectClass *child_list_parent_class = NULL;
+
+static void
+lsm_dom_node_child_list_weak_notify_cb (void *user_data, GObject *object)
+{
+	LsmDomNodeChildList *list = user_data;
+
+	list->parent_node = NULL;
+}
+
+LsmDomNode *
+lsm_dom_node_child_list_get_item (LsmDomNodeList *list, unsigned int index)
+{
+	LsmDomNodeChildList *child_list = LSM_DOM_NODE_CHILD_LIST (list);
+	LsmDomNode *iter;
+	unsigned int i = 0;
+
+	if (child_list->parent_node == NULL)
+		return NULL;
+
+	for (iter = child_list->parent_node->first_child; iter != NULL; iter = iter->next_sibling) {
+		if (i == index)
+			return iter;
+		i++;
+	}
+
+	return NULL;
+}
+
+unsigned int
+lsm_dom_node_child_list_get_length (LsmDomNodeList *list)
+{
+	LsmDomNodeChildList *child_list = LSM_DOM_NODE_CHILD_LIST (list);
+	LsmDomNode *iter;
+	unsigned int length = 0;
+
+	if (child_list->parent_node == NULL)
+		return 0;
+
+	for (iter = child_list->parent_node->first_child; iter != NULL; iter = iter->next_sibling)
+		length++;
+
+	return length;
+}
+
+LsmDomNodeList *
+lsm_dom_node_child_list_new (LsmDomNode *parent_node)
+{
+	LsmDomNodeChildList *list;
+
+	g_return_val_if_fail (LSM_IS_DOM_NODE (parent_node), NULL);
+
+	list = g_object_new (LSM_TYPE_DOM_NODE_CHILD_LIST, NULL);
+	list->parent_node = parent_node;
+
+	g_object_weak_ref (G_OBJECT (parent_node), lsm_dom_node_child_list_weak_notify_cb, list);
+
+	return LSM_DOM_NODE_LIST (list);
+}
+
+static void
+lsm_dom_node_child_list_init (LsmDomNodeChildList *list)
+{
+}
+
+static void
+lsm_dom_node_child_list_finalize (GObject *object)
+{
+	LsmDomNodeChildList *list = LSM_DOM_NODE_CHILD_LIST (object);
+
+	if (list->parent_node != NULL) {
+		g_object_weak_unref (G_OBJECT (list->parent_node), lsm_dom_node_child_list_weak_notify_cb, list);
+		list->parent_node = NULL;
+	}
+
+	child_list_parent_class->finalize (object);
+}
+
+static void
+lsm_dom_node_child_list_class_init (LsmDomNodeChildListClass *klass)
+{
+	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+	LsmDomNodeListClass *node_list_class = LSM_DOM_NODE_LIST_CLASS (klass);
+
+	child_list_parent_class = g_type_class_peek_parent (klass);
+
+	object_class->finalize = lsm_dom_node_child_list_finalize;
+
+	node_list_class->get_item = lsm_dom_node_child_list_get_item;
+	node_list_class->get_length = lsm_dom_node_child_list_get_length;
+}
+
+G_DEFINE_TYPE (LsmDomNodeChildList, lsm_dom_node_child_list, LSM_TYPE_DOM_NODE_LIST)
 
 static GObjectClass *parent_class = NULL;
 
@@ -122,7 +240,7 @@ lsm_dom_node_get_child_nodes (LsmDomNode* self)
 	list = g_object_get_data (G_OBJECT (self), "child-nodes");
 
 	if (list == NULL) {
-		list = lsm_dom_node_list_new (self);
+		list = lsm_dom_node_child_list_new (self);
 		g_object_set_data_full (G_OBJECT (self), "child-nodes", list, g_object_unref);
 	}
 
