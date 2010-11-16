@@ -1,6 +1,6 @@
-/* lsmdomelement.c
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,7 +74,7 @@ lsm_dom_element_write_to_stream (LsmDomNode *self, GOutputStream *stream, GError
 
 /* LsmDomElement implementation */
 
-const char*
+const char *
 lsm_dom_element_get_attribute (LsmDomElement* self, const char* name)
 {
 	g_return_val_if_fail (LSM_IS_DOM_ELEMENT (self), NULL);
