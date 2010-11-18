@@ -7,14 +7,14 @@ create_document_test (void)
 	LsmDomDocument *document;
 	LsmDomElement *element;
 
-	document = lsm_dom_implementation_create_document ("math");
+	document = lsm_dom_implementation_create_document (NULL, "math");
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
 	g_assert_cmpstr (lsm_dom_node_get_node_name (LSM_DOM_NODE (document)), ==, "#document");
 	g_assert (lsm_dom_node_get_node_value (LSM_DOM_NODE (document)) == NULL);
 
 	g_object_unref (document);
 
-	document = lsm_dom_implementation_create_document ("svg");
+	document = lsm_dom_implementation_create_document (NULL, "svg");
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
 	g_assert_cmpstr (lsm_dom_node_get_node_name (LSM_DOM_NODE (document)), ==, "#document");
 	g_assert (lsm_dom_node_get_node_value (LSM_DOM_NODE (document)) == NULL);
@@ -28,7 +28,7 @@ create_element_test (void)
 	LsmDomDocument *document;
 	LsmDomElement *element;
 
-	document = lsm_dom_implementation_create_document ("svg");
+	document = lsm_dom_implementation_create_document (NULL, "svg");
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
 	g_assert_cmpstr (lsm_dom_node_get_node_name (LSM_DOM_NODE (document)), ==, "#document");
 
@@ -48,7 +48,7 @@ add_remove_element_test (void)
 	LsmDomDocument *document;
 	LsmDomElement *element;
 
-	document = lsm_dom_implementation_create_document ("svg");
+	document = lsm_dom_implementation_create_document (NULL, "svg");
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
 
 	element = lsm_dom_document_create_element (document, "unknown");
@@ -85,7 +85,7 @@ node_list_test (void)
 	LsmDomElement *element;
 	LsmDomNodeList *childs;
 
-	document = lsm_dom_implementation_create_document ("svg");
+	document = lsm_dom_implementation_create_document (NULL, "svg");
 	element = lsm_dom_document_create_element (document, "svg");
 	lsm_dom_node_append_child (LSM_DOM_NODE (document), LSM_DOM_NODE (element));
 
@@ -115,7 +115,7 @@ insert_before_test (void)
 	LsmDomElement *mo1;
 	LsmDomElement *mo2;
 
-	document = lsm_dom_implementation_create_document ("math");
+	document = lsm_dom_implementation_create_document (NULL, "math");
 	math = lsm_dom_document_create_element (document, "math");
 	lsm_dom_node_append_child (LSM_DOM_NODE (document), LSM_DOM_NODE (math));
 	mn1 = lsm_dom_document_create_element (document, "mn");

@@ -1,6 +1,6 @@
-/* lsmmathmldocument.c
+/* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -141,7 +141,7 @@ lsm_mathml_document_create_view (LsmDomDocument *document)
 
 /* LsmMathmlDocument implementation */
 
-LsmMathmlDocument *
+LsmDomDocument *
 lsm_mathml_document_new (void)
 {
 	return g_object_new (LSM_TYPE_MATHML_DOCUMENT, NULL);

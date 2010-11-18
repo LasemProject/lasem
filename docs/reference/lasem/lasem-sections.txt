@@ -56,7 +56,6 @@ lsm_dom_node_write_to_stream
 lsm_dom_node_list_get_item
 lsm_dom_node_list_get_length
 lsm_dom_node_list_get_type
-lsm_dom_node_list_new
 <SUBSECTION Standard>
 LsmDomNodeList
 LsmDomNodeListClass
@@ -75,7 +74,9 @@ LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION
 LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_WIDTH
 LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_HEIGHT
 LsmDomDocument
+LsmDomDocumentCreateFunction
 lsm_dom_implementation_create_document
+lsm_dom_implementation_add_document_create_function
 lsm_dom_document_new_from_memory
 lsm_dom_document_new_from_path
 lsm_dom_document_new_from_url

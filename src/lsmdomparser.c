@@ -97,7 +97,7 @@ lsm_dom_parser_start_element(void *user_data,
 	}
 
 	if (state->document == NULL) {
-		state->document = lsm_dom_implementation_create_document ((char *)name);
+		state->document = lsm_dom_implementation_create_document (NULL, (char *) name);
 		state->current_node = LSM_DOM_NODE (state->document);
 
 		g_return_if_fail (LSM_IS_DOM_DOCUMENT (state->document));

@@ -24,17 +24,50 @@
 #include <lsmdomimplementation.h>
 #include <lsmmathmldocument.h>
 #include <lsmsvgdocument.h>
+#include <lsmdebug.h>
 #include <string.h>
 
-LsmDomDocument *
-lsm_dom_implementation_create_document (const char *qualified_name)
+static GHashTable *document_types = NULL;
+
+void
+lsm_dom_implementation_add_create_function (const char *qualified_name,
+					    LsmDomDocumentCreateFunction create_function)
 {
+	if (document_types == NULL)
+		document_types = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+	g_hash_table_insert (document_types, g_strdup (qualified_name), create_function);
+}
+
+void
+lsm_dom_implementation_cleanup (void)
+{
+	if (document_types == NULL)
+		return;
+
+	g_hash_table_unref (document_types);
+	document_types = NULL;
+}
+
+LsmDomDocument *
+lsm_dom_implementation_create_document (const char *namespace_uri,
+					const char *qualified_name)
+{
+	LsmDomDocumentCreateFunction create_function;
+
 	g_return_val_if_fail (qualified_name != NULL, NULL);
 
-	if (strcmp (qualified_name, "svg") == 0)
-		return LSM_DOM_DOCUMENT (lsm_svg_document_new ());
-	else if (strcmp (qualified_name, "math") == 0)
-		return LSM_DOM_DOCUMENT (lsm_mathml_document_new ());
+	if (document_types == NULL) {
+		lsm_dom_implementation_add_create_function ("math", lsm_mathml_document_new);
+		lsm_dom_implementation_add_create_function ("svg", lsm_svg_document_new);
+	}
 
-	return NULL;
+	create_function = g_hash_table_lookup (document_types, qualified_name);
+	if (create_function == NULL) {
+		lsm_debug ("dom", "[LsmDomImplementation::create_document] Unknow document type (%s)",
+			   qualified_name);
+		return NULL;
+	}
+
+	return create_function ();
 }

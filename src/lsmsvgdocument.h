@@ -1,4 +1,5 @@
-/*
+/* Lasem - SVG and Mathml library
+ *
  * Copyright © 2009 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -47,7 +48,7 @@ struct _LsmSvgDocumentClass {
 
 GType lsm_svg_document_get_type (void);
 
-LsmSvgDocument *	lsm_svg_document_new 			(void);
+LsmDomDocument *	lsm_svg_document_new 			(void);
 LsmSvgSvgElement * 	lsm_svg_document_get_root_element 	(const LsmSvgDocument *document);
 LsmSvgElement * 	lsm_svg_document_get_element_by_url 	(LsmSvgDocument *document, const char *url);
 

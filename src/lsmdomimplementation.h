@@ -29,7 +29,12 @@
 
 G_BEGIN_DECLS
 
-LsmDomDocument *lsm_dom_implementation_create_document (const char *qualified_name);
+typedef LsmDomDocument * (*LsmDomDocumentCreateFunction) (void);
+
+LsmDomDocument *	lsm_dom_implementation_create_document 			(const char *namespace_uri,
+										 const char *qualified_name);
+void			lsm_dom_implementation_add_document_create_function	(const char *qualified_name,
+										 LsmDomDocumentCreateFunction create_function);
 
 G_END_DECLS
 
