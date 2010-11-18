@@ -117,5 +117,7 @@ main (int argc, char *argv[])
 	g_slist_free (files);
 	g_regex_unref (filename_regex);
 
+	lsm_shutdown ();
+
 	return result;
 }

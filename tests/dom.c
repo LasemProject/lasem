@@ -151,7 +151,7 @@ insert_before_test (void)
 int
 main (int argc, char *argv[])
 {
-	int i;
+	int result;
 
 	g_test_init (&argc, &argv, NULL);
 
@@ -163,5 +163,7 @@ main (int argc, char *argv[])
 
 	g_type_init ();
 
-	return g_test_run();
+	result = g_test_run();
+
+	lsm_shutdown ();
 }

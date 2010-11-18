@@ -1,6 +1,6 @@
 /* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2009 Emmanuel Pacaud
+ * Copyright © 2010 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,23 +21,10 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef LSM_DOM_IMPLEMENTATION_H
-#define LSM_DOM_IMPLEMENTATION_H
+#include <lsmdomimplementation.h>
 
-#include <lsmdomtypes.h>
-#include <lsmdomdocument.h>
-
-G_BEGIN_DECLS
-
-typedef LsmDomDocument * (*LsmDomDocumentCreateFunction) (void);
-
-LsmDomDocument *	lsm_dom_implementation_create_document 			(const char *namespace_uri,
-										 const char *qualified_name);
-void			lsm_dom_implementation_add_document_create_function	(const char *qualified_name,
-										 LsmDomDocumentCreateFunction create_function);
-
-void			lsm_dom_implementation_cleanup 				(void);
-
-G_END_DECLS
-
-#endif
+void
+lsm_shutdown (void)
+{
+	lsm_dom_implementation_cleanup ();
+}

@@ -39,16 +39,6 @@ lsm_dom_implementation_add_create_function (const char *qualified_name,
 	g_hash_table_insert (document_types, g_strdup (qualified_name), create_function);
 }
 
-void
-lsm_dom_implementation_cleanup (void)
-{
-	if (document_types == NULL)
-		return;
-
-	g_hash_table_unref (document_types);
-	document_types = NULL;
-}
-
 LsmDomDocument *
 lsm_dom_implementation_create_document (const char *namespace_uri,
 					const char *qualified_name)
@@ -70,4 +60,14 @@ lsm_dom_implementation_create_document (const char *namespace_uri,
 	}
 
 	return create_function ();
+}
+
+void
+lsm_dom_implementation_cleanup (void)
+{
+	if (document_types == NULL)
+		return;
+
+	g_hash_table_unref (document_types);
+	document_types = NULL;
 }

@@ -34,6 +34,7 @@ liblasem_@LASEM_API_VERSION@_la_LIBADD = 	\
 	$(LASEM_LIBS)
 
 LASEM_DOM_SRCS =				\
+	lsm.c					\
 	lsmdebug.c				\
 	lsmstr.c				\
 	lsmtraits.c				\
