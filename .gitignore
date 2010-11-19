@@ -35,3 +35,4 @@ gtk-doc.make
 gtk-doc.m4
 .libs/
 .deps/
+tmp-introspect*
