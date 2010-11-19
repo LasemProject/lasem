@@ -166,4 +166,6 @@ main (int argc, char *argv[])
 	result = g_test_run();
 
 	lsm_shutdown ();
+
+	return result;
 }
