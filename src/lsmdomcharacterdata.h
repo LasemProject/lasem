@@ -1,6 +1,6 @@
 /* Lasem - SVG and Mathml library
  *
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2007-2010  Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,8 +50,8 @@ struct _LsmDomCharacterDataClass {
 
 GType lsm_dom_character_data_get_type (void);
 
-char* lsm_dom_character_data_get_data (LsmDomCharacterData* self);
-void lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char* value);
+const char * 	lsm_dom_character_data_get_data 	(LsmDomCharacterData* self);
+void 		lsm_dom_character_data_set_data 	(LsmDomCharacterData* self, const char* value);
 
 G_END_DECLS
 

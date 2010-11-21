@@ -43,9 +43,21 @@ lsm_dom_character_data_write_to_stream (LsmDomNode *self, GOutputStream *stream,
 		g_output_stream_write (stream, character_data->data, strlen (character_data->data), NULL, error);
 }
 
+static const char *
+lsm_dom_character_data_get_node_value (LsmDomNode* self)
+{
+	return lsm_dom_character_data_get_data (LSM_DOM_CHARACTER_DATA (self));
+}
+
+static void
+lsm_dom_character_data_set_node_value (LsmDomNode* self, const char *value)
+{
+	lsm_dom_character_data_set_data (LSM_DOM_CHARACTER_DATA (self), value);
+}
+
 /* LsmDomCharacterData implementation */
 
-char*
+const char *
 lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 {
 	g_return_val_if_fail (LSM_IS_DOM_CHARACTER_DATA (self), NULL);
@@ -54,7 +66,7 @@ lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 }
 
 void
-lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char* value)
+lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char * value)
 {
 	g_return_if_fail (LSM_IS_DOM_CHARACTER_DATA (self));
 	g_return_if_fail (value != NULL);
@@ -95,6 +107,8 @@ lsm_dom_character_data_class_init (LsmDomCharacterDataClass *character_data_clas
 	object_class->finalize = lsm_dom_character_data_finalize;
 
 	node_class->write_to_stream = lsm_dom_character_data_write_to_stream;
+	node_class->set_node_value = lsm_dom_character_data_set_node_value;
+	node_class->get_node_value = lsm_dom_character_data_get_node_value;
 }
 
 G_DEFINE_ABSTRACT_TYPE (LsmDomCharacterData, lsm_dom_character_data, LSM_TYPE_DOM_NODE)
