@@ -44,6 +44,7 @@ LASEM_DOM_SRCS =				\
 	lsmdomenumtypes.c			\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
+	lsmdomnamednodemap.c			\
 	lsmdomdocument.c			\
 	lsmdomdocumentfragment.c		\
 	lsmdomelement.c				\
@@ -142,6 +143,7 @@ LASEM_DOM_HDRS = 				\
 	lsmdomtypes.h				\
 	lsmdomnode.h				\
 	lsmdomnodelist.h			\
+	lsmdomnamednodemap.h			\
 	lsmdomdocument.h			\
 	lsmdomdocumentfragment.h		\
 	lsmdomelement.h				\

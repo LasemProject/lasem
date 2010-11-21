@@ -68,6 +68,26 @@ LSM_TYPE_DOM_NODE_LIST
 </SECTION>
 
 <SECTION>
+<FILE>lsmdomnamednodemap</FILE>
+<TITLE>LsmDomNamedNodeMap</TITLE>
+lsm_dom_named_node_map_get_item
+lsm_dom_named_node_map_get_length
+lsm_dom_named_node_map_get_named_item
+lsm_dom_named_node_map_set_named_item
+lsm_dom_named_node_map_remove_named_item
+<SUBSECTION Standard>
+LSM_DOM_NAMED_NODE_MAP
+LSM_DOM_NAMED_NODE_MAP_CLASS
+LSM_DOM_NAMED_NODE_MAP_GET_CLASS
+LSM_IS_DOM_NAMED_NODE_MAP
+LSM_IS_DOM_NAMED_NODE_MAP_CLASS
+LSM_TYPE_DOM_NAMED_NODE_MAP
+LsmDomNamedNodeMap
+LsmDomNamedNodeMapClass
+lsm_dom_named_node_map_get_type
+</SECTION>
+
+<SECTION>
 <FILE>lsmdomdocument</FILE>
 <TITLE>LsmDomDocument</TITLE>
 LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION
