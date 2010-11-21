@@ -29,7 +29,7 @@
 
 G_BEGIN_DECLS
 
-LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, size_t size, GError **error);
+LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, int size, GError **error);
 LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError **error);
 LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError **error);
 
@@ -38,7 +38,7 @@ void			lsm_dom_document_save_to_stream		(LsmDomDocument *document,
 								 GError **error);
 void			lsm_dom_document_save_to_memory		(LsmDomDocument *documennt,
 								 void **buffer,
-								 size_t *size,
+								 int *size,
 								 GError **error);
 void			lsm_dom_document_save_to_path		(LsmDomDocument *documennt,
 								 const char *path,

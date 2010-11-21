@@ -170,12 +170,12 @@ int main(int argc, char **argv)
 	if (document != NULL) {
 		if (lsm_debug_check ("dom")) {
 			void *buffer;
-			size_t size;
+			int size;
 
 			lsm_dom_document_save_to_memory (document, &buffer, &size, NULL);
 
 			if (buffer != NULL) {
-				g_printf ("%*s\n", (int) size, (char *) buffer);
+				g_printf ("%*s\n", size, (char *) buffer);
 				g_free (buffer);
 			}
 		}

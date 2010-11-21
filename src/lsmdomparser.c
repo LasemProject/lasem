@@ -216,7 +216,7 @@ lsm_dom_parser_declare_entity (void * user_data, const xmlChar * name, int type,
 	}
 }
 
-#if 0
+#if 1
 static void
 lsm_dom_parser_warning (void *user_data, const char *msg, ...)
 {
@@ -249,7 +249,7 @@ lsm_dom_parser_fatal_error (void *user_data, const char *msg, ...)
 #endif
 
 static xmlSAXHandler sax_handler = {
-#if 0
+#if 1
 	.warning = lsm_dom_parser_warning,
 	.error = lsm_dom_parser_error,
 	.fatalError = lsm_dom_parser_fatal_error,
@@ -282,7 +282,7 @@ typedef enum {
 } LsmDomDocumentError;
 
 LsmDomDocument *
-lsm_dom_document_new_from_memory (const void *buffer, size_t size, GError **error)
+lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
 {
 	static LsmDomSaxParserState state;
 
@@ -376,7 +376,7 @@ lsm_dom_document_save_to_stream (LsmDomDocument *document, GOutputStream *stream
 }
 
 void
-lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, size_t *size, GError **error)
+lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, int *size, GError **error)
 {
 	GOutputStream *stream;
 
