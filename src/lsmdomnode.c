@@ -67,7 +67,7 @@ lsm_dom_node_child_list_weak_notify_cb (void *user_data, GObject *object)
 	list->parent_node = NULL;
 }
 
-LsmDomNode *
+static LsmDomNode *
 lsm_dom_node_child_list_get_item (LsmDomNodeList *list, unsigned int index)
 {
 	LsmDomNodeChildList *child_list = LSM_DOM_NODE_CHILD_LIST (list);
@@ -86,7 +86,7 @@ lsm_dom_node_child_list_get_item (LsmDomNodeList *list, unsigned int index)
 	return NULL;
 }
 
-unsigned int
+static unsigned int
 lsm_dom_node_child_list_get_length (LsmDomNodeList *list)
 {
 	LsmDomNodeChildList *child_list = LSM_DOM_NODE_CHILD_LIST (list);
