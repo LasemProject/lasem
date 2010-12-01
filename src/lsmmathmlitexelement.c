@@ -48,14 +48,24 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
 	LsmMathmlItexElement *itex_element = LSM_MATHML_ITEX_ELEMENT (self);
 	LsmDomNode *node;
-	GString *string = g_string_new ("");
+	GString *string;
 	gboolean need_conversion;
+
+	if (style->display == LSM_MATHML_DISPLAY_INLINE)
+		string = g_string_new ("$");
+	else
+		string = g_string_new ("$$");
 
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
 		if (LSM_IS_DOM_TEXT (node)) {
 			g_string_append (string, lsm_dom_node_get_node_value (node));
 		}
 	}
+
+	if (style->display == LSM_MATHML_DISPLAY_INLINE)
+		g_string_append (string, "$");
+	else
+		g_string_append (string, "$$");
 
 	need_conversion = g_strcmp0 (itex_element->itex, string->str) != 0;
 
