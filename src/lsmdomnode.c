@@ -421,6 +421,7 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 	LsmDomNodeClass *node_class;
 
 	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
 	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
