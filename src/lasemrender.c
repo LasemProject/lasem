@@ -61,13 +61,13 @@ static const GOptionEntry entries[] =
 	{ G_OPTION_REMAINING,	' ', 0,	G_OPTION_ARG_FILENAME_ARRAY,
 		&option_input_filenames, 	NULL, NULL},
 	{ "output",		'o', 0, G_OPTION_ARG_FILENAME,
-		&option_output_filename,	"Output filename", NULL},
+		&option_output_filename,	_("Output filename"), NULL},
 	{ "format", 		'f', 0, G_OPTION_ARG_STRING,
-		&option_output_file_format, 	"Output format", NULL },
+		&option_output_file_format, 	_("Output format"), NULL },
 	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
-		&option_ppi, 			"Pixel per inch", NULL },
+		&option_ppi, 			_("Pixel per inch"), NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
-		&option_debug_domains,		"Debug domains", NULL },
+		&option_debug_domains,		_("Debug domains"), NULL },
 	{ NULL }
 };
 
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 	if (!g_option_context_parse (context, &argc, &argv, &error))
 	{
 		g_option_context_free (context);
-		g_print ("Option parsing failed: %s\n", error->message);
+		g_print (_("Option parsing failed: %s\n"), error->message);
 		return 1;
 	}
 
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	lsm_debug_enable (option_debug_domains);
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
-		g_print ("One input file name is required\n");
+		g_print (_("One input file name is required\n"));
 		return 1;
 	}
 
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
 			if (g_ascii_strcasecmp (option_output_file_format, file_formats[format]) == 0)
 				break;
 		if (FORMAT_UNKNOWN == format) {
-			g_print ("Unknown format : %s\n", option_output_file_format);
+			g_print (_("Unknown format : %s\n"), option_output_file_format);
 			return 1;
 		}
 	} else
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
 
 		lsm_debug ("render", "width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else
-		g_warning ("Can't load %s", input_filename);
+		g_warning (_("Can't load %s"), input_filename);
 
 	return (0);
 }
