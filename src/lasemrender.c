@@ -24,8 +24,8 @@
 #include <string.h>
 #include <lsm.h>
 #include <lsmmathml.h>
-#include <glib/gmessages.h>
-#include <glib/goption.h>
+#include <glib.h>
+#include <glib/gi18n.h>
 #include <glib/gprintf.h>
 #include <gio/gio.h>
 #include <cairo-pdf.h>
@@ -61,13 +61,13 @@ static const GOptionEntry entries[] =
 	{ G_OPTION_REMAINING,	' ', 0,	G_OPTION_ARG_FILENAME_ARRAY,
 		&option_input_filenames, 	NULL, NULL},
 	{ "output",		'o', 0, G_OPTION_ARG_FILENAME,
-		&option_output_filename,	_("Output filename"), NULL},
+		&option_output_filename,	N_("Output filename"), NULL},
 	{ "format", 		'f', 0, G_OPTION_ARG_STRING,
-		&option_output_file_format, 	_("Output format"), NULL },
+		&option_output_file_format, 	N_("Output format"), NULL },
 	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
-		&option_ppi, 			_("Pixel per inch"), NULL },
+		&option_ppi, 			N_("Pixel per inch"), NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
-		&option_debug_domains,		_("Debug domains"), NULL },
+		&option_debug_domains,		N_("Debug domains"), NULL },
 	{ NULL }
 };
 

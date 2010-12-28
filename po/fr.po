@@ -1,0 +1,53 @@
+# French translation for lasem
+# Copyright (C) 2010 Emmanuel Pacaud <emmanuel@gnome.org>
+# This file is distributed under the same license as the lasem package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-12-04 22:53+0100\n"
+"PO-Revision-Date: 2010-12-04 22:56+0100\n"
+"Last-Translator: Emmanuel Pacaud <emmanuel@gnome.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../src/lasemrender.c:64
+msgid "Output filename"
+msgstr "Nom du fichier de sortie"
+
+#: ../src/lasemrender.c:66
+msgid "Output format"
+msgstr "Format de sortie"
+
+#: ../src/lasemrender.c:68
+msgid "Pixel per inch"
+msgstr "Pixels par pouce"
+
+#: ../src/lasemrender.c:70
+msgid "Debug domains"
+msgstr "Domaine de déboguage"
+
+#: ../src/lasemrender.c:96
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Syntaxe des options incorrecte: %s\n"
+
+#: ../src/lasemrender.c:105
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Un nom de fichier d'entrée est nécessaire\n"
+
+#: ../src/lasemrender.c:116
+#, c-format
+msgid "Unknown format : %s\n"
+msgstr "Format inconnu: %s\n"
+
+#: ../src/lasemrender.c:238
+#, c-format
+msgid "Can't load %s"
+msgstr "%s ne peut être chargé"
+
