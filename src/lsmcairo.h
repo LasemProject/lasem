@@ -26,6 +26,7 @@
 
 #include <lsmtypes.h>
 #include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -42,6 +43,10 @@ void 			lsm_filter_surface_free 		(LsmFilterSurface *filter_surface);
 void 			lsm_filter_fast_blur 			(LsmFilterSurface *input,
 								 LsmFilterSurface *output,
 								 double sx, double sy);
+void 			lsm_cairo_set_source_pixbuf 		(cairo_t         *cr,
+								 const GdkPixbuf *pixbuf,
+								 gdouble          pixbuf_x,
+								 gdouble          pixbuf_y);
 
 G_END_DECLS
 

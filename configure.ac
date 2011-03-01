@@ -40,7 +40,6 @@ PKG_CHECK_MODULES(LASEM, [gobject-2.0
 			  glib-2.0
 			  gio-2.0
 			  gdk-pixbuf-2.0 >= 2.16
-			  gdk-2.0 >= 2.16
 			  cairo >= 1.2
 			  pangocairo >= 1.16.0
 			  libxml-2.0])

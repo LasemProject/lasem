@@ -34,7 +34,7 @@
 #include <lsmsvgmaskelement.h>
 #include <lsmcairo.h>
 #include <lsmstr.h>
-#include <gdk/gdk.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 #include <glib/gprintf.h>
 
 #include <math.h>
@@ -1462,7 +1462,7 @@ lsm_svg_view_show_pixbuf (LsmSvgView *view, GdkPixbuf *pixbuf)
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
 
-	gdk_cairo_set_source_pixbuf (view->dom_view.cairo, pixbuf, 0, 0);
+	lsm_cairo_set_source_pixbuf (view->dom_view.cairo, pixbuf, 0, 0);
 	cairo_paint (view->dom_view.cairo);
 }
 
