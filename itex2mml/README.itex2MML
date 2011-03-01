@@ -1,7 +1,7 @@
 itex2MML[1] transforms itex (a dialect of latex) into MathML. itex2MML is developed by
 Paul Gartside and Jacques Distler.
 
-Currently, we include itex2MML 1.3.22, with the following modification:
+Currently, we include itex2MML 1.4.5, with the following modification:
 
   - printf use is removed from itex2MML.y.
 
