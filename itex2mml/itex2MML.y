@@ -1,8 +1,6 @@
-/*             itex2MML 1.3.21
- *   itex2MML.y last modified 4/4/2010
+/*             itex2MML 1.4.5
+ *   itex2MML.y last modified 10/2/2010
  */
-
-%expect 220
 
 %{
 #include <stdio.h>
@@ -279,7 +277,7 @@
 %}
 
 %left TEXOVER TEXATOP
-%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR
+%token CHAR STARTMATH STARTDMATH ENDMATH MI MIB MN MO SUP SUB MROWOPEN MROWCLOSE LEFT RIGHT BIG BBIG BIGG BBIGG BIGL BBIGL BIGGL BBIGGL FRAC TFRAC OPERATORNAME MATHOP MATHBIN MATHREL MOP MOL MOLL MOF MOR PERIODDELIM OTHERDELIM LEFTDELIM RIGHTDELIM MOS MOB SQRT ROOT BINOM TBINOM UNDER OVER OVERBRACE UNDERLINE UNDERBRACE UNDEROVER TENSOR MULTI ARRAYALIGN COLUMNALIGN ARRAY COLSEP ROWSEP ARRAYOPTS COLLAYOUT COLALIGN ROWALIGN ALIGN EQROWS EQCOLS ROWLINES COLLINES FRAME PADDING ATTRLIST ITALICS BOLD BOXED SLASHED RM BB ST END BBLOWERCHAR BBUPPERCHAR BBDIGIT CALCHAR FRAKCHAR CAL FRAK CLAP LLAP RLAP ROWOPTS TEXTSIZE SCSIZE SCSCSIZE DISPLAY TEXTSTY TEXTBOX TEXTSTRING XMLSTRING CELLOPTS ROWSPAN COLSPAN THINSPACE MEDSPACE THICKSPACE QUAD QQUAD NEGSPACE PHANTOM HREF UNKNOWNCHAR EMPTYMROW STATLINE TOOLTIP TOGGLE FGHIGHLIGHT BGHIGHLIGHT SPACE INTONE INTTWO INTTHREE BAR WIDEBAR VEC WIDEVEC HAT WIDEHAT CHECK WIDECHECK TILDE WIDETILDE DOT DDOT DDDOT DDDDOT UNARYMINUS UNARYPLUS BEGINENV ENDENV MATRIX PMATRIX BMATRIX BBMATRIX VMATRIX VVMATRIX SVG ENDSVG SMALLMATRIX CASES ALIGNED GATHERED SUBSTACK PMOD RMCHAR COLOR BGCOLOR XARROW OPTARGOPEN OPTARGCLOSE
 
 %%
 
@@ -562,6 +560,7 @@ closedTerm: array
 | bbold
 | frak
 | slashed
+| boxed
 | cal
 | space
 | textstring
@@ -826,10 +825,6 @@ mo: mob
   itex2MML_free_string($2);
 };
 
-emptymrow: EMPTYMROW {
-  $$ = itex2MML_copy_string("<mrow></mrow>");
-};
-
 space: SPACE ST INTONE END ST INTTWO END ST INTTHREE END {
   char * s1 = itex2MML_copy3("<mspace height=\"", $3, "ex\" depth=\"");
   char * s2 = itex2MML_copy3($6, "ex\" width=\"", $9);
@@ -947,7 +942,12 @@ italics: ITALICS closedTerm {
 };
 
 slashed: SLASHED closedTerm {
-  $$ = itex2MML_copy3("<mrow><mpadded width=\"0.125em\"><mo>&#xff0f;</mo></mpadded>", $2, "</mrow>");
+  $$ = itex2MML_copy3("<menclose notation=\"updiagonalstrike\">", $2, "</menclose>");
+  itex2MML_free_string($2);
+};
+
+boxed: BOXED closedTerm {
+  $$ = itex2MML_copy3("<menclose notation=\"box\">", $2, "</menclose>");
   itex2MML_free_string($2);
 };
 
@@ -1217,6 +1217,13 @@ binom: BINOM closedTerm closedTerm {
   itex2MML_free_string(s1);
   itex2MML_free_string($2);
   itex2MML_free_string($3);
+}
+| TBINOM closedTerm closedTerm {
+  char * s1 = itex2MML_copy3("<mrow><mo>(</mo><mstyle displaystyle=\"false\"><mfrac linethickness=\"0\">", $2, $3);
+  $$ = itex2MML_copy2(s1, "</mfrac></mstyle><mo>)</mo></mrow>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($2);
+  itex2MML_free_string($3);
 };
 
 munderbrace: UNDERBRACE closedTerm {
@@ -1291,11 +1298,11 @@ check: CHECK closedTerm {
 };
 
 hat: HAT closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x302;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo stretchy=\"false\">&#x5E;</mo></mover>");
   itex2MML_free_string($2);
 }
 | WIDEHAT closedTerm {
-  $$ = itex2MML_copy3("<mover>", $2, "<mo>&#x302;</mo></mover>");
+  $$ = itex2MML_copy3("<mover>", $2, "<mo>&#x5E;</mo></mover>");
   itex2MML_free_string($2);
 };
 
@@ -1304,7 +1311,14 @@ msqrt: SQRT closedTerm {
   itex2MML_free_string($2);
 };
 
-mroot: ROOT closedTerm closedTerm {
+mroot: SQRT OPTARGOPEN compoundTermList OPTARGCLOSE closedTerm {
+  char * s1 = itex2MML_copy3("<mroot>", $5, $3);
+  $$ = itex2MML_copy2(s1, "</mroot>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+}
+| ROOT closedTerm closedTerm {
   char * s1 = itex2MML_copy3("<mroot>", $3, $2);
   $$ = itex2MML_copy2(s1, "</mroot>");
   itex2MML_free_string(s1);
@@ -1312,7 +1326,14 @@ mroot: ROOT closedTerm closedTerm {
   itex2MML_free_string($3);
 };
 
-munder: UNDER closedTerm closedTerm {
+munder: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE EMPTYMROW {
+  char * s1 = itex2MML_copy3("<munder><mo>", $1, "</mo><mrow>");
+  $$ = itex2MML_copy3(s1, $3, "</mrow></munder>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($1);
+  itex2MML_free_string($3);
+}
+| UNDER closedTerm closedTerm {
   char * s1 = itex2MML_copy3("<munder>", $3, $2);
   $$ = itex2MML_copy2(s1, "</munder>");
   itex2MML_free_string(s1);
@@ -1320,7 +1341,14 @@ munder: UNDER closedTerm closedTerm {
   itex2MML_free_string($3);
 };
 
-mover: OVER closedTerm closedTerm {
+mover: XARROW closedTerm {
+  char * s1 = itex2MML_copy3("<mover><mo>", $1, "</mo>");
+  $$ =  itex2MML_copy3(s1, $2, "</mover>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+}
+| OVER closedTerm closedTerm {
   char * s1 = itex2MML_copy3("<mover>", $3, $2);
   $$ = itex2MML_copy2(s1, "</mover>");
   itex2MML_free_string(s1);
@@ -1328,13 +1356,27 @@ mover: OVER closedTerm closedTerm {
   itex2MML_free_string($3);
 };
 
-munderover: UNDEROVER closedTerm closedTerm closedTerm {
+munderover: XARROW OPTARGOPEN compoundTermList OPTARGCLOSE closedTerm {
+  char * s1 = itex2MML_copy3("<munderover><mo>", $1, "</mo><mrow>");
+  char * s2 = itex2MML_copy3(s1, $3, "</mrow>");
+  $$ = itex2MML_copy3(s2, $5, "</munderover>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($1);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+}
+| UNDEROVER closedTerm closedTerm closedTerm {
   char * s1 = itex2MML_copy3("<munderover>", $4, $2);
   $$ = itex2MML_copy3(s1, $3, "</munderover>");
   itex2MML_free_string(s1);
   itex2MML_free_string($2);
   itex2MML_free_string($3);
   itex2MML_free_string($4);
+};
+
+emptymrow: EMPTYMROW {
+  $$ = itex2MML_copy_string("<mrow></mrow>");
 };
 
 mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
@@ -1377,12 +1419,39 @@ mathenv: BEGINENV MATRIX tableRowList ENDENV MATRIX {
   $$ = itex2MML_copy3("<mrow><mtable columnalign=\"right left right left right left right left right left\" columnspacing=\"0em\">", $3, "</mtable></mrow>");
   itex2MML_free_string($3);
 }
+| BEGINENV ARRAY ARRAYALIGN ST columnAlignList END tableRowList ENDENV ARRAY {
+  char * s1 = itex2MML_copy3("<mtable rowspacing=\"0.5ex\" align=\"", $3, "\" columnalign=\"");
+  char * s2 = itex2MML_copy3(s1, $5, "\">");
+  $$ = itex2MML_copy3(s2, $7, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string(s2);
+  itex2MML_free_string($3);
+  itex2MML_free_string($5);
+  itex2MML_free_string($7);
+}
+| BEGINENV ARRAY ST columnAlignList END tableRowList ENDENV ARRAY {
+  char * s1 = itex2MML_copy3("<mtable rowspacing=\"0.5ex\" columnalign=\"", $4, "\">");
+  $$ = itex2MML_copy3(s1, $6, "</mtable>");
+  itex2MML_free_string(s1);
+  itex2MML_free_string($4);
+  itex2MML_free_string($6);
+}
 | BEGINENV SVG XMLSTRING ENDSVG {
   $$ = itex2MML_copy3("<semantics><annotation-xml encoding=\"SVG1.1\">", $3, "</annotation-xml></semantics>");
   itex2MML_free_string($3);
 }
 | BEGINENV SVG ENDSVG {
   $$ = itex2MML_copy_string(" ");
+};
+
+columnAlignList: columnAlignList COLUMNALIGN {
+  $$ = itex2MML_copy3($1, " ", $2);
+  itex2MML_free_string($1);
+  itex2MML_free_string($2);
+}
+| COLUMNALIGN {
+  $$ = itex2MML_copy_string($1);
+  itex2MML_free_string($1);
 };
 
 substack: SUBSTACK MROWOPEN tableRowList MROWCLOSE {
