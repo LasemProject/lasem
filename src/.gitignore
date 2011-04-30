@@ -3,7 +3,7 @@
 *.lo
 *.la
 .libs
-lasemrender
+lasem-render-*
 *.swp
 *enumtypes.c
 *enumtypes.h

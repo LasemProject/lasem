@@ -261,14 +261,14 @@ lsmsvgenumtypes.h: lsmsvgenumtypes.h.template $(LASEM_SVG_HDRS) $(GLIB_MKENUMS)
 lsmsvgenumtypes.c: lsmsvgenumtypes.c.template $(LASEM_SVG_HDRS) $(GLIB_MKENUMS)
 	$(AM_V_GEN) (cd $(srcdir) && $(GLIB_MKENUMS) --template lsmsvgenumtypes.c.template $(LASEM_SVG_HDRS)) > $@
 
-bin_PROGRAMS = lasemrender
+bin_PROGRAMS = lasem-render-@LASEM_API_VERSION@
 
-lasemrender_SOURCES = 				\
+lasem_render_@LASEM_API_VERSION@_SOURCES = 				\
 	lasemrender.c
 
-lasemrender_LDFLAGS =
+lasem_render_@LASEM_API_VERSION@_LDFLAGS =
 
-lasemrender_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
+lasem_render_@LASEM_API_VERSION@_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSION@.la ../itex2mml/libitex2mml.la
 
 CLEANFILES = $(BUILT_SOURCES)
 
