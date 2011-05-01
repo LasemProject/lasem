@@ -9,7 +9,7 @@ m4_define([lasem_libtool_current], m4_eval(100 * lasem_version_major + lasem_ver
 
 AC_INIT([lasem], [lasem_version], [http://bugzilla.gnome.org/], [lasem])
 
-AM_INIT_AUTOMAKE([-Wno-portability])
+AM_INIT_AUTOMAKE([-Wno-portability dist-bzip2])
 AM_MAINTAINER_MODE
 
 AC_CONFIG_HEADERS([config.h])
