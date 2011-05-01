@@ -300,19 +300,55 @@ lsm_dom_node_get_owner_document (LsmDomNode* self)
 	return LSM_DOM_DOCUMENT (parent);
 }
 
+/**
+ * lsm_dom_node_insert_before:
+ * @self: a #LsmDomNode
+ * @new_child: (transfer full): node to insert
+ * @ref_child: (transfer none): reference node, i.e., the node before which the new node must be inserted.
+ *
+ * Inserts the node @new_child before the existing child node @ref_child. If
+ * @ref_child is null, insert @new_child at the end of the list of children.
+ * If the @new_child is already in the tree, it is first removed.
+ *
+ * returns: (transfer none): the inserted node.
+ */
+
+/* TODO:
+ * If @new_child is a #LsmDocumentFragment object, all of its children are inserted,
+ * in the same order, before @ref_child. 
+ * Check if new_child is an ancestor of self.
+ */
+
 LsmDomNode*
 lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* ref_child)
 {
 	LsmDomNodeClass *node_class;
 
-	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	if (ref_child == NULL)
+		lsm_dom_node_append_child (self, new_child);
+
 	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
-	g_return_val_if_fail (LSM_IS_DOM_NODE (ref_child), NULL);
+
+	if (new_child->parent_node != NULL)
+		lsm_dom_node_remove_child (self, new_child);
+
+	if (!LSM_IS_DOM_NODE (self)) {
+		g_critical ("%s: self is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		return NULL;
+	}
+
+	if (!LSM_IS_DOM_NODE (ref_child)) {
+		g_critical ("%s: ref_child is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		return NULL;
+	}
 
 	if (ref_child->parent_node != self) {
 		lsm_debug ("dom", "[LsmDomNode::insert_before] Ref child '%s' doesn't belong to '%s'",
 			   lsm_dom_node_get_node_name (ref_child),
 			   lsm_dom_node_get_node_name (self));
+		g_object_unref (new_child);
 		return NULL;
 	}
 
@@ -320,6 +356,7 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 		lsm_debug ("dom", "[LsmDomNode::insert_before] Can't append '%s' to '%s'",
 			   lsm_dom_node_get_node_name (new_child),
 			   lsm_dom_node_get_node_name (self));
+		g_object_unref (new_child);
 		return NULL;
 	}
 
@@ -344,28 +381,75 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	return new_child;
 }
 
+/**
+ * lsm_dom_node_replace_child:
+ * @self: a #LsmDomNode
+ * @new_child: (transfer full): a replacement node
+ * @old_child: (transfer none): node to replace
+ *
+ * Replaces the child node @old_child with @new_child in the list of children,
+ * and returns the @old_child node.
+ * If the @new_child is already in the tree, it is first removed.
+ *
+ * returns: (transfer full): the replaced node.
+ */
+
+/* TODO:
+ * Check if new_child is an ancestor of self.
+ */
+
 LsmDomNode*
 lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode* old_child)
 {
 	LsmDomNode *next_sibling;
 	LsmDomNode *node;
 
-	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
-	g_return_val_if_fail (LSM_IS_DOM_NODE (old_child), NULL);
+	if (new_child == NULL)
+		return lsm_dom_node_remove_child (self, old_child);
 
-	if (old_child->parent_node != self)
+	if (!LSM_IS_DOM_NODE (new_child)) {
+		g_critical ("%s: new_child is not a LsmDomNode", G_STRFUNC);
+		if (LSM_IS_DOM_NODE (old_child))
+			g_object_unref (old_child);
 		return NULL;
+	}
+
+	if (new_child->parent_node != NULL)
+		lsm_dom_node_remove_child (self, new_child);
+
+	if (old_child == NULL) {
+		lsm_debug ("dom", "[LsmDomNode::replace_child] old_child == NULL)");
+		g_object_unref (new_child);
+		return NULL;
+	}
+
+	if (!LSM_IS_DOM_NODE (old_child)) {
+		g_critical ("%s: old_child is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		return NULL;
+	}
+
+	if (!LSM_IS_DOM_NODE (self)) {
+		g_critical ("%s: self is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		g_object_unref (old_child);
+		return NULL;
+	}
+
+	if (old_child->parent_node != self) {
+		g_object_unref (new_child);
+		g_object_unref (old_child);
+		return NULL;
+	}
 
 	next_sibling = old_child->next_sibling;
 
 	node = lsm_dom_node_remove_child (self, old_child);
-	if (node != old_child)
+	if (node != old_child) {
+		g_object_unref (new_child);
+		g_object_unref (old_child);
 		return NULL;
-
-	if (new_child == NULL)
-		return NULL;
-
-	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
+	}
 
 	if (next_sibling == NULL)
 		lsm_dom_node_append_child (self, new_child);
@@ -375,6 +459,16 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	return old_child;
 }
 
+/**
+ * lsm_dom_node_remove_child:
+ * @self: a #LsmDomNode
+ * @old_child: (transfer none): node to remove.
+ *
+ * Removes the child node indicated by @old_child from the list of children, and returns it.
+ *
+ * returns: (transfer full): the removed node.
+ */
+
 LsmDomNode*
 lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 {
@@ -382,6 +476,10 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 	LsmDomNodeClass *node_class;
 
 	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+
+	if (old_child == NULL)
+		return NULL;
+
 	g_return_val_if_fail (LSM_IS_DOM_NODE (old_child), NULL);
 
 	for (node = self->first_child;
@@ -415,19 +513,41 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
 	return old_child;
 }
 
+/**
+ * lsm_dom_node_append_child:
+ * @self: a #LsmDomNode
+ * @new_child: (transfer full): node to append
+ *
+ * Adds the node @new_child to the end of the list of children of this node.
+ * If the @new_child is already in the tree, it is first removed.
+ *
+ * returns: (transfer none): the added node.
+ */
+
 LsmDomNode *
 lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 {
 	LsmDomNodeClass *node_class;
 
-	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
+	if (new_child == NULL)
+		return NULL;
+
 	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
-	g_return_val_if_fail (new_child->parent_node == NULL, NULL);
+
+	if (!LSM_IS_DOM_NODE (self)) {
+		g_critical ("%s: self is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		return NULL;
+	}
+
+	if (new_child->parent_node != NULL)
+		lsm_dom_node_remove_child (self, new_child);
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
 		lsm_debug ("dom", "[LsmDomNode::append_child] Can't append '%s' to '%s'",
 			   lsm_dom_node_get_node_name (new_child),
 			   lsm_dom_node_get_node_name (self));
+		g_object_unref (new_child);
 		return NULL;
 	}
 

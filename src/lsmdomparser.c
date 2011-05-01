@@ -116,9 +116,6 @@ lsm_dom_parser_start_element(void *user_data,
 		state->is_error = FALSE;
 		state->error_depth = 0;
 	} else {
-		if (node != NULL)
-			g_object_unref (node);
-
 		state->is_error = TRUE;
 		state->error_depth = 1;
 	}
@@ -155,10 +152,7 @@ lsm_dom_parser_characters (void *user_data, const xmlChar *ch, int len)
 		text = g_strndup ((char *) ch, len);
 		node = LSM_DOM_NODE (lsm_dom_document_create_text_node (LSM_DOM_DOCUMENT (state->document), text));
 
-		if (lsm_dom_node_append_child (state->current_node, node) == NULL) {
-			if (node != NULL)
-				g_object_unref (node);
-		}
+		lsm_dom_node_append_child (state->current_node, node);
 
 		g_free (text);
 	}
