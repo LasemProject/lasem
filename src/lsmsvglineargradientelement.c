@@ -61,13 +61,18 @@ lsm_svg_linear_gradient_element_get_node_name (LsmDomNode *node)
 static LsmSvgGradientElement *
 lsm_svg_linear_gradient_element_inherit_referenced (LsmDomDocument *owner,
 						    LsmSvgGradientElement *gradient,
-						    LsmSvgLinearGradientElementAttributes *attributes)
+						    LsmSvgLinearGradientElementAttributes *attributes,
+						    GSList **elements)
 {
 	LsmSvgGradientElement *referenced_gradient = gradient;
 	LsmDomElement *element;
 
+	*elements = g_slist_prepend (*elements, gradient);
+
 	if (lsm_attribute_is_defined (&gradient->href)) {
 		char *id;
+		GSList *iter;
+		gboolean circular_reference_found = FALSE;
 
 		id = gradient->href.value;
 		if (id == NULL)
@@ -76,21 +81,33 @@ lsm_svg_linear_gradient_element_inherit_referenced (LsmDomDocument *owner,
 			id++;
 
 		element = lsm_dom_document_get_element_by_id (owner, id);
-		if (LSM_IS_SVG_GRADIENT_ELEMENT (element)) {
-			lsm_debug ("render",
-				   "[LsmSvgLinearGradientElement::inherit_attributes]"
-				   " Found referenced element '%s'", id);
 
-			referenced_gradient = lsm_svg_linear_gradient_element_inherit_referenced
-				(owner,
-				 LSM_SVG_GRADIENT_ELEMENT (element),
-				 attributes);
-		} else {
-			lsm_debug ("render",
-				   "[LsmSvgLinearGradientElement::inherit_attributes]"
-				   " Referenced element '%s' not found", id);
+		for (iter = *elements; iter != NULL; iter = iter->next)
+			if (iter->data == element) {
+				lsm_debug ("render", "[LsmSvgLinearGradientElement::inherit_attributes] "
+					   "Circular reference (id = %s)", id);
+				circular_reference_found = TRUE;
+			}
+
+		if (!circular_reference_found) {
+			if (LSM_IS_SVG_GRADIENT_ELEMENT (element)) {
+				lsm_debug ("render",
+					   "[LsmSvgLinearGradientElement::inherit_attributes]"
+					   " Found referenced element '%s'", id);
+
+				referenced_gradient = lsm_svg_linear_gradient_element_inherit_referenced
+					(owner,
+					 LSM_SVG_GRADIENT_ELEMENT (element),
+					 attributes, elements);
+
+			} else {
+				lsm_debug ("render",
+					   "[LsmSvgLinearGradientElement::inherit_attributes]"
+					   " Referenced element '%s' not found", id);
+				referenced_gradient = NULL;
+			}
+		} else
 			referenced_gradient = NULL;
-		}
 	}
 
 	if (LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (gradient)) {
@@ -128,11 +145,14 @@ lsm_svg_linear_gradient_element_create_gradient (LsmSvgElement *self,
 		LsmSvgLinearGradientElementAttributes attributes;
 		LsmDomDocument *owner;
 		attributes = default_attributes;
+		GSList *elements = NULL;
 
 		owner = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 
 		referenced_gradient = lsm_svg_linear_gradient_element_inherit_referenced
-			(owner, LSM_SVG_GRADIENT_ELEMENT (gradient), &attributes);
+			(owner, LSM_SVG_GRADIENT_ELEMENT (gradient), &attributes, &elements);
+
+		g_slist_free (elements);
 
 		gradient->x1.length = attributes.x1;
 		gradient->y1.length = attributes.y1;

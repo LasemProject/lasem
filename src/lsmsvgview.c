@@ -40,6 +40,8 @@
 #include <math.h>
 #include <string.h>
 
+static gboolean lsm_svg_view_circular_reference_check (LsmSvgView *view, LsmSvgElement *element);
+
 static GObjectClass *parent_class;
 
 typedef struct {
@@ -761,9 +763,10 @@ _paint_url (LsmSvgView *view,
 	LsmBox extents;
 
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
-	if (!LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) &&
-	    !LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element) &&
-	    !LSM_IS_SVG_PATTERN_ELEMENT (element))
+	if ((!LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) &&
+	     !LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element) &&
+	     !LSM_IS_SVG_PATTERN_ELEMENT (element)) ||
+	    lsm_svg_view_circular_reference_check (view, element))
 		return;
 
 	lsm_debug ("render", "[LsmSvgView::_paint_url] Paint using '%s'", url);
@@ -889,6 +892,15 @@ paint_markers (LsmSvgView *view)
 							  style->marker_end->value);
 	stroke_width = lsm_svg_view_normalize_length (view, &view->style->stroke_width->length,
 						      LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	if (marker != NULL && lsm_svg_view_circular_reference_check (view, marker))
+		return;
+	if (marker_start != NULL && lsm_svg_view_circular_reference_check (view, marker_start))
+		return;
+	if (marker_mid != NULL && lsm_svg_view_circular_reference_check (view, marker_mid))
+		return;
+	if (marker_end != NULL && lsm_svg_view_circular_reference_check (view, marker_end))
+		return;
 
 	if (marker_start == NULL)
 		marker_start = marker;
@@ -1737,7 +1749,8 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 	view->clip_extents.height = extents.y2 - extents.y1;
 
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
-	if (LSM_IS_SVG_CLIP_PATH_ELEMENT (element)) {
+	if (LSM_IS_SVG_CLIP_PATH_ELEMENT (element) &&
+	    !lsm_svg_view_circular_reference_check (view, element)) {
 		view->is_clipping = TRUE;
 		lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 		cairo_clip (view->dom_view.cairo);
@@ -1771,7 +1784,8 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 	mask_element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
 							    view->style->mask->value);
 
-	if (LSM_IS_SVG_MASK_ELEMENT (mask_element)) {
+	if (LSM_IS_SVG_MASK_ELEMENT (mask_element) &&
+	    !lsm_svg_view_circular_reference_check (view, mask_element)) {
 		LsmExtents extents;
 		LsmBox mask_extents;
 		cairo_t *cairo;
@@ -1876,6 +1890,8 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	filter_element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
 							      view->style->filter->value);
 
+TODO: lsm_svg_view_circular_reference_check
+
 	cairo = view->pattern_data->old_cairo;
 
 	view->filter_surfaces = NULL;
@@ -1934,6 +1950,23 @@ lsm_svg_view_pop_element (LsmSvgView *view)
 	g_return_if_fail (view->element_stack != NULL);
 
 	view->element_stack = g_slist_delete_link (view->element_stack, view->element_stack);
+}
+
+static gboolean
+lsm_svg_view_circular_reference_check (LsmSvgView *view, LsmSvgElement *element)
+{
+	GSList *iter;
+
+	for (iter = view->element_stack; iter != NULL; iter = iter->next)
+		if (iter->data == element) {
+			lsm_debug ("render", "[LsmSvgView::circular_reference_check] "
+				   "Circular reference to %s (id = %s)",
+				   lsm_dom_element_get_tag_name (LSM_DOM_ELEMENT (element)),
+				   lsm_dom_element_get_attribute (LSM_DOM_ELEMENT (element), "id"));
+			return TRUE;
+		}
+
+	return FALSE;
 }
 
 void

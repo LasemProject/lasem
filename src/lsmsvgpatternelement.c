@@ -69,13 +69,18 @@ _pattern_element_get_node_name (LsmDomNode *node)
 static LsmSvgPatternElement *
 lsm_svg_pattern_element_inherit_referenced (LsmDomDocument *owner,
 					    LsmSvgPatternElement *pattern,
-					    LsmSvgPatternElementAttributes *attributes)
+					    LsmSvgPatternElementAttributes *attributes,
+					    GSList **elements)
 {
 	LsmSvgPatternElement *referenced_pattern = pattern;
 	LsmDomElement *element;
 
+	*elements = g_slist_prepend (*elements, pattern);
+
 	if (lsm_attribute_is_defined (&pattern->href)) {
 		char *id;
+		GSList *iter;
+		gboolean circular_reference_found = FALSE;
 
 		id = pattern->href.value;
 		if (id == NULL)
@@ -84,19 +89,32 @@ lsm_svg_pattern_element_inherit_referenced (LsmDomDocument *owner,
 			id++;
 
 		element = lsm_dom_document_get_element_by_id (owner, id);
-		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
-			lsm_debug ("render",
-				   "[LsmSvgPatternElement::inherit_attributes] Found referenced element '%s'", id);
 
-			referenced_pattern = lsm_svg_pattern_element_inherit_referenced
-				(owner,
-				 LSM_SVG_PATTERN_ELEMENT (element),
-				 attributes);
-		} else {
-			lsm_debug ("render",
-				   "[LsmSvgPatternElement::inherit_attributes] Referenced element '%s' not found", id);
+		for (iter = *elements; iter != NULL; iter = iter->next)
+			if (iter->data == element) {
+				lsm_debug ("render", "[LsmSvgPatternElement::inherit_attributes] "
+					   "Circular reference (id = %s)", id);
+				circular_reference_found = TRUE;
+			}
+
+		if (!circular_reference_found) {
+			if (LSM_IS_SVG_PATTERN_ELEMENT (element), elements) {
+				lsm_debug ("render",
+					   "[LsmSvgPatternElement::inherit_attributes] "
+					   "Found referenced element '%s'", id);
+
+				referenced_pattern = lsm_svg_pattern_element_inherit_referenced
+					(owner,
+					 LSM_SVG_PATTERN_ELEMENT (element),
+					 attributes, elements);
+			} else {
+				lsm_debug ("render",
+					   "[LsmSvgPatternElement::inherit_attributes] "
+					   "Referenced element '%s' not found", id);
+				referenced_pattern = NULL;
+			}
+		} else
 			referenced_pattern = NULL;
-		}
 	}
 
 	if (lsm_attribute_is_defined (&pattern->x.base))
@@ -144,10 +162,14 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		LsmSvgPatternElementAttributes attributes;
 		LsmDomDocument *owner;
 		attributes = default_attributes;
+		GSList *elements = NULL;
 
 		owner = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 
-		referenced_pattern = lsm_svg_pattern_element_inherit_referenced (owner, pattern, &attributes);
+		referenced_pattern = lsm_svg_pattern_element_inherit_referenced (owner, pattern,
+										 &attributes, &elements);
+
+		g_slist_free (elements);
 
 		pattern->x.length = attributes.x;
 		pattern->y.length = attributes.y;
