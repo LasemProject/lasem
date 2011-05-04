@@ -28,6 +28,11 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_RENDER =		1 << 0,
+	LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS =	1 << 1
+} LsmSvgUseElementFlags;
+
 #define LSM_TYPE_SVG_USE_ELEMENT             (lsm_svg_use_element_get_type ())
 #define LSM_SVG_USE_ELEMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_SVG_USE_ELEMENT, LsmSvgUseElement))
 #define LSM_SVG_USE_ELEMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_SVG_USE_ELEMENT, LsmSvgUseElementClass))
@@ -46,6 +51,8 @@ struct _LsmSvgUseElement {
 	LsmSvgLengthAttribute	height;
 
 	LsmAttribute		href;
+
+	LsmSvgUseElementFlags	flags;
 };
 
 struct _LsmSvgUseElementClass {

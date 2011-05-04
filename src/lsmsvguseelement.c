@@ -83,9 +83,16 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgMatrix matrix;
 	double x, y;
 
+	if (use_element->flags & LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_RENDER) {
+		lsm_debug ("render", "[LsmSvgUseElement::render] Circular reference");
+		return;
+	}
+
 	element = _get_used_element (use_element, "render");
 	if (element == NULL)
 		return;
+
+	use_element->flags |= LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_RENDER;
 
 	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
 					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
@@ -98,6 +105,8 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
 
 	lsm_svg_view_pop_matrix (view);
+
+	use_element->flags &= ~LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_RENDER;
 }
 
 static void
@@ -108,6 +117,15 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 	LsmSvgMatrix matrix;
 	double x, y;
 
+	if (use_element->flags & LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS) {
+		lsm_debug ("render", "[LsmSvgUseElement::get_extents] Circular reference");
+		extents->x1 = 0;
+		extents->y1 = 0;
+		extents->x2 = 0;
+		extents->y2 = 0;
+		return;
+	}
+
 	element = _get_used_element (use_element, "render");
 	if (element == NULL) {
 		extents->x1 = 0;
@@ -116,6 +134,8 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 		extents->y2 = 0;
 		return;
 	}
+
+	use_element->flags |= LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS;
 
 	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
 					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
@@ -137,6 +157,8 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 					       &extents->x2, &extents->y2);
 
 	lsm_svg_view_pop_matrix (view);
+
+	use_element->flags &= ~LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS;
 }
 
 /* LsmSvgUseElement implementation */
