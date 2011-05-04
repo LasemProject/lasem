@@ -1337,7 +1337,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	PangoStyle font_style;
 	PangoLayoutIter *iter;
 	PangoRectangle rectangle;
-	double font_size;
+	int font_size;
 	int baseline;
 	double x1, y1;
 
@@ -1364,11 +1364,14 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	pango_layout = view->pango_layout;
 	font_description = view->dom_view.font_description;
 
-	font_size = lsm_svg_view_normalize_length (view, &style->font_size->length,
-						   LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	font_size = PANGO_SCALE * lsm_svg_view_normalize_length (view, &style->font_size->length,
+								 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+
+	if (font_size < 0)
+		font_size = 0;
 
 	pango_font_description_set_family (font_description, style->font_family->value);
-	pango_font_description_set_size (font_description, font_size * PANGO_SCALE);
+	pango_font_description_set_size (font_description, font_size);
 	pango_font_description_set_weight (font_description, style->font_weight->value);
 
 	switch (style->font_stretch->value) {
