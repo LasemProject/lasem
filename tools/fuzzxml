@@ -1,0 +1,243 @@
+#!/usr/bin/perl -w
+
+# Copyright (C) 2010 Morten Welinder.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+use strict;
+use XML::Parser;
+use XML::Writer;
+use IO::File;
+use Getopt::Long;
+
+# -----------------------------------------------------------------------------
+
+my $base_prob = 1 / 1000;
+my $seed = undef;
+
+Getopt::Long::Configure ("bundling");
+&GetOptions ("s|seed=i" => \$seed,
+	     "r|rate=f" => \$base_prob,
+    );
+srand ($seed) if defined $seed;
+
+my $infile = shift @ARGV;
+my $outfile = shift @ARGV;
+
+my $remove_tag_prob = 0.1 * $base_prob;
+my $remove_attr_prob = 0.1 * $base_prob;
+my $change_int_prob = $base_prob;
+my $copy_attr_value_prob = $base_prob;
+my $permute_attrs_prob = $base_prob;
+
+my %attr_range;
+
+# -----------------------------------------------------------------------------
+
+my $tree;
+my $encoding;
+{
+    my $parser = new XML::Parser ('Style' => 'Tree');
+    $parser->setHandlers('Start' => \&MyStart,
+			 'XMLDecl' => sub {
+			     my ($expat,$ver,$enc,$standalone) = @_;
+			     $encoding = $enc;
+			 });
+    $tree = $parser->parsefile ($infile);
+}
+
+&study_tags ($tree);
+foreach my $key (sort keys %attr_range) {
+    $attr_range{$key} = [sort keys %{$attr_range{$key}}];
+}
+
+&fuzz_tags ($tree);
+
+{
+    my $f = new IO::File ($outfile, "w");
+    my $writer = new XML::Writer(OUTPUT => $f,
+				 ENCODING => $encoding);
+    if (defined $encoding) {
+	$writer->xmlDecl();
+    }
+    &write_xml ($writer, $tree);
+}
+
+# -----------------------------------------------------------------------------
+
+sub fuzz_tags {
+    my ($pl) = @_;
+
+    for (my $i = 0; $i + 1 < @$pl; $i += 2) {
+	my $tag = $pl->[$i];
+	my $cont = $pl->[$i + 1];
+
+	if ($tag eq '0') {
+	    &fuzz_text (\$cont);
+	    $pl->[$i + 1] = $cont;
+	} else {
+	    if (&doit ($remove_tag_prob)) {
+		splice @$pl, $i, 2;
+		$i -= 2; # Counter the add
+		next;
+	    }
+
+	    my ($attrs,@l) = @$cont;
+	    &fuzz_attrs ($attrs);
+	    &fuzz_tags (\@l);
+	    $pl->[$i + 1] = [$attrs, @l];
+	}
+    }
+}
+
+sub fuzz_text {
+    my ($pt) = @_;
+    my $t = ${$pt};
+
+    if (&looks_like_int ($t) && &doit ($change_int_prob)) {
+	my $i = int((rand() - 0.5) * 2 * 2147483647);
+	${$pt} = $i;
+	return;
+    }
+}
+
+sub fuzz_attrs {
+    my ($pa) = @_;
+
+    my @l = @$pa;
+    if (@l > 2 && &doit ($permute_attrs_prob)) {
+	my @p = &random_permutation (@l / 2);
+	my @l2 = ();
+	foreach my $i (@p) {
+	    push @l2, $l[$i * 2], $l[$i * 2 + 1];
+	}
+	@l = @l2;
+    }
+    for (my $i = 0; $i + 1 < @l; $i += 2) {
+	if (&doit ($remove_attr_prob)) {
+	    splice @l, $i, 2;
+	    $i -= 2; # Counter the add
+	    next;
+	} else {
+	    my $attr = $l[$i];
+	    my $N = @{$attr_range{$attr}};
+	    if ($N > 1 && &doit ($copy_attr_value_prob)) {
+		# Copy a random value seen for this attribute.
+		$l[$i + 1] = $attr_range{$attr}->[int (rand ($N))];
+	    } else {
+		&fuzz_text (\$l[$i + 1]);
+	    }
+	}
+    }
+    @$pa = @l;
+}
+
+# -----------------------------------------------------------------------------
+
+sub study_tags {
+    my ($pl) = @_;
+
+    for (my $i = 0; $i + 1 < @$pl; $i += 2) {
+	my $tag = $pl->[$i];
+	my $cont = $pl->[$i + 1];
+
+	if ($tag eq '0') {
+	    &study_text ($cont);
+	} else {
+	    my ($attrs,@l) = @$cont;
+	    &study_attrs ($attrs);
+	    &study_tags (\@l);
+	}
+    }
+}
+
+sub study_text {
+}
+
+sub study_attrs {
+    my ($pa) = @_;
+
+    for (my $i = 0; $i + 1 < @$pa; $i += 2) {
+	my $attr = $pa->[$i];
+	my $value = $pa->[$i + 1];
+	$attr_range{$attr}{$value} = 1;
+    }
+}
+
+# -----------------------------------------------------------------------------
+
+sub write_xml {
+    my ($writer,$pl) = @_;
+
+    for (my $i = 0; $i + 1 < @$pl; $i += 2) {
+	my $tag = $pl->[$i];
+	my $cont = $pl->[$i + 1];
+
+	if ($tag eq '0') {
+	    $writer->characters($cont);
+	} else {
+	    my ($attrs,@l) = @$cont;
+	    if (@l == 0) {
+		$writer->emptyTag($tag, @$attrs);
+	    } else {
+		$writer->startTag($tag, @$attrs);
+		&write_xml ($writer, \@l);
+		$writer->endTag($tag);
+	    }
+	}
+    }
+}
+
+# -----------------------------------------------------------------------------
+
+sub doit {
+    my ($p) = @_;
+    return rand() < $p;
+}
+
+# -----------------------------------------------------------------------------
+
+sub looks_like_int {
+    my ($t) = @_;
+    return ($t =~ /^[-+]?\d+$/) ? 1 : 0;
+}
+
+# -----------------------------------------------------------------------------
+# Return a random permutation of (0 ... $n-1)
+
+sub random_permutation {
+    my ($n) = @_;
+
+    my @src = (0 ... $n-1);
+    my @dst;
+    while (@src) {
+	my $i = int (rand() * @src);
+	push @dst, $src[$i];
+	splice @src, $i, 1;
+    }
+    return @dst;
+}
+
+# -----------------------------------------------------------------------------
+# Just like XML::Parse::Style::Tree::start, except attrs as list.
+
+sub MyStart {
+    my $expat = shift;
+    my $tag = shift;
+    my $newlist = [ [ @_ ] ];
+    push @{ $expat->{Lists} }, $expat->{Curlist};
+    push @{ $expat->{Curlist} }, $tag => $newlist;
+    $expat->{Curlist} = $newlist;
+}
