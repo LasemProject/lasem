@@ -4,7 +4,7 @@ INCLUDES = -g -I$(top_srcdir)/src/ $(LASEM_CFLAGS)
 
 test_progs_ldadd = 					\
 	$(top_builddir)/src/liblasem-@LASEM_API_VERSION@.la		\
-	$(top_builddir)/itex2mml/libitex2mml.la
+	$(top_builddir)/itex2mml/libitex2mml.la		\
 	$(LASEM_LIBS)
 
 noinst_PROGRAMS = lsm-test
