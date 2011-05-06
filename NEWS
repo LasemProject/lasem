@@ -1,3 +1,13 @@
+Release 0.2.1
+=============
+
+Bug fix release.
+
+  * License changed to LGPLv2+.
+  * itexmml update to 1.3.22.
+  * Lower autoconf requirement to 2.63.0.
+  * Don't set -Werror flag.
+
 Release 0.2.0
 =============
 
