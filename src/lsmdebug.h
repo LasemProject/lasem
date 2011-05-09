@@ -62,12 +62,9 @@ extern LsmDebugCategory lsm_debug_category_render;
 #define lsm_log_render(...)		lsm_log (&lsm_debug_category_render, __VA_ARGS__)
 #define lsm_warning_render(...)		lsm_warning (&lsm_debug_category_render, __VA_ARGS__)
 
-#define lsm_warning(c,...)		lsm_debug_with_level ((c), LSM_DEBUG_LEVEL_WARNING, __VA_ARGS__)
-#define lsm_debug(c,...)		lsm_debug_with_level (c, LSM_DEBUG_LEVEL_DEBUG, __VA_ARGS__)
-#define lsm_log(c,...)			lsm_debug_with_level ((c), LSM_DEBUG_LEVEL_LOG, __VA_ARGS__)
-
-void		lsm_debug_with_level		(LsmDebugCategory *category, LsmDebugLevel level,
-						 const char *format, ...);
+void 		lsm_warning 			(LsmDebugCategory *category, const char *format, ...);
+void 		lsm_debug 			(LsmDebugCategory *category, const char *format, ...);
+void 		lsm_log 			(LsmDebugCategory *category, const char *format, ...);
 
 gboolean	lsm_debug_check			(LsmDebugCategory *category, LsmDebugLevel level);
 

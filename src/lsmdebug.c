@@ -126,17 +126,43 @@ lsm_debug_check	(LsmDebugCategory *category, LsmDebugLevel level)
 	return (int) level <= (int) category->level;
 }
 
-void
-lsm_debug_with_level (LsmDebugCategory *category, LsmDebugLevel level, const char *format, ...)
+static void
+lsm_debug_with_level (LsmDebugCategory *category, LsmDebugLevel level, const char *format, va_list args)
 {
-	va_list args;
-
 	if (!lsm_debug_check (category, level))
 		return;
 
-	va_start (args, format);
 	g_vprintf (format, args);
 	g_printf ("\n");
+}
+
+void
+lsm_warning (LsmDebugCategory *category, const char *format, ...)
+{
+	va_list args;
+
+	va_start (args, format);
+	lsm_debug_with_level (category, LSM_DEBUG_LEVEL_WARNING, format, args);
+	va_end (args);
+}
+
+void
+lsm_debug (LsmDebugCategory *category, const char *format, ...)
+{
+	va_list args;
+
+	va_start (args, format);
+	lsm_debug_with_level (category, LSM_DEBUG_LEVEL_DEBUG, format, args);
+	va_end (args);
+}
+
+void
+lsm_log (LsmDebugCategory *category, const char *format, ...)
+{
+	va_list args;
+
+	va_start (args, format);
+	lsm_debug_with_level (category, LSM_DEBUG_LEVEL_LOG, format, args);
 	va_end (args);
 }
 
