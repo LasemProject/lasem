@@ -1,3 +1,4 @@
 dom
 suite
 lsm-test
+fuzz.*
