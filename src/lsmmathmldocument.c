@@ -128,7 +128,7 @@ lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_na
 	else if (strcmp (tag_name, "lasem:itex") == 0)
 		node = lsm_mathml_itex_element_new ();
 	else
-		lsm_debug ("dom", "[MathmlDocument::create_element] Unknown tag (%s)", tag_name);
+		lsm_debug_dom ("[MathmlDocument::create_element] Unknown tag (%s)", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
 }
@@ -205,7 +205,7 @@ lsm_mathml_document_new_from_itex (const char *itex, int size, GError **error)
 	xml = itex2MML_parse (itex, size);
 
 	if (xml == NULL) {
-		lsm_debug ("dom", "[LsmMathmlDocument::new_from_itex] Invalid document");
+		lsm_debug_dom ("[LsmMathmlDocument::new_from_itex] Invalid document");
 
 		g_set_error (error,
 			     LSM_MATHML_DOCUMENT_ERROR,

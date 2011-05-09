@@ -64,7 +64,7 @@ lsm_svg_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (referenced_gradient == NULL)
 		return;
 
-	lsm_debug ("render", "[LsmSvgElement::render] transform %g, %g, %g, %g, %g, %g",
+	lsm_debug_render ("[LsmSvgElement::render] transform %g, %g, %g, %g, %g, %g",
 		   gradient->transform.matrix.a,
 		   gradient->transform.matrix.b,
 		   gradient->transform.matrix.c,

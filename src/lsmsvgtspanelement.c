@@ -54,7 +54,7 @@ lsm_svg_tspan_element_render (LsmSvgElement *self, LsmSvgView *view)
 	GString *string = g_string_new ("");
 	double x, y;
 
-	lsm_debug ("render", "[LsmSvgTspanElement::render] Render");
+	lsm_debug_render ("[LsmSvgTspanElement::render] Render");
 
 	if (node->first_child == NULL)
 		return;

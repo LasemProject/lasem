@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 	}
 
 	if (document != NULL) {
-		if (lsm_debug_check ("dom")) {
+		if (lsm_debug_check (&lsm_debug_category_dom, LSM_DEBUG_LEVEL_LOG)) {
 			void *buffer;
 			int size;
 
@@ -183,8 +183,6 @@ int main(int argc, char **argv)
 		lsm_dom_document_set_resolution (document, option_ppi);
 
 		view = lsm_dom_document_create_view (document);
-
-		lsm_dom_view_set_debug (view, lsm_debug_check ("view"));
 
 		width_pt = 2.0;
 		height_pt = 2.0;
@@ -233,7 +231,7 @@ int main(int argc, char **argv)
 
 		g_object_unref (document);
 
-		lsm_debug ("render", "width = %g pt, height = %g pt",  width_pt, height_pt);
+		lsm_debug_render ("width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else
 		g_warning (_("Can't load %s"), input_filename);
 

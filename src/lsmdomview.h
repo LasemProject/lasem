@@ -49,8 +49,6 @@ struct _LsmDomView {
 	PangoLayout *		measure_pango_layout;
 	cairo_t *		cairo;
 	gboolean		is_vector;
-
-	gboolean debug;
 };
 
 struct _LsmDomViewClass {
@@ -69,8 +67,6 @@ void			lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height);
 void 			lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height);
 
 void 			lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
-
-void			lsm_dom_view_set_debug 		(LsmDomView *view, gboolean debug);
 
 G_END_DECLS
 

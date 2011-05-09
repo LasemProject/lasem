@@ -175,7 +175,6 @@ LsmDomView
 lsm_dom_view_render
 lsm_dom_view_get_size
 lsm_dom_view_get_size_pixels
-lsm_dom_view_set_debug
 <SUBSECTION Standard>
 LsmDomViewClass
 LSM_DOM_VIEW

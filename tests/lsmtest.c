@@ -128,8 +128,6 @@ lasem_test_render (char const *filename)
 
 		view = lsm_dom_document_create_view (document);
 
-		lsm_dom_view_set_debug (view, lsm_debug_check ("view"));
-
 		viewport.x = 0.0;
 		viewport.y = 0.0;
 		viewport.width = 480.0;

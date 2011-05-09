@@ -117,8 +117,8 @@ lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_
 	g_return_val_if_fail (parent_style != NULL, FALSE);
 
 	if (!self->need_update && !self->need_children_update) {
-		lsm_debug ("update", "[Element::update] %s already up to date",
-			    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
+		lsm_debug_update ("[Element::update] %s already up to date",
+				  lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
 		return FALSE;
 	}
 
@@ -130,10 +130,10 @@ lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_
 	if (element_class->update != NULL)
 		element_class->update (self, style);
 
-	lsm_debug ("update", "[Element::update] update %s (%s-%g)",
-		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)),
-		    style->math_family != NULL ? style->math_family : "undefined" ,
-		    style->math_size);
+	lsm_debug_update ("[Element::update] update %s (%s-%g)",
+			  lsm_dom_node_get_node_name (LSM_DOM_NODE (self)),
+			  style->math_family != NULL ? style->math_family : "undefined" ,
+			  style->math_size);
 
 	g_free (self->style.math_family);
 	self->style.math_family = g_strdup (style->math_family);
@@ -204,7 +204,7 @@ _measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox
 	}
 
 	if (stretchy_found) {
-		lsm_debug ("measure", "[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
+		lsm_debug_measure ("[Element::_measure] Stretchy found (width = %g, height = %g, depth = %g)",
 			    stretch_bbox.width, stretch_bbox.height, stretch_bbox.depth);
 
 		for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
@@ -241,12 +241,12 @@ lsm_mathml_element_measure (LsmMathmlElement *element, LsmMathmlView *view, cons
 		if (element_class->measure) {
 			element->bbox = *(element_class->measure (element, view, stretch_bbox));
 
-			lsm_debug ("measure", "[Element::measure] Bbox (%s) %g, %g, %g",
+			lsm_debug_measure ("[Element::measure] Bbox (%s) %g, %g, %g",
 				    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 				    element->bbox.width, element->bbox.height, element->bbox.depth);
 		} else {
 
-			lsm_debug ("measure", "[Element::measure] method not defined");
+			lsm_debug_measure ("[Element::measure] method not defined");
 			element->bbox.width = 0.0;
 			element->bbox.height = 0.0;
 			element->bbox.depth = 0.0;
@@ -255,7 +255,7 @@ lsm_mathml_element_measure (LsmMathmlElement *element, LsmMathmlView *view, cons
 		element->need_measure = FALSE;
 		element->need_layout = TRUE;
 	} else
-		lsm_debug ("measure", "[Element::measure] %s already up to date",
+		lsm_debug_measure ("[Element::measure] %s already up to date",
 			    lsm_dom_node_get_node_name (LSM_DOM_NODE (element)));
 
 	return &element->bbox;
@@ -299,7 +299,7 @@ lsm_mathml_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 
 	g_return_if_fail (element_class != NULL);
 
-	lsm_debug ("measure", "[Element::layout] assigned bbox for %s = %g, %g, %g at %g, %g",
+	lsm_debug_measure ("[Element::layout] assigned bbox for %s = %g, %g, %g at %g, %g",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)), bbox->width, bbox->height, bbox->depth, x , y);
 
 	self->x = x;

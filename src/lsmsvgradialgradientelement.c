@@ -91,25 +91,23 @@ lsm_svg_radial_gradient_element_inherit_referenced (LsmDomDocument *owner,
 
 		for (iter = *elements; iter != NULL; iter = iter->next)
 			if (iter->data == element) {
-				lsm_debug ("render", "[LsmSvgRadialGradientElement::inherit_attributes] "
+				lsm_debug_render ("[LsmSvgRadialGradientElement::inherit_attributes] "
 					   "Circular reference (id = %s)", id);
 				circular_reference_found = TRUE;
 			}
 
 		if (!circular_reference_found) {
 			if (LSM_IS_SVG_GRADIENT_ELEMENT (element)) {
-				lsm_debug ("render",
-					   "[LsmSvgRadialGradientElement::inherit_attributes]"
-					   " Found referenced element '%s'", id);
+				lsm_debug_render ("[LsmSvgRadialGradientElement::inherit_attributes]"
+						  " Found referenced element '%s'", id);
 
 				referenced_gradient = lsm_svg_radial_gradient_element_inherit_referenced
 					(owner,
 					 LSM_SVG_GRADIENT_ELEMENT (element),
 					 attributes, elements);
 			} else {
-				lsm_debug ("render",
-					   "[LsmSvgRadialGradientElement::inherit_attributes]"
-					   " Referenced element '%s' not found", id);
+				lsm_debug_render ("[LsmSvgRadialGradientElement::inherit_attributes]"
+						  " Referenced element '%s' not found", id);
 				referenced_gradient = NULL;
 			}
 		} else
@@ -229,7 +227,7 @@ lsm_svg_radial_gradient_element_create_gradient (LsmSvgElement *self,
 	if (is_object_bounding_box)
 		lsm_svg_view_pop_viewbox (view);
 
-	lsm_debug ("render", "[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
+	lsm_debug_render ("[LsmSvgRadialElement::render] cx = %g, cy = %g, r = %g, fx = %g, fy = %g",
 		    cx, cy, r, fx, fy);
 
 	lsm_svg_view_create_radial_gradient (view, cx, cy, r, fx, fy);

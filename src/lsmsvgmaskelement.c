@@ -47,7 +47,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgStyle *style;
 
 	if (!mask->enable_rendering) {
-		lsm_debug ("render", "[LsmSvgMaskElement::render] Direct rendering not allowed");
+		lsm_debug_render ("[LsmSvgMaskElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		mask->enable_rendering = FALSE;
@@ -85,7 +85,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
-		lsm_debug ("render", "[LsmSvgMaskElement::render] Invalid viewport w = %g, h = %g",
+		lsm_debug_render ("[LsmSvgMaskElement::render] Invalid viewport w = %g, h = %g",
 			   viewport.width, viewport.height);
 		lsm_svg_view_pop_style (view);
 		lsm_svg_style_unref (style);
@@ -95,13 +95,13 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (!lsm_svg_view_create_surface_pattern (view, &viewport,
 						  NULL,
 						  LSM_SVG_VIEW_SURFACE_TYPE_IMAGE)) {
-		lsm_debug ("render", "[LsmSvgMaskElement::render] Intermediate surface creation failed");
+		lsm_debug_render ("[LsmSvgMaskElement::render] Intermediate surface creation failed");
 		lsm_svg_view_pop_style (view);
 		lsm_svg_style_unref (style);
 		return;
 	}
 
-	lsm_debug ("render", "[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
+	lsm_debug_render ("[LsmSvgMaskElement::render] Create mask x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	is_object_bounding_box = (mask->content_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
@@ -115,7 +115,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 
-		lsm_debug ("render", "[LsmSvgMaskElement::render] object_bounding_box"
+		lsm_debug_render ("[LsmSvgMaskElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
 			   mask_extents->width, mask_extents->height,
 			   mask_extents->x, mask_extents->y);

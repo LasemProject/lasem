@@ -54,7 +54,7 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 	gboolean is_object_bounding_box;
 
 	if (!filter->enable_rendering) {
-		lsm_debug ("render", "[LsmSvgFilterElement::render] Direct rendering not allowed");
+		lsm_debug_render ("[LsmSvgFilterElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		filter->enable_rendering = FALSE;
@@ -89,12 +89,12 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
-		lsm_debug ("render", "[LsmSvgFilterElement::render] Invalid filter area w = %g, h = %g",
+		lsm_debug_render ("[LsmSvgFilterElement::render] Invalid filter area w = %g, h = %g",
 			   viewport.width, viewport.height);
 		return;
 	}
 
-	lsm_debug ("render", "[LsmFilterElement::render] Render filter x = %g, y = %g, w = %g, h = %g",
+	lsm_debug_render ("[LsmFilterElement::render] Render filter x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	is_object_bounding_box = (filter->primitive_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);

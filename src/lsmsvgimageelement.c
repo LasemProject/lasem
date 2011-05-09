@@ -108,7 +108,7 @@ lsm_svg_image_element_render (LsmSvgElement *self, LsmSvgView *view)
 	viewport.height = lsm_svg_view_normalize_length (view, &image->height.length,
 							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_debug ("render", "[LsmSvgImageElement::graphic_render] viewport %g, %g, %g, %g",
+	lsm_debug_render ("[LsmSvgImageElement::graphic_render] viewport %g, %g, %g, %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	viewbox.x = 0;

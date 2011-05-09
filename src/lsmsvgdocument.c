@@ -138,7 +138,7 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_gaussian_blur_new ();
 
 	if (node != NULL)
-		lsm_debug ("dom", "[LsmSvgDocument::create_element] Create a %s element", tag_name);
+		lsm_debug_dom ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
 }

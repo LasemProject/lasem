@@ -49,7 +49,7 @@ lsm_svg_line_element_render (LsmSvgElement *self, LsmSvgView *view)
 	x2 = lsm_svg_view_normalize_length (view, &line->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	y2 = lsm_svg_view_normalize_length (view, &line->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_debug ("render", "[LsmSvgLineElement::render] %g, %g, %g, %g", x1, y1, x2, y2);
+	lsm_debug_render ("[LsmSvgLineElement::render] %g, %g, %g, %g", x1, y1, x2, y2);
 
 	lsm_svg_view_show_line (view, x1, y1, x2, y2);
 }

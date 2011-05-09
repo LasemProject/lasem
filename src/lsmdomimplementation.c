@@ -54,7 +54,7 @@ lsm_dom_implementation_create_document (const char *namespace_uri,
 
 	create_function = g_hash_table_lookup (document_types, qualified_name);
 	if (create_function == NULL) {
-		lsm_debug ("dom", "[LsmDomImplementation::create_document] Unknow document type (%s)",
+		lsm_debug_dom ("[LsmDomImplementation::create_document] Unknow document type (%s)",
 			   qualified_name);
 		return NULL;
 	}

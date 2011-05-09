@@ -46,7 +46,7 @@ lsm_svg_clip_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgStyle *style;
 
 	if (!clip->enable_rendering) {
-		lsm_debug ("render", "[LsmSvgClipPathElement::render] Direct rendering not allowed");
+		lsm_debug_render ("[LsmSvgClipPathElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		clip->enable_rendering = FALSE;

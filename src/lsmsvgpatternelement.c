@@ -92,25 +92,23 @@ lsm_svg_pattern_element_inherit_referenced (LsmDomDocument *owner,
 
 		for (iter = *elements; iter != NULL; iter = iter->next)
 			if (iter->data == element) {
-				lsm_debug ("render", "[LsmSvgPatternElement::inherit_attributes] "
+				lsm_debug_render ("[LsmSvgPatternElement::inherit_attributes] "
 					   "Circular reference (id = %s)", id);
 				circular_reference_found = TRUE;
 			}
 
 		if (!circular_reference_found) {
 			if (LSM_IS_SVG_PATTERN_ELEMENT (element), elements) {
-				lsm_debug ("render",
-					   "[LsmSvgPatternElement::inherit_attributes] "
-					   "Found referenced element '%s'", id);
+				lsm_debug_render ("[LsmSvgPatternElement::inherit_attributes] "
+						  "Found referenced element '%s'", id);
 
 				referenced_pattern = lsm_svg_pattern_element_inherit_referenced
 					(owner,
 					 LSM_SVG_PATTERN_ELEMENT (element),
 					 attributes, elements);
 			} else {
-				lsm_debug ("render",
-					   "[LsmSvgPatternElement::inherit_attributes] "
-					   "Referenced element '%s' not found", id);
+				lsm_debug_render ("[LsmSvgPatternElement::inherit_attributes] "
+						  "Referenced element '%s' not found", id);
 				referenced_pattern = NULL;
 			}
 		} else
@@ -152,7 +150,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgStyle *style;
 
 	if (!pattern->enable_rendering) {
-		lsm_debug ("render", "[LsmSvgPatternElement::render] Direct rendering not allowed");
+		lsm_debug_render ("[LsmSvgPatternElement::render] Direct rendering not allowed");
 		return;
 	} else {
 		pattern->enable_rendering = FALSE;
@@ -220,20 +218,20 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
-		lsm_debug ("render", "[LsmSvgPatternElement::render] Invalid viewport w = %g, h = %g",
+		lsm_debug_render ("[LsmSvgPatternElement::render] Invalid viewport w = %g, h = %g",
 			   viewport.width, viewport.height);
 		lsm_svg_view_pop_style (view);
 		lsm_svg_style_unref (style);
 		return;
 	}
 
-	lsm_debug ("render", "[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
+	lsm_debug_render ("[LsmSvgPatternElement::render] Create pattern x = %g, y = %g, w = %g, h = %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	if (!lsm_svg_view_create_surface_pattern (view, &image_box,
 						  &pattern->transform.matrix,
 						  LSM_SVG_VIEW_SURFACE_TYPE_AUTO)) {
-		lsm_debug ("render", "[LsmSvgPatternElement::render] Intermediate surface creation failed");
+		lsm_debug_render ("[LsmSvgPatternElement::render] Intermediate surface creation failed");
 		lsm_svg_view_pop_style (view);
 		lsm_svg_style_unref (style);
 		return;
@@ -250,7 +248,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_push_viewbox (view, &viewbox);
 		lsm_svg_view_push_matrix (view, &matrix);
 
-		lsm_debug ("render", "[LsmSvgPatternElement::render] object_bounding_box"
+		lsm_debug_render ("[LsmSvgPatternElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
 			   pattern_extents->width, pattern_extents->height,
 			   pattern_extents->x,     pattern_extents->y);

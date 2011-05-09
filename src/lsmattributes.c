@@ -149,7 +149,7 @@ lsm_attribute_manager_set_attribute (LsmAttributeManager *manager,
 			g_free (attribute->value);
 			attribute->value = NULL;
 
-			lsm_debug ("dom", "[LsmAttributeManager::set_attribute] Invalid attribute value %s='%s'",
+			lsm_debug_dom ("[LsmAttributeManager::set_attribute] Invalid attribute value %s='%s'",
 				   name, value);
 		} else
 			return TRUE;

@@ -154,18 +154,10 @@ lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 
 	cairo_restore (view->cairo);
 
-	lsm_debug ("render", "[LsmDomView::render] cairo status = %s",
-		   cairo_status_to_string (cairo_status (view->cairo)));
+	lsm_debug_render ("[LsmDomView::render] cairo status = %s",
+			  cairo_status_to_string (cairo_status (view->cairo)));
 
 	lsm_dom_view_set_cairo_context (view, NULL);
-}
-
-void
-lsm_dom_view_set_debug (LsmDomView *view, gboolean debug)
-{
-	g_return_if_fail (LSM_IS_DOM_VIEW (view));
-
-	view->debug = debug;
 }
 
 void

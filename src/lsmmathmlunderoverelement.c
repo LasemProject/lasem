@@ -152,7 +152,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		operator = lsm_mathml_element_get_embellished_core (under_over->underscript);
 		if (operator != NULL) {
 			accent_under = operator->accent.value;
-			lsm_debug ("update", "[UnderOver::update] Underscript is%s accent (%s)",
+			lsm_debug_update ("[UnderOver::update] Underscript is%s accent (%s)",
 				    accent_under ? "" : " not",
 				    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
@@ -173,7 +173,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		if (operator != NULL) {
 			accent = operator->accent.value;
 			if (accent)
-				lsm_debug ("update", "[UnderOver::update] Overscript is%s accent (%s)",
+				lsm_debug_update ("[UnderOver::update] Overscript is%s accent (%s)",
 					    accent ? "" : " not",
 					    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
@@ -195,7 +195,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		operator = lsm_mathml_element_get_embellished_core (under_over->base);
 		if (operator != NULL) {
 			movable_limits = operator->movable_limits.value;
-			lsm_debug ("update", "[UnderOver::update] movable_limits found");
+			lsm_debug_update ("[UnderOver::update] movable_limits found");
 		}
 	}
 
@@ -204,7 +204,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 
 	under_over->as_script = under_over->display == LSM_MATHML_DISPLAY_INLINE && movable_limits;
 
-	lsm_debug ("update", "[UnderOver::update] space under = %g, over = %g",
+	lsm_debug_update ("[UnderOver::update] space under = %g, over = %g",
 		    under_over->under_space, under_over->over_space);
 
 	return need_measure;
@@ -247,7 +247,7 @@ lsm_mathml_under_over_element_measure (LsmMathmlElement *self, LsmMathmlView *vi
 	regular_stretch_bbox = lsm_mathml_bbox_null;
 	operator_stretch_bbox = lsm_mathml_bbox_null;
 
-	lsm_debug ("measure", "[UnderOver::measure] Begin");
+	lsm_debug_measure ("[UnderOver::measure] Begin");
 
 	index = 0;
 	for (node = LSM_DOM_NODE (self)->first_child; node != NULL; node = node->next_sibling) {
@@ -277,11 +277,11 @@ lsm_mathml_under_over_element_measure (LsmMathmlElement *self, LsmMathmlView *vi
 
 	if (stretchy_found) {
 		if (all_stretchy) {
-			lsm_debug ("measure", "[UnderOver::measure] All stretchy");
+			lsm_debug_measure ("[UnderOver::measure] All stretchy");
 			regular_stretch_bbox = operator_stretch_bbox;
 		}
 
-		lsm_debug ("measure", "[UnderOver::measure] Stretchy found (width = %g, height = %g, depth = %g)",
+		lsm_debug_measure ("[UnderOver::measure] Stretchy found (width = %g, height = %g, depth = %g)",
 			    regular_stretch_bbox.width,
 			    regular_stretch_bbox.height,
 			    regular_stretch_bbox.depth);
@@ -341,7 +341,7 @@ lsm_mathml_under_over_element_measure (LsmMathmlElement *self, LsmMathmlView *vi
 		self->bbox.depth += under_over->underscript_offset;
 	}
 
-	lsm_debug ("measure", "[UnderOver::measure] End");
+	lsm_debug_measure ("[UnderOver::measure] End");
 
 	return &self->bbox;
 }

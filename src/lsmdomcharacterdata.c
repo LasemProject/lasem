@@ -74,7 +74,7 @@ lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char * value)
 	g_free (self->data);
 	self->data = g_strdup (value);
 
-	lsm_debug ("dom", "[LsmDomCharacterData::set_data] Value = '%s'", value);
+	lsm_debug_dom ("[LsmDomCharacterData::set_data] Value = '%s'", value);
 
 	lsm_dom_node_changed (LSM_DOM_NODE (self));
 }

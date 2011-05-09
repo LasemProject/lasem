@@ -69,7 +69,7 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	need_conversion = g_strcmp0 (itex_element->itex, string->str) != 0;
 
-	lsm_debug ("update", "[MathmlItex::update] itex = '%s'", itex_element->itex);
+	lsm_debug_update ("[MathmlItex::update] itex = '%s'", itex_element->itex);
 
 	if (need_conversion) {
 		LsmMathmlDocument *document;
@@ -77,7 +77,7 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 		g_free (itex_element->itex);
 		itex_element->itex = string->str;
 
-		lsm_debug ("update", "[MathmlItex::update] need conversion");
+		lsm_debug_update ("[MathmlItex::update] need conversion");
 
 		document = lsm_mathml_document_new_from_itex (itex_element->itex,
 							      string->len, NULL);

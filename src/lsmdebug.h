@@ -1,6 +1,6 @@
 /* Lasem - SVG and Mathml library
  *
- * Copyright © 2010 Emmanuel Pacaud
+ * Copyright © 2010-2011 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,9 +28,50 @@
 
 G_BEGIN_DECLS
 
-void 		lsm_debug 			(const char *domain, char const *format, ...);
-gboolean 	lsm_debug_check 		(const char *domain);
-void 		lsm_debug_enable 		(const char *domains);
+typedef enum {
+	LSM_DEBUG_LEVEL_NONE,
+	LSM_DEBUG_LEVEL_WARNING,
+	LSM_DEBUG_LEVEL_DEBUG,
+	LSM_DEBUG_LEVEL_LOG,
+	LSM_DEBUG_LEVEL_COUNT
+} LsmDebugLevel;
+
+typedef struct {
+	char *name;
+	LsmDebugLevel level;
+} LsmDebugCategory;
+
+extern LsmDebugCategory lsm_debug_category_dom;
+extern LsmDebugCategory lsm_debug_category_measure;
+extern LsmDebugCategory lsm_debug_category_update;
+extern LsmDebugCategory lsm_debug_category_render;
+
+#define lsm_debug_dom(...) 		lsm_debug (&lsm_debug_category_dom, __VA_ARGS__)
+#define lsm_log_dom(...)		lsm_log (&lsm_debug_category_dom, __VA_ARGS__)
+#define lsm_warning_dom(...)		lsm_warning (&lsm_debug_category_dom, __VA_ARGS__)
+
+#define lsm_debug_measure(...) 		lsm_debug (&lsm_debug_category_measure, __VA_ARGS__)
+#define lsm_log_measure(...)		lsm_log (&lsm_debug_category_measure, __VA_ARGS__)
+#define lsm_warning_measure(...)	lsm_warning (&lsm_debug_category_measure, __VA_ARGS__)
+
+#define lsm_debug_update(...) 		lsm_debug (&lsm_debug_category_update, __VA_ARGS__)
+#define lsm_log_update(...)		lsm_log (&lsm_debug_category_update, __VA_ARGS__)
+#define lsm_warning_update(...)		lsm_warning (&lsm_debug_category_update, __VA_ARGS__)
+
+#define lsm_debug_render(...) 		lsm_debug (&lsm_debug_category_render, __VA_ARGS__)
+#define lsm_log_render(...)		lsm_log (&lsm_debug_category_render, __VA_ARGS__)
+#define lsm_warning_render(...)		lsm_warning (&lsm_debug_category_render, __VA_ARGS__)
+
+#define lsm_warning(c,...)		lsm_debug_with_level ((c), LSM_DEBUG_LEVEL_WARNING, __VA_ARGS__)
+#define lsm_debug(c,...)		lsm_debug_with_level (c, LSM_DEBUG_LEVEL_DEBUG, __VA_ARGS__)
+#define lsm_log(c,...)			lsm_debug_with_level ((c), LSM_DEBUG_LEVEL_LOG, __VA_ARGS__)
+
+void		lsm_debug_with_level		(LsmDebugCategory *category, LsmDebugLevel level,
+						 const char *format, ...);
+
+gboolean	lsm_debug_check			(LsmDebugCategory *category, LsmDebugLevel level);
+
+void		lsm_debug_enable		(const char *category_selection);
 
 G_END_DECLS
 

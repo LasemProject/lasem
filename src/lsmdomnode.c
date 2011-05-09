@@ -345,7 +345,7 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	}
 
 	if (ref_child->parent_node != self) {
-		lsm_debug ("dom", "[LsmDomNode::insert_before] Ref child '%s' doesn't belong to '%s'",
+		lsm_debug_dom ("[LsmDomNode::insert_before] Ref child '%s' doesn't belong to '%s'",
 			   lsm_dom_node_get_node_name (ref_child),
 			   lsm_dom_node_get_node_name (self));
 		g_object_unref (new_child);
@@ -353,7 +353,7 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	}
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
-		lsm_debug ("dom", "[LsmDomNode::insert_before] Can't append '%s' to '%s'",
+		lsm_debug_dom ("[LsmDomNode::insert_before] Can't append '%s' to '%s'",
 			   lsm_dom_node_get_node_name (new_child),
 			   lsm_dom_node_get_node_name (self));
 		g_object_unref (new_child);
@@ -418,7 +418,7 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 		lsm_dom_node_remove_child (self, new_child);
 
 	if (old_child == NULL) {
-		lsm_debug ("dom", "[LsmDomNode::replace_child] old_child == NULL)");
+		lsm_debug_dom ("[LsmDomNode::replace_child] old_child == NULL)");
 		g_object_unref (new_child);
 		return NULL;
 	}
@@ -544,7 +544,7 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 		lsm_dom_node_remove_child (self, new_child);
 
 	if (!LSM_DOM_NODE_GET_CLASS (self)->can_append_child (self, new_child)) {
-		lsm_debug ("dom", "[LsmDomNode::append_child] Can't append '%s' to '%s'",
+		lsm_debug_dom ("[LsmDomNode::append_child] Can't append '%s' to '%s'",
 			   lsm_dom_node_get_node_name (new_child),
 			   lsm_dom_node_get_node_name (self));
 		g_object_unref (new_child);

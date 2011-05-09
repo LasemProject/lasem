@@ -47,7 +47,7 @@ lsm_svg_use_can_append_child (LsmDomNode *node, LsmDomNode *child)
 /* LsmSvgGraphic implementation */
 
 static LsmDomElement *
-_get_used_element (LsmSvgUseElement *use_element, const char *domain)
+_get_used_element (LsmSvgUseElement *use_element)
 {
 	LsmDomDocument *document;
 	LsmDomElement *element;
@@ -55,7 +55,7 @@ _get_used_element (LsmSvgUseElement *use_element, const char *domain)
 
 	document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (use_element));
 	if (document == NULL) {
-		lsm_debug (domain, "[LsmSvgUseElement::_get_used_element] Owner document not found");
+		lsm_debug_dom ("[LsmSvgUseElement::_get_used_element] Owner document not found");
 		return NULL;
 	}
 
@@ -68,7 +68,7 @@ _get_used_element (LsmSvgUseElement *use_element, const char *domain)
 
 	element = lsm_dom_document_get_element_by_id (document, id);
 	if (!LSM_IS_SVG_ELEMENT (element)) {
-		lsm_debug (domain, "[LsmSvgUseElement::_get_used_element] Target '%s' not found", id);
+		lsm_debug_dom ("[LsmSvgUseElement::_get_used_element] Target '%s' not found", id);
 		return NULL;
 	}
 
@@ -84,11 +84,11 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 	double x, y;
 
 	if (use_element->flags & LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_RENDER) {
-		lsm_debug ("render", "[LsmSvgUseElement::render] Circular reference");
+		lsm_debug_render ("[LsmSvgUseElement::render] Circular reference");
 		return;
 	}
 
-	element = _get_used_element (use_element, "render");
+	element = _get_used_element (use_element);
 	if (element == NULL)
 		return;
 
@@ -118,7 +118,7 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 	double x, y;
 
 	if (use_element->flags & LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS) {
-		lsm_debug ("render", "[LsmSvgUseElement::get_extents] Circular reference");
+		lsm_debug_render ("[LsmSvgUseElement::get_extents] Circular reference");
 		extents->x1 = 0;
 		extents->y1 = 0;
 		extents->x2 = 0;
@@ -126,7 +126,7 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 		return;
 	}
 
-	element = _get_used_element (use_element, "render");
+	element = _get_used_element (use_element);
 	if (element == NULL) {
 		extents->x1 = 0;
 		extents->y1 = 0;

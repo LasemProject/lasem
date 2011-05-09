@@ -84,16 +84,15 @@ lsm_svg_linear_gradient_element_inherit_referenced (LsmDomDocument *owner,
 
 		for (iter = *elements; iter != NULL; iter = iter->next)
 			if (iter->data == element) {
-				lsm_debug ("render", "[LsmSvgLinearGradientElement::inherit_attributes] "
+				lsm_debug_render ("[LsmSvgLinearGradientElement::inherit_attributes] "
 					   "Circular reference (id = %s)", id);
 				circular_reference_found = TRUE;
 			}
 
 		if (!circular_reference_found) {
 			if (LSM_IS_SVG_GRADIENT_ELEMENT (element)) {
-				lsm_debug ("render",
-					   "[LsmSvgLinearGradientElement::inherit_attributes]"
-					   " Found referenced element '%s'", id);
+				lsm_debug_render ("[LsmSvgLinearGradientElement::inherit_attributes]"
+						  " Found referenced element '%s'", id);
 
 				referenced_gradient = lsm_svg_linear_gradient_element_inherit_referenced
 					(owner,
@@ -101,9 +100,8 @@ lsm_svg_linear_gradient_element_inherit_referenced (LsmDomDocument *owner,
 					 attributes, elements);
 
 			} else {
-				lsm_debug ("render",
-					   "[LsmSvgLinearGradientElement::inherit_attributes]"
-					   " Referenced element '%s' not found", id);
+				lsm_debug_render ("[LsmSvgLinearGradientElement::inherit_attributes]"
+						  " Referenced element '%s' not found", id);
 				referenced_gradient = NULL;
 			}
 		} else
@@ -184,7 +182,7 @@ lsm_svg_linear_gradient_element_create_gradient (LsmSvgElement *self,
 	if (is_object_bounding_box)
 		lsm_svg_view_pop_viewbox (view);
 
-	lsm_debug ("render", "[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
+	lsm_debug_render ("[LsmSvgLinearGradientElement::render] Create linear %g, %g, %g, %g",
 		    x1, y1, x2, y2);
 
 	lsm_svg_view_create_linear_gradient (view, x1, y1, x2, y2);
