@@ -310,7 +310,7 @@ lsm_dom_node_get_owner_document (LsmDomNode* self)
  * @ref_child is null, insert @new_child at the end of the list of children.
  * If the @new_child is already in the tree, it is first removed.
  *
- * returns: (transfer none): the inserted node.
+ * Returns: (transfer none): the inserted node.
  */
 
 /* TODO:
@@ -391,7 +391,7 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
  * and returns the @old_child node.
  * If the @new_child is already in the tree, it is first removed.
  *
- * returns: (transfer full): the replaced node.
+ * Returns: (transfer full): the replaced node.
  */
 
 /* TODO:
@@ -466,7 +466,7 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
  *
  * Removes the child node indicated by @old_child from the list of children, and returns it.
  *
- * returns: (transfer full): the removed node.
+ * Returns: (transfer full): the removed node.
  */
 
 LsmDomNode*
@@ -521,7 +521,7 @@ lsm_dom_node_remove_child (LsmDomNode* self, LsmDomNode* old_child)
  * Adds the node @new_child to the end of the list of children of this node.
  * If the @new_child is already in the tree, it is first removed.
  *
- * returns: (transfer none): the added node.
+ * Returns: (transfer none): the added node.
  */
 
 LsmDomNode *
