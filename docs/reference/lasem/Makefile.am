@@ -61,10 +61,10 @@ EXTRA_HFILES=
 # Header files to ignore when scanning. Use base file name, no paths
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
 IGNORE_HFILES=\
-	lsmdomenumtypes.h 	\
-	lsmmathmlenumtypes.h 	\
-	lsmsvgenumtypes.h 	\
-	lsmconfig.h		\
+	lsmdomenumtypes.h 			\
+	lsmmathmlenumtypes.h 			\
+	lsmsvgenumtypes.h 			\
+	lsmconfig.h				\
 	lsm.h					\
 	lsmcairo.h				\
 	lsmstr.h				\
