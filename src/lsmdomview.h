@@ -56,15 +56,15 @@ struct _LsmDomViewClass {
 
 	GType document_type;
 
-	void (*measure)	(LsmDomView *view, double *width, double *height);
+	void (*measure)	(LsmDomView *view, double *width, double *height, double *baseline);
 	void (*render)	(LsmDomView *view);
 };
 
 GType lsm_dom_view_get_type (void);
 
-void 			lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double y);
+void 			lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double y, double *baseline);
 void			lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height);
-void 			lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height);
+void 			lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height, unsigned int *baseline);
 
 void 			lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
 

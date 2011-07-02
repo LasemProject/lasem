@@ -33,7 +33,7 @@
 static GObjectClass *parent_class;
 
 void
-lsm_dom_view_get_size (LsmDomView *view, double *width, double *height)
+lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *baseline)
 {
 	LsmDomViewClass *view_class;
 	double dummy_width = 0.0;
@@ -49,15 +49,16 @@ lsm_dom_view_get_size (LsmDomView *view, double *width, double *height)
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
 	if (view_class->measure != NULL)
-		view_class->measure (view, width, height);
+		view_class->measure (view, width, height, baseline);
 }
 
 void
-lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned int *height)
+lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned int *height, unsigned int *baseline)
 {
 	double resolution_ppi;
 	double width_pt;
 	double height_pt;
+	double baseline_pt;
 
 	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 	g_return_if_fail (view->document != NULL);
@@ -67,13 +68,16 @@ lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned in
 
 	width_pt =  width  != NULL ? *width  * 72.0 / resolution_ppi : 0.0;
 	height_pt = height != NULL ? *height * 72.0 / resolution_ppi : 0.0;
+	baseline_pt = baseline != NULL? *baseline * 72.0 /resolution_ppi : 0.0;
 
-	lsm_dom_view_get_size (view, &width_pt, &height_pt);
+	lsm_dom_view_get_size (view, &width_pt, &height_pt,&baseline_pt);
 
 	if (width != NULL)
 		*width =  (double) (0.5 + width_pt  * resolution_ppi / 72.0);
 	if (height != NULL)
 		*height = (double) (0.5 + height_pt * resolution_ppi / 72.0);
+	if (baseline != NULL)
+		*baseline = (double) (0.5 + baseline_pt * resolution_ppi / 72.0);
 }
 
 static void

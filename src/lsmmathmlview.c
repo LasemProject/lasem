@@ -933,7 +933,7 @@ lsm_mathml_view_show_fraction_line (LsmMathmlView *view,
 }
 
 static const LsmMathmlBbox *
-_view_measure (LsmMathmlView *view, double *width, double *height)
+_view_measure (LsmMathmlView *view, double *width, double *height, double *baseline)
 {
 	LsmMathmlMathElement *math_element;
 	const LsmMathmlBbox *bbox;
@@ -951,15 +951,17 @@ _view_measure (LsmMathmlView *view, double *width, double *height)
 			*width = bbox->width;
 		if (height != NULL)
 			*height = bbox->height + bbox->depth;
+		if (baseline != NULL)
+			*baseline = bbox->height;
 	}
 
 	return bbox;
 }
 
 static void
-lsm_mathml_view_measure (LsmDomView *dom_view, double *width, double *height)
+lsm_mathml_view_measure (LsmDomView *dom_view, double *width, double *height, double *baseline)
 {
-	_view_measure (LSM_MATHML_VIEW (dom_view), width, height);
+	_view_measure (LSM_MATHML_VIEW (dom_view), width, height, baseline);
 }
 
 static void
