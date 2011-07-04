@@ -135,7 +135,7 @@ lasem_test_render (char const *filename)
 
 		lsm_dom_document_set_resolution (document, option_ppi);
 		lsm_dom_document_set_viewport_px (document, &viewport);
-		lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height);
+		lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height, NULL);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
 		cairo = cairo_create (surface);

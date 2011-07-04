@@ -67,7 +67,7 @@ render_test (gconstpointer user_data)
 
 	lsm_dom_document_set_resolution (document, 96);
 	lsm_dom_document_set_viewport_px (document, &viewport);
-	lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height);
+	lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height, NULL);
 
 	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
 	cairo = cairo_create (surface);

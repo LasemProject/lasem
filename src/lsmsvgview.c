@@ -2057,7 +2057,7 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height, double *b
 
 	lsm_svg_svg_element_measure (svg_element, width, height);
 	if (baseline)
-		baseline = -1.; /* or anything else as nan or inf */
+		*baseline = *height;
 }
 
 static void

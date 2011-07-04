@@ -187,8 +187,8 @@ int main(int argc, char **argv)
 		width_pt = 2.0;
 		height_pt = 2.0;
 
-		lsm_dom_view_get_size (view, &width_pt, &height_pt);
-		lsm_dom_view_get_size_pixels (view, &width, &height);
+		lsm_dom_view_get_size (view, &width_pt, &height_pt, NULL);
+		lsm_dom_view_get_size_pixels (view, &width, &height, NULL);
 
 		switch (format) {
 			case FORMAT_PDF:
