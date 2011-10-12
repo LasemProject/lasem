@@ -180,9 +180,8 @@ int main(int argc, char **argv)
 			}
 		}
 
-		lsm_dom_document_set_resolution (document, option_ppi);
-
 		view = lsm_dom_document_create_view (document);
+		lsm_dom_view_set_resolution (view, option_ppi);
 
 		width_pt = 2.0;
 		height_pt = 2.0;

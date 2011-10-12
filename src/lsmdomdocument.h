@@ -31,10 +31,6 @@
 
 G_BEGIN_DECLS
 
-#define LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION 		 72.0
-#define LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_WIDTH		320.0
-#define LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_HEIGHT 	200.0
-
 #define LSM_TYPE_DOM_DOCUMENT             (lsm_dom_document_get_type ())
 #define LSM_DOM_DOCUMENT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_DOCUMENT, LsmDomDocument))
 #define LSM_DOM_DOCUMENT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), LSM_TYPE_DOM_DOCUMENT, LsmDomDocumentClass))
@@ -52,9 +48,6 @@ struct _LsmDomDocument {
 
 	char *		url;
 
-	/* Not really a document property, but that simplifies things greatly */
-	double resolution_ppi;
-	LsmBox viewport_pt;
 };
 
 struct _LsmDomDocumentClass {
@@ -77,14 +70,6 @@ LsmDomElement *	lsm_dom_document_get_element_by_id 	(LsmDomDocument *self, const
 void 		lsm_dom_document_register_element 	(LsmDomDocument *self, LsmDomElement *element, const char *id);
 
 LsmDomView*	lsm_dom_document_create_view		(LsmDomDocument *self);
-
-double		lsm_dom_document_get_resolution		(LsmDomDocument *self);
-void		lsm_dom_document_set_resolution		(LsmDomDocument *self, double ppi);
-
-void 		lsm_dom_document_set_viewport 		(LsmDomDocument *self, const LsmBox *viewport);
-void 		lsm_dom_document_set_viewport_px 	(LsmDomDocument *self, const LsmBox *viewport);
-LsmBox 		lsm_dom_document_get_viewport 		(LsmDomDocument *self);
-LsmBox 		lsm_dom_document_get_viewport_px 	(LsmDomDocument *self);
 
 const char * 	lsm_dom_document_get_url 		(LsmDomDocument *self);
 void		lsm_dom_document_set_url		(LsmDomDocument *self, const char *url);

@@ -41,9 +41,8 @@ lsm_svg_svg_element_get_node_name (LsmDomNode *node)
 /* LsmSvgElement implementation */
 
 void
-lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *height)
+lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, double *width, double *height)
 {
-	LsmDomDocument *document;
 	LsmSvgViewbox *svg_viewbox;
 	LsmBox viewport;
 	gboolean is_outermost_svg;
@@ -56,11 +55,8 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, double *width, double *heig
 
 	g_return_if_fail (LSM_IS_SVG_SVG_ELEMENT (self));
 
-	document = LSM_DOM_DOCUMENT (LSM_DOM_NODE (self)->parent_node);
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
-
-	resolution_ppi = lsm_dom_document_get_resolution (document);
-	viewport = lsm_dom_document_get_viewport_px (document);
+	resolution_ppi = lsm_dom_view_get_resolution (LSM_DOM_VIEW (view));
+	viewport = lsm_dom_view_get_viewport_pixels (LSM_DOM_VIEW (view));
 
 	svg_viewbox = lsm_svg_viewbox_new (resolution_ppi, &viewport);
 	font_size = 10 * resolution_ppi / 72.0;

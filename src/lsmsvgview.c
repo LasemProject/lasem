@@ -2055,7 +2055,7 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height, double *b
 	if (svg_element == NULL)
 		return;
 
-	lsm_svg_svg_element_measure (svg_element, width, height);
+	lsm_svg_svg_element_measure (svg_element, LSM_SVG_VIEW (view), width, height);
 	if (baseline)
 		*baseline = *height;
 }
@@ -2082,7 +2082,7 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->is_pango_layout_in_use = FALSE;
 	svg_view->pango_layout = view->pango_layout;
 
-	svg_view->resolution_ppi = lsm_dom_document_get_resolution (view->document);
+	svg_view->resolution_ppi = lsm_dom_view_get_resolution (view);
 
 	lsm_svg_svg_element_render  (svg_element, svg_view);
 

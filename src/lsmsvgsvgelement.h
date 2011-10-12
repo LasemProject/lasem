@@ -61,7 +61,8 @@ GType lsm_svg_svg_element_get_type (void);
 
 LsmDomNode *		lsm_svg_svg_element_new 		(void);
 
-void 			lsm_svg_svg_element_measure 		(LsmSvgSvgElement *self, double *width, double *height);
+void 			lsm_svg_svg_element_measure 		(LsmSvgSvgElement *self,
+								 LsmSvgView *view, double *width, double *height);
 void 			lsm_svg_svg_element_render 		(LsmSvgSvgElement *svg_element, LsmSvgView *view);
 
 G_END_DECLS

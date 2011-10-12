@@ -25,10 +25,15 @@
 #define LSM_DOM_VIEW_H
 
 #include <lsmdomtypes.h>
+#include <lsmtypes.h>
 #include <cairo.h>
 #include <pango/pangocairo.h>
 
 G_BEGIN_DECLS
+
+#define LSM_DOM_VIEW_DEFAULT_RESOLUTION 	 72.0
+#define LSM_DOM_VIEW_DEFAULT_VIEWBOX_WIDTH	320.0
+#define LSM_DOM_VIEW_DEFAULT_VIEWBOX_HEIGHT 	200.0
 
 #define LSM_TYPE_DOM_VIEW             (lsm_dom_view_get_type ())
 #define LSM_DOM_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), LSM_TYPE_DOM_VIEW, LsmDomView))
@@ -49,6 +54,9 @@ struct _LsmDomView {
 	PangoLayout *		measure_pango_layout;
 	cairo_t *		cairo;
 	gboolean		is_vector;
+
+	double resolution_ppi;
+	LsmBox viewport_pt;
 };
 
 struct _LsmDomViewClass {
@@ -62,11 +70,21 @@ struct _LsmDomViewClass {
 
 GType lsm_dom_view_get_type (void);
 
-void 			lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double y);
-void			lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height, double *baseline);
-void 			lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height, unsigned int *baseline);
+double		lsm_dom_view_get_resolution	(LsmDomView *self);
+void		lsm_dom_view_set_resolution	(LsmDomView *self, double ppi);
 
-void 			lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
+void 		lsm_dom_view_set_viewport 	(LsmDomView *self, const LsmBox *viewport);
+void 		lsm_dom_view_set_viewport_pixels(LsmDomView *self, const LsmBox *viewport);
+LsmBox 		lsm_dom_view_get_viewport 	(LsmDomView *self);
+LsmBox 		lsm_dom_view_get_viewport_pixels(LsmDomView *self);
+
+void 		lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double y);
+
+void		lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height, double *baseline);
+void 		lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height,
+						 unsigned int *baseline);
+
+void 		lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
 
 G_END_DECLS
 

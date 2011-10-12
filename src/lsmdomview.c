@@ -32,6 +32,71 @@
 
 static GObjectClass *parent_class;
 
+double
+lsm_dom_view_get_resolution (LsmDomView *self)
+{
+	g_return_val_if_fail (LSM_IS_DOM_VIEW (self), 0.0);
+
+	return self->resolution_ppi;
+}
+
+void
+lsm_dom_view_set_resolution (LsmDomView *self, double ppi)
+{
+	g_return_if_fail (LSM_IS_DOM_VIEW (self));
+
+	if (ppi < 0.0)
+		self->resolution_ppi = LSM_DOM_VIEW_DEFAULT_RESOLUTION;
+	else
+		self->resolution_ppi = ppi;
+}
+
+void
+lsm_dom_view_set_viewport (LsmDomView *self, const LsmBox *viewport_pt)
+{
+	g_return_if_fail (LSM_IS_DOM_VIEW (self));
+	g_return_if_fail (viewport_pt != NULL);
+
+	self->viewport_pt = *viewport_pt;
+}
+
+void
+lsm_dom_view_set_viewport_pixels (LsmDomView *self, const LsmBox *viewport)
+{
+	g_return_if_fail (LSM_IS_DOM_VIEW (self));
+	g_return_if_fail (viewport != NULL);
+
+	self->viewport_pt.x      = viewport->x      * 72.0 / self->resolution_ppi;
+	self->viewport_pt.y      = viewport->y      * 72.0 / self->resolution_ppi;
+	self->viewport_pt.width  = viewport->width  * 72.0 / self->resolution_ppi;
+	self->viewport_pt.height = viewport->height * 72.0 / self->resolution_ppi;
+}
+
+LsmBox
+lsm_dom_view_get_viewport (LsmDomView *self)
+{
+	static const LsmBox null_viewport = {0, 0, 0, 0};
+
+	g_return_val_if_fail (LSM_IS_DOM_VIEW (self), null_viewport);
+
+	return self->viewport_pt;
+}
+
+LsmBox
+lsm_dom_view_get_viewport_pixels (LsmDomView *self)
+{
+	LsmBox viewport = {0, 0, 0, 0};
+
+	g_return_val_if_fail (LSM_IS_DOM_VIEW (self), viewport);
+
+	viewport.x      = self->viewport_pt.x      * self->resolution_ppi / 72.0;
+	viewport.y      = self->viewport_pt.y      * self->resolution_ppi / 72.0;
+	viewport.width  = self->viewport_pt.width  * self->resolution_ppi / 72.0;
+	viewport.height = self->viewport_pt.height * self->resolution_ppi / 72.0;
+
+	return viewport;
+}
+
 void
 lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *baseline)
 {
@@ -63,7 +128,7 @@ lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned in
 	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 	g_return_if_fail (view->document != NULL);
 
-	resolution_ppi = lsm_dom_document_get_resolution (view->document);
+	resolution_ppi = view->resolution_ppi;
 	g_return_if_fail (resolution_ppi > 0.0);
 
 	width_pt =  width  != NULL ? *width  * 72.0 / resolution_ppi : 0.0;
@@ -138,15 +203,12 @@ void
 lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 {
 	LsmDomViewClass *view_class;
-	double resolution_ppi;
 
 	g_return_if_fail (LSM_IS_DOM_VIEW (view));
 	g_return_if_fail (LSM_IS_DOM_DOCUMENT (view->document));
 	g_return_if_fail (cairo != NULL);
 
 	lsm_dom_view_set_cairo_context (view, cairo);
-
-	resolution_ppi = lsm_dom_document_get_resolution (view->document);
 
 	cairo_save (view->cairo);
 
@@ -188,6 +250,12 @@ lsm_dom_view_init (LsmDomView *view)
 	PangoFontMap *font_map;
 	PangoContext *pango_context;
 	cairo_font_options_t *font_options;
+
+	view->resolution_ppi = LSM_DOM_VIEW_DEFAULT_RESOLUTION;
+	view->viewport_pt.x = 0;
+	view->viewport_pt.y = 0;
+	view->viewport_pt.width  = LSM_DOM_VIEW_DEFAULT_VIEWBOX_WIDTH;
+	view->viewport_pt.height = LSM_DOM_VIEW_DEFAULT_VIEWBOX_HEIGHT;
 
 	view->font_description = pango_font_description_new ();
 

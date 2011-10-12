@@ -96,71 +96,6 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
 
-double
-lsm_dom_document_get_resolution (LsmDomDocument *self)
-{
-	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), 0.0);
-
-	return self->resolution_ppi;
-}
-
-void
-lsm_dom_document_set_resolution (LsmDomDocument *self, double ppi)
-{
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
-
-	if (ppi < 0.0)
-		self->resolution_ppi = LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION;
-	else
-		self->resolution_ppi = ppi;
-}
-
-void
-lsm_dom_document_set_viewport (LsmDomDocument *self, const LsmBox *viewport_pt)
-{
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
-	g_return_if_fail (viewport_pt != NULL);
-
-	self->viewport_pt = *viewport_pt;
-}
-
-void
-lsm_dom_document_set_viewport_px (LsmDomDocument *self, const LsmBox *viewport)
-{
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
-	g_return_if_fail (viewport != NULL);
-
-	self->viewport_pt.x      = viewport->x      * 72.0 / self->resolution_ppi;
-	self->viewport_pt.y      = viewport->y      * 72.0 / self->resolution_ppi;
-	self->viewport_pt.width  = viewport->width  * 72.0 / self->resolution_ppi;
-	self->viewport_pt.height = viewport->height * 72.0 / self->resolution_ppi;
-}
-
-LsmBox
-lsm_dom_document_get_viewport (LsmDomDocument *self)
-{
-	static const LsmBox null_viewport = {0, 0, 0, 0};
-
-	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), null_viewport);
-
-	return self->viewport_pt;
-}
-
-LsmBox
-lsm_dom_document_get_viewport_px (LsmDomDocument *self)
-{
-	LsmBox viewport = {0, 0, 0, 0};
-
-	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), viewport);
-
-	viewport.x      = self->viewport_pt.x      * self->resolution_ppi / 72.0;
-	viewport.y      = self->viewport_pt.y      * self->resolution_ppi / 72.0;
-	viewport.width  = self->viewport_pt.width  * self->resolution_ppi / 72.0;
-	viewport.height = self->viewport_pt.height * self->resolution_ppi / 72.0;
-
-	return viewport;
-}
-
 LsmDomElement *
 lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
 {
@@ -272,12 +207,6 @@ lsm_dom_document_init (LsmDomDocument *document)
 {
 	document->ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 	document->elements = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
-
-	document->resolution_ppi = LSM_DOM_DOCUMENT_DEFAULT_RESOLUTION;
-	document->viewport_pt.x = 0;
-	document->viewport_pt.y = 0;
-	document->viewport_pt.width  = LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_WIDTH;
-	document->viewport_pt.height = LSM_DOM_DOCUMENT_DEFAULT_VIEWBOX_HEIGHT;
 }
 
 static void

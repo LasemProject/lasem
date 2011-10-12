@@ -977,7 +977,7 @@ lsm_mathml_view_render (LsmDomView *dom_view)
 	if (math_element == NULL)
 		return;
 
-	resolution_ppi = lsm_dom_document_get_resolution (view->dom_view.document);
+	resolution_ppi = lsm_dom_view_get_resolution (dom_view);
 
 	bbox = _view_measure (view, NULL, NULL, NULL);
 
