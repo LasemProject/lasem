@@ -1,3 +1,33 @@
+Release 0.3.1
+=============
+
+All:
+	Single header include.
+	gtk-doc support.
+	Unit testing.
+	Only export and document the DOM API.
+	Binary are now parallel installable.
+	Fix crashers found using fuzzxml from Morten Welinder.
+	Improve debug output (À la gstreamer).
+
+DOM:
+	Pass a cairo context for each view render.
+	Better DOM specification conformance.
+	Serialization support.
+
+itex2mml:
+	Update to 1.4.5.
+
+Mathml:
+	Return equation baseline.
+
+SVG:
+	Fix gradient on stroke or fill when opacity < 1.0.
+	Implement visibility attribute.
+	Implement display attribute.
+	Implement image::get_extents.
+	Avoid infinite circular references.
+
 Release 0.3.0
 =============
 
