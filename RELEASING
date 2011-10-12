@@ -53,14 +53,14 @@ make distcheck again.
   
   For example:
 
-  	$ scp gnome-panel-2.3.1.tar.gz (user)@master.gnome.org:
+  	$ scp lasem-0.3.1.tar.gz (user)@master.gnome.org:
 
   Then ssh into master.gnome.org and call install-module. There are no extra
   steps required for new modules.
   
   For example:
 
-  	$ install-module gnome-panel-2.3.1.tar.gz
+  	$ install-module lasem-0.3.1.tar.gz
 
   This will move the tarball to the appropriate directory, do some additional
   administrative stuff, and send an email to the ftp-release mailing list so
