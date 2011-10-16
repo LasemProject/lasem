@@ -175,7 +175,6 @@ _measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox
 	LsmMathmlBbox child_bbox;
 	LsmMathmlBbox stretch_bbox;
 	gboolean stretchy_found = FALSE;
-	gboolean all_stretchy = TRUE;
 	unsigned int n_elements = 0;
 
 	self->bbox = lsm_mathml_bbox_null;
@@ -191,7 +190,6 @@ _measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox
 								       &lsm_mathml_bbox_null);
 				lsm_mathml_bbox_stretch_vertically (&stretch_bbox, &child_bbox);
 			} else {
-				all_stretchy = FALSE;
 				child_bbox = *lsm_mathml_element_measure (LSM_MATHML_ELEMENT (node), view,
 								       &lsm_mathml_bbox_null);
 				if (operator != NULL)
