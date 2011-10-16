@@ -634,7 +634,6 @@ lsm_mathml_view_show_radical (LsmMathmlView *view,
 			   LsmMathmlBbox const *stretch_bbox)
 {
 	cairo_t *cairo;
-	LsmMathmlBbox radical_stretch_bbox;
 	double thickness;
 	double y_line;
 	double dummy = 0.0;
@@ -645,8 +644,6 @@ lsm_mathml_view_show_radical (LsmMathmlView *view,
 	g_return_if_fail (stretch_bbox != NULL);
 
 	cairo = view->dom_view.cairo;
-
-	radical_stretch_bbox = *stretch_bbox;
 
 	lsm_mathml_view_show_operator (view, style, x, y, LSM_MATHML_RADICAL_UTF8, FALSE, stretch_bbox);
 
