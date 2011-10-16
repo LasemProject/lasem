@@ -79,11 +79,10 @@ lsm_svg_image_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 		if (data != NULL) {
 			GdkPixbufLoader *loader;
-			int result;
 
 			loader = gdk_pixbuf_loader_new ();
 
-			result = gdk_pixbuf_loader_write (loader, (guchar *) data, size, NULL);
+			gdk_pixbuf_loader_write (loader, (guchar *) data, size, NULL);
 
 			g_free (data);
 
