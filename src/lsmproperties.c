@@ -307,10 +307,6 @@ lsm_property_manager_apply_property_bag (LsmPropertyManager *manager,
 		property = iter->data;
 
 		if (property->id < manager->n_properties) {
-			const LsmPropertyInfos *property_infos;
-
-			property_infos = &manager->property_infos[property->id];
-
 			if (g_strcmp0 (property->value, "inherit") != 0)
 				*((LsmProperty **) ((void*) style
 						   + LSM_PROPERTY_ID_TO_OFFSET (property->id))) = property;
