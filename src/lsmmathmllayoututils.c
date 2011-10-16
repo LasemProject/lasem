@@ -45,7 +45,6 @@ lsm_mathml_measure_sub_sup (LsmMathmlElement *parent,
 	LsmMathmlOperatorElement *embellished_core;
 	double axis_offset, ascent, descent;
 	double v_space;
-	double slant;
 	gboolean is_operator;
 
 	*bbox = lsm_mathml_bbox_null;
@@ -56,7 +55,10 @@ lsm_mathml_measure_sub_sup (LsmMathmlElement *parent,
 	embellished_core = lsm_mathml_element_get_embellished_core (base);
 	is_operator = embellished_core != NULL;
 
+	/* TODO
+	double slant;
 	slant = is_operator ? lsm_mathml_operator_element_get_slant (embellished_core, view) : 0.0;
+	*/
 
 	axis_offset = lsm_mathml_view_measure_axis_offset (view, parent->style.math_size);
 	v_space = parent->style.math_size * LSM_MATHML_SPACE_EM_THIN;
