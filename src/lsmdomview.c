@@ -149,7 +149,6 @@ static void
 lsm_dom_view_set_cairo_context (LsmDomView *view, cairo_t *cairo)
 {
 	PangoContext *context;
-	PangoFontDescription *font_description;
 	cairo_font_options_t *font_options;
 	const cairo_font_options_t *current_font_options;
 	cairo_surface_t *surface;
@@ -171,8 +170,6 @@ lsm_dom_view_set_cairo_context (LsmDomView *view, cairo_t *cairo)
 
 		return;
 	}
-
-	font_description = view->font_description;
 
 	cairo_reference (cairo);
 	view->cairo = cairo;
