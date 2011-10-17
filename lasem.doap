@@ -8,7 +8,7 @@
   <shortdesc xml:lang="en">SVG and Mathml rendering library</shortdesc>
   <homepage rdf:resource="http://blogs.gnome.org/emmanuel/category/lasem" />
   <bug-database rdf:resource="http://bugzilla.gnome.org/browse.cgi?product=lasem" />
-  <category rdf:resource="http://api.gnome.org/doap-extensions#productivity" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#development" />
 
   <maintainer>
     <foaf:Person>
