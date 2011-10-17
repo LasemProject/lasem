@@ -1,0 +1,54 @@
+# Swedish translation for lasem.
+# Copyright (C) 2011 Free Software Foundation, Inc.
+# This file is distributed under the same license as the lasem package.
+# Daniel Nylander <po@danielnylander.se>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-10-17 10:46+0200\n"
+"PO-Revision-Date: 2011-10-17 10:48+0100\n"
+"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/lasemrender.c:64
+msgid "Output filename"
+msgstr "Filnamn för utmatning"
+
+#: ../src/lasemrender.c:66
+msgid "Output format"
+msgstr "Format för utmatning"
+
+#: ../src/lasemrender.c:68
+msgid "Pixel per inch"
+msgstr "Bildpunkter per tum"
+
+#: ../src/lasemrender.c:70
+msgid "Debug domains"
+msgstr "Felsökningsdomäner"
+
+#: ../src/lasemrender.c:96
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Tolkning av flaggor misslyckades: %s\n"
+
+#: ../src/lasemrender.c:105
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Ett filnamn för inmatning krävs\n"
+
+#: ../src/lasemrender.c:116
+#, c-format
+msgid "Unknown format : %s\n"
+msgstr "Okänt format : %s\n"
+
+#: ../src/lasemrender.c:235
+#, c-format
+msgid "Can't load %s"
+msgstr "Kan inte läsa in %s"
+
