@@ -33,6 +33,10 @@ struct _LsmPropertyManager {
 	unsigned int		n_properties;
 	const LsmPropertyInfos *property_infos;
 	GHashTable *		hash_by_name;
+
+	/* FIXME: Not thread safe */
+	unsigned int *		property_check;
+	unsigned int		property_check_count;
 };
 
 LsmPropertyManager *
@@ -48,6 +52,8 @@ lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *pro
 	manager->hash_by_name = g_hash_table_new (g_str_hash, g_str_equal);
 	manager->n_properties = n_properties;
 	manager->property_infos = property_infos;
+	manager->property_check_count = 0;
+	manager->property_check = g_new0 (unsigned int, n_properties);
 
 	for (i = 0; i < n_properties; i++) {
 
@@ -68,6 +74,7 @@ lsm_property_manager_free (LsmPropertyManager *manager)
 	g_return_if_fail (manager != NULL);
 
 	g_hash_table_unref (manager->hash_by_name);
+	g_free (manager->property_check);
 	g_free (manager);
 }
 
@@ -96,7 +103,8 @@ _set_property (LsmPropertyManager *manager,
 
 	trait_class = property_infos->trait_class;
 
-	/* We don't check for existing property in the list. The cleanup will be done later. */
+	/* We don't check for existing property in the list. The cleanup is done later when 
+	 * applying a property bag. */
 
 	property = g_slice_alloc0 (PROPERTY_SIZE (trait_class));
 	property->id = property_infos->id;
@@ -299,22 +307,58 @@ lsm_property_manager_apply_property_bag (LsmPropertyManager *manager,
 {
 	LsmProperty *property;
 	GSList *iter;
+	GSList *previous_iter = NULL;
 
 	g_return_if_fail (bag != NULL);
 	g_return_if_fail (manager != NULL);
 
-	for (iter = bag->properties; iter != NULL; iter = iter->next) {
+	manager->property_check_count++;
+	if (manager->property_check_count == 0) {
+		manager->property_check_count++;
+		memset (manager->property_check, 0, sizeof (unsigned int) * manager->n_properties);
+	}
+
+	for (iter = bag->properties; iter != NULL;) {
 		property = iter->data;
 
 		if (property->id < manager->n_properties) {
-			if (g_strcmp0 (property->value, "inherit") != 0)
-				*((LsmProperty **) ((void*) style
-						   + LSM_PROPERTY_ID_TO_OFFSET (property->id))) = property;
-			else
-				*((LsmProperty **) ((void*) style
-						   + LSM_PROPERTY_ID_TO_OFFSET (property->id))) =
-					*((LsmProperty **) ((void*) parent_style
-							   + LSM_PROPERTY_ID_TO_OFFSET (property->id)));
+			if (manager->property_check[property->id] != manager->property_check_count) {
+				if (g_strcmp0 (property->value, "inherit") != 0)
+					*((LsmProperty **) ((void*) style
+							    + LSM_PROPERTY_ID_TO_OFFSET (property->id))) = property;
+				else
+					*((LsmProperty **) ((void*) style
+							    + LSM_PROPERTY_ID_TO_OFFSET (property->id))) =
+						*((LsmProperty **) ((void*) parent_style
+								    + LSM_PROPERTY_ID_TO_OFFSET (property->id)));
+
+				manager->property_check[property->id] = manager->property_check_count;
+				previous_iter = iter;
+				iter = iter->next;
+			} else {
+				/* property garbage collector */
+				const LsmPropertyInfos *property_infos;
+
+				property_infos = &manager->property_infos[property->id];
+
+				lsm_log_dom ("[LsmPropertyManager::apply_property_bag] Garbage collection of %s=%s",
+					     property_infos->name, property->value);
+
+				property_free (property, property_infos->trait_class);
+
+				if (previous_iter == NULL) {
+					bag->properties = iter->next;
+					g_slist_free_1 (iter);
+					iter = bag->properties;
+				} else {
+					previous_iter->next = iter->next;
+					g_slist_free_1 (iter);
+					iter = previous_iter->next;
+				}
+			}
+		} else {
+			previous_iter = iter;
+			iter = iter->next;
 		}
 	}
 }
