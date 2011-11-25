@@ -18,6 +18,7 @@ AC_CONFIG_MACRO_DIR([m4])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_SUBST([LASEM_API_VERSION], [0.4])
+AC_SUBST([LASEM_API_VERSION_U],[AS_TR_SH([$LASEM_API_VERSION])])
 AC_SUBST([LASEM_LIBTOOL_VERSION], [lasem_libtool_current:lasem_version_micro:0])
 
 AC_SEARCH_LIBS([strerror],[cposix])
