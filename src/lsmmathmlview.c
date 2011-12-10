@@ -176,6 +176,7 @@ lsm_mathml_view_measure_axis_offset (LsmMathmlView *view,
 	pango_font_description_set_family (font_description, LSM_MATHML_FONT_SERIF);
 	pango_font_description_set_size (font_description, math_size * PANGO_SCALE);
 	pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+	pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 	pango_layout_set_text (pango_layout, "\xe2\x88\x92", -1);
 	pango_layout_set_font_description (pango_layout, font_description);
 	pango_layout_get_extents (pango_layout, &ink_rect, NULL);
@@ -303,6 +304,7 @@ lsm_mathml_view_update_layout_for_operator (LsmMathmlView *view,
 	pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
 	pango_font_description_set_size (font_description,
 					 style->math_size * PANGO_SCALE * (large ? LSM_MATHML_LARGE_OP_SCALE : 1.0));
+	pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 	pango_layout_set_text (pango_layout, text, -1);
 	pango_layout_set_font_description (pango_layout, font_description);
 	pango_layout_get_extents (pango_layout, ink_rect, rect);
@@ -383,6 +385,7 @@ lsm_mathml_view_measure_operator (LsmMathmlView *view,
 			font_name = lsm_mathml_font_names [glyph->sized_glyphs[i].font];
 			pango_font_description_set_family (font_description, font_name);
 			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			pango_layout_set_text (pango_layout, glyph->sized_glyphs[i].utf8, -1);
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
@@ -510,6 +513,7 @@ lsm_mathml_view_show_operator (LsmMathmlView *view,
 			font_name = lsm_mathml_font_names [glyph->sized_glyphs[i].font];
 			pango_font_description_set_family (font_description, font_name);
 			pango_font_description_set_style (font_description, PANGO_STYLE_NORMAL);
+			pango_font_description_set_weight (font_description, PANGO_WEIGHT_NORMAL);
 			pango_layout_set_text (pango_layout, glyph->sized_glyphs[i].utf8, -1);
 			pango_layout_set_font_description (pango_layout, font_description);
 			pango_layout_get_extents (pango_layout, &ink_rect, NULL);
