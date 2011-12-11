@@ -32,9 +32,30 @@ lsm_mathml_semantics_element_get_node_name (LsmDomNode *node)
 	return "semantics";
 }
 
+static gboolean
+lsm_mathml_semantics_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
+{
+	if (!LSM_IS_MATHML_ELEMENT (child))
+		return FALSE;
+
+	return TRUE;
+}
+
 /* LsmMathmlElement implementation */
 
 /* LsmMathmlSemanticsElement implementation */
+
+LsmMathmlElement *
+lsm_mathml_semantics_element_get_body (LsmMathmlSemanticsElement *semantics)
+{
+	LsmDomNode *node;
+
+	g_return_val_if_fail (LSM_IS_MATHML_SEMANTICS_ELEMENT (semantics), NULL);
+
+       	node = LSM_DOM_NODE (semantics);
+
+	return LSM_MATHML_ELEMENT (node->first_child);
+}
 
 LsmDomNode *
 lsm_mathml_semantics_element_new (void)
@@ -43,7 +64,7 @@ lsm_mathml_semantics_element_new (void)
 }
 
 static void
-lsm_mathml_semantics_element_init (LsmMathmlSemanticsElement *container)
+lsm_mathml_semantics_element_init (LsmMathmlSemanticsElement *semantics)
 {
 }
 
@@ -55,6 +76,7 @@ lsm_mathml_semantics_element_class_init (LsmMathmlSemanticsElementClass *klass)
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
 
 	d_node_class->get_node_name = lsm_mathml_semantics_element_get_node_name;
+	d_node_class->can_append_child = lsm_mathml_semantics_element_can_append_child;
 }
 
 G_DEFINE_TYPE (LsmMathmlSemanticsElement, lsm_mathml_semantics_element, LSM_TYPE_MATHML_ELEMENT)
