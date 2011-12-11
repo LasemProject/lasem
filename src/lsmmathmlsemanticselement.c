@@ -1,6 +1,6 @@
 /* Lasem - A library for SVG and MathML rendering
  * 
- * Copyright © 2007-2008  Emmanuel Pacaud
+ * Copyright © 2011 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,23 +21,40 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmmathmlpresentationcontainer.h>
+#include <lsmmathmlsemanticselement.h>
 #include <lsmmathmlview.h>
+
+/* LsmDomNode implementation */
+
+static const char *
+lsm_mathml_semantics_element_get_node_name (LsmDomNode *node)
+{
+	return "semantics";
+}
 
 /* LsmMathmlElement implementation */
 
-/* LsmMathmlPresentationContainer implementation */
+/* LsmMathmlSemanticsElement implementation */
+
+LsmDomNode *
+lsm_mathml_semantics_element_new (void)
+{
+	return g_object_new (LSM_TYPE_MATHML_SEMANTICS_ELEMENT, NULL);
+}
 
 static void
-lsm_mathml_presentation_container_init (LsmMathmlPresentationContainer *container)
+lsm_mathml_semantics_element_init (LsmMathmlSemanticsElement *container)
 {
 }
 
-/* LsmMathmlPresentationContainer class */
+/* LsmMathmlSemanticsElement class */
 
 static void
-lsm_mathml_presentation_container_class_init (LsmMathmlPresentationContainerClass *klass)
+lsm_mathml_semantics_element_class_init (LsmMathmlSemanticsElementClass *klass)
 {
+	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
+
+	d_node_class->get_node_name = lsm_mathml_semantics_element_get_node_name;
 }
 
-G_DEFINE_ABSTRACT_TYPE (LsmMathmlPresentationContainer, lsm_mathml_presentation_container, LSM_TYPE_MATHML_ELEMENT)
+G_DEFINE_TYPE (LsmMathmlSemanticsElement, lsm_mathml_semantics_element, LSM_TYPE_MATHML_ELEMENT)

@@ -1,5 +1,5 @@
-/* lsmmathmlrowelement.c
- *
+/* Lasem - A library for SVG and MathML rendering
+ * 
  * Copyright © 2007-2008  Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or

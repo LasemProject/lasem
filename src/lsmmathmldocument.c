@@ -22,6 +22,7 @@
  */
 
 #include <lsmmathmldocument.h>
+#include <lsmmathmlsemanticselement.h>
 #include <lsmmathmlphantomelement.h>
 #include <lsmmathmlmathelement.h>
 #include <lsmmathmltableelement.h>
@@ -125,6 +126,8 @@ lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_na
 		node = lsm_mathml_align_mark_element_new ();
 	else if (strcmp (tag_name, "maligngroup") == 0)
 		node = lsm_mathml_align_group_element_new ();
+	else if (strcmp (tag_name, "semantics") == 0)
+		node = lsm_mathml_semantics_element_new ();
 	else if (strcmp (tag_name, "lasem:itex") == 0)
 		node = lsm_mathml_itex_element_new ();
 	else

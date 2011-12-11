@@ -63,6 +63,7 @@ LASEM_MATHML_SRCS =				\
 	lsmmathmloperatordictionary.c		\
 	lsmmathmldocument.c			\
 	lsmmathmlelement.c			\
+	lsmmathmlsemanticselement.c		\
 	lsmmathmlphantomelement.c		\
 	lsmmathmlmathelement.c			\
 	lsmmathmltableelement.c			\
@@ -163,6 +164,7 @@ LASEM_MATHML_HDRS =				\
 	lsmmathmloperatordictionary.h		\
 	lsmmathmldocument.h			\
 	lsmmathmlelement.h			\
+	lsmmathmlsemanticselement.h		\
 	lsmmathmlphantomelement.h		\
 	lsmmathmlmathelement.h			\
 	lsmmathmltableelement.h			\

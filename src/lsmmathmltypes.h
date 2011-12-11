@@ -30,6 +30,7 @@ G_BEGIN_DECLS
 
 typedef struct _LsmMathmlDocument LsmMathmlDocument;
 typedef struct _LsmMathmlElement LsmMathmlElement;
+typedef struct _LsmMathmlSemanticsElement LsmMathmlSemanticsElement;
 typedef struct _LsmMathmlPhantomElement LsmMathmlPhantomElement;
 typedef struct _LsmMathmlTableElement LsmMathmlTableElement;
 typedef struct _LsmMathmlTableRowElement LsmMathmlTableRowElement;
