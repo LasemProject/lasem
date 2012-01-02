@@ -1,4 +1,4 @@
-/* Lasem - A library for SVG and MathML rendering
+/* Lasem
  * 
  * Copyright © 2011 Emmanuel Pacaud
  *

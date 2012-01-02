@@ -1,4 +1,4 @@
-/* Lasem - SVG and Mathml library
+/* Lasem
  *
  * Copyright © 2004 Caleb Moore
  * Copyright © 2010 Emmanuel Pacaud

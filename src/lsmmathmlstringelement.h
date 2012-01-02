@@ -1,5 +1,6 @@
-/*
- * Copyright © 2007-2008  Emmanuel Pacaud
+/* Lasem
+ *
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

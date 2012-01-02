@@ -1,6 +1,6 @@
-/* lsmmathmlmathelement.c
- *
- * Copyright © 2007-2008  Emmanuel Pacaud
+/* Lasem
+ * 
+ * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,7 @@ void
 lsm_mathml_math_element_update (LsmMathmlMathElement *math_element)
 {
 	lsm_mathml_element_update (LSM_MATHML_ELEMENT (math_element),
-				lsm_mathml_math_element_get_default_style (math_element));
+				   lsm_mathml_math_element_get_default_style (math_element));
 }
 
 const LsmMathmlBbox *

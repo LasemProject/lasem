@@ -1,4 +1,5 @@
-/*
+/* Lasem
+ *
  * Copyright © 2000 Eazel, Inc.
  * Copyright © 2002 Dom Lachowicz
  * Copyright © 2007-2009 Emmanuel Pacaud
