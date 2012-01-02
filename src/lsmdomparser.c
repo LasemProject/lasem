@@ -262,6 +262,70 @@ typedef enum {
 	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
 } LsmDomDocumentError;
 
+#define IN_LIBXML
+#include <libxml/parserInternals.h>
+#undef IN_LIBXML
+
+static void
+lsmDetectSAX2(xmlParserCtxtPtr ctxt) {
+    if (ctxt == NULL) return;
+#ifdef LIBXML_SAX1_ENABLED
+    if ((ctxt->sax) &&  (ctxt->sax->initialized == XML_SAX2_MAGIC) &&
+        ((ctxt->sax->startElementNs != NULL) ||
+         (ctxt->sax->endElementNs != NULL))) ctxt->sax2 = 1;
+#else
+    ctxt->sax2 = 1;
+#endif /* LIBXML_SAX1_ENABLED */
+
+    ctxt->str_xml = xmlDictLookup(ctxt->dict, BAD_CAST "xml", 3);
+    ctxt->str_xmlns = xmlDictLookup(ctxt->dict, BAD_CAST "xmlns", 5);
+    ctxt->str_xml_ns = xmlDictLookup(ctxt->dict, XML_XML_NAMESPACE, 36);
+    if ((ctxt->str_xml==NULL) || (ctxt->str_xmlns==NULL) || 
+    		(ctxt->str_xml_ns == NULL)) {
+	xmlErrMemory(ctxt, NULL);
+    }
+}
+
+int lsmSAXUserParseMemory(xmlSAXHandlerPtr sax, void *user_data,
+			  const char *buffer, int size) {
+    int ret = 0;
+    xmlParserCtxtPtr ctxt;
+
+    xmlInitParser();
+
+    ctxt = xmlCreateMemoryParserCtxt(buffer, size);
+
+    if (ctxt == NULL) return -1;
+    if (ctxt->sax != (xmlSAXHandlerPtr) &xmlDefaultSAXHandler)
+        xmlFree(ctxt->sax);
+    ctxt->sax = sax;
+    lsmDetectSAX2(ctxt);
+
+    if (user_data != NULL)
+	ctxt->userData = user_data;
+
+    xmlCtxtUseOptions(ctxt, XML_PARSE_NOENT);
+    xmlParseDocument(ctxt);
+    
+    if (ctxt->wellFormed)
+	ret = 0;
+    else {
+        if (ctxt->errNo != 0)
+	    ret = ctxt->errNo;
+	else
+	    ret = -1;
+    }
+    if (sax != NULL)
+        ctxt->sax = NULL;
+    if (ctxt->myDoc != NULL) {
+        xmlFreeDoc(ctxt->myDoc);
+	ctxt->myDoc = NULL;
+    }
+    xmlFreeParserCtxt(ctxt);
+    
+    return ret;
+}
+
 LsmDomDocument *
 lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
 {
@@ -274,7 +338,7 @@ lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
 	if (size < 0)
 		size = strlen (buffer);
 
-	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, size) < 0) {
+	if (lsmSAXUserParseMemory (&sax_handler, &state, buffer, size) < 0) {
 		if (state.document !=  NULL)
 			g_object_unref (state.document);
 		state.document = NULL;
