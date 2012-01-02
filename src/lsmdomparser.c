@@ -171,14 +171,7 @@ lsm_dom_parser_get_entity (void *user_data, const xmlChar *name)
 
 	utf8 = lsm_mathml_entity_get_utf8 ((char *) name);
 	if (utf8 != NULL) {
-
-		entity = g_new0 (xmlEntity, 1);
-
-		entity->type = XML_ENTITY_DECL;
-		entity->name = (xmlChar *) xmlMemStrdup ((const char *) name);
-		entity->content = (xmlChar *) xmlMemStrdup (utf8);
-		entity->length = strlen (utf8);
-		entity->etype = XML_INTERNAL_PREDEFINED_ENTITY;
+		entity = xmlNewEntity (NULL, name, XML_INTERNAL_GENERAL_ENTITY, NULL, NULL, (xmlChar *) utf8);
 
 		g_hash_table_insert (state->entities, (char *) name, entity);
 
@@ -198,13 +191,7 @@ lsm_dom_parser_declare_entity (void * user_data, const xmlChar * name, int type,
 	if (content != NULL) {
 		xmlEntity *entity;
 
-		entity = g_new0 (xmlEntity, 1);
-
-		entity->type = XML_ENTITY_DECL;
-		entity->name = (xmlChar *) xmlMemStrdup ((const char *) name);
-		entity->content = (xmlChar *) xmlMemStrdup ((const char *) content);
-		entity->length = strlen ((const char *) content);
-		entity->etype = type;
+		entity = xmlNewEntity (NULL, name, type, publicId, systemId, content);
 
 		g_hash_table_insert (state->entities, (char *) name, entity);
 	}
