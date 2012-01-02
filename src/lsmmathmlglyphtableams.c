@@ -227,7 +227,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x8b\x81" /* ∨ */,
+		"\xe2\x8b\x81" /* ∨ - bigvee */,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -240,7 +240,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x8b\x80" /* ∧ */,
+		"\xe2\x8b\x80" /* ∧  - bigwedge */,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -279,7 +279,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x88\xa9" /* ⋂ */,
+		"\xe2\x88\xa9" /* ⋂ - cap*/,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -292,7 +292,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x88\xaa" /* ⋃ */,
+		"\xe2\x88\xaa" /* ⋃ - cup */,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -305,7 +305,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x8b\x82" /* ⋂ */,
+		"\xe2\x8b\x82" /* ⋂ - bigcap */,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -318,7 +318,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		}
 	},
 	{
-		"\xe2\x8b\x80" /* ⋃ */,
+		"\xe2\x8b\x83" /* ⋃ - bigcup */,
 		LSM_MATHML_GLYPH_FLAG_ALIGN_AXIS | LSM_MATHML_GLYPH_FLAG_HAS_LARGE_VERSION,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -326,8 +326,8 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		{LSM_MATHML_FONT_ERROR,		""},
 		2,
 		{
-			{LSM_MATHML_FONT_CMSY10,	"]"},
-			{LSM_MATHML_FONT_CMEX10,	"]"}
+			{LSM_MATHML_FONT_CMSY10,	"["},
+			{LSM_MATHML_FONT_CMEX10,	"["}
 		}
 	},
 	{
