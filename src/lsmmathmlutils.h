@@ -35,7 +35,7 @@ typedef struct {
 	gboolean is_defined;
 } LsmMathmlBbox;
 
-const LsmMathmlBbox lsm_mathml_bbox_null;
+extern const LsmMathmlBbox lsm_mathml_bbox_null;
 
 void 	lsm_mathml_bbox_add_horizontally 		(LsmMathmlBbox *bbox, const LsmMathmlBbox *new_bbox);
 void 	lsm_mathml_bbox_add_over 			(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
