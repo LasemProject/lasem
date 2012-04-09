@@ -106,6 +106,7 @@ IGNORE_HFILES=\
 	lsmmathmlglyphtableams.h		\
 	lsmmathmlalignmarkelement.h		\
 	lsmmathmlaligngroupelement.h		\
+	lsmmathmlsemanticselement.h		\
 	lsmmathmlitexelement.h			\
 	lsmmathmlutils.h			\
 	lsmmathmllayoututils.h			\

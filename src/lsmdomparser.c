@@ -69,7 +69,6 @@ lsm_dom_parser_start_document (void *user_data)
 	LsmDomSaxParserState *state = user_data;
 
 	state->state = STATE;
-	state->document = NULL;
 	state->is_error = FALSE;
 	state->error_depth = 0;
 	state->entities = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, _free_entity);
@@ -263,14 +262,17 @@ typedef enum {
 	LSM_DOM_DOCUMENT_ERROR_INVALID_XML
 } LsmDomDocumentError;
 
-LsmDomDocument *
-lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
+static LsmDomDocument *
+_parse_memory (LsmDomDocument *document, LsmDomNode *node,
+	       const void *buffer, int size, GError **error)
 {
 	static LsmDomSaxParserState state;
 
-	g_return_val_if_fail (buffer != NULL, NULL);
-
-	state.document = NULL;
+	state.document = document;
+	if (node != NULL)
+		state.current_node = node;
+	else
+		state.current_node = LSM_DOM_NODE (document);
 
 	if (size < 0)
 		size = strlen (buffer);
@@ -290,6 +292,40 @@ lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
 
 	return state.document;
 }
+
+/**
+ * lsm_dom_document_append_from_memory:
+ * @document: a #LsmDomDocument
+ * @node: a #LsmDomNode
+ * @buffer: a memory buffer holding xml data
+ * @size: size of the xml data, in bytes
+ * @error: an error placeholder
+ *
+ * Append a chunk of xml tree to an existing document. The resulting nodes will be appended to
+ * @node, or to @document if @node == NULL.
+ *
+ * Size set to a negative value indicated an unknow xml data size.
+ */
+
+void
+lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
+				     const void *buffer, int size, GError **error)
+{
+	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
+	g_return_if_fail (LSM_IS_DOM_NODE (node) || node == NULL);
+	g_return_if_fail (buffer != NULL);
+
+	_parse_memory (document, node, buffer, size, error);
+}
+
+LsmDomDocument *
+lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
+{
+	g_return_val_if_fail (buffer != NULL, NULL);
+
+	return _parse_memory (NULL, NULL, buffer, size, error); 
+}
+
 
 static LsmDomDocument *
 lsm_dom_document_new_from_file (GFile *file, GError **error)
