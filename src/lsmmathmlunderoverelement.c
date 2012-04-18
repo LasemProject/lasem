@@ -152,7 +152,7 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		operator = lsm_mathml_element_get_embellished_core (under_over->underscript);
 		if (operator != NULL) {
 			accent_under = operator->accent.value;
-			lsm_debug_update ("[UnderOver::update] Underscript is%s accent (%s)",
+			lsm_debug_update ("[UnderOver::update] Underscript is%s an accent (%s)",
 				    accent_under ? "" : " not",
 				    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
@@ -172,10 +172,9 @@ lsm_mathml_under_over_element_update_children (LsmMathmlElement *self, LsmMathml
 		operator = lsm_mathml_element_get_embellished_core (under_over->overscript);
 		if (operator != NULL) {
 			accent = operator->accent.value;
-			if (accent)
-				lsm_debug_update ("[UnderOver::update] Overscript is%s accent (%s)",
-					    accent ? "" : " not",
-					    lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
+			lsm_debug_update ("[UnderOver::update] Overscript is%s an accent (%s)",
+					  accent ? "" : " not",
+					  lsm_dom_node_get_node_name (LSM_DOM_NODE (operator)));
 		}
 
 		accent = lsm_mathml_boolean_attribute_inherit (&under_over->accent, accent);

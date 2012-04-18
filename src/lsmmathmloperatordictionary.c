@@ -2768,6 +2768,15 @@ static const LsmMathmlOperatorDictionaryEntry lsm_mathml_operator_entries[] = {
 		TRUE
 	},
 	{
+		"^", LSM_MATHML_FORM_POSTFIX,
+		{ LSM_MATHML_SPACE_NAME_ERROR, { 0.0, LSM_MATHML_UNIT_EM}},
+		{ LSM_MATHML_SPACE_NAME_ERROR, { 0.0, LSM_MATHML_UNIT_EM}},
+		TRUE, FALSE, TRUE, FALSE, FALSE, FALSE,
+		{ LSM_MATHML_SPACE_NAME_ERROR, { 1, LSM_MATHML_UNIT_PX}},
+		{ LSM_MATHML_SPACE_NAME_INFINITY, {0.0, 0}},
+		TRUE
+	},
+	{
 		"<>", LSM_MATHML_FORM_INFIX,
 		{ LSM_MATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
 		{ LSM_MATHML_SPACE_NAME_VERY_THIN, { 0.0, 0}},
@@ -3256,8 +3265,11 @@ lsm_mathml_operator_dictionary_lookup (const char *utf8, LsmMathmlForm form)
 		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (entry != NULL)
+		if (entry != NULL) {
+			lsm_debug_update ("[OperatorDictionary::lookup] Return infix entry instead of %s for %s",
+					  prefix, utf8);
 			return entry;
+		}
 	}
 
 	if (form != LSM_MATHML_FORM_POSTFIX) {
@@ -3265,8 +3277,11 @@ lsm_mathml_operator_dictionary_lookup (const char *utf8, LsmMathmlForm form)
 		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (entry != NULL)
+		if (entry != NULL) {
+			lsm_debug_update ("[OperatorDictionary::lookup] Return postfix entry instead of %s for %s",
+					  prefix, utf8);
 			return entry;
+		}
 	}
 
 	if (form != LSM_MATHML_FORM_PREFIX) {
@@ -3274,9 +3289,15 @@ lsm_mathml_operator_dictionary_lookup (const char *utf8, LsmMathmlForm form)
 		entry = g_hash_table_lookup (_get_operator_dictionary (), key);
 		g_free (key);
 
-		if (entry != NULL)
+		if (entry != NULL) {
+			lsm_debug_update ("[OperatorDictionary::lookup] Return prefix entry instead of %s for %s",
+					  prefix, utf8);
 			return entry;
+		}
 	}
+
+	lsm_debug_update ("[OperatorDictionary::lookup] Return default entry instead of %s for %s",
+			  prefix, utf8);
 
 	return &lsm_mathml_operator_dictionary_default_entry;
 }

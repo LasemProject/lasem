@@ -24,6 +24,8 @@
 #include <lsmdebug.h>
 #include <lsmmathmloperatorelement.h>
 #include <lsmmathmloperatordictionary.h>
+#include <lsmmathmlunderoverelement.h>
+#include <lsmmathmlscriptelement.h>
 #include <lsmmathmlview.h>
 
 static GObject *parent_class;
@@ -52,15 +54,23 @@ lsm_mathml_operator_element_dictionary_lookup (LsmMathmlOperatorElement *operato
 
 	text = lsm_mathml_presentation_token_get_text (LSM_MATHML_PRESENTATION_TOKEN (operator));
 
-	if (LSM_IS_MATHML_ELEMENT (node->parent_node) &&
-	    lsm_mathml_element_is_inferred_row (LSM_MATHML_ELEMENT (node->parent_node))) {
-		if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
-		    (node->previous_sibling == NULL && node->next_sibling == NULL))
-			form = LSM_MATHML_FORM_INFIX;
-		else if (node->previous_sibling == NULL)
-			form = LSM_MATHML_FORM_PREFIX;
-		else
-			form = LSM_MATHML_FORM_POSTFIX;
+	if (LSM_IS_MATHML_ELEMENT (node->parent_node)) {
+	       if (lsm_mathml_element_is_inferred_row (LSM_MATHML_ELEMENT (node->parent_node))) {
+		       if ((node->previous_sibling != NULL && node->next_sibling != NULL) ||
+			   (node->previous_sibling == NULL && node->next_sibling == NULL))
+			       form = LSM_MATHML_FORM_INFIX;
+		       else if (node->previous_sibling == NULL)
+			       form = LSM_MATHML_FORM_PREFIX;
+		       else
+			       form = LSM_MATHML_FORM_POSTFIX;
+	       } else if (LSM_IS_MATHML_UNDER_OVER_ELEMENT (node->parent_node) &&
+			  node->previous_sibling != NULL) {
+		       form = LSM_MATHML_FORM_POSTFIX;
+	       } else if (LSM_IS_MATHML_SCRIPT_ELEMENT (node->parent_node) &&
+			  node->previous_sibling != NULL) {
+		       form = LSM_MATHML_FORM_POSTFIX;
+	       } else
+		       form = LSM_MATHML_FORM_INFIX;
 	} else
 		form = LSM_MATHML_FORM_INFIX;
 
