@@ -290,11 +290,11 @@ Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_f
 INTROSPECTION_GIRS += Lasem-@LASEM_API_VERSION@.gir
 
 girdir = $(datadir)/gir-1.0
-dist_gir_DATA = $(INTROSPECTION_GIRS)
+gir_DATA = $(INTROSPECTION_GIRS)
 
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES += $(dist_gir_DATA) $(typelib_DATA)
+CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
 endif
