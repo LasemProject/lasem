@@ -22,7 +22,7 @@
  */
 
 #include <lsmmathmlentitydictionary.h>
-#include <glib/ghash.h>
+#include <glib.h>
 #include <stdio.h>
 
 static const struct {
