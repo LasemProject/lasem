@@ -1,10 +1,5 @@
 include $(top_srcdir)/Makefile.decl
 
--include $(INTROSPECTION_MAKEFILE)
-  INTROSPECTION_GIRS =
-  INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
-  INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
-
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
 	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
@@ -274,15 +269,23 @@ lasem_render_@LASEM_API_VERSION@_LDADD = $(LASEM_LIBS) liblasem-@LASEM_API_VERSI
 
 CLEANFILES = $(BUILT_SOURCES)
 
+-include $(INTROSPECTION_MAKEFILE)
+
+INTROSPECTION_GIRS =
+INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
+
 if HAVE_INTROSPECTION
 
-introspection_files = $(liblasem_@LASEM_API_VERSION@_la_SOURCES) \
-		      $(liblasem_@LASEM_API_VERSION@_la_HEADERS)
+introspection_files = $(LASEM_DOM_SRCS) \
+		      $(LASEM_DOM_HDRS) \
+		      lsmdomenumtypes.c	\
+		      lsmdomenumtypes.h
 
 Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER)
 
 Lasem_@LASEM_API_VERSION_U@_gir_INCLUDES = GObject-2.0 cairo-1.0 Gio-2.0 Pango-1.0 GdkPixbuf-2.0
-Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --strip-prefix=Lsm
+Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --identifier-prefix=Lsm
 Lasem_@LASEM_API_VERSION_U@_gir_CFLAGS = $(INCLUDES)
 Lasem_@LASEM_API_VERSION_U@_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
 Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
