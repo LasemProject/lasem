@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2007-2008 Emmanuel Pacaud
+ * Copyright © 2007-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,14 +21,14 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmmathmlentitydictionary.h>
+#include <lsmdomentities.h>
 #include <glib.h>
 #include <stdio.h>
 
 static const struct {
 	const char *name;
 	const char *utf8;
-} lsm_mathml_entities[] = {
+} lsm_dom_entities[] = {
 	{"AElig",                 "\xc3\x86"                }, /* Æ [LATIN CAPITAL LETTER AE]*/
 	{"Aacute",                "\xc3\x81"                }, /* Á [LATIN CAPITAL LETTER A WITH ACUTE]*/
 	{"Abreve",                "\xc4\x82"                }, /* Ă [LATIN CAPITAL LETTER A WITH BREVE]*/
@@ -2123,7 +2123,7 @@ static const struct {
 };
 
 static GHashTable *
-lsm_mathml_get_entity_dictionary (void)
+lsm_dom_get_entities (void)
 {
 	static GHashTable *entity_hash = NULL;
 	int i;
@@ -2133,20 +2133,20 @@ lsm_mathml_get_entity_dictionary (void)
 
 	entity_hash = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
 
-	for (i = 0; i < G_N_ELEMENTS (lsm_mathml_entities); i++)
+	for (i = 0; i < G_N_ELEMENTS (lsm_dom_entities); i++)
 			g_hash_table_insert (entity_hash,
-					     (char *) lsm_mathml_entities[i].name,
-					     (char *) lsm_mathml_entities[i].utf8);
+					     (char *) lsm_dom_entities[i].name,
+					     (char *) lsm_dom_entities[i].utf8);
 
 	return entity_hash;
 }
 
 const char *
-lsm_mathml_entity_get_utf8 (const char *name)
+lsm_dom_get_entity (const char *name)
 {
 	const char *utf8;
 
-	utf8 = g_hash_table_lookup (lsm_mathml_get_entity_dictionary (), name);
+	utf8 = g_hash_table_lookup (lsm_dom_get_entities (), name);
 
 	if (utf8 == NULL)
 		return name;

@@ -28,6 +28,7 @@
 
 #include <lsmdomtypes.h>
 
+#include <lsmdomentities.h>
 #include <lsmdomnode.h>
 #include <lsmdomnodelist.h>
 #include <lsmdomdocument.h>

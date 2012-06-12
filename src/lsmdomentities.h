@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2007-2008 Emmanuel Pacaud
+ * Copyright © 2007-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,11 @@
 #ifndef LSM_MATHML_ENTITY_DICTIONARY_H
 #define LSM_MATHML_ENTITY_DICTIONARY_H
 
-#include <lsmmathmltypes.h>
+#include <lsmdomtypes.h>
 
 G_BEGIN_DECLS
 
-const char 	*lsm_mathml_entity_get_utf8 	(const char *name);
+const char 	*lsm_dom_get_entity 	(const char *name);
 
 G_END_DECLS
 

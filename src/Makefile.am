@@ -37,6 +37,7 @@ LASEM_DOM_SRCS =				\
 	lsmattributes.c				\
 	lsmcairo.c				\
 	lsmdomenumtypes.c			\
+	lsmdomentities.c			\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
 	lsmdomnamednodemap.c			\
@@ -54,7 +55,6 @@ LASEM_MATHML_SRCS =				\
 	lsmmathmlenums.c			\
 	lsmmathmltraits.c			\
 	lsmmathmlattributes.c			\
-	lsmmathmlentitydictionary.c		\
 	lsmmathmloperatordictionary.c		\
 	lsmmathmldocument.c			\
 	lsmmathmlelement.c			\
@@ -135,6 +135,7 @@ LASEM_DOM_HDRS = 				\
 	lsmtraits.h				\
 	lsmproperties.h				\
 	lsmattributes.h				\
+	lsmdomentities.h			\
 	lsmdom.h				\
 	lsmdomtypes.h				\
 	lsmdomnode.h				\
@@ -155,7 +156,6 @@ LASEM_MATHML_HDRS =				\
 	lsmmathmlenums.h			\
 	lsmmathmltraits.h			\
 	lsmmathmlattributes.h			\
-	lsmmathmlentitydictionary.h		\
 	lsmmathmloperatordictionary.h		\
 	lsmmathmldocument.h			\
 	lsmmathmlelement.h			\

@@ -31,7 +31,6 @@
 #include <lsmmathmlenums.h>
 #include <lsmmathmltraits.h>
 #include <lsmmathmlattributes.h>
-#include <lsmmathmlentitydictionary.h>
 #include <lsmmathmloperatordictionary.h>
 #include <lsmmathmldocument.h>
 #include <lsmmathmlelement.h>

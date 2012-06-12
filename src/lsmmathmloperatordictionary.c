@@ -22,7 +22,7 @@
  */
 
 #include <lsmmathmloperatordictionary.h>
-#include <lsmmathmlentitydictionary.h>
+#include <lsmdomentities.h>
 #include <stdio.h>
 
 /* Automatically generated using a slightly modified version of gnumerator parser */
@@ -3227,7 +3227,7 @@ _get_operator_dictionary (void)
 	operator_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	for (i = 0; i < G_N_ELEMENTS (lsm_mathml_operator_entries); i++) {
-		utf8 = lsm_mathml_entity_get_utf8 (lsm_mathml_operator_entries[i].name);
+		utf8 = lsm_dom_get_entity (lsm_mathml_operator_entries[i].name);
 
 		switch (lsm_mathml_operator_entries[i].form) {
 			case LSM_MATHML_FORM_PREFIX:

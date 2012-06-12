@@ -24,7 +24,7 @@
 #include <lsmdebug.h>
 #include <lsmdomimplementation.h>
 #include <lsmdomnode.h>
-#include <lsmmathmlentitydictionary.h>
+#include <lsmdomentities.h>
 #include <lsmsvgtextelement.h>
 #include <lsmstr.h>
 #include <libxml/parser.h>
@@ -168,7 +168,7 @@ lsm_dom_parser_get_entity (void *user_data, const xmlChar *name)
 	if (entity != NULL)
 		return entity;
 
-	utf8 = lsm_mathml_entity_get_utf8 ((char *) name);
+	utf8 = lsm_dom_get_entity ((char *) name);
 	if (utf8 != NULL) {
 		entity = xmlNewEntity (NULL, name, XML_INTERNAL_GENERAL_ENTITY, NULL, NULL, (xmlChar *) utf8);
 

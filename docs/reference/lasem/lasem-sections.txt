@@ -113,6 +113,7 @@ lsm_dom_document_get_url
 lsm_dom_document_set_url
 lsm_dom_document_set_path
 lsm_dom_document_get_href_data
+lsm_dom_get_entity
 <SUBSECTION Standard>
 LsmDomDocumentClass
 LSM_DOM_DOCUMENT

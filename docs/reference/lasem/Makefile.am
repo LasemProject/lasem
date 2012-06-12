@@ -77,7 +77,6 @@ IGNORE_HFILES=\
 	lsmmathmlenums.h			\
 	lsmmathmltraits.h			\
 	lsmmathmlattributes.h			\
-	lsmmathmlentitydictionary.h		\
 	lsmmathmloperatordictionary.h		\
 	lsmmathmldocument.h			\
 	lsmmathmlelement.h			\
