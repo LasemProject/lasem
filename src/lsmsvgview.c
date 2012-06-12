@@ -244,7 +244,7 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 	status = cairo_matrix_invert (&inv_matrix);
 
 	if (status != CAIRO_STATUS_SUCCESS) {
-		lsm_debug_render ("SvgView::set_gradient_properties] Not invertible matrix");
+		lsm_debug_render ("[LsmSvgView::set_gradient_properties] Not invertible matrix");
 		return FALSE;
 	}
 
