@@ -46,6 +46,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmBox viewport;
 	const LsmBox *mask_extents;
 	LsmSvgStyle *style;
+	gboolean is_matrix_invertible = TRUE;
 
 	if (!mask->enable_rendering) {
 		lsm_debug_render ("[LsmSvgMaskElement::render] Direct rendering not allowed");
@@ -114,7 +115,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_matrix_init_translate (&matrix, +mask_extents->x, +mask_extents->y);
 		lsm_svg_matrix_scale (&matrix, mask_extents->width, mask_extents->height);
 		lsm_svg_view_push_viewbox (view, &viewbox);
-		lsm_svg_view_push_matrix (view, &matrix);
+		is_matrix_invertible = lsm_svg_view_push_matrix (view, &matrix);
 
 		lsm_debug_render ("[LsmSvgMaskElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
@@ -122,7 +123,10 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 			   mask_extents->x, mask_extents->y);
 	}
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+	if (is_matrix_invertible)
+		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+	else
+		lsm_debug_render ("[LsmSvgMaskElement::render] Not invertibale matrix");
 
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_matrix (view);

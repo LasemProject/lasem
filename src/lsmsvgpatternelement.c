@@ -149,6 +149,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmBox image_box;
 	const LsmBox *pattern_extents;
 	LsmSvgStyle *style;
+	gboolean is_matrix_invertible = TRUE;
 
 	if (!pattern->enable_rendering) {
 		lsm_debug_render ("[LsmSvgPatternElement::render] Direct rendering not allowed");
@@ -247,7 +248,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_matrix_init_scale (&matrix, pattern_extents->width, pattern_extents->height);
 		lsm_svg_matrix_translate (&matrix, -pattern_extents->x, -pattern_extents->y);
 		lsm_svg_view_push_viewbox (view, &viewbox);
-		lsm_svg_view_push_matrix (view, &matrix);
+		is_matrix_invertible = lsm_svg_view_push_matrix (view, &matrix);
 
 		lsm_debug_render ("[LsmSvgPatternElement::render] object_bounding_box"
 			   " x_scale = %g, y_scale = %g, x_offset = %g, y_offset = %g",
@@ -255,18 +256,22 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 			   pattern_extents->x,     pattern_extents->y);
 	}
 
-	is_viewbox_defined = lsm_attribute_is_defined (&pattern->viewbox.base);
+	if (is_matrix_invertible) {
 
-	if (!(is_viewbox_defined) ||
-	    (is_viewbox_defined && pattern->viewbox.value.width > 0.0 && pattern->viewbox.value.height > 0.0)) {
+		is_viewbox_defined = lsm_attribute_is_defined (&pattern->viewbox.base);
 
-		lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &pattern->viewbox.value : NULL,
-					    &pattern->preserve_aspect_ratio.value);
+		if (!(is_viewbox_defined) ||
+		    (is_viewbox_defined && pattern->viewbox.value.width > 0.0 && pattern->viewbox.value.height > 0.0)) {
 
-		LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_pattern), view);
+			lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &pattern->viewbox.value : NULL,
+						    &pattern->preserve_aspect_ratio.value);
 
-		lsm_svg_view_pop_viewport (view);
-	}
+			LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_pattern), view);
+
+			lsm_svg_view_pop_viewport (view);
+		}
+	} else
+		lsm_debug_render ("[LsmSvgPatternElement::render] Not invertiblae matrix");
 
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_matrix (view);

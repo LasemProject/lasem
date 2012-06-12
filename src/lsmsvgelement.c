@@ -159,6 +159,7 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
 	gboolean is_identity_transform;
+	gboolean is_matrix_invertible = TRUE;
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
@@ -172,23 +173,30 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
 
 	if (!is_identity_transform)
-		lsm_svg_view_push_matrix (view, &element->transform.matrix);
+		is_matrix_invertible = lsm_svg_view_push_matrix (view, &element->transform.matrix);
 
-	lsm_svg_view_push_element (view, element);
-	lsm_svg_view_push_style (view, style);
+	if (!is_matrix_invertible & !is_matrix_invertible)
+		lsm_debug_render ("[LsmSvgElement::render] Not invertibale matrix for %s (%s)",
+				  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+				  element->id.value != NULL ? element->id.value : "no id");
+
+	if (is_identity_transform || is_matrix_invertible) {
+		lsm_svg_view_push_element (view, element);
+		lsm_svg_view_push_style (view, style);
 
 
-	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
-	    style->display->value != LSM_SVG_DISPLAY_NONE) {
-		lsm_debug_render ("[LsmSvgElement::render] Render %s (%s)",
-			   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
-			   element->id.value != NULL ? element->id.value : "no id");
+		if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
+		    style->display->value != LSM_SVG_DISPLAY_NONE) {
+			lsm_debug_render ("[LsmSvgElement::render] Render %s (%s)",
+					  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+					  element->id.value != NULL ? element->id.value : "no id");
 
-		element_class->render (element, view);
+			element_class->render (element, view);
+		}
+
+		lsm_svg_view_pop_style (view);
+		lsm_svg_view_pop_element (view);
 	}
-
-	lsm_svg_view_pop_style (view);
-	lsm_svg_view_pop_element (view);
 
 	if (!is_identity_transform)
 		lsm_svg_view_pop_matrix (view);

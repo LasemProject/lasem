@@ -1656,13 +1656,15 @@ lsm_svg_view_viewbox_to_viewport (LsmSvgView *view, const LsmBox *viewport, cons
 		*y = *y * y_scale + y_offset;
 }
 
-void
+gboolean
 lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 {
 	cairo_matrix_t cr_matrix;
+	cairo_matrix_t cr_inv_matrix;
 	cairo_matrix_t *ctm;
+	cairo_status_t status;
 
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), FALSE);
 
 	ctm = g_new (cairo_matrix_t, 1);
 	cairo_get_matrix (view->dom_view.cairo, ctm);
@@ -1673,6 +1675,12 @@ lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 		   matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
 
 	cairo_matrix_init (&cr_matrix, matrix->a, matrix->b, matrix->c, matrix->d, matrix->e, matrix->f);
+	cr_inv_matrix = cr_matrix;
+	status = cairo_matrix_invert (&cr_inv_matrix) == CAIRO_STATUS_SUCCESS;
+
+	if (status == CAIRO_STATUS_SUCCESS)
+       		return FALSE;
+
 	cairo_transform (view->dom_view.cairo, &cr_matrix);
 
 	{
@@ -1683,6 +1691,8 @@ lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 			   current_ctm.xx, current_ctm.xy, current_ctm.yx, current_ctm.yy,
 			   current_ctm.x0, current_ctm.y0);
 	}
+
+	return TRUE;
 }
 
 void
@@ -2118,6 +2128,9 @@ lsm_svg_view_render (LsmDomView *view)
 		g_slist_free (svg_view->style_stack);
 		svg_view->style_stack = NULL;
 	}
+
+	if (cairo_status (view->cairo) != CAIRO_STATUS_SUCCESS)
+		printf ("Cairo error ! %s\n", cairo_status_to_string (cairo_status (view->cairo)));
 }
 
 LsmSvgView *

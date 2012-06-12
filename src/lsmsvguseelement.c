@@ -101,9 +101,11 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	lsm_svg_matrix_init_translate (&matrix, x, y);
-	lsm_svg_view_push_matrix (view, &matrix);
 
-	lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
+	if (lsm_svg_view_push_matrix (view, &matrix))
+		lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
+	else
+		lsm_debug_render ("[LsmSvgUseElement::render] Not invertibale matrix");
 
 	lsm_svg_view_pop_matrix (view);
 
@@ -151,12 +153,11 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 						       &extents->x2, &extents->y2);
 
 	lsm_svg_matrix_init_translate (&matrix, x, y);
-	lsm_svg_view_push_matrix (view, &matrix);
 
-	lsm_svg_matrix_transform_bounding_box (&matrix,
-					       &extents->x1, &extents->y1,
-					       &extents->x2, &extents->y2);
-
+	if (lsm_svg_view_push_matrix (view, &matrix))
+		lsm_svg_matrix_transform_bounding_box (&matrix,
+						       &extents->x1, &extents->y1,
+						       &extents->x2, &extents->y2);
 	lsm_svg_view_pop_matrix (view);
 
 	use_element->flags &= ~LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS;

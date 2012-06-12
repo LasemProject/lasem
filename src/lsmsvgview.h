@@ -130,7 +130,7 @@ void 		lsm_svg_view_viewbox_to_viewport 	(LsmSvgView *view,
 							 const LsmBox *viewport, const LsmBox *viewbox,
 							 const LsmSvgPreserveAspectRatio *aspect_ratio,
 							 double *x, double *y);
-void 		lsm_svg_view_push_matrix		(LsmSvgView *view, const LsmSvgMatrix *matrix);
+gboolean	lsm_svg_view_push_matrix		(LsmSvgView *view, const LsmSvgMatrix *matrix);
 void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
 
 void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);

@@ -96,16 +96,20 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_debug_render ("[LsmSvgMarkerElement::render] auto angle = %g", marker->vertex_angle);
 	}
 	lsm_svg_matrix_translate (&matrix, -ref_x, -ref_y);
-	lsm_svg_view_push_matrix (view, &matrix);
 
-	lsm_svg_view_push_viewport (view, &viewport, &marker->viewbox.value,
-				    &marker->preserve_aspect_ratio.value);
+	if (lsm_svg_view_push_matrix (view, &matrix)) {
 
-	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+		lsm_svg_view_push_viewport (view, &viewport, &marker->viewbox.value,
+					    &marker->preserve_aspect_ratio.value);
 
-	lsm_svg_view_pop_viewport (view);
+		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+		lsm_svg_view_pop_viewport (view);
+	} else
+		lsm_debug_render ("[LsmSvgMarkerElement::render] Not invertible matrix");
 
 	lsm_svg_view_pop_matrix (view);
+
 
 	lsm_svg_view_pop_style (view);
 	lsm_svg_style_unref (style);
