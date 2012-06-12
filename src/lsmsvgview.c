@@ -2128,9 +2128,6 @@ lsm_svg_view_render (LsmDomView *view)
 		g_slist_free (svg_view->style_stack);
 		svg_view->style_stack = NULL;
 	}
-
-	if (cairo_status (view->cairo) != CAIRO_STATUS_SUCCESS)
-		printf ("Cairo error ! %s\n", cairo_status_to_string (cairo_status (view->cairo)));
 }
 
 LsmSvgView *
