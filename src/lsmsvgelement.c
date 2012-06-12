@@ -175,11 +175,6 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	if (!is_identity_transform)
 		is_matrix_invertible = lsm_svg_view_push_matrix (view, &element->transform.matrix);
 
-	if (!is_matrix_invertible & !is_matrix_invertible)
-		lsm_debug_render ("[LsmSvgElement::render] Not invertibale matrix for %s (%s)",
-				  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
-				  element->id.value != NULL ? element->id.value : "no id");
-
 	if (is_identity_transform || is_matrix_invertible) {
 		lsm_svg_view_push_element (view, element);
 		lsm_svg_view_push_style (view, style);

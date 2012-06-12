@@ -1690,8 +1690,10 @@ lsm_svg_view_push_matrix (LsmSvgView *view, const LsmSvgMatrix *matrix)
 	cr_inv_matrix = cr_matrix;
 	status = cairo_matrix_invert (&cr_inv_matrix) == CAIRO_STATUS_SUCCESS;
 
-	if (status == CAIRO_STATUS_SUCCESS)
+	if (status == CAIRO_STATUS_SUCCESS) {
+		lsm_debug_render ("[LsmSvgView::push_matrix] Not invertible matrix");
        		return FALSE;
+	}
 
 	cairo_transform (view->dom_view.cairo, &cr_matrix);
 

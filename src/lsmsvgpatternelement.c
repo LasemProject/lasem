@@ -270,8 +270,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 			lsm_svg_view_pop_viewport (view);
 		}
-	} else
-		lsm_debug_render ("[LsmSvgPatternElement::render] Not invertiblae matrix");
+	}
 
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_matrix (view);

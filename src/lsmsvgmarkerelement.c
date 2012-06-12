@@ -105,8 +105,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 
 		lsm_svg_view_pop_viewport (view);
-	} else
-		lsm_debug_render ("[LsmSvgMarkerElement::render] Not invertible matrix");
+	}
 
 	lsm_svg_view_pop_matrix (view);
 

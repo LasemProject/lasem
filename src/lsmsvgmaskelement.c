@@ -125,8 +125,6 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (is_matrix_invertible)
 		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
-	else
-		lsm_debug_render ("[LsmSvgMaskElement::render] Not invertible matrix");
 
 	if (is_object_bounding_box) {
 		lsm_svg_view_pop_matrix (view);

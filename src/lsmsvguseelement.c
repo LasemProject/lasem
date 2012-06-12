@@ -104,8 +104,6 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (lsm_svg_view_push_matrix (view, &matrix))
 		lsm_svg_element_render (LSM_SVG_ELEMENT (element), view);
-	else
-		lsm_debug_render ("[LsmSvgUseElement::render] Not invertibale matrix");
 
 	lsm_svg_view_pop_matrix (view);
 
