@@ -32,6 +32,10 @@ G_BEGIN_DECLS
 
 typedef struct _LsmFilterSurface LsmFilterSurface;
 
+GType lsm_filter_surface_get_type (void);
+
+#define LSM_TYPE_FILTER_SURFACE (lsm_filter_surface_get_type())
+
 LsmFilterSurface * 	lsm_filter_surface_new 			(const char *name,
 								 unsigned int x0, unsigned int y0,
 								 unsigned int x1, unsigned int y1);

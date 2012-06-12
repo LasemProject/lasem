@@ -36,6 +36,26 @@ struct _LsmFilterSurface {
 };
 
 LsmFilterSurface *
+lsm_filter_surface_duplicate (const LsmFilterSurface *from)
+{
+	LsmFilterSurface *filter_surface;
+
+	g_return_val_if_fail (from != NULL, NULL);
+
+	cairo_surface_reference (from->surface);
+	
+	filter_surface = g_new (LsmFilterSurface, 1);
+	filter_surface->name = g_strdup (from->name);
+	filter_surface->surface = from->surface;
+	filter_surface->x0 = from->x0;
+	filter_surface->x1 = from->x1;
+	filter_surface->y0 = from->y0;
+	filter_surface->y1 = from->y1;
+
+	return filter_surface;
+}
+
+LsmFilterSurface *
 lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1)
 {
 	cairo_surface_t *surface;
@@ -75,6 +95,19 @@ lsm_filter_surface_free (LsmFilterSurface *filter_surface)
 	cairo_surface_destroy (filter_surface->surface);
 	g_free (filter_surface->name);
 	g_free (filter_surface);
+}
+
+GType
+lsm_filter_surface_get_type (void)
+{
+	static GType our_type = 0;
+
+	if (our_type == 0)
+		our_type = g_boxed_type_register_static ("LsmFilterSurface",
+							 (GBoxedCopyFunc) lsm_filter_surface_duplicate,
+							 (GBoxedFreeFunc) lsm_filter_surface_free);
+
+	return our_type;
 }
 
 static void
