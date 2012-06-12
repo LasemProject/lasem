@@ -262,6 +262,8 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	cairo_surface_t *surface;
 	cairo_pattern_t *pattern;
 	cairo_matrix_t matrix;
+	cairo_matrix_t inv_matrix;
+	cairo_status_t status;
 	double x1, y1, x2, y2;
 	double device_width, device_height;
 	double x_scale, y_scale;
@@ -330,6 +332,14 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	} else {
 		cairo_matrix_init_scale (&matrix, x_scale, y_scale);
 		cairo_matrix_translate (&matrix, -viewport->x, -viewport->y);
+	}
+
+	inv_matrix = matrix;
+	status = cairo_matrix_invert (&inv_matrix);
+
+	if (status != CAIRO_STATUS_SUCCESS) {
+		lsm_debug_render ("[LsmSvgView::create_surface_pattern] Not invertible matrix");
+		return FALSE;
 	}
 
 	cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
