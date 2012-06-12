@@ -194,17 +194,19 @@ lsm_svg_view_add_gradient_color_stop (LsmSvgView *view, double offset)
 					   style->stop_opacity->value * view->pattern_data->opacity);
 }
 
-void
+gboolean
 lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 				      LsmSvgSpreadMethod method,
 				      LsmSvgPatternUnits units,
 				      const LsmSvgMatrix *gradient_matrix)
 {
 	cairo_matrix_t matrix;
+	cairo_matrix_t inv_matrix;
+	cairo_status_t status;
 
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->pattern_data != NULL);
-	g_return_if_fail (view->pattern_data->pattern != NULL);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), FALSE);
+	g_return_val_if_fail (view->pattern_data != NULL, FALSE);
+	g_return_val_if_fail (view->pattern_data->pattern != NULL, FALSE);
 
 	switch (method) {
 		case LSM_SVG_SPREAD_METHOD_REFLECT:
@@ -238,7 +240,17 @@ lsm_svg_view_set_gradient_properties (LsmSvgView *view,
 
 	}
 
+	inv_matrix = matrix;
+	status = cairo_matrix_invert (&inv_matrix);
+
+	if (status != CAIRO_STATUS_SUCCESS) {
+		lsm_debug_render ("SvgView::set_gradient_properties] Not invertible matrix");
+		return FALSE;
+	}
+
 	cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
+
+	return TRUE;
 }
 
 gboolean

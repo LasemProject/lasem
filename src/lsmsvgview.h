@@ -99,12 +99,14 @@ void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double
 void 		lsm_svg_view_create_linear_gradient 	(LsmSvgView *view, double x1, double y1,
 							                   double x2, double y2);
 void 		lsm_svg_view_add_gradient_color_stop	(LsmSvgView *view, double offset);
-void 		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
+G_GNUC_WARN_UNUSED_RESULT gboolean 	
+		lsm_svg_view_set_gradient_properties	(LsmSvgView *view,
 							 LsmSvgSpreadMethod method,
 							 LsmSvgPatternUnits units,
 							 const LsmSvgMatrix *matrix);
 
-gboolean	lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
+G_GNUC_WARN_UNUSED_RESULT gboolean
+		lsm_svg_view_create_surface_pattern	(LsmSvgView *view, const LsmBox *viewport,
 							 const LsmSvgMatrix *matrix,
 							 LsmSvgViewSurfaceType surface_type) G_GNUC_WARN_UNUSED_RESULT;
 

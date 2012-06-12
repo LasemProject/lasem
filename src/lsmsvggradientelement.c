@@ -72,14 +72,14 @@ lsm_svg_gradient_element_render (LsmSvgElement *self, LsmSvgView *view)
 		   gradient->transform.matrix.e,
 		   gradient->transform.matrix.f);
 
-	lsm_svg_view_set_gradient_properties (view,
-					      gradient->spread_method.value,
-					      gradient->units.value,
-					      &gradient->transform.matrix);
-
-	for (node = LSM_DOM_NODE (referenced_gradient)->first_child; node != NULL; node = node->next_sibling)
-		if (LSM_IS_SVG_ELEMENT (node))
-		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
+	if (lsm_svg_view_set_gradient_properties (view,
+						  gradient->spread_method.value,
+						  gradient->units.value,
+						  &gradient->transform.matrix)) {
+		for (node = LSM_DOM_NODE (referenced_gradient)->first_child; node != NULL; node = node->next_sibling)
+			if (LSM_IS_SVG_ELEMENT (node))
+				lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
+	}
 }
 
 static void
