@@ -196,14 +196,13 @@ lsm_dom_parser_declare_entity (void * user_data, const xmlChar * name, int type,
 	}
 }
 
-#if 1
 static void
 lsm_dom_parser_warning (void *user_data, const char *msg, ...)
 {
 	va_list args;
 
 	va_start(args, msg);
-	g_logv("XML", G_LOG_LEVEL_WARNING, msg, args);
+	lsm_warning_dom (msg);
 	va_end(args);
 }
 
@@ -213,7 +212,7 @@ lsm_dom_parser_error (void *user_data, const char *msg, ...)
 	va_list args;
 
 	va_start(args, msg);
-	g_logv("XML", G_LOG_LEVEL_CRITICAL, msg, args);
+	lsm_warning_dom (msg);
 	va_end(args);
 }
 
@@ -223,17 +222,14 @@ lsm_dom_parser_fatal_error (void *user_data, const char *msg, ...)
 	va_list args;
 
 	va_start(args, msg);
-	g_logv("XML", G_LOG_LEVEL_ERROR, msg, args);
+	lsm_warning_dom (msg);
 	va_end(args);
 }
-#endif
 
 static xmlSAXHandler sax_handler = {
-#if 1
 	.warning = lsm_dom_parser_warning,
 	.error = lsm_dom_parser_error,
 	.fatalError = lsm_dom_parser_fatal_error,
-#endif
 	.startDocument = lsm_dom_parser_start_document,
 	.endDocument = lsm_dom_parser_end_document,
 	.startElement = lsm_dom_parser_start_element,
