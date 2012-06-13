@@ -51,9 +51,14 @@ typedef struct {
 
 typedef struct _LsmPropertyManager LsmPropertyManager;
 
+#define LSM_TYPE_PROPERTY_MANAGER (lsm_property_manager_get_type())
+
+GType lsm_property_manager_get_type (void);
+
 LsmPropertyManager *	lsm_property_manager_new	(unsigned int n_properties,
 							 const LsmPropertyInfos *property_infos);
-void			lsm_property_manager_free	(LsmPropertyManager *manager);
+LsmPropertyManager *	lsm_property_manager_ref	(LsmPropertyManager *manager);
+void			lsm_property_manager_unref	(LsmPropertyManager *manager);
 
 gboolean 	lsm_property_manager_set_property 	(LsmPropertyManager *manager,
 							 LsmPropertyBag *property_bag,

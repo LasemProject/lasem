@@ -39,7 +39,11 @@ lsm_attribute_is_defined (const LsmAttribute *attribute)
 
 struct _LsmAttributeManager {
 	GHashTable *			hash_by_name;
+
+	gint ref_count;
 };
+
+G_DEFINE_BOXED_TYPE (LsmAttributeManager, lsm_attribute_manager, lsm_attribute_manager_ref, lsm_attribute_manager_unref)
 
 static LsmAttributeManager *
 lsm_attribute_manager_create (void)
@@ -48,6 +52,7 @@ lsm_attribute_manager_create (void)
 
 	manager = g_new0 (LsmAttributeManager, 1);
 	manager->hash_by_name = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	manager->ref_count = 1;
 
 	return manager;
 }
@@ -104,13 +109,25 @@ lsm_attribute_manager_add_attributes (LsmAttributeManager *manager,
 
 }
 
+LsmAttributeManager *
+lsm_attribute_manager_ref (LsmAttributeManager *manager)
+{
+	g_return_val_if_fail (manager != NULL, NULL);
+
+	g_atomic_int_inc (&manager->ref_count);
+
+	return manager;
+}
+
 void
-lsm_attribute_manager_free (LsmAttributeManager *manager)
+lsm_attribute_manager_unref (LsmAttributeManager *manager)
 {
 	g_return_if_fail (manager != NULL);
 
-	g_hash_table_unref (manager->hash_by_name);
-	g_free (manager);
+	if (g_atomic_int_dec_and_test (&manager->ref_count)) {
+		g_hash_table_unref (manager->hash_by_name);
+		g_free (manager);
+	}
 }
 
 gboolean

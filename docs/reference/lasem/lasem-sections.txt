@@ -93,7 +93,6 @@ lsm_dom_named_node_map_get_type
 LsmDomDocument
 LsmDomDocumentCreateFunction
 lsm_dom_implementation_create_document
-lsm_dom_implementation_add_document_create_function
 lsm_dom_implementation_cleanup
 lsm_dom_document_append_from_memory
 lsm_dom_document_new_from_memory
@@ -188,8 +187,12 @@ LSM_IS_DOM_VIEW_CLASS
 LSM_DOM_VIEW_GET_CLASS
 <SUBSECTION Private>
 lsm_dom_view_set_document
+LSM_TYPE_BOX
+LSM_TYPE_EXTENTS
 LsmBox
 LsmExtents
+lsm_box_get_type
+lsm_extents_get_type
 </SECTION>
 
 <SECTION>

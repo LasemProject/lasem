@@ -44,13 +44,19 @@ typedef struct {
 
 typedef struct _LsmAttributeManager LsmAttributeManager;
 
+#define LSM_TYPE_ATTRIBUTE_MANAGER (lsm_attribute_manager_get_type())
+
+GType lsm_attribute_manager_get_type (void);
+
 LsmAttributeManager *	lsm_attribute_manager_new 		(unsigned int n_attributes,
 								 const LsmAttributeInfos *attribute_infos);
-void			lsm_attribute_manager_free		(LsmAttributeManager *manager);
+LsmAttributeManager * 	lsm_attribute_manager_duplicate 	(const LsmAttributeManager *origin);
+LsmAttributeManager *	lsm_attribute_manager_ref		(LsmAttributeManager *manager);
+void			lsm_attribute_manager_unref		(LsmAttributeManager *manager);
+
 void 			lsm_attribute_manager_add_attributes 	(LsmAttributeManager *manager,
 								 unsigned int n_attributes,
 								 const LsmAttributeInfos *attribute_infos);
-LsmAttributeManager * 	lsm_attribute_manager_duplicate 	(const LsmAttributeManager *origin);
 
 gboolean	lsm_attribute_manager_set_attribute		(LsmAttributeManager *manager,
 								 void *instance,

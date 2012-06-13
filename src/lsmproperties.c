@@ -37,7 +37,11 @@ struct _LsmPropertyManager {
 	/* FIXME: Not thread safe */
 	unsigned int *		property_check;
 	unsigned int		property_check_count;
+
+	gint ref_count;
 };
+
+G_DEFINE_BOXED_TYPE (LsmPropertyManager, lsm_property_manager, lsm_property_manager_ref, lsm_property_manager_unref)
 
 LsmPropertyManager *
 lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *property_infos)
@@ -54,6 +58,7 @@ lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *pro
 	manager->property_infos = property_infos;
 	manager->property_check_count = 0;
 	manager->property_check = g_new0 (unsigned int, n_properties);
+	manager->ref_count = 1;
 
 	for (i = 0; i < n_properties; i++) {
 
@@ -68,14 +73,26 @@ lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *pro
 	return manager;
 }
 
+LsmPropertyManager *
+lsm_property_manager_ref (LsmPropertyManager *manager)
+{
+	g_return_val_if_fail (manager != NULL, NULL);
+
+	g_atomic_int_inc (&manager->ref_count);
+
+	return manager;
+}
+
 void
-lsm_property_manager_free (LsmPropertyManager *manager)
+lsm_property_manager_unref (LsmPropertyManager *manager)
 {
 	g_return_if_fail (manager != NULL);
 
-	g_hash_table_unref (manager->hash_by_name);
-	g_free (manager->property_check);
-	g_free (manager);
+	if (g_atomic_int_dec_and_test (&manager->ref_count)) {
+		g_hash_table_unref (manager->hash_by_name);
+		g_free (manager->property_check);
+		g_free (manager);
+	}
 }
 
 static void

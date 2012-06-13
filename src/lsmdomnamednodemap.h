@@ -54,7 +54,7 @@ struct _LsmDomNamedNodeMapClass {
 GType lsm_dom_named_node_map_get_type (void);
 
 LsmDomNode *		lsm_dom_named_node_map_get_named_item 		(LsmDomNamedNodeMap *map, const char *name);
-LsmDomNode *		lsm_dom_named_node_map_set_named_item 		(LsmDomNamedNodeMap *map, LsmDomNode *item);
+LsmDomNode *		lsm_dom_named_node_map_set_named_item 		(LsmDomNamedNodeMap *map, LsmDomNode *node);
 LsmDomNode *		lsm_dom_named_node_map_remove_named_item	(LsmDomNamedNodeMap *map, const char *name);
 LsmDomNode *		lsm_dom_named_node_map_get_item 		(LsmDomNamedNodeMap *map, unsigned int index);
 unsigned int		lsm_dom_named_node_map_get_length		(LsmDomNamedNodeMap *map);

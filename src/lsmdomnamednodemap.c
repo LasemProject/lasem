@@ -26,6 +26,13 @@
 
 /* LsmDomNamedNodeMap implementation */
 
+/**
+ * lsm_dom_named_node_map_get_named_item:
+ * @map: a #LsmDomNamedNodeMap
+ * @name: name of the requested item
+ * Returns: (transfer none): The corresponding node, NULL if not found.
+ */
+
 LsmDomNode *
 lsm_dom_named_node_map_get_named_item (LsmDomNamedNodeMap *map, const char *name)
 {
@@ -33,6 +40,13 @@ lsm_dom_named_node_map_get_named_item (LsmDomNamedNodeMap *map, const char *name
 
 	return LSM_DOM_NAMED_NODE_MAP_GET_CLASS (map)->get (map, name);
 }
+
+/**
+ * lsm_dom_named_node_map_set_named_item:
+ * @map: a #LsmDomNamedNodeMap
+ * @node: a #LsmDomNode
+ * Returns: (transfer none): same as @node, NULL on error.
+ */
 
 LsmDomNode *
 lsm_dom_named_node_map_set_named_item (LsmDomNamedNodeMap *map, LsmDomNode *node)
@@ -42,6 +56,13 @@ lsm_dom_named_node_map_set_named_item (LsmDomNamedNodeMap *map, LsmDomNode *node
 	return LSM_DOM_NAMED_NODE_MAP_GET_CLASS (map)->set (map, node);
 }
 
+/**
+ * lsm_dom_named_node_map_remove_named_item:
+ * @map: a #LsmDomNamedNodeMap
+ * @name: name of the item to remove
+ * Returns: (transfer full): removed node, NULL on error.
+ */
+
 LsmDomNode *
 lsm_dom_named_node_map_remove_named_item (LsmDomNamedNodeMap *map, const char *name)
 {
@@ -49,6 +70,13 @@ lsm_dom_named_node_map_remove_named_item (LsmDomNamedNodeMap *map, const char *n
 
 	return LSM_DOM_NAMED_NODE_MAP_GET_CLASS (map)->remove (map, name);
 }
+
+/**
+ * lsm_dom_named_node_map_get_item:
+ * @map: a #LsmDomNamedNodeMap
+ * @index: item index
+ * Returns: (transfer none): The node corresponding to @index, NULL on error.
+ */
 
 LsmDomNode *
 lsm_dom_named_node_map_get_item (LsmDomNamedNodeMap *map, unsigned int index)

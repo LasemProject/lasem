@@ -222,6 +222,12 @@ LsmDomNodeType lsm_dom_node_get_node_type (LsmDomNode* self)
 	return 0;
 }
 
+/**
+ * lsm_dom_node_get_parent_node:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node parent
+ */
+
 LsmDomNode*
 lsm_dom_node_get_parent_node (LsmDomNode* self)
 {
@@ -229,6 +235,12 @@ lsm_dom_node_get_parent_node (LsmDomNode* self)
 
 	return self->parent_node;
 }
+
+/**
+ * lsm_dom_node_get_child_nodes:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node child list
+ */
 
 LsmDomNodeList*
 lsm_dom_node_get_child_nodes (LsmDomNode* self)
@@ -247,6 +259,12 @@ lsm_dom_node_get_child_nodes (LsmDomNode* self)
 	return list;
 }
 
+/**
+ * lsm_dom_node_get_first_child:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node first child
+ */
+
 LsmDomNode*
 lsm_dom_node_get_first_child (LsmDomNode* self)
 {
@@ -254,6 +272,12 @@ lsm_dom_node_get_first_child (LsmDomNode* self)
 
 	return self->first_child;
 }
+
+/**
+ * lsm_dom_node_get_last_child:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node last child
+ */
 
 LsmDomNode*
 lsm_dom_node_get_last_child (LsmDomNode* self)
@@ -263,6 +287,12 @@ lsm_dom_node_get_last_child (LsmDomNode* self)
 	return self->last_child;
 }
 
+/**
+ * lsm_dom_node_get_previous_sibling:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node previous sibling
+ */
+
 LsmDomNode*
 lsm_dom_node_get_previous_sibling (LsmDomNode* self)
 {
@@ -270,6 +300,12 @@ lsm_dom_node_get_previous_sibling (LsmDomNode* self)
 
 	return self->previous_sibling;
 }
+
+/**
+ * lsm_dom_node_get_next_sibling:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node next sibling
+ */
 
 LsmDomNode*
 lsm_dom_node_get_next_sibling (LsmDomNode* self)
@@ -279,13 +315,21 @@ lsm_dom_node_get_next_sibling (LsmDomNode* self)
 	return self->next_sibling;
 }
 
-/*LsmDomNamedNodeMap**/
-/*lsm_dom_node_get_attributes (LsmDomNode* self)*/
-/*{*/
-/*        return LSM_DOM_NODE_GET_CLASS (self)->get_attributes (self);*/
-/*}*/
+#if 0
+LsmDomNamedNodeMap*
+lsm_dom_node_get_attributes (LsmDomNode* self)
+{
+	return LSM_DOM_NODE_GET_CLASS (self)->get_attributes (self);
+}
+#endif
 
-LsmDomDocument*
+/**
+ * lsm_dom_node_get_owner_document:
+ * @self: a #LsmDomNode
+ * Returns: (transfer none): node owner document
+ */
+
+LsmDomDocument *
 lsm_dom_node_get_owner_document (LsmDomNode* self)
 {
 	LsmDomNode *parent;

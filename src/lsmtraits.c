@@ -22,6 +22,7 @@
  */
 
 #include <lsmtraits.h>
+#include <lsmutils.h>
 #include <lsmstr.h>
 #include <string.h>
 

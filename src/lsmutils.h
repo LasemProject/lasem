@@ -1,6 +1,6 @@
-/* Lasem - SVG and Mathml library
+/* Lasem
  *
- * Copyright © 2007-2010 Emmanuel Pacaud
+ * Copyright © 2007-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,16 +21,36 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef LSM_TYPES_H
-#define LSM_TYPES_H
+#ifndef LSM_UTILS_H
+#define LSM_UTILS_H
 
-#include <glib-object.h>
+#include <lsmtypes.h>
 
 G_BEGIN_DECLS
 
-typedef struct _LsmExtents LsmExtents;
-typedef struct _LsmBox LsmBox;
+struct _LsmExtents {
+	double x1;
+	double y1;
+	double x2;
+	double y2;
+};
+
+#define LSM_TYPE_EXTENTS (lsm_extents_get_type())
+
+GType lsm_extents_get_type (void);
+
+struct _LsmBox {
+	double x;
+	double y;
+	double width;
+	double height;
+};
+
+#define LSM_TYPE_BOX (lsm_box_get_type())
+
+GType lsm_box_get_type (void);
 
 G_END_DECLS
 
 #endif
+

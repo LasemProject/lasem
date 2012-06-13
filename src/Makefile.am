@@ -32,6 +32,7 @@ LASEM_DOM_SRCS =				\
 	lsm.c					\
 	lsmdebug.c				\
 	lsmstr.c				\
+	lsmutils.c				\
 	lsmtraits.c				\
 	lsmproperties.c				\
 	lsmattributes.c				\
@@ -131,6 +132,7 @@ LASEM_DOM_HDRS = 				\
 	lsmtypes.h				\
 	lsmcairo.h				\
 	lsmstr.h				\
+	lsmutils.h				\
 	lsmdebug.h				\
 	lsmtraits.h				\
 	lsmproperties.h				\
@@ -285,7 +287,7 @@ introspection_files = $(LASEM_DOM_SRCS) \
 Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER)
 
 Lasem_@LASEM_API_VERSION_U@_gir_INCLUDES = GObject-2.0 cairo-1.0 Gio-2.0 Pango-1.0 GdkPixbuf-2.0
-Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --identifier-prefix=Lsm
+Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --identifier-prefix=Lsm --warn-all
 Lasem_@LASEM_API_VERSION_U@_gir_CFLAGS = $(INCLUDES)
 Lasem_@LASEM_API_VERSION_U@_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
 Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))

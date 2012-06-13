@@ -25,7 +25,7 @@
 #define LSM_DOM_VIEW_H
 
 #include <lsmdomtypes.h>
-#include <lsmtypes.h>
+#include <lsmutils.h>
 #include <cairo.h>
 #include <pango/pangocairo.h>
 

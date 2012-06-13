@@ -29,15 +29,22 @@
 
 static GHashTable *document_types = NULL;
 
-void
-lsm_dom_implementation_add_create_function (const char *qualified_name,
-					    LsmDomDocumentCreateFunction create_function)
+static void
+lsm_dom_implementation_add_document_create_function (const char *qualified_name,
+						     LsmDomDocumentCreateFunction create_function)
 {
 	if (document_types == NULL)
 		document_types = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	g_hash_table_insert (document_types, g_strdup (qualified_name), create_function);
 }
+
+/**
+ * lsm_dom_implementation_create_document:
+ * @namespace_uri: namespace uri
+ * @qualified_name: qualified name
+ * Returns: (transfer full): a new #LsmDomDocument
+ */
 
 LsmDomDocument *
 lsm_dom_implementation_create_document (const char *namespace_uri,
@@ -48,8 +55,8 @@ lsm_dom_implementation_create_document (const char *namespace_uri,
 	g_return_val_if_fail (qualified_name != NULL, NULL);
 
 	if (document_types == NULL) {
-		lsm_dom_implementation_add_create_function ("math", lsm_mathml_document_new);
-		lsm_dom_implementation_add_create_function ("svg", lsm_svg_document_new);
+		lsm_dom_implementation_add_document_create_function ("math", lsm_mathml_document_new);
+		lsm_dom_implementation_add_document_create_function ("svg", lsm_svg_document_new);
 	}
 
 	create_function = g_hash_table_lookup (document_types, qualified_name);

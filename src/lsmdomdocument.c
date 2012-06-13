@@ -52,6 +52,13 @@ lsm_dom_document_get_node_type (LsmDomNode *node)
 
 /* LsmDomDocument implementation */
 
+
+/**
+ * lsm_dom_document_get_document_element:
+ * @self: a #LsmDomElement
+ * Returns: (transfer none): document element
+ */
+
 LsmDomElement *
 lsm_dom_document_get_document_element (LsmDomDocument *self)
 {
@@ -59,6 +66,13 @@ lsm_dom_document_get_document_element (LsmDomDocument *self)
 
 	return LSM_DOM_ELEMENT (lsm_dom_node_get_first_child (LSM_DOM_NODE (self)));
 }
+
+/**
+ * lsm_dom_document_create_element:
+ * @self: a #LsmDomDocument
+ * @tag_name: name of the element to create
+ * Returns: (transfer full): a newly created #LsmDomElement
+ */
 
 LsmDomElement *
 lsm_dom_document_create_element (LsmDomDocument *document, const char *tag_name)
@@ -80,6 +94,13 @@ lsm_dom_document_create_text_node_base (LsmDomDocument *document, const char *da
 	return LSM_DOM_TEXT (lsm_dom_text_new (data));
 }
 
+/**
+ * lsm_dom_document_create_text_node:
+ * @self: a #LsmDomDocument
+ * @data: content of the text node
+ * Returns: (transfer full): a newly created #LsmDomText
+ */
+
 LsmDomText *
 lsm_dom_document_create_text_node (LsmDomDocument *document, const char *data)
 {
@@ -88,6 +109,12 @@ lsm_dom_document_create_text_node (LsmDomDocument *document, const char *data)
 	return LSM_DOM_DOCUMENT_GET_CLASS (document)->create_text_node (document, data);
 }
 
+/**
+ * lsm_dom_document_create_view:
+ * @self: a #LsmDomDocument
+ * Returns: (transfer full): a new #LsmDomView
+ */
+
 LsmDomView *
 lsm_dom_document_create_view (LsmDomDocument *self)
 {
@@ -95,6 +122,13 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
+
+/**
+ * lsm_dom_document_get_element_by_id:
+ * @self: a #LsmDomDocument
+ * @id: id of the element to find
+ * Returns: (transfer none): the requested element, NULL if not found.
+ */
 
 LsmDomElement *
 lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
@@ -164,6 +198,14 @@ lsm_dom_document_set_url (LsmDomDocument *self, const char *url)
 	g_free (self->url);
 	self->url = g_strdup (url);
 }
+
+/**
+ * lsm_dom_document_get_href_data:
+ * @self: a #LsmDomDocument
+ * @href: href
+ * @size: placeholder for the size of the returned data
+ * Returns: (transfer full): a newly allocated buffer containing the requested data.
+ */
 
 void *
 lsm_dom_document_get_href_data (LsmDomDocument *self, const char *href, gsize *size)
