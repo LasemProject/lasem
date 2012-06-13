@@ -1,3 +1,18 @@
+Release 0.3.2
+=============
+
+All:
+	Restrict introspection to the DOM API.
+
+Mathml:
+	Fix weight of operators.
+	Support of semantics elements (used by libreoffice formulas).
+	Fix the form of script elements of underover and script.
+
+SVG:
+	Garbage collection in property manager.
+	Avoid cairo errors due to not invertible matrix.
+
 Release 0.3.1
 =============
 
