@@ -288,7 +288,7 @@ Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER)
 
 Lasem_@LASEM_API_VERSION_U@_gir_INCLUDES = GObject-2.0 cairo-1.0 Gio-2.0 Pango-1.0 GdkPixbuf-2.0
 Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --identifier-prefix=Lsm --warn-all
-Lasem_@LASEM_API_VERSION_U@_gir_CFLAGS = $(INCLUDES)
+Lasem_@LASEM_API_VERSION_U@_gir_CFLAGS = $(INCLUDES) -I$(top_srcdir)/src
 Lasem_@LASEM_API_VERSION_U@_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
 Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
 
