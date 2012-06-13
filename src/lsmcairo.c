@@ -33,27 +33,9 @@ struct _LsmFilterSurface {
 	unsigned int y0;
 	unsigned int x1;
 	unsigned int y1;
+
+	gint ref_count;
 };
-
-LsmFilterSurface *
-lsm_filter_surface_duplicate (const LsmFilterSurface *from)
-{
-	LsmFilterSurface *filter_surface;
-
-	g_return_val_if_fail (from != NULL, NULL);
-
-	cairo_surface_reference (from->surface);
-	
-	filter_surface = g_new (LsmFilterSurface, 1);
-	filter_surface->name = g_strdup (from->name);
-	filter_surface->surface = from->surface;
-	filter_surface->x0 = from->x0;
-	filter_surface->x1 = from->x1;
-	filter_surface->y0 = from->y0;
-	filter_surface->y1 = from->y1;
-
-	return filter_surface;
-}
 
 LsmFilterSurface *
 lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1)
@@ -83,32 +65,34 @@ lsm_filter_surface_new_with_content (const char *name, unsigned int x0, unsigned
 	filter_surface->x1 = x0 + cairo_image_surface_get_width (surface);
 	filter_surface->y1 = y0 + cairo_image_surface_get_height (surface);
 	filter_surface->surface  = surface;
+	filter_surface->ref_count = 1;
+
+	return filter_surface;
+}
+
+LsmFilterSurface *
+lsm_filter_surface_ref (LsmFilterSurface *filter_surface)
+{
+	g_return_val_if_fail (filter_surface != NULL, NULL);
+
+	g_atomic_int_inc (&filter_surface->ref_count);
 
 	return filter_surface;
 }
 
 void
-lsm_filter_surface_free (LsmFilterSurface *filter_surface)
+lsm_filter_surface_unref (LsmFilterSurface *filter_surface)
 {
 	g_return_if_fail (filter_surface != NULL);
 
-	cairo_surface_destroy (filter_surface->surface);
-	g_free (filter_surface->name);
-	g_free (filter_surface);
+	if (g_atomic_int_dec_and_test (&filter_surface->ref_count)) {
+		cairo_surface_destroy (filter_surface->surface);
+		g_free (filter_surface->name);
+		g_free (filter_surface);
+	}
 }
 
-GType
-lsm_filter_surface_get_type (void)
-{
-	static GType our_type = 0;
-
-	if (our_type == 0)
-		our_type = g_boxed_type_register_static ("LsmFilterSurface",
-							 (GBoxedCopyFunc) lsm_filter_surface_duplicate,
-							 (GBoxedFreeFunc) lsm_filter_surface_free);
-
-	return our_type;
-}
+G_DEFINE_BOXED_TYPE (LsmFilterSurface, lsm_filter_surface, lsm_filter_surface_ref, lsm_filter_surface_unref)
 
 static void
 box_blur (LsmFilterSurface *input,
