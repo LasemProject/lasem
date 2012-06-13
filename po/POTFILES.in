@@ -7,6 +7,10 @@ src/lsmcairo.c
 src/lsmcairo.h
 src/lsmdebug.c
 src/lsmdebug.h
+src/lsmutils.c
+src/lsmutils.h
+src/lsmdomentities.h
+src/lsmdomentities.c
 src/lsmdomcharacterdata.c
 src/lsmdomcharacterdata.h
 src/lsmdomdocument.c
@@ -46,8 +50,6 @@ src/lsmmathmldocument.c
 src/lsmmathmldocument.h
 src/lsmmathmlelement.c
 src/lsmmathmlelement.h
-src/lsmmathmlentitydictionary.c
-src/lsmmathmlentitydictionary.h
 src/lsmmathmlenums.c
 src/lsmmathmlenums.h
 src/lsmmathmlenumtypes.c.template
