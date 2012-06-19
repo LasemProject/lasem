@@ -42,7 +42,8 @@ PKG_CHECK_MODULES(LASEM, [gobject-2.0
 			  gdk-pixbuf-2.0 >= 2.16
 			  cairo >= 1.2
 			  pangocairo >= 1.16.0
-			  libxml-2.0])
+			  libxml-2.0
+			  libcroco-0.6])
 AC_SUBST(LASEM_CFLAGS)
 AC_SUBST(LASEM_LIBS)
 
