@@ -144,4 +144,4 @@ lsm_svg_circle_element_class_init (LsmSvgCircleElementClass *s_rect_class)
 					      lsm_svg_circle_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgCircleElement, lsm_svg_circle_element, LSM_TYPE_SVG_TRANSFORMABLE)

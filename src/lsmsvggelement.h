@@ -25,7 +25,7 @@
 #define LSM_SVG_G_ELEMENT_H
 
 #include <lsmsvgtypes.h>
-#include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 
 G_BEGIN_DECLS
 
@@ -39,11 +39,11 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgGElementClass LsmSvgGElementClass;
 
 struct _LsmSvgGElement {
-	LsmSvgElement element;
+	LsmSvgTransformable base;
 };
 
 struct _LsmSvgGElementClass {
-	LsmSvgElementClass  element_class;
+	LsmSvgTransformableClass  base_class;
 };
 
 GType lsm_svg_g_element_get_type (void);

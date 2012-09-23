@@ -25,7 +25,7 @@
 #define LSM_SVG_CIRCLE_ELEMENT_H
 
 #include <lsmsvgtypes.h>
-#include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 
 G_BEGIN_DECLS
 
@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgCircleElementClass LsmSvgCircleElementClass;
 
 struct _LsmSvgCircleElement {
-	LsmSvgElement element;
+	LsmSvgTransformable base;
 
 	LsmSvgLengthAttribute	cx;
 	LsmSvgLengthAttribute	cy;
@@ -47,7 +47,7 @@ struct _LsmSvgCircleElement {
 };
 
 struct _LsmSvgCircleElementClass {
-	LsmSvgElementClass  element_class;
+	LsmSvgTransformableClass  base_class;
 };
 
 GType lsm_svg_circle_element_get_type (void);

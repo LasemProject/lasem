@@ -25,7 +25,7 @@
 #define LSM_SVG_CLIP_PATH_ELEMENT_H
 
 #include <lsmsvgtypes.h>
-#include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 
 G_BEGIN_DECLS
 
@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgClipPathElementClass LsmSvgClipPathElementClass;
 
 struct _LsmSvgClipPathElement {
-	LsmSvgElement element;
+	LsmSvgTransformable base;
 
 	LsmSvgPatternUnitsAttribute units;
 
@@ -47,7 +47,7 @@ struct _LsmSvgClipPathElement {
 };
 
 struct _LsmSvgClipPathElementClass {
-	LsmSvgElementClass  element_class;
+	LsmSvgTransformableClass  base_class;
 };
 
 GType lsm_svg_clip_path_element_get_type (void);

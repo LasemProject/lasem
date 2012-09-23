@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2009 Emmanuel Pacaud
+ * Copyright © 2009-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@
 #define LSM_SVG_RECT_ELEMENT_H
 
 #include <lsmsvgtypes.h>
-#include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 
 G_BEGIN_DECLS
 
@@ -39,7 +39,7 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgRectElementClass LsmSvgRectElementClass;
 
 struct _LsmSvgRectElement {
-	LsmSvgElement element;
+	LsmSvgTransformable base;
 
 	LsmSvgLengthAttribute	x;
 	LsmSvgLengthAttribute	y;
@@ -50,7 +50,7 @@ struct _LsmSvgRectElement {
 };
 
 struct _LsmSvgRectElementClass {
-	LsmSvgElementClass  element_class;
+	LsmSvgTransformableClass base_class;
 };
 
 GType lsm_svg_rect_element_get_type (void);

@@ -71,4 +71,4 @@ lsm_svg_defs_element_class_init (LsmSvgDefsElementClass *s_g_class)
 	s_element_class->render = NULL;
 }
 
-G_DEFINE_TYPE (LsmSvgDefsElement, lsm_svg_defs_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgDefsElement, lsm_svg_defs_element, LSM_TYPE_SVG_TRANSFORMABLE)

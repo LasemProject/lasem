@@ -112,4 +112,4 @@ lsm_svg_path_element_class_init (LsmSvgPathElementClass *s_rect_class)
 					      lsm_svg_path_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgPathElement, lsm_svg_path_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgPathElement, lsm_svg_path_element, LSM_TYPE_SVG_TRANSFORMABLE)

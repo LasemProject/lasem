@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2009 Emmanuel Pacaud
+ * Copyright © 2009-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -126,4 +126,4 @@ lsm_svg_line_element_class_init (LsmSvgLineElementClass *s_rect_class)
 					      lsm_svg_line_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgLineElement, lsm_svg_line_element, LSM_TYPE_SVG_TRANSFORMABLE)

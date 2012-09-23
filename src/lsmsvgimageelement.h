@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2009 Emmanuel Pacaud
+ * Copyright © 2009-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@
 #define LSM_SVG_IMAGE_ELEMENT_H
 
 #include <lsmsvgtypes.h>
-#include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
@@ -40,7 +40,7 @@ G_BEGIN_DECLS
 typedef struct _LsmSvgImageElementClass LsmSvgImageElementClass;
 
 struct _LsmSvgImageElement {
-	LsmSvgElement element;
+	LsmSvgTransformable base;
 
 	LsmSvgLengthAttribute	x;
 	LsmSvgLengthAttribute	y;
@@ -55,7 +55,7 @@ struct _LsmSvgImageElement {
 };
 
 struct _LsmSvgImageElementClass {
-	LsmSvgElementClass  element_class;
+	LsmSvgTransformableClass  base_class;
 };
 
 GType lsm_svg_image_element_get_type (void);

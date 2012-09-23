@@ -70,4 +70,4 @@ lsm_svg_g_element_class_init (LsmSvgGElementClass *s_g_class)
 		LSM_SVG_ELEMENT_CATEGORY_STRUCTURAL;
 }
 
-G_DEFINE_TYPE (LsmSvgGElement, lsm_svg_g_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgGElement, lsm_svg_g_element, LSM_TYPE_SVG_TRANSFORMABLE)

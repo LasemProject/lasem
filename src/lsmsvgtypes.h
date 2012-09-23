@@ -30,6 +30,7 @@ G_BEGIN_DECLS
 
 typedef struct _LsmSvgDocument LsmSvgDocument;
 typedef struct _LsmSvgElement LsmSvgElement;
+typedef struct _LsmSvgTransformable LsmSvgTransformable;
 typedef struct _LsmSvgGraphic LsmSvgGraphic;
 typedef struct _LsmSvgClipPathElement LsmSvgClipPathElement;
 typedef struct _LsmSvgSvgElement LsmSvgSvgElement;

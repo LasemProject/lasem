@@ -130,4 +130,4 @@ lsm_svg_clip_path_element_class_init (LsmSvgClipPathElementClass *klass)
 					      lsm_svg_clip_path_element_attribute_infos);
 }
 
-G_DEFINE_TYPE (LsmSvgClipPathElement, lsm_svg_clip_path_element, LSM_TYPE_SVG_ELEMENT)
+G_DEFINE_TYPE (LsmSvgClipPathElement, lsm_svg_clip_path_element, LSM_TYPE_SVG_TRANSFORMABLE)

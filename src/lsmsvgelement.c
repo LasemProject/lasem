@@ -26,6 +26,7 @@
 #include <lsmproperties.h>
 #include <lsmdomdocument.h>
 #include <lsmsvgelement.h>
+#include <lsmsvgtransformable.h>
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgradialgradientelement.h>
 #include <lsmsvglineargradientelement.h>
@@ -158,8 +159,6 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	LsmSvgElementClass *element_class;
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
-	gboolean is_identity_transform;
-	gboolean is_matrix_invertible = TRUE;
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
@@ -167,34 +166,26 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 	if (element_class->render == NULL)
 		return;
 
-	is_identity_transform = lsm_svg_matrix_is_identity (&element->transform.matrix);
-
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
 
-	if (!is_identity_transform)
-		is_matrix_invertible = lsm_svg_view_push_matrix (view, &element->transform.matrix);
+	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
+	    style->display->value != LSM_SVG_DISPLAY_NONE) {
 
-	if (is_identity_transform || is_matrix_invertible) {
+		lsm_debug_render ("[LsmSvgElement::render] Render %s (%s)",
+				  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
+				  element->id.value != NULL ? element->id.value : "no id");
 		lsm_svg_view_push_element (view, element);
 		lsm_svg_view_push_style (view, style);
 
-
-		if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
-		    style->display->value != LSM_SVG_DISPLAY_NONE) {
-			lsm_debug_render ("[LsmSvgElement::render] Render %s (%s)",
-					  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
-					  element->id.value != NULL ? element->id.value : "no id");
-
+		if (element_class->transformed_render)
+			element_class->transformed_render (element, view);
+		else
 			element_class->render (element, view);
-		}
 
 		lsm_svg_view_pop_style (view);
 		lsm_svg_view_pop_element (view);
 	}
-
-	if (!is_identity_transform)
-		lsm_svg_view_pop_matrix (view);
 
 	lsm_svg_style_unref (style);
 }
@@ -227,6 +218,22 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 	lsm_svg_element_render (element, view);
 }
 
+void
+lsm_svg_element_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgElementClass *element_class;
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (extents != NULL);
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+
+	if (element_class->transformed_get_extents != NULL)
+		element_class->transformed_get_extents (element, view, extents);
+	else
+		element_class->get_extents (element, view, extents);
+}
+
 static void
 _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 {
@@ -240,15 +247,15 @@ _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 		if (LSM_IS_SVG_ELEMENT (node)) {
 			LsmExtents child_extents;
 			LsmSvgElement *child_element;
+			LsmSvgElementClass *child_element_class;
 
 			child_element = LSM_SVG_ELEMENT (node);
-
-			lsm_svg_element_get_extents (child_element, view, &child_extents);
-
-			if (!lsm_svg_matrix_is_identity (&child_element->transform.matrix))
-				lsm_svg_matrix_transform_bounding_box (&child_element->transform.matrix,
-								       &extents->x1, &extents->y1,
-								       &extents->x2, &extents->y2);
+			child_element_class = LSM_SVG_ELEMENT_GET_CLASS (node);
+			
+			if (child_element_class->transformed_get_extents != NULL)
+				child_element_class->transformed_get_extents (child_element, view, &child_extents);
+			else
+				child_element_class->get_extents (child_element, view, &child_extents);
 
 			if (first_child) {
 				element_extents = child_extents;
@@ -275,29 +282,21 @@ lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtent
 	g_return_if_fail (extents != NULL);
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-	if (element_class->get_extents != NULL) {
-		element_class->get_extents (element, view, extents);
+	element_class->get_extents (element, view, extents);
 
-		if (element->id.value != NULL)
-			lsm_debug_measure ("LsmSvgElement::get_extents] Extents for '%s' = %g,%g %g,%g",
+	if (element->id.value != NULL)
+		lsm_debug_measure ("LsmSvgElement::get_extents] Extents for '%s' = %g,%g %g,%g",
 				   element->id.value,
 				   extents->x1, extents->y1, extents->x2, extents->y2);
-		else
-			lsm_debug_measure ("LsmSvgElement::get_extents] Extents for <%s> = %g,%g %g,%g",
+	else
+		lsm_debug_measure ("LsmSvgElement::get_extents] Extents for <%s> = %g,%g %g,%g",
 				   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 				   extents->x1, extents->y1, extents->x2, extents->y2);
-	} else {
-		extents->x1 = 0.0;
-		extents->y1 = 0.0;
-		extents->x2 = 0.0;
-		extents->y2 = 0.0;
-	}
 }
 
 static void
 lsm_svg_element_init (LsmSvgElement *element)
 {
-	lsm_svg_matrix_init_identity (&element->transform.matrix);
 }
 
 static void
@@ -331,12 +330,6 @@ static const LsmAttributeInfos lsm_svg_attribute_infos[] = {
 		.name = "class",
 		.trait_class = &lsm_null_trait_class,
 		.attribute_offset = offsetof (LsmSvgElement, class_name)
-	},
-	{
-		.name = "transform",
-		.attribute_offset = offsetof (LsmSvgElement, transform),
-		.trait_class = &lsm_svg_matrix_trait_class,
-		.trait_default = &matrix_default
 	}
 };
 
@@ -362,6 +355,8 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 
 	s_element_class->render = _render;
 	s_element_class->get_extents = _get_extents;
+	s_element_class->transformed_render = NULL;
+	s_element_class->transformed_get_extents = NULL;
 	s_element_class->attribute_manager = lsm_attribute_manager_new (G_N_ELEMENTS (lsm_svg_attribute_infos),
 									lsm_svg_attribute_infos);
 }

@@ -48,7 +48,6 @@ struct _LsmSvgElement {
 
 	LsmAttribute			id;
 	LsmAttribute			class_name;
-	LsmSvgTransformAttribute 	transform;
 };
 
 struct _LsmSvgElementClass {
@@ -58,18 +57,22 @@ struct _LsmSvgElementClass {
 
 	LsmSvgElementCategory category;
 
-	void		(*enable_rendering)	(LsmSvgElement *element);
-	void 		(*render)		(LsmSvgElement *element, LsmSvgView *view);
-	void 		(*get_extents)		(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+	void		(*enable_rendering)		(LsmSvgElement *element);
+	void 		(*render)			(LsmSvgElement *element, LsmSvgView *view);
+	void 		(*get_extents)			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+	void 		(*transformed_render)		(LsmSvgElement *element, LsmSvgView *view);
+	void 		(*transformed_get_extents)	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 };
 
 GType lsm_svg_element_get_type (void);
 
 LsmSvgElementCategory	lsm_svg_element_get_category	(LsmSvgElement *element);
 
-void 		lsm_svg_element_render 		(LsmSvgElement *element, LsmSvgView *view);
-void 		lsm_svg_element_force_render 	(LsmSvgElement *element, LsmSvgView *view);
-void		lsm_svg_element_get_extents	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
+void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
+void 		lsm_svg_element_force_render 			(LsmSvgElement *element, LsmSvgView *view);
+void		lsm_svg_element_get_extents			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+void 		lsm_svg_element_transformed_get_extents 	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 
 G_END_DECLS
 
