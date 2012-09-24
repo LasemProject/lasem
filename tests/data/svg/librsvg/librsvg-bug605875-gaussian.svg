@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="38.629799"
+   height="41.790039"
+   id="svg5379">
+  <defs
+     id="defs5381">
+    <filter
+       x="-0.22915407"
+       y="-0.10932358"
+       width="1.4583081"
+       height="1.2186472"
+       color-interpolation-filters="sRGB"
+       id="filter6285">
+      <feGaussianBlur
+         id="feGaussianBlur6287"
+         stdDeviation="0.50391394" />
+    </filter>
+    <filter
+       color-interpolation-filters="sRGB"
+       id="filter3594">
+      <feGaussianBlur
+         id="feGaussianBlur3596"
+         stdDeviation="0.0038929357" />
+    </filter>
+  </defs>
+  <g
+     transform="translate(-706.39934,-182.89573)"
+     id="layer1">
+    <path
+       d="m 151.64191,31.946184 c -1.08292,-0.09118 -1.77213,-0.42461 -3.56446,-0.413963 -2.52802,0.01502 -5.33621,0.171729 -7.2243,0.584124 -2.91594,0.419982 -3.60785,1.487792 -3.26565,2.451201 0.42445,1.194945 3.14882,1.954504 4.48459,1.39286 3.0255,-1.157564 4.69018,-1.422484 6.8728,-2.303585 1.30931,-0.528555 1.79012,-1.129743 2.69702,-1.710637 z"
+       transform="matrix(-1.486225,2.6599364,-8.1146644,-0.48157969,1212.3324,-165.01042)"
+       id="path4720"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3594)" />
+  </g>
+</svg>
