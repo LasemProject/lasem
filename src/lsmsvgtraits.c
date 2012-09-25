@@ -965,3 +965,27 @@ const LsmTraitClass lsm_svg_one_or_two_double_trait_class = {
 	.to_string = lsm_svg_one_or_two_double_trait_to_string
 };
 
+static gboolean
+lsm_svg_writing_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+
+	*trait = lsm_svg_writing_mode_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_writing_mode_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+
+	return g_strdup (lsm_svg_writing_mode_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_writing_mode_trait_class = {
+	.size = sizeof (LsmSvgWritingMode),
+	.from_string = lsm_svg_writing_mode_trait_from_string,
+	.to_string = lsm_svg_writing_mode_trait_to_string
+};
+

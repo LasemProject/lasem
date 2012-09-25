@@ -104,6 +104,11 @@ typedef struct {
 	LsmSvgVisibility value;
 } LsmSvgVisibilityProperty;
 
+typedef struct {
+	LsmProperty base;
+	LsmSvgWritingMode value;
+} LsmSvgWritingModeProperty;
+
 struct _LsmSvgStyle {
 	/* Not inherited */
 
@@ -170,7 +175,7 @@ struct _LsmSvgStyle {
 	LsmProperty *			text_rendering;
 	LsmSvgVisibilityProperty *	visibility;
 	LsmProperty *			word_spacing;
-	LsmProperty *			writing_mode;
+	LsmSvgWritingModeProperty *	writing_mode;
 };
 
 void 		lsm_svg_property_bag_set_property 	(LsmPropertyBag *property_bag,

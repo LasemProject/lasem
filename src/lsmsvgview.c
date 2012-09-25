@@ -1475,7 +1475,17 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	path_infos.extents.y2 = y1 + pango_units_to_double (rectangle.height);
 	path_infos.pango_layout = pango_layout;
 
-	process_path (view, &path_infos);
+	if (style->writing_mode->value == LSM_SVG_WRITING_MODE_TB ||
+	    style->writing_mode->value == LSM_SVG_WRITING_MODE_TB_RL) {
+
+		cairo_save (view->dom_view.cairo);
+		cairo_rotate (view->dom_view.cairo, M_PI / 2.0);
+
+		process_path (view, &path_infos);
+
+		cairo_restore (view->dom_view.cairo);
+	} else
+		process_path (view, &path_infos);
 
 	if (pango_layout != view->pango_layout) {
 		lsm_debug_render ("[LsmSvgView::show_text] Free the child pango layout");

@@ -301,6 +301,19 @@ typedef enum {
 	LSM_SVG_ELEMENT_CATEGORY_ANIMATION		= 1 << 12
 } LsmSvgElementCategory;
 
+typedef enum {
+	LSM_SVG_WRITING_MODE_ERROR = -1,
+	LSM_SVG_WRITING_MODE_LR_TB,
+	LSM_SVG_WRITING_MODE_RL_TB,
+	LSM_SVG_WRITING_MODE_TB_RL,
+	LSM_SVG_WRITING_MODE_LR,
+	LSM_SVG_WRITING_MODE_RL,
+	LSM_SVG_WRITING_MODE_TB
+} LsmSvgWritingMode;
+
+const char * 		lsm_svg_writing_mode_to_string 		(LsmSvgWritingMode writing_mode);
+LsmSvgWritingMode	lsm_svg_writing_mode_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

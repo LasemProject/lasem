@@ -442,3 +442,28 @@ lsm_svg_visibility_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_visibility_strings));
 }
 
+static const char *lsm_svg_writing_mode_strings[] = {
+	"lr-tb",
+	"rl-tb",
+	"tb-rl",
+	"lr",
+	"rl",
+	"tb"
+};
+
+const char *
+lsm_svg_writing_mode_to_string (LsmSvgWritingMode writing_mode)
+{
+	if (writing_mode < 0 || writing_mode > LSM_SVG_WRITING_MODE_TB)
+		return NULL;
+
+	return lsm_svg_writing_mode_strings[writing_mode];
+}
+
+LsmSvgWritingMode
+lsm_svg_writing_mode_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_writing_mode_strings,
+					   G_N_ELEMENTS (lsm_svg_writing_mode_strings));
+}
+

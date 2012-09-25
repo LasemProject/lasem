@@ -393,7 +393,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "writing-mode",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, writing_mode),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_writing_mode_trait_class,
 		.trait_default = "lr-tb"
 	}
 };
