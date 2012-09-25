@@ -37,6 +37,7 @@ lsm_dom_implementation_add_document_create_function (const char *qualified_name,
 		document_types = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
 	g_hash_table_insert (document_types, g_strdup (qualified_name), create_function);
+	g_hash_table_insert (document_types, g_strdup_printf ("%s:%s", qualified_name, qualified_name), create_function);
 }
 
 /**

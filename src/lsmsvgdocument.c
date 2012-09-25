@@ -84,7 +84,7 @@ lsm_svg_document_get_element_by_url (LsmSvgDocument *document, const char *url)
 }
 
 static LsmDomElement *
-lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
+_create_element (LsmDomDocument *document, const char *tag_name)
 {
 	LsmDomNode *node = NULL;
 
@@ -141,6 +141,21 @@ lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
 		lsm_debug_dom ("[LsmSvgDocument::create_element] Create a %s element", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
+}
+
+static LsmDomElement *
+lsm_svg_document_create_element (LsmDomDocument *document, const char *tag_name)
+{
+	LsmDomElement *element;
+
+	element = _create_element (document, tag_name);
+	if (element != NULL)
+		return element;
+
+	if (g_str_has_prefix (tag_name, "svg:"))
+		return _create_element (document, &tag_name[4]);
+
+	return NULL;
 }
 
 static LsmDomView *
