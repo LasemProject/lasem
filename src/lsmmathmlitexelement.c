@@ -52,11 +52,6 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	GString *string;
 	gboolean need_conversion;
 
-	if (itex_element->math != NULL) {
-		lsm_dom_node_changed (LSM_DOM_NODE (itex_element->math));
-		LSM_MATHML_ELEMENT (itex_element->math)->need_measure = TRUE;
-	}
-
 	if (style->display == LSM_MATHML_DISPLAY_INLINE)
 		string = g_string_new ("$");
 	else
@@ -97,10 +92,10 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	g_string_free (string, FALSE);
 
-	if (itex_element->math != NULL)
-		lsm_mathml_element_update (itex_element->math, style);
-
-	self->need_measure = TRUE;
+	if (itex_element->math != NULL) {
+		lsm_dom_node_changed (LSM_DOM_NODE (itex_element->math));
+		self->need_measure = lsm_mathml_element_update (itex_element->math, style);
+	}
 }
 
 static const LsmMathmlBbox *
