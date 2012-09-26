@@ -106,6 +106,16 @@ _update_children (LsmMathmlElement *self, LsmMathmlStyle *style)
 	return need_measure;
 }
 
+/**
+ * lsm_mathml_element_update:
+ * @self: a #LsmMathmlElement
+ * @parent_style: self parent style
+ *
+ * Update the actual property of an element and it's children. This function parses the element attributes and also make elements inherit style from their parents.
+ *
+ * Returns: TRUE if the size of the element has changed and needs to be recalculated.
+ */
+
 gboolean
 lsm_mathml_element_update (LsmMathmlElement *self, const LsmMathmlStyle *parent_style)
 {
