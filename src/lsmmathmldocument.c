@@ -64,7 +64,7 @@ lsm_mathml_document_can_append_child (LsmDomNode *self, LsmDomNode *child)
 /* LsmDomDocument implementation */
 
 static LsmDomElement *
-lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_name)
+_create_element (LsmDomDocument *document, const char *tag_name)
 {
 	LsmDomNode *node = NULL;
 
@@ -134,6 +134,21 @@ lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_na
 		lsm_debug_dom ("[MathmlDocument::create_element] Unknown tag (%s)", tag_name);
 
 	return LSM_DOM_ELEMENT (node);
+}
+
+static LsmDomElement *
+lsm_mathml_document_create_element (LsmDomDocument *document, const char *tag_name)
+{
+	LsmDomElement *element;
+
+	element = _create_element (document, tag_name);
+	if (element != NULL)
+		return element;
+
+	if (g_str_has_prefix (tag_name, "math:"))
+		return _create_element (document, &tag_name[4]);
+
+	return NULL;
 }
 
 static LsmDomView *
