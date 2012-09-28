@@ -24,6 +24,11 @@
 #include <lsmdomnodelist.h>
 #include <lsmdomnode.h>
 
+/**
+ * SECTION:lsmdomnodelist
+ * @short_description: Base class for DOM node lists
+ */
+
 /* LsmDomNodeList implementation */
 
 /**

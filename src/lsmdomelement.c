@@ -74,6 +74,14 @@ lsm_dom_element_write_to_stream (LsmDomNode *self, GOutputStream *stream, GError
 
 /* LsmDomElement implementation */
 
+/**
+ * lsm_dom_element_get_attribute:
+ * @self: a #LsmDomElement
+ * @name: attribute name
+ *
+ * Returns: (transfer none): attribute value, as string.
+ */
+
 const char *
 lsm_dom_element_get_attribute (LsmDomElement* self, const char* name)
 {
@@ -82,6 +90,15 @@ lsm_dom_element_get_attribute (LsmDomElement* self, const char* name)
 
 	return LSM_DOM_ELEMENT_GET_CLASS (self)->get_attribute (self, name);
 }
+
+/**
+ * lsm_dom_element_set_attribute:
+ * @self: a #LsmDomElement
+ * @name: attribute name
+ * @attribute_value: attribute value as string
+ * 
+ * Set the atribute value.
+ */
 
 void
 lsm_dom_element_set_attribute (LsmDomElement* self, const char* name, const char* attribute_value)
@@ -93,6 +110,13 @@ lsm_dom_element_set_attribute (LsmDomElement* self, const char* name, const char
 
 	lsm_dom_node_changed (LSM_DOM_NODE (self));
 }
+
+/**
+ * lsm_dom_element_get_tag_name:
+ * @self: a #LsmDomElement
+ *
+ * Returns: (transfer none): element tag name.
+ */
 
 const char *
 lsm_dom_element_get_tag_name (LsmDomElement *self)

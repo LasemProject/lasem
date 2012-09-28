@@ -24,6 +24,11 @@
 #include <lsmdomnamednodemap.h>
 #include <lsmdomnode.h>
 
+/**
+ * SECTION:lsmdomnamednodemap
+ * @short_description: Base class for DOM named node maps
+ */
+
 /* LsmDomNamedNodeMap implementation */
 
 /**

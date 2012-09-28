@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2009 Emmanuel Pacaud
+ * Copyright © 2009-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,13 @@
 
 static GObjectClass *parent_class;
 
+/**
+ * lsm_dom_view_get_resolution:
+ * @self: A #LsmDomView
+ *
+ * Returns: view resolution, in pixel per inch.
+ */
+
 double
 lsm_dom_view_get_resolution (LsmDomView *self)
 {
@@ -39,6 +46,14 @@ lsm_dom_view_get_resolution (LsmDomView *self)
 
 	return self->resolution_ppi;
 }
+
+/**
+ * lsm_dom_view_set_resolution:
+ * @self: a #LsmDomView
+ * @ppi: resolution, in pixel per inch.
+ *
+ * Set the view resolution, in pixel per inch.
+ */
 
 void
 lsm_dom_view_set_resolution (LsmDomView *self, double ppi)
@@ -51,6 +66,14 @@ lsm_dom_view_set_resolution (LsmDomView *self, double ppi)
 		self->resolution_ppi = ppi;
 }
 
+/**
+ * lsm_dom_view_set_viewport:
+ * @self: a #LsmDomView
+ * @viewport_pt: viewport size, in points
+ *
+ * Set the viewport size.
+ */
+
 void
 lsm_dom_view_set_viewport (LsmDomView *self, const LsmBox *viewport_pt)
 {
@@ -59,6 +82,14 @@ lsm_dom_view_set_viewport (LsmDomView *self, const LsmBox *viewport_pt)
 
 	self->viewport_pt = *viewport_pt;
 }
+
+/**
+ * lsm_dom_view_set_viewport_pixels:
+ * @self: a #LsmDomView
+ * @viewport: viewport size, in pixels
+ *
+ * Set the viewport size.
+ */
 
 void
 lsm_dom_view_set_viewport_pixels (LsmDomView *self, const LsmBox *viewport)
@@ -72,6 +103,13 @@ lsm_dom_view_set_viewport_pixels (LsmDomView *self, const LsmBox *viewport)
 	self->viewport_pt.height = viewport->height * 72.0 / self->resolution_ppi;
 }
 
+/**
+ * lsm_dom_view_get_viewport:
+ * @self: a #LsmDomView
+ *
+ * Returns: viewport size, in points.
+ */
+
 LsmBox
 lsm_dom_view_get_viewport (LsmDomView *self)
 {
@@ -81,6 +119,13 @@ lsm_dom_view_get_viewport (LsmDomView *self)
 
 	return self->viewport_pt;
 }
+
+/**
+ * lsm_dom_view_get_viewport_pixels:
+ * @self: a #LsmDomView
+ *
+ * Returns: viewport size, in pixels.
+ */
 
 LsmBox
 lsm_dom_view_get_viewport_pixels (LsmDomView *self)
@@ -96,6 +141,16 @@ lsm_dom_view_get_viewport_pixels (LsmDomView *self)
 
 	return viewport;
 }
+
+/**
+ * lsm_dom_view_get_size:
+ * @view: a #LsmDomView
+ * @width: view width placeholder, in points
+ * @height: view height placeholder, in points
+ * @baseline: view baseline, in points
+ *
+ * Get the view size and baseline. Baseline is for use of view inside bloc of text.
+ */
 
 void
 lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *baseline)
@@ -116,6 +171,16 @@ lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *
 	if (view_class->measure != NULL)
 		view_class->measure (view, width, height, baseline);
 }
+
+/**
+ * lsm_dom_view_get_size_pixels:
+ * @view: a #LsmDomView
+ * @width: view width placeholder, in pixels
+ * @height: view height placeholder, in pixels
+ * @baseline: view baseline, in pixels
+ *
+ * Get the view size and baseline. Baseline is for use of view inside bloc of text.
+ */
 
 void
 lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned int *height, unsigned int *baseline)
@@ -196,6 +261,16 @@ lsm_dom_view_set_cairo_context (LsmDomView *view, cairo_t *cairo)
 	cairo_font_options_destroy (font_options);
 }
 
+/**
+ * lsm_dom_view_render:
+ * @view: a #LsmDomView
+ * @cairo: cairo context
+ * @x: x posiiton for rendering
+ * @y: y position for rendering
+ *
+ * Render @view in the @cairo context.
+ */
+
 void
 lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 {
@@ -222,6 +297,14 @@ lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 
 	lsm_dom_view_set_cairo_context (view, NULL);
 }
+
+/**
+ * lsm_dom_view_set_document:
+ * @view: a #LsmDomView
+ * @document: (transfer full): a #LsmDomDocument
+ *
+ * Change the document attached to @view. The previously attached document is unreferenced.
+ */
 
 void
 lsm_dom_view_set_document (LsmDomView *view, LsmDomDocument *document)

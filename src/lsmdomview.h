@@ -73,7 +73,7 @@ GType lsm_dom_view_get_type (void);
 double		lsm_dom_view_get_resolution	(LsmDomView *self);
 void		lsm_dom_view_set_resolution	(LsmDomView *self, double ppi);
 
-void 		lsm_dom_view_set_viewport 	(LsmDomView *self, const LsmBox *viewport);
+void 		lsm_dom_view_set_viewport 	(LsmDomView *self, const LsmBox *viewport_pt);
 void 		lsm_dom_view_set_viewport_pixels(LsmDomView *self, const LsmBox *viewport);
 LsmBox 		lsm_dom_view_get_viewport 	(LsmDomView *self);
 LsmBox 		lsm_dom_view_get_viewport_pixels(LsmDomView *self);

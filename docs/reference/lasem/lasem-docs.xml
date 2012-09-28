@@ -39,14 +39,14 @@
 		<chapter>
 			<title>DOM</title>
 			<xi:include href="xml/lsmdomnode.xml"/>
-			<xi:include href="xml/lsmdomnodelist.xml"/>
-			<xi:include href="xml/lsmdomnamednodemap.xml"/>
 			<xi:include href="xml/lsmdomdocument.xml"/>
-			<xi:include href="xml/lsmdomdocumentfragment.xml"/>
 			<xi:include href="xml/lsmdomelement.xml"/>
 			<xi:include href="xml/lsmdomcharacterdata.xml"/>
 			<xi:include href="xml/lsmdomtext.xml"/>
 			<xi:include href="xml/lsmdomview.xml"/>
+			<xi:include href="xml/lsmdomnodelist.xml"/>
+			<xi:include href="xml/lsmdomnamednodemap.xml"/>
+			<xi:include href="xml/lsmdomdocumentfragment.xml"/>
 		</chapter>
 	</part>
 
