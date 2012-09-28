@@ -123,7 +123,7 @@ IGNORE_HFILES=\
 	lsmsvgelement.h				\
 	lsmsvgclippathelement.h			\
 	lsmsvgsvgelement.h			\
-	lsmsvgtransformable.h		\
+	lsmsvgtransformable.h			\
 	lsmsvggelement.h			\
 	lsmsvgdefselement.h			\
 	lsmsvguseelement.h			\
