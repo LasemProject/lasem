@@ -76,24 +76,30 @@ lsm_svg_image_element_render (LsmSvgElement *self, LsmSvgView *view)
 		gsize size;
 
 		document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
-		data = lsm_dom_document_get_href_data (document, image->href.value, &size);
 
-		if (data != NULL) {
-			GdkPixbufLoader *loader;
+		if (image->href.value != NULL) {
+			data = lsm_dom_document_get_href_data (document, image->href.value, &size);
+			if (data != NULL) {
+				GdkPixbufLoader *loader;
 
-			loader = gdk_pixbuf_loader_new ();
+				loader = gdk_pixbuf_loader_new ();
 
-			gdk_pixbuf_loader_write (loader, (guchar *) data, size, NULL);
+				gdk_pixbuf_loader_write (loader, (guchar *) data, size, NULL);
 
-			g_free (data);
+				g_free (data);
 
-			gdk_pixbuf_loader_close (loader, NULL);
+				gdk_pixbuf_loader_close (loader, NULL);
 
-			image->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-			g_object_ref (image->pixbuf);
+				image->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+				g_object_ref (image->pixbuf);
 
-			g_object_unref (loader);
-		}
+				g_object_unref (loader);
+			} else
+				lsm_debug_render ("[SvgImageElement::render] Failed to load image '%s'",
+						  image->href.value);
+		} else
+			lsm_debug_render ("[SvgImageElement::render] Missing xlink:href attribute");
+
 	}
 
 	if (image->pixbuf == NULL)
