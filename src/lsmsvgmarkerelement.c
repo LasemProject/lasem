@@ -106,7 +106,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (lsm_svg_view_push_matrix (view, &matrix)) {
 
 		lsm_svg_view_push_viewport (view, &viewport, &viewbox,
-					    &marker->preserve_aspect_ratio.value);
+					    &marker->preserve_aspect_ratio.value, style->overflow->value);
 
 		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 

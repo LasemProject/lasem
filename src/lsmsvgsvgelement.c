@@ -140,7 +140,7 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
 	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,
-				    &svg->preserve_aspect_ratio.value);
+				    &svg->preserve_aspect_ratio.value, LSM_SVG_OVERFLOW_HIDDEN);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 
@@ -152,7 +152,7 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 void
 lsm_svg_svg_element_render (LsmSvgSvgElement *svg, LsmSvgView *view)
 {
-	lsm_svg_view_push_viewport (view, &svg->svg_box, NULL, NULL);
+	lsm_svg_view_push_viewport (view, &svg->svg_box, NULL, NULL, LSM_SVG_OVERFLOW_HIDDEN);
 	lsm_svg_element_render (LSM_SVG_ELEMENT (svg), view);
 	lsm_svg_view_pop_viewport (view);
 }

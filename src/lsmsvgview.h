@@ -126,7 +126,8 @@ void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);
 void 		lsm_svg_view_pop_viewbox 		(LsmSvgView *view);
 void 		lsm_svg_view_push_viewport 		(LsmSvgView *view, const LsmBox *viewport,
 							 const LsmBox *viewbox,
-							 const LsmSvgPreserveAspectRatio *aspect_ratio);
+							 const LsmSvgPreserveAspectRatio *aspect_ratio,
+							 LsmSvgOverflow overflow);
 void 		lsm_svg_view_pop_viewport 		(LsmSvgView *view);
 void 		lsm_svg_view_viewbox_to_viewport 	(LsmSvgView *view,
 							 const LsmBox *viewport, const LsmBox *viewbox,

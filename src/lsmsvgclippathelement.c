@@ -63,7 +63,7 @@ lsm_svg_clip_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 		viewport = lsm_svg_view_get_clip_extents (view);
 
-		lsm_svg_view_push_viewport (view, viewport, &viewbox, NULL);
+		lsm_svg_view_push_viewport (view, viewport, &viewbox, NULL, LSM_SVG_OVERFLOW_HIDDEN);
 	}
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);

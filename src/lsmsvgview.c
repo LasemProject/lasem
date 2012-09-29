@@ -1611,7 +1611,8 @@ _compute_viewbox_scale (const LsmBox *viewport, const LsmBox *viewbox,
 
 void
 lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmBox *viewbox,
-			    const LsmSvgPreserveAspectRatio *aspect_ratio)
+			    const LsmSvgPreserveAspectRatio *aspect_ratio,
+			    LsmSvgOverflow overflow)
 {
 	cairo_t *cairo;
 	const LsmBox *actual_viewbox;
@@ -1638,7 +1639,7 @@ lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmB
 		cairo_restore (cairo);
 	}
 
-	if (view->style != NULL && view->style->overflow->value == LSM_SVG_OVERFLOW_HIDDEN) {
+	if (overflow == LSM_SVG_OVERFLOW_HIDDEN) {
 		cairo_rectangle (cairo, viewport->x, viewport->y, viewport->width, viewport->height);
 		cairo_clip (cairo);
 	}

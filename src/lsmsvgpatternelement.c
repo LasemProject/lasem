@@ -264,7 +264,7 @@ lsm_svg_pattern_element_render (LsmSvgElement *self, LsmSvgView *view)
 		    (is_viewbox_defined && pattern->viewbox.value.width > 0.0 && pattern->viewbox.value.height > 0.0)) {
 
 			lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &pattern->viewbox.value : NULL,
-						    &pattern->preserve_aspect_ratio.value);
+						    &pattern->preserve_aspect_ratio.value, LSM_SVG_OVERFLOW_HIDDEN);
 
 			LSM_SVG_ELEMENT_CLASS (parent_class)->render (LSM_SVG_ELEMENT (referenced_pattern), view);
 
