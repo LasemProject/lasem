@@ -459,6 +459,7 @@ lsm_svg_get_default_style (void)
 		return style;
 
 	style = lsm_svg_style_new ();
+	style->font_size_px = 0.0;
 
 	lsm_property_manager_init_default_style (property_manager, style);
 

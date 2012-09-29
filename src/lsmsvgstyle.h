@@ -176,6 +176,8 @@ struct _LsmSvgStyle {
 	LsmSvgVisibilityProperty *	visibility;
 	LsmProperty *			word_spacing;
 	LsmSvgWritingModeProperty *	writing_mode;
+
+	double font_size_px;
 };
 
 void 		lsm_svg_property_bag_set_property 	(LsmPropertyBag *property_bag,

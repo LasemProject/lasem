@@ -71,18 +71,9 @@ struct _LsmSvgViewPatternData {
 double
 lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, LsmSvgLengthDirection direction)
 {
-	double font_size;
-
 	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), 0.0);
 
-	/* TODO cache font size */
-	if (view->viewbox_stack != NULL && view->style != NULL) {
-		font_size = lsm_svg_length_normalize (&view->style->font_size->length, view->viewbox_stack->data,
-						      0.0, LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
-	} else
-		font_size = 0.0;
-
-	return lsm_svg_length_normalize (length, view->viewbox_stack->data, font_size, direction);
+	return lsm_svg_length_normalize (length, view->viewbox_stack->data, view->style->font_size_px, direction);
 }
 
 static void
@@ -1359,7 +1350,6 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	PangoStyle font_style;
 	PangoLayoutIter *iter;
 	PangoRectangle rectangle;
-	int font_size;
 	int baseline;
 	double x1, y1;
 
@@ -1386,14 +1376,8 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	pango_layout = view->pango_layout;
 	font_description = view->dom_view.font_description;
 
-	font_size = PANGO_SCALE * lsm_svg_view_normalize_length (view, &style->font_size->length,
-								 LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
-
-	if (font_size < 0)
-		font_size = 0;
-
 	pango_font_description_set_family (font_description, style->font_family->value);
-	pango_font_description_set_size (font_description, font_size);
+	pango_font_description_set_size (font_description, PANGO_SCALE * style->font_size_px);
 	pango_font_description_set_weight (font_description, style->font_weight->value);
 
 	switch (style->font_stretch->value) {
@@ -2017,10 +2001,38 @@ lsm_svg_view_circular_reference_check (LsmSvgView *view, LsmSvgElement *element)
 }
 
 void
-lsm_svg_view_push_style	(LsmSvgView *view, const LsmSvgStyle *style)
+lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (style != NULL);
+
+	lsm_log_render ("[SvgView::push_style]");
+
+	if (view->style == NULL || (style->font_size != view->style->font_size)) {
+		LsmSvgViewbox font_viewbox;
+		LsmSvgViewbox *viewbox;
+		double current_font_size_px;
+
+		if (view->style != NULL)
+			current_font_size_px = view->style->font_size_px;
+		else
+			current_font_size_px = 0.0;
+
+		viewbox = view->viewbox_stack->data;
+		font_viewbox.resolution_ppi = viewbox->resolution_ppi;
+		font_viewbox.viewbox.x = 0;
+		font_viewbox.viewbox.y = 0;
+		font_viewbox.viewbox.width = current_font_size_px;
+		font_viewbox.viewbox.height = current_font_size_px;
+
+		style->font_size_px = lsm_svg_length_normalize (&style->font_size->length, &font_viewbox,
+								current_font_size_px, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+		if (style->font_size_px < 0.0)
+			style->font_size_px = 0.0;
+		lsm_log_render ("[SvgView::push_style] Font size = %g pixels", style->font_size_px);
+	} else
+		style->font_size_px = view->style->font_size_px;
 
 	view->style_stack = g_slist_prepend (view->style_stack, (void *) style);
 	view->style = style;
@@ -2058,6 +2070,8 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 
 	view->style_stack = g_slist_delete_link (view->style_stack, view->style_stack);
 	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
+
+	lsm_log_render ("[SvgView::pop_style]");
 }
 
 LsmSvgStyle *
