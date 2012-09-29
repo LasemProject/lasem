@@ -1628,8 +1628,8 @@ lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmB
 	cairo = view->dom_view.cairo;
 
 	cairo_save (cairo);
-#if 0
-	if (view->dom_view.debug) {
+
+	if (lsm_debug_check (&lsm_debug_category_viewport, LSM_DEBUG_LEVEL_LOG)) {
 		cairo_save (cairo);
 		cairo_set_line_width (cairo, 1.0);
 		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);
@@ -1637,9 +1637,12 @@ lsm_svg_view_push_viewport (LsmSvgView *view, const LsmBox *viewport, const LsmB
 		cairo_stroke (cairo);
 		cairo_restore (cairo);
 	}
-#endif
-	cairo_rectangle (cairo, viewport->x, viewport->y, viewport->width, viewport->height);
-	cairo_clip (cairo);
+
+	if (view->style != NULL && view->style->overflow->value == LSM_SVG_OVERFLOW_HIDDEN) {
+		cairo_rectangle (cairo, viewport->x, viewport->y, viewport->width, viewport->height);
+		cairo_clip (cairo);
+	}
+
 	cairo_translate (cairo, viewport->x + x_offset, viewport->y + y_offset);
 	cairo_scale (cairo, x_scale, y_scale);
 }

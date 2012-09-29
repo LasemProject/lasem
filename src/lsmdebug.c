@@ -49,6 +49,12 @@ LsmDebugCategory lsm_debug_category_render =
 	.level = -1
 };
 
+LsmDebugCategory lsm_debug_category_viewport =
+{
+	.name = "viewport",
+	.level = -1
+};
+
 static GHashTable *lsm_debug_categories = NULL;
 
 static void

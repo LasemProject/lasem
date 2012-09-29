@@ -104,8 +104,8 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "overflow",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, overflow),
-		.trait_class = &lsm_null_trait_class,
-		.trait_default = ""
+		.trait_class = &lsm_svg_overflow_trait_class,
+		.trait_default = "visible"
 	},
 	{
 		.name = "stop-color",
@@ -502,6 +502,7 @@ lsm_svg_style_unref (LsmSvgStyle *style)
 LsmSvgStyle *
 lsm_svg_style_new_inherited (const LsmSvgStyle *parent_style, LsmPropertyBag *property_bag)
 {
+	LsmPropertyManager *property_manager = lsm_svg_get_property_manager ();
 	LsmSvgRealStyle *real_style;
 	LsmSvgStyle *style;
 	const LsmSvgStyle *default_style;
@@ -514,16 +515,14 @@ lsm_svg_style_new_inherited (const LsmSvgStyle *parent_style, LsmPropertyBag *pr
 	style = &real_style->base;
 
 	if (parent_style != NULL) {
-		LsmPropertyManager *property_manager = lsm_svg_get_property_manager ();
-
 		memcpy (style, default_style, offsetof (LsmSvgStyle, clip_rule));
 		memcpy (&style->clip_rule, &parent_style->clip_rule,
 			sizeof (LsmSvgStyle) - offsetof (LsmSvgStyle, clip_rule));
-
-		lsm_property_manager_apply_property_bag (property_manager, property_bag, style, parent_style);
 	} else {
 		memcpy (style, default_style, sizeof (LsmSvgStyle));
 	}
+
+	lsm_property_manager_apply_property_bag (property_manager, property_bag, style, parent_style);
 
 	return style;
 }

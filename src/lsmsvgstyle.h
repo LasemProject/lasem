@@ -41,6 +41,11 @@ typedef struct {
 
 typedef struct {
 	LsmProperty base;
+	LsmSvgOverflow value;
+} LsmSvgOverflowProperty;
+
+typedef struct {
+	LsmProperty base;
 	LsmSvgPaint paint;
 } LsmSvgPaintProperty;
 
@@ -124,7 +129,7 @@ struct _LsmSvgStyle {
 	LsmProperty *			lighting_color;
 	LsmProperty *			mask;
 	LsmSvgDoubleProperty *		opacity;
-	LsmProperty *			overflow;
+	LsmSvgOverflowProperty *	overflow;
 	LsmSvgColorProperty *		stop_color;
 	LsmSvgDoubleProperty *		stop_opacity;
 	LsmProperty *			text_decoration;

@@ -119,6 +119,31 @@ lsm_svg_line_cap_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_line_cap_strings));
 }
 
+static const char *lsm_svg_overflow_strings[] = {
+	"visible",
+	"hidden",
+	"scroll",
+	"auto"
+};
+
+const char *
+lsm_svg_overflow_to_string (LsmSvgOverflow overflow)
+{
+	if (overflow < 0 || overflow > LSM_SVG_OVERFLOW_AUTO)
+		return NULL;
+
+	return lsm_svg_overflow_strings[overflow];
+}
+
+LsmSvgOverflow
+lsm_svg_overflow_from_string (const char *string)
+{
+	LsmSvgOverflow overflow = lsm_enum_value_from_string (string, lsm_svg_overflow_strings,
+							      G_N_ELEMENTS (lsm_svg_overflow_strings));
+
+	return overflow;
+}
+
 static const char *lsm_svg_pattern_units_strings[] = {
 	"userSpaceOnUse",
 	"objectBoundingBox"
@@ -141,8 +166,8 @@ lsm_svg_pattern_units_from_string (const char *string)
 }
 
 static const char *lsm_svg_marker_units_strings[] = {
-	"userSpaceOnUse",
-	"strokeWidth"
+	"strokeWidth",
+	"userSpaceOnUse"
 };
 
 const char *

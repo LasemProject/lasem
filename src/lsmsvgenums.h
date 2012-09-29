@@ -112,6 +112,17 @@ typedef enum {
 } LsmSvgTransformType;
 
 typedef enum {
+	LSM_SVG_OVERFLOW_ERROR = -1,
+	LSM_SVG_OVERFLOW_VISIBLE,
+	LSM_SVG_OVERFLOW_HIDDEN,
+	LSM_SVG_OVERFLOW_SCROLL,
+	LSM_SVG_OVERFLOW_AUTO
+} LsmSvgOverflow;
+
+const char * 		lsm_svg_overflow_to_string 		(LsmSvgOverflow overflow);
+LsmSvgOverflow		lsm_svg_overflow_from_string		(const char *string);
+
+typedef enum {
 	LSM_SVG_PATTERN_UNITS_ERROR = -1,
 	LSM_SVG_PATTERN_UNITS_USER_SPACE_ON_USE,
 	LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX
@@ -122,8 +133,8 @@ LsmSvgPatternUnits	lsm_svg_pattern_units_from_string		(const char *string);
 
 typedef enum {
 	LSM_SVG_MARKER_UNITS_ERROR = -1,
-	LSM_SVG_MARKER_UNITS_USER_SPACE_ON_USE,
-	LSM_SVG_MARKER_UNITS_STROKE_WIDTH
+	LSM_SVG_MARKER_UNITS_STROKE_WIDTH,
+	LSM_SVG_MARKER_UNITS_USER_SPACE_ON_USE
 } LsmSvgMarkerUnits;
 
 const char * 		lsm_svg_marker_units_to_string 			(LsmSvgMarkerUnits units);

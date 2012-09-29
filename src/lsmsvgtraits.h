@@ -86,6 +86,7 @@ extern const LsmTraitClass lsm_svg_line_cap_trait_class;
 extern const LsmTraitClass lsm_svg_marker_units_trait_class;
 extern const LsmTraitClass lsm_svg_matrix_trait_class;
 extern const LsmTraitClass lsm_svg_one_or_two_double_trait_class;
+extern const LsmTraitClass lsm_svg_overflow_trait_class;
 extern const LsmTraitClass lsm_svg_paint_trait_class;
 extern const LsmTraitClass lsm_svg_pattern_units_trait_class;
 extern const LsmTraitClass lsm_svg_preserve_aspect_ratio_trait_class;

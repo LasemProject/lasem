@@ -343,11 +343,13 @@ lsm_property_manager_apply_property_bag (LsmPropertyManager *manager,
 				if (g_strcmp0 (property->value, "inherit") != 0)
 					*((LsmProperty **) ((void*) style
 							    + LSM_PROPERTY_ID_TO_OFFSET (property->id))) = property;
-				else
-					*((LsmProperty **) ((void*) style
-							    + LSM_PROPERTY_ID_TO_OFFSET (property->id))) =
-						*((LsmProperty **) ((void*) parent_style
-								    + LSM_PROPERTY_ID_TO_OFFSET (property->id)));
+				else {
+					if (parent_style != NULL)
+						*((LsmProperty **) ((void*) style
+								    + LSM_PROPERTY_ID_TO_OFFSET (property->id))) =
+							*((LsmProperty **) ((void*) parent_style
+									    + LSM_PROPERTY_ID_TO_OFFSET (property->id)));
+				}
 
 				manager->property_check[property->id] = manager->property_check_count;
 				previous_iter = iter;
