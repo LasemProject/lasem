@@ -1449,8 +1449,6 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 			break;
 	}
 
-	cairo_move_to (view->dom_view.cairo, x1, y1);
-
 	path_infos.is_text_path = TRUE;
 	path_infos.is_extents_defined = TRUE;
 	path_infos.extents.x1 = x1;
@@ -1464,12 +1462,15 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 		cairo_save (view->dom_view.cairo);
 		cairo_rotate (view->dom_view.cairo, M_PI / 2.0);
+		cairo_move_to (view->dom_view.cairo, x1, y1);
 
 		process_path (view, &path_infos);
 
 		cairo_restore (view->dom_view.cairo);
-	} else
+	} else {
+		cairo_move_to (view->dom_view.cairo, x1, y1);
 		process_path (view, &path_infos);
+	}
 
 	if (pango_layout != view->pango_layout) {
 		lsm_debug_render ("[LsmSvgView::show_text] Free the child pango layout");
