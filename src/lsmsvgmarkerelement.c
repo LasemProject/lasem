@@ -53,9 +53,13 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	double ref_x, ref_y;
 
 	if (!marker->enable_rendering) {
+		/* Remember style for futur rendering.
+		 * Spec says properties are inherited from ancestor, not element referencing
+		 * the marker element. */
 		if (marker->style)
 			lsm_svg_style_unref (marker->style);
 		marker->style = lsm_svg_style_ref (lsm_svg_view_get_current_style (view));
+
 		lsm_debug_render ("[LsmSvgMarkerElement::render] Direct rendering not allowed");
 		return;
 	} else {
@@ -96,10 +100,10 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	if (marker->orientation.value.type == LSM_SVG_ANGLE_TYPE_FIXED) {
 		lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle * M_PI / 18.0);
-		lsm_debug_render ("[LsmSvgMarkerElement::render] fixed angle = %g", marker->orientation.value.angle);
+		lsm_debug_render ("[LsmSvgMarkerElement::render] fixed angle = %g°", marker->orientation.value.angle);
 	} else {
 		lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
-		lsm_debug_render ("[LsmSvgMarkerElement::render] auto angle = %g", marker->vertex_angle);
+		lsm_debug_render ("[LsmSvgMarkerElement::render] auto angle = %g rad", marker->vertex_angle);
 	}
 	lsm_svg_matrix_translate (&matrix, -ref_x, -ref_y);
 
