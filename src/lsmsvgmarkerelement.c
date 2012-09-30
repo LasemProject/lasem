@@ -99,7 +99,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 					  &marker->preserve_aspect_ratio.value, &ref_x, &ref_y);
 
 	if (marker->orientation.value.type == LSM_SVG_ANGLE_TYPE_FIXED) {
-		lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle * M_PI / 18.0);
+		lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle * M_PI / 180.0);
 		lsm_debug_render ("[LsmSvgMarkerElement::render] fixed angle = %g°", marker->orientation.value.angle);
 	} else {
 		lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
