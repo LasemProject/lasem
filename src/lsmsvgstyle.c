@@ -105,7 +105,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 		.name = "overflow",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, overflow),
 		.trait_class = &lsm_svg_overflow_trait_class,
-		.trait_default = "visible"
+		.trait_default = "hidden"
 	},
 	{
 		.name = "stop-color",
