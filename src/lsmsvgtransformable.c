@@ -37,7 +37,6 @@ static void
 lsm_svg_transformable_transformed_render (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmSvgTransformable *transformable = LSM_SVG_TRANSFORMABLE (element);
-	LsmSvgElementClass *element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 	gboolean is_identity_transform;
 	gboolean is_matrix_invertible = TRUE;
 
@@ -49,7 +48,7 @@ lsm_svg_transformable_transformed_render (LsmSvgElement *element, LsmSvgView *vi
 		is_matrix_invertible = TRUE;
 
 	if (is_matrix_invertible)
-		element_class->render (element, view);
+		LSM_SVG_ELEMENT_CLASS (parent_class)->transformed_render (element, view);
 
 	if (!is_identity_transform)
 		lsm_svg_view_pop_matrix (view);

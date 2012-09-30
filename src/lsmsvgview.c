@@ -1784,6 +1784,12 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 	view->clip_extents.width  = extents.x2 - extents.x1;
 	view->clip_extents.height = extents.y2 - extents.y1;
 
+	lsm_debug_render ("[LsmSvgView::push_clip] x=%g y=%g w=%g h=%g",
+			  view->clip_extents.x,
+			  view->clip_extents.y,
+			  view->clip_extents.width,
+			  view->clip_extents.height);
+
 	element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document), url);
 	if (LSM_IS_SVG_CLIP_PATH_ELEMENT (element) &&
 	    !lsm_svg_view_circular_reference_check (view, element)) {

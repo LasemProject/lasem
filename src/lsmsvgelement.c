@@ -153,18 +153,14 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 	lsm_svg_view_pop_group_opacity (view);
 }
 
-void
-lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
+static void
+_transformed_render (LsmSvgElement *element, LsmSvgView *view)
 {
 	LsmSvgElementClass *element_class;
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
 
-	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
-
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-	if (element_class->render == NULL)
-		return;
 
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
@@ -178,16 +174,26 @@ lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
 		lsm_svg_view_push_element (view, element);
 		lsm_svg_view_push_style (view, style);
 
-		if (element_class->transformed_render)
-			element_class->transformed_render (element, view);
-		else
-			element_class->render (element, view);
+		element_class->render (element, view);
 
 		lsm_svg_view_pop_style (view);
 		lsm_svg_view_pop_element (view);
 	}
 
 	lsm_svg_style_unref (style);
+}
+
+void
+lsm_svg_element_render (LsmSvgElement *element, LsmSvgView *view)
+{
+	LsmSvgElementClass *element_class;
+
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+
+	if (element_class->render != NULL)
+		element_class->transformed_render (element, view);
 }
 
 static void
@@ -355,7 +361,7 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 
 	s_element_class->render = _render;
 	s_element_class->get_extents = _get_extents;
-	s_element_class->transformed_render = NULL;
+	s_element_class->transformed_render = _transformed_render;
 	s_element_class->transformed_get_extents = NULL;
 	s_element_class->attribute_manager = lsm_attribute_manager_new (G_N_ELEMENTS (lsm_svg_attribute_infos),
 									lsm_svg_attribute_infos);
