@@ -1353,14 +1353,14 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	int baseline;
 	double x1, y1;
 
-	if (string == NULL)
+	if (string == NULL || string[0] == '\0')
 		return;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
-	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g", string, x, y);
-
 	style = view->style;
+
+	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string, x, y, style->font_size_px);
 
 	if (view->is_pango_layout_in_use) {
 		PangoContext *pango_context;
