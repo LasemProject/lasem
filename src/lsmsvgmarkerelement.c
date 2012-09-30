@@ -69,55 +69,57 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	style = lsm_svg_style_new_inherited (marker->style, &self->property_bag);
 	lsm_svg_view_push_style (view, style);
 
-	ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
-					       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	ref_y = lsm_svg_view_normalize_length (view, &marker->ref_y.length,
-					       LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	if (marker->stroke_width > 0.0 || marker->units.value != LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
+		ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
+						       LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+		ref_y = lsm_svg_view_normalize_length (view, &marker->ref_y.length,
+						       LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	viewport.x = 0.0;
-	viewport.y = 0.0;
+		viewport.x = 0.0;
+		viewport.y = 0.0;
 
-	viewport.width = lsm_svg_view_normalize_length (view, &marker->width.length,
-							LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.height = lsm_svg_view_normalize_length (view, &marker->height.length,
-							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+		viewport.width = lsm_svg_view_normalize_length (view, &marker->width.length,
+								LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+		viewport.height = lsm_svg_view_normalize_length (view, &marker->height.length,
+								 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
-	if (lsm_attribute_is_defined (&marker->viewbox.base))
-		viewbox = marker->viewbox.value;
-	else
-		viewbox = viewport;
+		if (lsm_attribute_is_defined (&marker->viewbox.base))
+			viewbox = marker->viewbox.value;
+		else
+			viewbox = viewport;
 
-	if (marker->units.value == LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
-		viewport.width *= marker->stroke_width;
-		viewport.height *= marker->stroke_width;
+		if (marker->units.value == LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
+			viewport.width *= marker->stroke_width;
+			viewport.height *= marker->stroke_width;
 
-		lsm_debug_render ("[LsmSvgMarkerElement::render] stroke_width scale = %g",
-				  marker->stroke_width);
+			lsm_debug_render ("[LsmSvgMarkerElement::render] stroke_width scale = %g",
+					  marker->stroke_width);
+		}
+
+		lsm_svg_view_viewbox_to_viewport (view, &viewport, &viewbox,
+						  &marker->preserve_aspect_ratio.value, &ref_x, &ref_y);
+
+		if (marker->orientation.value.type == LSM_SVG_ANGLE_TYPE_FIXED) {
+			lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle * M_PI / 180.0);
+			lsm_debug_render ("[LsmSvgMarkerElement::render] fixed angle = %g°", marker->orientation.value.angle);
+		} else {
+			lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
+			lsm_debug_render ("[LsmSvgMarkerElement::render] auto angle = %g rad", marker->vertex_angle);
+		}
+		lsm_svg_matrix_translate (&matrix, -ref_x, -ref_y);
+
+		if (lsm_svg_view_push_matrix (view, &matrix)) {
+
+			lsm_svg_view_push_viewport (view, &viewport, &viewbox,
+						    &marker->preserve_aspect_ratio.value, style->overflow->value);
+
+			LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
+
+			lsm_svg_view_pop_viewport (view);
+		}
+
+		lsm_svg_view_pop_matrix (view);
 	}
-
-	lsm_svg_view_viewbox_to_viewport (view, &viewport, &viewbox,
-					  &marker->preserve_aspect_ratio.value, &ref_x, &ref_y);
-
-	if (marker->orientation.value.type == LSM_SVG_ANGLE_TYPE_FIXED) {
-		lsm_svg_matrix_init_rotate (&matrix, marker->orientation.value.angle * M_PI / 180.0);
-		lsm_debug_render ("[LsmSvgMarkerElement::render] fixed angle = %g°", marker->orientation.value.angle);
-	} else {
-		lsm_svg_matrix_init_rotate (&matrix, marker->vertex_angle);
-		lsm_debug_render ("[LsmSvgMarkerElement::render] auto angle = %g rad", marker->vertex_angle);
-	}
-	lsm_svg_matrix_translate (&matrix, -ref_x, -ref_y);
-
-	if (lsm_svg_view_push_matrix (view, &matrix)) {
-
-		lsm_svg_view_push_viewport (view, &viewport, &viewbox,
-					    &marker->preserve_aspect_ratio.value, style->overflow->value);
-
-		LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
-
-		lsm_svg_view_pop_viewport (view);
-	}
-
-	lsm_svg_view_pop_matrix (view);
 
 	lsm_svg_view_pop_style (view);
 	lsm_svg_style_unref (style);
