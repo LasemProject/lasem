@@ -1,61 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
-   width="200"
-   height="200"
-   id="svg2">
-  <defs
-     id="defs4">
-    <filter
-       x="-0.5"
-       y="-0.19"
-       width="1.86"
-       height="1.6799999"
-       color-interpolation-filters="sRGB"
-       id="filter2987">
-      <feGaussianBlur
-         stdDeviation="50 0.01"
-         in="SourceGraphic"
-         id="feGaussianBlur2989" />
-    </filter>
-    <filter
-       color-interpolation-filters="sRGB"
-       id="filter3788">
-      <feGaussianBlur
-         stdDeviation="5 0.01"
-         in="SourceGraphic"
-         id="feGaussianBlur3790" />
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+  <defs>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="10 0" in="SourceGraphic" />
     </filter>
   </defs>
-  <metadata
-     id="metadata7">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     transform="translate(0,-852.36218)"
-     id="layer1">
-    <rect
-       width="100"
-       height="100"
-       x="50"
-       y="902.36218"
-       transform="matrix(0.73958535,-0.67306278,0.67306278,0.73958535,-614.95807,315.31534)"
-       id="rect3786"
-       style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99999994;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter3788);enable-background:new" />
+  <g>
+    <rect width="100" height="100" x="-50" y="-50"
+       transform="matrix(0.707,-0.707,0.707,0.707,100,100)"
+       style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#blur);enable-background:new" />
   </g>
 </svg>
