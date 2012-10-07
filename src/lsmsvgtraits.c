@@ -936,6 +936,8 @@ lsm_svg_one_or_two_double_trait_from_string (LsmTrait *abstract_trait, char *str
 		return FALSE;
 	}
 
+	string = end_ptr;
+
 	lsm_str_skip_spaces (&string);
 
 	if (string[0] == '\0') {
