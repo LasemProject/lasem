@@ -55,6 +55,18 @@ LsmDebugCategory lsm_debug_category_viewport =
 	.level = -1
 };
 
+LsmDebugCategory lsm_debug_category_filter =
+{
+	.name = "filter",
+	.level = -1
+};
+
+LsmDebugCategory lsm_debug_category_mask =
+{
+	.name = "mask",
+	.level = -1
+};
+
 static GHashTable *lsm_debug_categories = NULL;
 
 static void
