@@ -969,17 +969,27 @@ paint_markers (LsmSvgView *view)
 			} else if (next_data == NULL ||
 				   next_data->header.type == CAIRO_PATH_MOVE_TO) {
 				marker = marker_end;
-				if (type == CAIRO_PATH_CURVE_TO)
-					angle = atan2 (y - data[2].point.y,
-						       x - data[2].point.x);
-				else
+				if (type == CAIRO_PATH_CURVE_TO) {
+					if (y != data[2].point.y ||
+					    x != data[2].point.x)
+						angle = atan2 (y - data[2].point.y,
+							       x - data[2].point.x);
+					else
+						angle = atan2 (y - data[1].point.y,
+							       x - data[1].point.x);
+				} else
 					angle = atan2 (y - prev_y, x - prev_x);
 			} else if (data->header.type == CAIRO_PATH_MOVE_TO) {
 				marker = marker_start;
-				if (next_type == CAIRO_PATH_CURVE_TO)
-					angle = atan2 (next_data[1].point.y - y,
-						       next_data[1].point.x - x);
-				else
+				if (next_type == CAIRO_PATH_CURVE_TO) {
+					if (next_data[1].point.y != y ||
+					    next_data[1].point.x != x)
+						angle = atan2 (next_data[1].point.y - y,
+							       next_data[1].point.x - x);
+					else
+						angle = atan2 (next_data[2].point.y - y,
+							       next_data[2].point.x - x);
+				} else
 					angle = atan2 (next_y - y, next_x - x);
 			} else {
 				double xdifin, ydifin, xdifout, ydifout, intot, outtot;
@@ -987,15 +997,27 @@ paint_markers (LsmSvgView *view)
 				marker = marker_mid;
 
 				if (type == CAIRO_PATH_CURVE_TO) {
-					xdifin = x - data[2].point.x;
-					ydifin = y - data[2].point.y;
+					if (x != data[2].point.x ||
+					    y != data[2].point.y) {
+						xdifin = x - data[2].point.x;
+						ydifin = y - data[2].point.y;
+					} else {
+						xdifin = x - data[1].point.x;
+						ydifin = y - data[1].point.y;
+					}
 				} else {
 					xdifin = x - prev_x;
 					ydifin = y - prev_y;
 				}
 				if (next_type == CAIRO_PATH_CURVE_TO) {
-					xdifout = data[3].point.x - x;
-					ydifout = data[3].point.y - y;
+					if (next_data[1].point.x != x ||
+					    next_data[1].point.y != y) {
+						xdifout = next_data[1].point.x - x;
+						ydifout = next_data[1].point.y - y;
+					} else {
+						xdifout = next_data[2].point.x - x;
+						ydifout = next_data[2].point.y - y;
+					}
 				} else {
 					xdifout = next_x - x;
 					ydifout = next_y - y;
