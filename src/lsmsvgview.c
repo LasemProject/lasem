@@ -977,8 +977,8 @@ paint_markers (LsmSvgView *view)
 			} else if (data->header.type == CAIRO_PATH_MOVE_TO) {
 				marker = marker_start;
 				if (next_type == CAIRO_PATH_CURVE_TO)
-					angle = atan2 (data[1].point.y - y,
-						       data[1].point.x - x);
+					angle = atan2 (next_data[1].point.y - y,
+						       next_data[1].point.x - x);
 				else
 					angle = atan2 (next_y - y, next_x - x);
 			} else {
