@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2010-2011 Emmanuel Pacaud
+ * Copyright © 2010-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,8 +46,6 @@ extern LsmDebugCategory lsm_debug_category_measure;
 extern LsmDebugCategory lsm_debug_category_update;
 extern LsmDebugCategory lsm_debug_category_render;
 extern LsmDebugCategory lsm_debug_category_viewport;
-extern LsmDebugCategory lsm_debug_category_filter;
-extern LsmDebugCategory lsm_debug_category_mask;
 
 #define lsm_debug_dom(...) 		lsm_debug (&lsm_debug_category_dom, __VA_ARGS__)
 #define lsm_log_dom(...)		lsm_log (&lsm_debug_category_dom, __VA_ARGS__)

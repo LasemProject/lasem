@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2010-2011 Emmanuel Pacaud
+ * Copyright © 2010-2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -52,18 +52,6 @@ LsmDebugCategory lsm_debug_category_render =
 LsmDebugCategory lsm_debug_category_viewport =
 {
 	.name = "viewport",
-	.level = -1
-};
-
-LsmDebugCategory lsm_debug_category_filter =
-{
-	.name = "filter",
-	.level = -1
-};
-
-LsmDebugCategory lsm_debug_category_mask =
-{
-	.name = "mask",
 	.level = -1
 };
 
