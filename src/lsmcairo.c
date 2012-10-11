@@ -40,11 +40,16 @@ struct _LsmFilterSurface {
 LsmFilterSurface *
 lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1)
 {
+	LsmFilterSurface *filter_surface;
 	cairo_surface_t *surface;
 
 	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, x1 - x0, y1 - y0);
 
-	return lsm_filter_surface_new_with_content (name, x0, y0, surface);
+	filter_surface = lsm_filter_surface_new_with_content (name, x0, y0, surface);
+
+	cairo_surface_destroy (surface);
+
+	return filter_surface;
 }
 
 LsmFilterSurface *
@@ -89,7 +94,7 @@ lsm_filter_surface_get_name (LsmFilterSurface *surface)
 cairo_surface_t *
 lsm_filter_surface_get_cairo_surface (LsmFilterSurface *surface)
 {
-	g_return_if_fail (surface != NULL);
+	g_return_val_if_fail (surface != NULL, NULL);
 
 	return surface->surface;
 }
@@ -108,6 +113,7 @@ void
 lsm_filter_surface_unref (LsmFilterSurface *filter_surface)
 {
 	g_return_if_fail (filter_surface != NULL);
+	g_return_if_fail (filter_surface->ref_count > 0);
 
 	if (g_atomic_int_dec_and_test (&filter_surface->ref_count)) {
 		cairo_surface_destroy (filter_surface->surface);
