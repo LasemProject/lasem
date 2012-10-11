@@ -42,10 +42,13 @@ LsmFilterSurface * 	lsm_filter_surface_new 			(const char *name,
 LsmFilterSurface * 	lsm_filter_surface_new_with_content 	(const char *name,
 								 unsigned int x0, unsigned int y0,
 								 cairo_surface_t *surface);
+LsmFilterSurface *	lsm_filter_surface_new_similar		(const char *name, LsmFilterSurface *model);
+const char * 		lsm_filter_surface_get_name 		(LsmFilterSurface *surface);
+cairo_surface_t *	lsm_filter_surface_get_cairo_surface	(LsmFilterSurface *surface);
 void 			lsm_filter_surface_unref 		(LsmFilterSurface *filter_surface);
 LsmFilterSurface *	lsm_filter_surface_ref 			(LsmFilterSurface *filter_surface);
 
-void 			lsm_filter_fast_blur 			(LsmFilterSurface *input,
+void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input,
 								 LsmFilterSurface *output,
 								 double sx, double sy);
 void 			lsm_cairo_set_source_pixbuf 		(cairo_t         *cr,

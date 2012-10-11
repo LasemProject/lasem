@@ -71,6 +71,30 @@ lsm_filter_surface_new_with_content (const char *name, unsigned int x0, unsigned
 }
 
 LsmFilterSurface *
+lsm_filter_surface_new_similar (const char *name, LsmFilterSurface *model)
+{
+	g_return_val_if_fail (model != NULL, NULL);
+
+	return lsm_filter_surface_new (name, model->x0, model->y0, model->x1, model->y1);
+}
+
+const char *
+lsm_filter_surface_get_name (LsmFilterSurface *surface)
+{
+	g_return_val_if_fail (surface != NULL, NULL);
+
+	return surface->name;
+}
+
+cairo_surface_t *
+lsm_filter_surface_get_cairo_surface (LsmFilterSurface *surface)
+{
+	g_return_if_fail (surface != NULL);
+
+	return surface->surface;
+}
+
+LsmFilterSurface *
 lsm_filter_surface_ref (LsmFilterSurface *filter_surface)
 {
 	g_return_val_if_fail (filter_surface != NULL, NULL);
@@ -211,7 +235,7 @@ box_blur (LsmFilterSurface *input,
 }
 
 void
-lsm_filter_fast_blur (LsmFilterSurface *input,
+lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 		      LsmFilterSurface *output,
 		      double sx, double sy)
 {
