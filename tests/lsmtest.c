@@ -45,6 +45,9 @@ static char *option_debug_domains = NULL;
 static char **option_input_filenames = NULL;
 double option_ppi = 72.0;
 static gboolean fatal_warning = FALSE;
+static gboolean debug_filter = FALSE;
+static gboolean debug_pattern = FALSE;
+static gboolean debug_mask = FALSE;
 
 static const GOptionEntry entries[] =
 {
@@ -56,6 +59,12 @@ static const GOptionEntry entries[] =
 		&option_debug_domains,		"Debug domains", NULL },
 	{ "fatal-warning", 	'f', 0, G_OPTION_ARG_NONE,
 		&fatal_warning,			"Make warning fatal", NULL },
+	{ "debug-filter", 	' ' , 0, G_OPTION_ARG_NONE,
+		&debug_filter,			"Debug filter surfaces", NULL },
+	{ "debug-pattern", 	' ' , 0, G_OPTION_ARG_NONE,
+		&debug_pattern,			"Debug pattern surfaces", NULL },
+	{ "debug-mask", 	' ' , 0, G_OPTION_ARG_NONE,
+		&debug_mask,			"Debug mask surfaces", NULL },
 	{ NULL }
 };
 
@@ -136,6 +145,13 @@ lasem_test_render (char const *filename)
 		lsm_dom_view_set_resolution (view, option_ppi);
 		lsm_dom_view_set_viewport_pixels (view, &viewport);
 		lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height, NULL);
+
+		if (debug_mask)
+			lsm_dom_view_set_debug (view, "mask", TRUE);
+		if (debug_pattern)
+			lsm_dom_view_set_debug (view, "pattern", TRUE);
+		if (debug_filter)
+			lsm_dom_view_set_debug (view, "filter", TRUE);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
 		cairo = cairo_create (surface);

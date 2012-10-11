@@ -47,7 +47,7 @@ typedef struct _LsmDomViewClass LsmDomViewClass;
 struct _LsmDomView {
 	GObject	object;
 
-	LsmDomDocument *		document;
+	LsmDomDocument *	document;
 
 	PangoFontDescription *	font_description;
 	PangoLayout *		pango_layout;
@@ -64,8 +64,9 @@ struct _LsmDomViewClass {
 
 	GType document_type;
 
-	void (*measure)	(LsmDomView *view, double *width, double *height, double *baseline);
-	void (*render)	(LsmDomView *view);
+	void (*measure)		(LsmDomView *view, double *width, double *height, double *baseline);
+	void (*render)		(LsmDomView *view);
+	void (*set_debug)	(LsmDomView *view, const char *feature, gboolean enable);
 };
 
 GType lsm_dom_view_get_type (void);
@@ -83,6 +84,8 @@ void 		lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double
 void		lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height, double *baseline);
 void 		lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height,
 						 unsigned int *baseline);
+
+void		lsm_dom_view_set_debug		(LsmDomView *view, const char *feature, gboolean enable);
 
 void 		lsm_dom_view_set_document 	(LsmDomView *view, LsmDomDocument *document);
 

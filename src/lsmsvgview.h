@@ -74,6 +74,10 @@ struct _LsmSvgView {
 	double last_stop_offset;
 
 	GSList *filter_surfaces;
+
+	gboolean debug_filter;
+	gboolean debug_mask;
+	gboolean debug_pattern;
 };
 
 struct _LsmSvgViewClass {

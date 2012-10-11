@@ -808,15 +808,13 @@ _paint_url (LsmSvgView *view,
 	cairo = view->pattern_data->old_cairo;
 
 	if (view->pattern_data->pattern) {
-#if 0
-		if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
+		if (view->debug_pattern && view->dom_view.cairo) {
 			char *filename;
 
-			filename = g_strdup_printf ("pattern-%s.png", url);
+			filename = g_strdup_printf ("pattern-%s).png", url);
 			cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
 			g_free (filename);
 		}
-#endif
 
 		cairo_set_source (cairo, view->pattern_data->pattern);
 	} else
@@ -1891,15 +1889,15 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 			}
 
 			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
-#if 0
-			{
+
+			if (view->debug_mask && view->dom_view.cairo != NULL) {
 				char *filename;
 
 				filename = g_strdup_printf ("mask-%s.png", view->style->mask->value);
 				cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
 				g_free (filename);
 			}
-#endif
+
 			cairo_mask (cairo, view->pattern_data->pattern);
 		} else {
 			cairo_paint (cairo);
@@ -2211,6 +2209,19 @@ lsm_svg_view_render (LsmDomView *view)
 	}
 }
 
+static void
+lsm_svg_view_set_debug (LsmDomView *view, const char *feature, gboolean enable)
+{
+	LsmSvgView *svg_view = LSM_SVG_VIEW (view);
+
+	if (g_strcmp0 (feature, "filter") == 0)
+		svg_view->debug_filter = enable;
+	else if (g_strcmp0 (feature, "mask") == 0)
+		svg_view->debug_mask = enable;
+	else if (g_strcmp0 (feature, "pattern") == 0)
+		svg_view->debug_pattern = enable;
+}
+
 LsmSvgView *
 lsm_svg_view_new (LsmSvgDocument *document)
 {
@@ -2226,6 +2237,9 @@ lsm_svg_view_new (LsmSvgDocument *document)
 static void
 lsm_svg_view_init (LsmSvgView *view)
 {
+	view->debug_mask = FALSE;
+	view->debug_filter = FALSE;
+	view->debug_pattern = FALSE;
 }
 
 static void
@@ -2246,6 +2260,7 @@ lsm_svg_view_class_init (LsmSvgViewClass *view_class)
 
 	d_view_class->measure = lsm_svg_view_measure;
 	d_view_class->render = lsm_svg_view_render;
+	d_view_class->set_debug = lsm_svg_view_set_debug;
 }
 
 G_DEFINE_TYPE (LsmSvgView, lsm_svg_view, LSM_TYPE_DOM_VIEW)

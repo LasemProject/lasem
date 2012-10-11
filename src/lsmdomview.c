@@ -324,6 +324,29 @@ lsm_dom_view_set_document (LsmDomView *view, LsmDomDocument *document)
 	view->document = document;
 }
 
+/**
+ * lsm_dom_view_set_debug:
+ * @view: a #LsmDomView
+ * @feature: name of the feature to debug
+ * @enable: wether to enable debugging
+ *
+ * Configure feature debug.
+ */
+
+void
+lsm_dom_view_set_debug (LsmDomView *view, const char *feature, gboolean enable)
+{
+	LsmDomViewClass *view_class;
+
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (feature != NULL);
+
+
+	view_class = LSM_DOM_VIEW_GET_CLASS (view);
+	if (view_class->set_debug)
+		view_class->set_debug (view, feature, enable);
+}
+
 static void
 lsm_dom_view_init (LsmDomView *view)
 {
