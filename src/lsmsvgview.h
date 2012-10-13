@@ -92,6 +92,7 @@ double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *
 							 LsmSvgLengthDirection direction);
 
 const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
+const LsmBox * 	lsm_svg_view_get_object_extents 	(LsmSvgView *view);
 const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
 
 void		lsm_svg_view_calculate_path_extents	(LsmSvgView *view, const char *path,

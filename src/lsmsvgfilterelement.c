@@ -45,12 +45,53 @@ lsm_svg_filter_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
 
 /* LsmSvgElement implementation */
 
+LsmBox
+lsm_svg_filter_element_get_effect_viewport (LsmSvgFilterElement *filter, const LsmBox *source_extents, LsmSvgView *view)
+{
+	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+	gboolean is_object_bounding_box;
+	LsmBox viewport;
+
+	g_return_val_if_fail (LSM_IS_SVG_FILTER_ELEMENT (filter), null_extents);
+	g_return_val_if_fail (source_extents != NULL, null_extents);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), null_extents);
+
+	is_object_bounding_box = (filter->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
+
+	if (is_object_bounding_box) {
+		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
+
+		lsm_svg_view_push_viewbox (view, &viewbox);
+	}
+
+	viewport.x      = lsm_svg_view_normalize_length (view, &filter->x.length,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.y      = lsm_svg_view_normalize_length (view, &filter->y.length,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	viewport.width  = lsm_svg_view_normalize_length (view, &filter->width.length,
+							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	viewport.height = lsm_svg_view_normalize_length (view, &filter->height.length,
+							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_viewbox (view);
+
+		viewport.x = viewport.x * source_extents->width + source_extents->x;
+		viewport.y = viewport.y * source_extents->height + source_extents->y;
+		viewport.width *= source_extents->width;
+		viewport.height *= source_extents->height;
+	}
+
+	return viewport;
+}
+
 static void
 lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgFilterElement *filter = LSM_SVG_FILTER_ELEMENT (self);
 	LsmDomNode *node;
 	LsmBox viewport;
+	LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
 	const LsmBox *filter_extents;
 	gboolean is_object_bounding_box;
 
@@ -61,15 +102,12 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 		filter->enable_rendering = FALSE;
 	}
 
-	filter_extents = lsm_svg_view_get_pattern_extents (view);
+	filter_extents = lsm_svg_view_get_object_extents (view);
 
 	is_object_bounding_box = (filter->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
-	if (is_object_bounding_box) {
-		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
-
+	if (is_object_bounding_box)
 		lsm_svg_view_push_viewbox (view, &viewbox);
-	}
 
 	viewport.x      = lsm_svg_view_normalize_length (view, &filter->x.length,
 							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
@@ -100,18 +138,14 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	is_object_bounding_box = (filter->primitive_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
-	if (is_object_bounding_box) {
-		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
-
-		lsm_svg_view_push_viewbox (view, &viewbox);
-	}
+	lsm_svg_view_push_viewport (view, &viewport,
+				    is_object_bounding_box ? &viewbox : NULL, NULL, LSM_SVG_OVERFLOW_VISIBLE); 
 
 	for (node = LSM_DOM_NODE (filter)->first_child; node != NULL; node = node->next_sibling)
 		if (LSM_IS_SVG_FILTER_PRIMITIVE (node))
 		    lsm_svg_filter_primitive_apply (LSM_SVG_FILTER_PRIMITIVE (node), view);
 
-	if (is_object_bounding_box)
-		lsm_svg_view_pop_viewbox (view);
+	lsm_svg_view_pop_viewport (view);
 }
 
 static void

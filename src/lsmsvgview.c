@@ -27,6 +27,7 @@
 #include <lsmsvgelement.h>
 #include <lsmsvgsvgelement.h>
 #include <lsmsvgradialgradientelement.h>
+#include <lsmsvgfilterelement.h>
 #include <lsmsvglineargradientelement.h>
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgmarkerelement.h>
@@ -64,6 +65,7 @@ struct _LsmSvgViewPatternData {
 	cairo_pattern_t *pattern;
 
 	LsmBox extents;
+	LsmBox object_extents;
 
 	double opacity;
 };
@@ -77,7 +79,7 @@ lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, Lsm
 }
 
 static void
-_start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
+_start_pattern (LsmSvgView *view, const LsmBox *extents, const LsmBox *object_extents, double opacity)
 {
 	lsm_debug_render ("[LsmSvgView::start_pattern]");
 
@@ -88,6 +90,7 @@ _start_pattern (LsmSvgView *view, const LsmBox *extents, double opacity)
 	view->pattern_data->pattern = NULL;
 	view->pattern_data->extents = *extents;
 	view->pattern_data->opacity = opacity;
+	view->pattern_data->object_extents = *object_extents;
 
 	view->dom_view.cairo = NULL;
 }
@@ -289,7 +292,7 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	x_scale = device_width / viewport->width;
 	y_scale = device_height / viewport->height;
 
-	lsm_debug_render ("[LsmSvgView::create_pattern] pattern size = %g ,%g at %g, %g (scale %g x %g)",
+	lsm_debug_render ("[LsmSvgView::create_surface_pattern] pattern size = %g ,%g at %g, %g (scale %g x %g)",
 		   device_width, device_height, viewport->x, viewport->y, x_scale, y_scale);
 
 	switch (surface_type) {
@@ -335,6 +338,10 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 
 	cairo_pattern_set_matrix (view->pattern_data->pattern, &matrix);
 	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_REPEAT);
+
+	lsm_debug_render ("[LsmSvgView::create_surface_pattern] Pattern matrix %g, %g, %g, %g, %g, %g",
+			  matrix.xx, matrix.xy, matrix.yx, matrix.yy,
+			  matrix.x0, matrix.y0);
 
 	return TRUE;
 }
@@ -801,7 +808,7 @@ _paint_url (LsmSvgView *view,
 	lsm_debug_render ("[LsmSvgView::_paint_url] Pattern extents x = %g, y = %g, w = %g, h = %g",
 		   extents.x, extents.y, extents.width, extents.height);
 
-	_start_pattern (view, &extents, opacity);
+	_start_pattern (view, &extents, &extents, opacity);
 
 	lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 
@@ -1861,7 +1868,7 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 
 		cairo = view->dom_view.cairo;
 
-		_start_pattern (view, &mask_extents, 1.0);
+		_start_pattern (view, &mask_extents, &mask_extents, 1.0);
 
 		lsm_svg_element_force_render (LSM_SVG_ELEMENT (mask_element), view);
 
@@ -1913,38 +1920,55 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 void
 lsm_svg_view_push_filter (LsmSvgView *view)
 {
-#if 0
 	LsmExtents extents;
-	LsmBox source_extents;
-	gboolean result;
+	LsmBox object_extents;
+	LsmBox effect_viewport;
+	LsmSvgElement *filter_element;
+	gboolean success;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->element_stack != NULL);
 
 	lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
 
-	source_extents.x = extents.x1;
-	source_extents.y = extents.y1;
-	source_extents.width = extents.x2 - extents.x1;
-	source_extents.height = extents.y2 - extents.y1;
+	object_extents.x = extents.x1;
+	object_extents.y = extents.y1;
+	object_extents.width = extents.x2 - extents.x1;
+	object_extents.height = extents.y2 - extents.y1;
 
-	_start_pattern (view, &source_extents, 1.0);
+	filter_element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
+							      view->style->filter->value);
 
-	result = lsm_svg_view_create_surface_pattern (view,
-						      &source_extents,
-						      NULL,
-						      LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
-#endif
+	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element)) {
+		effect_viewport = lsm_svg_filter_element_get_effect_viewport (LSM_SVG_FILTER_ELEMENT (filter_element),
+									      &object_extents, view);
+
+		_start_pattern (view, &effect_viewport, &object_extents,
+				view->style->opacity != NULL ? view->style->opacity->value : 1.0);
+
+		success = lsm_svg_view_create_surface_pattern (view,
+							      &effect_viewport,
+							      NULL,
+							      LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
+	} else {
+		_start_pattern (view, &object_extents, &object_extents, 0.0);
+
+		success = lsm_svg_view_create_surface_pattern (view,
+							       &object_extents,
+							       NULL,
+							       LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
+	}
+
+	if (!success) 
+		lsm_warning_render ("LsmSvgView::push_filter] Failed to create subsurface");
 }
 
 void
 lsm_svg_view_pop_filter (LsmSvgView *view)
 {
-#if 0
 	LsmSvgElement *filter_element;
 	LsmFilterSurface *filter_surface;
 	cairo_surface_t *surface;
-	cairo_t *cairo;
 	GSList *iter;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -1952,41 +1976,74 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	filter_element = lsm_svg_document_get_element_by_url (LSM_SVG_DOCUMENT (view->dom_view.document),
 							      view->style->filter->value);
 
-TODO: lsm_svg_view_circular_reference_check
+	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element) &&
+	    view->pattern_data->pattern != NULL) {
+		view->filter_surfaces = NULL;
 
-	cairo = view->pattern_data->old_cairo;
+		cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
+		filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", 0, 0, surface);
 
-	view->filter_surfaces = NULL;
+		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
-	cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
-	filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", 0, 0, surface);
+		lsm_svg_element_force_render (filter_element, view);
 
-	view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
+		cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
+		cairo_set_source (view->pattern_data->old_cairo, view->pattern_data->pattern);
+		cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
 
-#if 1
-	{
-		char *filename;
-		static int count = 0;
+		if (view->debug_filter) {
+			GSList *iter;
+			char *filename;
+			static int count = 0;
 
-		filename = g_strdup_printf ("filter-%04d-%s.png", count++, view->style->filter->value);
-		cairo_surface_write_to_png (cairo_get_target (view->dom_view.cairo), filename);
-		g_free (filename);
+			for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
+				LsmFilterSurface *surface = iter->data;
+
+				filename = g_strdup_printf ("filter-%04d-%s-%s.png", count++,
+							    view->style->filter->value,
+							    lsm_filter_surface_get_name (surface));
+				cairo_surface_write_to_png (lsm_filter_surface_get_cairo_surface (surface), filename);
+				g_free (filename);
+			}
+		}
+
+		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
+			lsm_filter_surface_unref (iter->data);
+		g_slist_free (view->filter_surfaces);
+		view->filter_surfaces = NULL;
 	}
-#endif
-
-#if 1
-	cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
-	cairo_set_source (cairo, view->pattern_data->pattern);
-	cairo_paint (cairo);
-#endif
-
-	for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
-		lsm_filter_surface_free (iter->data);
-	g_slist_free (view->filter_surfaces);
-	view->filter_surfaces = NULL;
 
 	_end_pattern (view);
-#endif
+}
+
+static LsmFilterSurface *
+_get_filter_surface (LsmSvgView *view, const char *input)
+{
+	GSList *iter;
+
+	if (input == NULL)
+		return view->filter_surfaces->data;
+
+	for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
+		LsmFilterSurface *surface = iter->data;
+
+		if (g_strcmp0 (input, lsm_filter_surface_get_name (surface)) == 0)
+			return surface;
+	}
+
+	return NULL;
+}
+
+static LsmFilterSurface *
+_create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *input_surface)
+{
+	LsmFilterSurface *surface;
+
+	surface = lsm_filter_surface_new_similar (output, input_surface);
+
+	view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface); 
+
+	return surface;
 }
 
 void
@@ -1994,6 +2051,31 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 				  double x, double y, double w, double h,
 				  double std_x, double std_y)
 {
+	LsmFilterSurface *input_surface;
+	LsmFilterSurface *output_surface;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, input);
+
+	if (input_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_gaussian_blur] Input '%s' not found", input);
+		return;
+	}
+
+	output_surface = _create_filter_surface (view, output, input_surface);
+
+	lsm_log_render ("[SvgView::apply_gaussian_blur] %s -> %s (x:%g,y:%g,w:%g,h:%g) (%g,%g)",
+			input != NULL ? input : "previous",
+			output != NULL ? output : "next",
+			x, y, w, h, std_x, std_y); 
+
+	cairo_user_to_device_distance (view->dom_view.cairo, &std_x, &std_y);
+
+	lsm_log_render ("[SvgView::apply_gaussian_blur] %g px,%g px",
+			std_x, std_y);
+
+	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
 }
 
 void
@@ -2122,6 +2204,17 @@ lsm_svg_view_get_pattern_extents (LsmSvgView *view)
 	g_return_val_if_fail (view->pattern_data != NULL, &null_extents);
 
 	return &view->pattern_data->extents;
+}
+
+const LsmBox *
+lsm_svg_view_get_object_extents (LsmSvgView *view)
+{
+	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), &null_extents);
+	g_return_val_if_fail (view->pattern_data != NULL, &null_extents);
+
+	return &view->pattern_data->object_extents;
 }
 
 const LsmBox *

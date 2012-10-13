@@ -42,10 +42,20 @@ lsm_svg_filter_gaussian_blur_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *vi
 				     double x, double y, double w, double h)
 {
 	LsmSvgFilterGaussianBlur *blur = LSM_SVG_FILTER_GAUSSIAN_BLUR (self);
+	LsmSvgLength length;
+	double std_a, std_b;
 
-	lsm_svg_view_apply_gaussian_blur (view, input, output, x, y, w, h,
-					  blur->std_deviation.value.a,
-					  blur->std_deviation.value.b);
+	length.type = LSM_SVG_LENGTH_TYPE_ERROR;
+
+	length.value_unit = blur->std_deviation.value.a;
+	std_a = lsm_svg_view_normalize_length (view, &length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	length.value_unit = blur->std_deviation.value.b;
+	std_b = lsm_svg_view_normalize_length (view, &length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+
+	lsm_svg_view_apply_gaussian_blur (view, input, output,
+					  x, y, w, h,
+					  std_a, std_b);
 }
 
 /* LsmSvgFilterGaussianBlur implementation */

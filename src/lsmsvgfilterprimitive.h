@@ -45,6 +45,9 @@ struct _LsmSvgFilterPrimitive {
 	LsmSvgLengthAttribute		y;
 	LsmSvgLengthAttribute		width;
 	LsmSvgLengthAttribute		height;
+
+	LsmAttribute in;
+	LsmAttribute result;
 };
 
 struct _LsmSvgFilterPrimitiveClass {

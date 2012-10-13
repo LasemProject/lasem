@@ -53,8 +53,10 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	w = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	h = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
+	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s", lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
+
 	if (primitive_class->apply != NULL)
-		primitive_class->apply (self, view, NULL, NULL, x, y, w, h);
+		primitive_class->apply (self, view, self->in.value, self->result.value, x, y, w, h);
 }
 
 static const LsmSvgLength x_y_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
@@ -101,6 +103,16 @@ static const LsmAttributeInfos lsm_svg_filter_primitive_attribute_infos[] = {
 		.attribute_offset = offsetof (LsmSvgFilterPrimitive, height),
 		.trait_class = &lsm_svg_length_trait_class,
 		.trait_default = &width_height_default
+	},
+	{
+		.name = "in",
+		.attribute_offset = offsetof (LsmSvgFilterPrimitive, in),
+		.trait_class = &lsm_null_trait_class
+	},
+	{
+		.name = "result",
+		.attribute_offset = offsetof (LsmSvgFilterPrimitive, result),
+		.trait_class = &lsm_null_trait_class
 	}
 };
 

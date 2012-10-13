@@ -57,7 +57,9 @@ struct _LsmSvgFilterElementClass {
 
 GType lsm_svg_filter_element_get_type (void);
 
-LsmDomNode *		lsm_svg_filter_element_new 		(void);
+LsmDomNode *		lsm_svg_filter_element_new 			(void);
+LsmBox 			lsm_svg_filter_element_get_effect_viewport 	(LsmSvgFilterElement *filter,
+									 const LsmBox *source_extents, LsmSvgView *view);
 
 G_END_DECLS
 
