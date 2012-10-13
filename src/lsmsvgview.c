@@ -1978,18 +1978,39 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element) &&
 	    view->pattern_data->pattern != NULL) {
+		cairo_matrix_t matrix;
+
 		view->filter_surfaces = NULL;
 
 		cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
 		filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", 0, 0, surface);
+		cairo_pattern_get_matrix (view->pattern_data->pattern, &matrix);
 
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
 		lsm_svg_element_force_render (filter_element, view);
 
+#if 1
+		lsm_filter_surface_copy_data (filter_surface, view->filter_surfaces->data);
+
 		cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
 		cairo_set_source (view->pattern_data->old_cairo, view->pattern_data->pattern);
 		cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
+#else
+		/* This is the code that should be used. But unfortunately it doesn't work.
+		 * For some reason, cairo_paint paints nothing. I fail to see why it doesn't, while
+		 * the above code does. */
+		{
+			cairo_pattern_t *pattern;
+
+			pattern = cairo_pattern_create_for_surface (lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data));
+			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
+			cairo_pattern_set_matrix (pattern, &matrix);
+			cairo_pattern_set_filter (pattern, CAIRO_FILTER_NEAREST);
+			cairo_set_source (view->pattern_data->old_cairo, pattern);
+			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
+		}
+#endif
 
 		if (view->debug_filter) {
 			GSList *iter;

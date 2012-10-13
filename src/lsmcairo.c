@@ -25,6 +25,7 @@
 
 #include <lsmcairo.h>
 #include <math.h>
+#include <string.h>
 
 struct _LsmFilterSurface {
 	char *name;
@@ -81,6 +82,26 @@ lsm_filter_surface_new_similar (const char *name, LsmFilterSurface *model)
 	g_return_val_if_fail (model != NULL, NULL);
 
 	return lsm_filter_surface_new (name, model->x0, model->y0, model->x1, model->y1);
+}
+
+void
+lsm_filter_surface_copy_data (LsmFilterSurface *to, LsmFilterSurface *from)
+{
+	size_t to_size;
+	size_t from_size;
+	void *to_data;
+	void *from_data;
+
+	g_return_if_fail (to != NULL);
+	g_return_if_fail (from != NULL);
+
+	to_size = cairo_image_surface_get_height (to->surface) * cairo_image_surface_get_stride (to->surface);
+	from_size = cairo_image_surface_get_height (from->surface) * cairo_image_surface_get_stride (from->surface);
+	to_data = cairo_image_surface_get_data (to->surface);
+	from_data = cairo_image_surface_get_data (from->surface);
+	
+	if (to_size == from_size)
+		memcpy (to_data, from_data, to_size);
 }
 
 const char *

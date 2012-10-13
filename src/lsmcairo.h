@@ -43,6 +43,7 @@ LsmFilterSurface * 	lsm_filter_surface_new_with_content 	(const char *name,
 								 unsigned int x0, unsigned int y0,
 								 cairo_surface_t *surface);
 LsmFilterSurface *	lsm_filter_surface_new_similar		(const char *name, LsmFilterSurface *model);
+void 			lsm_filter_surface_copy_data 		(LsmFilterSurface *to, LsmFilterSurface *from);
 const char * 		lsm_filter_surface_get_name 		(LsmFilterSurface *surface);
 cairo_surface_t *	lsm_filter_surface_get_cairo_surface	(LsmFilterSurface *surface);
 void 			lsm_filter_surface_unref 		(LsmFilterSurface *filter_surface);
