@@ -253,6 +253,8 @@ lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 	g_return_if_fail (input != NULL);
 	g_return_if_fail (output != NULL);
 
+	cairo_surface_flush (input->surface);
+
 	kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
 	ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
 
@@ -281,6 +283,8 @@ lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opaci
 	int channelmap[4] = {0, 1, 2, 3};
 
 	g_return_if_fail (surface != NULL);
+
+	cairo_surface_flush (surface->surface);
 
 	stride = cairo_image_surface_get_stride (surface->surface);
 	pixels = cairo_image_surface_get_data (surface->surface);
@@ -313,6 +317,9 @@ lsm_filter_surface_blend (LsmFilterSurface *input_1,
 	g_return_if_fail (input_1 != NULL);
 	g_return_if_fail (input_2 != NULL);
 	g_return_if_fail (output != NULL);
+
+	cairo_surface_flush (input_1->surface);
+	cairo_surface_flush (input_2->surface);
 
 	switch (blending_mode) {
 		case LSM_SVG_BLENDING_MODE_MULTIPLY:
