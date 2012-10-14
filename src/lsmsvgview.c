@@ -2167,7 +2167,7 @@ lsm_svg_view_circular_reference_check (LsmSvgView *view, LsmSvgElement *element)
 }
 
 void
-lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
+lsm_svg_view_push_style_only (LsmSvgView *view, LsmSvgStyle *style)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (style != NULL);
@@ -2203,6 +2203,16 @@ lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
 	view->style_stack = g_slist_prepend (view->style_stack, (void *) style);
 	view->style = style;
 
+}
+
+void
+lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (style != NULL);
+
+	lsm_svg_view_push_style_only (view, style);
+
 	if (g_strcmp0 (style->filter->value, "none") != 0) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
 		lsm_svg_view_push_filter (view);
@@ -2219,10 +2229,20 @@ lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
 	}
 }
 
-void lsm_svg_view_pop_style (LsmSvgView *view)
+void lsm_svg_view_pop_style_only (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->style_stack != NULL);
+
+	view->style_stack = g_slist_delete_link (view->style_stack, view->style_stack);
+	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
+
+	lsm_log_render ("[SvgView::pop_style]");
+}
+
+void lsm_svg_view_pop_style (LsmSvgView *view)
+{
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	if (g_strcmp0 (view->style->mask->value, "none") != 0)
 		lsm_svg_view_pop_mask (view);
@@ -2234,10 +2254,7 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 		lsm_svg_view_pop_filter (view);
 	}
 
-	view->style_stack = g_slist_delete_link (view->style_stack, view->style_stack);
-	view->style = view->style_stack != NULL ? view->style_stack->data : NULL;
-
-	lsm_log_render ("[SvgView::pop_style]");
+	lsm_svg_view_pop_style_only (view);
 }
 
 LsmSvgStyle *
