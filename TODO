@@ -31,8 +31,11 @@ SVG
 - don't ignore an element with visibility != visible when clipping
 - don't include extents of an element with display == none
 - don't use push_group when filling + stroking shapes with group opacity < 1.0
+
 - add support of subregion for filter primitives
 - add support for arithmetic in feComposite
 - group opacity should happen after filter
+- add support for filter BackgroundImage and BackgroundAlpha 
+- fix SourceAlpha
 
 And many many more things to do...
