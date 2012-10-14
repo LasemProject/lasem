@@ -357,43 +357,17 @@ lsm_filter_surface_offset (LsmFilterSurface *input,
 			   LsmFilterSurface *output,
 			   int dx, int dy)
 {
-	int x, y;
-	int rowstride, height, width, ch;
-	unsigned char *input_pixels;
-	unsigned char *output_pixels;
-	LsmExtents boundarys;
+	cairo_t *cairo;
 
 	g_return_if_fail (input != NULL);
 	g_return_if_fail (output != NULL);
 
 	cairo_surface_flush (input->surface);
 
-	height = cairo_image_surface_get_height (input->surface);
-	width = cairo_image_surface_get_width (input->surface);
-	rowstride = cairo_image_surface_get_stride (input->surface);
-
-	input_pixels = cairo_image_surface_get_data (input->surface);
-	output_pixels = cairo_image_surface_get_data (output->surface);
-
-	boundarys.x1 = 0;
-	boundarys.y1 = 0;
-	boundarys.x2 = width;
-	boundarys.y2 = height;
-
-	for (y = boundarys.y1; y < boundarys.y2; y++)
-		for (x = boundarys.x1; x < boundarys.x2; x++) {
-			if (x - dx < boundarys.x1 || x - dx >= boundarys.x2)
-				continue;
-			if (y - dy < boundarys.y1 || y - dy >= boundarys.y2)
-				continue;
-
-			for (ch = 0; ch < 4; ch++) {
-				output_pixels[y * rowstride + x * 4 + ch] =
-					input_pixels[(y - dy) * rowstride + (x - dx) * 4 + ch];
-			}
-		}
-
-	cairo_surface_mark_dirty (output->surface);
+	cairo = cairo_create (output->surface);
+	cairo_set_source_surface (cairo, input->surface, dx, dy);
+	cairo_paint (cairo);
+	cairo_destroy (cairo);
 }
 
 /**
