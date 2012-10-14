@@ -383,6 +383,24 @@ lsm_filter_surface_offset (LsmFilterSurface *input,
 }
 
 void
+lsm_filter_surface_merge (LsmFilterSurface *input,
+			  LsmFilterSurface *output)
+{
+	cairo_t *cairo;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+
+	cairo_surface_flush (input->surface);
+
+	cairo = cairo_create (output->surface);
+	cairo_set_source_surface (cairo, input->surface, 0, 0);
+	cairo_paint (cairo);
+
+	cairo_destroy (cairo);
+}
+
+void
 lsm_filter_surface_alpha (LsmFilterSurface *input, LsmFilterSurface *output)
 {
 	cairo_t *cairo;

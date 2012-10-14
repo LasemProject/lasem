@@ -51,6 +51,8 @@
 #include <lsmsvgfilterflood.h>
 #include <lsmsvgfiltergaussianblur.h>
 #include <lsmsvgfilteroffset.h>
+#include <lsmsvgfiltermerge.h>
+#include <lsmsvgfiltermergenode.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -146,6 +148,10 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_flood_new ();
 	else if (strcmp (tag_name, "feGaussianBlur") == 0)
 		node = lsm_svg_filter_gaussian_blur_new ();
+	else if (strcmp (tag_name, "feMerge") == 0)
+		node = lsm_svg_filter_merge_new ();
+	else if (strcmp (tag_name, "feMergeNode") == 0)
+		node = lsm_svg_filter_merge_node_new ();
 	else if (strcmp (tag_name, "feOffset") == 0)
 		node = lsm_svg_filter_offset_new ();
 

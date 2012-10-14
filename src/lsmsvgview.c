@@ -2194,6 +2194,29 @@ lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *outp
 }
 
 void
+lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output)
+{
+	LsmFilterSurface *input_surface;
+	LsmFilterSurface *output_surface;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, input);
+
+	if (input_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_offset] Input '%s' not found", input);
+		return;
+	}
+
+	output_surface = _get_filter_surface (view, output);
+	if (output_surface == NULL)
+		output_surface = _create_filter_surface (view, output, input_surface);
+
+	if (output_surface != NULL)
+		lsm_filter_surface_merge (input_surface, output_surface);
+}
+
+void
 lsm_svg_view_push_element (LsmSvgView *view, const LsmSvgElement *element)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));

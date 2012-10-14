@@ -162,6 +162,7 @@ void		lsm_svg_view_apply_gaussian_blur 	(LsmSvgView *view, const char *input, co
 							 double x, double y, double w, double h,
 							 double std_x, double std_y);
 void 		lsm_svg_view_apply_offset 		(LsmSvgView *view, const char *input, const char *output, double dx, double dy);
+void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const char *output);
 
 G_END_DECLS
 
