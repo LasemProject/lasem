@@ -2298,11 +2298,6 @@ lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
 
 	lsm_svg_view_push_style_only (view, style);
 
-	if (g_strcmp0 (style->filter->value, "none") != 0) {
-		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
-		lsm_svg_view_push_filter (view);
-	}
-
 	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
@@ -2311,6 +2306,11 @@ lsm_svg_view_push_style	(LsmSvgView *view, LsmSvgStyle *style)
 	if (g_strcmp0 (style->mask->value, "none") != 0) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
 		lsm_svg_view_push_mask (view);
+	}
+
+	if (g_strcmp0 (style->filter->value, "none") != 0) {
+		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
+		lsm_svg_view_push_filter (view);
 	}
 }
 
@@ -2329,15 +2329,15 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 {
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
+	if (g_strcmp0 (view->style->filter->value, "none") != 0) {
+		lsm_svg_view_pop_filter (view);
+	}
+
 	if (g_strcmp0 (view->style->mask->value, "none") != 0)
 		lsm_svg_view_pop_mask (view);
 
 	if (g_strcmp0 (view->style->clip_path->value, "none") != 0)
 		lsm_svg_view_pop_clip (view);
-
-	if (g_strcmp0 (view->style->filter->value, "none") != 0) {
-		lsm_svg_view_pop_filter (view);
-	}
 
 	lsm_svg_view_pop_style_only (view);
 }
