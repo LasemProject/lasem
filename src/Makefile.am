@@ -127,6 +127,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfilterelement.c			\
 	lsmsvgfilterprimitive.c			\
 	lsmsvgfilterblend.c			\
+	lsmsvgfiltercomposite.c			\
 	lsmsvgfilterflood.c			\
 	lsmsvgfiltergaussianblur.c		\
 	lsmsvgfilteroffset.c
@@ -235,6 +236,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfilterelement.h			\
 	lsmsvgfilterprimitive.h			\
 	lsmsvgfilterblend.h			\
+	lsmsvgfiltercomposite.h			\
 	lsmsvgfilterflood.h			\
 	lsmsvgfiltergaussianblur.h		\
 	lsmsvgfilteroffset.h

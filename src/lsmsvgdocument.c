@@ -47,6 +47,7 @@
 #include <lsmsvgmaskelement.h>
 #include <lsmsvgfilterelement.h>
 #include <lsmsvgfilterblend.h>
+#include <lsmsvgfiltercomposite.h>
 #include <lsmsvgfilterflood.h>
 #include <lsmsvgfiltergaussianblur.h>
 #include <lsmsvgfilteroffset.h>
@@ -139,6 +140,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_element_new ();
 	else if (strcmp (tag_name, "feBlend") == 0)
 		node = lsm_svg_filter_blend_new ();
+	else if (strcmp (tag_name, "feComposite") == 0)
+		node = lsm_svg_filter_composite_new ();
 	else if (strcmp (tag_name, "feFlood") == 0)
 		node = lsm_svg_filter_flood_new ();
 	else if (strcmp (tag_name, "feGaussianBlur") == 0)

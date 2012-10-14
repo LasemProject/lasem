@@ -335,6 +335,18 @@ lsm_filter_surface_blend (LsmFilterSurface *input_1,
 		case LSM_SVG_BLENDING_MODE_LIGHTEN:
 			op = CAIRO_OPERATOR_LIGHTEN;
 			break;
+		case LSM_SVG_BLENDING_MODE_IN:
+			op = CAIRO_OPERATOR_IN;
+			break;
+		case LSM_SVG_BLENDING_MODE_OUT:
+			op = CAIRO_OPERATOR_OUT;
+			break;
+		case LSM_SVG_BLENDING_MODE_ATOP:
+			op = CAIRO_OPERATOR_ATOP;
+			break;
+		case LSM_SVG_BLENDING_MODE_XOR:
+			op = CAIRO_OPERATOR_XOR;
+			break;
 		default:
 			op = CAIRO_OPERATOR_OVER;
 			break;
@@ -342,10 +354,10 @@ lsm_filter_surface_blend (LsmFilterSurface *input_1,
 
 	cairo = cairo_create (output->surface);
 
-	cairo_set_source_surface (cairo, input_1->surface, 0, 0);
+	cairo_set_source_surface (cairo, input_2->surface, 0, 0);
 	cairo_paint (cairo);
 
-	cairo_set_source_surface (cairo, input_2->surface, 0, 0);
+	cairo_set_source_surface (cairo, input_1->surface, 0, 0);
 	cairo_set_operator (cairo, op);
 	cairo_paint (cairo);
 

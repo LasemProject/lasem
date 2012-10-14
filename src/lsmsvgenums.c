@@ -30,7 +30,12 @@ static const char *lsm_svg_blending_mode_strings[] = {
 	"multiply",
 	"screen",
 	"darken",
-	"lighten"
+	"lighten",
+	"over",
+	"in",
+	"out",
+	"atop",
+	"xor"
 };
 
 const char *
