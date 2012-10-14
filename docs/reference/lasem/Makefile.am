@@ -147,6 +147,7 @@ IGNORE_HFILES=\
 	lsmsvgmaskelement.h			\
 	lsmsvgfilterelement.h			\
 	lsmsvgfilterprimitive.h			\
+	lsmsvgfilterflood.h			\
 	lsmsvgfiltergaussianblur.h
 
 # Images to copy into HTML directory.

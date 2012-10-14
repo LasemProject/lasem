@@ -1990,28 +1990,6 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 		lsm_svg_element_force_render (filter_element, view);
 
-#if 1
-		lsm_filter_surface_copy_data (filter_surface, view->filter_surfaces->data);
-
-		cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
-		cairo_set_source (view->pattern_data->old_cairo, view->pattern_data->pattern);
-		cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
-#else
-		/* This is the code that should be used. But unfortunately it doesn't work.
-		 * For some reason, cairo_paint paints nothing. I fail to see why it doesn't, while
-		 * the above code does. */
-		{
-			cairo_pattern_t *pattern;
-
-			pattern = cairo_pattern_create_for_surface (lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data));
-			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
-			cairo_pattern_set_matrix (pattern, &matrix);
-			cairo_pattern_set_filter (pattern, CAIRO_FILTER_NEAREST);
-			cairo_set_source (view->pattern_data->old_cairo, pattern);
-			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
-		}
-#endif
-
 		if (view->debug_filter) {
 			GSList *iter;
 			char *filename;
@@ -2026,6 +2004,32 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 				cairo_surface_write_to_png (lsm_filter_surface_get_cairo_surface (surface), filename);
 				g_free (filename);
 			}
+		}
+
+		if (view->filter_surfaces->next != NULL) {
+#if 1
+			lsm_filter_surface_copy_data (filter_surface, view->filter_surfaces->data);
+
+			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
+			cairo_set_source (view->pattern_data->old_cairo, view->pattern_data->pattern);
+			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
+#else
+			/* This is the code that should be used. But unfortunately it doesn't work.
+			 * For some reason, cairo_paint paints nothing. I fail to see why it doesn't, while
+			 * the above code does. */
+			{
+				cairo_pattern_t *pattern;
+				cairo_surface_t *surface;
+
+				surface = lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data);
+				pattern = cairo_pattern_create_for_surface (surface);
+				cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
+				cairo_pattern_set_matrix (pattern, &matrix);
+				cairo_pattern_set_filter (pattern, CAIRO_FILTER_NEAREST);
+				cairo_set_source (view->pattern_data->old_cairo, pattern);
+				cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
+			}
+#endif
 		}
 
 		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
@@ -2097,6 +2101,34 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 			std_x, std_y);
 
 	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
+}
+
+void
+lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
+			  double x, double y, double w, double h)
+{
+	LsmFilterSurface *output_surface;
+	LsmFilterSurface *input_surface;
+	guint8 red, green, blue;
+	guint32 color;
+	double opacity;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, NULL);
+
+	output_surface = _create_filter_surface (view, output, input_surface);
+
+	red = (double) (0.5 + view->style->flood_color->value.red * 255.0);
+	green = (double) (0.5 + view->style->flood_color->value.green * 255.0);
+	blue = (double) (0.5 + view->style->flood_color->value.blue * 255.0);
+	color = red << 16 | green << 8 | blue << 0;
+	opacity = view->style->fill_opacity->value;
+
+	lsm_log_render ("[SvgView::apply_flood] color = 0x%06x - opacity = %g",
+			color, opacity);
+
+	lsm_filter_surface_flood (output_surface, color, opacity);
 }
 
 void

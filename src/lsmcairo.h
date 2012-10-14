@@ -52,6 +52,8 @@ LsmFilterSurface *	lsm_filter_surface_ref 			(LsmFilterSurface *filter_surface);
 void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input,
 								 LsmFilterSurface *output,
 								 double sx, double sy);
+void 			lsm_filter_surface_flood 		(LsmFilterSurface *surface, guint32 color, double opacity);
+
 void 			lsm_cairo_set_source_pixbuf 		(cairo_t         *cr,
 								 const GdkPixbuf *pixbuf,
 								 gdouble          pixbuf_x,

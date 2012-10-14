@@ -124,9 +124,9 @@ struct _LsmSvgStyle {
 	LsmProperty *	 		dominant_baseline;
 	LsmProperty *	 		enable_background;
 	LsmProperty *	 		filter;
-	LsmProperty *	 		flood_color;
-	LsmProperty *	 		flood_opacity;
-	LsmProperty *			lighting_color;
+	LsmSvgColorProperty *		flood_color;
+	LsmSvgDoubleProperty *		flood_opacity;
+	LsmSvgColorProperty *		lighting_color;
 	LsmProperty *			mask;
 	LsmSvgDoubleProperty *		opacity;
 	LsmSvgOverflowProperty *	overflow;

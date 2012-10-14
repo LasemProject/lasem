@@ -74,19 +74,19 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "flood-color",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, flood_color),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_color_trait_class,
 		.trait_default = "black"
 	},
 	{
 		.name = "flood-opacity",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, flood_opacity),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_double_trait_class,
 		.trait_default = "1"
 	},
 	{
 		.name = "lighting-color",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, lighting_color),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_color_trait_class,
 		.trait_default = "white"
 	},
 	{

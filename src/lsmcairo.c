@@ -263,8 +263,8 @@ box_blur (LsmFilterSurface *input,
 
 void
 lsm_filter_surface_fast_blur (LsmFilterSurface *input,
-		      LsmFilterSurface *output,
-		      double sx, double sy)
+			      LsmFilterSurface *output,
+			      double sx, double sy)
 {
 	gint kx, ky;
 	guchar *intermediate;
@@ -285,6 +285,33 @@ lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 	box_blur (output, output, intermediate, kx, ky);
 
 	g_free (intermediate);
+}
+
+void
+lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opacity)
+{
+	guint8 int_opacity;
+	char pixcolour[4];
+	int i, x, y;
+	int stride;
+	unsigned char *pixels;
+
+	g_return_if_fail (surface != NULL);
+
+	stride = cairo_image_surface_get_stride (surface->surface);
+	pixels = cairo_image_surface_get_data (surface->surface);
+
+	int_opacity = (double) (0.5 + opacity * 255.0); 
+
+	for (i = 0; i < 3; i++)
+		pixcolour[i] = (int) (((unsigned char *)
+				       (&color))[2 - i]) * int_opacity / 255;
+	pixcolour[3] = opacity;
+
+	for (y = surface->y0; y < surface->y1; y++)
+		for (x = surface->x0; x < surface->x1; x++)
+			for (i = 0; i < 4; i++)
+				pixels[4 * x + y * stride + /*ctx->channelmap[i]*/ i] = pixcolour[i];
 }
 
 /**

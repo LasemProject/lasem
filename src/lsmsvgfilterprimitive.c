@@ -42,6 +42,8 @@ void
 lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 {
 	LsmSvgFilterPrimitiveClass *primitive_class;
+	const LsmSvgStyle *parent_style;
+	LsmSvgStyle *style;
 	double x, y, w, h;
 
 	g_return_if_fail (LSM_IS_SVG_FILTER_PRIMITIVE (self));
@@ -55,8 +57,13 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 
 	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s", lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
 
+	parent_style = lsm_svg_view_get_current_style (view);
+	style = lsm_svg_style_new_inherited (parent_style, &(LSM_SVG_ELEMENT (self))->property_bag);
+
 	if (primitive_class->apply != NULL)
 		primitive_class->apply (self, view, self->in.value, self->result.value, x, y, w, h);
+
+	lsm_svg_style_unref (style);
 }
 
 static const LsmSvgLength x_y_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
