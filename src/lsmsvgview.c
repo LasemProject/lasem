@@ -2053,6 +2053,18 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 
 		return surface;
+	} else if (g_strcmp0 (input, "BackgroundImage") == 0) {
+		/* TODO */
+		LsmFilterSurface *surface;
+
+		surface = lsm_filter_surface_new_similar ("BackgroundImage", source_surface);
+		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
+	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
+		/* TODO */
+		LsmFilterSurface *surface;
+
+		surface = lsm_filter_surface_new_similar ("BackgroundAlpha", source_surface);
+		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	}
 
 	return NULL;
