@@ -128,7 +128,8 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfilterprimitive.c			\
 	lsmsvgfilterblend.c			\
 	lsmsvgfilterflood.c			\
-	lsmsvgfiltergaussianblur.c
+	lsmsvgfiltergaussianblur.c		\
+	lsmsvgfilteroffset.c
 
 LASEM_DOM_HDRS = 				\
 	lsm.h					\
@@ -235,7 +236,8 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfilterprimitive.h			\
 	lsmsvgfilterblend.h			\
 	lsmsvgfilterflood.h			\
-	lsmsvgfiltergaussianblur.h
+	lsmsvgfiltergaussianblur.h		\
+	lsmsvgfilteroffset.h
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
 

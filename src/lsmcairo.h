@@ -58,6 +58,7 @@ void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input,
 								 LsmFilterSurface *output,
 								 double sx, double sy);
 void 			lsm_filter_surface_flood 		(LsmFilterSurface *surface, guint32 color, double opacity);
+void 			lsm_filter_surface_offset 		(LsmFilterSurface *input, LsmFilterSurface *output, int dx, int dy);
 
 void 			lsm_cairo_set_source_pixbuf 		(cairo_t         *cr,
 								 const GdkPixbuf *pixbuf,

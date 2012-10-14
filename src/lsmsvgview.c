@@ -1988,6 +1988,9 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
+		filter_surface = lsm_filter_surface_new_with_content ("SourceAlpha", 0, 0, surface);
+		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
+
 		lsm_svg_element_force_render (filter_element, view);
 
 		if (view->debug_filter) {
@@ -2140,6 +2143,32 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 			std_x, std_y);
 
 	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
+}
+
+void
+lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *output, double dx, double dy)
+{
+	LsmFilterSurface *input_surface;
+	LsmFilterSurface *output_surface;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, input);
+
+	if (input_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_offset] Input '%s' not found", input);
+		return;
+	}
+
+	output_surface = _create_filter_surface (view, output, input_surface);
+
+	lsm_log_render ("[SvgView::apply_offset] %s -> %s (dx:%g,dy:%g)", input, output, dx, dy); 
+
+	cairo_user_to_device_distance (view->dom_view.cairo, &dx, &dy);
+
+	lsm_log_render ("[SvgView::apply_offset] %g px,%g px", dx, dy);
+
+	lsm_filter_surface_offset (input_surface, output_surface, dx, dy);
 }
 
 void

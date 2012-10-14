@@ -161,6 +161,8 @@ void 		lsm_svg_view_apply_flood 		(LsmSvgView *view, const char *output,
 void		lsm_svg_view_apply_gaussian_blur 	(LsmSvgView *view, const char *input, const char *output,
 							 double x, double y, double w, double h,
 							 double std_x, double std_y);
+void 		lsm_svg_view_apply_offset 		(LsmSvgView *view, const char *input, const char *output, double dx, double dy);
+
 G_END_DECLS
 
 #endif
