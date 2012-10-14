@@ -382,6 +382,21 @@ lsm_filter_surface_offset (LsmFilterSurface *input,
 	cairo_destroy (cairo);
 }
 
+void
+lsm_filter_surface_alpha (LsmFilterSurface *input, LsmFilterSurface *output)
+{
+	cairo_t *cairo;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+
+	cairo = cairo_create (output->surface);
+	cairo_set_source_rgb (cairo, 0, 0, 0);
+	cairo_mask_surface (cairo, input->surface, 0, 0);
+
+	cairo_destroy (cairo);
+}
+
 /**
  * lsm_cairo_set_source_pixbuf:
  * @cr: a cairo context

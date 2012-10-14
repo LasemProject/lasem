@@ -50,6 +50,7 @@ cairo_surface_t *	lsm_filter_surface_get_cairo_surface	(LsmFilterSurface *surfac
 void 			lsm_filter_surface_unref 		(LsmFilterSurface *filter_surface);
 LsmFilterSurface *	lsm_filter_surface_ref 			(LsmFilterSurface *filter_surface);
 
+void 			lsm_filter_surface_alpha 		(LsmFilterSurface *input, LsmFilterSurface *output);
 void 			lsm_filter_surface_blend 		(LsmFilterSurface *input_1,
 								 LsmFilterSurface *input_2,
 								 LsmFilterSurface *output,

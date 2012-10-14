@@ -1,9 +1,9 @@
 All
 
-✓ garbage collection in lsm_property_manager
+x garbage collection in lsm_property_manager
 - CSS support
-✓ gtk-doc support
-✓ single <lsm.h> include
+x gtk-doc support
+x single <lsm.h> include
 - multithread safety
 
 Mathml
@@ -24,8 +24,8 @@ Mathml
 
 SVG
 
-✓ check for recursions
-✓ don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
+x check for recursions
+x don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
 - take group opacity into account when stroking or filling with pattern (like what was done for gradient)
 - really implement get_extents for all elements
 - don't ignore an element with visibility != visible when clipping
@@ -36,6 +36,6 @@ SVG
 - add support for arithmetic in feComposite
 - group opacity should happen after filter
 - add support for filter BackgroundImage and BackgroundAlpha 
-- fix SourceAlpha
+x fix SourceAlpha
 
 And many many more things to do...

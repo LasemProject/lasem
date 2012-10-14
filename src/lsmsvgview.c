@@ -1988,9 +1988,6 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
-		filter_surface = lsm_filter_surface_new_with_content ("SourceAlpha", 0, 0, surface);
-		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
-
 		lsm_svg_element_force_render (filter_element, view);
 
 		if (view->debug_filter) {
@@ -2034,6 +2031,7 @@ static LsmFilterSurface *
 _get_filter_surface (LsmSvgView *view, const char *input)
 {
 	GSList *iter;
+	LsmFilterSurface *source_surface = NULL;
 
 	if (input == NULL)
 		return view->filter_surfaces->data;
@@ -2043,6 +2041,18 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 
 		if (g_strcmp0 (input, lsm_filter_surface_get_name (surface)) == 0)
 			return surface;
+
+		source_surface = surface;
+	}
+
+	if (g_strcmp0 (input, "SourceAlpha") == 0 && source_surface != NULL) {
+		LsmFilterSurface *surface;
+
+		surface = lsm_filter_surface_new_similar ("SourceAlpha", source_surface);
+		lsm_filter_surface_alpha (source_surface, surface);
+		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
+
+		return surface;
 	}
 
 	return NULL;
