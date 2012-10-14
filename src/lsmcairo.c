@@ -1,7 +1,7 @@
 /* Lasem
  *
  * Copyright © 2004 Caleb Moore
- * Copyright © 2010 Emmanuel Pacaud
+ * Copyright © 2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@
  */
 
 #include <lsmcairo.h>
+#include <lsmsvgenums.h>
 #include <math.h>
 #include <string.h>
 
@@ -82,26 +83,6 @@ lsm_filter_surface_new_similar (const char *name, LsmFilterSurface *model)
 	g_return_val_if_fail (model != NULL, NULL);
 
 	return lsm_filter_surface_new (name, model->x0, model->y0, model->x1, model->y1);
-}
-
-void
-lsm_filter_surface_copy_data (LsmFilterSurface *to, LsmFilterSurface *from)
-{
-	size_t to_size;
-	size_t from_size;
-	void *to_data;
-	void *from_data;
-
-	g_return_if_fail (to != NULL);
-	g_return_if_fail (from != NULL);
-
-	to_size = cairo_image_surface_get_height (to->surface) * cairo_image_surface_get_stride (to->surface);
-	from_size = cairo_image_surface_get_height (from->surface) * cairo_image_surface_get_stride (from->surface);
-	to_data = cairo_image_surface_get_data (to->surface);
-	from_data = cairo_image_surface_get_data (from->surface);
-	
-	if (to_size == from_size)
-		memcpy (to_data, from_data, to_size);
 }
 
 const char *
@@ -285,6 +266,8 @@ lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 	box_blur (output, output, intermediate, kx, ky);
 
 	g_free (intermediate);
+
+	cairo_surface_mark_dirty (output->surface);
 }
 
 void
@@ -295,6 +278,7 @@ lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opaci
 	int i, x, y;
 	int stride;
 	unsigned char *pixels;
+	int channelmap[4] = {0, 1, 2, 3};
 
 	g_return_if_fail (surface != NULL);
 
@@ -306,12 +290,58 @@ lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opaci
 	for (i = 0; i < 3; i++)
 		pixcolour[i] = (int) (((unsigned char *)
 				       (&color))[2 - i]) * int_opacity / 255;
-	pixcolour[3] = opacity;
+	pixcolour[3] = int_opacity;
 
 	for (y = surface->y0; y < surface->y1; y++)
 		for (x = surface->x0; x < surface->x1; x++)
-			for (i = 0; i < 4; i++)
-				pixels[4 * x + y * stride + /*ctx->channelmap[i]*/ i] = pixcolour[i];
+			for (i = 0; i < 4; i++) {
+				pixels[4 * x + y * stride + channelmap[i]] = pixcolour[i];
+			}
+
+	cairo_surface_mark_dirty (surface->surface);
+}
+
+void
+lsm_filter_surface_blend (LsmFilterSurface *input_1,
+			  LsmFilterSurface *input_2,
+			  LsmFilterSurface *output,
+			  int blending_mode)
+{
+	cairo_t *cairo;
+	cairo_operator_t op;
+
+	g_return_if_fail (input_1 != NULL);
+	g_return_if_fail (input_2 != NULL);
+	g_return_if_fail (output != NULL);
+
+	switch (blending_mode) {
+		case LSM_SVG_BLENDING_MODE_MULTIPLY:
+			op = CAIRO_OPERATOR_MULTIPLY;
+			break;
+		case LSM_SVG_BLENDING_MODE_SCREEN:
+			op = CAIRO_OPERATOR_SCREEN;
+			break;
+		case LSM_SVG_BLENDING_MODE_DARKEN:
+			op = CAIRO_OPERATOR_DARKEN;
+			break;
+		case LSM_SVG_BLENDING_MODE_LIGHTEN:
+			op = CAIRO_OPERATOR_LIGHTEN;
+			break;
+		default:
+			op = CAIRO_OPERATOR_OVER;
+			break;
+	}
+
+	cairo = cairo_create (output->surface);
+
+	cairo_set_source_surface (cairo, input_1->surface, 0, 0);
+	cairo_paint (cairo);
+
+	cairo_set_source_surface (cairo, input_2->surface, 0, 0);
+	cairo_set_operator (cairo, op);
+	cairo_paint (cairo);
+
+	cairo_destroy (cairo);
 }
 
 /**

@@ -35,6 +35,11 @@ G_BEGIN_DECLS
 
 typedef struct {
 	LsmAttribute base;
+	LsmSvgBlendingMode value;
+} LsmSvgBlendingModeAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	double value;
 } LsmSvgDoubleAttribute;
 

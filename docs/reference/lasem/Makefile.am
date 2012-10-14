@@ -147,6 +147,7 @@ IGNORE_HFILES=\
 	lsmsvgmaskelement.h			\
 	lsmsvgfilterelement.h			\
 	lsmsvgfilterprimitive.h			\
+	lsmsvgfilterblend.h			\
 	lsmsvgfilterflood.h			\
 	lsmsvgfiltergaussianblur.h
 

@@ -57,8 +57,9 @@ typedef struct _LsmSvgPatternElement LsmSvgPatternElement;
 typedef struct _LsmSvgMaskElement LsmSvgMaskElement;
 typedef struct _LsmSvgFilterElement LsmSvgFilterElement;
 typedef struct _LsmSvgFilterPrimitive LsmSvgFilterPrimitive;
-typedef struct _LsmSvgFilterGaussianBlur LsmSvgFilterGaussianBlur;
+typedef struct _LsmSvgFilterBlend LsmSvgFilterBlend;
 typedef struct _LsmSvgFilterFlood LsmSvgFilterFlood;
+typedef struct _LsmSvgFilterGaussianBlur LsmSvgFilterGaussianBlur;
 
 typedef struct _LsmSvgView LsmSvgView;
 typedef struct _LsmSvgStyle LsmSvgStyle;

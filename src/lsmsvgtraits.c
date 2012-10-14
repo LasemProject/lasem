@@ -32,6 +32,30 @@ const LsmSvgColor lsm_svg_color_null = {0.0, 0.0, 0.0};
 const LsmSvgDashArray lsm_svg_dash_array_null = {0, NULL};
 
 static gboolean
+lsm_svg_blending_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgBlendingMode *trait = (LsmSvgBlendingMode *) abstract_trait;
+
+	*trait = lsm_svg_blending_mode_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_blending_mode_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgBlendingMode *trait = (LsmSvgBlendingMode *) abstract_trait;
+
+	return g_strdup (lsm_svg_blending_mode_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_blending_mode_trait_class = {
+	.size = sizeof (LsmSvgBlendingMode),
+	.from_string = lsm_svg_blending_mode_trait_from_string,
+	.to_string = lsm_svg_blending_mode_trait_to_string
+};
+
+static gboolean
 lsm_svg_length_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLength *svg_length = (LsmSvgLength *) abstract_trait;

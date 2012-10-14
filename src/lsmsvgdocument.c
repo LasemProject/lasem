@@ -46,8 +46,9 @@
 #include <lsmsvgpatternelement.h>
 #include <lsmsvgmaskelement.h>
 #include <lsmsvgfilterelement.h>
-#include <lsmsvgfiltergaussianblur.h>
+#include <lsmsvgfilterblend.h>
 #include <lsmsvgfilterflood.h>
+#include <lsmsvgfiltergaussianblur.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -135,10 +136,12 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_clip_path_element_new ();
 	else if (strcmp (tag_name, "filter") == 0)
 		node = lsm_svg_filter_element_new ();
-	else if (strcmp (tag_name, "feGaussianBlur") == 0)
-		node = lsm_svg_filter_gaussian_blur_new ();
+	else if (strcmp (tag_name, "feBlend") == 0)
+		node = lsm_svg_filter_blend_new ();
 	else if (strcmp (tag_name, "feFlood") == 0)
 		node = lsm_svg_filter_flood_new ();
+	else if (strcmp (tag_name, "feGaussianBlur") == 0)
+		node = lsm_svg_filter_gaussian_blur_new ();
 
 	if (node != NULL)
 		lsm_debug_dom ("[LsmSvgDocument::create_element] Create a %s element", tag_name);

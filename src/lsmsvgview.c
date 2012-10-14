@@ -2007,29 +2007,15 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 		}
 
 		if (view->filter_surfaces->next != NULL) {
-#if 1
-			lsm_filter_surface_copy_data (filter_surface, view->filter_surfaces->data);
+			cairo_pattern_t *pattern;
+			cairo_surface_t *surface;
 
-			cairo_pattern_set_extend (view->pattern_data->pattern, CAIRO_EXTEND_NONE);
-			cairo_set_source (view->pattern_data->old_cairo, view->pattern_data->pattern);
-			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
-#else
-			/* This is the code that should be used. But unfortunately it doesn't work.
-			 * For some reason, cairo_paint paints nothing. I fail to see why it doesn't, while
-			 * the above code does. */
-			{
-				cairo_pattern_t *pattern;
-				cairo_surface_t *surface;
-
-				surface = lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data);
-				pattern = cairo_pattern_create_for_surface (surface);
-				cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
-				cairo_pattern_set_matrix (pattern, &matrix);
-				cairo_pattern_set_filter (pattern, CAIRO_FILTER_NEAREST);
-				cairo_set_source (view->pattern_data->old_cairo, pattern);
-				cairo_paint_with_alpha (view->pattern_data->old_cairo, view->pattern_data->opacity);
-			}
-#endif
+			surface = lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data);
+			pattern = cairo_pattern_create_for_surface (surface);
+			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
+			cairo_pattern_set_matrix (pattern, &matrix);
+			cairo_set_source (view->pattern_data->old_cairo, pattern);
+			cairo_paint (view->pattern_data->old_cairo);
 		}
 
 		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
@@ -2072,6 +2058,59 @@ _create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *
 }
 
 void
+lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*input_2, const char *output,
+			  LsmSvgBlendingMode mode)
+{
+	LsmFilterSurface *output_surface;
+	LsmFilterSurface *input_1_surface;
+	LsmFilterSurface *input_2_surface;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_1_surface = _get_filter_surface (view, input_1);
+	input_2_surface = _get_filter_surface (view, input_2);
+
+	if (input_1_surface == NULL || input_2_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_blend] Inputs '%s' or '%s' not found", input_1, input_2);
+		return;
+	}
+
+	output_surface = _create_filter_surface (view, output, input_1_surface);
+
+	lsm_log_render ("[SvgView::blend] mode = %s", lsm_svg_blending_mode_to_string (mode));
+
+	lsm_filter_surface_blend (input_1_surface, input_2_surface, output_surface, mode);
+}
+
+void
+lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
+			  double x, double y, double w, double h)
+{
+	LsmFilterSurface *output_surface;
+	LsmFilterSurface *input_surface;
+	guint8 red, green, blue;
+	guint32 color;
+	double opacity;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, NULL);
+
+	output_surface = _create_filter_surface (view, output, input_surface);
+
+	red = (double) (0.5 + view->style->flood_color->value.red * 255.0);
+	green = (double) (0.5 + view->style->flood_color->value.green * 255.0);
+	blue = (double) (0.5 + view->style->flood_color->value.blue * 255.0);
+	color = red << 16 | green << 8 | blue << 0;
+	opacity = view->style->fill_opacity->value;
+
+	lsm_log_render ("[SvgView::apply_flood] color = 0x%06x - opacity = %g",
+			color, opacity);
+
+	lsm_filter_surface_flood (output_surface, color, opacity);
+}
+
+void
 lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const char *output,
 				  double x, double y, double w, double h,
 				  double std_x, double std_y)
@@ -2101,34 +2140,6 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 			std_x, std_y);
 
 	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
-}
-
-void
-lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
-			  double x, double y, double w, double h)
-{
-	LsmFilterSurface *output_surface;
-	LsmFilterSurface *input_surface;
-	guint8 red, green, blue;
-	guint32 color;
-	double opacity;
-
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-
-	input_surface = _get_filter_surface (view, NULL);
-
-	output_surface = _create_filter_surface (view, output, input_surface);
-
-	red = (double) (0.5 + view->style->flood_color->value.red * 255.0);
-	green = (double) (0.5 + view->style->flood_color->value.green * 255.0);
-	blue = (double) (0.5 + view->style->flood_color->value.blue * 255.0);
-	color = red << 16 | green << 8 | blue << 0;
-	opacity = view->style->fill_opacity->value;
-
-	lsm_log_render ("[SvgView::apply_flood] color = 0x%06x - opacity = %g",
-			color, opacity);
-
-	lsm_filter_surface_flood (output_surface, color, opacity);
 }
 
 void

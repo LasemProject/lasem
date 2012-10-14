@@ -1,6 +1,6 @@
 /* Lasem
  *
- * Copyright © 2010 Emmanuel Pacaud
+ * Copyright © 2012 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,6 +25,7 @@
 #define LSM_CAIRO_H
 
 #include <lsmtypes.h>
+#include <lsmsvgenums.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -49,6 +50,10 @@ cairo_surface_t *	lsm_filter_surface_get_cairo_surface	(LsmFilterSurface *surfac
 void 			lsm_filter_surface_unref 		(LsmFilterSurface *filter_surface);
 LsmFilterSurface *	lsm_filter_surface_ref 			(LsmFilterSurface *filter_surface);
 
+void 			lsm_filter_surface_blend 		(LsmFilterSurface *input_1,
+								 LsmFilterSurface *input_2,
+								 LsmFilterSurface *output,
+								 int blending_mode);
 void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input,
 								 LsmFilterSurface *output,
 								 double sx, double sy);

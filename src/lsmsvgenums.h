@@ -25,6 +25,7 @@
 #define LSM_SVG_ENUMS_H
 
 #include <glib-object.h>
+#include <lsmtypes.h>
 
 G_BEGIN_DECLS
 
@@ -33,6 +34,18 @@ typedef enum {
 	LSM_SVG_ANGLE_TYPE_AUTO,
 	LSM_SVG_ANGLE_TYPE_FIXED
 } LsmSvgAngleType;
+
+typedef enum {
+	LSM_SVG_BLENDING_MODE_ERROR = -1,
+	LSM_SVG_BLENDING_MODE_NORMAL,
+	LSM_SVG_BLENDING_MODE_MULTIPLY,
+	LSM_SVG_BLENDING_MODE_SCREEN,
+	LSM_SVG_BLENDING_MODE_DARKEN,
+	LSM_SVG_BLENDING_MODE_LIGHTEN
+} LsmSvgBlendingMode;
+
+const char * 		lsm_svg_blending_mode_to_string 	(LsmSvgBlendingMode blending_mode);
+LsmSvgBlendingMode	lsm_svg_blending_mode_from_string 	(const char *string);
 
 typedef enum {
 	LSM_SVG_PAINT_TYPE_ERROR = -1,
