@@ -2102,7 +2102,7 @@ lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
 	green = (double) (0.5 + view->style->flood_color->value.green * 255.0);
 	blue = (double) (0.5 + view->style->flood_color->value.blue * 255.0);
 	color = red << 16 | green << 8 | blue << 0;
-	opacity = view->style->fill_opacity->value;
+	opacity = view->style->flood_opacity->value;
 
 	lsm_log_render ("[SvgView::apply_flood] color = 0x%06x - opacity = %g",
 			color, opacity);

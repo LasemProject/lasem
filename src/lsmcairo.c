@@ -289,7 +289,7 @@ lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opaci
 	stride = cairo_image_surface_get_stride (surface->surface);
 	pixels = cairo_image_surface_get_data (surface->surface);
 
-	int_opacity = (double) (0.5 + opacity * 255.0); 
+	int_opacity = (double) (0.5 + (double) opacity * 255.0); 
 
 	for (i = 0; i < 3; i++)
 		pixcolour[i] = (int) (((unsigned char *)
