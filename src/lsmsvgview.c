@@ -2000,7 +2000,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
 			cairo_pattern_set_matrix (pattern, &matrix);
 			cairo_set_source (view->pattern_data->old_cairo, pattern);
-			cairo_paint (view->pattern_data->old_cairo);
+			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->style->opacity->value);
 		}
 
 		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
@@ -2278,6 +2278,10 @@ lsm_svg_view_push_style (LsmSvgView *view, LsmSvgStyle *style)
 void
 lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 {
+	gboolean do_filter;
+	gboolean do_mask;
+	gboolean do_clip;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (style != NULL);
 
@@ -2285,20 +2289,24 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 
 	lsm_log_render ("[SvgView::push_composition]");
 
-	if (view->style->opacity->value < 1.0)
+	do_clip = (g_strcmp0 (style->clip_path->value, "none") != 0);
+	do_mask = (g_strcmp0 (style->mask->value, "none") != 0);
+	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
+
+	if (view->style->opacity->value < 1.0 && !do_filter)
 		cairo_push_group (view->dom_view.cairo);
 
-	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
+	if (do_clip) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
 	}
 
-	if (g_strcmp0 (style->mask->value, "none") != 0) {
+	if (do_mask) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
 		lsm_svg_view_push_mask (view);
 	}
 
-	if (g_strcmp0 (style->filter->value, "none") != 0) {
+	if (do_filter) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
 		lsm_svg_view_push_filter (view);
 	}
@@ -2317,21 +2325,29 @@ void lsm_svg_view_pop_style (LsmSvgView *view)
 
 void lsm_svg_view_pop_composition (LsmSvgView *view)
 {
+	gboolean do_filter;
+	gboolean do_mask;
+	gboolean do_clip;
+
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (view->style != NULL);
 
 	lsm_log_render ("[SvgView::pop_composition]");
 
-	if (g_strcmp0 (view->style->filter->value, "none") != 0) {
-		lsm_svg_view_pop_filter (view);
-	}
+	do_clip = (g_strcmp0 (view->style->clip_path->value, "none") != 0);
+	do_mask = (g_strcmp0 (view->style->mask->value, "none") != 0);
+	do_filter = (g_strcmp0 (view->style->filter->value, "none") != 0);
 
-	if (g_strcmp0 (view->style->mask->value, "none") != 0)
+	if (do_filter)
+		lsm_svg_view_pop_filter (view);
+
+	if (do_mask)
 		lsm_svg_view_pop_mask (view);
 
-	if (g_strcmp0 (view->style->clip_path->value, "none") != 0)
+	if (do_clip)
 		lsm_svg_view_pop_clip (view);
 
-	if (view->style->opacity->value < 1.0) {
+	if (view->style->opacity->value < 1.0 && !do_filter) {
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
 	}
