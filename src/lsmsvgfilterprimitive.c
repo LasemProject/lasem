@@ -60,12 +60,12 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &(LSM_SVG_ELEMENT (self))->property_bag);
 
-	lsm_svg_view_push_style_only (view, style);
+	lsm_svg_view_push_style (view, style);
 
 	if (primitive_class->apply != NULL)
 		primitive_class->apply (self, view, self->in.value, self->result.value, x, y, w, h);
 
-	lsm_svg_view_pop_style_only (view);
+	lsm_svg_view_pop_style (view);
 
 	lsm_svg_style_unref (style);
 }

@@ -67,7 +67,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	style = lsm_svg_style_new_inherited (marker->style, &self->property_bag);
-	lsm_svg_view_push_style (view, style);
+	lsm_svg_view_push_composition (view, style);
 
 	if (marker->stroke_width > 0.0 || marker->units.value != LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {
 		ref_x = lsm_svg_view_normalize_length (view, &marker->ref_x.length,
@@ -121,7 +121,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_matrix (view);
 	}
 
-	lsm_svg_view_pop_style (view);
+	lsm_svg_view_pop_composition (view);
 	lsm_svg_style_unref (style);
 }
 

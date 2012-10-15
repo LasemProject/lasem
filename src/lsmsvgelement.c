@@ -172,11 +172,11 @@ _transformed_render (LsmSvgElement *element, LsmSvgView *view)
 				  lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 				  element->id.value != NULL ? element->id.value : "no id");
 		lsm_svg_view_push_element (view, element);
-		lsm_svg_view_push_style (view, style);
+		lsm_svg_view_push_composition (view, style);
 
 		element_class->render (element, view);
 
-		lsm_svg_view_pop_style (view);
+		lsm_svg_view_pop_composition (view);
 		lsm_svg_view_pop_element (view);
 	}
 

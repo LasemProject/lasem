@@ -56,7 +56,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
-	lsm_svg_view_push_style (view, style);
+	lsm_svg_view_push_composition (view, style);
 
 	mask_extents = lsm_svg_view_get_pattern_extents (view);
 
@@ -89,7 +89,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
 		lsm_debug_render ("[LsmSvgMaskElement::render] Invalid viewport w = %g, h = %g",
 			   viewport.width, viewport.height);
-		lsm_svg_view_pop_style (view);
+		lsm_svg_view_pop_composition (view);
 		lsm_svg_style_unref (style);
 		return;
 	}
@@ -98,7 +98,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 						  NULL,
 						  LSM_SVG_VIEW_SURFACE_TYPE_IMAGE)) {
 		lsm_debug_render ("[LsmSvgMaskElement::render] Intermediate surface creation failed");
-		lsm_svg_view_pop_style (view);
+		lsm_svg_view_pop_composition (view);
 		lsm_svg_style_unref (style);
 		return;
 	}
@@ -131,7 +131,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 		lsm_svg_view_pop_viewbox (view);
 	}
 
-	lsm_svg_view_pop_style (view);
+	lsm_svg_view_pop_composition (view);
 	lsm_svg_style_unref (style);
 }
 

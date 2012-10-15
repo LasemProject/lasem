@@ -147,10 +147,10 @@ void		lsm_svg_view_pop_element		(LsmSvgView *view);
 void 		lsm_svg_view_push_group_opacity 	(LsmSvgView *view);
 void 		lsm_svg_view_pop_group_opacity 		(LsmSvgView *view);
 
-void		lsm_svg_view_push_style_only		(LsmSvgView *view, LsmSvgStyle *style);
-void		lsm_svg_view_pop_style_only		(LsmSvgView *view);
 void		lsm_svg_view_push_style			(LsmSvgView *view, LsmSvgStyle *style);
 void		lsm_svg_view_pop_style			(LsmSvgView *view);
+void		lsm_svg_view_push_composition		(LsmSvgView *view, LsmSvgStyle *style);
+void		lsm_svg_view_pop_composition		(LsmSvgView *view);
 
 LsmSvgStyle *	lsm_svg_view_get_current_style	(LsmSvgView *view);
 
