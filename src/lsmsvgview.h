@@ -144,9 +144,6 @@ void 		lsm_svg_view_pop_matrix			(LsmSvgView *view);
 void		lsm_svg_view_push_element		(LsmSvgView *view, const LsmSvgElement *element);
 void		lsm_svg_view_pop_element		(LsmSvgView *view);
 
-void 		lsm_svg_view_push_group_opacity 	(LsmSvgView *view);
-void 		lsm_svg_view_pop_group_opacity 		(LsmSvgView *view);
-
 void		lsm_svg_view_push_style			(LsmSvgView *view, LsmSvgStyle *style);
 void		lsm_svg_view_pop_style			(LsmSvgView *view);
 void		lsm_svg_view_push_composition		(LsmSvgView *view, LsmSvgStyle *style);

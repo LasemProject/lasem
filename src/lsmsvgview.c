@@ -1068,6 +1068,9 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 	cairo = view->dom_view.cairo;
 	style = view->style;
 
+#if 0
+	/* This is disabled for now, as care should be taken in push_composition to
+	 * defer group opacity for simple shape to this function. */
 	if (style->opacity != NULL) {
 		group_opacity = style->opacity->value;
 
@@ -1078,8 +1081,12 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 		use_group = FALSE;
 		group_opacity = 1.0;
 	}
+#else
+	use_group = FALSE;
+	group_opacity = 1.0;
+#endif
 
-	/* FIXME Instead of push_group, restrict to the current path bounding box */
+	/* Instead of push_group, we should restrict to the current path bounding box */
 	if (use_group)
 		cairo_push_group (cairo);
 
@@ -1766,28 +1773,6 @@ lsm_svg_view_pop_matrix (LsmSvgView *view)
 	}
 }
 
-void
-lsm_svg_view_push_group_opacity (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->style != NULL);
-
-	if (view->style->opacity->value < 1.0)
-		cairo_push_group (view->dom_view.cairo);
-}
-
-void
-lsm_svg_view_pop_group_opacity (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (view->style != NULL);
-
-	if (view->style->opacity->value < 1.0) {
-		cairo_pop_group_to_source (view->dom_view.cairo);
-		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
-	}
-}
-
 static void
 lsm_svg_view_push_clip (LsmSvgView *view)
 {
@@ -2300,6 +2285,9 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 
 	lsm_log_render ("[SvgView::push_composition]");
 
+	if (view->style->opacity->value < 1.0)
+		cairo_push_group (view->dom_view.cairo);
+
 	if (g_strcmp0 (style->clip_path->value, "none") != 0) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
@@ -2342,6 +2330,11 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 
 	if (g_strcmp0 (view->style->clip_path->value, "none") != 0)
 		lsm_svg_view_pop_clip (view);
+
+	if (view->style->opacity->value < 1.0) {
+		cairo_pop_group_to_source (view->dom_view.cairo);
+		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
+	}
 
 	lsm_svg_view_pop_style (view);
 }

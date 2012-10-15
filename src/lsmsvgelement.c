@@ -144,13 +144,9 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 
 	lsm_debug_render ("[LsmSvgElement::_render");
 
-	lsm_svg_view_push_group_opacity (view);
-
 	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
 		if (LSM_IS_SVG_ELEMENT (node))
 		    lsm_svg_element_render (LSM_SVG_ELEMENT (node), view);
-
-	lsm_svg_view_pop_group_opacity (view);
 }
 
 static void
