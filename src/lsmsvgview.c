@@ -786,8 +786,12 @@ _paint_url (LsmSvgView *view,
 	if ((!LSM_IS_SVG_RADIAL_GRADIENT_ELEMENT (element) &&
 	     !LSM_IS_SVG_LINEAR_GRADIENT_ELEMENT (element) &&
 	     !LSM_IS_SVG_PATTERN_ELEMENT (element)) ||
-	    lsm_svg_view_circular_reference_check (view, element))
+	    lsm_svg_view_circular_reference_check (view, element)) {
+
+		lsm_warning_render ("[LsmSvgView::_paint_url] Paint url not found: %s", url);
+
 		return;
+	}
 
 	lsm_debug_render ("[LsmSvgView::_paint_url] Paint using '%s'", url);
 
@@ -1809,7 +1813,8 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 		lsm_svg_element_force_render (LSM_SVG_ELEMENT (element), view);
 		cairo_clip (view->dom_view.cairo);
 		view->is_clipping = FALSE;
-	}
+	} else
+		lsm_warning_render ("[LsmSvgView::push_clip] Clip path not found: %s", view->style->clip_path->value);
 }
 
 static void
@@ -1897,6 +1902,8 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 
 		_end_pattern (view);
 	} else {
+		lsm_warning_render ("[LsmSvgView::pop_mask] Mask url nout found: %s", view->style->mask->value);
+
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint (view->dom_view.cairo);
 	}
@@ -1936,6 +1943,8 @@ lsm_svg_view_push_filter (LsmSvgView *view)
 							      NULL,
 							      LSM_SVG_VIEW_SURFACE_TYPE_IMAGE);
 	} else {
+		lsm_warning_render ("LsmSvgView::push_filter] Filter not found: %s", view->style->filter->value);
+
 		_start_pattern (view, &object_extents, &object_extents, 0.0);
 
 		success = lsm_svg_view_create_surface_pattern (view,
