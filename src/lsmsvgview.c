@@ -788,6 +788,8 @@ _paint_url (LsmSvgView *view,
 	     !LSM_IS_SVG_PATTERN_ELEMENT (element)) ||
 	    lsm_svg_view_circular_reference_check (view, element)) {
 
+		cairo_set_source_rgba (view->dom_view.cairo, 0, 0, 0, 0);
+
 		lsm_warning_render ("[LsmSvgView::_paint_url] Paint url not found: %s", url);
 
 		return;
@@ -829,7 +831,7 @@ _paint_url (LsmSvgView *view,
 
 		cairo_set_source (cairo, view->pattern_data->pattern);
 	} else
-		cairo_set_source_rgb (cairo, 0.0, 0.0, 0.0);
+		cairo_set_source_rgba (cairo, 0.0, 0.0, 0.0, 0.0);
 
 	_end_pattern (view);
 }
