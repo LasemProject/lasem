@@ -2306,7 +2306,10 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 		lsm_svg_view_push_mask (view);
 	}
 
-	if (do_filter) {
+	/* Don't do filtering during a clipping operation, as filter will
+	 * create a new subsurface, where clipping should occur with the path
+	 * of the clip-path element. */ 
+	if (do_filter && !view->is_clipping) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
 		lsm_svg_view_push_filter (view);
 	}
@@ -2338,7 +2341,10 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	do_mask = (g_strcmp0 (view->style->mask->value, "none") != 0);
 	do_filter = (g_strcmp0 (view->style->filter->value, "none") != 0);
 
-	if (do_filter)
+	/* Don't do filtering during a clipping operation, as filter will
+	 * create a new subsurface, where clipping should occur with the path
+	 * of the clip-path element. */ 
+	if (do_filter && !view->is_clipping)
 		lsm_svg_view_pop_filter (view);
 
 	if (do_mask)
