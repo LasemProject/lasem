@@ -25,7 +25,6 @@
 #define LSM_CAIRO_H
 
 #include <lsmtypes.h>
-#include <lsmsvgenums.h>
 #include <cairo.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
