@@ -337,7 +337,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run)
 		if (is_svg) {
 			lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
 			lasem_test_html (filename);
-			lasem_test_html ("\" width=\"480\"/>");
+			lasem_test_html ("\" width=\"%dpx\"/>", width + 2);
 		}
 
 		lasem_test_html ("</td>");
