@@ -44,10 +44,11 @@
 static char *option_debug_domains = NULL;
 static char **option_input_filenames = NULL;
 double option_ppi = 72.0;
-static gboolean fatal_warning = FALSE;
-static gboolean debug_filter = FALSE;
-static gboolean debug_pattern = FALSE;
-static gboolean debug_mask = FALSE;
+static gboolean option_fatal_warning = FALSE;
+static gboolean option_debug_filter = FALSE;
+static gboolean option_debug_pattern = FALSE;
+static gboolean option_debug_mask = FALSE;
+static gboolean option_dry_run = FALSE;
 
 static const GOptionEntry entries[] =
 {
@@ -58,13 +59,15 @@ static const GOptionEntry entries[] =
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
 		&option_debug_domains,		"Debug domains", NULL },
 	{ "fatal-warning", 	'f', 0, G_OPTION_ARG_NONE,
-		&fatal_warning,			"Make warning fatal", NULL },
+		&option_fatal_warning,		"Make warning fatal", NULL },
 	{ "debug-filter", 	' ' , 0, G_OPTION_ARG_NONE,
-		&debug_filter,			"Debug filter surfaces", NULL },
+		&option_debug_filter,		"Debug filter surfaces", NULL },
 	{ "debug-pattern", 	' ' , 0, G_OPTION_ARG_NONE,
-		&debug_pattern,			"Debug pattern surfaces", NULL },
+		&option_debug_pattern,		"Debug pattern surfaces", NULL },
 	{ "debug-mask", 	' ' , 0, G_OPTION_ARG_NONE,
-		&debug_mask,			"Debug mask surfaces", NULL },
+		&option_debug_mask,		"Debug mask surfaces", NULL },
+	{ "dry-run",		'n' , 0, G_OPTION_ARG_NONE,
+		&option_dry_run,		"Don't write files", NULL },
 	{ NULL }
 };
 
@@ -85,7 +88,7 @@ lasem_test_html (const char *fmt, ...)
 static GRegex *regex_mml = NULL;
 
 void
-lasem_test_render (char const *filename)
+lasem_test_render (char const *filename, gboolean dry_run)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -146,11 +149,11 @@ lasem_test_render (char const *filename)
 		lsm_dom_view_set_viewport_pixels (view, &viewport);
 		lsm_dom_view_get_size_pixels (LSM_DOM_VIEW (view), &width, &height, NULL);
 
-		if (debug_mask)
+		if (option_debug_mask)
 			lsm_dom_view_set_debug (view, "mask", TRUE);
-		if (debug_pattern)
+		if (option_debug_pattern)
 			lsm_dom_view_set_debug (view, "pattern", TRUE);
-		if (debug_filter)
+		if (option_debug_filter)
 			lsm_dom_view_set_debug (view, "filter", TRUE);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
@@ -159,7 +162,8 @@ lasem_test_render (char const *filename)
 
 		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
 
-		cairo_surface_write_to_png (surface, png_filename);
+		if (!dry_run)
+			cairo_surface_write_to_png (surface, png_filename);
 
 		cairo_destroy (cairo);
 
@@ -200,7 +204,7 @@ lasem_test_render (char const *filename)
 		lasem_test_html ("</tr>\n");
 		lasem_test_html ("</table>\n");
 
-		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
+		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR) && !dry_run) {
 			FILE *file;
 			int result;
 			char *cmd;
@@ -232,7 +236,7 @@ lasem_test_render (char const *filename)
 			result = system ("rm lsmmathmltest.ps");
 		}
 
-		if (xml != buffer) {
+		if (xml != buffer && !dry_run) {
 			char *xml_filename;
 
 			xml_filename = g_strdup_printf ("%s.xml", test_name);
@@ -253,7 +257,7 @@ lasem_test_render (char const *filename)
 }
 
 unsigned int
-lasem_test_process_dir (const char *name)
+lasem_test_process_dir (const char *name, gboolean dry_run)
 {
 	GDir *directory;
 	GError *error = NULL;
@@ -277,10 +281,10 @@ lasem_test_process_dir (const char *name)
 			filename = g_build_filename (name, entry, NULL);
 
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-				n_files += lasem_test_process_dir (filename);
+				n_files += lasem_test_process_dir (filename, dry_run);
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 				 g_regex_match (regex_mml, filename, 0, NULL)) {
-				lasem_test_render (filename);
+				lasem_test_render (filename, dry_run);
 				n_files++;
 			}
 
@@ -333,7 +337,7 @@ main (int argc, char **argv)
 
 	lsm_debug_enable (option_debug_domains);
 
-	if (fatal_warning)
+	if (option_fatal_warning)
 		g_log_set_fatal_mask ("Lasem", G_LOG_FATAL_MASK | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_WARNING);
 
 	timer = g_timer_new ();
@@ -343,13 +347,13 @@ main (int argc, char **argv)
 
 	n_input_files = option_input_filenames != NULL ? g_strv_length (option_input_filenames) : 0;
 	if (n_input_files == 1 && g_file_test (option_input_filenames[0], G_FILE_TEST_IS_DIR))
-		n_input_files = lasem_test_process_dir (option_input_filenames[0]);
+		n_input_files = lasem_test_process_dir (option_input_filenames[0], option_dry_run);
 	else {
 		if (n_input_files > 0)
 			for (i = 0; i < n_input_files; i++)
-				lasem_test_render (option_input_filenames[i]);
+				lasem_test_render (option_input_filenames[i], option_dry_run);
 		else
-			n_input_files = lasem_test_process_dir (".");
+			n_input_files = lasem_test_process_dir (".", option_dry_run);
 	}
 
 	lasem_test_html ("</body>\n");
