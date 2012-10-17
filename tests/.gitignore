@@ -2,3 +2,4 @@ dom
 suite
 lsm-test
 fuzz.*
+*-diff.png

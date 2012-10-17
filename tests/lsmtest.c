@@ -49,6 +49,7 @@ static gboolean option_debug_filter = FALSE;
 static gboolean option_debug_pattern = FALSE;
 static gboolean option_debug_mask = FALSE;
 static gboolean option_dry_run = FALSE;
+static gboolean option_compare = FALSE;
 
 static const GOptionEntry entries[] =
 {
@@ -68,6 +69,8 @@ static const GOptionEntry entries[] =
 		&option_debug_mask,		"Debug mask surfaces", NULL },
 	{ "dry-run",		'n' , 0, G_OPTION_ARG_NONE,
 		&option_dry_run,		"Don't write files", NULL },
+	{ "compare",		'c' , 0, G_OPTION_ARG_NONE,
+		&option_compare,		"Compare with reference file", NULL },
 	{ NULL }
 };
 
@@ -87,8 +90,124 @@ lasem_test_html (const char *fmt, ...)
 
 static GRegex *regex_mml = NULL;
 
+typedef struct _buffer_diff_result {
+    unsigned int pixels_changed;
+    unsigned int max_diff;
+} buffer_diff_result_t;
+
+typedef guint32 pixman_bits_t;
+
+static void
+buffer_diff_core (unsigned char *_buf_a,
+		  unsigned char *_buf_b,
+		  unsigned char *_buf_diff,
+		  int		width,
+		  int		height,
+		  int		stride,
+		  pixman_bits_t mask,
+		  buffer_diff_result_t *result_ret)
+{
+	int x, y;
+	pixman_bits_t *row_a, *row_b, *row;
+	buffer_diff_result_t result = {0, 0};
+	pixman_bits_t *buf_a = (pixman_bits_t*)_buf_a;
+	pixman_bits_t *buf_b = (pixman_bits_t*)_buf_b;
+	pixman_bits_t *buf_diff = (pixman_bits_t*)_buf_diff;
+
+	stride /= sizeof(pixman_bits_t);
+	for (y = 0; y < height; y++)
+	{
+		row_a = buf_a + y * stride;
+		row_b = buf_b + y * stride;
+		row = buf_diff + y * stride;
+		for (x = 0; x < width; x++)
+		{
+			/* check if the pixels are the same */
+			if ((row_a[x] & mask) != (row_b[x] & mask)) {
+				int channel;
+				pixman_bits_t diff_pixel = 0;
+
+				/* calculate a difference value for all 4 channels */
+				for (channel = 0; channel < 4; channel++) {
+					int value_a = (row_a[x] >> (channel*8)) & 0xff;
+					int value_b = (row_b[x] >> (channel*8)) & 0xff;
+					unsigned int diff;
+					diff = abs (value_a - value_b);
+					if (diff > result.max_diff)
+						result.max_diff = diff;
+					diff *= 4;  /* emphasize */
+					if (diff)
+						diff += 128; /* make sure it's visible */
+					if (diff > 255)
+						diff = 255;
+					diff_pixel |= diff << (channel*8);
+				}
+
+				result.pixels_changed++;
+				row[x] = diff_pixel;
+			} else {
+				row[x] = 0;
+			}
+			row[x] |= 0xff000000; /* Set ALPHA to 100% (opaque) */
+		}
+	}
+
+	*result_ret = result;
+}
+
+static gboolean
+compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surface_t *surface_b)
+{
+	int width_a, width_b, height_a, height_b, stride_a, stride_b;
+
+	if (surface_b == NULL)
+		return FALSE;
+	if (surface_a == NULL)
+		return FALSE;
+
+	width_a = cairo_image_surface_get_width (surface_a);
+	height_a = cairo_image_surface_get_height (surface_a);
+	stride_a = cairo_image_surface_get_stride (surface_a);
+	width_b = cairo_image_surface_get_width (surface_b);
+	height_b = cairo_image_surface_get_height (surface_b);
+	stride_b = cairo_image_surface_get_stride (surface_b);
+
+	if (width_a  == width_b && height_a == height_b && stride_a == stride_b) {
+		buffer_diff_result_t result;
+		cairo_surface_t *surface_diff;
+		char *diff_png_filename;
+
+		diff_png_filename = g_strdup_printf ("%s-diff.png", test_name);
+
+		surface_diff = cairo_image_surface_create (CAIRO_FORMAT_ARGB32,
+							   width_a, height_a);
+
+		buffer_diff_core (cairo_image_surface_get_data (surface_a),
+				  cairo_image_surface_get_data (surface_b),
+				  cairo_image_surface_get_data (surface_diff),
+				  cairo_image_surface_get_width (surface_a),
+				  cairo_image_surface_get_height (surface_a),
+				  cairo_image_surface_get_stride (surface_a),
+				  0xffffffff,
+				  &result);
+
+		cairo_surface_write_to_png (surface_diff, diff_png_filename);
+
+		cairo_surface_destroy (surface_diff);
+		g_free (diff_png_filename);
+
+		if (result.pixels_changed == 0) {
+			g_printf ("\n");
+			return TRUE;
+		}
+	}
+
+	g_printf (" %sFAIL%s\n", fail_face, normal_face);
+	return FALSE;
+}
+
 void
-lasem_test_render (char const *filename, gboolean dry_run)
+lasem_test_render (char const *filename, gboolean compare, gboolean dry_run)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -104,6 +223,7 @@ lasem_test_render (char const *filename, gboolean dry_run)
 	gboolean is_xml, success;
 	gboolean is_svg;
 	gboolean is_mathml;
+	gboolean check;
 	GRegex *regex;
 	GError *error = NULL;
 	char *filtered_buffer;
@@ -111,7 +231,14 @@ lasem_test_render (char const *filename, gboolean dry_run)
 	test_name = g_regex_replace (regex_mml, filename, -1, 0, "", 0, NULL);
 
 	png_filename = g_strdup_printf ("%s-out.png", test_name);
-	reference_png_filename = g_strdup_printf ("%s.png", test_name);
+	reference_png_filename = g_strdup_printf ("%s-ref.png", test_name);
+	if (g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR)) {
+		check = compare;
+	} else {
+		g_free (reference_png_filename);
+		reference_png_filename = g_strdup_printf ("%s.png", test_name);
+		check = FALSE;
+	}
 
 	mime = g_content_type_guess (filename, NULL, 0, NULL);
 
@@ -119,7 +246,7 @@ lasem_test_render (char const *filename, gboolean dry_run)
 	is_mathml = (strcmp (mime, "text/mathml") == 0) || (strcmp (mime, "application/mathml+xml") == 0);
 	is_xml = is_svg || is_mathml;
 
-	g_printf ("\trender %s (%s)\n", filename, mime);
+	g_printf ("\trender %s (%s)", filename, mime);
 	g_free (mime);
 
 	success = g_file_get_contents (filename, &buffer, &size, NULL);
@@ -164,6 +291,19 @@ lasem_test_render (char const *filename, gboolean dry_run)
 
 		if (!dry_run)
 			cairo_surface_write_to_png (surface, png_filename);
+
+		if (check) {
+			cairo_surface_t *reference_surface;
+			gboolean same;
+
+			reference_surface = cairo_image_surface_create_from_png (reference_png_filename);
+			if (reference_surface != NULL) {
+				same = compare_surfaces (test_name, surface, reference_surface); 
+				cairo_surface_destroy (reference_surface);
+			} else
+				same = TRUE;
+		} else
+			g_printf ("\n");
 
 		cairo_destroy (cairo);
 
@@ -257,7 +397,7 @@ lasem_test_render (char const *filename, gboolean dry_run)
 }
 
 unsigned int
-lasem_test_process_dir (const char *name, gboolean dry_run)
+lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run)
 {
 	GDir *directory;
 	GError *error = NULL;
@@ -281,10 +421,10 @@ lasem_test_process_dir (const char *name, gboolean dry_run)
 			filename = g_build_filename (name, entry, NULL);
 
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-				n_files += lasem_test_process_dir (filename, dry_run);
+				n_files += lasem_test_process_dir (filename, compare, dry_run);
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 				 g_regex_match (regex_mml, filename, 0, NULL)) {
-				lasem_test_render (filename, dry_run);
+				lasem_test_render (filename, compare, dry_run);
 				n_files++;
 			}
 
@@ -347,13 +487,13 @@ main (int argc, char **argv)
 
 	n_input_files = option_input_filenames != NULL ? g_strv_length (option_input_filenames) : 0;
 	if (n_input_files == 1 && g_file_test (option_input_filenames[0], G_FILE_TEST_IS_DIR))
-		n_input_files = lasem_test_process_dir (option_input_filenames[0], option_dry_run);
+		n_input_files = lasem_test_process_dir (option_input_filenames[0], option_compare, option_dry_run);
 	else {
 		if (n_input_files > 0)
 			for (i = 0; i < n_input_files; i++)
-				lasem_test_render (option_input_filenames[i], option_dry_run);
+				lasem_test_render (option_input_filenames[i], option_compare, option_dry_run);
 		else
-			n_input_files = lasem_test_process_dir (".", option_dry_run);
+			n_input_files = lasem_test_process_dir (".", option_compare, option_dry_run);
 	}
 
 	lasem_test_html ("</body>\n");
