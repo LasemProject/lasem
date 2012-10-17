@@ -1,3 +1,26 @@
+Release 0.3.3
+=============
+
+All:
+	Fix parallel compilation.
+
+SVG:
+	Fix a crash in case of transform attribute on gradient elements.
+	Handle nodes with name prefixed with 'svg:'.
+	Lame vertical text support.
+	Fix font size when expressed as percentage.
+	Implement overflow attribute for markers.
+	Fix Marker auto orientation.
+	Fix clipPath transform
+	Add preliminary support for feGaussianBlur, feBlend, feComposite,
+		feOffset, feMerge, feMergeNode and feFlood.
+	Fix group opacity.
+	Use transparent color when paint url is not found.
+
+Mathml:
+	Support for element prefixed by 'math:'.
+	Fix update of itex element on style change.
+
 Release 0.3.2
 =============
 
