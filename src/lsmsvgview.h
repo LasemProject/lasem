@@ -152,14 +152,14 @@ void		lsm_svg_view_pop_composition		(LsmSvgView *view);
 LsmSvgStyle *	lsm_svg_view_get_current_style	(LsmSvgView *view);
 
 void 		lsm_svg_view_apply_blend 		(LsmSvgView *view, const char *input_1, const char*input_2, const char *output,
-							 LsmSvgBlendingMode mode);
-void 		lsm_svg_view_apply_flood 		(LsmSvgView *view, const char *output,
-							 double x, double y, double w, double h);
-void		lsm_svg_view_apply_gaussian_blur 	(LsmSvgView *view, const char *input, const char *output,
-							 double x, double y, double w, double h,
+							 const LsmBox *subregion, LsmSvgBlendingMode mode);
+void 		lsm_svg_view_apply_flood 		(LsmSvgView *view, const char *output, const LsmBox *subregion);
+void		lsm_svg_view_apply_gaussian_blur 	(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
 							 double std_x, double std_y);
-void 		lsm_svg_view_apply_offset 		(LsmSvgView *view, const char *input, const char *output, double dx, double dy);
-void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const char *output);
+void 		lsm_svg_view_apply_offset 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
+							 double dx, double dy);
+void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
+void 		lsm_svg_view_apply_tile 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
 
 G_END_DECLS
 

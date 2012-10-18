@@ -21,7 +21,7 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#include <lsmsvgfiltermergenode.h>
+#include <lsmsvgfiltertile.h>
 #include <lsmsvgview.h>
 
 static GObjectClass *parent_class;
@@ -29,44 +29,55 @@ static GObjectClass *parent_class;
 /* GdomNode implementation */
 
 static const char *
-lsm_svg_filter_merge_node_get_node_name (LsmDomNode *node)
+lsm_svg_filter_tile_get_node_name (LsmDomNode *node)
 {
-	return "feMergeNode";
+	return "feTile";
 }
 
 /* LsmSvgElement implementation */
 
 static void
-lsm_svg_filter_merge_node_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				  const char *input, const char *output, const LsmBox *subregion)
+lsm_svg_filter_tile_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
+				     const char *input, const char *output, const LsmBox *subregion)
 {
-	/* FIXME We probably want to retrieve output name from parent feMerge element */
-	lsm_svg_view_apply_merge (view, input, "MergeSurface", subregion);
+	lsm_svg_view_apply_tile (view, input, output, subregion);
 }
 
-/* LsmSvgFilterMergeNode implementation */
+/* LsmSvgFilterTile implementation */
+
+static const LsmSvgOneOrTwoDouble std_deviation_default =  {.a = 0.0, .b = 0.0};
 
 LsmDomNode *
-lsm_svg_filter_merge_node_new (void)
+lsm_svg_filter_tile_new (void)
 {
-	return g_object_new (LSM_TYPE_SVG_FILTER_MERGE_NODE, NULL);
+	return g_object_new (LSM_TYPE_SVG_FILTER_TILE, NULL);
 }
 
 static void
-lsm_svg_filter_merge_node_init (LsmSvgFilterMergeNode *self)
+lsm_svg_filter_tile_init (LsmSvgFilterTile *self)
 {
+	self->std_deviation.value = std_deviation_default;
 }
 
 static void
-lsm_svg_filter_merge_node_finalize (GObject *object)
+lsm_svg_filter_tile_finalize (GObject *object)
 {
 	parent_class->finalize (object);
 }
 
-/* LsmSvgFilterMergeNode class */
+/* LsmSvgFilterTile class */
+
+static const LsmAttributeInfos lsm_svg_filter_tile_attribute_infos[] = {
+	{
+		.name = "stdDeviation",
+		.attribute_offset = offsetof (LsmSvgFilterTile, std_deviation),
+		.trait_class = &lsm_svg_one_or_two_double_trait_class,
+		.trait_default = &std_deviation_default
+	}
+};
 
 static void
-lsm_svg_filter_merge_node_class_init (LsmSvgFilterMergeNodeClass *klass)
+lsm_svg_filter_tile_class_init (LsmSvgFilterTileClass *klass)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
@@ -75,13 +86,17 @@ lsm_svg_filter_merge_node_class_init (LsmSvgFilterMergeNodeClass *klass)
 
 	parent_class = g_type_class_peek_parent (klass);
 
-	object_class->finalize = lsm_svg_filter_merge_node_finalize;
+	object_class->finalize = lsm_svg_filter_tile_finalize;
 
-	d_node_class->get_node_name = lsm_svg_filter_merge_node_get_node_name;
+	d_node_class->get_node_name = lsm_svg_filter_tile_get_node_name;
 
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
-	f_primitive_class->apply = lsm_svg_filter_merge_node_apply;
+	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
+					      G_N_ELEMENTS (lsm_svg_filter_tile_attribute_infos),
+					      lsm_svg_filter_tile_attribute_infos);
+
+	f_primitive_class->apply = lsm_svg_filter_tile_apply;
 }
 
-G_DEFINE_TYPE (LsmSvgFilterMergeNode, lsm_svg_filter_merge_node, LSM_TYPE_SVG_FILTER_PRIMITIVE)
+G_DEFINE_TYPE (LsmSvgFilterTile, lsm_svg_filter_tile, LSM_TYPE_SVG_FILTER_PRIMITIVE)

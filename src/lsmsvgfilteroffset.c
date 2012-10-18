@@ -38,12 +38,11 @@ lsm_svg_filter_offset_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_offset_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				     const char *input, const char *output,
-				     double x, double y, double w, double h)
+			      const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterOffset *offset = LSM_SVG_FILTER_OFFSET (self);
 
-	lsm_svg_view_apply_offset (view, input, output, offset->dx.value, offset->dy.value);
+	lsm_svg_view_apply_offset (view, input, output, subregion, offset->dx.value, offset->dy.value);
 }
 
 /* LsmSvgFilterOffset implementation */

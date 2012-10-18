@@ -2078,13 +2078,23 @@ _create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *
 	return surface;
 }
 
+static void
+_cairo_box_user_to_device (cairo_t *cairo, LsmBox *to, const LsmBox *from)
+{
+	*to = *from;
+
+	cairo_user_to_device (cairo, &to->x, &to->y);
+	cairo_user_to_device_distance (cairo, &to->width, &to->height);
+}
+
 void
 lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*input_2, const char *output,
-			  LsmSvgBlendingMode mode)
+			  const LsmBox *subregion, LsmSvgBlendingMode mode)
 {
 	LsmFilterSurface *output_surface;
 	LsmFilterSurface *input_1_surface;
 	LsmFilterSurface *input_2_surface;
+	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2100,18 +2110,17 @@ lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*inpu
 
 	lsm_log_render ("[SvgView::blend] mode = %s", lsm_svg_blending_mode_to_string (mode));
 
-	lsm_filter_surface_blend (input_1_surface, input_2_surface, output_surface, mode);
+	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+
+	lsm_filter_surface_blend (input_1_surface, input_2_surface, output_surface, &subregion_px, mode);
 }
 
 void
-lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
-			  double x, double y, double w, double h)
+lsm_svg_view_apply_flood (LsmSvgView *view, const char *output, const LsmBox *subregion)
 {
 	LsmFilterSurface *output_surface;
 	LsmFilterSurface *input_surface;
-	guint8 red, green, blue;
-	guint32 color;
-	double opacity;
+	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2119,25 +2128,22 @@ lsm_svg_view_apply_flood (LsmSvgView *view, const char *output,
 
 	output_surface = _create_filter_surface (view, output, input_surface);
 
-	red = (double) (0.5 + view->style->flood_color->value.red * 255.0);
-	green = (double) (0.5 + view->style->flood_color->value.green * 255.0);
-	blue = (double) (0.5 + view->style->flood_color->value.blue * 255.0);
-	color = red << 16 | green << 8 | blue << 0;
-	opacity = view->style->flood_opacity->value;
+	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 
-	lsm_log_render ("[SvgView::apply_flood] color = 0x%06x - opacity = %g",
-			color, opacity);
-
-	lsm_filter_surface_flood (output_surface, color, opacity);
+	lsm_filter_surface_flood (output_surface, &subregion_px,
+				  view->style->flood_color->value.red,
+				  view->style->flood_color->value.green,
+				  view->style->flood_color->value.blue,
+				  view->style->flood_opacity->value);
 }
 
 void
 lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const char *output,
-				  double x, double y, double w, double h,
-				  double std_x, double std_y)
+				  const LsmBox *subregion, double std_x, double std_y)
 {
 	LsmFilterSurface *input_surface;
 	LsmFilterSurface *output_surface;
+	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2150,24 +2156,28 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 
 	output_surface = _create_filter_surface (view, output, input_surface);
 
-	lsm_log_render ("[SvgView::apply_gaussian_blur] %s -> %s (x:%g,y:%g,w:%g,h:%g) (%g,%g)",
+	lsm_log_render ("[SvgView::apply_gaussian_blur] %s -> %s (%g,%g)",
 			input != NULL ? input : "previous",
 			output != NULL ? output : "next",
-			x, y, w, h, std_x, std_y); 
+			std_x, std_y); 
 
 	cairo_user_to_device_distance (view->dom_view.cairo, &std_x, &std_y);
 
 	lsm_log_render ("[SvgView::apply_gaussian_blur] %g px,%g px",
 			std_x, std_y);
 
-	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
+	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+
+	lsm_filter_surface_fast_blur (input_surface, output_surface, &subregion_px, std_x, std_y);
 }
 
 void
-lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *output, double dx, double dy)
+lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *output,
+			   const LsmBox *subregion, double dx, double dy)
 {
 	LsmFilterSurface *input_surface;
 	LsmFilterSurface *output_surface;
+	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2186,14 +2196,17 @@ lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *outp
 
 	lsm_log_render ("[SvgView::apply_offset] %g px,%g px", dx, dy);
 
-	lsm_filter_surface_offset (input_surface, output_surface, dx, dy);
+	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+
+	lsm_filter_surface_offset (input_surface, output_surface, &subregion_px, dx, dy);
 }
 
 void
-lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output)
+lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmFilterSurface *input_surface;
 	LsmFilterSurface *output_surface;
+	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2208,8 +2221,15 @@ lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *outpu
 	if (output_surface == NULL)
 		output_surface = _create_filter_surface (view, output, input_surface);
 
+	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+
 	if (output_surface != NULL)
-		lsm_filter_surface_merge (input_surface, output_surface);
+		lsm_filter_surface_merge (input_surface, output_surface, &subregion_px);
+}
+
+void
+lsm_svg_view_apply_tile (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
+{
 }
 
 void

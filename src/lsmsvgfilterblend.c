@@ -38,12 +38,11 @@ lsm_svg_filter_blend_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_blend_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-			     const char *input, const char *output,
-			     double x, double y, double w, double h)
+			     const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterBlend *blend = LSM_SVG_FILTER_BLEND (self);
 
-	lsm_svg_view_apply_blend (view, input, blend->in2.value, output, blend->mode.value);
+	lsm_svg_view_apply_blend (view, input, blend->in2.value, output, subregion, blend->mode.value);
 }
 
 /* LsmSvgFilterBlend implementation */

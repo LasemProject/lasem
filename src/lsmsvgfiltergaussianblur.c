@@ -38,8 +38,7 @@ lsm_svg_filter_gaussian_blur_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_gaussian_blur_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				     const char *input, const char *output,
-				     double x, double y, double w, double h)
+				     const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterGaussianBlur *blur = LSM_SVG_FILTER_GAUSSIAN_BLUR (self);
 	LsmSvgLength length;
@@ -53,9 +52,7 @@ lsm_svg_filter_gaussian_blur_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *vi
 	length.value_unit = blur->std_deviation.value.b;
 	std_b = lsm_svg_view_normalize_length (view, &length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 
-	lsm_svg_view_apply_gaussian_blur (view, input, output,
-					  x, y, w, h,
-					  std_a, std_b);
+	lsm_svg_view_apply_gaussian_blur (view, input, output, subregion, std_a, std_b);
 }
 
 /* LsmSvgFilterGaussianBlur implementation */

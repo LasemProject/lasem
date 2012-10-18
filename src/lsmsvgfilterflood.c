@@ -38,10 +38,9 @@ lsm_svg_filter_flood_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_flood_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				     const char *input, const char *output,
-				     double x, double y, double w, double h)
+				     const char *input, const char *output, const LsmBox *subregion)
 {
-	lsm_svg_view_apply_flood (view, output, x, y, w, h);
+	lsm_svg_view_apply_flood (view, output, subregion);
 }
 
 /* LsmSvgFilterFlood implementation */

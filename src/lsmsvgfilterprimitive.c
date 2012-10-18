@@ -44,18 +44,20 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	LsmSvgFilterPrimitiveClass *primitive_class;
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
-	double x, y, w, h;
+	LsmBox subregion;
 
 	g_return_if_fail (LSM_IS_SVG_FILTER_PRIMITIVE (self));
 
 	primitive_class = LSM_SVG_FILTER_PRIMITIVE_GET_CLASS (self);
 
-	x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y = lsm_svg_view_normalize_length (view, &self->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	w = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	h = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	subregion.x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	subregion.y = lsm_svg_view_normalize_length (view, &self->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	subregion.width = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	subregion.height = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s", lsm_dom_node_get_node_name (LSM_DOM_NODE (self)));
+	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s at %g,%g over %g%g",
+		       	lsm_dom_node_get_node_name (LSM_DOM_NODE (self)),
+			subregion.x, subregion.y, subregion.width, subregion.height);
 
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &(LSM_SVG_ELEMENT (self))->property_bag);
@@ -63,7 +65,7 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	lsm_svg_view_push_style (view, style);
 
 	if (primitive_class->apply != NULL)
-		primitive_class->apply (self, view, self->in.value, self->result.value, x, y, w, h);
+		primitive_class->apply (self, view, self->in.value, self->result.value, &subregion);
 
 	lsm_svg_view_pop_style (view);
 

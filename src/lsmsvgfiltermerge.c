@@ -46,7 +46,7 @@ lsm_svg_filter_merge_can_append_child (LsmDomNode *self, LsmDomNode *child)
 static void
 lsm_svg_filter_merge_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
 			     const char *input, const char *output,
-			     double x, double y, double w, double h)
+			     const LsmBox *subregion)
 {
 	LsmDomNode *iter;
 

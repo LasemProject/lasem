@@ -153,7 +153,8 @@ IGNORE_HFILES=\
 	lsmsvgfiltergaussianblur.h		\
 	lsmsvgfilteroffset.h			\
 	lsmsvgfiltermerge.h			\
-	lsmsvgfiltermergenode.h
+	lsmsvgfiltermergenode.h			\
+	lsmsvgfiltertile.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

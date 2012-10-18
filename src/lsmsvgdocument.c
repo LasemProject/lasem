@@ -53,6 +53,7 @@
 #include <lsmsvgfilteroffset.h>
 #include <lsmsvgfiltermerge.h>
 #include <lsmsvgfiltermergenode.h>
+#include <lsmsvgfiltertile.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -154,6 +155,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_merge_node_new ();
 	else if (strcmp (tag_name, "feOffset") == 0)
 		node = lsm_svg_filter_offset_new ();
+	else if (strcmp (tag_name, "feTile") == 0)
+		node = lsm_svg_filter_tile_new ();
 
 	if (node != NULL)
 		lsm_debug_dom ("[LsmSvgDocument::create_element] Create a %s element", tag_name);

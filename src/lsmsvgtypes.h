@@ -61,9 +61,10 @@ typedef struct _LsmSvgFilterBlend LsmSvgFilterBlend;
 typedef struct _LsmSvgFilterComposite LsmSvgFilterComposite;
 typedef struct _LsmSvgFilterFlood LsmSvgFilterFlood;
 typedef struct _LsmSvgFilterGaussianBlur LsmSvgFilterGaussianBlur;
-typedef struct _LsmSvgFilterOffset LsmSvgFilterOffset;
 typedef struct _LsmSvgFilterMerge LsmSvgFilterMerge;
 typedef struct _LsmSvgFilterMergeNode LsmSvgFilterMergeNode;
+typedef struct _LsmSvgFilterOffset LsmSvgFilterOffset;
+typedef struct _LsmSvgFilterTile LsmSvgFilterTile;
 
 typedef struct _LsmSvgView LsmSvgView;
 typedef struct _LsmSvgStyle LsmSvgStyle;

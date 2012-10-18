@@ -38,12 +38,11 @@ lsm_svg_filter_composite_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_composite_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				     const char *input, const char *output,
-				     double x, double y, double w, double h)
+				     const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterComposite *composite = LSM_SVG_FILTER_COMPOSITE (self);
 
-	lsm_svg_view_apply_blend (view, input, composite->in2.value, output, composite->op.value);
+	lsm_svg_view_apply_blend (view, input, composite->in2.value, output, subregion, composite->op.value);
 }
 
 /* LsmSvgFilterComposite implementation */
