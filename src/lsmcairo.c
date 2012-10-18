@@ -281,7 +281,7 @@ lsm_filter_surface_flood (LsmFilterSurface *surface, guint32 color, double opaci
 	int i, x, y;
 	int stride;
 	unsigned char *pixels;
-	int channelmap[4] = {0, 1, 2, 3};
+	int channelmap[4] = {2, 1, 0, 3};
 
 	g_return_if_fail (surface != NULL);
 
