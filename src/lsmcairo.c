@@ -256,8 +256,20 @@ lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 
 	cairo_surface_flush (input->surface);
 
-	kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
-	ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
+	/* Original intermediate surface size calculation was:
+	 *
+	 * kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
+	 * ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
+	 *
+	 * Which has the drawback to give a surface with even dimensions, leading
+	 * to a blur with a one pixel offset.
+	 * The new dimensions are now always odd.
+	 *
+	 * 0.94 = 3.0 * sqrt(2*M_PI) / 8.0
+	 */
+
+	kx = round (sx * 0.94 - 0.5) * 2.0 + 1.5;
+	ky = round (sy * 0.94 - 0.5) * 2.0 + 1.5;
 
 	if (kx < 1 && ky < 1)
 		return;
