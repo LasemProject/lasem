@@ -32,23 +32,20 @@
 struct _LsmFilterSurface {
 	char *name;
 	cairo_surface_t *surface;
-	unsigned int x0;
-	unsigned int y0;
-	unsigned int x1;
-	unsigned int y1;
+	LsmBox subregion;
 
 	gint ref_count;
 };
 
 LsmFilterSurface *
-lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1)
+lsm_filter_surface_new (const char *name, unsigned int width, unsigned int height, const LsmBox *subregion)
 {
 	LsmFilterSurface *filter_surface;
 	cairo_surface_t *surface;
 
-	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, x1 - x0, y1 - y0);
+	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
 
-	filter_surface = lsm_filter_surface_new_with_content (name, x0, y0, surface);
+	filter_surface = lsm_filter_surface_new_with_content (name, surface, subregion);
 
 	cairo_surface_destroy (surface);
 
@@ -56,22 +53,24 @@ lsm_filter_surface_new (const char *name, unsigned int x0, unsigned int y0, unsi
 }
 
 LsmFilterSurface *
-lsm_filter_surface_new_with_content (const char *name, unsigned int x0, unsigned int y0, cairo_surface_t *surface)
+lsm_filter_surface_new_with_content (const char *name, cairo_surface_t *surface, const LsmBox *subregion)
 {
 	LsmFilterSurface *filter_surface;
+	LsmBox null_subregion = {0, 0, 0, 0};
 
-	g_return_val_if_fail (surface != NULL, NULL);
-	g_return_val_if_fail (cairo_surface_get_type (surface) == CAIRO_SURFACE_TYPE_IMAGE, NULL);
-	g_return_val_if_fail (cairo_image_surface_get_format (surface) == CAIRO_FORMAT_ARGB32, NULL);
+	if (surface == NULL ||
+	    cairo_surface_get_type (surface) != CAIRO_SURFACE_TYPE_IMAGE ||
+	    cairo_image_surface_get_format (surface) != CAIRO_FORMAT_ARGB32) {
+		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 0, 0);
+		subregion = &null_subregion;
+	} else if (subregion == NULL)
+		subregion = &null_subregion;
 
 	cairo_surface_reference (surface);
 
 	filter_surface = g_new (LsmFilterSurface, 1);
 	filter_surface->name = g_strdup (name);
-	filter_surface->x0 = x0;
-	filter_surface->y0 = y0;
-	filter_surface->x1 = x0 + cairo_image_surface_get_width (surface);
-	filter_surface->y1 = y0 + cairo_image_surface_get_height (surface);
+	filter_surface->subregion = *subregion;
 	filter_surface->surface  = surface;
 	filter_surface->ref_count = 1;
 
@@ -79,11 +78,15 @@ lsm_filter_surface_new_with_content (const char *name, unsigned int x0, unsigned
 }
 
 LsmFilterSurface *
-lsm_filter_surface_new_similar (const char *name, LsmFilterSurface *model)
+lsm_filter_surface_new_similar (const char *name, LsmFilterSurface *model, const LsmBox *subregion)
 {
-	g_return_val_if_fail (model != NULL, NULL);
+	if (model == NULL)
+		return lsm_filter_surface_new (name, 0, 0, subregion);
 
-	return lsm_filter_surface_new (name, model->x0, model->y0, model->x1, model->y1);
+	return lsm_filter_surface_new (name,
+				       cairo_image_surface_get_width (model->surface),
+				       cairo_image_surface_get_height (model->surface),
+				       subregion != NULL ? subregion : &model->subregion);
 }
 
 const char *
@@ -100,6 +103,17 @@ lsm_filter_surface_get_cairo_surface (LsmFilterSurface *surface)
 	g_return_val_if_fail (surface != NULL, NULL);
 
 	return surface->surface;
+}
+
+const LsmBox *
+lsm_filter_surface_get_subregion (LsmFilterSurface *surface)
+{
+	static const LsmBox null_subregion = {0, 0, 0, 0};
+
+	if (surface == NULL)
+		return &null_subregion;
+
+	return &surface->subregion;
 }
 
 LsmFilterSurface *
@@ -146,10 +160,9 @@ box_blur (LsmFilterSurface *input,
 
 	rowstride = cairo_image_surface_get_stride (input->surface);
 
-	x1 = input->x0;
-	y1 = input->y0;
-	x2 = input->x1;
-	y2 = input->y1;
+	x1 = 0; y1 = 0;
+	x2 = cairo_image_surface_get_width (input->surface);
+	y2 = cairo_image_surface_get_height (input->surface);
 
 	if (kw > x2 - x1)
 		kw = x2 - x1;
@@ -420,14 +433,52 @@ lsm_filter_surface_alpha (LsmFilterSurface *input, LsmFilterSurface *output)
 	cairo_destroy (cairo);
 }
 
+void
+lsm_cairo_box_user_to_device (cairo_t *cairo, LsmBox *to, const LsmBox *from)
+{
+	if (to == NULL)
+		return;
+
+	if (from == NULL || cairo == NULL) {
+		to->x = 0;
+		to->y = 0;
+		to->width = 0;
+		to->height = 0;
+	}
+
+	*to = *from;
+
+	cairo_user_to_device (cairo, &to->x, &to->y);
+	cairo_user_to_device_distance (cairo, &to->width, &to->height);
+}
+
+void
+lsm_cairo_box_device_to_user (cairo_t *cairo, LsmBox *to, const LsmBox *from)
+{
+	if (to == NULL)
+		return;
+
+	if (from == NULL || cairo == NULL) {
+		to->x = 0;
+		to->y = 0;
+		to->width = 0;
+		to->height = 0;
+	}
+
+	*to = *from;
+
+	cairo_device_to_user (cairo, &to->x, &to->y);
+	cairo_device_to_user_distance (cairo, &to->width, &to->height);
+}
+
 /**
  * lsm_cairo_set_source_pixbuf:
- * @cr: a cairo context
+ * @cairo: a cairo context
  * @pixbuf: a #GdkPixbuf
  * @pixbuf_x: X coordinate of location to place upper left corner of @pixbuf
  * @pixbuf_y: Y coordinate of location to place upper left corner of @pixbuf
  *
- * Sets the given pixbuf as the source pattern for @cr.
+ * Sets the given pixbuf as the source pattern for @cairo.
  *
  * The pattern has an extend mode of %CAIRO_EXTEND_NONE and is aligned
  * so that the origin of @pixbuf is @pixbuf_x, @pixbuf_y.
@@ -436,10 +487,10 @@ lsm_filter_surface_alpha (LsmFilterSurface *input, LsmFilterSurface *output)
  */
 
 void
-lsm_cairo_set_source_pixbuf (cairo_t         *cr,
+lsm_cairo_set_source_pixbuf (cairo_t *cairo,
                              const GdkPixbuf *pixbuf,
-                             gdouble          pixbuf_x,
-                             gdouble          pixbuf_y)
+                             double pixbuf_x,
+                             double pixbuf_y)
 {
 	gint width = gdk_pixbuf_get_width (pixbuf);
 	gint height = gdk_pixbuf_get_height (pixbuf);
@@ -523,7 +574,7 @@ lsm_cairo_set_source_pixbuf (cairo_t         *cr,
 		cairo_pixels += cairo_stride;
 	}
 
-	cairo_set_source_surface (cr, surface, pixbuf_x, pixbuf_y);
+	cairo_set_source_surface (cairo, surface, pixbuf_x, pixbuf_y);
 	cairo_surface_destroy (surface);
 }
 

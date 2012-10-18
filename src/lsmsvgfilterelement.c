@@ -90,9 +90,8 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgFilterElement *filter = LSM_SVG_FILTER_ELEMENT (self);
 	LsmDomNode *node;
-	LsmBox viewport;
 	LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
-	const LsmBox *filter_extents;
+	const LsmBox *object_extents;
 	gboolean is_object_bounding_box;
 
 	if (!filter->enable_rendering) {
@@ -102,43 +101,11 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 		filter->enable_rendering = FALSE;
 	}
 
-	filter_extents = lsm_svg_view_get_object_extents (view);
-
-	is_object_bounding_box = (filter->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
-
-	if (is_object_bounding_box)
-		lsm_svg_view_push_viewbox (view, &viewbox);
-
-	viewport.x      = lsm_svg_view_normalize_length (view, &filter->x.length,
-							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.y      = lsm_svg_view_normalize_length (view, &filter->y.length,
-							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	viewport.width  = lsm_svg_view_normalize_length (view, &filter->width.length,
-							 LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	viewport.height = lsm_svg_view_normalize_length (view, &filter->height.length,
-							 LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-
-	if (is_object_bounding_box) {
-		lsm_svg_view_pop_viewbox (view);
-
-		viewport.x = viewport.x * filter_extents->width + filter_extents->x;
-		viewport.y = viewport.y * filter_extents->height + filter_extents->y;
-		viewport.width *= filter_extents->width;
-		viewport.height *= filter_extents->height;
-	}
-
-	if (viewport.width <= 0.0 || viewport.height <= 0.0) {
-		lsm_debug_render ("[LsmSvgFilterElement::render] Invalid filter area w = %g, h = %g",
-			   viewport.width, viewport.height);
-		return;
-	}
-
-	lsm_debug_render ("[LsmFilterElement::render] Render filter x = %g, y = %g, w = %g, h = %g",
-		   viewport.x, viewport.y, viewport.width, viewport.height);
+	object_extents = lsm_svg_view_get_object_extents (view);
 
 	is_object_bounding_box = (filter->primitive_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
-	lsm_svg_view_push_viewport (view, &viewport,
+	lsm_svg_view_push_viewport (view, object_extents,
 				    is_object_bounding_box ? &viewbox : NULL, NULL, LSM_SVG_OVERFLOW_VISIBLE); 
 
 	for (node = LSM_DOM_NODE (filter)->first_child; node != NULL; node = node->next_sibling)

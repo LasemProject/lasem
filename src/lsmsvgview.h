@@ -146,11 +146,12 @@ void		lsm_svg_view_pop_element		(LsmSvgView *view);
 
 void		lsm_svg_view_push_style			(LsmSvgView *view, LsmSvgStyle *style);
 void		lsm_svg_view_pop_style			(LsmSvgView *view);
+LsmSvgStyle *	lsm_svg_view_get_current_style		(LsmSvgView *view);
+
 void		lsm_svg_view_push_composition		(LsmSvgView *view, LsmSvgStyle *style);
 void		lsm_svg_view_pop_composition		(LsmSvgView *view);
 
-LsmSvgStyle *	lsm_svg_view_get_current_style	(LsmSvgView *view);
-
+LsmBox 		lsm_svg_view_get_filter_surface_extents (LsmSvgView *view, const char *name);
 void 		lsm_svg_view_apply_blend 		(LsmSvgView *view, const char *input_1, const char*input_2, const char *output,
 							 const LsmBox *subregion, LsmSvgBlendingMode mode);
 void 		lsm_svg_view_apply_flood 		(LsmSvgView *view, const char *output, const LsmBox *subregion);

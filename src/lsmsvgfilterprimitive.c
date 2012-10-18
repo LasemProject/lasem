@@ -45,17 +45,32 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	const LsmSvgStyle *parent_style;
 	LsmSvgStyle *style;
 	LsmBox subregion;
-
+	gboolean is_x_defined;
+	gboolean is_y_defined;
+	gboolean is_width_defined;
+	gboolean is_height_defined;
+	
 	g_return_if_fail (LSM_IS_SVG_FILTER_PRIMITIVE (self));
 
 	primitive_class = LSM_SVG_FILTER_PRIMITIVE_GET_CLASS (self);
 
-	subregion.x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	subregion.y = lsm_svg_view_normalize_length (view, &self->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	subregion.width = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	subregion.height = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	is_x_defined = lsm_attribute_is_defined (&self->x.base);
+	is_y_defined = lsm_attribute_is_defined (&self->y.base);
+	is_width_defined = lsm_attribute_is_defined (&self->width.base);
+	is_height_defined = lsm_attribute_is_defined (&self->height.base);
 
-	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s at %g,%g over %g%g",
+	subregion = lsm_svg_view_get_filter_surface_extents (view, self->in.value);
+
+	if (is_x_defined)
+		subregion.x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	if (is_y_defined)
+		subregion.y = lsm_svg_view_normalize_length (view, &self->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	if (is_width_defined)
+		subregion.width = lsm_svg_view_normalize_length (view, &self->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	if (is_height_defined)
+		subregion.height = lsm_svg_view_normalize_length (view, &self->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	lsm_log_render ("[Svg::FilterPrimitive::apply] Apply %s at %g,%g over a %gx%g region",
 		       	lsm_dom_node_get_node_name (LSM_DOM_NODE (self)),
 			subregion.x, subregion.y, subregion.width, subregion.height);
 

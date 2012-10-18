@@ -36,16 +36,15 @@ typedef struct _LsmFilterSurface LsmFilterSurface;
 
 GType lsm_filter_surface_get_type (void);
 
-LsmFilterSurface * 	lsm_filter_surface_new 			(const char *name,
-								 unsigned int x0, unsigned int y0,
-								 unsigned int x1, unsigned int y1);
-LsmFilterSurface * 	lsm_filter_surface_new_with_content 	(const char *name,
-								 unsigned int x0, unsigned int y0,
-								 cairo_surface_t *surface);
-LsmFilterSurface *	lsm_filter_surface_new_similar		(const char *name, LsmFilterSurface *model);
+LsmFilterSurface * 	lsm_filter_surface_new 			(const char *name, unsigned int width, unsigned int height,
+								 const LsmBox *subregion);
+LsmFilterSurface * 	lsm_filter_surface_new_with_content 	(const char *name, cairo_surface_t *surface, const LsmBox *subregion);
+LsmFilterSurface *	lsm_filter_surface_new_similar		(const char *name, LsmFilterSurface *model, const LsmBox *subregion);
+
 void 			lsm_filter_surface_copy_data 		(LsmFilterSurface *to, LsmFilterSurface *from);
 const char * 		lsm_filter_surface_get_name 		(LsmFilterSurface *surface);
 cairo_surface_t *	lsm_filter_surface_get_cairo_surface	(LsmFilterSurface *surface);
+const LsmBox *		lsm_filter_surface_get_subregion 	(LsmFilterSurface *surface);
 void 			lsm_filter_surface_unref 		(LsmFilterSurface *filter_surface);
 LsmFilterSurface *	lsm_filter_surface_ref 			(LsmFilterSurface *filter_surface);
 
@@ -64,10 +63,10 @@ void 			lsm_filter_surface_offset 		(LsmFilterSurface *input, LsmFilterSurface *
 void 			lsm_filter_surface_merge 		(LsmFilterSurface *input, LsmFilterSurface *output,
 								 const LsmBox *subregion);
 
-void 			lsm_cairo_set_source_pixbuf 		(cairo_t         *cr,
-								 const GdkPixbuf *pixbuf,
-								 gdouble          pixbuf_x,
-								 gdouble          pixbuf_y);
+void 			lsm_cairo_box_user_to_device 		(cairo_t *cairo, LsmBox *to, const LsmBox *from);
+void 			lsm_cairo_box_device_to_user 		(cairo_t *cairo, LsmBox *to, const LsmBox *from);
+void 			lsm_cairo_set_source_pixbuf 		(cairo_t *cairo, const GdkPixbuf *pixbuf,
+								 double pixbuf_x, double pixbuf_y);
 
 G_END_DECLS
 

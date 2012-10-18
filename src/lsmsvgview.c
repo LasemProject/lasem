@@ -1975,11 +1975,18 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element) &&
 	    view->pattern_data->pattern != NULL) {
 		cairo_matrix_t matrix;
+		LsmBox subregion;
 
 		view->filter_surfaces = NULL;
 
 		cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
-		filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", 0, 0, surface);
+
+		subregion.x = 0;
+		subregion.y = 0;
+		subregion.width = cairo_image_surface_get_width (surface);
+		subregion.height = cairo_image_surface_get_height (surface);
+
+		filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", surface, &subregion);
 		cairo_pattern_get_matrix (view->pattern_data->pattern, &matrix);
 
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
@@ -2044,7 +2051,7 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 	if (g_strcmp0 (input, "SourceAlpha") == 0 && source_surface != NULL) {
 		LsmFilterSurface *surface;
 
-		surface = lsm_filter_surface_new_similar ("SourceAlpha", source_surface);
+		surface = lsm_filter_surface_new_similar ("SourceAlpha", source_surface, NULL);
 		lsm_filter_surface_alpha (source_surface, surface);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 
@@ -2053,13 +2060,13 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 		/* TODO */
 		LsmFilterSurface *surface;
 
-		surface = lsm_filter_surface_new_similar ("BackgroundImage", source_surface);
+		surface = lsm_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
 		/* TODO */
 		LsmFilterSurface *surface;
 
-		surface = lsm_filter_surface_new_similar ("BackgroundAlpha", source_surface);
+		surface = lsm_filter_surface_new_similar ("BackgroundAlpha", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	}
 
@@ -2067,24 +2074,33 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 }
 
 static LsmFilterSurface *
-_create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *input_surface)
+_create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *input_surface, const LsmBox *subregion)
 {
 	LsmFilterSurface *surface;
 
-	surface = lsm_filter_surface_new_similar (output, input_surface);
+	surface = lsm_filter_surface_new_similar (output, input_surface, subregion);
 
 	view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface); 
 
 	return surface;
 }
 
-static void
-_cairo_box_user_to_device (cairo_t *cairo, LsmBox *to, const LsmBox *from)
+LsmBox
+lsm_svg_view_get_filter_surface_extents (LsmSvgView *view, const char *name)
 {
-	*to = *from;
+	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
+	LsmFilterSurface *surface;
+	LsmBox extents;
 
-	cairo_user_to_device (cairo, &to->x, &to->y);
-	cairo_user_to_device_distance (cairo, &to->width, &to->height);
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), null_extents);
+
+	surface = _get_filter_surface (view, name);
+	if (surface == NULL)
+		return null_extents;
+
+	lsm_cairo_box_device_to_user (view->dom_view.cairo, &extents, lsm_filter_surface_get_subregion (surface));
+
+	return extents;
 }
 
 void
@@ -2102,15 +2118,14 @@ lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*inpu
 	input_2_surface = _get_filter_surface (view, input_2);
 
 	if (input_1_surface == NULL || input_2_surface == NULL) {
-		lsm_debug_render ("[SvgView::apply_blend] Inputs '%s' or '%s' not found", input_1, input_2);
+		lsm_warning_render ("[SvgView::apply_blend] Inputs '%s' or '%s' not found", input_1, input_2);
 		return;
 	}
 
-	output_surface = _create_filter_surface (view, output, input_1_surface);
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_1_surface, &subregion_px);
 
 	lsm_log_render ("[SvgView::blend] mode = %s", lsm_svg_blending_mode_to_string (mode));
-
-	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 
 	lsm_filter_surface_blend (input_1_surface, input_2_surface, output_surface, &subregion_px, mode);
 }
@@ -2126,9 +2141,12 @@ lsm_svg_view_apply_flood (LsmSvgView *view, const char *output, const LsmBox *su
 
 	input_surface = _get_filter_surface (view, NULL);
 
-	output_surface = _create_filter_surface (view, output, input_surface);
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
-	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	lsm_log_render ("[SvgView::apply_flood] subregion %gx%g px at %g,%g px",
+		        subregion_px.width, subregion_px.height,
+		        subregion_px.x, subregion_px.y);
 
 	lsm_filter_surface_flood (output_surface, &subregion_px,
 				  view->style->flood_color->value.red,
@@ -2154,7 +2172,8 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 		return;
 	}
 
-	output_surface = _create_filter_surface (view, output, input_surface);
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
 	lsm_log_render ("[SvgView::apply_gaussian_blur] %s -> %s (%g,%g)",
 			input != NULL ? input : "previous",
@@ -2165,8 +2184,6 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 
 	lsm_log_render ("[SvgView::apply_gaussian_blur] %g px,%g px",
 			std_x, std_y);
-
-	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 
 	lsm_filter_surface_fast_blur (input_surface, output_surface, &subregion_px, std_x, std_y);
 }
@@ -2188,15 +2205,14 @@ lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *outp
 		return;
 	}
 
-	output_surface = _create_filter_surface (view, output, input_surface);
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
 	lsm_log_render ("[SvgView::apply_offset] %s -> %s (dx:%g,dy:%g)", input, output, dx, dy); 
 
 	cairo_user_to_device_distance (view->dom_view.cairo, &dx, &dy);
 
 	lsm_log_render ("[SvgView::apply_offset] %g px,%g px", dx, dy);
-
-	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 
 	lsm_filter_surface_offset (input_surface, output_surface, &subregion_px, dx, dy);
 }
@@ -2218,10 +2234,9 @@ lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *outpu
 	}
 
 	output_surface = _get_filter_surface (view, output);
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 	if (output_surface == NULL)
-		output_surface = _create_filter_surface (view, output, input_surface);
-
-	_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+		output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
 	if (output_surface != NULL)
 		lsm_filter_surface_merge (input_surface, output_surface, &subregion_px);
