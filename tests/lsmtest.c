@@ -74,7 +74,9 @@ static const GOptionEntry entries[] =
 	{ NULL }
 };
 
-static const char *fail_face = "", *normal_face = "";
+static const char *fail_face = "";
+static const char *success_face = "";
+static const char *normal_face = "";
 FILE *lasem_test_html_file = NULL;
 
 static void
@@ -197,12 +199,12 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 		g_free (diff_png_filename);
 
 		if (result.pixels_changed == 0) {
-			g_printf ("\n");
+			g_printf (" %sOK%s \n", success_face, normal_face);
 			return TRUE;
 		}
 	}
 
-	g_printf (" %sFAIL%s\n", fail_face, normal_face);
+	g_printf (" %sFAIL%s \n", fail_face, normal_face);
 	return FALSE;
 }
 
@@ -449,6 +451,7 @@ main (int argc, char **argv)
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
 		fail_face = "\033[41m\033[37m\033[1m";
+		success_face = "\033[42m\033[37m\033[1m";
 		normal_face = "\033[m";
 	}
 #endif
