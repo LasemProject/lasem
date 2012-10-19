@@ -59,7 +59,7 @@ lsm_svg_filter_primitive_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view)
 	is_width_defined = lsm_attribute_is_defined (&self->width.base);
 	is_height_defined = lsm_attribute_is_defined (&self->height.base);
 
-	subregion = lsm_svg_view_get_filter_surface_extents (view, self->in.value);
+	subregion = lsm_svg_view_get_filter_surface_extents (view, "SourceGraphic");
 
 	if (is_x_defined)
 		subregion.x = lsm_svg_view_normalize_length (view, &self->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);

@@ -419,6 +419,35 @@ lsm_filter_surface_merge (LsmFilterSurface *input,
 }
 
 void
+lsm_filter_surface_tile (LsmFilterSurface *input, LsmFilterSurface *output, const LsmBox *subregion)
+{
+	cairo_t *cairo;
+	cairo_surface_t *surface;
+	cairo_pattern_t *pattern;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+
+	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, input->subregion.width, input->subregion.height);
+	cairo = cairo_create (surface);
+	cairo_set_source_surface (cairo, input->surface, input->subregion.x, input->subregion.y);
+	cairo_paint (cairo);
+	cairo_destroy (cairo);
+
+	cairo = cairo_create (output->surface);
+	if (subregion != NULL) {
+		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
+		cairo_clip (cairo);
+	}
+	cairo_set_source_surface (cairo, surface, 0, 0);
+	pattern = cairo_get_source (cairo);
+	cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
+	cairo_paint (cairo);
+	cairo_destroy (cairo);
+	cairo_surface_destroy (surface);
+}
+
+void
 lsm_filter_surface_alpha (LsmFilterSurface *input, LsmFilterSurface *output)
 {
 	cairo_t *cairo;
