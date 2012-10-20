@@ -160,6 +160,7 @@ _transformed_render (LsmSvgElement *element, LsmSvgView *view)
 
 	parent_style = lsm_svg_view_get_current_style (view);
 	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
+	style->ignore_group_opacity = element_class->is_shape_element;
 
 	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
 	    style->display->value != LSM_SVG_DISPLAY_NONE) {

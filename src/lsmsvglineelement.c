@@ -121,6 +121,8 @@ lsm_svg_line_element_class_init (LsmSvgLineElementClass *s_rect_class)
 	s_element_class->render = lsm_svg_line_element_render;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
+	s_element_class->is_shape_element = TRUE;
+
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
 					      G_N_ELEMENTS (lsm_svg_line_element_attribute_infos),
 					      lsm_svg_line_element_attribute_infos);

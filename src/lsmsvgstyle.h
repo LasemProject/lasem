@@ -183,6 +183,7 @@ struct _LsmSvgStyle {
 	LsmSvgWritingModeProperty *	writing_mode;
 
 	double font_size_px;
+	gboolean ignore_group_opacity;
 };
 
 void 		lsm_svg_property_bag_set_property 	(LsmPropertyBag *property_bag,

@@ -56,6 +56,7 @@ lsm_svg_mask_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
+	style->ignore_group_opacity = FALSE;
 	lsm_svg_view_push_composition (view, style);
 
 	mask_extents = lsm_svg_view_get_pattern_extents (view);

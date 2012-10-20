@@ -62,6 +62,8 @@ struct _LsmSvgElementClass {
 	void 		(*get_extents)			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 	void 		(*transformed_render)		(LsmSvgElement *element, LsmSvgView *view);
 	void 		(*transformed_get_extents)	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+
+	gboolean is_shape_element;
 };
 
 GType lsm_svg_element_get_type (void);

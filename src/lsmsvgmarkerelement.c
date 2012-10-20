@@ -67,6 +67,7 @@ _marker_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	style = lsm_svg_style_new_inherited (marker->style, &self->property_bag);
+	style->ignore_group_opacity = FALSE;
 	lsm_svg_view_push_composition (view, style);
 
 	if (marker->stroke_width > 0.0 || marker->units.value != LSM_SVG_MARKER_UNITS_STROKE_WIDTH) {

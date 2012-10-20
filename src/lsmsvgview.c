@@ -1074,23 +1074,22 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 	cairo = view->dom_view.cairo;
 	style = view->style;
 
-#if 0
-	/* This is disabled for now, as care should be taken in push_composition to
-	 * defer group opacity for simple shape to this function. */
-	if (style->opacity != NULL) {
+	if (style->opacity != NULL &&
+	    style->ignore_group_opacity &&
+	    g_strcmp0 (style->filter->value, "none") == 0) {
 		group_opacity = style->opacity->value;
 
-		use_group = style->fill->paint.type != LSM_SVG_PAINT_TYPE_NONE &&
-			style->stroke->paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+		use_group = ((style->fill->paint.type != LSM_SVG_PAINT_TYPE_NONE &&
+			      style->stroke->paint.type != LSM_SVG_PAINT_TYPE_NONE) ||
+			     style->stroke->paint.type == LSM_SVG_PAINT_TYPE_URI ||
+			     style->stroke->paint.type == LSM_SVG_PAINT_TYPE_URI_RGB_COLOR ||
+			     style->fill->paint.type == LSM_SVG_PAINT_TYPE_URI_RGB_COLOR ||
+			     style->fill->paint.type == LSM_SVG_PAINT_TYPE_URI) &&
 			group_opacity < 1.0;
 	} else {
 		use_group = FALSE;
 		group_opacity = 1.0;
 	}
-#else
-	use_group = FALSE;
-	group_opacity = 1.0;
-#endif
 
 	/* Instead of push_group, we should restrict to the current path bounding box */
 	if (use_group)
@@ -2354,8 +2353,10 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	do_mask = (g_strcmp0 (style->mask->value, "none") != 0);
 	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
 
-	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping)
+	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping && !view->style->ignore_group_opacity) {
+		printf ("Push group opacity\n");
 		cairo_push_group (view->dom_view.cairo);
+	}
 
 	if (do_clip) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
@@ -2414,7 +2415,7 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	if (do_clip)
 		lsm_svg_view_pop_clip (view);
 
-	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping) {
+	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping && !view->style->ignore_group_opacity) {
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
 	}

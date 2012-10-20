@@ -107,6 +107,8 @@ lsm_svg_path_element_class_init (LsmSvgPathElementClass *s_rect_class)
 	s_element_class->get_extents = lsm_svg_path_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
+	s_element_class->is_shape_element = TRUE;
+
 	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
 					      G_N_ELEMENTS (lsm_svg_path_element_attribute_infos),
 					      lsm_svg_path_element_attribute_infos);

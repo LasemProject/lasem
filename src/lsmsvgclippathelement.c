@@ -53,6 +53,7 @@ lsm_svg_clip_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 	}
 
 	style = lsm_svg_style_new_inherited (NULL, &self->property_bag);
+	style->ignore_group_opacity = TRUE;
 	lsm_svg_view_push_composition (view, style);
 
 	is_object_bounding_box = (clip->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
