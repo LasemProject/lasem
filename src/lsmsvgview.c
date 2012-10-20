@@ -2354,7 +2354,6 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
 
 	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping && !view->style->ignore_group_opacity) {
-		printf ("Push group opacity\n");
 		cairo_push_group (view->dom_view.cairo);
 	}
 
