@@ -173,22 +173,6 @@ box_blur (LsmFilterSurface *input,
 
 	if (kw >= 1) {
 		for (ch = 0; ch < 4; ch++) {
-#if 0
-			switch (ch) {
-				case 0:
-					if (!op.Rused)
-						continue;
-				case 1:
-					if (!op.Gused)
-						continue;
-				case 2:
-					if (!op.Bused)
-						continue;
-				case 3:
-					if (!op.Aused)
-						continue;
-			}
-#endif
 			for (y = y1; y < y2; y++) {
 				sum = 0;
 				for (x = x1; x < x1 + kw; x++) {
@@ -215,22 +199,6 @@ box_blur (LsmFilterSurface *input,
 
 	if (kh >= 1) {
 		for (ch = 0; ch < 4; ch++) {
-#if 0
-			switch (ch) {
-				case 0:
-					if (!op.Rused)
-						continue;
-				case 1:
-					if (!op.Gused)
-						continue;
-				case 2:
-					if (!op.Bused)
-						continue;
-				case 3:
-					if (!op.Aused)
-						continue;
-			}
-#endif
 			for (x = x1; x < x2; x++) {
 				sum = 0;
 
