@@ -2354,7 +2354,7 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	do_mask = (g_strcmp0 (style->mask->value, "none") != 0);
 	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
 
-	if (view->style->opacity->value < 1.0 && !do_filter)
+	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping)
 		cairo_push_group (view->dom_view.cairo);
 
 	if (do_clip) {
@@ -2414,7 +2414,7 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	if (do_clip)
 		lsm_svg_view_pop_clip (view);
 
-	if (view->style->opacity->value < 1.0 && !do_filter) {
+	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping) {
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
 	}
