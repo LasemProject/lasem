@@ -2059,11 +2059,15 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 		/* TODO */
 		LsmFilterSurface *surface;
 
+		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundImage is not yet implemented");
+
 		surface = lsm_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
 		/* TODO */
 		LsmFilterSurface *surface;
+
+		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundAlpha is not yet implemented");
 
 		surface = lsm_filter_surface_new_similar ("BackgroundAlpha", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
