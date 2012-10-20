@@ -45,8 +45,6 @@ lsm_svg_filter_flood_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
 
 /* LsmSvgFilterFlood implementation */
 
-static const LsmSvgOneOrTwoDouble std_deviation_default =  {.a = 0.0, .b = 0.0};
-
 LsmDomNode *
 lsm_svg_filter_flood_new (void)
 {
@@ -56,7 +54,6 @@ lsm_svg_filter_flood_new (void)
 static void
 lsm_svg_filter_flood_init (LsmSvgFilterFlood *self)
 {
-	self->std_deviation.value = std_deviation_default;
 }
 
 static void
@@ -66,15 +63,6 @@ lsm_svg_filter_flood_finalize (GObject *object)
 }
 
 /* LsmSvgFilterFlood class */
-
-static const LsmAttributeInfos lsm_svg_filter_flood_attribute_infos[] = {
-	{
-		.name = "stdDeviation",
-		.attribute_offset = offsetof (LsmSvgFilterFlood, std_deviation),
-		.trait_class = &lsm_svg_one_or_two_double_trait_class,
-		.trait_default = &std_deviation_default
-	}
-};
 
 static void
 lsm_svg_filter_flood_class_init (LsmSvgFilterFloodClass *klass)
@@ -91,10 +79,6 @@ lsm_svg_filter_flood_class_init (LsmSvgFilterFloodClass *klass)
 	d_node_class->get_node_name = lsm_svg_filter_flood_get_node_name;
 
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
-
-	lsm_attribute_manager_add_attributes (s_element_class->attribute_manager,
-					      G_N_ELEMENTS (lsm_svg_filter_flood_attribute_infos),
-					      lsm_svg_filter_flood_attribute_infos);
 
 	f_primitive_class->apply = lsm_svg_filter_flood_apply;
 }

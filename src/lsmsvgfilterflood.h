@@ -40,8 +40,6 @@ typedef struct _LsmSvgFilterFloodClass LsmSvgFilterFloodClass;
 
 struct _LsmSvgFilterFlood {
 	LsmSvgFilterPrimitive base;
-
-	LsmSvgOneOrTwoDoubleAttribute std_deviation;
 };
 
 struct _LsmSvgFilterFloodClass {
