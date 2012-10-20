@@ -76,6 +76,14 @@ static const char *success_face = "";
 static const char *normal_face = "";
 FILE *lasem_test_html_file = NULL;
 
+typedef struct {
+	double elapsed_time;
+	unsigned int rendered_count;
+	unsigned int comparison_count;
+	unsigned int failed_count;
+	unsigned int success_count;
+} Statistic;
+
 static void
 lasem_test_html (const char *fmt, ...)
 {
@@ -206,7 +214,7 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 }
 
 void
-lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, double *elapsed_time)
+lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Statistic *statistic)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -227,6 +235,8 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, dou
 	GRegex *regex;
 	GError *error = NULL;
 	char *filtered_buffer;
+
+	g_return_if_fail (statistic != NULL);
 
 	test_name = g_regex_replace (regex_mml, filename, -1, 0, "", 0, NULL);
 
@@ -291,8 +301,8 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, dou
 
 		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
 
-		if (elapsed_time != NULL)
-			*elapsed_time = g_timer_elapsed (timer, NULL);
+		statistic->elapsed_time +=  g_timer_elapsed (timer, NULL);
+		statistic->rendered_count++;
 		g_timer_destroy (timer);
 
 		if (!dry_run)
@@ -300,14 +310,20 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, dou
 
 		if (check) {
 			cairo_surface_t *reference_surface;
-			gboolean same;
 
 			reference_surface = cairo_image_surface_create_from_png (reference_png_filename);
 			if (reference_surface != NULL) {
+				gboolean same;
+
 				same = compare_surfaces (test_name, surface, reference_surface); 
 				cairo_surface_destroy (reference_surface);
-			} else
-				same = TRUE;
+
+				if (same)
+					statistic->success_count++;
+				else
+					statistic->failed_count++;
+				statistic->comparison_count++;
+			}
 		} else
 			g_printf ("\n");
 
@@ -402,15 +418,14 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, dou
 	g_free (test_name);
 }
 
-unsigned int
-lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, double *elapsed_time)
+void
+lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, Statistic *statistic)
 {
 	GDir *directory;
 	GError *error = NULL;
 	const char *entry;
 	char *filename;
 	unsigned int n_files = 0;
-	double time;
 
 	directory = g_dir_open (name, 0, &error);
 	assert (error == NULL);
@@ -418,9 +433,6 @@ lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, do
 	g_printf ("In directory %s\n", name);
 
 	lasem_test_html ("<h1>%s</h1>", name);
-
-	if (elapsed_time != NULL)
-		*elapsed_time = 0;
 
 	do {
 		entry = g_dir_read_name (directory);
@@ -431,23 +443,18 @@ lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, do
 			filename = g_build_filename (name, entry, NULL);
 
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
-				n_files += lasem_test_process_dir (filename, compare, dry_run, &time);
+				lasem_test_process_dir (filename, compare, dry_run, statistic);
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 				 g_regex_match (regex_mml, filename, 0, NULL)) {
-				lasem_test_render (filename, compare, dry_run, &time);
+				lasem_test_render (filename, compare, dry_run, statistic);
 				n_files++;
 			}
-
-			if (elapsed_time != NULL)
-				*elapsed_time += time;
 
 			g_free (filename);
 		}
 	} while (entry != NULL);
 
 	g_dir_close (directory);
-
-	return n_files;
 }
 
 int
@@ -457,7 +464,7 @@ main (int argc, char **argv)
 	GError *error = NULL;
 	unsigned int i;
 	unsigned int n_input_files = 0;
-	double elapsed_time;
+	Statistic statistic = {0, 0, 0, 0, 0};
 
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
@@ -499,13 +506,13 @@ main (int argc, char **argv)
 
 	n_input_files = option_input_filenames != NULL ? g_strv_length (option_input_filenames) : 0;
 	if (n_input_files == 1 && g_file_test (option_input_filenames[0], G_FILE_TEST_IS_DIR))
-		n_input_files = lasem_test_process_dir (option_input_filenames[0], TRUE, option_dry_run, &elapsed_time);
+		lasem_test_process_dir (option_input_filenames[0], TRUE, option_dry_run, &statistic);
 	else {
 		if (n_input_files > 0)
 			for (i = 0; i < n_input_files; i++)
-				lasem_test_render (option_input_filenames[i], TRUE, option_dry_run, &elapsed_time);
+				lasem_test_render (option_input_filenames[i], TRUE, option_dry_run, &statistic);
 		else
-			n_input_files = lasem_test_process_dir (".", TRUE, option_dry_run, &elapsed_time);
+			lasem_test_process_dir (".", TRUE, option_dry_run, &statistic);
 	}
 
 	lasem_test_html ("</body>\n");
@@ -516,7 +523,13 @@ main (int argc, char **argv)
 
 	g_regex_unref (regex_mml);
 
-	g_printf ("%d files processed in %g seconds.\n", n_input_files, elapsed_time);
+	g_printf ("%d files processed in %g seconds.\n", statistic.rendered_count, statistic.elapsed_time);
+	if (statistic.comparison_count > 0)
+		g_printf ("%s%d/%d%s comparison failures.\n",
+			  statistic.failed_count > 0 ? fail_face : success_face,
+			  statistic.failed_count,
+			  statistic.comparison_count,
+			  normal_face);
 
 	return 0;
 }
