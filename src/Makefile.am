@@ -133,6 +133,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfilteroffset.c			\
 	lsmsvgfiltermerge.c			\
 	lsmsvgfiltermergenode.c			\
+	lsmsvgfilterspecularlighting.c		\
 	lsmsvgfiltertile.c
 
 LASEM_DOM_HDRS = 				\
@@ -245,6 +246,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfilteroffset.h			\
 	lsmsvgfiltermerge.h			\
 	lsmsvgfiltermergenode.h			\
+	lsmsvgfilterspecularlighting.h		\
 	lsmsvgfiltertile.h
 
 

@@ -154,6 +154,7 @@ IGNORE_HFILES=\
 	lsmsvgfilteroffset.h			\
 	lsmsvgfiltermerge.h			\
 	lsmsvgfiltermergenode.h			\
+	lsmsvgfilterspecularlighting.h		\
 	lsmsvgfiltertile.h
 
 # Images to copy into HTML directory.
