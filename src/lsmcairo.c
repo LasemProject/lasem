@@ -311,7 +311,6 @@ lsm_filter_surface_fast_blur (LsmFilterSurface *input,
 
 void
 lsm_filter_surface_flood (LsmFilterSurface *surface,
-			  const LsmBox *subregion,
 			  double red,
 			  double green,
 			  double blue,
@@ -322,10 +321,8 @@ lsm_filter_surface_flood (LsmFilterSurface *surface,
 	g_return_if_fail (surface != NULL);
 
 	cairo = cairo_create (surface->surface);
-	if (subregion != NULL) {
-		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
-		cairo_clip (cairo);
-	}
+	cairo_rectangle (cairo, surface->subregion.x, surface->subregion.y, surface->subregion.width, surface->subregion.height);
+	cairo_clip (cairo);
 	cairo_set_source_rgba (cairo, red, green, blue, opacity);
 	cairo_paint (cairo);
 }
@@ -334,7 +331,6 @@ void
 lsm_filter_surface_blend (LsmFilterSurface *input_1,
 			  LsmFilterSurface *input_2,
 			  LsmFilterSurface *output,
-			  const LsmBox *subregion,
 			  int blending_mode)
 {
 	cairo_t *cairo;
@@ -375,10 +371,8 @@ lsm_filter_surface_blend (LsmFilterSurface *input_1,
 	}
 
 	cairo = cairo_create (output->surface);
-	if (subregion != NULL) {
-		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
-		cairo_clip (cairo);
-	}
+	cairo_rectangle (cairo, output->subregion.x, output->subregion.y, output->subregion.width, output->subregion.height);
+	cairo_clip (cairo);
 	cairo_set_source_surface (cairo, input_2->surface, 0, 0);
 	cairo_paint (cairo);
 	cairo_set_source_surface (cairo, input_1->surface, 0, 0);
@@ -390,7 +384,6 @@ lsm_filter_surface_blend (LsmFilterSurface *input_1,
 void
 lsm_filter_surface_offset (LsmFilterSurface *input,
 			   LsmFilterSurface *output,
-			   const LsmBox *subregion,
 			   int dx, int dy)
 {
 	cairo_t *cairo;
@@ -399,10 +392,8 @@ lsm_filter_surface_offset (LsmFilterSurface *input,
 	g_return_if_fail (output != NULL);
 
 	cairo = cairo_create (output->surface);
-	if (subregion != NULL) {
-		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
-		cairo_clip (cairo);
-	}
+	cairo_rectangle (cairo, output->subregion.x, output->subregion.y, output->subregion.width, output->subregion.height);
+	cairo_clip (cairo);
 	cairo_set_source_surface (cairo, input->surface, dx, dy);
 	cairo_paint (cairo);
 	cairo_destroy (cairo);
@@ -410,8 +401,7 @@ lsm_filter_surface_offset (LsmFilterSurface *input,
 
 void
 lsm_filter_surface_merge (LsmFilterSurface *input,
-			  LsmFilterSurface *output,
-			  const LsmBox *subregion)
+			  LsmFilterSurface *output)
 {
 	cairo_t *cairo;
 
@@ -419,17 +409,15 @@ lsm_filter_surface_merge (LsmFilterSurface *input,
 	g_return_if_fail (output != NULL);
 
 	cairo = cairo_create (output->surface);
-	if (subregion != NULL) {
-		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
-		cairo_clip (cairo);
-	}
+	cairo_rectangle (cairo, output->subregion.x, output->subregion.y, output->subregion.width, output->subregion.height);
+	cairo_clip (cairo);
 	cairo_set_source_surface (cairo, input->surface, 0, 0);
 	cairo_paint (cairo);
 	cairo_destroy (cairo);
 }
 
 void
-lsm_filter_surface_tile (LsmFilterSurface *input, LsmFilterSurface *output, const LsmBox *subregion)
+lsm_filter_surface_tile (LsmFilterSurface *input, LsmFilterSurface *output)
 {
 	cairo_t *cairo;
 	cairo_surface_t *surface;
@@ -445,10 +433,8 @@ lsm_filter_surface_tile (LsmFilterSurface *input, LsmFilterSurface *output, cons
 	cairo_destroy (cairo);
 
 	cairo = cairo_create (output->surface);
-	if (subregion != NULL) {
-		cairo_rectangle (cairo, subregion->x, subregion->y, subregion->width, subregion->height);
-		cairo_clip (cairo);
-	}
+	cairo_rectangle (cairo, output->subregion.x, output->subregion.y, output->subregion.width, output->subregion.height);
+	cairo_clip (cairo);
 	cairo_set_source_surface (cairo, surface, 0, 0);
 	pattern = cairo_get_source (cairo);
 	cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);

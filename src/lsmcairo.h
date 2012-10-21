@@ -52,17 +52,14 @@ void 			lsm_filter_surface_alpha 		(LsmFilterSurface *input, LsmFilterSurface *o
 void 			lsm_filter_surface_blend 		(LsmFilterSurface *input_1,
 								 LsmFilterSurface *input_2,
 								 LsmFilterSurface *output,
-								 const LsmBox *subregion,
 								 int blending_mode);
 void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input, LsmFilterSurface *output, double sx, double sy);
-void 			lsm_filter_surface_flood 		(LsmFilterSurface *surface, const LsmBox *subregion,
+void 			lsm_filter_surface_flood 		(LsmFilterSurface *surface,
 								 double red, double green, double blue, double opacity);
 void 			lsm_filter_surface_offset 		(LsmFilterSurface *input, LsmFilterSurface *output,
-								const LsmBox *subregion, int dx, int dy);
-void 			lsm_filter_surface_merge 		(LsmFilterSurface *input, LsmFilterSurface *output,
-								 const LsmBox *subregion);
-void 			lsm_filter_surface_tile 		(LsmFilterSurface *input, LsmFilterSurface *output,
-								 const LsmBox *subregion);
+								 int dx, int dy);
+void 			lsm_filter_surface_merge 		(LsmFilterSurface *input, LsmFilterSurface *output);
+void 			lsm_filter_surface_tile 		(LsmFilterSurface *input, LsmFilterSurface *output);
 
 void 			lsm_cairo_box_user_to_device 		(cairo_t *cairo, LsmBox *to, const LsmBox *from);
 void 			lsm_cairo_box_device_to_user 		(cairo_t *cairo, LsmBox *to, const LsmBox *from);
