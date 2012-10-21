@@ -58,6 +58,7 @@ static gboolean option_debug_filter = FALSE;
 static gboolean option_debug_pattern = FALSE;
 static gboolean option_debug_mask = FALSE;
 static gboolean option_dry_run = FALSE;
+static double option_compare_fuzz = 10.0;
 
 static const GOptionEntry entries[] =
 {
@@ -77,6 +78,8 @@ static const GOptionEntry entries[] =
 		&option_debug_mask,		"Debug mask surfaces", NULL },
 	{ "dry-run",		'n' , 0, G_OPTION_ARG_NONE,
 		&option_dry_run,		"Don't write files", NULL },
+	{ "compare-fuzz",	'z', 0, G_OPTION_ARG_DOUBLE,
+		&option_compare_fuzz,		"Compare fuzz", NULL},
 	{ NULL }
 };
 
@@ -192,6 +195,9 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 		buffer_diff_result_t result;
 		cairo_surface_t *surface_diff;
 		char *diff_png_filename;
+		char *command;
+		char *command_result = NULL;
+		int command_status;
 
 		diff_png_filename = g_strdup_printf ("%s-diff.png", test_name);
 
@@ -213,6 +219,16 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 		g_free (diff_png_filename);
 
 		if (result.pixels_changed == 0) {
+			g_printf (" %sOK%s \n", success_face, normal_face);
+			return TRUE;
+		}
+
+		command = g_strdup_printf ("compare -metric AE -fuzz %g%% %s-out.png %s-ref.png %s-compare-diff.png",
+					   option_compare_fuzz, test_name, test_name, test_name);
+		g_spawn_command_line_sync (command, NULL, &command_result, &command_status, NULL);
+		g_free (command);
+
+		if (command_result != NULL && atoi (command_result) == 0) {
 			g_printf (" %sOK%s \n", success_face, normal_face);
 			return TRUE;
 		}
@@ -466,6 +482,22 @@ lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, St
 	g_dir_close (directory);
 }
 
+static gboolean
+check_for_compare (void)
+{
+	char *result;
+
+	g_spawn_command_line_sync ("compare --version", NULL, &result, NULL, NULL);
+
+	if (result != NULL) {
+		g_free (result);
+		return TRUE;
+	}
+
+	g_printf ("lsm-test requires compare tool from ImageMagick\n");
+	return FALSE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -474,6 +506,9 @@ main (int argc, char **argv)
 	unsigned int i;
 	unsigned int n_input_files = 0;
 	Statistic statistic = {0, 0, 0, 0, 0};
+
+	if (!check_for_compare())
+		return EXIT_FAILURE;
 
 #ifdef HAVE_UNISTD_H
 	if (isatty (2)) {
