@@ -40,14 +40,20 @@ lsm_svg_circle_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
+_normalize_length (LsmSvgCircleElement *circle, LsmSvgView *view, double *cx, double *cy, double *r)
+{
+	*cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+}
+
+static void
 lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	double cx, cy, r;
 
-	cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	_normalize_length (circle, view, &cx,&cy,&r);
 
 	lsm_debug_render ("[LsmSvgCircleElement::render] cx = %g, cy = %g, r = %g", cx, cy, r);
 
@@ -60,9 +66,7 @@ lsm_svg_circle_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmEx
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	double cx, cy, r;
 
-	cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	_normalize_length (circle, view, &cx,&cy,&r);
 
 	extents->x1 = cx - r;
 	extents->y1 = cy - r;

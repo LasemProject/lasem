@@ -39,17 +39,37 @@ lsm_svg_ellipse_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
+_normalize_length (LsmSvgEllipseElement *ellipse, LsmSvgView *view, double *cx, double *cy, double *rx, double *ry)
+{
+	*cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+}
+
+static void
 lsm_svg_ellipse_element_render (LsmSvgElement *self, LsmSvgView *view)
 {
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
 	double cx, cy, rx, ry;
 
-	cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	_normalize_length (ellipse, view, &cx, &cy, &rx, &ry);
 
 	lsm_svg_view_show_ellipse (view, cx, cy, rx, ry);
+}
+
+static void
+lsm_svg_ellipse_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
+	double cx, cy, rx, ry;
+
+	_normalize_length (ellipse, view, &cx, &cy, &rx, &ry);
+
+	extents->x1 = cx - rx;
+	extents->y1 = cy - ry;
+	extents->x2 = cx + rx;
+	extents->y2 = cy + ry;
 }
 
 /* LsmSvgEllipseElement implementation */
@@ -125,6 +145,7 @@ lsm_svg_ellipse_element_class_init (LsmSvgEllipseElementClass *s_rect_class)
 		LSM_SVG_ELEMENT_CATEGORY_BASIC_SHAPE;
 
 	s_element_class->render = lsm_svg_ellipse_element_render;
+	s_element_class->get_extents = lsm_svg_ellipse_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	s_element_class->is_shape_element = TRUE;
