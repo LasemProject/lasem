@@ -54,8 +54,7 @@ void 			lsm_filter_surface_blend 		(LsmFilterSurface *input_1,
 								 LsmFilterSurface *output,
 								 const LsmBox *subregion,
 								 int blending_mode);
-void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input, LsmFilterSurface *output,
-								 const LsmBox *subregion, double sx, double sy);
+void 			lsm_filter_surface_fast_blur 		(LsmFilterSurface *input, LsmFilterSurface *output, double sx, double sy);
 void 			lsm_filter_surface_flood 		(LsmFilterSurface *surface, const LsmBox *subregion,
 								 double red, double green, double blue, double opacity);
 void 			lsm_filter_surface_offset 		(LsmFilterSurface *input, LsmFilterSurface *output,

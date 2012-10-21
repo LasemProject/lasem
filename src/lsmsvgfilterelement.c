@@ -105,14 +105,18 @@ lsm_svg_filter_element_render (LsmSvgElement *self, LsmSvgView *view)
 
 	is_object_bounding_box = (filter->primitive_units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
 
-	lsm_svg_view_push_viewport (view, object_extents,
-				    is_object_bounding_box ? &viewbox : NULL, NULL, LSM_SVG_OVERFLOW_VISIBLE); 
+	if (is_object_bounding_box) {
+		lsm_svg_view_push_viewport (view, object_extents,
+					    is_object_bounding_box ? &viewbox : NULL, NULL, LSM_SVG_OVERFLOW_VISIBLE); 
+	}
 
 	for (node = LSM_DOM_NODE (filter)->first_child; node != NULL; node = node->next_sibling)
 		if (LSM_IS_SVG_FILTER_PRIMITIVE (node))
 		    lsm_svg_filter_primitive_apply (LSM_SVG_FILTER_PRIMITIVE (node), view);
 
-	lsm_svg_view_pop_viewport (view);
+	if (is_object_bounding_box) {
+		lsm_svg_view_pop_viewport (view);
+	}
 }
 
 static void
