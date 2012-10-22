@@ -33,6 +33,7 @@
 #include <lsmsvgmarkerelement.h>
 #include <lsmsvgclippathelement.h>
 #include <lsmsvgmaskelement.h>
+#include <lsmsvgfiltersurface.h>
 #include <lsmcairo.h>
 #include <lsmstr.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -1962,7 +1963,7 @@ void
 lsm_svg_view_pop_filter (LsmSvgView *view)
 {
 	LsmSvgElement *filter_element;
-	LsmFilterSurface *filter_surface;
+	LsmSvgFilterSurface *filter_surface;
 	cairo_surface_t *surface;
 	GSList *iter;
 
@@ -1985,7 +1986,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 		subregion.width = cairo_image_surface_get_width (surface);
 		subregion.height = cairo_image_surface_get_height (surface);
 
-		filter_surface = lsm_filter_surface_new_with_content ("SourceGraphic", surface, &subregion);
+		filter_surface = lsm_svg_filter_surface_new_with_content ("SourceGraphic", surface, &subregion);
 		cairo_pattern_get_matrix (view->pattern_data->pattern, &matrix);
 
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
@@ -1998,12 +1999,12 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 			static int count = 0;
 
 			for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
-				LsmFilterSurface *surface = iter->data;
+				LsmSvgFilterSurface *surface = iter->data;
 
 				filename = g_strdup_printf ("filter-%04d-%s-%s.png", count++,
 							    view->style->filter->value,
-							    lsm_filter_surface_get_name (surface));
-				cairo_surface_write_to_png (lsm_filter_surface_get_cairo_surface (surface), filename);
+							    lsm_svg_filter_surface_get_name (surface));
+				cairo_surface_write_to_png (lsm_svg_filter_surface_get_cairo_surface (surface), filename);
 				g_free (filename);
 			}
 		}
@@ -2012,7 +2013,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 			cairo_pattern_t *pattern;
 			cairo_surface_t *surface;
 
-			surface = lsm_filter_surface_get_cairo_surface (view->filter_surfaces->data);
+			surface = lsm_svg_filter_surface_get_cairo_surface (view->filter_surfaces->data);
 			pattern = cairo_pattern_create_for_surface (surface);
 			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
 			cairo_pattern_set_matrix (pattern, &matrix);
@@ -2021,7 +2022,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 		}
 
 		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
-			lsm_filter_surface_unref (iter->data);
+			lsm_svg_filter_surface_unref (iter->data);
 		g_slist_free (view->filter_surfaces);
 		view->filter_surfaces = NULL;
 	}
@@ -2029,59 +2030,59 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 	_end_pattern (view);
 }
 
-static LsmFilterSurface *
+static LsmSvgFilterSurface *
 _get_filter_surface (LsmSvgView *view, const char *input)
 {
 	GSList *iter;
-	LsmFilterSurface *source_surface = NULL;
+	LsmSvgFilterSurface *source_surface = NULL;
 
 	if (input == NULL)
 		return view->filter_surfaces->data;
 
 	for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
-		LsmFilterSurface *surface = iter->data;
+		LsmSvgFilterSurface *surface = iter->data;
 
-		if (g_strcmp0 (input, lsm_filter_surface_get_name (surface)) == 0)
+		if (g_strcmp0 (input, lsm_svg_filter_surface_get_name (surface)) == 0)
 			return surface;
 
 		source_surface = surface;
 	}
 
 	if (g_strcmp0 (input, "SourceAlpha") == 0 && source_surface != NULL) {
-		LsmFilterSurface *surface;
+		LsmSvgFilterSurface *surface;
 
-		surface = lsm_filter_surface_new_similar ("SourceAlpha", source_surface, NULL);
-		lsm_filter_surface_alpha (source_surface, surface);
+		surface = lsm_svg_filter_surface_new_similar ("SourceAlpha", source_surface, NULL);
+		lsm_svg_filter_surface_alpha (source_surface, surface);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 
 		return surface;
 	} else if (g_strcmp0 (input, "BackgroundImage") == 0) {
 		/* TODO */
-		LsmFilterSurface *surface;
+		LsmSvgFilterSurface *surface;
 
 		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundImage is not yet implemented");
 
-		surface = lsm_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
+		surface = lsm_svg_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
 		/* TODO */
-		LsmFilterSurface *surface;
+		LsmSvgFilterSurface *surface;
 
 		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundAlpha is not yet implemented");
 
-		surface = lsm_filter_surface_new_similar ("BackgroundAlpha", source_surface, NULL);
+		surface = lsm_svg_filter_surface_new_similar ("BackgroundAlpha", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 	}
 
 	return NULL;
 }
 
-static LsmFilterSurface *
-_create_filter_surface (LsmSvgView *view, const char *output, LsmFilterSurface *input_surface, const LsmBox *subregion)
+static LsmSvgFilterSurface *
+_create_filter_surface (LsmSvgView *view, const char *output, LsmSvgFilterSurface *input_surface, const LsmBox *subregion)
 {
-	LsmFilterSurface *surface;
+	LsmSvgFilterSurface *surface;
 
-	surface = lsm_filter_surface_new_similar (output, input_surface, subregion);
+	surface = lsm_svg_filter_surface_new_similar (output, input_surface, subregion);
 
 	view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface); 
 
@@ -2092,7 +2093,7 @@ LsmBox
 lsm_svg_view_get_filter_surface_extents (LsmSvgView *view, const char *name)
 {
 	static LsmBox null_extents = {.x = 0.0, .y = 0.0, .width = 0.0, .height = 0.0};
-	LsmFilterSurface *surface;
+	LsmSvgFilterSurface *surface;
 	LsmBox extents;
 
 	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), null_extents);
@@ -2101,7 +2102,7 @@ lsm_svg_view_get_filter_surface_extents (LsmSvgView *view, const char *name)
 	if (surface == NULL)
 		return null_extents;
 
-	lsm_cairo_box_device_to_user (view->dom_view.cairo, &extents, lsm_filter_surface_get_subregion (surface));
+	lsm_cairo_box_device_to_user (view->dom_view.cairo, &extents, lsm_svg_filter_surface_get_subregion (surface));
 
 	return extents;
 }
@@ -2110,9 +2111,9 @@ void
 lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*input_2, const char *output,
 			  const LsmBox *subregion, LsmSvgBlendingMode mode)
 {
-	LsmFilterSurface *output_surface;
-	LsmFilterSurface *input_1_surface;
-	LsmFilterSurface *input_2_surface;
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_1_surface;
+	LsmSvgFilterSurface *input_2_surface;
 	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -2130,14 +2131,14 @@ lsm_svg_view_apply_blend (LsmSvgView *view, const char *input_1, const char*inpu
 
 	lsm_log_render ("[SvgView::blend] mode = %s", lsm_svg_blending_mode_to_string (mode));
 
-	lsm_filter_surface_blend (input_1_surface, input_2_surface, output_surface, mode);
+	lsm_svg_filter_surface_blend (input_1_surface, input_2_surface, output_surface, mode);
 }
 
 void
 lsm_svg_view_apply_flood (LsmSvgView *view, const char *output, const LsmBox *subregion)
 {
-	LsmFilterSurface *output_surface;
-	LsmFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
 	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -2151,7 +2152,7 @@ lsm_svg_view_apply_flood (LsmSvgView *view, const char *output, const LsmBox *su
 		        subregion_px.width, subregion_px.height,
 		        subregion_px.x, subregion_px.y);
 
-	lsm_filter_surface_flood (output_surface,
+	lsm_svg_filter_surface_flood (output_surface,
 				  view->style->flood_color->value.red,
 				  view->style->flood_color->value.green,
 				  view->style->flood_color->value.blue,
@@ -2162,8 +2163,8 @@ void
 lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const char *output,
 				  const LsmBox *subregion, double std_x, double std_y)
 {
-	LsmFilterSurface *input_surface;
-	LsmFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
 	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -2188,15 +2189,15 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 	lsm_log_render ("[SvgView::apply_gaussian_blur] %g px,%g px",
 			std_x, std_y);
 
-	lsm_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
+	lsm_svg_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
 }
 
 void
 lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *output,
 			   const LsmBox *subregion, double dx, double dy)
 {
-	LsmFilterSurface *input_surface;
-	LsmFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
 	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -2217,14 +2218,14 @@ lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *outp
 
 	lsm_log_render ("[SvgView::apply_offset] %g px,%g px", dx, dy);
 
-	lsm_filter_surface_offset (input_surface, output_surface, dx, dy);
+	lsm_svg_filter_surface_offset (input_surface, output_surface, dx, dy);
 }
 
 void
 lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
-	LsmFilterSurface *input_surface;
-	LsmFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
 	LsmBox subregion_px;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
@@ -2242,14 +2243,14 @@ lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *outpu
 		output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
 	if (output_surface != NULL)
-		lsm_filter_surface_merge (input_surface, output_surface);
+		lsm_svg_filter_surface_merge (input_surface, output_surface);
 }
 
 void
 lsm_svg_view_apply_tile (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
-	LsmFilterSurface *input_surface;
-	LsmFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
 	LsmBox subregion_px;
 
 	input_surface = _get_filter_surface (view, input);
@@ -2262,7 +2263,7 @@ lsm_svg_view_apply_tile (LsmSvgView *view, const char *input, const char *output
 	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
-	lsm_filter_surface_tile (input_surface, output_surface);
+	lsm_svg_filter_surface_tile (input_surface, output_surface);
 }
 
 void

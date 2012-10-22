@@ -155,7 +155,8 @@ IGNORE_HFILES=\
 	lsmsvgfiltermerge.h			\
 	lsmsvgfiltermergenode.h			\
 	lsmsvgfilterspecularlighting.h		\
-	lsmsvgfiltertile.h
+	lsmsvgfiltertile.h			\
+	lsmsvgfiltersurface.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

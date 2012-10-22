@@ -134,7 +134,8 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfiltermerge.c			\
 	lsmsvgfiltermergenode.c			\
 	lsmsvgfilterspecularlighting.c		\
-	lsmsvgfiltertile.c
+	lsmsvgfiltertile.c			\
+	lsmsvgfiltersurface.c
 
 LASEM_DOM_HDRS = 				\
 	lsm.h					\
@@ -247,7 +248,8 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfiltermerge.h			\
 	lsmsvgfiltermergenode.h			\
 	lsmsvgfilterspecularlighting.h		\
-	lsmsvgfiltertile.h
+	lsmsvgfiltertile.h			\
+	lsmsvgfiltersurface.h
 
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
