@@ -50,29 +50,8 @@ static void
 lsm_svg_polyline_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
 {
 	LsmSvgPolylineElement *polyline = LSM_SVG_POLYLINE_ELEMENT (self);
-	int count = 0;
-	int n_values;
-	char *str = polyline->points.value;
-	double values[2];
 
-	/* TODO cache polyline extents and share code with polygon */
-	do {
-		n_values = lsm_str_parse_double_list (&str, 2, values);
-		if (n_values == 2) {
-			if (count == 0) {
-				extents->x1 = values[0];
-				extents->x2 = values[0];
-				extents->y1 = values[1];
-				extents->y2 = values[1];
-			} else {
-				extents->x1 = MIN (values[0], extents->x1);
-				extents->x2 = MAX (values[0], extents->x2);
-				extents->y1 = MIN (values[1], extents->y1);
-				extents->y2 = MAX (values[1], extents->y2);
-			}
-		}
-		count++;
-	} while (n_values == 2);
+	lsm_str_point_list_exents (polyline->points.value, extents);
 }
 
 /* LsmSvgPolylineElement implementation */

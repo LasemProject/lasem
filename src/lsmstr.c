@@ -22,6 +22,7 @@
  */
 
 #include <lsmstr.h>
+#include <lsmutils.h>
 #include <glib.h>
 #include <stdio.h>
 #include <string.h>
@@ -191,3 +192,40 @@ lsm_str_parse_double_list (char **str, unsigned int n_values, double *values)
 	return i;
 }
 
+void
+lsm_str_point_list_exents (const char *point_list, LsmExtents *extents)
+{
+	char *str = (char *) point_list;
+	int count = 0;
+	int n_values;
+	double values[2];
+
+	if (extents == NULL)
+		return;
+
+	if (point_list == NULL) {
+		extents->x1 = 0;
+		extents->x2 = 0;
+		extents->y1 = 0;
+		extents->y2 = 0;
+		return;
+	}
+
+	do {
+		n_values = lsm_str_parse_double_list (&str, 2, values);
+		if (n_values == 2) {
+			if (count == 0) {
+				extents->x1 = values[0];
+				extents->x2 = values[0];
+				extents->y1 = values[1];
+				extents->y2 = values[1];
+			} else {
+				extents->x1 = MIN (values[0], extents->x1);
+				extents->x2 = MAX (values[0], extents->x2);
+				extents->y1 = MIN (values[1], extents->y1);
+				extents->y2 = MAX (values[1], extents->y2);
+			}
+		}
+		count++;
+	} while (n_values == 2);
+}
