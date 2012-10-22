@@ -981,6 +981,8 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 
 	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string, x, y, style->font_size_px);
 
+	/* A text may be painted with a text based pattern. In this case,
+	 * we take care to create a new pango layout if the current one is in use. */
 	if (view->is_pango_layout_in_use) {
 		PangoContext *pango_context;
 
