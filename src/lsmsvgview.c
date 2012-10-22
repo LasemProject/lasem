@@ -873,28 +873,24 @@ lsm_svg_view_show_path (LsmSvgView *view,
 }
 
 void
-lsm_svg_view_calculate_path_extents (LsmSvgView *view,
-				     const char *path,
-				     double *x1, double *y1,
-				     double *x2, double *y2)
+lsm_svg_view_path_extents (LsmSvgView *view,
+			   const char *path,
+			   LsmExtents *extents)
 {
-	double xx1, yy1, xx2, yy2;
+	double x1, y1, x2, y2;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (extents != NULL);
 
 	cairo_new_path (view->dom_view.cairo);
 	lsm_cairo_emit_svg_path (view->dom_view.cairo, path);
-	cairo_path_extents (view->dom_view.cairo, &xx1, &yy1, &xx2, &yy2);
+	cairo_path_extents (view->dom_view.cairo, &x1, &y1, &x2, &y2);
 	cairo_new_path (view->dom_view.cairo);
 
-	if (x1 != NULL)
-		*x1 = xx1;
-	if (y1 != NULL)
-		*y1 = yy1;
-	if (x2 != NULL)
-		*x2 = xx2;
-	if (y2 != NULL)
-		*y2 = yy2;
+	extents->x1 = x1;
+	extents->x2 = x2;
+	extents->y1 = y1;
+	extents->y2 = y2;
 }
 
 void
@@ -958,10 +954,9 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 	_show_points (view, points, TRUE);
 }
 
-void
-lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y)
+static void
+_update_pango_layout (LsmSvgView *view, char const *string, double x, double y, LsmSvgViewPathInfos *path_infos)
 {
-	LsmSvgViewPathInfos path_infos = default_path_infos;
 	const LsmSvgStyle *style;
 	PangoLayout *pango_layout;
 	PangoFontDescription *font_description;
@@ -972,27 +967,7 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	int baseline;
 	double x1, y1;
 
-	if (string == NULL || string[0] == '\0')
-		return;
-
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-
 	style = view->style;
-
-	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string, x, y, style->font_size_px);
-
-	/* A text may be painted with a text based pattern. In this case,
-	 * we take care to create a new pango layout if the current one is in use. */
-	if (view->is_pango_layout_in_use) {
-		PangoContext *pango_context;
-
-		pango_context = pango_layout_get_context (view->pango_layout);
-		view->pango_layout_stack = g_slist_prepend (view->pango_layout_stack, view->pango_layout);
-		view->pango_layout = pango_layout_new (pango_context);
-
-		lsm_debug_render ("[LsmSvgView::show_text] Create a new pango layout");
-	} else
-		view->is_pango_layout_in_use = TRUE;
 
 	pango_layout = view->pango_layout;
 	font_description = view->dom_view.font_description;
@@ -1070,30 +1045,42 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 			break;
 	}
 
-	path_infos.is_text_path = TRUE;
-	path_infos.is_extents_defined = TRUE;
-	path_infos.extents.x1 = x1;
-	path_infos.extents.y1 = y1;
-	path_infos.extents.x2 = x1 + pango_units_to_double (rectangle.width);
-	path_infos.extents.y2 = y1 + pango_units_to_double (rectangle.height);
-	path_infos.pango_layout = pango_layout;
+	path_infos->is_text_path = TRUE;
+	path_infos->is_extents_defined = TRUE;
+	path_infos->extents.x1 = x1;
+	path_infos->extents.y1 = y1;
+	path_infos->extents.x2 = x1 + pango_units_to_double (rectangle.width);
+	path_infos->extents.y2 = y1 + pango_units_to_double (rectangle.height);
+	path_infos->pango_layout = pango_layout;
+}
 
-	if (style->writing_mode->value == LSM_SVG_WRITING_MODE_TB ||
-	    style->writing_mode->value == LSM_SVG_WRITING_MODE_TB_RL) {
+static gboolean
+_lock_pango_layout (LsmSvgView *view)
+{
+	/* A text may be painted with a text based pattern. In this case,
+	 * we take care to create a new pango layout if the current one is in use. */
+	if (view->is_pango_layout_in_use) {
+		PangoContext *pango_context;
 
-		cairo_save (view->dom_view.cairo);
-		cairo_rotate (view->dom_view.cairo, M_PI / 2.0);
-		cairo_move_to (view->dom_view.cairo, x1, y1);
+		pango_context = pango_layout_get_context (view->pango_layout);
+		view->pango_layout_stack = g_slist_prepend (view->pango_layout_stack, view->pango_layout);
+		view->pango_layout = pango_layout_new (pango_context);
 
-		process_path (view, &path_infos);
+		lsm_debug_render ("[LsmSvgView::show_text] Create a new pango layout");
 
-		cairo_restore (view->dom_view.cairo);
-	} else {
-		cairo_move_to (view->dom_view.cairo, x1, y1);
-		process_path (view, &path_infos);
+		return TRUE;
 	}
 
-	if (pango_layout != view->pango_layout) {
+	view->is_pango_layout_in_use = TRUE;
+
+	return FALSE;
+}
+
+static void
+_unlock_pango_layout (LsmSvgView *view, gboolean need_pop)
+{
+
+	if (need_pop) {
 		lsm_debug_render ("[LsmSvgView::show_text] Free the child pango layout");
 
 		if (view->pango_layout != NULL) {
@@ -1107,6 +1094,70 @@ lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y
 	}
 
 	view->is_pango_layout_in_use = FALSE;
+}
+
+void
+lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y)
+{
+	LsmSvgViewPathInfos path_infos = default_path_infos;
+	const LsmSvgStyle *style;
+	gboolean need_pop;
+
+	if (string == NULL || string[0] == '\0')
+		return;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	style = view->style;
+
+	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string, x, y, style->font_size_px);
+
+	need_pop = _lock_pango_layout (view);
+
+	_update_pango_layout (view, string, x, y, &path_infos);
+
+	if (style->writing_mode->value == LSM_SVG_WRITING_MODE_TB ||
+	    style->writing_mode->value == LSM_SVG_WRITING_MODE_TB_RL) {
+
+		cairo_save (view->dom_view.cairo);
+		cairo_rotate (view->dom_view.cairo, M_PI / 2.0);
+		cairo_move_to (view->dom_view.cairo, path_infos.extents.x1, path_infos.extents.y1);
+
+		process_path (view, &path_infos);
+
+		cairo_restore (view->dom_view.cairo);
+	} else {
+		cairo_move_to (view->dom_view.cairo, path_infos.extents.x1, path_infos.extents.y1);
+		process_path (view, &path_infos);
+	}
+
+	_unlock_pango_layout (view, need_pop);
+}
+
+void
+lsm_svg_view_text_extents (LsmSvgView *view, char const *string, double x, double y, LsmExtents *extents)
+{
+	LsmSvgViewPathInfos path_infos = default_path_infos;
+	gboolean need_pop;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (extents != NULL);
+
+	if (string == NULL ||
+	    string[0] == '\0') {
+		extents->x1 = 0;
+		extents->y1 = 0;
+		extents->y1 = 0;
+		extents->y2 = 0;
+	}
+
+	need_pop = _lock_pango_layout (view);
+
+	_update_pango_layout (view, string, x, y, &path_infos);
+
+	_unlock_pango_layout (view, need_pop);
+
+	*extents = path_infos.extents;
 }
 
 void

@@ -80,15 +80,22 @@ static void
 lsm_svg_text_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
 {
 	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
+	LsmDomNode *iter;
+	GString *string = g_string_new ("");
 	double x, y;
+
+	for (iter = LSM_DOM_NODE (self)->first_child; iter != NULL; iter = iter->next_sibling) {
+		if (LSM_IS_DOM_TEXT (iter)) {
+			g_string_append (string, lsm_dom_node_get_node_value (iter));
+		}
+	}
 
 	x = lsm_svg_view_normalize_length (view, &text->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	y = lsm_svg_view_normalize_length (view, &text->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	extents->x1 = x;
-	extents->y1 = y;
-	extents->x2 = x;
-	extents->y2 = y;
+	lsm_svg_view_text_extents (view, g_strstrip (string->str), x, y, extents);
+
+	g_string_free (string, TRUE);
 }
 
 /* LsmSvgTextElement implementation */

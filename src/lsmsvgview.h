@@ -95,9 +95,7 @@ const LsmBox *	lsm_svg_view_get_pattern_extents	(LsmSvgView *view);
 const LsmBox * 	lsm_svg_view_get_object_extents 	(LsmSvgView *view);
 const LsmBox *	lsm_svg_view_get_clip_extents		(LsmSvgView *view);
 
-void		lsm_svg_view_calculate_path_extents	(LsmSvgView *view, const char *path,
-							 double *x1, double *y1,
-							 double *x2, double *y2);
+void		lsm_svg_view_path_extents		(LsmSvgView *view, const char *path, LsmExtents *extents);
 
 void 		lsm_svg_view_create_radial_gradient 	(LsmSvgView *view, double cx, double cy,
 							                   double r, double fx, double fy);
@@ -125,6 +123,7 @@ void 		lsm_svg_view_show_line 		(LsmSvgView *view, double x1, double y1, double 
 void 		lsm_svg_view_show_polyline	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_polygon	(LsmSvgView *view, const char *points);
 void 		lsm_svg_view_show_text 		(LsmSvgView *view, char const *text, double x, double y);
+void 		lsm_svg_view_text_extents 	(LsmSvgView *view, char const *string, double x, double y, LsmExtents *extents);
 void		lsm_svg_view_show_pixbuf	(LsmSvgView *view, GdkPixbuf *pixbuf);
 
 void 		lsm_svg_view_push_viewbox 		(LsmSvgView *view, const LsmBox *viewbox);

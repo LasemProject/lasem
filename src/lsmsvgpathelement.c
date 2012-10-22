@@ -52,9 +52,7 @@ lsm_svg_path_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExte
 {
 	LsmSvgPathElement *path = LSM_SVG_PATH_ELEMENT (self);
 
-	lsm_svg_view_calculate_path_extents (view, path->d.value,
-					     &extents->x1, &extents->y1,
-					     &extents->x2, &extents->y2);
+	lsm_svg_view_path_extents (view, path->d.value, extents);
 }
 
 /* LsmSvgPathElement implementation */
