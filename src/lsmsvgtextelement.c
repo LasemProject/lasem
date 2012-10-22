@@ -76,6 +76,21 @@ lsm_svg_text_element_render (LsmSvgElement *self, LsmSvgView *view)
 		    lsm_svg_element_render (LSM_SVG_ELEMENT (iter), view);
 }
 
+static void
+lsm_svg_text_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);
+	double x, y;
+
+	x = lsm_svg_view_normalize_length (view, &text->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_view_normalize_length (view, &text->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+
+	extents->x1 = x;
+	extents->y1 = y;
+	extents->x2 = x;
+	extents->y2 = y;
+}
+
 /* LsmSvgTextElement implementation */
 
 LsmDomNode *
@@ -135,6 +150,7 @@ lsm_svg_text_element_class_init (LsmSvgTextElementClass *s_text_class)
 		LSM_SVG_ELEMENT_CATEGORY_TEXT_CONTENT;
 
 	s_element_class->render = lsm_svg_text_element_render;
+	s_element_class->get_extents = lsm_svg_text_element_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_duplicate (s_element_class->attribute_manager);
 
 	s_element_class->is_shape_element = TRUE;
