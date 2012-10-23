@@ -485,16 +485,18 @@ lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, St
 static gboolean
 check_for_compare (void)
 {
-	char *result;
+	char *result, *output;
 
-	g_spawn_command_line_sync ("compare --version", NULL, &result, NULL, NULL);
+	g_spawn_command_line_sync ("compare --version", &output, &result, NULL, NULL);
+
+	g_free (output);
 
 	if (result != NULL) {
 		g_free (result);
 		return TRUE;
 	}
 
-	g_printf ("lsm-test requires compare tool from ImageMagick\n");
+	g_printf ("Compare utility not found.\nPlease install ImageMagick.\n");
 	return FALSE;
 }
 
