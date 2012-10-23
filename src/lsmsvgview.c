@@ -1650,6 +1650,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
 			cairo_pattern_set_matrix (pattern, &matrix);
 			cairo_set_source (view->pattern_data->old_cairo, pattern);
+			cairo_pattern_destroy (pattern);
 			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->style->opacity->value);
 		}
 
