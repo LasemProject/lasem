@@ -41,7 +41,7 @@ static const char *lsm_svg_blending_mode_strings[] = {
 const char *
 lsm_svg_blending_mode_to_string (LsmSvgBlendingMode blending_mode)
 {
-	if (blending_mode < 0 || blending_mode > LSM_SVG_BLENDING_MODE_LIGHTEN)
+	if (blending_mode < 0 || blending_mode > LSM_SVG_BLENDING_MODE_XOR)
 		return NULL;
 
 	return lsm_svg_blending_mode_strings[blending_mode];
