@@ -70,8 +70,8 @@
     </radialGradient>
 
     <radialGradient id="rgSpreadRepeat" gradientUnits="objectBoundingBox" cx="0.5" cy="0.5" r="0.2" spreadMethod="repeat">
-    	<stop offset="000%" stop-color="red"/>
-    	<stop offset="100%" stop-color="gold"/>
+	    <stop offset="000%" stop-color="red"/>
+	    <stop offset="100%" stop-color="gold"/>
     </radialGradient>
 
     <radialGradient id="rgSpreadDefault" gradientUnits="objectBoundingBox" cx="0.5" cy="0.5" r="0.2">
@@ -94,7 +94,8 @@
 
   <rect x="245" y="130" width="225" height="40" fill="url(#rgSpreadReflect)" stroke="none"/>
 
-  <rect x="245" y="200" width="225" height="40" fill="url(#rgSpreadRepeat)" stroke="none"/>
+<!--  Disable in suite for now.-->
+<!--  <rect x="245" y="200" width="225" height="40" fill="url(#rgSpreadRepeat)" stroke="none"/>-->
 
   <rect x="245" y="270" width="225" height="40" fill="url(#rgSpreadDefault)" stroke="none"/>
 
