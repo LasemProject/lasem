@@ -1690,21 +1690,44 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 
 		return surface;
 	} else if (g_strcmp0 (input, "BackgroundImage") == 0) {
-		/* TODO */
 		LsmSvgFilterSurface *surface;
-
-		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundImage is not yet implemented");
+		cairo_surface_t *background_surface;
+		cairo_matrix_t matrix;
+		cairo_matrix_t pattern_matrix;
+		cairo_t *cairo;
 
 		surface = lsm_svg_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
+
+		background_surface = cairo_get_target (view->pattern_data->old_cairo);
+		cairo_get_matrix (view->pattern_data->old_cairo, &matrix);
+		cairo_pattern_get_matrix (view->pattern_data->pattern, &pattern_matrix);
+		
+		cairo_matrix_invert (&matrix);
+		cairo_matrix_multiply (&matrix, &matrix, &pattern_matrix);
+
+		lsm_debug_render ("[LsmSvgView::_get_filter_surface] Background image matrix %g, %g, %g, %g, %g, %g\n",
+				  matrix.xx, matrix.xy, matrix.yx, matrix.yy,
+				  matrix.x0, matrix.y0);
+
+		cairo = cairo_create (lsm_svg_filter_surface_get_cairo_surface (surface));
+		cairo_set_matrix (cairo, &matrix);
+		cairo_set_source_surface (cairo, background_surface, 0, 0);
+		cairo_paint (cairo);
+		cairo_destroy (cairo);
+		
+		return surface;
 	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
-		/* TODO */
 		LsmSvgFilterSurface *surface;
+		LsmSvgFilterSurface *background_surface;
 
-		lsm_warning_render ("LsmSvgView::get_filter_surface] BackgroundAlpha is not yet implemented");
+		background_surface = _get_filter_surface (view, "BackgroundImage");
 
-		surface = lsm_svg_filter_surface_new_similar ("BackgroundAlpha", source_surface, NULL);
+		surface = lsm_svg_filter_surface_new_similar ("BackgroundAlpha", background_surface, NULL);
+		lsm_svg_filter_surface_alpha (background_surface, surface);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
+
+		return surface;
 	}
 
 	return NULL;
