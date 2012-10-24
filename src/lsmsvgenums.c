@@ -54,6 +54,27 @@ lsm_svg_blending_mode_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_blending_mode_strings));
 }
 
+static const char *lsm_svg_enable_background_strings[] = {
+	"accumulate",
+	"new"
+};
+
+const char *
+lsm_svg_enable_background_to_string (LsmSvgEnableBackground enable_background)
+{
+	if (enable_background < 0 || enable_background > LSM_SVG_ENABLE_BACKGROUND_NEW)
+		return NULL;
+
+	return lsm_svg_enable_background_strings[enable_background];
+}
+
+LsmSvgEnableBackground
+lsm_svg_enable_background_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_enable_background_strings,
+					   G_N_ELEMENTS (lsm_svg_enable_background_strings));
+}
+
 static const char *lsm_svg_length_type_strings[] = {
 	"",
 	"%",

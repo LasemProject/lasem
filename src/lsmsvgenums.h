@@ -53,6 +53,15 @@ const char * 		lsm_svg_blending_mode_to_string 	(LsmSvgBlendingMode blending_mod
 LsmSvgBlendingMode	lsm_svg_blending_mode_from_string 	(const char *string);
 
 typedef enum {
+	LSM_SVG_ENABLE_BACKGROUND_ERROR = -1,
+	LSM_SVG_ENABLE_BACKGROUND_ACCUMULATE,
+	LSM_SVG_ENABLE_BACKGROUND_NEW
+} LsmSvgEnableBackground;
+
+const char * 		lsm_svg_enable_background_to_string 	(LsmSvgEnableBackground enable_background);
+LsmSvgEnableBackground	lsm_svg_enable_background_from_string 	(const char *string);
+
+typedef enum {
 	LSM_SVG_PAINT_TYPE_ERROR = -1,
 	LSM_SVG_PAINT_TYPE_UNKNOWN = 0,
 	LSM_SVG_PAINT_TYPE_RGB_COLOR,

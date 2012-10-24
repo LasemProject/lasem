@@ -60,6 +60,7 @@ struct _LsmSvgView {
 	GSList *viewbox_stack;
 	GSList *matrix_stack;
 	GSList *pango_layout_stack;
+	GSList *background_stack;
 
 	gboolean is_pango_layout_in_use;
 

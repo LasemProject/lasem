@@ -62,7 +62,7 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 	{
 		.name = "enable-background",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, enable_background),
-		.trait_class = &lsm_null_trait_class,
+		.trait_class = &lsm_svg_enable_background_trait_class,
 		.trait_default = "accumulate"
 	},
 	{

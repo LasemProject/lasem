@@ -36,6 +36,11 @@ typedef struct {
 
 typedef struct {
 	LsmProperty base;
+	LsmSvgEnableBackground value;
+} LsmSvgEnableBackgroundProperty;
+
+typedef struct {
+	LsmProperty base;
 	LsmSvgLength length;
 } LsmSvgLengthProperty;
 
@@ -122,7 +127,7 @@ struct _LsmSvgStyle {
 	LsmProperty *	 		clip;
 	LsmProperty *	 		clip_path;
 	LsmProperty *	 		dominant_baseline;
-	LsmProperty *	 		enable_background;
+	LsmSvgEnableBackgroundProperty *enable_background;
 	LsmProperty *	 		filter;
 	LsmSvgColorProperty *		flood_color;
 	LsmSvgDoubleProperty *		flood_opacity;

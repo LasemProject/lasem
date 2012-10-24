@@ -1696,17 +1696,21 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 		cairo_matrix_t pattern_matrix;
 		cairo_t *cairo;
 
+		if (view->background_stack == NULL)
+			return NULL;
+
 		surface = lsm_svg_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
 
-		background_surface = cairo_get_target (view->pattern_data->old_cairo);
+		background_surface = view->background_stack->data;
+
 		cairo_get_matrix (view->pattern_data->old_cairo, &matrix);
 		cairo_pattern_get_matrix (view->pattern_data->pattern, &pattern_matrix);
 		
 		cairo_matrix_invert (&matrix);
 		cairo_matrix_multiply (&matrix, &matrix, &pattern_matrix);
 
-		lsm_debug_render ("[LsmSvgView::_get_filter_surface] Background image matrix %g, %g, %g, %g, %g, %g\n",
+		lsm_debug_render ("[LsmSvgView::_get_filter_surface] Background image matrix %g, %g, %g, %g, %g, %g",
 				  matrix.xx, matrix.xy, matrix.yx, matrix.yy,
 				  matrix.x0, matrix.y0);
 
@@ -1720,6 +1724,9 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 	} else if (g_strcmp0 (input, "BackgroundAlpha") == 0) {
 		LsmSvgFilterSurface *surface;
 		LsmSvgFilterSurface *background_surface;
+
+		if (view->background_stack == NULL)
+			return NULL;
 
 		background_surface = _get_filter_surface (view, "BackgroundImage");
 
@@ -2014,8 +2021,17 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	do_mask = (g_strcmp0 (style->mask->value, "none") != 0);
 	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
 
-	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping && !view->style->ignore_group_opacity) {
+	if ((view->style->opacity->value < 1.0 ||
+	     view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) &&
+	    !do_filter &&
+	    !view->is_clipping &&
+	    !view->style->ignore_group_opacity) {
+		lsm_debug_render ("[LsmSvgView::push_composition] Push group");
 		cairo_push_group (view->dom_view.cairo);
+		if (view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) {
+			lsm_debug_render ("[LsmSvgView::push_composition] Push background");
+			view->background_stack = g_slist_prepend (view->background_stack, cairo_get_group_target (view->dom_view.cairo));
+		}
 	}
 
 	if (do_clip) {
@@ -2075,9 +2091,18 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	if (do_clip)
 		lsm_svg_view_pop_clip (view);
 
-	if (view->style->opacity->value < 1.0 && !do_filter && !view->is_clipping && !view->style->ignore_group_opacity) {
+	if ((view->style->opacity->value < 1.0 ||
+	     view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) &&
+	    !do_filter &&
+	    !view->is_clipping &&
+	    !view->style->ignore_group_opacity) {
+		if (view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) {
+			lsm_debug_render ("[LsmSvgView::pop_composition] Pop background");
+			view->background_stack = g_slist_delete_link (view->background_stack, view->background_stack);
+		}
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
+		lsm_debug_render ("[LsmSvgView::pop_composition] Pop group");
 	}
 
 	lsm_svg_view_pop_style (view);
@@ -2155,6 +2180,7 @@ lsm_svg_view_render (LsmDomView *view)
 	svg_view->viewbox_stack = NULL;
 	svg_view->matrix_stack = NULL;
 	svg_view->pango_layout_stack = NULL;
+	svg_view->background_stack = NULL;
 
 	svg_view->is_clipping = FALSE;
 	svg_view->is_pango_layout_in_use = FALSE;
@@ -2195,6 +2221,11 @@ lsm_svg_view_render (LsmDomView *view)
 		g_warning ("[LsmSvgView::render] Dangling style in stack");
 		g_slist_free (svg_view->style_stack);
 		svg_view->style_stack = NULL;
+	}
+	if (svg_view->background_stack != NULL) {
+		g_warning ("[LsmSvgView::render] Dangling background in stack");
+		g_slist_free (svg_view->background_stack);
+		svg_view->background_stack = NULL;
 	}
 }
 

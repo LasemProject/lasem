@@ -56,6 +56,30 @@ const LsmTraitClass lsm_svg_blending_mode_trait_class = {
 };
 
 static gboolean
+lsm_svg_enable_background_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgEnableBackground *trait = (LsmSvgEnableBackground *) abstract_trait;
+
+	*trait = lsm_svg_enable_background_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_enable_background_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgEnableBackground *trait = (LsmSvgEnableBackground *) abstract_trait;
+
+	return g_strdup (lsm_svg_enable_background_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_enable_background_trait_class = {
+	.size = sizeof (LsmSvgEnableBackground),
+	.from_string = lsm_svg_enable_background_trait_from_string,
+	.to_string = lsm_svg_enable_background_trait_to_string
+};
+
+static gboolean
 lsm_svg_length_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLength *svg_length = (LsmSvgLength *) abstract_trait;
