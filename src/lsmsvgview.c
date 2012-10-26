@@ -71,6 +71,12 @@ struct _LsmSvgViewPatternData {
 	double opacity;
 };
 
+typedef struct {
+	cairo_surface_t *surface;
+	double group_opacity;
+	gboolean enable_background;
+} LsmSvgViewBackground;
+
 double
 lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, LsmSvgLengthDirection direction)
 {
@@ -1691,18 +1697,29 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 		return surface;
 	} else if (g_strcmp0 (input, "BackgroundImage") == 0) {
 		LsmSvgFilterSurface *surface;
-		cairo_surface_t *background_surface;
+		LsmSvgViewBackground *background;
+		gboolean background_processing = FALSE;
 		cairo_matrix_t matrix;
 		cairo_matrix_t pattern_matrix;
 		cairo_t *cairo;
+		GList *iter;
 
-		if (view->background_stack == NULL)
+		for (iter = view->background_stack; iter != NULL; iter = iter->next) {
+			background = iter->data;
+
+			if (background->enable_background) {
+				background_processing = TRUE;
+				break;
+			}
+		}
+
+		if (!background_processing) {
+			lsm_debug_render ("[LsmSvgView::_get_filter_surface] Background processing not enabled");
 			return NULL;
+		}
 
 		surface = lsm_svg_filter_surface_new_similar ("BackgroundImage", source_surface, NULL);
 		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, surface);	
-
-		background_surface = view->background_stack->data;
 
 		cairo_get_matrix (view->pattern_data->old_cairo, &matrix);
 		cairo_pattern_get_matrix (view->pattern_data->pattern, &pattern_matrix);
@@ -1716,8 +1733,14 @@ _get_filter_surface (LsmSvgView *view, const char *input)
 
 		cairo = cairo_create (lsm_svg_filter_surface_get_cairo_surface (surface));
 		cairo_set_matrix (cairo, &matrix);
-		cairo_set_source_surface (cairo, background_surface, 0, 0);
-		cairo_paint (cairo);
+
+		for (; iter != NULL; iter = iter->prev) {
+			background = iter->data;
+
+			cairo_set_source_surface (cairo, background->surface, 0, 0);
+			cairo_paint_with_alpha (cairo, background->group_opacity);
+		}
+
 		cairo_destroy (cairo);
 		
 		return surface;
@@ -2026,12 +2049,17 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	    !do_filter &&
 	    !view->is_clipping &&
 	    !view->style->ignore_group_opacity) {
+		LsmSvgViewBackground *background;
+
 		lsm_debug_render ("[LsmSvgView::push_composition] Push group");
 		cairo_push_group (view->dom_view.cairo);
-		if (view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) {
-			lsm_debug_render ("[LsmSvgView::push_composition] Push background");
-			view->background_stack = g_slist_prepend (view->background_stack, cairo_get_group_target (view->dom_view.cairo));
-		}
+
+		background = g_slice_new (LsmSvgViewBackground);
+		background->surface = cairo_get_group_target (view->dom_view.cairo);
+		background->group_opacity = view->style->opacity->value;
+		background->enable_background = view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW;
+
+		view->background_stack = g_list_prepend (view->background_stack, background);
 	}
 
 	if (do_clip) {
@@ -2096,10 +2124,9 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	    !do_filter &&
 	    !view->is_clipping &&
 	    !view->style->ignore_group_opacity) {
-		if (view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) {
-			lsm_debug_render ("[LsmSvgView::pop_composition] Pop background");
-			view->background_stack = g_slist_delete_link (view->background_stack, view->background_stack);
-		}
+		g_slice_free (LsmSvgViewBackground, view->background_stack->data);
+		view->background_stack = g_list_delete_link (view->background_stack, view->background_stack);
+
 		cairo_pop_group_to_source (view->dom_view.cairo);
 		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
 		lsm_debug_render ("[LsmSvgView::pop_composition] Pop group");
@@ -2224,7 +2251,7 @@ lsm_svg_view_render (LsmDomView *view)
 	}
 	if (svg_view->background_stack != NULL) {
 		g_warning ("[LsmSvgView::render] Dangling background in stack");
-		g_slist_free (svg_view->background_stack);
+		g_list_free (svg_view->background_stack);
 		svg_view->background_stack = NULL;
 	}
 }
