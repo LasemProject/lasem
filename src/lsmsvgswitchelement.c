@@ -51,6 +51,21 @@ _render (LsmSvgElement *element, LsmSvgView *view)
 		}
 }
 
+static void
+_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmDomNode *node;
+	LsmExtents null_extents = {0.0, 0.0, 0.0, 0.0};
+
+	for (node = LSM_DOM_NODE (element)->first_child; node != NULL; node = node->next_sibling)
+		if (LSM_IS_SVG_ELEMENT (node)) {
+		    lsm_svg_element_get_extents (LSM_SVG_ELEMENT (node), view, extents);
+		    return;
+		}
+
+	*extents = null_extents;
+}
+
 /* LsmSvgSwitchElement implementation */
 
 LsmDomNode *
@@ -78,6 +93,7 @@ lsm_svg_switch_element_class_init (LsmSvgSwitchElementClass *s_g_class)
 	d_node_class->get_node_name = lsm_svg_switch_element_get_node_name;
 
 	s_element_class->render = _render;
+	s_element_class->get_extents = _get_extents;
 
 	s_element_class->category =
 		LSM_SVG_ELEMENT_CATEGORY_CONTAINER |
