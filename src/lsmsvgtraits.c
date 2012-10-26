@@ -261,6 +261,23 @@ const LsmTraitClass lsm_svg_matrix_trait_class = {
 	.to_string = lsm_svg_matrix_trait_to_string
 };
 
+static double
+_hue_to_rgb (double m1, double m2, double h)
+{
+	if (h < 0)
+		h = h + 1.0;
+	if (h > 1)
+		h = h - 1.0;
+	if (h * 6.0 < 1.0)
+		return  m1 + (m2 - m1 ) * h * 6.0;
+	if (h * 2.0 < 1.0)
+		return m2;
+       	if (h * 3.0 < 2.0)
+		return m1 + (m2 - m1) * (2.0 / 3.0 - h) * 6.0;
+
+	return m1;
+}
+
 static char *
 _parse_color (char *string,
 	      LsmSvgColor *svg_color,
@@ -337,6 +354,51 @@ _parse_color (char *string,
 			color = 0;
 
 		*paint_type = LSM_SVG_PAINT_TYPE_RGB_COLOR;
+	} else if (strncmp (string, "hsl(", 4) == 0) {
+		double value[3];
+		int i;
+
+		string += 4; /* strlen ("hsl(") */
+
+		lsm_str_skip_spaces (&string);
+
+		for (i = 0; i < 3; i++) {
+			if (!lsm_str_parse_double (&string, &value[i]))
+				break;
+
+			if (i > 0) {
+			       if (*string != '%')
+				break;
+			       string++;
+			}
+
+			lsm_str_skip_comma_and_spaces (&string);
+		}
+
+		lsm_str_skip_spaces (&string);
+
+		if (*string == ')' && i == 3) {
+			double m1, m2;
+			double h,s,l;
+
+			h = value[0] / 360.0;
+			s = value[1] / 100.0; 
+			l = value[2] / 100.0;
+
+			if (l <= 0.5)
+				m2 = l*(s + 1.0);
+			else
+				m2 = l + s - l * s;
+			m1 = l * 2.0 - m2;
+
+			svg_color->red = _hue_to_rgb (m1, m2, h + 1.0/3.0);
+			svg_color->green  = _hue_to_rgb (m1, m2, h);		
+			svg_color->blue = _hue_to_rgb (m1, m2, h - 1.0/3.0);
+
+			*paint_type = LSM_SVG_PAINT_TYPE_RGB_COLOR;
+
+			return string;
+		}
 	} else if (g_strcmp0 (string, "none") != 0) {
 		color = lsm_svg_color_from_string (string);
 
