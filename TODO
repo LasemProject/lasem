@@ -30,12 +30,18 @@ x don't use cairo_stroke for simple text, but pango_cairo_show_layout instead.
 - really implement get_extents for all elements
 - don't ignore an element with visibility != visible when clipping
 - don't include extents of an element with display == none
-- don't use push_group when filling + stroking shapes with group opacity < 1.0
+x don't use push_group when filling or stroking shapes with group opacity < 1.0
 
-- add support of subregion for filter primitives
-- add support for arithmetic in feComposite
-- group opacity should happen after filter
-- add support for filter BackgroundImage and BackgroundAlpha 
+x add support of subregion for filter primitives
+x group opacity should happen after filter
+x add support for filter BackgroundImage and BackgroundAlpha 
+- handle width and height of enable-background=new
 x fix SourceAlpha
+
+- feComposite: add support for arithmetic
+- feSpecularLighting: implementation needed
+- feTurbulence: TODO
+- switch: handle requiredFeatures, requiredExtensions and systemLanguage
+- text, tspan: correct implementation needed
 
 And many many more things to do...
