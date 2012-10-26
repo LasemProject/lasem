@@ -36,3 +36,4 @@ gtk-doc.m4
 .libs/
 .deps/
 tmp-introspect*
+tests/suite
