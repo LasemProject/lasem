@@ -122,6 +122,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvglineargradientelement.c		\
 	lsmsvgradialgradientelement.c		\
 	lsmsvgstopelement.c			\
+	lsmsvgswitchelement.c			\
 	lsmsvgpatternelement.c			\
 	lsmsvgmaskelement.c			\
 	lsmsvgfilterelement.c			\
@@ -236,6 +237,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvglineargradientelement.h		\
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
+	lsmsvgswitchelement.h			\
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h			\
 	lsmsvgfilterelement.h			\

@@ -22,29 +22,11 @@
  */
 
 #include <lsmdebug.h>
-#include <lsmsvgdocument.h>
-#include <lsmsvgclippathelement.h>
-#include <lsmsvgsvgelement.h>
-#include <lsmsvggelement.h>
-#include <lsmsvgdefselement.h>
-#include <lsmsvguseelement.h>
-#include <lsmsvgimageelement.h>
-#include <lsmsvgsymbolelement.h>
-#include <lsmsvgmarkerelement.h>
-#include <lsmsvgrectelement.h>
 #include <lsmsvgcircleelement.h>
+#include <lsmsvgclippathelement.h>
+#include <lsmsvgdefselement.h>
+#include <lsmsvgdocument.h>
 #include <lsmsvgellipseelement.h>
-#include <lsmsvglineelement.h>
-#include <lsmsvgpolylineelement.h>
-#include <lsmsvgpolygonelement.h>
-#include <lsmsvgpathelement.h>
-#include <lsmsvgtextelement.h>
-#include <lsmsvgtspanelement.h>
-#include <lsmsvglineargradientelement.h>
-#include <lsmsvgradialgradientelement.h>
-#include <lsmsvgstopelement.h>
-#include <lsmsvgpatternelement.h>
-#include <lsmsvgmaskelement.h>
 #include <lsmsvgfilterelement.h>
 #include <lsmsvgfilterblend.h>
 #include <lsmsvgfiltercomposite.h>
@@ -55,6 +37,25 @@
 #include <lsmsvgfiltermergenode.h>
 #include <lsmsvgfilterspecularlighting.h>
 #include <lsmsvgfiltertile.h>
+#include <lsmsvggelement.h>
+#include <lsmsvgimageelement.h>
+#include <lsmsvglineargradientelement.h>
+#include <lsmsvglineelement.h>
+#include <lsmsvgmarkerelement.h>
+#include <lsmsvgmaskelement.h>
+#include <lsmsvgpolylineelement.h>
+#include <lsmsvgpolygonelement.h>
+#include <lsmsvgpathelement.h>
+#include <lsmsvgpatternelement.h>
+#include <lsmsvgradialgradientelement.h>
+#include <lsmsvgrectelement.h>
+#include <lsmsvgsvgelement.h>
+#include <lsmsvgstopelement.h>
+#include <lsmsvgswitchelement.h>
+#include <lsmsvgsymbolelement.h>
+#include <lsmsvgtextelement.h>
+#include <lsmsvgtspanelement.h>
+#include <lsmsvguseelement.h>
 #include <lsmsvgview.h>
 #include <string.h>
 
@@ -140,6 +141,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_marker_element_new ();
 	else if (strcmp (tag_name, "clipPath") == 0)
 		node = lsm_svg_clip_path_element_new ();
+	else if (strcmp (tag_name, "switch") == 0)
+		node = lsm_svg_switch_element_new ();
 	else if (strcmp (tag_name, "filter") == 0)
 		node = lsm_svg_filter_element_new ();
 	else if (strcmp (tag_name, "feBlend") == 0)

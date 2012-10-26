@@ -143,6 +143,7 @@ IGNORE_HFILES=\
 	lsmsvglineargradientelement.h		\
 	lsmsvgradialgradientelement.h		\
 	lsmsvgstopelement.h			\
+	lsmsvgswitchelement.h			\
 	lsmsvgpatternelement.h			\
 	lsmsvgmaskelement.h			\
 	lsmsvgfilterelement.h			\
