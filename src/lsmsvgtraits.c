@@ -698,14 +698,21 @@ lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 	dash_array->n_dashes = 0;
 	dash_array->dashes = NULL;
 
-	if (strcmp (string, "none") != 0) {
+	if (strcmp (string, "none") != 0 &&
+	    strcmp (string, "inherit")) {
 		char *iter = (char *) string;
 		unsigned int i;
 
 		while (*iter != '\0') {
-			if (*iter == ',')
+			if (*iter == ',' ||
+			    *iter == ' ') {
 				n_dashes++;
-			iter++;
+				do {
+					iter++;
+				} while (*iter == ',' ||
+					 *iter == ' ');
+			} else
+				iter++;
 		}
 
 		if (n_dashes > 0) {
@@ -737,14 +744,14 @@ lsm_svg_dash_array_trait_from_string (LsmTrait *abstract_trait, char *string)
 				sum += value;
 			}
 		}
-	}
 
-	if (is_error || sum <= 0.0) {
-		g_free (dash_array->dashes);
-		dash_array->n_dashes = 0;
-		dash_array->dashes = NULL;
+		if (is_error || sum <= 0.0) {
+			g_free (dash_array->dashes);
+			dash_array->n_dashes = 0;
+			dash_array->dashes = NULL;
 
-		return !is_error;
+			return !is_error;
+		}
 	}
 
 	return TRUE;
