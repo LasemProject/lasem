@@ -205,18 +205,6 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 		.trait_default = "nonzero"
 	},
 	{
-		.name = "viewport-fill",
-		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, viewport_fill),
-		.trait_class = &lsm_svg_paint_trait_class,
-		.trait_default = "none" 
-	},
-	{
-		.name = "viewport-opacity",
-		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, viewport_opacity),
-		.trait_class = &lsm_double_trait_class,
-		.trait_default = "1"
-	},
-	{
 		.name = "font",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, font),
 		.trait_class = &lsm_null_trait_class,
@@ -389,6 +377,18 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, text_rendering),
 		.trait_class = &lsm_null_trait_class,
 		.trait_default = "auto"
+	},
+	{
+		.name = "viewport-fill",
+		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, viewport_fill),
+		.trait_class = &lsm_svg_paint_trait_class,
+		.trait_default = "none" 
+	},
+	{
+		.name = "viewport-opacity",
+		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, viewport_opacity),
+		.trait_class = &lsm_double_trait_class,
+		.trait_default = "1"
 	},
 	{
 		.name = "visibility",
