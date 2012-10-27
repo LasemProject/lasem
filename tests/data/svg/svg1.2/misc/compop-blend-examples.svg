@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.2" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 650 600">
+
+  <title>Compositing Operation Blend Examples</title>
+
+  <defs>
+    <linearGradient id="g1" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fdf06f"/>
+      <stop offset="1" stop-color="#fe9f34"/>
+    </linearGradient>
+    <linearGradient id="g2" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fc1ff"/>
+      <stop offset="1" stop-color="#05005f"/>
+    </linearGradient>
+
+    <circle id="a" r="30" fill="url(#g1)" stroke="black"/>
+    <rect id="b" width="60" height="60" fill="url(#g2)" stroke="black"/>
+
+    <circle id="c" r="30" fill="url(#g1)" stroke="black" opacity="0.75"/>
+    <rect id="d" width="60" height="60" fill="url(#g2)" stroke="black" opacity="0.75"/>
+
+  </defs>
+
+  <text x="260" y="50" font-family="verdana" font-size="20" fill="black">Opaque</text>
+
+  <g transform="translate(0 40)">
+
+    <!-- plus -->
+    <g transform="translate(20, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        plus
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="plus"/>
+      </g>
+    </g>
+
+    <!-- multiply -->
+    <g transform="translate(120, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        multiply
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="multiply"/>
+      </g>
+    </g>
+
+    <!-- screen -->
+    <g transform="translate(220, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        screen
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="screen"/>
+      </g>
+    </g>
+
+    <!-- overlay -->
+    <g transform="translate(320, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        overlay
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="overlay"/>
+      </g>
+    </g>
+
+    <!-- darken -->
+    <g transform="translate(420, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        darken
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="darken"/>
+      </g>
+    </g>
+
+    <!-- lighten -->
+    <g transform="translate(520, 40)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        lighten
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="lighten"/>
+      </g>
+    </g>
+
+    <!-- color-dodge -->
+    <g transform="translate(20, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        color-dodge
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="color-dodge"/>
+      </g>
+    </g>
+
+    <!-- color-burn -->
+    <g transform="translate(120, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        color-burn
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="color-burn"/>
+      </g>
+    </g>
+
+    <!-- hard-light -->
+    <g transform="translate(220, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        hard-light
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="hard-light"/>
+      </g>
+    </g>
+
+    <!-- soft-light -->
+    <g transform="translate(320, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        soft-light
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="soft-light"/>
+      </g>
+    </g>
+
+    <!-- difference -->
+    <g transform="translate(420, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        difference
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="difference"/>
+      </g>
+    </g>
+
+    <!-- exclusion -->
+    <g transform="translate(520, 160)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        exclusion
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#a"/>
+        <use x="30" y="10" xlink:href="#b" comp-op="exclusion"/>
+      </g>
+    </g>
+  </g>
+
+  <text x="220" y="320" font-family="verdana" font-size="20" fill="black">Partially Transparent</text>
+
+  <g transform="translate(0 80)">
+
+    <!-- plus -->
+    <g transform="translate(20, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        plus
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="plus"/>
+      </g>
+    </g>
+
+    <!-- multiply -->
+    <g transform="translate(120, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        multiply
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="multiply"/>
+      </g>
+    </g>
+
+    <!-- screen -->
+    <g transform="translate(220, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        screen
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="screen"/>
+      </g>
+    </g>
+
+    <!-- overlay -->
+    <g transform="translate(320, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        overlay
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="overlay"/>
+      </g>
+    </g>
+
+    <!-- darken -->
+    <g transform="translate(420, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        darken
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="darken"/>
+      </g>
+    </g>
+
+    <!-- lighten -->
+    <g transform="translate(520, 280)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        lighten
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="lighten"/>
+      </g>
+    </g>
+
+    <!-- color-dodge -->
+    <g transform="translate(20, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        color-dodge
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="color-dodge"/>
+      </g>
+    </g>
+
+    <!-- color-burn -->
+    <g transform="translate(120, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        color-burn
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="color-burn"/>
+      </g>
+    </g>
+
+    <!-- hard-light -->
+    <g transform="translate(220, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        hard-light
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="hard-light"/>
+      </g>
+    </g>
+
+    <!-- soft-light -->
+    <g transform="translate(320, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        soft-light
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="soft-light"/>
+      </g>
+    </g>
+
+    <!-- difference -->
+    <g transform="translate(420, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        difference
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="difference"/>
+      </g>
+    </g>
+
+    <!-- exclusion -->
+    <g transform="translate(520, 400)">
+      <text x="20" y="0" font-family="verdana" font-size="16" fill="black">
+        exclusion
+      </text>
+      <g enable-background="new">
+        <use x="30" y="50" xlink:href="#c"/>
+        <use x="30" y="10" xlink:href="#d" comp-op="exclusion"/>
+      </g>
+    </g>
+  </g>
+</svg>
