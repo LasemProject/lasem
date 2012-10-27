@@ -1,3 +1,21 @@
+Release 0.3.4
+=============
+
+All:
+	Display result of comparison to reference file in test suite.
+
+SVG:
+	Use cairo API for filter implementation when possible.
+	Fix blur misposition.
+	Support for filter primitive subregion.
+	Implementation of <feTile>.
+	Implementation of BackgroundImage and BackgroundAlpha.
+	Implementation of <switch>.
+	Reimplement group opacity optimisation.
+	Implementation of get_extents for <polygon>, <polyline>, <ellipse>, <line> and <text>.
+	Add support for HSL color syntax.
+	Fix parsing of stroke-dasharray when value are separated by spaces.
+
 Release 0.3.3
 =============
 
@@ -12,8 +30,8 @@ SVG:
 	Implement overflow attribute for markers.
 	Fix Marker auto orientation.
 	Fix clipPath transform
-	Add preliminary support for feGaussianBlur, feBlend, feComposite,
-		feOffset, feMerge, feMergeNode and feFlood.
+	Add preliminary support for <feGaussianBlur>, <feBlend>, <feComposite>,
+		<feOffset>, <feMerge>, <feMergeNode> and <feFlood>.
 	Fix group opacity.
 	Use transparent color when paint url is not found.
 
