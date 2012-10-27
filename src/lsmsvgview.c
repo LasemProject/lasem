@@ -779,6 +779,38 @@ process_path (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 		paint (view, path_infos);
 }
 
+void
+lsm_svg_view_show_viewport (LsmSvgView*view, const LsmBox *viewport)
+{
+	LsmSvgPaint *paint;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (viewport != NULL);
+
+	paint = &view->style->viewport_fill->paint;
+
+	switch (paint->type) {
+		case LSM_SVG_PAINT_TYPE_RGB_COLOR:
+			cairo_set_source_rgba (view->dom_view.cairo,
+					       paint->color.red,
+					       paint->color.green,
+					       paint->color.blue,
+					       view->style->viewport_opacity->value);
+			break;
+		case LSM_SVG_PAINT_TYPE_CURRENT_COLOR:
+			cairo_set_source_rgba (view->dom_view.cairo,
+					       view->style->color->value.red,
+					       view->style->color->value.green,
+					       view->style->color->value.blue,
+					       view->style->viewport_opacity->value);
+		default:
+			return;
+	}
+
+	cairo_rectangle (view->dom_view.cairo, viewport->x, viewport->y, 0, 0);
+	cairo_paint (view->dom_view.cairo);
+}
+
 /*
  * Code for show_rectangle and show ellipse is inspired from
  * the librsvg library (rsvg-shapes.c)

@@ -139,6 +139,8 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_debug_render ("[LsmSvgSvgElement::render] viewport %g, %g, %g, %g",
 		   viewport.x, viewport.y, viewport.width, viewport.height);
 
+	lsm_svg_view_show_viewport (view, &viewport);
+
 	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,
 				    &svg->preserve_aspect_ratio.value, LSM_SVG_OVERFLOW_HIDDEN);
 

@@ -114,6 +114,7 @@ G_GNUC_WARN_UNUSED_RESULT gboolean
 							 const LsmSvgMatrix *matrix,
 							 LsmSvgViewSurfaceType surface_type) G_GNUC_WARN_UNUSED_RESULT;
 
+void 		lsm_svg_view_show_viewport 	(LsmSvgView*view, const LsmBox *viewport);
 void 		lsm_svg_view_show_rectangle 	(LsmSvgView *view, double x, double y,
 						                   double width, double height,
 								   double rx, double ry);

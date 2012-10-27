@@ -122,6 +122,8 @@ lsm_svg_image_element_render (LsmSvgElement *self, LsmSvgView *view)
 	viewbox.width = gdk_pixbuf_get_width (image->pixbuf);
 	viewbox.height = gdk_pixbuf_get_height (image->pixbuf);
 
+	lsm_svg_view_show_viewport (view, &viewport);
+
 	lsm_svg_view_push_viewport (view, &viewport, &viewbox, &image->preserve_aspect_ratio.value, LSM_SVG_OVERFLOW_HIDDEN);
 
 	lsm_svg_view_show_pixbuf (view, image->pixbuf);

@@ -154,6 +154,8 @@ struct _LsmSvgStyle {
 	LsmSvgPaintProperty *		fill;
 	LsmSvgDoubleProperty *		fill_opacity;
 	LsmSvgFillRuleProperty *	fill_rule;
+	LsmSvgPaintProperty *		viewport_fill;
+	LsmSvgDoubleProperty *		viewport_opacity;
 	LsmProperty *			font;
 	LsmProperty *			font_family;
 	LsmSvgLengthProperty *		font_size;
