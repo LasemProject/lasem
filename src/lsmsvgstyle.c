@@ -54,6 +54,12 @@ static const LsmPropertyInfos lsm_svg_property_infos[] = {
 		.trait_default = "none"
 	},
 	{
+		.name = "comp-op",
+		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, comp_op),
+		.trait_class = &lsm_svg_comp_op_trait_class,
+		.trait_default = "src-over"
+	},
+	{
 		.name = "dominant-baseline",
 		.id = LSM_PROPERTY_OFFSET_TO_ID (LsmSvgStyle, dominant_baseline),
 		.trait_class = &lsm_null_trait_class,

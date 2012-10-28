@@ -76,6 +76,7 @@ extern const LsmTraitClass lsm_svg_angle_trait_class;
 extern const LsmTraitClass lsm_svg_blending_mode_trait_class;
 extern const LsmTraitClass lsm_svg_enable_background_trait_class;
 extern const LsmTraitClass lsm_svg_color_trait_class;
+extern const LsmTraitClass lsm_svg_comp_op_trait_class;
 extern const LsmTraitClass lsm_svg_dash_array_trait_class;
 extern const LsmTraitClass lsm_svg_display_trait_class;
 extern const LsmTraitClass lsm_svg_fill_rule_trait_class;

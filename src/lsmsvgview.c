@@ -77,6 +77,40 @@ typedef struct {
 	gboolean enable_background;
 } LsmSvgViewBackground;
 
+cairo_operator_t cairo_operators[] = {
+	CAIRO_OPERATOR_CLEAR,
+	CAIRO_OPERATOR_SOURCE,
+	CAIRO_OPERATOR_DEST,
+	CAIRO_OPERATOR_OVER,
+	CAIRO_OPERATOR_DEST_OVER,
+	CAIRO_OPERATOR_IN,
+	CAIRO_OPERATOR_DEST_IN,
+	CAIRO_OPERATOR_OUT,
+	CAIRO_OPERATOR_DEST_OUT,
+	CAIRO_OPERATOR_ATOP,
+	CAIRO_OPERATOR_DEST_ATOP,
+	CAIRO_OPERATOR_XOR,
+	CAIRO_OPERATOR_ADD,
+	CAIRO_OPERATOR_MULTIPLY,
+	CAIRO_OPERATOR_SCREEN,
+	CAIRO_OPERATOR_OVERLAY,
+	CAIRO_OPERATOR_DARKEN,
+	CAIRO_OPERATOR_LIGHTEN,
+	CAIRO_OPERATOR_COLOR_DODGE,
+	CAIRO_OPERATOR_COLOR_BURN,
+	CAIRO_OPERATOR_HARD_LIGHT,
+	CAIRO_OPERATOR_SOFT_LIGHT,
+	CAIRO_OPERATOR_DIFFERENCE,
+	CAIRO_OPERATOR_EXCLUSION
+};
+
+void
+lsm_cairo_set_comp_op (cairo_t *cairo, LsmSvgCompOp comp_op)
+{
+	if (G_LIKELY (cairo != NULL && comp_op >= LSM_SVG_COMP_OP_CLEAR && comp_op <= LSM_SVG_COMP_OP_EXCLUSION))
+		cairo_set_operator (cairo, cairo_operators[comp_op]);
+}
+
 double
 lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, LsmSvgLengthDirection direction)
 {
@@ -660,7 +694,8 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 	cairo = view->dom_view.cairo;
 	style = view->style;
 
-	if (style->opacity != NULL &&
+	if ((style->opacity != NULL ||
+	     style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER ) &&
 	    style->ignore_group_opacity &&
 	    g_strcmp0 (style->filter->value, "none") == 0) {
 		group_opacity = style->opacity->value;
@@ -671,15 +706,17 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 			     style->stroke->paint.type == LSM_SVG_PAINT_TYPE_URI_RGB_COLOR ||
 			     style->fill->paint.type == LSM_SVG_PAINT_TYPE_URI_RGB_COLOR ||
 			     style->fill->paint.type == LSM_SVG_PAINT_TYPE_URI) &&
-			group_opacity < 1.0;
+			(group_opacity < 1.0 || style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER );
 	} else {
 		use_group = FALSE;
 		group_opacity = 1.0;
 	}
 
 	/* Instead of push_group, we should restrict to the current path bounding box */
-	if (use_group)
+	if (use_group) {
 		cairo_push_group (cairo);
+	} else if (style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER)
+		lsm_cairo_set_comp_op (cairo, style->comp_op->value);
 
 	if (_set_color (view,
 			path_infos,
@@ -762,8 +799,13 @@ paint (LsmSvgView *view, LsmSvgViewPathInfos *path_infos)
 
 	if (use_group) {
 		cairo_pop_group_to_source (cairo);
+		if (G_UNLIKELY (style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER))
+			lsm_cairo_set_comp_op (cairo, style->comp_op->value);
 		cairo_paint_with_alpha (cairo, group_opacity);
 	}
+
+	if (view->style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER)
+		lsm_cairo_set_comp_op (cairo, LSM_SVG_COMP_OP_SRC_OVER);
 }
 
 static void
@@ -2076,11 +2118,13 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	do_mask = (g_strcmp0 (style->mask->value, "none") != 0);
 	do_filter = (g_strcmp0 (style->filter->value, "none") != 0);
 
-	if ((view->style->opacity->value < 1.0 ||
-	     view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) &&
-	    !do_filter &&
-	    !view->is_clipping &&
-	    !view->style->ignore_group_opacity) {
+	if (G_UNLIKELY((view->style->opacity->value < 1.0 ||
+			view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW ||
+			view->style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER) &&
+		       !do_filter &&
+		       !view->is_clipping &&
+		       !view->style->ignore_group_opacity &&
+		       view->dom_view.cairo != NULL)) {
 		LsmSvgViewBackground *background;
 
 		lsm_debug_render ("[LsmSvgView::push_composition] Push group");
@@ -2094,12 +2138,12 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 		view->background_stack = g_list_prepend (view->background_stack, background);
 	}
 
-	if (do_clip) {
+	if (G_UNLIKELY (do_clip)) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start clip '%s'", style->clip_path->value);
 		lsm_svg_view_push_clip (view);
 	}
 
-	if (do_mask) {
+	if (G_UNLIKELY (do_mask)) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start mask '%s'", style->mask->value);
 		lsm_svg_view_push_mask (view);
 	}
@@ -2107,7 +2151,7 @@ lsm_svg_view_push_composition (LsmSvgView *view, LsmSvgStyle *style)
 	/* Don't do filtering during a clipping operation, as filter will
 	 * create a new subsurface, where clipping should occur with the path
 	 * of the clip-path element. */ 
-	if (do_filter && !view->is_clipping) {
+	if (G_UNLIKELY (do_filter && !view->is_clipping)) {
 		lsm_debug_render ("[LsmSvgView::push_style] Start filter '%s'", style->filter->value);
 		lsm_svg_view_push_filter (view);
 	}
@@ -2129,6 +2173,7 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	gboolean do_filter;
 	gboolean do_mask;
 	gboolean do_clip;
+	cairo_t *cairo;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (view->style != NULL);
@@ -2142,25 +2187,33 @@ void lsm_svg_view_pop_composition (LsmSvgView *view)
 	/* Don't do filtering during a clipping operation, as filter will
 	 * create a new subsurface, where clipping should occur with the path
 	 * of the clip-path element. */ 
-	if (do_filter && !view->is_clipping)
+	if (G_UNLIKELY (do_filter && !view->is_clipping))
 		lsm_svg_view_pop_filter (view);
 
-	if (do_mask)
+	if (G_UNLIKELY (do_mask))
 		lsm_svg_view_pop_mask (view);
 
-	if (do_clip)
+	if (G_UNLIKELY (do_clip))
 		lsm_svg_view_pop_clip (view);
 
-	if ((view->style->opacity->value < 1.0 ||
-	     view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW) &&
-	    !do_filter &&
-	    !view->is_clipping &&
-	    !view->style->ignore_group_opacity) {
+	cairo = view->dom_view.cairo;
+
+	if (G_UNLIKELY ((view->style->opacity->value < 1.0 ||
+			 view->style->enable_background->value == LSM_SVG_ENABLE_BACKGROUND_NEW ||
+			 view->style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER) &&
+			!do_filter &&
+			!view->is_clipping &&
+			!view->style->ignore_group_opacity &&
+			cairo != NULL)) {
 		g_slice_free (LsmSvgViewBackground, view->background_stack->data);
 		view->background_stack = g_list_delete_link (view->background_stack, view->background_stack);
 
 		cairo_pop_group_to_source (view->dom_view.cairo);
-		cairo_paint_with_alpha (view->dom_view.cairo, view->style->opacity->value);
+		if (G_UNLIKELY (view->style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER))
+			lsm_cairo_set_comp_op (cairo, view->style->comp_op->value);
+		cairo_paint_with_alpha (cairo, view->style->opacity->value);
+		if (G_UNLIKELY (view->style->comp_op->value != LSM_SVG_COMP_OP_SRC_OVER))
+			lsm_cairo_set_comp_op (cairo, LSM_SVG_COMP_OP_SRC_OVER);
 		lsm_debug_render ("[LsmSvgView::pop_composition] Pop group");
 	}
 

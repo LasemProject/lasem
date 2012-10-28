@@ -31,6 +31,11 @@ G_BEGIN_DECLS
 
 typedef struct {
 	LsmProperty base;
+	LsmSvgCompOp value;
+} LsmSvgCompOpProperty;
+
+typedef struct {
+	LsmProperty base;
 	double value;
 } LsmSvgDoubleProperty;
 
@@ -126,6 +131,7 @@ struct _LsmSvgStyle {
 	LsmProperty *			baseline_shift;
 	LsmProperty *	 		clip;
 	LsmProperty *	 		clip_path;
+	LsmSvgCompOpProperty *		comp_op;
 	LsmProperty *	 		dominant_baseline;
 	LsmSvgEnableBackgroundProperty *enable_background;
 	LsmProperty *	 		filter;

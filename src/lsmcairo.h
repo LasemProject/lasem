@@ -45,6 +45,7 @@ void 			lsm_cairo_box_user_to_device 		(cairo_t *cairo, LsmBox *to, const LsmBox
 void 			lsm_cairo_box_device_to_user 		(cairo_t *cairo, LsmBox *to, const LsmBox *from);
 void 			lsm_cairo_set_source_pixbuf 		(cairo_t *cairo, const GdkPixbuf *pixbuf,
 								 double pixbuf_x, double pixbuf_y);
+
 G_END_DECLS
 
 #endif

@@ -56,6 +56,30 @@ const LsmTraitClass lsm_svg_blending_mode_trait_class = {
 };
 
 static gboolean
+lsm_svg_comp_op_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgCompOp *trait = (LsmSvgCompOp *) abstract_trait;
+
+	*trait = lsm_svg_comp_op_from_string (string);
+
+	return *trait >= 0;
+}
+
+char *
+lsm_svg_comp_op_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgCompOp *trait = (LsmSvgCompOp *) abstract_trait;
+
+	return g_strdup (lsm_svg_comp_op_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_comp_op_trait_class = {
+	.size = sizeof (LsmSvgCompOp),
+	.from_string = lsm_svg_comp_op_trait_from_string,
+	.to_string = lsm_svg_comp_op_trait_to_string
+};
+
+static gboolean
 lsm_svg_enable_background_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgEnableBackground *trait = (LsmSvgEnableBackground *) abstract_trait;

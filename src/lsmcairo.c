@@ -595,3 +595,4 @@ lsm_cairo_set_source_pixbuf (cairo_t *cairo,
 	cairo_set_source_surface (cairo, surface, pixbuf_x, pixbuf_y);
 	cairo_surface_destroy (surface);
 }
+
