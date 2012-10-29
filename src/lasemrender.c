@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <lsm.h>
 #include <lsmmathml.h>
 #include <glib.h>
@@ -39,6 +40,7 @@ static char *option_output_file_format = NULL;
 static char **option_input_filenames = NULL;
 static char *option_output_filename = NULL;
 double option_ppi = 72.0;
+double option_zoom = 1.0;
 
 typedef enum {
 	FORMAT_SVG,
@@ -66,6 +68,8 @@ static const GOptionEntry entries[] =
 		&option_output_file_format, 	N_("Output format"), NULL },
 	{ "ppi", 		'p', 0, G_OPTION_ARG_DOUBLE,
 		&option_ppi, 			N_("Pixel per inch"), NULL },
+	{ "zoom", 		'z', 0, G_OPTION_ARG_DOUBLE,
+		&option_zoom, 			N_("Zoom"), NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
 		&option_debug_domains,		N_("Debug domains"), NULL },
 	{ NULL }
@@ -94,16 +98,21 @@ int main(int argc, char **argv)
 	{
 		g_option_context_free (context);
 		g_print (_("Option parsing failed: %s\n"), error->message);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	g_option_context_free (context);
+
+	if (option_zoom < 0.0) {
+		g_print (_("Invalid zoom value"));
+		return EXIT_FAILURE;
+	}
 
 	lsm_debug_enable (option_debug_domains);
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
 		g_print (_("One input file name is required\n"));
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	input_filename = option_input_filenames[0];
@@ -114,7 +123,7 @@ int main(int argc, char **argv)
 				break;
 		if (FORMAT_UNKNOWN == format) {
 			g_print (_("Unknown format : %s\n"), option_output_file_format);
-			return 1;
+			return EXIT_FAILURE;
 		}
 	} else
 		format = FORMAT_UNKNOWN;
@@ -189,6 +198,11 @@ int main(int argc, char **argv)
 		lsm_dom_view_get_size (view, &width_pt, &height_pt, NULL);
 		lsm_dom_view_get_size_pixels (view, &width, &height, NULL);
 
+		width_pt *= option_zoom;
+		height_pt *= option_zoom;
+		width *= option_zoom;
+		height *= option_zoom;
+
 		switch (format) {
 			case FORMAT_PDF:
 				surface = cairo_pdf_surface_create (output_filename,
@@ -212,6 +226,7 @@ int main(int argc, char **argv)
 
 		cairo = cairo_create (surface);
 		cairo_surface_destroy (surface);
+		cairo_scale (cairo, option_zoom, option_zoom);
 
 		lsm_dom_view_render (view, cairo, 0, 0);
 
@@ -231,8 +246,11 @@ int main(int argc, char **argv)
 		g_object_unref (document);
 
 		lsm_debug_render ("width = %g pt, height = %g pt",  width_pt, height_pt);
-	} else
-		g_warning (_("Can't load %s"), input_filename);
+	} else {
+		g_print (_("Can't load '%s'\n"), input_filename);
 
-	return (0);
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }
