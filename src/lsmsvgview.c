@@ -107,8 +107,10 @@ cairo_operator_t cairo_operators[] = {
 void
 lsm_cairo_set_comp_op (cairo_t *cairo, LsmSvgCompOp comp_op)
 {
-	if (G_LIKELY (cairo != NULL && comp_op >= LSM_SVG_COMP_OP_CLEAR && comp_op <= LSM_SVG_COMP_OP_EXCLUSION))
+	if (G_LIKELY (cairo != NULL && comp_op >= LSM_SVG_COMP_OP_CLEAR && comp_op <= LSM_SVG_COMP_OP_EXCLUSION)) {
+		lsm_log_render ("[lsmSvgView::set_comp_op] Set comp-op to %s", lsm_svg_comp_op_to_string (comp_op));
 		cairo_set_operator (cairo, cairo_operators[comp_op]);
+	}
 }
 
 double
