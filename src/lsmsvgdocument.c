@@ -22,6 +22,7 @@
  */
 
 #include <lsmdebug.h>
+#include <lsmsvgaelement.h>
 #include <lsmsvgcircleelement.h>
 #include <lsmsvgclippathelement.h>
 #include <lsmsvgdefselement.h>
@@ -143,6 +144,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_clip_path_element_new ();
 	else if (strcmp (tag_name, "switch") == 0)
 		node = lsm_svg_switch_element_new ();
+	else if (strcmp (tag_name, "a") == 0)
+		node = lsm_svg_a_element_new ();
 	else if (strcmp (tag_name, "filter") == 0)
 		node = lsm_svg_filter_element_new ();
 	else if (strcmp (tag_name, "feBlend") == 0)

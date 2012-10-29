@@ -34,6 +34,7 @@ typedef struct _LsmSvgTransformable LsmSvgTransformable;
 typedef struct _LsmSvgGraphic LsmSvgGraphic;
 typedef struct _LsmSvgClipPathElement LsmSvgClipPathElement;
 typedef struct _LsmSvgSvgElement LsmSvgSvgElement;
+typedef struct _LsmSvgAElement LsmSvgAElement;
 typedef struct _LsmSvgGElement LsmSvgGElement;
 typedef struct _LsmSvgDefsElement LsmSvgDefsElement;
 typedef struct _LsmSvgUseElement LsmSvgUseElement;

@@ -124,6 +124,7 @@ IGNORE_HFILES=\
 	lsmsvgclippathelement.h			\
 	lsmsvgsvgelement.h			\
 	lsmsvgtransformable.h			\
+	lsmsvgaelement.h			\
 	lsmsvggelement.h			\
 	lsmsvgdefselement.h			\
 	lsmsvguseelement.h			\

@@ -107,6 +107,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvgimageelement.c			\
 	lsmsvgsymbolelement.c			\
 	lsmsvgmarkerelement.c			\
+	lsmsvgaelement.c			\
 	lsmsvggelement.c			\
 	lsmsvgdefselement.c			\
 	lsmsvgrectelement.c			\
@@ -218,6 +219,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvgtransformable.h			\
 	lsmsvgclippathelement.h			\
 	lsmsvgsvgelement.h			\
+	lsmsvgaelement.h			\
 	lsmsvggelement.h			\
 	lsmsvgdefselement.h			\
 	lsmsvguseelement.h			\
