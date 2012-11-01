@@ -839,14 +839,14 @@ lsm_svg_view_show_viewport (LsmSvgView*view, const LsmBox *viewport)
 					       paint->color.red,
 					       paint->color.green,
 					       paint->color.blue,
-					       view->style->viewport_opacity->value);
+					       view->style->viewport_fill_opacity->value);
 			break;
 		case LSM_SVG_PAINT_TYPE_CURRENT_COLOR:
 			cairo_set_source_rgba (view->dom_view.cairo,
 					       view->style->color->value.red,
 					       view->style->color->value.green,
 					       view->style->color->value.blue,
-					       view->style->viewport_opacity->value);
+					       view->style->viewport_fill_opacity->value);
 		default:
 			return;
 	}

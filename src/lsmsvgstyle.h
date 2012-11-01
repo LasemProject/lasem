@@ -145,6 +145,8 @@ struct _LsmSvgStyle {
 	LsmSvgDoubleProperty *		stop_opacity;
 	LsmProperty *			text_decoration;
 	LsmProperty *			unicode_bidi;
+	LsmSvgPaintProperty *		viewport_fill;
+	LsmSvgDoubleProperty *		viewport_fill_opacity;
 
 	/* Inherited */
 
@@ -189,8 +191,6 @@ struct _LsmSvgStyle {
 	LsmSvgLengthProperty *		stroke_width;
 	LsmSvgTextAnchorProperty *	text_anchor;
 	LsmProperty *			text_rendering;
-	LsmSvgPaintProperty *		viewport_fill;
-	LsmSvgDoubleProperty *		viewport_opacity;
 	LsmSvgVisibilityProperty *	visibility;
 	LsmProperty *			word_spacing;
 	LsmSvgWritingModeProperty *	writing_mode;
