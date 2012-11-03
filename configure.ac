@@ -43,6 +43,10 @@ PKG_CHECK_MODULES(LASEM, [gobject-2.0
 			  cairo >= 1.2
 			  pangocairo >= 1.16.0
 			  libxml-2.0])
+# We use functions from the standard math library; it doesn't have
+# a pkgconfig file.
+LASEM_LIBS="${LASEM_LIBS} -lm"
+
 AC_SUBST(LASEM_CFLAGS)
 AC_SUBST(LASEM_LIBS)
 
