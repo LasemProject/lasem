@@ -37,7 +37,6 @@ LASEM_DOM_SRCS =				\
 	lsmproperties.c				\
 	lsmattributes.c				\
 	lsmcairo.c				\
-	lsmdomenumtypes.c			\
 	lsmdomentities.c			\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
@@ -50,6 +49,10 @@ LASEM_DOM_SRCS =				\
 	lsmdomview.c				\
 	lsmdomparser.c				\
 	lsmdomimplementation.c
+
+LASEM_DOM_BUILT_SRCS =				\
+	lsmdomenumtypes.c			\
+	lsmdomenumtypes.h
 
 LASEM_MATHML_SRCS =				\
 	lsmmathmlenumtypes.c			\
@@ -258,7 +261,7 @@ LASEM_SVG_HDRS =				\
 
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
 
-liblasem_@LASEM_API_VERSION@_la_SOURCES = $(LASEM_DOM_SRCS) $(LASEM_MATHML_SRCS) $(LASEM_SVG_SRCS)
+liblasem_@LASEM_API_VERSION@_la_SOURCES = $(LASEM_DOM_SRCS) $(LASEM_DOM_BUILT_SRCS) $(LASEM_MATHML_SRCS) $(LASEM_SVG_SRCS)
 liblasem_@LASEM_API_VERSION@_la_SOURCES +=  $(LASEM_MATHML_HDRS) $(LASEM_SVG_HDRS)
 liblasem_@LASEM_API_VERSION@_la_SOURCES += lsmmathmlenumtypes.h lsmsvgenumtypes.h
 
@@ -305,9 +308,9 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 if HAVE_INTROSPECTION
 
 introspection_files = $(LASEM_DOM_SRCS) \
-		      $(LASEM_DOM_HDRS) \
-		      lsmdomenumtypes.c	\
-		      lsmdomenumtypes.h
+		      $(LASEM_DOM_HDRS)
+
+introspection_built_files = $(LASEM_DOM_BUILT_SRCS)
 
 Lasem-@LASEM_API_VERSION@.gir: $(INTROSPECTION_SCANNER) liblasem-@LASEM_API_VERSION@.la Makefile
 
@@ -315,7 +318,7 @@ Lasem_@LASEM_API_VERSION_U@_gir_INCLUDES = GObject-2.0 cairo-1.0 Gio-2.0 Pango-1
 Lasem_@LASEM_API_VERSION_U@_gir_SCANNERFLAGS = --identifier-prefix=Lsm --warn-all
 Lasem_@LASEM_API_VERSION_U@_gir_CFLAGS = $(INCLUDES) -I$(top_srcdir)/src
 Lasem_@LASEM_API_VERSION_U@_gir_LIBS = liblasem-@LASEM_API_VERSION@.la
-Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files))
+Lasem_@LASEM_API_VERSION_U@_gir_FILES = $(addprefix $(srcdir)/,$(introspection_files)) $(addprefix $(top_builddir)/src/,$(introspection_built_files))
 
 INTROSPECTION_GIRS += Lasem-@LASEM_API_VERSION@.gir
 
