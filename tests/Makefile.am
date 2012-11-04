@@ -12,9 +12,12 @@ noinst_PROGRAMS = lsm-test
 lsm_test_SOURCES = lsmtest.c
 lsm_test_LDADD = $(test_progs_ldadd)
 
-TEST_PROGS += dom suite
+TEST_PROGS += dom suite str
 
 noinst_PROGRAMS += $(TEST_PROGS)
+
+str_SOURCES = str.c
+str_LDADD = $(test_progs_ldadd)
 
 dom_SOURCES = dom.c
 dom_LDADD = $(test_progs_ldadd)

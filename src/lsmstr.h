@@ -71,6 +71,44 @@ lsm_str_skip_colon_and_spaces (char **str)
 		(*str)++;
 }
 
+/**
+ * lsm_str_consolidate:
+ * @str: a utf8 string
+ *
+ * Removes trailing and heading ascii spaces from str, and reduce consecutive spaces to one space.
+ */
+
+static inline void
+lsm_str_consolidate (char *str)
+{
+	char *to_ptr;
+	char *from_ptr;
+
+	if (str == NULL)
+		return;
+
+	from_ptr = str;
+	to_ptr = str;
+	while (*from_ptr != '\0') {
+		if (g_ascii_isspace (*from_ptr)) {
+			if (to_ptr != str &&
+			    *(to_ptr - 1) != ' ') {
+				*to_ptr = ' ';
+				to_ptr++;
+			}
+		} else {
+			*to_ptr = *from_ptr;
+			to_ptr++;
+		}
+		from_ptr++;
+	}
+
+	if (to_ptr != str && *(to_ptr - 1) == ' ')
+		*(to_ptr - 1) = '\0';
+	else
+		*to_ptr = '\0';
+}
+
 G_END_DECLS
 
 #endif
