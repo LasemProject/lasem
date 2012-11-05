@@ -131,6 +131,78 @@ const LsmTraitClass lsm_svg_length_trait_class = {
 	.to_string = lsm_svg_length_trait_to_string
 };
 
+static gboolean
+lsm_svg_length_list_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgLengthList *length_list = (LsmSvgLengthList *) abstract_trait;
+	unsigned int n_lengths = 1;
+	unsigned int i;
+	gboolean success = FALSE;
+	char *iter = (char *) string;
+
+	g_free (length_list->lengths);
+	length_list->n_lengths = 0;
+	length_list->lengths = NULL;
+
+	while (*iter != '\0') {
+		if (*iter == ',' ||
+		    *iter == ' ') {
+			n_lengths++;
+			do {
+				iter++;
+			} while (*iter == ',' ||
+				 *iter == ' ');
+		} else
+			iter++;
+	}
+
+	length_list->lengths = g_new (LsmSvgLength, n_lengths);
+	length_list->n_lengths = n_lengths;
+	iter = (char *)string;
+	lsm_str_skip_spaces (&iter);
+
+	for (i = 0; i < n_lengths; i++) {
+		success = lsm_svg_parse_length (&iter, &length_list->lengths[i]);
+
+		if (!success)
+			break;
+		lsm_str_skip_comma_and_spaces (&iter);
+	}
+
+	if (!success) {
+		g_free (length_list->lengths);
+		length_list->lengths = NULL;
+		length_list->n_lengths = 0;
+	}
+
+	return TRUE;
+}
+
+static char *
+lsm_svg_length_list_trait_to_string (LsmTrait *abstract_trait)
+{
+	g_assert_not_reached ();
+
+	return NULL;
+}
+
+static void
+lsm_svg_length_list_trait_finalize (LsmTrait *abstract_trait)
+{
+	LsmSvgLengthList *svg_length_list = (LsmSvgLengthList *) abstract_trait;
+
+	g_free (svg_length_list->lengths);
+	svg_length_list->n_lengths = 0;
+	svg_length_list->lengths = NULL;
+}
+
+const LsmTraitClass lsm_svg_length_list_trait_class = {
+	.size = sizeof (LsmSvgLengthList),
+	.from_string = lsm_svg_length_list_trait_from_string,
+	.to_string = lsm_svg_length_list_trait_to_string,
+	.finalize = lsm_svg_length_list_trait_finalize
+};
+
 static void
 _init_matrix (LsmSvgMatrix *matrix, LsmSvgTransformType transform, unsigned int n_values, double values[])
 {
@@ -785,6 +857,8 @@ static char *
 lsm_svg_dash_array_trait_to_string (LsmTrait *abstract_trait)
 {
 	g_assert_not_reached ();
+
+	return NULL;
 }
 
 static void
