@@ -1134,6 +1134,7 @@ _update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, doub
 	pango_layout_set_text (pango_layout, string, n);
 
 	attrs = pango_attr_list_new ();
+#if 0
 	for (i = 0; i < n_dx; i++) {
 
 		attr = pango_attr_letter_spacing_new (pango_units_from_double (dx[i]));
@@ -1144,9 +1145,8 @@ _update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, doub
 			attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
 
 		pango_attr_list_insert (attrs, attr);
-
-		printf ("spacing = %g\n", dx[i]);
 	}
+#endif
 	for (i = 0; i < n_dy; i++) {
 
 		attr = pango_attr_rise_new (-pango_units_from_double (dy[i]));
@@ -1157,8 +1157,6 @@ _update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, doub
 			attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
 
 		pango_attr_list_insert (attrs, attr);
-
-		printf ("rise = %g\n", dy[i]);
 	}
 	pango_layout_set_attributes (pango_layout, attrs);
 	pango_attr_list_unref (attrs);
