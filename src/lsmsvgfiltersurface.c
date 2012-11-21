@@ -142,78 +142,86 @@ lsm_svg_filter_surface_unref (LsmSvgFilterSurface *filter_surface)
 G_DEFINE_BOXED_TYPE (LsmSvgFilterSurface, lsm_svg_filter_surface, lsm_svg_filter_surface_ref, lsm_svg_filter_surface_unref)
 
 static void
-box_blur (unsigned char *input_pixels,
-	  unsigned char *output_pixels,
-	  guchar * intermediate,
-	  gint kw, gint kh,
+box_blur (cairo_surface_t *in,
+          cairo_surface_t *output,
+          int kw,
+          int kh,
+          int shiftx,
+          int shifty,
+	  int x0,
+	  int y0,
 	  int x1,
-	  int y1,
-	  int x2,
-	  int y2,
-	  int rowstride)
+	  int y1)
 {
-	gint ch;
-	gint x, y;
-	gint sum;
+    gint ch;
+    gint x, y;
+    gint offset;
+    gint rowstride;
+    guchar *intermediate;
+    guchar *in_pixels;
+    guchar *output_pixels;
+    gint sum;
 
-	if (kw > x2 - x1)
-		kw = x2 - x1;
+    in_pixels = cairo_image_surface_get_data (in);
+    output_pixels = cairo_image_surface_get_data (output);
 
-	if (kh > y2 - y1)
-		kh = y2 - y1;
+    rowstride = cairo_image_surface_get_stride (in);
 
+    intermediate = g_new (guchar, MAX (kw, kh));
 
-	if (kw >= 1) {
-		for (ch = 0; ch < 4; ch++) {
-			for (y = y1; y < y2; y++) {
-				sum = 0;
-				for (x = x1; x < x1 + kw; x++) {
-					sum += (intermediate[x % kw] = input_pixels[4 * x + y * rowstride + ch]);
+    if (kw > 1) {
+        offset = shiftx - kw / 2;
+        for (ch = 0; ch < 4; ch++) {
+            for (y = y0; y < y1; y++) {
+                sum = 0;
+                for (x = x0; x < x0 + kw; x++) {
+                    sum += (intermediate[x % kw] = in_pixels[4 * x + y * rowstride + ch]);
+                    if (x + offset >= 0 && x + offset < x1)
+                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
+                }
+                for (x = x0 + kw; x < x1; x++) {
+                    sum -= intermediate[x % kw];
+                    sum += (intermediate[x % kw] = in_pixels[4 * x + y * rowstride + ch]);
+                    if (x + offset >= 0 && x + offset < x1)
+                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
+                }
+                for (x = x1; x < x1 + kw; x++) {
+                    sum -= intermediate[x % kw];
+                    if (x + offset >= 0 && x + offset < x1)
+                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
+                }
+            }
+        }
+        in_pixels = output_pixels;
+    }
 
-					if (x - kw / 2 >= 0 && x - kw / 2 < x2)
-						output_pixels[4 * (x - kw / 2) + y * rowstride + ch] = sum / kw;
-				}
-				for (x = x1 + kw; x < x2; x++) {
-					sum -= intermediate[x % kw];
-					sum += (intermediate[x % kw] = input_pixels[4 * x + y * rowstride + ch]);
-					output_pixels[4 * (x - kw / 2) + y * rowstride + ch] = sum / kw;
-				}
-				for (x = x2; x < x2 + kw; x++) {
-					sum -= intermediate[x % kw];
+    if (kh > 1) {
+        offset = shifty - kh / 2;
+        for (ch = 0; ch < 4; ch++) {
+            for (x = x0; x < x1; x++) {
+                sum = 0;
 
-					if (x - kw / 2 >= 0 && x - kw / 2 < x2)
-						output_pixels[4 * (x - kw / 2) + y * rowstride + ch] = sum / kw;
-				}
-			}
-		}
-		input_pixels = output_pixels;
-	}
-
-	if (kh >= 1) {
-		for (ch = 0; ch < 4; ch++) {
-			for (x = x1; x < x2; x++) {
-				sum = 0;
-
-				for (y = y1; y < y1 + kh; y++) {
-					sum += (intermediate[y % kh] = input_pixels[4 * x + y * rowstride + ch]);
-
-					if (y - kh / 2 >= 0 && y - kh / 2 < y2)
-						output_pixels[4 * x + (y - kh / 2) * rowstride + ch] = sum / kh;
-				}
-				for (; y < y2; y++) {
-					sum -= intermediate[y % kh];
-					sum += (intermediate[y % kh] = input_pixels[4 * x + y * rowstride + ch]);
-					output_pixels[4 * x + (y - kh / 2) * rowstride + ch] = sum / kh;
-				}
-				for (; y < y2 + kh; y++) {
-					sum -= intermediate[y % kh];
-
-					if (y - kh / 2 >= 0 && y - kh / 2 < y2)
-						output_pixels[4 * x + (y - kh / 2) * rowstride + ch] = sum / kh;
-				}
-			}
-		}
-	}
+                for (y = y0; y < y0 + kh; y++) {
+                    sum += (intermediate[y % kh] = in_pixels[4 * x + y * rowstride + ch]);
+                    if (y + offset >= 0 && y + offset < y1)
+                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
+                }
+                for (y = y0 + kh; y < y1; y++) {
+                    sum -= intermediate[y % kh];
+                    sum += (intermediate[y % kh] = in_pixels[4 * x + y * rowstride + ch]);
+                    if (y + offset >= 0 && y + offset < y1)
+                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
+                }
+                for (y = y1; y < y1 + kh; y++) {
+                    sum -= intermediate[y % kh];
+                    if (y + offset >= 0 && y + offset < y1)
+                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
+                }
+            }
+        }
+    }
+    
+    g_free (intermediate);
 }
 
 void
@@ -222,79 +230,68 @@ lsm_svg_filter_surface_fast_blur (LsmSvgFilterSurface *input,
 				  double sx, double sy)
 {
 	int kx, ky;
-	unsigned char *intermediate;
-	int rowstride;
-	int x1, y1, x2, y2;
-	unsigned char *input_pixels;
-	unsigned char *output_pixels;
 	int width, height;
-	cairo_surface_t *blur_surface;
-	gboolean do_clip = FALSE;
 
 	g_return_if_fail (input != NULL);
 	g_return_if_fail (output != NULL);
 
 	cairo_surface_flush (input->surface);
 
-	/* Original intermediate surface size calculation was:
-	 *
-	 * kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
-	 * ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
-	 *
-	 * Which has the drawback to give a surface with even dimensions, leading
-	 * to a blur with a one pixel offset.
-	 * The new dimensions are now always odd.
-	 *
-	 * 0.94 = 3.0 * sqrt(2*M_PI) / 8.0
-	 */
-
-	kx = round (sx * 0.94 - 0.5) * 2.0 + 1.5;
-	ky = round (sy * 0.94 - 0.5) * 2.0 + 1.5;
-
-	if (kx < 1 && ky < 1)
-		return;
-
-	rowstride = cairo_image_surface_get_stride (input->surface);
+	kx = floor (sx * 3 * sqrt (2 * M_PI) / 4 + 0.5);
+	ky = floor (sy * 3 * sqrt (2 * M_PI) / 4 + 0.5);
 
 	width = cairo_image_surface_get_width (input->surface);
 	height = cairo_image_surface_get_height (input->surface);
-
-	if (input->subregion.x < output->subregion.x ||
-	    input->subregion.y < output->subregion.y ||
-	    input->subregion.width > output->subregion.width ||
-	    input->subregion.height > output->subregion.height) {
-		do_clip = TRUE;	
-		blur_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
-	} else
-		blur_surface = output->surface;
 
 	if (width != cairo_image_surface_get_width (output->surface) ||
 	    height != cairo_image_surface_get_height (output->surface))
 		return;
 
-	x1 = output->subregion.x - kx;
-	y1 = output->subregion.y - ky;
-	x2 = output->subregion.width + output->subregion.x + kx;
-	y2 = output->subregion.height + output->subregion.y + ky;
-	x1 = CLAMP (x1, 0, width);
-	y1 = CLAMP (y1, 0, height);
-	x2 = CLAMP (x2, x1, width);
-	y2 = CLAMP (y2, y1, height);
+	if (kx > 1 || ky > 1) {
+		int x1, y1, x2, y2;
+		cairo_surface_t *blur_surface;
+		gboolean do_clip = FALSE;
 
-	intermediate = g_new (guchar, MAX (kx, ky));
+		x1 = output->subregion.x - kx;
+		y1 = output->subregion.y - ky;
+		x2 = output->subregion.width + output->subregion.x + kx;
+		y2 = output->subregion.height + output->subregion.y + ky;
+		x1 = CLAMP (x1, 0, width);
+		y1 = CLAMP (y1, 0, height);
+		x2 = CLAMP (x2, x1, width);
+		y2 = CLAMP (y2, y1, height);
 
-	input_pixels = cairo_image_surface_get_data (input->surface);
-	output_pixels = cairo_image_surface_get_data (blur_surface);
 
-	box_blur (input_pixels, output_pixels, intermediate, kx, ky, x1, y1, x2, y2, rowstride);
-	box_blur (output_pixels, output_pixels, intermediate, kx, ky, x1, y1, x2, y2, rowstride);
-	box_blur (output_pixels, output_pixels, intermediate, kx, ky, x1, y1, x2, y2, rowstride);
+		if (input->subregion.x < output->subregion.x ||
+		    input->subregion.y < output->subregion.y ||
+		    input->subregion.width > output->subregion.width ||
+		    input->subregion.height > output->subregion.height) {
+			do_clip = TRUE;	
+			blur_surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width, height);
+		} else
+			blur_surface = output->surface;
 
-	g_free (intermediate);
+		box_blur (input->surface, blur_surface, kx, ky, 0, 0, x1, y1, x2, y2);
+		box_blur (blur_surface, blur_surface, kx, ky, (kx + 1) % 2, (ky + 1) % 2, x1, y1, x2, y2);
+		box_blur (blur_surface, blur_surface, kx + (kx + 1) % 2, ky + (ky + 1) % 2, 0, 0, x1, y1, x2, y2);
 
-	cairo_surface_mark_dirty (blur_surface);
+		cairo_surface_mark_dirty (blur_surface);
 
-	if (do_clip) {
+		if (do_clip) {
+			cairo_t *cairo;
+
+			cairo = cairo_create (output->surface);
+			cairo_rectangle (cairo,
+					 output->subregion.x, output->subregion.y,
+					 output->subregion.width, output->subregion.height);
+			cairo_clip (cairo);
+			cairo_set_source_surface (cairo, blur_surface, 0, 0);
+			cairo_paint (cairo);
+			cairo_destroy (cairo);
+
+			cairo_surface_destroy (blur_surface);
+		}
+	} else {
 		cairo_t *cairo;
 
 		cairo = cairo_create (output->surface);
@@ -302,9 +299,8 @@ lsm_svg_filter_surface_fast_blur (LsmSvgFilterSurface *input,
 				 output->subregion.x, output->subregion.y,
 				 output->subregion.width, output->subregion.height);
 		cairo_clip (cairo);
-		cairo_set_source_surface (cairo, blur_surface, 0, 0);
+		cairo_set_source_surface (cairo, input->surface, 0, 0);
 		cairo_paint (cairo);
-		cairo_surface_destroy (blur_surface);
 		cairo_destroy (cairo);
 	}
 }
