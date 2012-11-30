@@ -379,6 +379,13 @@ lsm_dom_document_new_from_url (const char *url, GError **error)
 	return document;
 }
 
+/**
+ * lsm_dom_document_save_to_stream:
+ * @document: a #LsmDomDocument
+ * @stream: stream to save to
+ * @error: an error placeholder
+ */
+
 void
 lsm_dom_document_save_to_stream (LsmDomDocument *document, GOutputStream *stream, GError **error)
 {
