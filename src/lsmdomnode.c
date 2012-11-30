@@ -159,9 +159,10 @@ static GObjectClass *parent_class = NULL;
 /**
  * lsm_dom_node_get_node_name:
  * @self: a #LsmDomNode
- * Return value: the node name.
  *
  * Gets the node name.
+ *
+ * Return value: the node name.
  */
 
 const char*
@@ -180,9 +181,10 @@ lsm_dom_node_get_node_name (LsmDomNode* self)
 /**
  * lsm_dom_node_get_node_value:
  * @self: a #LsmDomNode
- * Return value: the node value.
  *
  * Gets the node value.
+ *
+ * Return value: the node value.
  */
 
 const char*
@@ -225,6 +227,7 @@ LsmDomNodeType lsm_dom_node_get_node_type (LsmDomNode* self)
 /**
  * lsm_dom_node_get_parent_node:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node parent
  */
 
@@ -239,6 +242,7 @@ lsm_dom_node_get_parent_node (LsmDomNode* self)
 /**
  * lsm_dom_node_get_child_nodes:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node child list
  */
 
@@ -262,6 +266,7 @@ lsm_dom_node_get_child_nodes (LsmDomNode* self)
 /**
  * lsm_dom_node_get_first_child:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node first child
  */
 
@@ -276,6 +281,7 @@ lsm_dom_node_get_first_child (LsmDomNode* self)
 /**
  * lsm_dom_node_get_last_child:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node last child
  */
 
@@ -290,6 +296,7 @@ lsm_dom_node_get_last_child (LsmDomNode* self)
 /**
  * lsm_dom_node_get_previous_sibling:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node previous sibling
  */
 
@@ -304,6 +311,7 @@ lsm_dom_node_get_previous_sibling (LsmDomNode* self)
 /**
  * lsm_dom_node_get_next_sibling:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node next sibling
  */
 
@@ -326,6 +334,7 @@ lsm_dom_node_get_attributes (LsmDomNode* self)
 /**
  * lsm_dom_node_get_owner_document:
  * @self: a #LsmDomNode
+ *
  * Returns: (transfer none): node owner document
  */
 

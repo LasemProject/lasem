@@ -35,6 +35,7 @@
  * lsm_dom_node_list_get_item:
  * @list: a #LsmDomNodeList
  * @index: id of the item to retrieve
+ *
  * Returns: (transfer none): the node corresponding to index, NULL on error.
  */
 

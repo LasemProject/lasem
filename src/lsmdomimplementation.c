@@ -44,6 +44,7 @@ lsm_dom_implementation_add_document_create_function (const char *qualified_name,
  * lsm_dom_implementation_create_document:
  * @namespace_uri: namespace uri
  * @qualified_name: qualified name
+ *
  * Returns: (transfer full): a new #LsmDomDocument
  */
 
