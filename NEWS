@@ -1,3 +1,17 @@
+Release 0.4.0
+=============
+
+All:
+	Add a zoom option to lasem-render.
+	Support out-of-source build (Ray Dassen)
+	Explicitely link against standard math library (Ray Dassen).
+	GIR scanner warning fixes.
+
+SVG:
+	Add support for viewport-fill and viewport-opacity attributes.
+	Add support for comp-op attributes.
+	Better fix for blur offset from a patch found in librsvg bugzilla (Eduard Braun).
+
 Release 0.3.4
 =============
 
