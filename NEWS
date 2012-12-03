@@ -1,3 +1,9 @@
+Release 0.4.1
+=============
+
+SVG:
+	Revert text patches. They were not supposed to be in 0.4.0 release.
+
 Release 0.4.0
 =============
 
