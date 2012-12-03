@@ -1,7 +1,7 @@
 AC_PREREQ(2.63.0)
 
 m4_define([lasem_version_major], [0])
-m4_define([lasem_version_minor], [4])
+m4_define([lasem_version_minor], [5])
 m4_define([lasem_version_micro], [0])
 m4_define([lasem_version], [lasem_version_major.lasem_version_minor.lasem_version_micro])
 
@@ -17,7 +17,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
-AC_SUBST([LASEM_API_VERSION], [0.4])
+AC_SUBST([LASEM_API_VERSION], [0.6])
 AC_SUBST([LASEM_API_VERSION_U],[AS_TR_SH([$LASEM_API_VERSION])])
 AC_SUBST([LASEM_LIBTOOL_VERSION], [lasem_libtool_current:lasem_version_micro:0])
 
