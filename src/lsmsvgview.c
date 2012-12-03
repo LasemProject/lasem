@@ -121,27 +121,6 @@ lsm_svg_view_normalize_length (LsmSvgView *view, const LsmSvgLength *length, Lsm
 	return lsm_svg_length_normalize (length, view->viewbox_stack->data, view->style->font_size_px, direction);
 }
 
-double *
-lsm_svg_view_normalize_length_list (LsmSvgView *view, const LsmSvgLengthList *list, LsmSvgLengthDirection direction, unsigned int *n_data)
-{
-	double *data;
-	unsigned int i;
-
-	g_return_val_if_fail (n_data != NULL, NULL);
-	*n_data = 0;
-	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), NULL);
-
-	if (list->n_lengths == 0)
-		return NULL;
-
-	*n_data = list->n_lengths;
-	data = g_new (double, list->n_lengths);
-	for (i = 0; i < list->n_lengths; i++)
-		data[i] = lsm_svg_view_normalize_length (view, &list->lengths[i], direction);
-
-	return data;
-}
-
 static void
 _start_pattern (LsmSvgView *view, const LsmBox *extents, const LsmBox *object_extents, double opacity)
 {
@@ -1058,10 +1037,7 @@ lsm_svg_view_show_polygon (LsmSvgView *view, const char *points)
 }
 
 static void
-_update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, double x, double y,
-		      unsigned int n_dx, const double *dx,
-		      unsigned int n_dy, const double *dy,
-		      LsmSvgViewPathInfos *path_infos)
+_update_pango_layout (LsmSvgView *view, char const *string, double x, double y, LsmSvgViewPathInfos *path_infos)
 {
 	const LsmSvgStyle *style;
 	PangoLayout *pango_layout;
@@ -1070,10 +1046,7 @@ _update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, doub
 	PangoStyle font_style;
 	PangoLayoutIter *iter;
 	PangoRectangle rectangle;
-	PangoAttrList *attrs;
-	PangoAttribute *attr;
 	int baseline;
-	int i;
 	double x1, y1;
 
 	style = view->style;
@@ -1131,38 +1104,7 @@ _update_pango_layout (LsmSvgView *view, unsigned int n, char const *string, doub
 	}
 	pango_font_description_set_style (font_description, font_style);
 
-	pango_layout_set_text (pango_layout, string, n);
-
-	attrs = pango_attr_list_new ();
-	for (i = 0; i < n_dx; i++) {
-
-		attr = pango_attr_letter_spacing_new (pango_units_from_double (dx[i]));
-		attr->start_index = i;
-		if (i < n_dx - 1)
-			attr->end_index = i + 1;
-		else
-			attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
-
-		pango_attr_list_insert (attrs, attr);
-
-		printf ("spacing = %g\n", dx[i]);
-	}
-	for (i = 0; i < n_dy; i++) {
-
-		attr = pango_attr_rise_new (-pango_units_from_double (dy[i]));
-		attr->start_index = i;
-		if (i < n_dy - 1)
-			attr->end_index = i + 1;
-		else
-			attr->end_index = PANGO_ATTR_INDEX_TO_TEXT_END;
-
-		pango_attr_list_insert (attrs, attr);
-
-		printf ("rise = %g\n", dy[i]);
-	}
-	pango_layout_set_attributes (pango_layout, attrs);
-	pango_attr_list_unref (attrs);
-
+	pango_layout_set_text (pango_layout, string, -1);
 	pango_layout_set_font_description (pango_layout, font_description);
 	pango_layout_get_extents (pango_layout, &rectangle, NULL);
 
@@ -1206,7 +1148,7 @@ _lock_pango_layout (LsmSvgView *view)
 		view->pango_layout_stack = g_slist_prepend (view->pango_layout_stack, view->pango_layout);
 		view->pango_layout = pango_layout_new (pango_context);
 
-		lsm_debug_render ("[LsmSvgView::_lock_pango_layout] Create a new pango layout");
+		lsm_debug_render ("[LsmSvgView::show_text] Create a new pango layout");
 
 		return TRUE;
 	}
@@ -1221,7 +1163,7 @@ _unlock_pango_layout (LsmSvgView *view, gboolean need_pop)
 {
 
 	if (need_pop) {
-		lsm_debug_render ("[LsmSvgView::_unlock_pango_layout] Free the child pango layout");
+		lsm_debug_render ("[LsmSvgView::show_text] Free the child pango layout");
 
 		if (view->pango_layout != NULL) {
 			g_object_unref (view->pango_layout);
@@ -1230,31 +1172,23 @@ _unlock_pango_layout (LsmSvgView *view, gboolean need_pop)
 			view->pango_layout_stack = g_slist_delete_link (view->pango_layout_stack,
 									view->pango_layout_stack);
 		} else
-			g_warning ("[LsmSvgView::_unlock_pango_layout] Pango layout stack empty");
+			g_warning ("[LsmSvgView::show_text] Pango layout stack empty");
 	}
 
 	view->is_pango_layout_in_use = FALSE;
 }
 
-static void
-_show_text (LsmSvgView *view,
-	    unsigned int n, char const *string, 
-	    unsigned int n_x, double *x, unsigned int n_y, double *y,
-	    unsigned int n_dx, double *dx, unsigned int n_dy, double *dy)
+void
+lsm_svg_view_show_text (LsmSvgView *view, char const *string, double x, double y)
 {
 	LsmSvgViewPathInfos path_infos = default_path_infos;
-	PangoRectangle extents;
-	PangoLayoutIter *layout_iter;
 	const LsmSvgStyle *style;
 	gboolean need_pop;
-	double x_text;
-	double y_text;
-	double x_end, y_end;
-	double baseline;
-	cairo_t *cairo;
 
+	if (string == NULL || string[0] == '\0')
+		return;
 
-	cairo = view->dom_view.cairo;
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
 	style = view->style;
 
@@ -1262,143 +1196,28 @@ _show_text (LsmSvgView *view,
 
 	need_pop = _lock_pango_layout (view);
 
-	cairo_get_current_point (cairo, &x_text, &y_text);
-	if (x != NULL)
-		x_text = x[0];
-	if (y != NULL)
-		y_text = y[0];
-
-
-	_update_pango_layout (view, n, string, x_text, y_text, n_dx, dx, n_dy, dy, &path_infos);
+	_update_pango_layout (view, string, x, y, &path_infos);
 
 	if (style->writing_mode->value == LSM_SVG_WRITING_MODE_TB ||
 	    style->writing_mode->value == LSM_SVG_WRITING_MODE_TB_RL) {
 
-		cairo_save (cairo);
-		cairo_rotate (cairo, M_PI / 2.0);
-		cairo_move_to (cairo, path_infos.extents.x1, path_infos.extents.y1);
+		cairo_save (view->dom_view.cairo);
+		cairo_rotate (view->dom_view.cairo, M_PI / 2.0);
+		cairo_move_to (view->dom_view.cairo, path_infos.extents.x1, path_infos.extents.y1);
 
 		process_path (view, &path_infos);
 
-		cairo_restore (cairo);
+		cairo_restore (view->dom_view.cairo);
 	} else {
-		cairo_move_to (cairo, path_infos.extents.x1, path_infos.extents.y1);
+		cairo_move_to (view->dom_view.cairo, path_infos.extents.x1, path_infos.extents.y1);
 		process_path (view, &path_infos);
 	}
-
-	layout_iter = pango_layout_get_iter (view->pango_layout);
-	pango_layout_iter_get_line_extents (layout_iter, NULL, &extents);
-	baseline = pango_units_to_double (pango_layout_iter_get_baseline (layout_iter));
-	pango_layout_iter_free (layout_iter);
-
-	x_end = pango_units_to_double (extents.x + extents.width) + path_infos.extents.x1;
-	y_end = pango_units_to_double (extents.y) + baseline + path_infos.extents.y1;
-
-	if (view->debug_text) {
-		double x1, y1;
-
-		lsm_debug_render ("[LsmSvgView::_show_text] Logical extents %gx%g at %g,%g\n",
-			pango_units_to_double (extents.width),
-			pango_units_to_double (extents.height),
-			pango_units_to_double (extents.x),
-			pango_units_to_double (extents.y));
-
-		lsm_debug_render ("[LsmSvgView::_show_text] End point is %g, %g\n", x_end, y_end);
-		lsm_debug_render ("[LsmSvgView::_show_text] Baseline = %g\n", baseline);
-
-		x1 = 1;
-		y1 = 1;
-		cairo_device_to_user_distance (cairo, &x1, &y1);
-
-		cairo_set_source_rgba (cairo, 1.0, 0.0, 0.0, 0.2);
-		cairo_set_line_width (cairo, x1);
-		cairo_rectangle (cairo, path_infos.extents.x1, path_infos.extents.y1,
-				 pango_units_to_double (extents.x + extents.width),
-				 pango_units_to_double (extents.y + extents.height));
-		cairo_stroke (cairo);
-		cairo_set_source_rgba (cairo, 1.0, 0.0, 0.0, 0.2);
-		cairo_arc (cairo, x_end, y_end, 4.0 * x1, 0.0, 2.0 * M_PI);
-		cairo_arc (cairo, path_infos.extents.x1, path_infos.extents.y1, 4.0 * x1, 0.0, 2.0 * M_PI);
-		cairo_fill (cairo);
-	}
-
-	cairo_move_to (cairo, x_end, y_end);
 
 	_unlock_pango_layout (view, need_pop);
 }
 
 void
-lsm_svg_view_start_text (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-
-	cairo_move_to (view->dom_view.cairo, 0, 0);
-}
-
-void
-lsm_svg_view_end_text (LsmSvgView *view)
-{
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-
-	cairo_new_path (view->dom_view.cairo);
-}
-
-void
-lsm_svg_view_show_text (LsmSvgView *view, char const *string, 
-			unsigned int n_x, double *x, unsigned int n_y, double *y,
-			unsigned int n_dx, double *dx, unsigned int n_dy, double *dy)
-{
-	unsigned int n, i;
-	char *iter = (char *) string;
-
-	if (string == NULL || string[0] == '\0')
-		return;
-
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (n_x > 0 || x == NULL);
-	g_return_if_fail (n_y > 0 || y == NULL);
-	g_return_if_fail (n_dx > 0 || dx == NULL);
-	g_return_if_fail (n_dy > 0 || dy == NULL);
-
-	n = MAX (n_x, n_y);
-	if (n <= 1) {
-		_show_text (view, strlen (string), string, n_x, x, n_y, y, n_dx, dx, n_dy, dy);
-		return;
-	}
-
-	for (i = 0; (i < n - 1) && iter[0] != '\0'; i++) {
-		char *next_char;
-
-		next_char = g_utf8_next_char (iter);
-		_show_text (view, next_char - iter, iter,
-			    i < n_x ? n_x - i : 0,
-			    i < n_x ? &x[i] : NULL,
-			    i < n_y ? n_y - i : 0,
-			    i < n_y ? &y[i] : NULL,
-			    i < n_dx ? n_dx - i : 0,
-			    i < n_dx ? &dx[i] : NULL,
-			    i < n_dy ? n_dy - i : 0,
-			    i < n_dy ? &dy[i] : NULL);
-		iter = next_char;
-	}
-
-	if (iter[0] != '\0')
-		_show_text (view, strlen (iter), iter,
-			    i < n_x ? n_x - i : 0,
-			    i < n_x ? &x[i] : NULL,
-			    i < n_y ? n_y - i : 0,
-			    i < n_y ? &y[i] : NULL,
-			    i < n_dx ? n_dx - i : 0,
-			    i < n_dx ? &dx[i] : NULL,
-			    i < n_dy ? n_dy - i : 0,
-			    i < n_dy ? &dy[i] : NULL);
-}
-
-void
-lsm_svg_view_text_extents (LsmSvgView *view, char const *string,
-			   double x, double y,
-			   unsigned int n_dx, double *dx, unsigned int n_dy, double *dy,
-			   LsmExtents *extents)
+lsm_svg_view_text_extents (LsmSvgView *view, char const *string, double x, double y, LsmExtents *extents)
 {
 	LsmSvgViewPathInfos path_infos = default_path_infos;
 	gboolean need_pop;
@@ -1416,7 +1235,7 @@ lsm_svg_view_text_extents (LsmSvgView *view, char const *string,
 
 	need_pop = _lock_pango_layout (view);
 
-	_update_pango_layout (view, strlen (string), string, x, y, n_dx, dx, n_dy, dy, &path_infos);
+	_update_pango_layout (view, string, x, y, &path_infos);
 
 	_unlock_pango_layout (view, need_pop);
 
@@ -2535,10 +2354,6 @@ lsm_svg_view_set_debug (LsmDomView *view, const char *feature, gboolean enable)
 		svg_view->debug_mask = enable;
 	else if (g_strcmp0 (feature, "pattern") == 0)
 		svg_view->debug_pattern = enable;
-	else if (g_strcmp0 (feature, "group") == 0)
-		svg_view->debug_group = enable;
-	else if (g_strcmp0 (feature, "text") == 0)
-		svg_view->debug_text = enable;
 }
 
 LsmSvgView *

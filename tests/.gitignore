@@ -1,5 +1,4 @@
 dom
-str
 lsm-test
 fuzz.*
 *-diff.png
