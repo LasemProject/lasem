@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lasem\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 18:22+0200\n"
-"PO-Revision-Date: 2012-09-04 18:23+0200\n"
+"POT-Creation-Date: 2012-12-04 00:28+0100\n"
+"PO-Revision-Date: 2012-12-04 00:29+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -23,38 +23,47 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../src/lasemrender.c:64
+#: ../src/lasemrender.c:66
 msgid "Output filename"
 msgstr "Nazwa pliku wyjściowego"
 
-#: ../src/lasemrender.c:66
+#: ../src/lasemrender.c:68
 msgid "Output format"
 msgstr "Format wyjściowy"
 
-#: ../src/lasemrender.c:68
+#: ../src/lasemrender.c:70
 msgid "Pixel per inch"
 msgstr "Piksele na cal"
 
-#: ../src/lasemrender.c:70
+#: ../src/lasemrender.c:72
+msgid "Zoom"
+msgstr "Powiększenie"
+
+#: ../src/lasemrender.c:74
 msgid "Debug domains"
 msgstr "Domeny debugowania"
 
-#: ../src/lasemrender.c:96
+#: ../src/lasemrender.c:100
 #, c-format
 msgid "Option parsing failed: %s\n"
 msgstr "Przetworzenie opcji się nie powiodło: %s\n"
 
-#: ../src/lasemrender.c:105
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Nieprawidłowa wartość powiększenia"
+
+#: ../src/lasemrender.c:114
 #, c-format
 msgid "One input file name is required\n"
 msgstr "Wymagany jest jeden plik wejściowy\n"
 
-#: ../src/lasemrender.c:116
+#: ../src/lasemrender.c:125
 #, c-format
 msgid "Unknown format : %s\n"
 msgstr "Nieznany format: %s\n"
 
-#: ../src/lasemrender.c:235
+#: ../src/lasemrender.c:250
 #, c-format
-msgid "Can't load %s"
-msgstr "Nie można wczytać %s"
+msgid "Can't load '%s'\n"
+msgstr "Nie można wczytać \"%s\"\n"
