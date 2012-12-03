@@ -57,8 +57,6 @@ static gboolean option_fatal_warning = FALSE;
 static gboolean option_debug_filter = FALSE;
 static gboolean option_debug_pattern = FALSE;
 static gboolean option_debug_mask = FALSE;
-static gboolean option_debug_group = FALSE;
-static gboolean option_debug_text = FALSE;
 static gboolean option_dry_run = FALSE;
 static double option_compare_fuzz = 10.0;
 
@@ -78,10 +76,6 @@ static const GOptionEntry entries[] =
 		&option_debug_pattern,		"Debug pattern surfaces", NULL },
 	{ "debug-mask", 	' ' , 0, G_OPTION_ARG_NONE,
 		&option_debug_mask,		"Debug mask surfaces", NULL },
-	{ "debug-group", 	' ' , 0, G_OPTION_ARG_NONE,
-		&option_debug_group,		"Debug group surfaces", NULL },
-	{ "debug-text", 	' ' , 0, G_OPTION_ARG_NONE,
-		&option_debug_text,		"Debug text layout", NULL },
 	{ "dry-run",		'n' , 0, G_OPTION_ARG_NONE,
 		&option_dry_run,		"Don't write files", NULL },
 	{ "compare-fuzz",	'z', 0, G_OPTION_ARG_DOUBLE,
@@ -325,10 +319,6 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 			lsm_dom_view_set_debug (view, "pattern", TRUE);
 		if (option_debug_filter)
 			lsm_dom_view_set_debug (view, "filter", TRUE);
-		if (option_debug_group)
-			lsm_dom_view_set_debug (view, "group", TRUE);
-		if (option_debug_text)
-			lsm_dom_view_set_debug (view, "text", TRUE);
 
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, width + 2, height + 2);
 		cairo = cairo_create (surface);
