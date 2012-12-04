@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 			if (g_ascii_strcasecmp (option_output_file_format, file_formats[format]) == 0)
 				break;
 		if (FORMAT_UNKNOWN == format) {
-			g_print (_("Unknown format : %s\n"), option_output_file_format);
+			g_print (_("Unknown format: %s\n"), option_output_file_format);
 			return EXIT_FAILURE;
 		}
 	} else
