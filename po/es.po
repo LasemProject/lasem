@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-03 23:30+0000\n"
-"PO-Revision-Date: 2012-12-04 11:29+0100\n"
+"POT-Creation-Date: 2012-12-04 10:51+0000\n"
+"PO-Revision-Date: 2012-12-04 11:52+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -52,7 +52,8 @@ msgstr "Valor de ampliación no válido"
 
 #: ../src/lasemrender.c:114
 #, c-format
-msgid "One input filename is required\n"
+#| msgid "One input filename is required\n"
+msgid "One input file name is required\n"
 msgstr "Se necesita un nombre de archivo de entrada\n"
 
 #: ../src/lasemrender.c:125
