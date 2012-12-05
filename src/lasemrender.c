@@ -32,6 +32,7 @@
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
 #include <cairo-ps.h>
+#include <../config.h>
 
 #include <../itex2mml/itex2MML.h>
 
@@ -88,6 +89,11 @@ int main(int argc, char **argv)
 	char *input_filename;
 	double height_pt, width_pt;
 	unsigned int height, width;
+
+	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+	setlocale (LC_ALL, "");
 
 	g_type_init ();
 
