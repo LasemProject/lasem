@@ -1,0 +1,64 @@
+# Brazilian Portuguese translation for lasem.
+# Copyright (C) 2012 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-12-12 22:02+0000\n"
+"PO-Revision-Date: 2012-12-27 08:24-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Nome do arquivo de saída"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Formato de saída"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Pixel por polegada"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Domínios de depuração"
+
+#: ../src/lasemrender.c:106
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Falha ao analisar opção: %s\n"
+
+#: ../src/lasemrender.c:113
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Valor de zoom inválido"
+
+#: ../src/lasemrender.c:120
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Um nome de arquivo como entrada é necessário\n"
+
+#: ../src/lasemrender.c:131
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Formato desconhecido: %s\n"
+
+#: ../src/lasemrender.c:256
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Não foi possível carregar \"%s\"\n"
