@@ -1,0 +1,64 @@
+# Galician translations for PACKAGE package.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Fran Diéguez <frandieguez@gnome.org>, 2012.
+# Fran Dieguez <frandieguez@gnome.org>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-30 21:00+0100\n"
+"PO-Revision-Date: 2012-12-30 21:03+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
+"Language: gl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Nome do ficheiro de saída"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Formato da saída"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Píxeles por polgada"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Ampliación"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Dominios de depuración"
+
+#: ../src/lasemrender.c:106
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Produciuse un erro ao analizar a opción: %s\n"
+
+#: ../src/lasemrender.c:113
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Valor da ampliación non válido"
+
+#: ../src/lasemrender.c:120
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Requírese un nome de ficheiro de entrada\n"
+
+#: ../src/lasemrender.c:131
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Formato descoñecido: %s\n"
+
+#: ../src/lasemrender.c:256
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Non é posíbel cargar «%s»\n"
