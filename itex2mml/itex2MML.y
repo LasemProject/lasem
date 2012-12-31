@@ -1935,10 +1935,10 @@ int itex2MML_do_html_filter (const char * buffer, unsigned long length, const in
 
 int itex2MML_html_filter (const char * buffer, unsigned long length)
 {
-  itex2MML_do_html_filter (buffer, length, 0);
+  return itex2MML_do_html_filter (buffer, length, 0);
 }
 
 int itex2MML_strict_html_filter (const char * buffer, unsigned long length)
 {
-  itex2MML_do_html_filter (buffer, length, 1);
+  return itex2MML_do_html_filter (buffer, length, 1);
 }
