@@ -1,5 +1,6 @@
 #include <glib.h>
 #include <lsmstr.h>
+#include <lsm.h>
 
 static void
 str_consolidate_test (void)
