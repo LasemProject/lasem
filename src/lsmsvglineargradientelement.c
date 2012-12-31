@@ -44,7 +44,7 @@ static const LsmSvgLinearGradientElementAttributes default_attributes = {
 	.x1 = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
 	.y1 = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
 	.x2 = { .value_unit = 100.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE},
-	.y1 = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE}
+	.y2 = { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE}
 };
 
 static GObjectClass *parent_class;
