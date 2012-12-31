@@ -1209,7 +1209,7 @@ const LsmTraitClass lsm_svg_overflow_trait_class = {
 static gboolean
 lsm_svg_writing_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
-	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+	LsmSvgWritingMode *trait = (LsmSvgWritingMode *) abstract_trait;
 
 	*trait = lsm_svg_writing_mode_from_string (string);
 
@@ -1219,7 +1219,7 @@ lsm_svg_writing_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
 char *
 lsm_svg_writing_mode_trait_to_string (LsmTrait *abstract_trait)
 {
-	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
+	LsmSvgWritingMode *trait = (LsmSvgWritingMode *) abstract_trait;
 
 	return g_strdup (lsm_svg_writing_mode_to_string (*trait));
 }
