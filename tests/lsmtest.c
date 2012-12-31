@@ -42,6 +42,7 @@
 
 #include <lsmmathml.h>
 #include <glib.h>
+#include <glib/gprintf.h>
 #include <gio/gio.h>
 
 #include <libxml/parser.h>
