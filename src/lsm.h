@@ -33,4 +33,6 @@
 #include <lsmattributes.h>
 #include <lsmproperties.h>
 
+void lsm_shutdown (void);
+
 #endif
