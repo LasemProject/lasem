@@ -99,7 +99,7 @@ lsm_svg_pattern_element_inherit_referenced (LsmDomDocument *owner,
 			}
 
 		if (!circular_reference_found) {
-			if (LSM_IS_SVG_PATTERN_ELEMENT (element), elements) {
+			if (LSM_IS_SVG_PATTERN_ELEMENT (element)) {
 				lsm_debug_render ("[LsmSvgPatternElement::inherit_attributes] "
 						  "Found referenced element '%s'", id);
 
