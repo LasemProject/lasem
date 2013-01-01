@@ -1041,7 +1041,7 @@ int itex2MML_displaymode = 0;
 
 %%
 
-void itex2MML_restart ()
+void itex2MML_restart (void)
 {
 	BEGIN(INITIAL);
 }

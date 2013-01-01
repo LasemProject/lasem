@@ -41,7 +41,7 @@ extern "C" {
    */
   extern void   itex2MML_setup (const char * buffer, unsigned long length);
 
-  extern void   itex2MML_restart ();
+  extern void   itex2MML_restart (void);
 
   extern char * itex2MML_copy_string (const char * str);
   extern char * itex2MML_copy_string_extra (const char * str, unsigned extra);
