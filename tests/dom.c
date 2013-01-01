@@ -22,6 +22,7 @@ create_document_test (void)
 	g_object_unref (document);
 }
 
+#if 0 /* Unused code - remove? */
 static void
 create_element_test (void)
 {
@@ -77,6 +78,7 @@ add_remove_element_test (void)
 	g_object_unref (element);
 	g_object_unref (document);
 }
+#endif /* 0 */
 
 static void
 node_list_test (void)
