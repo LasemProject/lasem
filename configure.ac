@@ -52,6 +52,60 @@ ifdef([GNOME_COMPILE_WARNINGS],
 	[GNOME_COMPILE_WARNINGS] CFLAGS="$CFLAGS $WARN_CFLAGS",
 	[]
 )
+set_more_warnings=yes
+if test "$GCC" = yes -a "x$set_more_warnings" != xno; then
+	warning_options="\
+			 -Wformat=2 \
+			 -Wmissing-format-attribute \
+			 -Wextra \
+			 -Wundef \
+			 -Wstrict-prototypes -Wnested-externs \
+			 -Wchar-subscripts -Wwrite-strings \
+			 -Wmissing-noreturn \
+			 -Wmissing-declarations \
+			 -Wcast-align \
+			 -Winline \
+			 -Wbad-function-cast \
+			 -Waddress-space \
+			 -Wbitwise \
+			 -Wcast-to-as \
+			 -Wno-pointer-sign \
+			 -Wdefault-bitfield-sign \
+			 -Wdo-while \
+			 -Wparen-string \
+			 -Wptr-subtraction-blows \
+			 -Wreturn-void \
+			 -Wtypesign \
+			"
+	# Fine tuning. Some warnings enabled above are a bit too much
+	# (at least for now)
+	warning_options="$warning_options \
+			 -Wno-unused-parameter -Wno-sign-compare"
+	# Some warnings which we may want to consider later on but which
+	# trigger too often at the time of writing
+	not_now_please="\
+			 -Wpointer-arith \
+			 -Wswitch-enum \
+			 -Wfloat-equal \
+			 -Wdeclaration-after-statement \
+			 -Wshadow \
+			"
+	for option in $warning_options ; do
+		SAVE_CFLAGS="$CFLAGS"
+		CFLAGS="$CFLAGS $option"
+		AC_MSG_CHECKING([whether gcc understands $option])
+		AC_TRY_COMPILE([], [],
+			has_option=yes,
+			has_option=no,)
+		if test $has_option = no; then
+		  CFLAGS="$SAVE_CFLAGS"
+		fi
+		AC_MSG_RESULT($has_option)
+		unset has_option
+		unset SAVE_CFLAGS
+	done
+	unset option
+fi
 
 AC_SUBST(LASEM_CFLAGS)
 AC_SUBST(LASEM_LIBS)
