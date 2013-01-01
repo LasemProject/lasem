@@ -102,7 +102,7 @@ lsm_dom_node_child_list_get_length (LsmDomNodeList *list)
 	return length;
 }
 
-LsmDomNodeList *
+static LsmDomNodeList *
 lsm_dom_node_child_list_new (LsmDomNode *parent_node)
 {
 	LsmDomNodeChildList *list;

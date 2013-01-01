@@ -260,7 +260,7 @@
 
  /* Create a hex character reference string corresponding to code
   */
- char * itex2MML_character_reference (unsigned long int code)
+ static char * itex2MML_character_reference (unsigned long int code)
    {
 #define ENTITY_LENGTH 10
      char * entity = (char *) malloc(ENTITY_LENGTH);
@@ -1727,7 +1727,7 @@ static void itex2MML_keep_error (const char * msg)
   itex2MML_last_error = itex2MML_copy_escaped (msg);
 }
 
-int itex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)
+static int itex2MML_do_html_filter (const char * buffer, unsigned long length, const int forbid_markup)
 {
   int result = 0;
 

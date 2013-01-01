@@ -239,7 +239,7 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 	return FALSE;
 }
 
-void
+static void
 lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Statistic *statistic)
 {
 	LsmDomDocument *document;
@@ -444,7 +444,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 	g_free (test_name);
 }
 
-void
+static void
 lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, Statistic *statistic)
 {
 	GDir *directory;

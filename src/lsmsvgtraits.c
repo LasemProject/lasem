@@ -41,7 +41,7 @@ lsm_svg_blending_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_blending_mode_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgBlendingMode *trait = (LsmSvgBlendingMode *) abstract_trait;
@@ -65,7 +65,7 @@ lsm_svg_comp_op_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_comp_op_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgCompOp *trait = (LsmSvgCompOp *) abstract_trait;
@@ -89,7 +89,7 @@ lsm_svg_enable_background_trait_from_string (LsmTrait *abstract_trait, char *str
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_enable_background_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgEnableBackground *trait = (LsmSvgEnableBackground *) abstract_trait;
@@ -492,7 +492,7 @@ lsm_svg_paint_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return TRUE;
 }
 
-char *
+static char *
 lsm_svg_paint_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgPaint *paint = (LsmSvgPaint *) abstract_trait;
@@ -526,7 +526,7 @@ lsm_svg_fill_rule_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_fill_rule_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgFillRule *trait = (LsmSvgFillRule *) abstract_trait;
@@ -550,7 +550,7 @@ lsm_svg_font_style_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_font_style_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgFontStyle *trait = (LsmSvgFontStyle *) abstract_trait;
@@ -574,7 +574,7 @@ lsm_svg_font_stretch_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_font_stretch_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgFontStretch *trait = (LsmSvgFontStretch *) abstract_trait;
@@ -601,7 +601,7 @@ lsm_svg_font_weight_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 100 && *trait <= 1000;
 }
 
-char *
+static char *
 lsm_svg_font_weight_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgFontWeight *trait = (LsmSvgFontWeight *) abstract_trait;
@@ -631,7 +631,7 @@ lsm_svg_line_join_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_line_join_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgLineJoin *trait = (LsmSvgLineJoin *) abstract_trait;
@@ -814,7 +814,7 @@ lsm_svg_display_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_display_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgDisplay *trait = (LsmSvgDisplay *) abstract_trait;
@@ -871,7 +871,7 @@ lsm_svg_marker_units_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_marker_units_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgMarkerUnits *trait = (LsmSvgMarkerUnits *) abstract_trait;
@@ -895,7 +895,7 @@ lsm_svg_pattern_units_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_pattern_units_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgPatternUnits *trait = (LsmSvgPatternUnits *) abstract_trait;
@@ -941,7 +941,7 @@ lsm_svg_preserve_aspect_ratio_trait_from_string (LsmTrait *abstract_trait, char 
 	return TRUE;
 }
 
-char *
+static char *
 lsm_svg_preserve_aspect_ratio_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgPreserveAspectRatio *trait = (LsmSvgPreserveAspectRatio *) abstract_trait;
@@ -1027,7 +1027,7 @@ lsm_svg_text_anchor_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_text_anchor_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgTextAnchor *trait = (LsmSvgTextAnchor *) abstract_trait;
@@ -1051,7 +1051,7 @@ lsm_svg_visibility_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_visibility_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgVisibility *trait = (LsmSvgVisibility *) abstract_trait;
@@ -1118,7 +1118,7 @@ lsm_svg_overflow_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_overflow_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgOverflow *trait = (LsmSvgOverflow *) abstract_trait;
@@ -1142,7 +1142,7 @@ lsm_svg_writing_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
 	return *trait >= 0;
 }
 
-char *
+static char *
 lsm_svg_writing_mode_trait_to_string (LsmTrait *abstract_trait)
 {
 	LsmSvgWritingMode *trait = (LsmSvgWritingMode *) abstract_trait;

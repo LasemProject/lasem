@@ -85,7 +85,7 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 	}
 }
 
-const char *
+static const char *
 lsm_svg_element_get_attribute (LsmDomElement *self, const char *name)
 {
 	LsmSvgElementClass *s_element_class = LSM_SVG_ELEMENT_GET_CLASS(self);
