@@ -101,7 +101,6 @@ main (int argc, char *argv[])
 {
 	GRegex *filename_regex;
 	GSList *files;
-	int i;
 	int result;
 
 	g_type_init ();
