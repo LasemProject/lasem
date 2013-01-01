@@ -15,7 +15,7 @@
 
 #define yytext itex2MML_yytext
 
- extern int yylex ();
+ extern int yylex (void);
 
  extern char * yytext;
 
