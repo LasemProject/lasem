@@ -90,7 +90,7 @@ lsm_dom_document_create_element (LsmDomDocument *document, const char *tag_name)
 	return NULL;
 }
 
-LsmDomText *
+static LsmDomText *
 lsm_dom_document_create_text_node_base (LsmDomDocument *document, const char *data)
 {
 	return LSM_DOM_TEXT (lsm_dom_text_new (data));

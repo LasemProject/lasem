@@ -23,7 +23,7 @@
 
 #include <lsmutils.h>
 
-LsmExtents *
+static LsmExtents *
 lsm_extents_duplicate (const LsmExtents *from)
 {
 	LsmExtents *extents;
@@ -38,7 +38,7 @@ lsm_extents_duplicate (const LsmExtents *from)
 
 G_DEFINE_BOXED_TYPE (LsmExtents, lsm_extents, lsm_extents_duplicate, g_free)
 
-LsmBox *
+static LsmBox *
 lsm_box_duplicate (const LsmBox *from)
 {
 	LsmBox *box;

@@ -104,7 +104,7 @@ cairo_operator_t cairo_operators[] = {
 	CAIRO_OPERATOR_EXCLUSION
 };
 
-void
+static void
 lsm_cairo_set_comp_op (cairo_t *cairo, LsmSvgCompOp comp_op)
 {
 	if (G_LIKELY (cairo != NULL && comp_op >= LSM_SVG_COMP_OP_CLEAR && comp_op <= LSM_SVG_COMP_OP_EXCLUSION)) {
@@ -1804,7 +1804,7 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 	}
 }
 
-void
+static void
 lsm_svg_view_push_filter (LsmSvgView *view)
 {
 	LsmExtents extents;
@@ -1852,7 +1852,7 @@ lsm_svg_view_push_filter (LsmSvgView *view)
 		lsm_warning_render ("LsmSvgView::push_filter] Failed to create subsurface");
 }
 
-void
+static void
 lsm_svg_view_pop_filter (LsmSvgView *view)
 {
 	LsmSvgElement *filter_element;

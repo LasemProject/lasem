@@ -66,7 +66,7 @@ lsm_svg_radial_gradient_element_get_node_name (LsmDomNode *node)
 
 /* LsmSvgGradientElement implementation */
 
-LsmSvgGradientElement *
+static LsmSvgGradientElement *
 lsm_svg_radial_gradient_element_inherit_referenced (LsmDomDocument *owner,
 						    LsmSvgGradientElement *gradient,
 						    LsmSvgRadialGradientElementAttributes *attributes,
