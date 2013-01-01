@@ -5,7 +5,6 @@ static void
 create_document_test (void)
 {
 	LsmDomDocument *document;
-	LsmDomElement *element;
 
 	document = lsm_dom_implementation_create_document (NULL, "math");
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
