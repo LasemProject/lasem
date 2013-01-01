@@ -27,7 +27,7 @@
 
  void (*itex2MML_error) (const char * msg) = itex2MML_default_error;
 
- static void yyerror (char * s)
+ static void yyerror (const char * s)
    {
      char * msg = itex2MML_copy3 (s, " at token ", yytext);
      if (itex2MML_error)
