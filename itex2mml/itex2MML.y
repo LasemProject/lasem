@@ -121,7 +121,7 @@
     void (*itex2MML_write_mathml) (const char * mathml) = itex2MML_default_write_mathml;
 #endif 
 
- char * itex2MML_empty_string = "";
+ char * itex2MML_empty_string = (char *) "";
 
  /* Create a copy of a string, adding space for extra chars
   */
