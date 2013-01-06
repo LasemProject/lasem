@@ -77,8 +77,7 @@ lsm_debug_initialize (const char *debug_var)
 	if (lsm_debug_categories != NULL)
 		return;
 
-	lsm_debug_categories = g_hash_table_new_full (g_str_hash, g_str_equal,
-						      (GDestroyNotify) lsm_debug_category_free, NULL);
+	lsm_debug_categories = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, (GDestroyNotify) lsm_debug_category_free);
 
 	if (debug_var != NULL) {
 		char **categories;
