@@ -97,8 +97,8 @@ typedef struct {
 	unsigned int success_count;
 } Statistic;
 
-static void
-lasem_test_html (const char *fmt, ...)
+static void __attribute__((format(printf,1,2)))
+lasem_test_html (const char *fmt, ...) 
 {
 	va_list va;
 	FILE *file = lasem_test_html_file ? lasem_test_html_file : stdout;
@@ -377,14 +377,14 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 							   0, NULL);
 			g_regex_unref (regex);
 
-			lasem_test_html (filtered_buffer);
+			lasem_test_html ("%s", filtered_buffer);
 
 			g_free (filtered_buffer);
 		}
 
 		if (is_svg) {
 			lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
-			lasem_test_html (filename);
+			lasem_test_html ("%s", filename);
 			lasem_test_html ("\" width=\"%dpx\"/>", width + 2);
 		}
 
