@@ -16,6 +16,7 @@
 
 #define YY_NEVER_INTERACTIVE 1
 #define YY_INPUT(buffer,result,max_size) result = s_itex2MML_read (buffer, max_size)
+#define YY_NO_INPUT
 
 static int s_itex2MML_read (char * buffer, int max_size);
 
