@@ -1763,7 +1763,6 @@ static int itex2MML_do_html_filter (const char * buffer, unsigned long length, c
 
   if (ptr2 == end) goto _finish;
 
- _until_html:
   ptr1 = ptr2;
 
   if (ptr2 + 1 < end)
