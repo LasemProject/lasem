@@ -394,7 +394,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 
 		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR) && !dry_run) {
 			FILE *file;
-			int result;
+			int result __attribute__((unused));
 			char *cmd;
 
 			file = fopen ("lsmmathmltest.tmp", "w");
