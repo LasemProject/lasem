@@ -25,33 +25,38 @@
 #include <glib/gprintf.h>
 #include <stdlib.h>
 
+struct _LsmDebugCategory {
+	char *name;
+	LsmDebugLevel level;
+};
+
 LsmDebugCategory lsm_debug_category_dom =
 {
-	.name = "dom",
+	.name = (char *) "dom",
 	.level = -1
 };
 
 LsmDebugCategory lsm_debug_category_measure =
 {
-	.name = "measure",
+	.name = (char *) "measure",
 	.level = -1
 };
 
 LsmDebugCategory lsm_debug_category_update =
 {
-	.name = "update",
+	.name = (char *) "update",
 	.level = -1
 };
 
 LsmDebugCategory lsm_debug_category_render =
 {
-	.name = "render",
+	.name = (char *) "render",
 	.level = -1
 };
 
 LsmDebugCategory lsm_debug_category_viewport =
 {
-	.name = "viewport",
+	.name = (char *) "viewport",
 	.level = -1
 };
 
