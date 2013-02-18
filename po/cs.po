@@ -1,0 +1,66 @@
+# Czech translation for lasem.
+# Copyright (C) 2013 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+#
+# Marek Černocký <marek@manet.cz>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-02-03 08:52+0000\n"
+"PO-Revision-Date: 2013-02-18 11:09+0100\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Název výstupního souboru"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Výstupní formát"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Pixelů na palec"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Přiblížení"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Ladit domény"
+
+#: ../src/lasemrender.c:106
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Selhalo zpracování voleb: %s\n"
+
+#: ../src/lasemrender.c:113
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Neplatná hodnota přiblížení"
+
+#: ../src/lasemrender.c:120
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Je vyžadován název jednoho vstupního souboru\n"
+
+#: ../src/lasemrender.c:131
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Neznámý formát: %s\n"
+
+#: ../src/lasemrender.c:256
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Nelze načíst „%s“\n"
