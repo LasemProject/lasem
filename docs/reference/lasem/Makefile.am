@@ -72,6 +72,7 @@ IGNORE_HFILES=\
 	lsmtraits.h				\
 	lsmproperties.h				\
 	lsmattributes.h				\
+	lsmitex.h				\
 	lsmmathml.h				\
 	lsmmathmltypes.h			\
 	lsmmathmlenums.h			\

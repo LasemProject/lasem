@@ -1,6 +1,6 @@
 /* Lasem - SVG and Mathml library
  *
- * Copyright © 2009 Emmanuel Pacaud
+ * Copyright © 2013 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,19 +21,16 @@
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
  */
 
-#ifndef LSM_H
-#define LSM_H
+#ifndef LSM_ITEX_H
+#define LSM_ITEX_H
 
 #include <lsmtypes.h>
 
-#include <lsmcairo.h>
-#include <lsmstr.h>
-#include <lsmdebug.h>
-#include <lsmtraits.h>
-#include <lsmattributes.h>
-#include <lsmproperties.h>
-#include <lsmitex.h>
+G_BEGIN_DECLS
 
-void lsm_shutdown (void);
+char *		lsm_itex_to_mathml		(const char *itex, int size);
+void		lsm_itex_free_mathml_buffer	(char *mathml);
+
+G_END_DECLS
 
 #endif

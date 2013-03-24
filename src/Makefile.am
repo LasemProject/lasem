@@ -37,6 +37,7 @@ LASEM_DOM_SRCS =				\
 	lsmproperties.c				\
 	lsmattributes.c				\
 	lsmcairo.c				\
+	lsmitex.c				\
 	lsmdomentities.c			\
 	lsmdomnode.c				\
 	lsmdomnodelist.c			\
@@ -152,6 +153,7 @@ LASEM_DOM_HDRS = 				\
 	lsmtraits.h				\
 	lsmproperties.h				\
 	lsmattributes.h				\
+	lsmitex.h				\
 	lsmdomentities.h			\
 	lsmdom.h				\
 	lsmdomtypes.h				\
