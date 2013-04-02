@@ -5,6 +5,8 @@ x garbage collection in lsm_property_manager
 x gtk-doc support
 x single <lsm.h> include
 - multithread safety
+- registered elements (by id) are never unregistered !!! (see lsm_dom_document_register_element). Also, the id hash table is not
+  necessary.
 
 Mathml
 
