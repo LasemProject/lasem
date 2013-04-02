@@ -371,7 +371,7 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 	LsmDomNodeClass *node_class;
 
 	if (ref_child == NULL)
-		lsm_dom_node_append_child (self, new_child);
+		return lsm_dom_node_append_child (self, new_child);
 
 	g_return_val_if_fail (LSM_IS_DOM_NODE (new_child), NULL);
 
