@@ -24,7 +24,7 @@
 #include <lsmdebug.h>
 #include <lsmattributes.h>
 #include <lsmproperties.h>
-#include <lsmdomdocument.h>
+#include <lsmsvgdocument.h>
 #include <lsmsvgelement.h>
 #include <lsmsvgtransformable.h>
 #include <lsmsvgpatternelement.h>
@@ -81,7 +81,7 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 
 		document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 		if (document != NULL)
-			lsm_dom_document_register_element (document, LSM_DOM_ELEMENT (self), value);
+			lsm_svg_document_register_element (LSM_SVG_DOCUMENT (document), LSM_SVG_ELEMENT (self), value);
 	}
 }
 

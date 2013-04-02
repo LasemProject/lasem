@@ -139,50 +139,6 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
 
-/**
- * lsm_dom_document_get_element_by_id:
- * @self: a #LsmDomDocument
- * @id: id of the element to find
- *
- * Returns: (transfer none): the requested element, NULL if not found.
- */
-
-LsmDomElement *
-lsm_dom_document_get_element_by_id (LsmDomDocument *self, const char *id)
-{
-	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (self), NULL);
-	g_return_val_if_fail (id != NULL, NULL);
-
-	lsm_debug_dom ("[LsmDomDocument::get_element_by_id] Lookup '%s'", id);
-
-	return g_hash_table_lookup (self->ids, id);
-}
-
-void
-lsm_dom_document_register_element (LsmDomDocument *self, LsmDomElement *element, const char *id)
-{
-	char *old_id;
-
-	g_return_if_fail (LSM_IS_DOM_DOCUMENT (self));
-
-	old_id = g_hash_table_lookup (self->elements, element);
-	if (old_id != NULL) {
-		lsm_debug_dom ("[LsmDomDocument::register_element] Unregister '%s'", old_id);
-
-		g_hash_table_remove (self->elements, element);
-		g_hash_table_remove (self->ids, old_id);
-	}
-
-	if (id != NULL) {
-		char *new_id = g_strdup (id);
-
-		lsm_debug_dom ("[LsmDomDocument::register_element] Register '%s'", id);
-
-		g_hash_table_replace (self->ids, new_id, element);
-		g_hash_table_replace (self->elements, element, new_id);
-	}
-}
-
 const char *
 lsm_dom_document_get_url (LsmDomDocument *self)
 {
@@ -265,17 +221,12 @@ lsm_dom_document_get_href_data (LsmDomDocument *self, const char *href, gsize *s
 static void
 lsm_dom_document_init (LsmDomDocument *document)
 {
-	document->ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	document->elements = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
 }
 
 static void
 lsm_dom_document_finalize (GObject *object)
 {
 	LsmDomDocument *document = LSM_DOM_DOCUMENT (object);
-
-	g_hash_table_unref (document->elements);
-	g_hash_table_unref (document->ids);
 
 	g_free (document->url);
 
