@@ -80,20 +80,32 @@ LsmDomElement *
 lsm_dom_document_create_element (LsmDomDocument *document, const char *tag_name)
 {
 	LsmDomDocumentClass *document_class;
+	LsmDomElement *element;
 
 	g_return_val_if_fail (LSM_IS_DOM_DOCUMENT (document), NULL);
 
 	document_class = LSM_DOM_DOCUMENT_GET_CLASS (document);
-	if (document_class->create_element != NULL)
-		return document_class->create_element (document, tag_name);
+	if (document_class->create_element == NULL)
+		return NULL;
 
-	return NULL;
+	element = document_class->create_element (document, tag_name);
+	if (element != NULL)
+		LSM_DOM_NODE (element)->owner_document = document;
+
+	return element;
 }
 
 static LsmDomText *
 lsm_dom_document_create_text_node_base (LsmDomDocument *document, const char *data)
 {
-	return LSM_DOM_TEXT (lsm_dom_text_new (data));
+	LsmDomText *text_node;
+
+	text_node = LSM_DOM_TEXT (lsm_dom_text_new (data));
+
+	if (text_node != NULL)
+		LSM_DOM_NODE (text_node)->owner_document = document;
+
+	return text_node;
 }
 
 /**

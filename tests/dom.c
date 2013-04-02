@@ -2,6 +2,14 @@
 #include <lsmdom.h>
 
 static void
+_weak_ref_cb (void *data, GObject *object)
+{
+	int *counter = data;
+
+	(*counter)++;
+}
+
+static void
 create_document_test (void)
 {
 	LsmDomDocument *document;
@@ -19,6 +27,49 @@ create_document_test (void)
 	g_assert (lsm_dom_node_get_node_value (LSM_DOM_NODE (document)) == NULL);
 
 	g_object_unref (document);
+}
+
+static void
+owner_document_test (void)
+{
+	LsmDomDocument *document;
+	LsmDomElement *element;
+	LsmDomElement *text_element;
+	LsmDomText *text;
+	int counter = 0;
+
+	document = lsm_dom_implementation_create_document (NULL, "svg");
+	g_assert (LSM_IS_DOM_DOCUMENT (document));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (document)) == NULL);
+
+	element = lsm_dom_document_create_element (document, "svg");
+	g_assert (LSM_IS_DOM_ELEMENT (element));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (element)) == document);
+
+	lsm_dom_node_append_child (LSM_DOM_NODE (document), LSM_DOM_NODE (element));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (element)) == document);
+
+	text_element = lsm_dom_document_create_element (document, "text");
+	g_assert (LSM_IS_DOM_ELEMENT (text_element));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (text_element)) == document);
+
+	lsm_dom_node_append_child (LSM_DOM_NODE (element), LSM_DOM_NODE (text_element));
+
+	text = lsm_dom_document_create_text_node (document, "");
+	g_assert (LSM_IS_DOM_TEXT (text));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (text)) == document);
+
+	lsm_dom_node_append_child (LSM_DOM_NODE (text_element), LSM_DOM_NODE (text));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (text)) == document);
+
+	g_object_weak_ref (G_OBJECT (document), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (element), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (text_element), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (text), _weak_ref_cb, &counter);
+
+	g_object_unref (document);
+
+	g_assert_cmpint (counter, ==, 4);
 }
 
 #if 0 /* Unused code - remove? */
@@ -85,6 +136,7 @@ node_list_test (void)
 	LsmDomDocument *document;
 	LsmDomElement *element;
 	LsmDomNodeList *childs;
+	int counter = 0;
 
 	document = lsm_dom_implementation_create_document (NULL, "svg");
 	element = lsm_dom_document_create_element (document, "svg");
@@ -96,12 +148,18 @@ node_list_test (void)
 	g_assert (lsm_dom_node_list_get_item (childs, 0) == LSM_DOM_NODE (element));
 	g_assert (lsm_dom_node_list_get_item (childs, 1) == NULL);
 
+	g_object_weak_ref (G_OBJECT (document), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (element), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (childs), _weak_ref_cb, &counter);
+
 	g_object_ref (childs);
 	g_object_unref (document);
 
 	g_assert (lsm_dom_node_list_get_length (childs) == 0);
 
 	g_object_unref (childs);
+
+	g_assert_cmpint (counter, ==, 3);
 }
 
 static void
@@ -157,6 +215,7 @@ main (int argc, char *argv[])
 	g_test_init (&argc, &argv, NULL);
 
 	g_test_add_func ("/dom/create-document", create_document_test);
+	g_test_add_func ("/dom/owner-document", owner_document_test);
 	g_test_add_func ("/dom/create-element", create_document_test);
 	g_test_add_func ("/dom/add-remove-element", create_document_test);
 	g_test_add_func ("/dom/node-list", node_list_test);

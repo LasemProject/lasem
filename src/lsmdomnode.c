@@ -341,16 +341,9 @@ lsm_dom_node_get_attributes (LsmDomNode* self)
 LsmDomDocument *
 lsm_dom_node_get_owner_document (LsmDomNode* self)
 {
-	LsmDomNode *parent;
-
 	g_return_val_if_fail (LSM_IS_DOM_NODE (self), NULL);
 
-	for (parent = self;
-	     parent != NULL &&
-	     !LSM_IS_DOM_DOCUMENT (parent);
-	     parent = parent->parent_node);
-
-	return LSM_DOM_DOCUMENT (parent);
+	return self->owner_document;
 }
 
 /**
