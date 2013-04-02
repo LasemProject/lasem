@@ -72,6 +72,46 @@ owner_document_test (void)
 	g_assert_cmpint (counter, ==, 4);
 }
 
+static void
+owner_mismatch_test (void)
+{
+	LsmDomDocument *document_a;
+	LsmDomDocument *document_b;
+	LsmDomElement *element_a;
+	LsmDomElement *element_b;
+	LsmDomElement *element_c;
+	int counter = 0;
+
+	document_a = lsm_dom_implementation_create_document (NULL, "svg");
+	g_assert (LSM_IS_DOM_DOCUMENT (document_a));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (document_a)) == NULL);
+
+	element_a = lsm_dom_document_create_element (document_a, "svg");
+	element_b = lsm_dom_document_create_element (document_a, "text");
+
+	document_b = lsm_dom_implementation_create_document (NULL, "svg");
+	g_assert (LSM_IS_DOM_DOCUMENT (document_b));
+	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (document_b)) == NULL);
+
+	element_c = lsm_dom_document_create_element (document_b, "text");
+
+	g_assert (lsm_dom_node_append_child (LSM_DOM_NODE (document_a), LSM_DOM_NODE (element_a)) == LSM_DOM_NODE (element_a));
+	g_assert (lsm_dom_node_append_child (LSM_DOM_NODE (element_a), LSM_DOM_NODE (element_b)) == LSM_DOM_NODE (element_b));
+
+	g_object_weak_ref (G_OBJECT (document_a), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (document_b), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (element_a), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (element_c), _weak_ref_cb, &counter);
+	g_object_weak_ref (G_OBJECT (element_b), _weak_ref_cb, &counter);
+
+	g_assert (lsm_dom_node_append_child (LSM_DOM_NODE (element_a), LSM_DOM_NODE (element_c)) == NULL);
+
+	g_object_unref (document_a);
+	g_object_unref (document_b);
+
+	g_assert_cmpint (counter,  ==, 5);
+}
+
 #if 0 /* Unused code - remove? */
 static void
 create_element_test (void)
@@ -216,6 +256,7 @@ main (int argc, char *argv[])
 
 	g_test_add_func ("/dom/create-document", create_document_test);
 	g_test_add_func ("/dom/owner-document", owner_document_test);
+	g_test_add_func ("/dom/owner-mismatch", owner_mismatch_test);
 	g_test_add_func ("/dom/create-element", create_document_test);
 	g_test_add_func ("/dom/add-remove-element", create_document_test);
 	g_test_add_func ("/dom/node-list", node_list_test);

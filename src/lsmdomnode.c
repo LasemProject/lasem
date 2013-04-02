@@ -384,6 +384,12 @@ lsm_dom_node_insert_before (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 		return NULL;
 	}
 
+	if (self->owner_document != new_child->owner_document &&
+	    self->owner_document != NULL) {
+		g_object_unref (new_child);
+		return NULL;
+	}
+
 	if (!LSM_IS_DOM_NODE (ref_child)) {
 		g_critical ("%s: ref_child is not a LsmDomNode", G_STRFUNC);
 		g_object_unref (new_child);
@@ -477,6 +483,13 @@ lsm_dom_node_replace_child (LsmDomNode* self, LsmDomNode* new_child, LsmDomNode*
 
 	if (!LSM_IS_DOM_NODE (self)) {
 		g_critical ("%s: self is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		g_object_unref (old_child);
+		return NULL;
+	}
+
+	if (self->owner_document != new_child->owner_document &&
+	    self->owner_document != NULL) {
 		g_object_unref (new_child);
 		g_object_unref (old_child);
 		return NULL;
@@ -582,6 +595,12 @@ lsm_dom_node_append_child (LsmDomNode* self, LsmDomNode* new_child)
 
 	if (!LSM_IS_DOM_NODE (self)) {
 		g_critical ("%s: self is not a LsmDomNode", G_STRFUNC);
+		g_object_unref (new_child);
+		return NULL;
+	}
+
+	if (self->owner_document != new_child->owner_document &&
+	    self->owner_document != NULL) {
 		g_object_unref (new_child);
 		return NULL;
 	}
