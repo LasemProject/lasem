@@ -70,19 +70,25 @@ lsm_svg_element_set_attribute (LsmDomElement *self, const char* name, const char
 	lsm_debug_dom ("[LsmSvgElement::set_attribute] node = %s, name = %s, value = %s",
 		    lsm_dom_node_get_node_name (LSM_DOM_NODE (self)), name, value);
 
-	/* TODO Avoid double hash table lookup */
-	if (!lsm_attribute_manager_set_attribute (s_element_class->attribute_manager,
-						  self, name, value))
-		lsm_svg_property_bag_set_property (&s_element->property_bag, name, value);
-
 	if (g_strcmp0 (name, "id") == 0 ||
 	    g_strcmp0 (name, "xml:id") == 0) {
 		LsmDomDocument *document;
 
 		document = lsm_dom_node_get_owner_document (LSM_DOM_NODE (self));
 		if (document != NULL)
-			lsm_svg_document_register_element (LSM_SVG_DOCUMENT (document), LSM_SVG_ELEMENT (self), value);
+			lsm_svg_document_register_element (LSM_SVG_DOCUMENT (document), LSM_SVG_ELEMENT (self),
+							   value, s_element->id.value);
+
+		lsm_attribute_manager_set_attribute (s_element_class->attribute_manager,
+						     self, name, value);
+
+		return;
 	}
+
+	/* TODO Avoid double hash table lookup */
+	if (!lsm_attribute_manager_set_attribute (s_element_class->attribute_manager,
+						  self, name, value))
+		lsm_svg_property_bag_set_property (&s_element->property_bag, name, value);
 }
 
 static const char *

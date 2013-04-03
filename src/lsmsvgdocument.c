@@ -218,18 +218,14 @@ lsm_svg_document_get_element_by_id (LsmSvgDocument *self, const char *id)
 }
 
 void
-lsm_svg_document_register_element (LsmSvgDocument *self, LsmSvgElement *element, const char *id)
+lsm_svg_document_register_element (LsmSvgDocument *self, LsmSvgElement *element, const char *id, const char *old_id)
 {
-	char *old_id;
-
 	g_return_if_fail (LSM_IS_SVG_DOCUMENT (self));
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 
-	old_id = g_hash_table_lookup (self->elements, element);
 	if (old_id != NULL) {
 		lsm_debug_dom ("[LsmSvgDocument::register_element] Unregister '%s'", old_id);
 
-		g_hash_table_remove (self->elements, element);
 		g_hash_table_remove (self->ids, old_id);
 	}
 
@@ -239,7 +235,6 @@ lsm_svg_document_register_element (LsmSvgDocument *self, LsmSvgElement *element,
 		lsm_debug_dom ("[LsmSvgDocument::register_element] Register '%s'", id);
 
 		g_hash_table_replace (self->ids, new_id, element);
-		g_hash_table_replace (self->elements, element, new_id);
 	}
 }
 
@@ -253,7 +248,6 @@ static void
 lsm_svg_document_init (LsmSvgDocument *document)
 {
 	document->ids = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-	document->elements = g_hash_table_new_full (g_direct_hash, g_direct_equal, NULL, NULL);
 }
 
 static void
@@ -261,7 +255,6 @@ lsm_svg_document_finalize (GObject *object)
 {
 	LsmSvgDocument *document = LSM_SVG_DOCUMENT (object);
 
-	g_hash_table_unref (document->elements);
 	g_hash_table_unref (document->ids);
 
 	parent_class->finalize (object);

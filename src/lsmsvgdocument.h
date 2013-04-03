@@ -42,7 +42,6 @@ struct _LsmSvgDocument {
 	LsmDomDocument	document;
 
 	GHashTable *	ids;
-	GHashTable *	elements;
 };
 
 struct _LsmSvgDocumentClass {
@@ -56,7 +55,8 @@ LsmDomDocument *	lsm_svg_document_new 			(void);
 LsmSvgSvgElement * 	lsm_svg_document_get_root_element 	(const LsmSvgDocument *document);
 LsmSvgElement * 	lsm_svg_document_get_element_by_url 	(LsmSvgDocument *document, const char *url);
 LsmSvgElement *		lsm_svg_document_get_element_by_id 	(LsmSvgDocument *self, const char *id);
-void 			lsm_svg_document_register_element 	(LsmSvgDocument *self, LsmSvgElement *element, const char *id);
+void 			lsm_svg_document_register_element 	(LsmSvgDocument *self, LsmSvgElement *element,
+								 const char *id, const char *old_id);
 
 G_END_DECLS
 
