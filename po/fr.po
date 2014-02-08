@@ -1,53 +1,65 @@
 # French translation for lasem
 # Copyright (C) 2010 Emmanuel Pacaud <emmanuel@gnome.org>
 # This file is distributed under the same license as the lasem package.
+# Emmanuel Pacaud <emmanuel@gnome.org>, 2010
+# Fievez Yoann <yoann.fievez@gmail.com>, 2013
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-04 22:53+0100\n"
-"PO-Revision-Date: 2010-12-04 22:56+0100\n"
-"Last-Translator: Emmanuel Pacaud <emmanuel@gnome.org>\n"
-"Language: \n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-08-30 15:45+0000\n"
+"PO-Revision-Date: 2014-02-08 17:14+0100\n"
+"Last-Translator: Claude Paroz <claude@2xlibre.net>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/lasemrender.c:64
+#: ../src/lasemrender.c:67
 msgid "Output filename"
 msgstr "Nom du fichier de sortie"
 
-#: ../src/lasemrender.c:66
+#: ../src/lasemrender.c:69
 msgid "Output format"
 msgstr "Format de sortie"
 
-#: ../src/lasemrender.c:68
+#: ../src/lasemrender.c:71
 msgid "Pixel per inch"
 msgstr "Pixels par pouce"
 
-#: ../src/lasemrender.c:70
-msgid "Debug domains"
-msgstr "Domaine de déboguage"
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoom"
 
-#: ../src/lasemrender.c:96
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Syntaxe des options incorrecte: %s\n"
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Domaines de débogage"
 
 #: ../src/lasemrender.c:105
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Échec d'analyse des options : %s\n"
+
+#: ../src/lasemrender.c:112
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Valeur de zoom invalide"
+
+#: ../src/lasemrender.c:119
 #, c-format
 msgid "One input file name is required\n"
 msgstr "Un nom de fichier d'entrée est nécessaire\n"
 
-#: ../src/lasemrender.c:116
+#: ../src/lasemrender.c:130
 #, c-format
-msgid "Unknown format : %s\n"
-msgstr "Format inconnu: %s\n"
+msgid "Unknown format: %s\n"
+msgstr "Format inconnu : %s\n"
 
-#: ../src/lasemrender.c:238
+#: ../src/lasemrender.c:255
 #, c-format
-msgid "Can't load %s"
-msgstr "%s ne peut être chargé"
-
+msgid "Can't load '%s'\n"
+msgstr "Impossible de charger « %s »\n"
