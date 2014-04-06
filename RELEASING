@@ -82,4 +82,4 @@ make distcheck again.
   the front page. (just the parts before your signature).
 
 (This release procedure is an adaptation of the RELEASING file found in cairo,
- and of what can be found here: http://live.gnome.org/MaintainersCorner/Releasing).
+ and of what can be found here: https://wiki.gnome.org/MaintainersCorner/Releasing).
