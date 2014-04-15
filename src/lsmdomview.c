@@ -291,6 +291,7 @@ lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 		view_class->render (view);
 
 	cairo_restore (view->cairo);
+	cairo_new_path (cairo);
 
 	lsm_debug_render ("[LsmDomView::render] cairo status = %s",
 			  cairo_status_to_string (cairo_status (view->cairo)));
