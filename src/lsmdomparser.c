@@ -202,7 +202,7 @@ lsm_dom_parser_warning (void *user_data, const char *msg, ...)
 	va_list args;
 
 	va_start(args, msg);
-	lsm_warning_dom (msg);
+	lsm_warning_dom ("%s", msg);
 	va_end(args);
 }
 
@@ -212,7 +212,7 @@ lsm_dom_parser_error (void *user_data, const char *msg, ...)
 	va_list args;
 
 	va_start(args, msg);
-	lsm_warning_dom (msg);
+	lsm_warning_dom ("%s", msg);
 	va_end(args);
 }
 
@@ -222,7 +222,7 @@ lsm_dom_parser_fatal_error (void *user_data, const char *msg, ...)
 	va_list args;
 
 	va_start(args, msg);
-	lsm_warning_dom (msg);
+	lsm_warning_dom ("%s", msg);
 	va_end(args);
 }
 
