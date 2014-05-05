@@ -94,7 +94,9 @@ int main(int argc, char **argv)
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
+#if !GLIB_CHECK_VERSION(2,36,0)
 	g_type_init ();
+#endif
 
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, entries, NULL);

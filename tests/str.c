@@ -36,7 +36,9 @@ main (int argc, char *argv[])
 
 	g_test_add_func ("/str/str-consolidate", str_consolidate_test);
 
+#if !GLIB_CHECK_VERSION(2,36,0)
 	g_type_init ();
+#endif
 
 	result = g_test_run();
 
