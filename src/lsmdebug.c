@@ -25,6 +25,8 @@
 #include <glib/gprintf.h>
 #include <stdlib.h>
 
+static void lsm_debug_with_level (LsmDebugCategory *category, LsmDebugLevel level, const char *format, va_list args) G_GNUC_PRINTF(3,0);
+
 struct _LsmDebugCategory {
 	char *name;
 	LsmDebugLevel level;
