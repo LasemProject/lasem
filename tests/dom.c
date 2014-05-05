@@ -162,7 +162,9 @@ main (int argc, char *argv[])
 	g_test_add_func ("/dom/node-list", node_list_test);
 	g_test_add_func ("/dom/insert-before", insert_before_test);
 
+#if !GLIB_CHECK_VERSION(2,36,0)
 	g_type_init ();
+#endif
 
 	result = g_test_run();
 

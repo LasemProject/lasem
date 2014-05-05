@@ -530,7 +530,10 @@ main (int argc, char **argv)
 	lasem_test_html ("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
 	lasem_test_html ("<body>\n");
 
+#if !GLIB_CHECK_VERSION(2,36,0)
 	g_type_init ();
+#endif
+
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, entries, NULL);
 
