@@ -1256,7 +1256,8 @@ _show_text (LsmSvgView *view,
 
 	style = view->style;
 
-	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string, *x, *y, style->font_size_px);
+	lsm_debug_render ("[LsmSvgView::show_text] Show '%s' at %g,%g (%g px)", string,
+			 x != NULL ? *x : 0, y != NULL ? *y : 0, style->font_size_px);
 
 	need_pop = _lock_pango_layout (view);
 
