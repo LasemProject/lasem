@@ -544,17 +544,3 @@ lsm_svg_style_new_inherited (const LsmSvgStyle *parent_style, LsmPropertyBag *pr
 
 	return style;
 }
-
-#if 0 /* Unused code - remove? */
-LsmSvgStyle *
-lsm_svg_style_duplicate (const LsmSvgStyle *origin)
-{
-	LsmSvgStyle *style;
-
-	style = g_new (LsmSvgStyle, 1);
-
-	memcpy (style, origin, sizeof (LsmSvgStyle));
-
-	return style;
-}
-#endif /* 0 */
