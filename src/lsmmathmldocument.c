@@ -213,7 +213,7 @@ typedef enum {
 } LsmMathmlDocumentError;
 
 LsmMathmlDocument *
-lsm_mathml_document_new_from_itex (const char *itex, int size, GError **error)
+lsm_mathml_document_new_from_itex (const char *itex, gsize size, GError **error)
 {
 	LsmDomDocument *document;
 	char *mathml;

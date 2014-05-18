@@ -28,7 +28,7 @@
 /**
  * lsm_itex_to_mathml:
  * @itex: (allow-none): an itex string
- * @size: itex string length, -1 if unknown
+ * @size: itex string length, 0 if unknown
  *
  * Converts an itex string to a Mathml representation.
  *
@@ -36,14 +36,14 @@
  */
 
 char *
-lsm_itex_to_mathml (const char *itex, int size)
+lsm_itex_to_mathml (const char *itex, gsize size)
 {
 	char *mathml;
 
 	if (itex == NULL)
 		return NULL;
 
-	if (size < 0)
+	if (size < 1)
 		size = strlen (itex);
 
 	mathml = itex2MML_parse (itex, size);

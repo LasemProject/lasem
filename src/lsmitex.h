@@ -28,7 +28,7 @@
 
 G_BEGIN_DECLS
 
-char *		lsm_itex_to_mathml		(const char *itex, int size);
+char *		lsm_itex_to_mathml		(const char *itex, gsize size);
 void		lsm_itex_free_mathml_buffer	(char *mathml);
 
 G_END_DECLS
