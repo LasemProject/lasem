@@ -259,7 +259,7 @@ typedef enum {
 
 static LsmDomDocument *
 _parse_memory (LsmDomDocument *document, LsmDomNode *node,
-	       const void *buffer, int size, GError **error)
+	       const void *buffer, gsize size, GError **error)
 {
 	static LsmDomSaxParserState state;
 
@@ -269,7 +269,7 @@ _parse_memory (LsmDomDocument *document, LsmDomNode *node,
 	else
 		state.current_node = LSM_DOM_NODE (document);
 
-	if (size < 0)
+	if (size < 1)
 		size = strlen (buffer);
 
 	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, size) < 0) {
@@ -293,18 +293,18 @@ _parse_memory (LsmDomDocument *document, LsmDomNode *node,
  * @document: a #LsmDomDocument
  * @node: a #LsmDomNode
  * @buffer: a memory buffer holding xml data
- * @size: size of the xml data, in bytes
+ * @size: size of the xml data, in bytes, 0 if unknown
  * @error: an error placeholder
  *
  * Append a chunk of xml tree to an existing document. The resulting nodes will be appended to
  * @node, or to @document if @node == NULL.
  *
- * Size set to a negative value indicated an unknow xml data size.
+ * Size set to 0 indicates an unknow xml data size.
  */
 
 void
 lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
-				     const void *buffer, int size, GError **error)
+				     const void *buffer, gsize size, GError **error)
 {
 	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
 	g_return_if_fail (LSM_IS_DOM_NODE (node) || node == NULL);
@@ -313,14 +313,30 @@ lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
 	_parse_memory (document, node, buffer, size, error);
 }
 
+/**
+ * lsm_dom_document_new_from_memory:
+ * @buffer: xml data
+ * @size: size of the data, in bytes, 0 if unknown
+ * @error: an error placeholder
+ *
+ * Create a new document from a memory data buffer.
+ */
+
 LsmDomDocument *
-lsm_dom_document_new_from_memory (const void *buffer, int size, GError **error)
+lsm_dom_document_new_from_memory (const void *buffer, gsize size, GError **error)
 {
 	g_return_val_if_fail (buffer != NULL, NULL);
 
 	return _parse_memory (NULL, NULL, buffer, size, error); 
 }
 
+/**
+ * lsm_dom_document_new_from_file:
+ * @file: a #GFile
+ * @error: an error placeholder
+ *
+ * Create a new document from a #GFile.
+ */
 
 static LsmDomDocument *
 lsm_dom_document_new_from_file (GFile *file, GError **error)
@@ -338,6 +354,14 @@ lsm_dom_document_new_from_file (GFile *file, GError **error)
 
 	return document;
 }
+
+/**
+ * lsm_dom_document_new_from_path:
+ * @path: a file path
+ * @error: an error placeholder
+ *
+ * Create a new document from the data stored in @path.
+ */
 
 LsmDomDocument *
 lsm_dom_document_new_from_path (const char *path, GError **error)
@@ -358,6 +382,14 @@ lsm_dom_document_new_from_path (const char *path, GError **error)
 
 	return document;
 }
+
+/**
+ * lsm_dom_document_new_from_url:
+ * @url: a file url
+ * @error: an error placeholder
+ *
+ * Create a new document from the data stored at @url.
+ */
 
 LsmDomDocument *
 lsm_dom_document_new_from_url (const char *url, GError **error)
@@ -384,6 +416,8 @@ lsm_dom_document_new_from_url (const char *url, GError **error)
  * @document: a #LsmDomDocument
  * @stream: stream to save to
  * @error: an error placeholder
+ *
+ * Save @document as an xml representation into @stream.
  */
 
 void
@@ -395,8 +429,18 @@ lsm_dom_document_save_to_stream (LsmDomDocument *document, GOutputStream *stream
 	lsm_dom_node_write_to_stream (LSM_DOM_NODE (document), stream, error);
 }
 
+/**
+ * lsm_dom_document_save_to_memory:
+ * @document: a #LsmDomDocument
+ * @buffer: placeholder for a pointer to the resulting data buffer
+ * @size: placeholder for the data size
+ * @error: placeholder for a #GError
+ *
+ * Save @document as an xml representation into @buffer.
+ */
+
 void
-lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, int *size, GError **error)
+lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, gsize *size, GError **error)
 {
 	GOutputStream *stream;
 
@@ -426,6 +470,15 @@ lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, int *s
 	g_object_unref (stream);
 }
 
+/**
+ * lsm_dom_document_save_to_path:
+ * @document: a #LsmDomDocument
+ * @path: a file path
+ * @error: placeholder for a #GError
+ *
+ * Save @document as an xml representation to a file, replacing the already existing file if needed.
+ */
+
 void
 lsm_dom_document_save_to_path (LsmDomDocument *document, const char *path, GError **error)
 {
@@ -443,15 +496,24 @@ lsm_dom_document_save_to_path (LsmDomDocument *document, const char *path, GErro
 	g_object_unref (file);
 }
 
+/**
+ * lsm_dom_document_save_to_url:
+ * @document: a #LsmDomDocument
+ * @url: an url
+ * @error: placeholder for a #GError
+ *
+ * Save @document as an xml representation to @url, replacing the already existing file if needed.
+ */
+
 void
-lsm_dom_document_save_to_url (LsmDomDocument *document, const char *path, GError **error)
+lsm_dom_document_save_to_url (LsmDomDocument *document, const char *url, GError **error)
 {
 	GFile *file;
 	GFileOutputStream *stream;
 
-	g_return_if_fail (path != NULL);
+	g_return_if_fail (url != NULL);
 
-	file = g_file_new_for_uri (path);
+	file = g_file_new_for_uri (url);
 	stream = g_file_create (file, G_FILE_CREATE_REPLACE_DESTINATION, NULL, error);
 	if (stream != NULL) {
 		lsm_dom_document_save_to_stream (document, G_OUTPUT_STREAM (stream), error);

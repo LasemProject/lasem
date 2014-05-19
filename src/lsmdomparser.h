@@ -30,23 +30,23 @@
 G_BEGIN_DECLS
 
 void 			lsm_dom_document_append_from_memory 	(LsmDomDocument *document, LsmDomNode *node,
-								 const void *buffer, int size, GError **error);
-LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, int size, GError **error);
+								 const void *buffer, gsize size, GError **error);
+LsmDomDocument * 	lsm_dom_document_new_from_memory 	(const void *buffer, gsize size, GError **error);
 LsmDomDocument * 	lsm_dom_document_new_from_path 		(const char *path, GError **error);
 LsmDomDocument * 	lsm_dom_document_new_from_url 		(const char *url, GError **error);
 
 void			lsm_dom_document_save_to_stream		(LsmDomDocument *document,
 								 GOutputStream *stream,
 								 GError **error);
-void			lsm_dom_document_save_to_memory		(LsmDomDocument *documennt,
+void			lsm_dom_document_save_to_memory		(LsmDomDocument *document,
 								 void **buffer,
-								 int *size,
+								 gsize *size,
 								 GError **error);
-void			lsm_dom_document_save_to_path		(LsmDomDocument *documennt,
+void			lsm_dom_document_save_to_path		(LsmDomDocument *document,
 								 const char *path,
 								 GError **error);
-void			lsm_dom_document_save_to_url		(LsmDomDocument *documennt,
-								 const char *path,
+void			lsm_dom_document_save_to_url		(LsmDomDocument *document,
+								 const char *url,
 								 GError **error);
 
 G_END_DECLS
