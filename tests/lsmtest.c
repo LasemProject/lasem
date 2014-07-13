@@ -254,7 +254,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 	cairo_t *cairo;
 	cairo_surface_t *surface;
 	char *buffer = NULL;
-	gsize size;
+	gssize size;
 	char *png_filename;
 	char *reference_png_filename;
 	char *test_name;
@@ -300,7 +300,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 			xml = buffer;
 		else {
 			xml = itex2MML_parse (buffer, size);
-			size = 0;
+			size = -1;
 		}
 
 		timer = g_timer_new ();

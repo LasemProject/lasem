@@ -259,7 +259,7 @@ typedef enum {
 
 static LsmDomDocument *
 _parse_memory (LsmDomDocument *document, LsmDomNode *node,
-	       const void *buffer, gsize size, GError **error)
+	       const void *buffer, gssize size, GError **error)
 {
 	static LsmDomSaxParserState state;
 
@@ -269,7 +269,7 @@ _parse_memory (LsmDomDocument *document, LsmDomNode *node,
 	else
 		state.current_node = LSM_DOM_NODE (document);
 
-	if (size < 1)
+	if (size < 0)
 		size = strlen (buffer);
 
 	if (xmlSAXUserParseMemory (&sax_handler, &state, buffer, size) < 0) {
@@ -293,18 +293,18 @@ _parse_memory (LsmDomDocument *document, LsmDomNode *node,
  * @document: a #LsmDomDocument
  * @node: a #LsmDomNode
  * @buffer: a memory buffer holding xml data
- * @size: size of the xml data, in bytes, 0 if unknown
+ * @size: size of the xml data, in bytes, -1 if NULL terminated
  * @error: an error placeholder
  *
  * Append a chunk of xml tree to an existing document. The resulting nodes will be appended to
  * @node, or to @document if @node == NULL.
  *
- * Size set to 0 indicates an unknow xml data size.
+ * Size set to -1 indicates the buffer is NULL terminated.
  */
 
 void
 lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
-				     const void *buffer, gsize size, GError **error)
+				     const void *buffer, gssize size, GError **error)
 {
 	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
 	g_return_if_fail (LSM_IS_DOM_NODE (node) || node == NULL);
@@ -316,14 +316,14 @@ lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
 /**
  * lsm_dom_document_new_from_memory:
  * @buffer: xml data
- * @size: size of the data, in bytes, 0 if unknown
+ * @size: size of the data, in bytes, -1 if NULL terminated
  * @error: an error placeholder
  *
  * Create a new document from a memory data buffer.
  */
 
 LsmDomDocument *
-lsm_dom_document_new_from_memory (const void *buffer, gsize size, GError **error)
+lsm_dom_document_new_from_memory (const void *buffer, gssize size, GError **error)
 {
 	g_return_val_if_fail (buffer != NULL, NULL);
 

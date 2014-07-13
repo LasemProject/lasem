@@ -51,7 +51,7 @@ GType lsm_mathml_document_get_type (void);
 LsmDomDocument *	lsm_mathml_document_new 		(void);
 LsmMathmlMathElement * 	lsm_mathml_document_get_root_element 	(const LsmMathmlDocument *document);
 
-LsmMathmlDocument * 	lsm_mathml_document_new_from_itex	(const char *itex, gsize size, GError **error);
+LsmMathmlDocument * 	lsm_mathml_document_new_from_itex	(const char *itex, gssize size, GError **error);
 LsmMathmlDocument * 	lsm_mathml_document_new_from_itex_path 	(const char *url, GError **error);
 LsmMathmlDocument * 	lsm_mathml_document_new_from_itex_url 	(const char *url, GError **error);
 
