@@ -2,6 +2,8 @@
  *   itex2MML.y last modified 10/2/2010
  */
 
+%parse-param {char **ret_str}
+
 %{
 #include <stdio.h>
 #include <string.h>
@@ -27,7 +29,7 @@
 
  void (*itex2MML_error) (const char * msg) = itex2MML_default_error;
 
- static void yyerror (const char * s)
+ static void yyerror (char **ret_str, const char * s)
    {
      char * msg = itex2MML_copy3 (s, " at token ", yytext);
      if (itex2MML_error)
