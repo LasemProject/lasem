@@ -48,6 +48,7 @@ typedef struct _LsmMathmlStringElement LsmMathmlStringElement;
 typedef struct _LsmMathmlPresentationContainer LsmMathmlPresentationContainer;
 typedef struct _LsmMathmlStyleElement LsmMathmlStyleElement;
 typedef struct _LsmMathmlRowElement LsmMathmlRowElement;
+typedef struct _LsmMathmlEncloseElement LsmMathmlEncloseElement;
 typedef struct _LsmMathmlFencedElement LsmMathmlFencedElement;
 typedef struct _LsmMathmlPaddedElement LsmMathmlPaddedElement;
 typedef struct _LsmMathmlErrorElement LsmMathmlErrorElement;

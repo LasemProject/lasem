@@ -80,6 +80,7 @@ LASEM_MATHML_SRCS =				\
 	lsmmathmlpresentationcontainer.c	\
 	lsmmathmlstyleelement.c			\
 	lsmmathmlrowelement.c			\
+	lsmmathmlencloseelement.c		\
 	lsmmathmlfencedelement.c		\
 	lsmmathmlpaddedelement.c		\
 	lsmmathmlerrorelement.c			\
@@ -195,6 +196,7 @@ LASEM_MATHML_HDRS =				\
 	lsmmathmlpresentationcontainer.h	\
 	lsmmathmlstyleelement.h			\
 	lsmmathmlrowelement.h			\
+	lsmmathmlencloseelement.h			\
 	lsmmathmlfencedelement.h		\
 	lsmmathmlpaddedelement.h		\
 	lsmmathmlerrorelement.h			\

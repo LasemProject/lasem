@@ -36,6 +36,7 @@
 #include <lsmmathmloperatorelement.h>
 #include <lsmmathmlstringelement.h>
 #include <lsmmathmlrowelement.h>
+#include <lsmmathmlencloseelement.h>
 #include <lsmmathmlpaddedelement.h>
 #include <lsmmathmlfencedelement.h>
 #include <lsmmathmlerrorelement.h>
@@ -102,6 +103,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_mathml_operator_element_new ();
 	else if (strcmp (tag_name, "mrow") == 0)
 		node = lsm_mathml_row_element_new ();
+	else if (strcmp (tag_name, "menclose") == 0)
+		node = lsm_mathml_enclose_element_new ();
 	else if (strcmp (tag_name, "mn") == 0)
 		node = lsm_mathml_number_element_new ();
 	else if (strcmp (tag_name, "mi") == 0)
