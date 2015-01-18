@@ -31,6 +31,14 @@ lsm_mathml_enclose_element_get_node_name (LsmDomNode *node)
 	return "menclose";
 }
 
+static gboolean
+lsm_mathml_enclose_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
+{
+	return (LSM_IS_MATHML_ELEMENT (child) &&
+		(self->first_child == NULL ||
+		 self->first_child->next_sibling == NULL));
+}
+
 /* LsmMathmlEncloseElement implementation */
 
 LsmDomNode *
@@ -39,6 +47,8 @@ lsm_mathml_enclose_element_new (void)
 	return g_object_new (LSM_TYPE_MATHML_ENCLOSE_ELEMENT, NULL);
 }
 
+static const LsmMathmlNotation notation_default = LSM_MATHML_NOTATION_LONGDIV;
+
 static void
 lsm_mathml_enclose_element_init (LsmMathmlEncloseElement *element)
 {
@@ -46,12 +56,22 @@ lsm_mathml_enclose_element_init (LsmMathmlEncloseElement *element)
 
 /* LsmMathmlEncloseElement class */
 
+static const LsmAttributeInfos _attribute_infos[] = {
+	{
+		.name = "notation",
+		.attribute_offset = offsetof (LsmMathmlEncloseElement, notation),
+		.trait_class = &lsm_mathml_notation_trait_class,
+		.trait_default = &notation_default
+	}
+};
+
 static void
 lsm_mathml_enclose_element_class_init (LsmMathmlEncloseElementClass *klass)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
 
 	d_node_class->get_node_name = lsm_mathml_enclose_element_get_node_name;
+	d_node_class->can_append_child = lsm_mathml_enclose_element_can_append_child;
 }
 
 G_DEFINE_TYPE (LsmMathmlEncloseElement, lsm_mathml_enclose_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

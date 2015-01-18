@@ -166,7 +166,7 @@ typedef enum {
 	LSM_MATHML_LINE_DASHED
 } LsmMathmlLine;
 
-const char *		lsm_mathml_line_to_string			(LsmMathmlLine line);
+const char *		lsm_mathml_line_to_string		(LsmMathmlLine line);
 LsmMathmlLine		lsm_mathml_line_from_string		(const char *string);
 
 typedef enum {
@@ -175,6 +175,29 @@ typedef enum {
 	LSM_MATHML_SCRIPT_LEVEL_SIGN_PLUS,
 	LSM_MATHML_SCRIPT_LEVEL_SIGN_MINUS
 } LsmMathmlScriptLevelSign;
+
+typedef enum {
+	LSM_MATHML_NOTATION_ERROR = -1,
+	LSM_MATHML_NOTATION_LONGDIV,
+	LSM_MATHML_NOTATION_ACTUARIAL,
+	LSM_MATHML_NOTATION_RADICAL,
+	LSM_MATHML_NOTATION_BOX,
+	LSM_MATHML_NOTATION_ROUNDED_BOX,
+	LSM_MATHML_NOTATION_CIRCLE,
+	LSM_MATHML_NOTATION_LEFT,
+	LSM_MATHML_NOTATION_RIGHT,
+	LSM_MATHML_NOTATION_TOP,
+	LSM_MATHML_NOTATION_BOTTOM,
+	LSM_MATHML_NOTATION_UP_DIAGONAL_STRIKE,
+	LSM_MATHML_NOTATION_DOWN_DIAGONAL_STRIKE,
+	LSM_MATHML_NOTATION_VERTICAL_STRIKE,
+	LSM_MATHML_NOTATION_HORIZONTAL_STRIKE,
+	LSM_MATHML_NOTATION_MADRUWB,
+	LSM_MATHML_NOTATION_UP_DIAGONAL_ARROW
+} LsmMathmlNotation;
+
+const char *		lsm_mathml_notation_to_string		(LsmMathmlNotation notation);
+LsmMathmlNotation	lsm_mathml_notation_from_string		(const char *string);
 
 G_END_DECLS
 

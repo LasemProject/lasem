@@ -98,6 +98,7 @@ extern const LsmTraitClass lsm_mathml_font_style_trait_class;
 extern const LsmTraitClass lsm_mathml_font_weight_trait_class;
 extern const LsmTraitClass lsm_mathml_variant_trait_class;
 extern const LsmTraitClass lsm_mathml_form_trait_class;
+extern const LsmTraitClass lsm_mathml_notation_trait_class;
 
 extern const LsmTraitClass lsm_mathml_row_align_list_trait_class;
 extern const LsmTraitClass lsm_mathml_column_align_list_trait_class;

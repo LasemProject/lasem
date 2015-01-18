@@ -40,6 +40,8 @@ typedef struct _LsmMathmlEncloseElementClass LsmMathmlEncloseElementClass;
 
 struct _LsmMathmlEncloseElement {
 	LsmMathmlPresentationContainer presentation_container;
+
+	LsmMathmlEnumAttribute notation;
 };
 
 struct _LsmMathmlEncloseElementClass {

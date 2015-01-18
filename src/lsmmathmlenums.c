@@ -427,3 +427,38 @@ lsm_mathml_line_from_string (const char *string)
 	return lsm_enum_value_from_string (string, lsm_mathml_line_strings,
 					   G_N_ELEMENTS (lsm_mathml_line_strings));
 }
+
+static const char *lsm_mathml_notation_strings[] = {
+	"longdiv",
+	"actuarial",
+	"radical",
+	"box",
+	"roundedbox",
+	"circle",
+	"left",
+	"right",
+	"top",
+	"bottom",
+	"updiagonalstrike",
+	"downdiagonalstrike",
+	"verticalstrike",
+	"horizontalstrike",
+	"madruwb",
+	"updiagonalarrow"
+};
+
+const char *
+lsm_mathml_notation_to_string (LsmMathmlNotation notation)
+{
+	if (notation < 0 || notation > LSM_MATHML_NOTATION_UP_DIAGONAL_ARROW)
+		return NULL;
+
+	return lsm_mathml_notation_strings [notation];
+}
+
+LsmMathmlNotation
+lsm_mathml_notation_from_string	 (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_mathml_notation_strings,
+					   G_N_ELEMENTS (lsm_mathml_notation_strings));
+}
