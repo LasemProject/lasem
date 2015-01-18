@@ -1,145 +1,116 @@
+Release 0.5.0
+=============
+
+  * build improvements (ray, emmanuel, dominique)
+  * man page for lasem-render (ray)
+  * svg: move element registering by id to SvgDocument
+  * dom: store owner_document as node member
+  * itex: export new functions for itex to matml conversion
+  * translation updates (Piotr, Daniel, Matej, Andika, Mario, Rafael, Fran, Balázs, Мирослав, Marek, Dimitris, Aurimas, Muhammet, Kjartan, Anders)
+
 Release 0.4.0
 =============
 
-All:
-	Add a zoom option to lasem-render.
-	Support out-of-source build (Ray Dassen)
-	Explicitely link against standard math library (Ray Dassen).
-	GIR scanner warning fixes.
-
-SVG:
-	Add support for viewport-fill and viewport-opacity attributes.
-	Add support for comp-op attributes.
-	Better fix for blur offset from a patch found in librsvg bugzilla (Eduard Braun).
+  * add a zoom option to lasem-render
+  * support out-of-source build (Ray Dassen)
+  * explicitely link against standard math library (Ray Dassen)
+  * GIR scanner warning fixes
+  * svg: add support for viewport-fill and viewport-opacity attributes
+  * svg: add support for comp-op attributes
+  * svg: better fix for blur offset from a patch found in librsvg bugzilla (Eduard Braun)
 
 Release 0.3.4
 =============
 
-All:
-	Display result of comparison to reference file in test suite.
-
-SVG:
-	Use cairo API for filter implementation when possible.
-	Fix blur misposition.
-	Support for filter primitive subregion.
-	Implementation of <feTile>.
-	Implementation of BackgroundImage and BackgroundAlpha.
-	Implementation of <switch>.
-	Reimplement group opacity optimisation.
-	Implementation of get_extents for <polygon>, <polyline>, <ellipse>, <line> and <text>.
-	Add support for HSL color syntax.
-	Fix parsing of stroke-dasharray when value are separated by spaces.
+  * display result of comparison to reference file in test suite
+  * svg: use cairo API for filter implementation when possible
+  * svg: fix blur misposition
+  * svg: support for filter primitive subregion
+  * svg: mplementation of <feTile>
+  * svg: implementation of BackgroundImage and BackgroundAlpha
+  * svg: implementation of <switch>
+  * svg: reimplement group opacity optimisation
+  * svg: implementation of get_extents for <polygon>, <polyline>, <ellipse>, <line> and <text>
+  * svg: add support for HSL color syntax
+  * svg: fix parsing of stroke-dasharray when value are separated by spaces
 
 Release 0.3.3
 =============
 
-All:
-	Fix parallel compilation.
-
-SVG:
-	Fix a crash in case of transform attribute on gradient elements.
-	Handle nodes with name prefixed with 'svg:'.
-	Lame vertical text support.
-	Fix font size when expressed as percentage.
-	Implement overflow attribute for markers.
-	Fix Marker auto orientation.
-	Fix clipPath transform
-	Add preliminary support for <feGaussianBlur>, <feBlend>, <feComposite>,
-		<feOffset>, <feMerge>, <feMergeNode> and <feFlood>.
-	Fix group opacity.
-	Use transparent color when paint url is not found.
-
-Mathml:
-	Support for element prefixed by 'math:'.
-	Fix update of itex element on style change.
+  * fix parallel compilation
+  * svg: fix a crash in case of transform attribute on gradient elements
+  * svg: handle nodes with name prefixed with 'svg:'
+  * svg: lame vertical text support
+  * svg: fix font size when expressed as percentage
+  * svg: implement overflow attribute for markers
+  * svg: fix Marker auto orientation
+  * svg: fix clipPath transform
+  * svg: add preliminary support for <feGaussianBlur>, <feBlend>, <feComposite>,
+  <feOffset>, <feMerge>, <feMergeNode> and <feFlood>
+  * svg: fix group opacity
+  * svg: use transparent color when paint url is not found
+  * mml: support for element prefixed by 'math:'
+  * mml: fix update of itex element on style change
 
 Release 0.3.2
 =============
 
-All:
-	Restrict introspection to the DOM API.
-
-Mathml:
-	Fix weight of operators.
-	Support of semantics elements (used by libreoffice formulas).
-	Fix the form of script elements of underover and script.
-
-SVG:
-	Garbage collection in property manager.
-	Avoid cairo errors due to not invertible matrix.
+  * restrict introspection to the DOM API
+  * mml: fix weight of operators
+  * mml: support of semantics elements (used by libreoffice formulas)
+  * mml: fix the form of script elements of underover and script
+  * svg: garbage collection in property manager
+  * svg: avoid cairo errors due to not invertible matrix
 
 Release 0.3.1
 =============
 
-All:
-	Single header include.
-	gtk-doc support.
-	Unit testing.
-	Only export and document the DOM API.
-	Binary are now parallel installable.
-	Fix crashers found using fuzzxml from Morten Welinder.
-	Improve debug output (À la gstreamer).
-
-DOM:
-	Pass a cairo context for each view render.
-	Better DOM specification conformance.
-	Serialization support.
-
-itex2mml:
-	Update to 1.4.5.
-
-Mathml:
-	Return equation baseline.
-
-SVG:
-	Fix gradient on stroke or fill when opacity < 1.0.
-	Implement visibility attribute.
-	Implement display attribute.
-	Implement image::get_extents.
-	Avoid infinite circular references.
+  * single header include
+  * gtk-doc support
+  * unit testing
+  * only export and document the DOM API
+  * binary are now parallel installable
+  * fix crashers found using fuzzxml from Morten Welinder
+  * improve debug output (À la gstreamer)
+  * dom: pass a cairo context for each view render
+  * dom: better DOM specification conformance
+  * dom: serialization support
+  * itex2mml: update to 1.4.5
+  * mml: return equation baseline.
+  * svg: fix gradient on stroke or fill when opacity < 1.0
+  * svg: implement visibility attribute
+  * svg: implement display attribute
+  * svg: implement image::get_extents
+  * svg: avoid infinite circular references
 
 Release 0.3.0
 =============
 
-All:
-	Add gobject-instrospection.
-	Switch to LGPLv2+ licence.
-
-itex2mml:
-	Update to 1.3.22.
-
-SVG:
-	Use pango_cairo_show_layout for text fill.
-	font-weight, font-style, font-stretch and text-anchor support.
-	<tspan> support.
-	Fix position of outermost <svg>.
-	href support for <pattern>.
-	href support for <radialGradient>.
-	href support for <lienarGradient>.
-	Allow commas in viewBox string.
-	Fix ellipse rendering direction.
-	Fix parsing of rgb() colors.
-	Don't send invalid dash array to cairo.
+  * add gobject-instrospection
+  * switch to LGPLv2+ licence
+  * itex2mml: update to 1.3.22
+  * svg: use pango_cairo_show_layout for text fill
+  * svg: font-weight, font-style, font-stretch and text-anchor support
+  * svg: <tspan> support
+  * svg: fix position of outermost <svg>
+  * svg: href support for <pattern>
+  * svg: href support for <radialGradient>
+  * svg: href support for <lienarGradient>
+  * svg: allow commas in viewBox string
+  * svg: fix ellipse rendering direction
+  * svg: fix parsing of rgb() colors
+  * svg: don't send invalid dash array to cairo
 
 Release 0.2.0
 =============
 
-Make lasem library parallel installable.
+  * make lasem library parallel installable
 
 Release 0.1.3
 =============
 
-itex2mml:
-
-  Update to the 1.3.15 release.
-
-Mathml:
-
-  Contribution of Jorn Baayen needed for his lasem python bindings.
+  * itex2mml: update to the 1.3.15 release
+  * mml: contribution of Jorn Baayen needed for his lasem python bindings
   http://github.com/jbaayen/pylasem
-
-  Migration of the attribute handling to lsm_attribute_manager.
-
-SVG:
-
-  Leak fixes.
+  * mml: migration of the attribute handling to lsm_attribute_manager
+  svg: leak fixes
