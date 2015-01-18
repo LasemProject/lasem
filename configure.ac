@@ -65,7 +65,6 @@ if test "$GCC" = yes -a "x$set_more_warnings" != xno; then
 			 -Wmissing-declarations \
 			 -Wcast-align \
 			 -Winline \
-			 -Wbad-function-cast \
 			 -Waddress-space \
 			 -Wbitwise \
 			 -Wcast-to-as \
@@ -85,6 +84,7 @@ if test "$GCC" = yes -a "x$set_more_warnings" != xno; then
 	# trigger too often at the time of writing
 	not_now_please="\
 			 -Wpointer-arith \
+			 -Wbad-function-cast \
 			 -Wswitch-enum \
 			 -Wfloat-equal \
 			 -Wdeclaration-after-statement \
