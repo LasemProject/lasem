@@ -1,0 +1,66 @@
+# Basque translation for lasem.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem lasem-0-4\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-01-19 22:06+0100\n"
+"PO-Revision-Date: 2013-08-30 17:39+0200\n"
+"Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
+"Language-Team: Basque <librezale@librezale.org>\n"
+"Language: eu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.4\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Irteerako fitxategi-izena"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Irteerako formatua"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Pixel hazbeteko"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zooma"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Arazketaren domeinuak"
+
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Huts egin du aukera aztertzean: %s\n"
+
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Zoomaren baliogabeko balioa"
+
+#: ../src/lasemrender.c:121
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Sarrerako fitxategi-izen bat behar da\n"
+
+#: ../src/lasemrender.c:132
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Formatu ezezaguna: %s\n"
+
+#: ../src/lasemrender.c:257
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Ezin da '%s' kargatu\n"
