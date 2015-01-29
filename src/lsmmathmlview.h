@@ -132,6 +132,18 @@ void 		lsm_mathml_view_show_radical		(LsmMathmlView *view,
 							 double x, double y, double width,
 							 const LsmMathmlBbox *stretch_bbox);
 
+void 		lsm_mathml_view_measure_notation 	(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 LsmMathmlNotation notation,
+							 const LsmMathmlBbox *stretch_bbox,
+							 LsmMathmlBbox *bbox,
+							 double *x_child_offset);
+void 		lsm_mathml_view_show_notation		(LsmMathmlView *view,
+							 const LsmMathmlElementStyle *style,
+							 LsmMathmlNotation notation,
+							 double x, double y,
+							 const LsmMathmlBbox *bbox);
+
 void 		lsm_mathml_view_show_background 	(LsmMathmlView *view,
 							 const LsmMathmlElementStyle *style,
 							 double x, double y,

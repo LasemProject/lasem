@@ -390,11 +390,11 @@ lsm_mathml_table_element_render (LsmMathmlElement *self, LsmMathmlView *view)
 		spacing = table->column_spacing.values[MIN (i, table->column_spacing.n_values - 1)];
 		x = position + 0.5 * (spacing + table->line_width);
 		lsm_mathml_view_show_line (view, &self->style,
-					x, y0, x, y1,
-					table->column_lines.enum_list.values[MIN (i,
-										  table->column_lines.enum_list.n_values
-										  - 1)],
-					table->line_width);
+					   x, y0, x, y1,
+					   table->column_lines.enum_list.values[MIN (i,
+										     table->column_lines.enum_list.n_values
+										     - 1)],
+					   table->line_width);
 		position += spacing + table->line_width;
 	}
 

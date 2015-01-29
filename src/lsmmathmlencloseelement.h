@@ -42,6 +42,10 @@ struct _LsmMathmlEncloseElement {
 	LsmMathmlPresentationContainer presentation_container;
 
 	LsmMathmlEnumAttribute notation;
+
+	/* View data */
+
+	double x_child_offset;
 };
 
 struct _LsmMathmlEncloseElementClass {

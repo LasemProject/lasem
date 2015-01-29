@@ -35,15 +35,22 @@ typedef struct {
 	gboolean is_defined;
 } LsmMathmlBbox;
 
+typedef struct {
+	double left;
+	double right;
+	double top;
+	double bottom;
+} LsmMathmlPadding;
+
 extern const LsmMathmlBbox lsm_mathml_bbox_null;
 
 void 	lsm_mathml_bbox_add_horizontally 		(LsmMathmlBbox *bbox, const LsmMathmlBbox *new_bbox);
 void 	lsm_mathml_bbox_add_over 			(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
 void 	lsm_mathml_bbox_add_under 			(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
 void 	lsm_mathml_bbox_merge_vertically 		(LsmMathmlBbox *self, const LsmMathmlBbox *bbox, double offset);
-void 	lsm_mathml_bbox_stretch			(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
+void 	lsm_mathml_bbox_stretch				(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
 void 	lsm_mathml_bbox_stretch_vertically		(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
-void 	lsm_mathml_bbox_stretch_horizontally	(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
+void 	lsm_mathml_bbox_stretch_horizontally		(LsmMathmlBbox *self, const LsmMathmlBbox *bbox);
 
 G_END_DECLS
 

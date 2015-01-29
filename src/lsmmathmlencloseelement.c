@@ -22,21 +22,58 @@
  */
 
 #include <lsmmathmlencloseelement.h>
+#include <lsmmathmlview.h>
+
+static GObjectClass *parent_class;
 
 /* LsmDomNode implementation */
 
 static const char *
-lsm_mathml_enclose_element_get_node_name (LsmDomNode *node)
+_get_node_name (LsmDomNode *node)
 {
 	return "menclose";
 }
 
-static gboolean
-lsm_mathml_enclose_element_can_append_child (LsmDomNode *self, LsmDomNode *child)
+/* LsmMathmlElement implementation */
+
+static void
+_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
-	return (LSM_IS_MATHML_ELEMENT (child) &&
-		(self->first_child == NULL ||
-		 self->first_child->next_sibling == NULL));
+}
+
+static const LsmMathmlBbox *
+_measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox)
+{
+	LsmMathmlEncloseElement *enclose = LSM_MATHML_ENCLOSE_ELEMENT (self);
+	LsmMathmlBbox stretch_bbox;
+
+	LSM_MATHML_ELEMENT_CLASS (parent_class)->measure (self, view, bbox);
+
+	stretch_bbox = self->bbox;
+
+	lsm_mathml_view_measure_notation (view, &self->style, enclose->notation.value, &stretch_bbox,
+					  &self->bbox, &enclose->x_child_offset);
+
+	return &self->bbox;
+}
+
+static void
+_layout (LsmMathmlElement *self, LsmMathmlView *view,
+	 double x, double y, const LsmMathmlBbox *bbox)
+{
+	LsmMathmlEncloseElement *enclose = LSM_MATHML_ENCLOSE_ELEMENT (self);
+
+	LSM_MATHML_ELEMENT_CLASS (parent_class)->layout (self, view, x + enclose->x_child_offset, y, bbox);
+}
+
+static void
+_render (LsmMathmlElement *self, LsmMathmlView *view)
+{
+	LsmMathmlEncloseElement *enclose = LSM_MATHML_ENCLOSE_ELEMENT (self);
+
+	LSM_MATHML_ELEMENT_CLASS (parent_class)->render (self, view);
+
+	lsm_mathml_view_show_notation (view, &self->style, enclose->notation.value, self->x, self->y, &self->bbox);
 }
 
 /* LsmMathmlEncloseElement implementation */
@@ -69,9 +106,21 @@ static void
 lsm_mathml_enclose_element_class_init (LsmMathmlEncloseElementClass *klass)
 {
 	LsmDomNodeClass *d_node_class = LSM_DOM_NODE_CLASS (klass);
+	LsmMathmlElementClass *m_element_class = LSM_MATHML_ELEMENT_CLASS (klass);
 
-	d_node_class->get_node_name = lsm_mathml_enclose_element_get_node_name;
-	d_node_class->can_append_child = lsm_mathml_enclose_element_can_append_child;
+	parent_class = g_type_class_peek_parent (klass);
+
+	d_node_class->get_node_name = _get_node_name;
+
+	m_element_class->update = _update;
+	m_element_class->measure = _measure;
+	m_element_class->layout = _layout;
+	m_element_class->render = _render;
+	m_element_class->attribute_manager = lsm_attribute_manager_duplicate (m_element_class->attribute_manager);
+
+	lsm_attribute_manager_add_attributes (m_element_class->attribute_manager,
+					      G_N_ELEMENTS (_attribute_infos),
+					      _attribute_infos);
 }
 
 G_DEFINE_TYPE (LsmMathmlEncloseElement, lsm_mathml_enclose_element, LSM_TYPE_MATHML_PRESENTATION_CONTAINER)

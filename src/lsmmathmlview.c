@@ -33,6 +33,13 @@
 #include <math.h>
 #include <string.h>
 
+typedef enum {
+	_GMATHML_STROKE_WIDTH_EVEN,
+	_GMATHML_STROKE_WIDTH_ODD,
+	_GMATHML_STROKE_WIDTH_NULL,
+	_GMATHML_STROKE_WIDTH_VECTOR
+} _LsmMathmlStrokeWidth;
+
 #define LSM_MATHML_LARGE_OP_SCALE	1.6
 
 static const char *lsm_mathml_font_names[] = {
@@ -631,7 +638,7 @@ lsm_mathml_view_measure_radical (LsmMathmlView *view,
 	radical_stretch_bbox.depth += LSM_MATHML_SPACE_EM_THICK * style->math_size;
 
 	lsm_mathml_view_measure_operator (view, style, LSM_MATHML_RADICAL_UTF8,
-				       FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
+					  FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
 
 	if (x_offset != NULL) {
 		*x_offset = bbox->width * LSM_MATHML_RADICAL_ORDER_X_OFFSET;
@@ -714,13 +721,6 @@ lsm_mathml_view_show_radical (LsmMathmlView *view,
 
 	cairo_restore (cairo);
 }
-
-typedef enum {
-	_GMATHML_STROKE_WIDTH_EVEN,
-	_GMATHML_STROKE_WIDTH_ODD,
-	_GMATHML_STROKE_WIDTH_NULL,
-	_GMATHML_STROKE_WIDTH_VECTOR
-} _LsmMathmlStrokeWidth;
 
 static void
 _round_rectangle_coordinates (cairo_t *cairo,
@@ -807,6 +807,181 @@ _emit_stroke_attributes (LsmMathmlView *view, LsmMathmlLine line, double line_wi
 			       alpha);
 
 	return stroke_width;
+}
+
+const LsmMathmlPadding notation_padding[] = {
+	{	.left = 1.0,	.right = 0.0,	.top = 1.0,	.bottom = 0.0 },	/* longdiv */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* actuarial */
+	{	.left = 0.0,	.right = 0.0,	.top = 0.0,	.bottom = 0.0 },	/* radical */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* box */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* boundedbox */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* circle */
+	{	.left = 1.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* left */
+	{	.left = 0.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* right */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 0.0 },	/* top */
+	{	.left = 1.0,	.right = 1.0,	.top = 0.0,	.bottom = 1.0 },	/* bottom */
+	{	.left = 0.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* updiagonalstrike */
+	{	.left = 0.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* downdiagonalstrike */
+	{	.left = 0.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* verticalstrike */
+	{	.left = 1.0,	.right = 1.0,	.top = 0.0,	.bottom = 0.0 },	/* horizontalstrike */
+	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* madruwb */
+	{	.left = 0.0,	.right = 2.0,	.top = 1.0,	.bottom = 1.0 }		/* updiagonalarrow */
+};
+
+void
+lsm_mathml_view_measure_notation (LsmMathmlView *view,
+				  const LsmMathmlElementStyle *style,
+				  LsmMathmlNotation notation,
+				  const LsmMathmlBbox *stretch_bbox,
+				  LsmMathmlBbox *bbox,
+				  double *x_child_offset)
+{
+	LsmMathmlLength padding_x = {.value = 0.5, .unit = LSM_MATHML_UNIT_EX};
+	LsmMathmlLength padding_y = {.value = 0.4, .unit = LSM_MATHML_UNIT_EM};
+	double base_x;
+	double base_y;
+
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
+	g_return_if_fail (style != NULL);
+	g_return_if_fail (stretch_bbox != NULL);
+	g_return_if_fail (bbox != NULL);
+
+	if (notation == LSM_MATHML_NOTATION_RADICAL) {
+		lsm_mathml_view_measure_radical (view, style, stretch_bbox, bbox, NULL, NULL);
+		if (x_child_offset != NULL)
+			*x_child_offset = bbox->width;
+		return;
+	}
+
+	base_x = lsm_mathml_length_normalize (&padding_x, 0.0, style->math_size);
+	base_y = lsm_mathml_length_normalize (&padding_y, 0.0, style->math_size);
+
+	*bbox = *stretch_bbox;
+
+	if (notation >= 0 && notation < LSM_MATHML_NOTATION_LAST) {
+		bbox->width += base_x * (notation_padding[notation].left + notation_padding[notation].right);
+		bbox->height += base_y * (notation_padding[notation].top + notation_padding[notation].bottom);
+		bbox->depth += base_y * (notation_padding[notation].bottom);
+
+		if (x_child_offset != NULL)
+			*x_child_offset = base_x * notation_padding[notation].left;
+	} else {
+		if (x_child_offset != NULL)
+			*x_child_offset = 0;
+	}
+
+}
+
+void
+lsm_mathml_view_show_notation (LsmMathmlView *view,
+			       const LsmMathmlElementStyle *style,
+			       LsmMathmlNotation notation,
+			       double x, double y,
+			       const LsmMathmlBbox *bbox)
+{
+	_LsmMathmlStrokeWidth stroke_width;
+	cairo_t *cairo;
+	double x1, y1;
+
+	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
+	g_return_if_fail (style != NULL);
+	g_return_if_fail (bbox != NULL);
+
+	stroke_width = _emit_stroke_attributes (view, LSM_MATHML_LINE_SOLID, 1.0, &style->math_color);
+
+	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
+		return;
+
+	y = y + bbox->depth;
+	x1 = x + bbox->width;
+	y1 = y - bbox->height;
+
+	cairo = view->dom_view.cairo;
+
+	_round_rectangle_coordinates (cairo, stroke_width, &x, &y, &x1, &y1);
+
+	cairo_new_path (cairo);
+
+	switch (notation) {
+		case LSM_MATHML_NOTATION_ACTUARIAL:
+			cairo_move_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y1);
+			cairo_line_to (cairo, x1, y);
+			break;
+		case LSM_MATHML_NOTATION_RADICAL:
+			break;
+		case LSM_MATHML_NOTATION_BOX:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y1);
+			cairo_line_to (cairo, x1, y);
+			cairo_close_path (cairo);
+			break;
+		case LSM_MATHML_NOTATION_ROUNDED_BOX:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y1);
+			cairo_line_to (cairo, x1, y);
+			cairo_close_path (cairo);
+			break;
+		case LSM_MATHML_NOTATION_CIRCLE:
+			cairo_save (cairo);
+			cairo_translate (cairo, (x + x1) / 2.0, (y + y1) / 2.0);
+			cairo_scale (cairo, (x - x1) / 2.0, (y - y1) / 2.0);
+			cairo_arc (cairo, 0., 0., 1., 0., 2 * M_PI);
+			cairo_restore (cairo);
+			break;
+		case LSM_MATHML_NOTATION_LEFT:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x, y1);
+			break;
+		case LSM_MATHML_NOTATION_RIGHT:
+			cairo_move_to (cairo, x1, y);
+			cairo_line_to (cairo, x1, y1);
+			break;
+		case LSM_MATHML_NOTATION_TOP:
+			cairo_move_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y1);
+			break;
+		case LSM_MATHML_NOTATION_BOTTOM:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x1, y);
+			break;
+		case LSM_MATHML_NOTATION_UP_DIAGONAL_STRIKE:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x1, y1);
+			break;
+		case LSM_MATHML_NOTATION_DOWN_DIAGONAL_STRIKE:
+			cairo_move_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y);
+			break;
+		case LSM_MATHML_NOTATION_HORIZONTAL_STRIKE:
+			cairo_move_to (cairo, x, (y + y1) / 2.0);
+			cairo_line_to (cairo, x1,(y + y1) / 2.0);
+			break;
+		case LSM_MATHML_NOTATION_VERTICAL_STRIKE:
+			cairo_move_to (cairo, (x + x1) / 2.0, y);
+			cairo_line_to (cairo, (x + x1) / 2.0, y1);
+			break;
+		case LSM_MATHML_NOTATION_MADRUWB:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x1, y);
+			cairo_line_to (cairo, x1, y1);
+			break;
+		case LSM_MATHML_NOTATION_UP_DIAGONAL_ARROW:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x1, y1);
+			break;
+		case LSM_MATHML_NOTATION_ERROR:
+		case LSM_MATHML_NOTATION_LONGDIV:
+		default:
+			cairo_move_to (cairo, x, y);
+			cairo_line_to (cairo, x, y1);
+			cairo_line_to (cairo, x1, y1);
+			break;
+	}
+
+	cairo_stroke (cairo);
 }
 
 void
