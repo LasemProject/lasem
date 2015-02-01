@@ -142,7 +142,8 @@ void 		lsm_mathml_view_show_notation		(LsmMathmlView *view,
 							 const LsmMathmlElementStyle *style,
 							 LsmMathmlNotation notation,
 							 double x, double y,
-							 const LsmMathmlBbox *bbox);
+							 const LsmMathmlBbox *bbox,
+							 double x_child_offset);
 
 void 		lsm_mathml_view_show_background 	(LsmMathmlView *view,
 							 const LsmMathmlElementStyle *style,

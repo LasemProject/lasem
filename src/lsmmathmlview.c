@@ -617,9 +617,9 @@ lsm_mathml_view_get_operator_slant (LsmMathmlView *view,
 
 void
 lsm_mathml_view_measure_radical (LsmMathmlView *view,
-			      const LsmMathmlElementStyle *style,
-			      const LsmMathmlBbox *stretch_bbox,
-			      LsmMathmlBbox *bbox, double *x_offset, double *y_offset)
+				 const LsmMathmlElementStyle *style,
+				 const LsmMathmlBbox *stretch_bbox,
+				 LsmMathmlBbox *bbox, double *x_offset, double *y_offset)
 {
 	LsmMathmlBbox radical_stretch_bbox;
 	double thickness;
@@ -810,7 +810,7 @@ _emit_stroke_attributes (LsmMathmlView *view, LsmMathmlLine line, double line_wi
 }
 
 const LsmMathmlPadding notation_padding[] = {
-	{	.left = 1.0,	.right = 0.0,	.top = 1.0,	.bottom = 0.0 },	/* longdiv */
+	{	.left = 2.0,	.right = 0.0,	.top = 1.0,	.bottom = 0.0 },	/* longdiv */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* actuarial */
 	{	.left = 0.0,	.right = 0.0,	.top = 0.0,	.bottom = 0.0 },	/* radical */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* box */
@@ -850,6 +850,7 @@ lsm_mathml_view_measure_notation (LsmMathmlView *view,
 		lsm_mathml_view_measure_radical (view, style, stretch_bbox, bbox, NULL, NULL);
 		if (x_child_offset != NULL)
 			*x_child_offset = bbox->width;
+		lsm_mathml_bbox_add_horizontally (bbox, stretch_bbox);
 		return;
 	}
 
@@ -869,7 +870,6 @@ lsm_mathml_view_measure_notation (LsmMathmlView *view,
 		if (x_child_offset != NULL)
 			*x_child_offset = 0;
 	}
-
 }
 
 void
@@ -877,11 +877,15 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			       const LsmMathmlElementStyle *style,
 			       LsmMathmlNotation notation,
 			       double x, double y,
-			       const LsmMathmlBbox *bbox)
+			       const LsmMathmlBbox *bbox,
+			       double x_child_offset)
 {
+	LsmMathmlBbox stretch_bbox;
+	LsmMathmlLength padding_x = {.value = 0.5, .unit = LSM_MATHML_UNIT_EM};
 	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 	double x1, y1;
+	double base_x;
 
 	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
 	g_return_if_fail (style != NULL);
@@ -891,6 +895,8 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
+
+	base_x = lsm_mathml_length_normalize (&padding_x, 0.0, style->math_size);
 
 	y = y + bbox->depth;
 	x1 = x + bbox->width;
@@ -909,6 +915,10 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			cairo_line_to (cairo, x1, y);
 			break;
 		case LSM_MATHML_NOTATION_RADICAL:
+			stretch_bbox = *bbox;
+			stretch_bbox.width = x_child_offset;
+			lsm_mathml_view_show_radical (view, style, x, y - bbox->depth,
+						      bbox->width - x_child_offset, &stretch_bbox);
 			break;
 		case LSM_MATHML_NOTATION_BOX:
 			cairo_move_to (cairo, x, y);
@@ -975,7 +985,11 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 		case LSM_MATHML_NOTATION_ERROR:
 		case LSM_MATHML_NOTATION_LONGDIV:
 		default:
-			cairo_move_to (cairo, x, y);
+			cairo_save (cairo);
+			cairo_translate (cairo, x, y + (y1 - y) / 2);
+			cairo_scale (cairo, base_x / 2.0, (y - y1) / 2.0);
+			cairo_arc_negative (cairo, 0.0, 0.0, 1.0, M_PI / 2.0, -M_PI / 2.0);
+			cairo_restore (cairo);
 			cairo_line_to (cairo, x, y1);
 			cairo_line_to (cairo, x1, y1);
 			break;

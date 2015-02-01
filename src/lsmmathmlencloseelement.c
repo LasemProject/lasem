@@ -73,7 +73,8 @@ _render (LsmMathmlElement *self, LsmMathmlView *view)
 
 	LSM_MATHML_ELEMENT_CLASS (parent_class)->render (self, view);
 
-	lsm_mathml_view_show_notation (view, &self->style, enclose->notation.value, self->x, self->y, &self->bbox);
+	lsm_mathml_view_show_notation (view, &self->style, enclose->notation.value, self->x, self->y, &self->bbox,
+				       enclose->x_child_offset);
 }
 
 /* LsmMathmlEncloseElement implementation */
