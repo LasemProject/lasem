@@ -861,8 +861,8 @@ lsm_mathml_view_measure_notation (LsmMathmlView *view,
 
 	if (notation >= 0 && notation < LSM_MATHML_NOTATION_LAST) {
 		bbox->width += base_x * (notation_padding[notation].left + notation_padding[notation].right);
-		bbox->height += base_y * (notation_padding[notation].top + notation_padding[notation].bottom);
-		bbox->depth += base_y * (notation_padding[notation].bottom);
+		bbox->height += base_y * notation_padding[notation].top;
+		bbox->depth += base_y * notation_padding[notation].bottom;
 
 		if (notation == LSM_MATHML_NOTATION_LONGDIV) {
 			bbox->width += bbox->height / 2.0;
@@ -954,7 +954,7 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 
 	y = y + bbox->depth;
 	x1 = x + bbox->width;
-	y1 = y - bbox->height;
+	y1 = y - bbox->height - bbox->depth;
 
 	cairo = view->dom_view.cairo;
 
