@@ -810,12 +810,12 @@ _emit_stroke_attributes (LsmMathmlView *view, LsmMathmlLine line, double line_wi
 }
 
 const LsmMathmlPadding notation_padding[] = {
-	{	.left = 2.0,	.right = 0.0,	.top = 1.0,	.bottom = 0.0 },	/* longdiv */
+	{	.left = 0.0,	.right = 0.0,	.top = 1.0,	.bottom = 0.0 },	/* longdiv */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* actuarial */
 	{	.left = 0.0,	.right = 0.0,	.top = 0.0,	.bottom = 0.0 },	/* radical */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* box */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* boundedbox */
-	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* circle */
+	{	.left = 2.0,	.right = 2.0,	.top = 2.0,	.bottom = 2.0 },	/* circle */
 	{	.left = 1.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* left */
 	{	.left = 0.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* right */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 0.0 },	/* top */
@@ -825,7 +825,7 @@ const LsmMathmlPadding notation_padding[] = {
 	{	.left = 0.0,	.right = 0.0,	.top = 1.0,	.bottom = 1.0 },	/* verticalstrike */
 	{	.left = 1.0,	.right = 1.0,	.top = 0.0,	.bottom = 0.0 },	/* horizontalstrike */
 	{	.left = 1.0,	.right = 1.0,	.top = 1.0,	.bottom = 1.0 },	/* madruwb */
-	{	.left = 0.0,	.right = 2.0,	.top = 1.0,	.bottom = 1.0 }		/* updiagonalarrow */
+	{	.left = 0.0,	.right = 5.0,	.top = 1.0,	.bottom = 1.0 }		/* updiagonalarrow */
 };
 
 void
@@ -864,12 +864,66 @@ lsm_mathml_view_measure_notation (LsmMathmlView *view,
 		bbox->height += base_y * (notation_padding[notation].top + notation_padding[notation].bottom);
 		bbox->depth += base_y * (notation_padding[notation].bottom);
 
-		if (x_child_offset != NULL)
-			*x_child_offset = base_x * notation_padding[notation].left;
+		if (notation == LSM_MATHML_NOTATION_LONGDIV) {
+			bbox->width += bbox->height / 2.0;
+			if (x_child_offset != NULL)
+				*x_child_offset = bbox->height / 2.0;
+		} else {
+			if (x_child_offset != NULL)
+				*x_child_offset = base_x * notation_padding[notation].left;
+		}
 	} else {
 		if (x_child_offset != NULL)
 			*x_child_offset = 0;
 	}
+}
+
+static void
+_cairo_arrow (cairo_t *cairo, double scale, double x0, double y0, double x1, double y1)
+{
+	double angle;
+	double x2, y2;
+
+	if ((y1 - y0) == 0 && (x1 - x0) == 0)
+		return;
+
+	angle = atan2 (y1 - y0, x1 - x0);
+	x2 = x1 - scale * cos (angle) / 2.0;
+	y2 = y1 - scale * sin (angle) / 2.0;
+
+	cairo_move_to (cairo, x0, y0);
+	cairo_line_to (cairo, x2, y2);
+	cairo_stroke (cairo);
+
+	cairo_save (cairo);
+
+	cairo_translate (cairo, x1, y1);
+	cairo_scale (cairo, scale, scale);
+	cairo_rotate (cairo, angle);
+
+	cairo_move_to (cairo, -1.0, 0.3);
+	cairo_line_to (cairo, 0.0, 0.0);
+	cairo_line_to (cairo, -1.0, -0.3);
+	cairo_line_to (cairo, -0.9, 0.0);
+	cairo_close_path (cairo);
+
+	cairo_restore (cairo);
+
+	cairo_fill (cairo);
+}  
+
+static void
+_cairo_rounded_rectangle (cairo_t *cairo, double radius, double x0, double y0, double x1, double y1)
+{
+	cairo_new_path (cairo);
+
+	cairo_arc (cairo, x0 + radius, y0 - radius, radius, M_PI / 2.0, -M_PI);
+	cairo_arc (cairo, x0 + radius, y1 + radius, radius, M_PI, -M_PI / 2.0);
+	cairo_arc (cairo, x1 - radius, y1 + radius, radius, -M_PI / 2.0, 0.0);
+	cairo_arc (cairo, x1 - radius, y0 - radius, radius, 0.0, M_PI / 2.0);
+	cairo_close_path (cairo);
+
+	cairo_stroke (cairo);
 }
 
 void
@@ -881,7 +935,7 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			       double x_child_offset)
 {
 	LsmMathmlBbox stretch_bbox;
-	LsmMathmlLength padding_x = {.value = 0.5, .unit = LSM_MATHML_UNIT_EM};
+	LsmMathmlLength padding_x = {.value = 0.5, .unit = LSM_MATHML_UNIT_EX};
 	_LsmMathmlStrokeWidth stroke_width;
 	cairo_t *cairo;
 	double x1, y1;
@@ -913,6 +967,7 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			cairo_move_to (cairo, x, y1);
 			cairo_line_to (cairo, x1, y1);
 			cairo_line_to (cairo, x1, y);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_RADICAL:
 			stretch_bbox = *bbox;
@@ -926,13 +981,10 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			cairo_line_to (cairo, x1, y1);
 			cairo_line_to (cairo, x1, y);
 			cairo_close_path (cairo);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_ROUNDED_BOX:
-			cairo_move_to (cairo, x, y);
-			cairo_line_to (cairo, x, y1);
-			cairo_line_to (cairo, x1, y1);
-			cairo_line_to (cairo, x1, y);
-			cairo_close_path (cairo);
+			_cairo_rounded_rectangle (cairo, base_x, x, y, x1, y1);
 			break;
 		case LSM_MATHML_NOTATION_CIRCLE:
 			cairo_save (cairo);
@@ -940,62 +992,87 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 			cairo_scale (cairo, (x - x1) / 2.0, (y - y1) / 2.0);
 			cairo_arc (cairo, 0., 0., 1., 0., 2 * M_PI);
 			cairo_restore (cairo);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_LEFT:
 			cairo_move_to (cairo, x, y);
 			cairo_line_to (cairo, x, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_RIGHT:
 			cairo_move_to (cairo, x1, y);
 			cairo_line_to (cairo, x1, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_TOP:
 			cairo_move_to (cairo, x, y1);
 			cairo_line_to (cairo, x1, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_BOTTOM:
 			cairo_move_to (cairo, x, y);
 			cairo_line_to (cairo, x1, y);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_UP_DIAGONAL_STRIKE:
 			cairo_move_to (cairo, x, y);
 			cairo_line_to (cairo, x1, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_DOWN_DIAGONAL_STRIKE:
 			cairo_move_to (cairo, x, y1);
 			cairo_line_to (cairo, x1, y);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_HORIZONTAL_STRIKE:
 			cairo_move_to (cairo, x, (y + y1) / 2.0);
 			cairo_line_to (cairo, x1,(y + y1) / 2.0);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_VERTICAL_STRIKE:
 			cairo_move_to (cairo, (x + x1) / 2.0, y);
 			cairo_line_to (cairo, (x + x1) / 2.0, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_MADRUWB:
 			cairo_move_to (cairo, x, y);
 			cairo_line_to (cairo, x1, y);
 			cairo_line_to (cairo, x1, y1);
+			cairo_stroke (cairo);
 			break;
 		case LSM_MATHML_NOTATION_UP_DIAGONAL_ARROW:
-			cairo_move_to (cairo, x, y);
-			cairo_line_to (cairo, x1, y1);
+			_cairo_arrow (cairo, 4.0 * base_x, x, y, x1, y1);
 			break;
 		case LSM_MATHML_NOTATION_ERROR:
 		case LSM_MATHML_NOTATION_LONGDIV:
 		default:
-			cairo_save (cairo);
-			cairo_translate (cairo, x, y + (y1 - y) / 2);
-			cairo_scale (cairo, base_x / 2.0, (y - y1) / 2.0);
-			cairo_arc_negative (cairo, 0.0, 0.0, 1.0, M_PI / 2.0, -M_PI / 2.0);
-			cairo_restore (cairo);
-			cairo_line_to (cairo, x, y1);
+/*                        cairo_arc_negative (cairo,*/
+/*                                            x - bbox->height / 2.0,*/
+/*                                            y - bbox->height / 2.0,*/
+/*                                            bbox->height / 1.41421356237,*/
+/*                                            M_PI / 4.0, -M_PI / 4.0);*/
+/*                        cairo_move_to (cairo, x, y1);*/
+/*                        cairo_line_to (cairo, x1, y1);*/
+/*                        cairo_stroke (cairo);*/
+
+			cairo_move_to (cairo, x, y);
+			cairo_curve_to (cairo, 
+					x + bbox->height / 4.0, y - bbox->height / 4.0,
+					x + bbox->height / 4.0, y1 + bbox->height / 4.0,
+					x, y1);
 			cairo_line_to (cairo, x1, y1);
+			cairo_stroke (cairo);
+
+/*                        cairo_save (cairo);*/
+/*                        cairo_translate (cairo, x, y + (y1 - y) / 2);*/
+/*                        cairo_scale (cairo, base_x / 1.2, (y - y1) / 2.0);*/
+/*                        cairo_arc_negative (cairo, 0.0, 0.0, 1.0, M_PI / 2.0, -M_PI / 2.0);*/
+/*                        cairo_restore (cairo);*/
+/*                        cairo_line_to (cairo, x, y1);*/
+/*                        cairo_line_to (cairo, x1, y1);*/
+/*                        cairo_stroke (cairo);*/
 			break;
 	}
-
-	cairo_stroke (cairo);
 }
 
 void
