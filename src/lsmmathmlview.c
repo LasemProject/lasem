@@ -1046,15 +1046,6 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 		case LSM_MATHML_NOTATION_ERROR:
 		case LSM_MATHML_NOTATION_LONGDIV:
 		default:
-/*                        cairo_arc_negative (cairo,*/
-/*                                            x - bbox->height / 2.0,*/
-/*                                            y - bbox->height / 2.0,*/
-/*                                            bbox->height / 1.41421356237,*/
-/*                                            M_PI / 4.0, -M_PI / 4.0);*/
-/*                        cairo_move_to (cairo, x, y1);*/
-/*                        cairo_line_to (cairo, x1, y1);*/
-/*                        cairo_stroke (cairo);*/
-
 			cairo_move_to (cairo, x, y);
 			cairo_curve_to (cairo, 
 					x + bbox->height / 4.0, y - bbox->height / 4.0,
@@ -1062,15 +1053,6 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 					x, y1);
 			cairo_line_to (cairo, x1, y1);
 			cairo_stroke (cairo);
-
-/*                        cairo_save (cairo);*/
-/*                        cairo_translate (cairo, x, y + (y1 - y) / 2);*/
-/*                        cairo_scale (cairo, base_x / 1.2, (y - y1) / 2.0);*/
-/*                        cairo_arc_negative (cairo, 0.0, 0.0, 1.0, M_PI / 2.0, -M_PI / 2.0);*/
-/*                        cairo_restore (cairo);*/
-/*                        cairo_line_to (cairo, x, y1);*/
-/*                        cairo_line_to (cairo, x1, y1);*/
-/*                        cairo_stroke (cairo);*/
 			break;
 	}
 }
