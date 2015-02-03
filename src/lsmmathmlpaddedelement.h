@@ -40,6 +40,11 @@ typedef struct _LsmMathmlPaddedElementClass LsmMathmlPaddedElementClass;
 
 struct _LsmMathmlPaddedElement {
 	LsmMathmlPresentationContainer presentation_container;
+
+	LsmMathmlLengthAttribute height;
+	LsmMathmlLengthAttribute depth;
+	LsmMathmlLengthAttribute width;
+	LsmMathmlLengthAttribute left_space;
 };
 
 struct _LsmMathmlPaddedElementClass {
