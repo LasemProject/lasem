@@ -263,6 +263,12 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.trait_class = &lsm_mathml_string_trait_class
 	},
 	{
+		.name = "fontsize",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, math_size),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
 		.name = "fontstyle",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, font_style),
 		.trait_class = &lsm_mathml_font_style_trait_class,
