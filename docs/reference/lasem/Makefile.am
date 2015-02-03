@@ -85,6 +85,7 @@ IGNORE_HFILES=\
 	lsmmathmlmathelement.h			\
 	lsmmathmltableelement.h			\
 	lsmmathmltablerowelement.h		\
+	lsmmathmlencloseelement.h		\
 	lsmmathmltablecellelement.h		\
 	lsmmathmlspaceelement.h			\
 	lsmmathmlradicalelement.h		\
