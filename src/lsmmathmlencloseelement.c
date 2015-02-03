@@ -39,6 +39,10 @@ _get_node_name (LsmDomNode *node)
 static void
 _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 {
+	LsmMathmlEncloseElement *enclose = LSM_MATHML_ENCLOSE_ELEMENT (self);
+
+	style->math_color = lsm_mathml_color_attribute_inherit (&enclose->math_color, style->math_color);
+	style->math_background = lsm_mathml_color_attribute_inherit (&enclose->math_background, style->math_background);
 }
 
 static const LsmMathmlBbox *
@@ -100,6 +104,16 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlEncloseElement, notation),
 		.trait_class = &lsm_mathml_notation_trait_class,
 		.trait_default = &notation_default
+	},
+	{
+		.name = "mathcolor",
+		.attribute_offset = offsetof (LsmMathmlEncloseElement, math_color),
+		.trait_class = &lsm_mathml_color_trait_class,
+	},
+	{
+		.name = "mathbackground",
+		.attribute_offset = offsetof (LsmMathmlEncloseElement, math_background),
+		.trait_class = &lsm_mathml_color_trait_class,
 	}
 };
 

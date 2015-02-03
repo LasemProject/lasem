@@ -42,6 +42,8 @@ struct _LsmMathmlEncloseElement {
 	LsmMathmlPresentationContainer presentation_container;
 
 	LsmMathmlEnumAttribute notation;
+	LsmMathmlColorAttribute	math_color;
+	LsmMathmlColorAttribute	math_background;
 
 	/* View data */
 
