@@ -76,6 +76,26 @@ static const struct {
 static GObjectClass *parent_class;
 
 static void
+_debug_element_style (const char *format, const LsmMathmlElementStyle *style) {
+	if (lsm_debug_check (&lsm_debug_category_render, LSM_DEBUG_LEVEL_DEBUG)) {
+		char *string;
+
+		string = g_strdup_printf ("%s %s %gpt (c:%02X%02X%02X b:%02X%02X%02X)",
+					  style->math_family,
+					  lsm_mathml_variant_to_string (style->math_variant),
+					  style->math_size,
+					  (int) (255.0 * style->math_color.red),
+					  (int) (255.0 * style->math_color.green),
+					  (int) (255.0 * style->math_color.blue),
+					  (int) (255.0 * style->math_background.red),
+					  (int) (255.0 * style->math_background.green),
+					  (int) (255.0 * style->math_background.blue));
+		lsm_debug_render ("[LsmMathmlView::render] Show notation %s", string);
+		g_free (string);
+	}
+}
+
+static void
 lsm_mathml_view_apply_style_to_font_description (PangoFontDescription *font_description,
 						 const LsmMathmlElementStyle *style,
 						 gboolean set_family)
@@ -947,6 +967,8 @@ lsm_mathml_view_show_notation (LsmMathmlView *view,
 
 	stroke_width = _emit_stroke_attributes (view, LSM_MATHML_LINE_SOLID, 1.0, &style->math_color);
 
+	_debug_element_style ("[LsmMathmlView::render] Show notation %s", style);
+
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
 
@@ -1175,6 +1197,8 @@ lsm_mathml_view_show_fraction_line (LsmMathmlView *view,
 	g_return_if_fail (style != NULL);
 
 	stroke_width = _emit_stroke_attributes (view, LSM_MATHML_LINE_SOLID, thickness, &style->math_color);
+
+	_debug_element_style ("[LsmMathmlView::render] Show fraction line %s", style);
 
 	if (stroke_width == _GMATHML_STROKE_WIDTH_NULL)
 		return;
