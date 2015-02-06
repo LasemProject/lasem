@@ -23,6 +23,7 @@ Mathml
 - handle correctly PT and PX units.
 - handle table alignment. Correctly compute axis position in a row.
 - merge attribute code in presentation_token and style_element.
+- maxsize and minsize support for mo
 
 SVG
 
