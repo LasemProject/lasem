@@ -1,6 +1,7 @@
 Release 0.5.0
 =============
 
+  * menclose mathml element support (emmanuel)
   * build improvements (ray, emmanuel, dominique)
   * man page for lasem-render (ray)
   * svg: move element registering by id to SvgDocument
