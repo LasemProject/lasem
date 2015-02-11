@@ -55,18 +55,20 @@ lsm_mathml_fenced_element_measure (LsmMathmlElement *self, LsmMathmlView *view, 
 
 	if (open != NULL && open[0] != '\0') {
 		lsm_mathml_view_measure_operator (view, &self->style,
-					       open, FALSE, TRUE,
-					       axis_offset,
-					       &stretch_bbox, &fenced->open_bbox);
+						  open, FALSE, TRUE,
+						  axis_offset,
+						  0, G_MAXDOUBLE,
+						  &stretch_bbox, &fenced->open_bbox);
 		spacing += self->style.math_size * LSM_MATHML_SPACE_EM_THIN;
 	} else
 		fenced->open_bbox = lsm_mathml_bbox_null;
 
 	if (close != NULL && close[0] != '\0') {
 		lsm_mathml_view_measure_operator (view, &self->style,
-					       close, FALSE, TRUE,
-					       axis_offset,
-					       &stretch_bbox, &fenced->close_bbox);
+						  close, FALSE, TRUE,
+						  axis_offset,
+						  0, G_MAXDOUBLE,
+						  &stretch_bbox, &fenced->close_bbox);
 		spacing += self->style.math_size * LSM_MATHML_SPACE_EM_THIN;
 	} else
 		fenced->close_bbox = lsm_mathml_bbox_null;

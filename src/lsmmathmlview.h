@@ -111,6 +111,8 @@ void 		lsm_mathml_view_measure_operator 	(LsmMathmlView *view,
 							 char const *text,
 							 gboolean large, gboolean symmetric,
 							 double axis_offset,
+							 double min_size,
+							 double max_size,
 							 const LsmMathmlBbox *stretch_bbox,
 							 LsmMathmlBbox *bbox);
 void 		lsm_mathml_view_show_operator 		(LsmMathmlView *view,

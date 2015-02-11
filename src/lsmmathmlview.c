@@ -361,12 +361,15 @@ lsm_mathml_view_update_layout_for_operator (LsmMathmlView *view,
 
 void
 lsm_mathml_view_measure_operator (LsmMathmlView *view,
-			       const LsmMathmlElementStyle *style,
-			       char const *text,
-			       gboolean large,
-			       gboolean symmetric,
-			       double axis_offset,
-			       LsmMathmlBbox const *stretch_bbox, LsmMathmlBbox *bbox)
+				  const LsmMathmlElementStyle *style,
+				  char const *text,
+				  gboolean large,
+				  gboolean symmetric,
+				  double axis_offset,
+				  double min_size,	/* TODO actually use this parameter */
+				  double max_size,	/* TODO actually use this parameter */
+				  LsmMathmlBbox const *stretch_bbox,
+				  LsmMathmlBbox *bbox)
 {
 	PangoFontDescription *font_description;
 	PangoLayout *pango_layout;
@@ -658,7 +661,9 @@ lsm_mathml_view_measure_radical (LsmMathmlView *view,
 	radical_stretch_bbox.depth += LSM_MATHML_SPACE_EM_THICK * style->math_size;
 
 	lsm_mathml_view_measure_operator (view, style, LSM_MATHML_RADICAL_UTF8,
-					  FALSE, FALSE, 0.0, &radical_stretch_bbox, bbox);
+					  FALSE, FALSE, 0.0,
+					  0, G_MAXDOUBLE,
+					  &radical_stretch_bbox, bbox);
 
 	if (x_offset != NULL) {
 		*x_offset = bbox->width * LSM_MATHML_RADICAL_ORDER_X_OFFSET;

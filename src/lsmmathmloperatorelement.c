@@ -152,12 +152,14 @@ lsm_mathml_operator_element_measure (LsmMathmlElement *self, LsmMathmlView *view
 	self->bbox = lsm_mathml_bbox_null;
 
 	lsm_mathml_view_measure_operator (view, &self->style,
-				       text,
-				       operator_element->is_large_op,
-				       operator_element->symmetric.value,
-				       lsm_mathml_view_measure_axis_offset (view, self->style.math_size),
-				       operator_element->stretchy.value ? stretch_bbox : &lsm_mathml_bbox_null,
-				       &self->bbox);
+					  text,
+					  operator_element->is_large_op,
+					  operator_element->symmetric.value,
+					  lsm_mathml_view_measure_axis_offset (view, self->style.math_size),
+					  operator_element->min_size.value,
+					  operator_element->max_size.value,
+					  operator_element->stretchy.value ? stretch_bbox : &lsm_mathml_bbox_null,
+					  &self->bbox);
 
 	g_free (text);
 
