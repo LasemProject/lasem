@@ -9,6 +9,6 @@ endif
 DIST_SUBDIRS = reference
 
 manpagedir   = $(mandir)/man1
-manpage_DATA = lasem-render-0.6
+manpage_DATA = lasem-render-0.6.1
 
 EXTRA_DIST = $(manpage_DATA)
