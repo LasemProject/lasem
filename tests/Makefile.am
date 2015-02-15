@@ -1,6 +1,8 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -g -I$(top_srcdir)/src/ $(LASEM_CFLAGS)
+AM_CPPFLAGS = -g -I$(top_srcdir)/src/ $(LASEM_CFLAGS)
+
+AM_CFLAGS = -Wall
 
 test_progs_ldadd = 					\
 	$(top_builddir)/src/liblasem-@LASEM_API_VERSION@.la		\
@@ -24,4 +26,6 @@ dom_LDADD = $(test_progs_ldadd)
 
 suite_SOURCES = suite.c
 suite_LDADD = $(test_progs_ldadd)
-suite_CFLAGS = -DSUITE_DATA_DIRECTORY="\"$(top_srcdir)/tests/data\""
+suite_CFLAGS = -DSUITE_DATA_DIRECTORY="\"$(top_srcdir)/tests/data\"" -DSUITE_OPTION_FILE="\"$(top_srcdir)/tests/suite.ini\""
+
+EXTRA_DIST = suite.ini

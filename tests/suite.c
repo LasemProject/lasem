@@ -2,6 +2,8 @@
 #include <string.h>
 #include <lsmdom.h>
 
+GKeyFile *suite_options;
+
 static GSList *
 build_file_list (const char *path, GRegex *filename_regex)
 {
@@ -47,12 +49,15 @@ static void
 render_test (gconstpointer user_data)
 {
 	const char *filename = user_data;
+	char *basename;
 	LsmDomDocument *document;
 	LsmDomView *view;
 	LsmBox viewport;
 	unsigned int width, height;
 	cairo_t *cairo;
 	cairo_surface_t *surface;
+
+	basename = g_path_get_basename (filename);
 
 	document = lsm_dom_document_new_from_path (filename, NULL);
 	g_assert (LSM_IS_DOM_DOCUMENT (document));
@@ -76,13 +81,20 @@ render_test (gconstpointer user_data)
 
 	if (cairo_status (cairo) == CAIRO_STATUS_SUCCESS) {
 		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
-		g_assert (cairo_status (cairo) == CAIRO_STATUS_SUCCESS);
+
+		if (!g_key_file_get_boolean (suite_options, basename, "ignore-cairo-status", NULL)) {
+			if (cairo_status (cairo) != CAIRO_STATUS_SUCCESS)
+				printf ("cairo_status = %s\n", cairo_status_to_string (cairo_status (cairo)));
+			g_assert (cairo_status (cairo) == CAIRO_STATUS_SUCCESS);
+		}
 	}
 
 	cairo_destroy (cairo);
 
 	g_object_unref (view);
 	g_object_unref (document);
+
+	g_free (basename);
 }
 
 static void
@@ -107,6 +119,9 @@ main (int argc, char *argv[])
 	g_type_init ();
 #endif
 
+	suite_options = g_key_file_new ();
+	g_assert (g_key_file_load_from_file (suite_options, SUITE_OPTION_FILE, G_KEY_FILE_NONE, NULL));
+
 	g_test_init (&argc, &argv, NULL);
 
 	filename_regex = g_regex_new ("\\.(svg|mml)$", 0, 0, NULL);
@@ -118,6 +133,8 @@ main (int argc, char *argv[])
 	g_slist_foreach (files, (GFunc) g_free, NULL);
 	g_slist_free (files);
 	g_regex_unref (filename_regex);
+
+	g_key_file_free (suite_options);
 
 	lsm_shutdown ();
 
