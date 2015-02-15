@@ -33,7 +33,15 @@ massif.out.*
 callgrind.out.*
 gtk-doc.make
 gtk-doc.m4
+gtkdoc-check.*
+test-suite.log
 .libs/
 .deps/
 tmp-introspect*
 tests/suite
+lasem-*.tar.bz2
+lasem-*.tar.gz
+perf.data
+perf.data.old
+test-driver
+compile
