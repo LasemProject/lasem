@@ -1,9 +1,9 @@
 <SECTION>
 <FILE>lsmdomtext</FILE>
 <TITLE>LsmDomText</TITLE>
-LsmDomText
 lsm_dom_text_new
 <SUBSECTION Standard>
+LsmDomText
 LsmDomTextClass
 LSM_DOM_TEXT
 LSM_IS_DOM_TEXT
@@ -17,7 +17,6 @@ LSM_DOM_TEXT_GET_CLASS
 <SECTION>
 <FILE>lsmdomnode</FILE>
 <TITLE>LsmDomNode</TITLE>
-LsmDomNode
 lsm_dom_node_get_node_name
 lsm_dom_node_get_node_value
 lsm_dom_node_set_node_value
@@ -37,6 +36,7 @@ lsm_dom_node_has_child_nodes
 lsm_dom_node_changed
 lsm_dom_node_get_owner_document
 <SUBSECTION Standard>
+LsmDomNode
 LsmDomNodeType
 LsmDomNodeClass
 LSM_DOM_NODE
@@ -90,7 +90,6 @@ lsm_dom_named_node_map_get_type
 <SECTION>
 <FILE>lsmdomdocument</FILE>
 <TITLE>LsmDomDocument</TITLE>
-LsmDomDocument
 LsmDomDocumentCreateFunction
 lsm_dom_implementation_create_document
 lsm_dom_implementation_cleanup
@@ -112,6 +111,7 @@ lsm_dom_document_set_path
 lsm_dom_document_get_href_data
 lsm_dom_get_entity
 <SUBSECTION Standard>
+LsmDomDocument
 LsmDomDocumentClass
 LSM_DOM_DOCUMENT
 LSM_IS_DOM_DOCUMENT
@@ -143,11 +143,11 @@ lsm_dom_document_fragment_get_type
 <SECTION>
 <FILE>lsmdomelement</FILE>
 <TITLE>LsmDomElement</TITLE>
-LsmDomElement
 lsm_dom_element_get_tag_name
 lsm_dom_element_get_attribute
 lsm_dom_element_set_attribute
 <SUBSECTION Standard>
+LsmDomElement
 LsmDomElementClass
 LSM_DOM_ELEMENT
 LSM_IS_DOM_ELEMENT
@@ -161,10 +161,6 @@ LSM_DOM_ELEMENT_GET_CLASS
 <SECTION>
 <FILE>lsmdomview</FILE>
 <TITLE>LsmDomView</TITLE>
-LSM_DOM_VIEW_DEFAULT_RESOLUTION
-LSM_DOM_VIEW_DEFAULT_VIEWBOX_HEIGHT
-LSM_DOM_VIEW_DEFAULT_VIEWBOX_WIDTH
-LsmDomView
 lsm_dom_view_get_resolution
 lsm_dom_view_get_viewport
 lsm_dom_view_get_viewport_pixels
@@ -176,6 +172,7 @@ lsm_dom_view_get_size
 lsm_dom_view_get_size_pixels
 lsm_dom_view_set_debug
 <SUBSECTION Standard>
+LsmDomView
 LsmDomViewClass
 LSM_DOM_VIEW
 LSM_IS_DOM_VIEW
@@ -185,6 +182,9 @@ LSM_DOM_VIEW_CLASS
 LSM_IS_DOM_VIEW_CLASS
 LSM_DOM_VIEW_GET_CLASS
 <SUBSECTION Private>
+LSM_DOM_VIEW_DEFAULT_RESOLUTION
+LSM_DOM_VIEW_DEFAULT_VIEWBOX_HEIGHT
+LSM_DOM_VIEW_DEFAULT_VIEWBOX_WIDTH
 lsm_dom_view_set_document
 LSM_TYPE_BOX
 LSM_TYPE_EXTENTS
@@ -197,10 +197,10 @@ lsm_extents_get_type
 <SECTION>
 <FILE>lsmdomcharacterdata</FILE>
 <TITLE>LsmDomCharacterData</TITLE>
-LsmDomCharacterData
 lsm_dom_character_data_get_data
 lsm_dom_character_data_set_data
 <SUBSECTION Standard>
+LsmDomCharacterData
 LsmDomCharacterDataClass
 LSM_DOM_CHARACTER_DATA
 LSM_IS_DOM_CHARACTER_DATA

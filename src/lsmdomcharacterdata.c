@@ -57,6 +57,15 @@ lsm_dom_character_data_set_node_value (LsmDomNode* self, const char *value)
 
 /* LsmDomCharacterData implementation */
 
+/**
+ * lsm_dom_character_data_get_data:
+ * @self: a #LsmDomCharacterData
+ *
+ * Get the character node data.
+ *
+ * Return value: character node data.
+ */
+
 const char *
 lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 {
@@ -64,6 +73,14 @@ lsm_dom_character_data_get_data (LsmDomCharacterData* self)
 
 	return self->data;
 }
+
+/**
+ * lsm_dom_character_data_set_data:
+ * @self: a #LsmDomCharacterData
+ * @value: new node data
+ *
+ * Set the character node data.
+ */
 
 void
 lsm_dom_character_data_set_data (LsmDomCharacterData* self, const char * value)

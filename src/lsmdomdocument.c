@@ -57,6 +57,8 @@ lsm_dom_document_get_node_type (LsmDomNode *node)
  * lsm_dom_document_get_document_element:
  * @self: a #LsmDomElement
  *
+ * Get the child node that is the root element of the document.
+ *
  * Returns: (transfer none): document element
  */
 
@@ -72,6 +74,8 @@ lsm_dom_document_get_document_element (LsmDomDocument *self)
  * lsm_dom_document_create_element:
  * @self: a #LsmDomDocument
  * @tag_name: name of the element to create
+ *
+ * Create a new element node with a type corresponding to @tag_name.
  *
  * Returns: (transfer full): a newly created #LsmDomElement
  */
@@ -113,6 +117,8 @@ lsm_dom_document_create_text_node_base (LsmDomDocument *document, const char *da
  * @self: a #LsmDomDocument
  * @data: content of the text node
  *
+ * Create a text node with @data as its initial content.
+ *
  * Returns: (transfer full): a newly created #LsmDomText
  */
 
@@ -128,6 +134,8 @@ lsm_dom_document_create_text_node (LsmDomDocument *document, const char *data)
  * lsm_dom_document_create_view:
  * @self: a #LsmDomDocument
  *
+ * Create a #LsmDomView for document rendering.
+ *
  * Returns: (transfer full): a new #LsmDomView
  */
 
@@ -138,6 +146,15 @@ lsm_dom_document_create_view (LsmDomDocument *self)
 
 	return LSM_DOM_DOCUMENT_GET_CLASS (self)->create_view (self);
 }
+
+/**
+ * lsm_dom_document_get_url:
+ * @self: a #LsmDomDocument
+ *
+ * Get document URL.
+ *
+ * Return value: document URL.
+ */
 
 const char *
 lsm_dom_document_get_url (LsmDomDocument *self)
