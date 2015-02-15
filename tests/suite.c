@@ -82,10 +82,10 @@ render_test (gconstpointer user_data)
 	if (cairo_status (cairo) == CAIRO_STATUS_SUCCESS) {
 		lsm_dom_view_render (LSM_DOM_VIEW (view), cairo, 1, 1);
 
-		if (!g_key_file_get_boolean (suite_options, basename, "ignore-cairo-status", NULL)) {
-			if (cairo_status (cairo) != CAIRO_STATUS_SUCCESS)
-				printf ("cairo_status = %s\n", cairo_status_to_string (cairo_status (cairo)));
-			g_assert (cairo_status (cairo) == CAIRO_STATUS_SUCCESS);
+		if (cairo_status (cairo) != CAIRO_STATUS_SUCCESS) {
+			g_test_message ("cairo_status = %s", cairo_status_to_string (cairo_status (cairo)));
+			if (!g_key_file_get_boolean (suite_options, basename, "ignore-cairo-status", NULL))
+				g_test_fail ();
 		}
 	}
 
