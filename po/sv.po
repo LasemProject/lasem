@@ -1,54 +1,65 @@
 # Swedish translation for lasem.
-# Copyright (C) 2011 Free Software Foundation, Inc.
+# Copyright © 2011, 2014 Free Software Foundation, Inc.
 # This file is distributed under the same license as the lasem package.
 # Daniel Nylander <po@danielnylander.se>, 2011.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-17 10:46+0200\n"
-"PO-Revision-Date: 2011-10-17 10:48+0100\n"
-"Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-16 10:33+0000\n"
+"PO-Revision-Date: 2014-09-18 19:00+0100\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
-"Language: \n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: ../src/lasemrender.c:64
+#: ../src/lasemrender.c:67
 msgid "Output filename"
 msgstr "Filnamn för utmatning"
 
-#: ../src/lasemrender.c:66
+#: ../src/lasemrender.c:69
 msgid "Output format"
 msgstr "Format för utmatning"
 
-#: ../src/lasemrender.c:68
+#: ../src/lasemrender.c:71
 msgid "Pixel per inch"
 msgstr "Bildpunkter per tum"
 
-#: ../src/lasemrender.c:70
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../src/lasemrender.c:75
 msgid "Debug domains"
 msgstr "Felsökningsdomäner"
 
-#: ../src/lasemrender.c:96
+#: ../src/lasemrender.c:107
 #, c-format
 msgid "Option parsing failed: %s\n"
 msgstr "Tolkning av flaggor misslyckades: %s\n"
 
-#: ../src/lasemrender.c:105
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Ogiltigt zoomvärde"
+
+#: ../src/lasemrender.c:121
 #, c-format
 msgid "One input file name is required\n"
 msgstr "Ett filnamn för inmatning krävs\n"
 
-#: ../src/lasemrender.c:116
+#: ../src/lasemrender.c:132
 #, c-format
-msgid "Unknown format : %s\n"
-msgstr "Okänt format : %s\n"
+msgid "Unknown format: %s\n"
+msgstr "Okänt format: %s\n"
 
-#: ../src/lasemrender.c:235
+#: ../src/lasemrender.c:257
 #, c-format
-msgid "Can't load %s"
-msgstr "Kan inte läsa in %s"
-
+msgid "Can't load '%s'\n"
+msgstr "Kan inte läsa in ”%s”\n"
