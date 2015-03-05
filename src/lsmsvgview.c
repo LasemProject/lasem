@@ -2226,6 +2226,18 @@ lsm_svg_view_pop_element (LsmSvgView *view)
 	view->element_stack = g_slist_delete_link (view->element_stack, view->element_stack);
 }
 
+LsmSvgElement *
+lsm_svg_view_get_referencing_element (LsmSvgView *view)
+{
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), NULL);
+	
+	if (view->element_stack == NULL ||
+	    view->element_stack->next == NULL)
+		return NULL;
+	
+	return view->element_stack->next->data;
+}
+
 static gboolean
 lsm_svg_view_circular_reference_check (LsmSvgView *view, LsmSvgElement *element)
 {
