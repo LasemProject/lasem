@@ -61,7 +61,7 @@ static gboolean option_debug_mask = FALSE;
 static gboolean option_debug_group = FALSE;
 static gboolean option_debug_text = FALSE;
 static gboolean option_dry_run = FALSE;
-static double option_compare_fuzz = 10.0;
+static double option_compare_fuzz = 15.0;
 
 static const GOptionEntry entries[] =
 {
