@@ -40,6 +40,9 @@ typedef struct _LsmSvgSymbolElementClass LsmSvgSymbolElementClass;
 
 struct _LsmSvgSymbolElement {
 	LsmSvgElement element;
+
+	LsmSvgViewboxAttribute			viewbox;
+	LsmSvgPreserveAspectRatioAttribute	preserve_aspect_ratio;
 };
 
 struct _LsmSvgSymbolElementClass {

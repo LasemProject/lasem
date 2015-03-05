@@ -164,15 +164,16 @@ lsm_svg_use_element_new (void)
 	return g_object_new (LSM_TYPE_SVG_USE_ELEMENT, NULL);
 }
 
-static const LsmSvgLength length_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+static const LsmSvgLength position_default = 	 { .value_unit =   0.0, .type = LSM_SVG_LENGTH_TYPE_PX};
+static const LsmSvgLength size_default = 	 { .value_unit =   100.0, .type = LSM_SVG_LENGTH_TYPE_PERCENTAGE};
 
 static void
 lsm_svg_use_element_init (LsmSvgUseElement *self)
 {
-	self->x.length = length_default;
-	self->y.length = length_default;
-	self->width.length = length_default;
-	self->height.length = length_default;
+	self->x.length = position_default;
+	self->y.length = position_default;
+	self->width.length = size_default;
+	self->height.length = size_default;
 }
 
 /* LsmSvgUseElement class */
@@ -182,25 +183,25 @@ static const LsmAttributeInfos lsm_svg_use_element_attribute_infos[] = {
 		.name = "x",
 		.attribute_offset = offsetof (LsmSvgUseElement, x),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &position_default
 	},
 	{
 		.name = "y",
 		.attribute_offset = offsetof (LsmSvgUseElement, y),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &position_default
 	},
 	{
 		.name = "width",
 		.attribute_offset = offsetof (LsmSvgUseElement, width),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &size_default
 	},
 	{
 		.name = "height",
 		.attribute_offset = offsetof (LsmSvgUseElement, height),
 		.trait_class = &lsm_svg_length_trait_class,
-		.trait_default = &length_default
+		.trait_default = &size_default
 	},
 	{
 		.name = "xlink:href",
