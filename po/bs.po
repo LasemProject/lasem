@@ -1,0 +1,65 @@
+# Bosnian translation for bosnianuniversetranslation
+# Copyright (c) 2014 Rosetta Contributors and Canonical Ltd 2014
+# This file is distributed under the same license as the bosnianuniversetranslation package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: bosnianuniversetranslation\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-02-26 22:41+0000\n"
+"PO-Revision-Date: 2014-01-14 07:25+0000\n"
+"Last-Translator: Samir Ribić <Unknown>\n"
+"Language-Team: Bosnian <bs@li.org>\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2014-10-23 07:14+0000\n"
+"X-Generator: Launchpad (build 17203)\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Ime izlazne datoteke"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Izlazni format"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Tačkica po inču"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Uvećaj"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Domeni pročišćavanja"
+
+#: ../src/lasemrender.c:105
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Nije uspjela obrada opcije: %s\n"
+
+#: ../src/lasemrender.c:112
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Neispravna vrijednost uveličanja"
+
+#: ../src/lasemrender.c:119
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Zahtjevan je naziv jedne ulazne datoteke\n"
+
+#: ../src/lasemrender.c:130
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Nepoznat zapis „%s“\n"
+
+#: ../src/lasemrender.c:255
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Ne mogu da učitam „%s“\n"
