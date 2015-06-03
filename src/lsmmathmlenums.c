@@ -68,6 +68,14 @@ lsm_mathml_display_from_string (const char *string)
 }
 
 static const char *lsm_mathml_space_name_strings[] = {
+	"negativeveryverythinmathspace",
+	"negativeverythinmathspace",
+	"negativethinmathspace",
+	"negativemediummathspace",
+	"negativethickmathspace",
+	"negativeverythickmathspace",
+	"negativeveryverythickmathspace",
+
 	"veryverythinmathspace",
 	"verythinmathspace",
 	"thinmathspace",

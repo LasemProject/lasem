@@ -41,6 +41,14 @@ struct _LsmMathmlStyle {
 	double script_size_multiplier;
 	double script_min_size;
 
+	double negative_very_very_thin_math_space;
+	double negative_very_thin_math_space;
+	double negative_thin_math_space;
+	double negative_medium_math_space;
+	double negative_thick_math_space;
+	double negative_very_thick_math_space;
+	double negative_very_very_thick_math_space;
+
 	double very_very_thin_math_space;
 	double very_thin_math_space;
 	double thin_math_space;

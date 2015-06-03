@@ -124,6 +124,28 @@ lsm_mathml_space_attribute_normalize (LsmMathmlSpaceAttribute *attribute,
 	g_return_val_if_fail (space != NULL, 0.0);
 
 	switch (space->name) {
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_VERY_VERY_THIN:
+			attribute->value = style->negative_very_very_thin_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_VERY_THIN:
+			attribute->value = style->negative_very_thin_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_THIN:
+			attribute->value = style->negative_thin_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_MEDIUM:
+			attribute->value = style->negative_medium_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_THICK:
+			attribute->value = style->negative_thick_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_VERY_THICK:
+			attribute->value = style->negative_very_thick_math_space;
+			break;
+		case LSM_MATHML_SPACE_NAME_NEGATIVE_VERY_VERY_THICK:
+			attribute->value = style->negative_very_very_thick_math_space;
+			break;
+
 		case LSM_MATHML_SPACE_NAME_VERY_VERY_THIN:
 			attribute->value = style->very_very_thin_math_space;
 			break;

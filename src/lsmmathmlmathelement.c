@@ -1,5 +1,5 @@
 /* Lasem
- * 
+ *
  * Copyright © 2007-2008 Emmanuel Pacaud
  *
  * This library is free software; you can redistribute it and/or
@@ -129,6 +129,14 @@ lsm_mathml_math_element_init (LsmMathmlMathElement *self)
 	style->script_level = 0;
 	style->script_size_multiplier = 0.71;
 	style->script_min_size = 8.0;
+
+	style->negative_very_very_thin_math_space = 	LSM_MATHML_SPACE_EM_NEGATIVE_VERY_VERY_THIN * style->math_size;
+	style->negative_very_thin_math_space = 		LSM_MATHML_SPACE_EM_NEGATIVE_VERY_THIN * style->math_size;
+	style->negative_thin_math_space = 		LSM_MATHML_SPACE_EM_NEGATIVE_THIN * style->math_size;
+	style->negative_medium_math_space = 		LSM_MATHML_SPACE_EM_NEGATIVE_MEDIUM * style->math_size;
+	style->negative_thick_math_space = 		LSM_MATHML_SPACE_EM_NEGATIVE_THICK * style->math_size;
+	style->negative_very_thick_math_space = 		LSM_MATHML_SPACE_EM_NEGATIVE_VERY_THICK * style->math_size;
+	style->negative_very_very_thick_math_space = 	LSM_MATHML_SPACE_EM_NEGATIVE_VERY_VERY_THICK * style->math_size;
 
 	style->very_very_thin_math_space = 	LSM_MATHML_SPACE_EM_VERY_VERY_THIN * style->math_size;
 	style->very_thin_math_space = 		LSM_MATHML_SPACE_EM_VERY_THIN * style->math_size;

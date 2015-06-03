@@ -47,6 +47,13 @@ struct _LsmMathmlStyleElement {
 	LsmMathmlScriptLevelAttribute script_level;
 	LsmMathmlDoubleAttribute script_size_multiplier;
 	LsmMathmlLengthAttribute script_min_size;
+	LsmMathmlLengthAttribute negative_very_very_thin_math_space;
+	LsmMathmlLengthAttribute negative_very_thin_math_space;
+	LsmMathmlLengthAttribute negative_thin_math_space;
+	LsmMathmlLengthAttribute negative_medium_math_space;
+	LsmMathmlLengthAttribute negative_thick_math_space;
+	LsmMathmlLengthAttribute negative_very_thick_math_space;
+	LsmMathmlLengthAttribute negative_very_very_thick_math_space;
 	LsmMathmlLengthAttribute very_very_thin_math_space;
 	LsmMathmlLengthAttribute very_thin_math_space;
 	LsmMathmlLengthAttribute thin_math_space;

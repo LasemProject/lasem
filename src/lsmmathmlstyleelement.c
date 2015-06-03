@@ -84,6 +84,42 @@ lsm_mathml_style_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	/* mstyle */
 
+	length.value = style->negative_very_very_thin_math_space;
+	style->negative_very_very_thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_very_very_thin_math_space,
+						       style->negative_very_very_thin_math_space,
+						       &length, style);
+	length.value = style->negative_very_thin_math_space;
+	style->negative_very_thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_very_thin_math_space,
+						       style->negative_very_thin_math_space,
+						       &length, style);
+	length.value = style->negative_thin_math_space;
+	style->negative_thin_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_thin_math_space,
+						       style->negative_thin_math_space,
+						       &length, style);
+	length.value = style->negative_medium_math_space;
+	style->negative_medium_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_medium_math_space,
+						       style->negative_medium_math_space,
+						       &length, style);
+	length.value = style->negative_thick_math_space;
+	style->negative_thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_thick_math_space,
+						       style->negative_thick_math_space,
+						       &length, style);
+	length.value = style->negative_very_thick_math_space;
+	style->negative_very_thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_very_thick_math_space,
+						       style->negative_very_thick_math_space,
+						       &length, style);
+	length.value = style->negative_very_very_thick_math_space;
+	style->negative_very_very_thick_math_space =
+		lsm_mathml_length_attribute_normalize (&style_element->negative_very_very_thick_math_space,
+						       style->negative_very_very_thick_math_space,
+						       &length, style);
+
 	length.value = style->very_very_thin_math_space;
 	style->very_very_thin_math_space =
 		lsm_mathml_length_attribute_normalize (&style_element->very_very_thin_math_space,
@@ -181,6 +217,48 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.name = "scriptsizemultiplier",
 		.attribute_offset = offsetof (LsmMathmlStyleElement, script_size_multiplier),
 		.trait_class = &lsm_mathml_double_trait_class
+	},
+	{
+		.name = "negativeveryverythinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_very_very_thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativeverythinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_very_thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativethinmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_thin_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativemediummathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_medium_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativethickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativeverythickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_very_thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
+	},
+	{
+		.name = "negativeveryverythickmathspace",
+		.attribute_offset = offsetof (LsmMathmlStyleElement, negative_very_very_thick_math_space),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &length_default
 	},
 	{
 		.name = "veryverythinmathspace",
