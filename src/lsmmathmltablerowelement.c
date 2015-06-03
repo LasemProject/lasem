@@ -1,4 +1,4 @@
-/* Lasem 
+/* Lasem
  *
  * Copyright © 2007-2008 Emmanuel Pacaud
  *
@@ -34,7 +34,7 @@ lsm_mathml_table_row_get_node_name (LsmDomNode *node)
 	LsmMathmlTableRowElement *row = LSM_MATHML_TABLE_ROW_ELEMENT (node);
 
 	switch (row->type) {
-		case LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW:
+		case LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_ROW:
 			return "mtr";
 			break;
 		default:
