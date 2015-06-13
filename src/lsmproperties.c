@@ -34,6 +34,9 @@ struct _LsmPropertyManager {
 	const LsmPropertyInfos *property_infos;
 	GHashTable *		hash_by_name;
 
+	LsmPropertySpecificity	default_specificity;
+	LsmPropertySpecificity	inline_style_specificity;
+
 	/* FIXME: Not thread safe */
 	unsigned int *		property_check;
 	unsigned int		property_check_count;
@@ -44,7 +47,9 @@ struct _LsmPropertyManager {
 G_DEFINE_BOXED_TYPE (LsmPropertyManager, lsm_property_manager, lsm_property_manager_ref, lsm_property_manager_unref)
 
 LsmPropertyManager *
-lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *property_infos)
+lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *property_infos,
+			  LsmPropertySpecificity default_specificity,
+			  LsmPropertySpecificity inline_style_specificity)
 {
 	LsmPropertyManager *manager;
 	guint16 i;
@@ -58,6 +63,8 @@ lsm_property_manager_new (unsigned int n_properties, const LsmPropertyInfos *pro
 	manager->property_infos = property_infos;
 	manager->property_check_count = 0;
 	manager->property_check = g_new0 (unsigned int, n_properties);
+	manager->default_specificity = default_specificity;
+	manager->inline_style_specificity = inline_style_specificity;
 	manager->ref_count = 1;
 
 	for (i = 0; i < n_properties; i++) {
@@ -108,7 +115,9 @@ property_free (LsmProperty *property, const LsmTraitClass *trait_class)
 static gboolean
 _set_property (LsmPropertyManager *manager,
 	       LsmPropertyBag *property_bag,
-	       const char *name, const char *value)
+	       const char *name,
+	       const char *value,
+	       LsmPropertySpecificity specificity)
 {
 	LsmProperty *property;
 	const LsmPropertyInfos *property_infos;
@@ -126,6 +135,7 @@ _set_property (LsmPropertyManager *manager,
 	property = g_slice_alloc0 (PROPERTY_SIZE (trait_class));
 	property->id = property_infos->id;
 	property->value = g_strdup (value);
+	property->specificity = specificity;
 
 	if (trait_class->init)
 		trait_class->init (PROPERTY_TRAIT (property), NULL);
@@ -160,7 +170,7 @@ lsm_property_manager_set_property (LsmPropertyManager *manager,
 	g_return_val_if_fail (manager != NULL, FALSE);
 	g_return_val_if_fail (name != NULL, FALSE);
 
-	property_found = _set_property (manager, property_bag, name, value);
+	property_found = _set_property (manager, property_bag, name, value, manager->default_specificity);
 	if (property_found)
 		return TRUE;
 
@@ -205,7 +215,7 @@ lsm_property_manager_set_property (LsmPropertyManager *manager,
 					lsm_debug_dom ("[LsmPropertyManager::set_property] inline_style %s = %s",
 						       name, value);
 
-					_set_property (manager, property_bag, name, value);
+					_set_property (manager, property_bag, name, value, manager->inline_style_specificity);
 
 					*end_ptr = old_char;
 

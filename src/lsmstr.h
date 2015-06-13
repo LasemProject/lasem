@@ -71,6 +71,34 @@ lsm_str_skip_colon_and_spaces (char **str)
 		(*str)++;
 }
 
+static inline void
+lsm_str_skip_line_separators (char **str)
+{
+	while (**str == '\r' || **str == '\n' || **str == '\f')
+		(*str)++;
+}
+
+static inline void
+lsm_str_skip_comment (char **str)
+{
+	do {
+		if (**str != '/' || *(*str + 1) != '*')
+			return;
+
+		(*str)++;
+		(*str)++;
+
+		while (**str != '\0' && **str != '*' && *(*str + 1) != '/')
+			(*str)++;
+
+		if (**str == '\0')
+			return;
+
+		(*str)++;
+		(*str)++;
+	} while (TRUE);
+}
+
 /**
  * lsm_str_consolidate:
  * @str: a utf8 string

@@ -32,9 +32,11 @@ G_BEGIN_DECLS
 #define LSM_PROPERTY_OFFSET_TO_ID(structure,member) (offsetof (structure, member) / sizeof (void *))
 #define LSM_PROPERTY_ID_TO_OFFSET(id) ((id) * sizeof (void *))
 
+typedef guint32 LsmPropertySpecificity;
+
 typedef struct {
-	guint16	id;
-	guint16	flags;
+	guint32 id;
+	LsmPropertySpecificity specificity;
 	char *	value;
 } LsmProperty;
 
@@ -56,7 +58,9 @@ typedef struct _LsmPropertyManager LsmPropertyManager;
 GType lsm_property_manager_get_type (void);
 
 LsmPropertyManager *	lsm_property_manager_new	(unsigned int n_properties,
-							 const LsmPropertyInfos *property_infos);
+							 const LsmPropertyInfos *property_infos,
+							 LsmPropertySpecificity default_specificity,
+							 LsmPropertySpecificity inline_style_specificity);
 LsmPropertyManager *	lsm_property_manager_ref	(LsmPropertyManager *manager);
 void			lsm_property_manager_unref	(LsmPropertyManager *manager);
 

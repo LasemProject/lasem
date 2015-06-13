@@ -424,7 +424,10 @@ lsm_svg_get_property_manager (void)
 	if (G_LIKELY (manager != NULL))
 		return manager;
 
-	manager = lsm_property_manager_new (G_N_ELEMENTS (lsm_svg_property_infos), lsm_svg_property_infos);
+	manager = lsm_property_manager_new (G_N_ELEMENTS (lsm_svg_property_infos),
+					    lsm_svg_property_infos,
+					    LSM_CSS_SPECIFITY_INLINE_STYLE,
+					    LSM_CSS_SPECIFITY_INLINE_STYLE);
 
 	return manager;
 }

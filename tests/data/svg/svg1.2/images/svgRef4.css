@@ -1,4 +1,8 @@
-rect     {fill:red;}
+/* Test comment */
+
+/* Other comment */
+
+rect     { fill : red; /* Comment */ }
 circle   {fill:blue;}
 polygon  {fill:green;}
 ellipse  {fill:gold;}

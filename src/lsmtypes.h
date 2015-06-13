@@ -30,6 +30,7 @@ G_BEGIN_DECLS
 
 typedef struct _LsmExtents LsmExtents;
 typedef struct _LsmBox LsmBox;
+typedef struct _LsmCss LsmCss;
 
 G_END_DECLS
 

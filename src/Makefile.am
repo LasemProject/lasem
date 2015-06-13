@@ -51,6 +51,9 @@ LASEM_DOM_SRCS =				\
 	lsmdomparser.c				\
 	lsmdomimplementation.c
 
+LASEM_CSS_SRCS =				\
+	lsmcss.c
+
 LASEM_DOM_BUILT_SRCS =				\
 	lsmdomenumtypes.c			\
 	lsmdomenumtypes.h
@@ -170,6 +173,9 @@ LASEM_DOM_HDRS = 				\
 	lsmdomparser.h				\
 	lsmdomimplementation.h
 
+LASEM_CSS_HDRS =				\
+	lsmcss.h
+
 LASEM_MATHML_HDRS =				\
 	lsmmathml.h				\
 	lsmmathmltypes.h			\
@@ -266,8 +272,10 @@ LASEM_SVG_HDRS =				\
 liblasem_@LASEM_API_VERSION@_ladir = $(includedir)/lasem-@LASEM_API_VERSION@
 
 liblasem_@LASEM_API_VERSION@_la_SOURCES = $(LASEM_DOM_SRCS) $(LASEM_DOM_BUILT_SRCS) $(LASEM_MATHML_SRCS) $(LASEM_SVG_SRCS)
-liblasem_@LASEM_API_VERSION@_la_SOURCES +=  $(LASEM_MATHML_HDRS) $(LASEM_SVG_HDRS)
+liblasem_@LASEM_API_VERSION@_la_SOURCES += $(LASEM_MATHML_HDRS) $(LASEM_SVG_HDRS)
 liblasem_@LASEM_API_VERSION@_la_SOURCES += lsmmathmlenumtypes.h lsmsvgenumtypes.h
+
+liblasem_@LASEM_API_VERSION@_la_SOURCES += $(LASEM_CSS_SRCS) $(LASEM_CSS_HDRS)
 
 liblasem_@LASEM_API_VERSION@_la_HEADERS = $(LASEM_DOM_HDRS)
 liblasem_@LASEM_API_VERSION@_la_HEADERS += lsmdomenumtypes.h

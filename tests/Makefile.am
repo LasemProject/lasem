@@ -14,7 +14,7 @@ noinst_PROGRAMS = lsm-test
 lsm_test_SOURCES = lsmtest.c
 lsm_test_LDADD = $(test_progs_ldadd)
 
-TEST_PROGS += dom str suite
+TEST_PROGS += dom str suite css
 
 noinst_PROGRAMS += $(TEST_PROGS)
 
@@ -27,5 +27,9 @@ dom_LDADD = $(test_progs_ldadd)
 suite_SOURCES = suite.c
 suite_LDADD = $(test_progs_ldadd)
 suite_CFLAGS = -DSUITE_DATA_DIRECTORY="\"$(top_srcdir)/tests/data\"" -DSUITE_OPTION_FILE="\"$(top_srcdir)/tests/suite.ini\""
+
+css_SOURCES = css.c
+css_LDADD = $(test_progs_ldadd)
+css_CFLAGS = -DCSS_TEST_FILE="\"$(top_srcdir)/tests/data/svg/svg1.2/images/svgRef4.css\""
 
 EXTRA_DIST = suite.ini
