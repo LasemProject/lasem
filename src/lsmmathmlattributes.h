@@ -93,7 +93,7 @@ typedef struct {
         double value;
 } LsmMathmlLengthAttribute;
 
-double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *atribute,
+double 		lsm_mathml_length_attribute_normalize	(LsmMathmlLengthAttribute *attribute,
 							 double base,
 							 const LsmMathmlLength *default_value,
 							 const LsmMathmlStyle *style);

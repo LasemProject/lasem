@@ -49,6 +49,7 @@ static LsmMathmlSpace frame_spacing_values[2] = {
 	{.name = LSM_MATHML_SPACE_NAME_ERROR, .length = {.unit = LSM_MATHML_UNIT_EX, .value = 0.5}}
 };
 static const LsmMathmlSpaceList frame_spacing_default = {.n_spaces = 2, .spaces = frame_spacing_values};
+static const LsmMathmlLength label_spacing_default = {1.0, LSM_MATHML_UNIT_EM};
 
 static GObjectClass *parent_class;
 
@@ -76,6 +77,7 @@ lsm_mathml_table_element_update (LsmMathmlElement *self, LsmMathmlStyle *style)
 	lsm_mathml_space_list_attribute_normalize (&table->row_spacing, 0.0, &row_spacing_default, style);
 	lsm_mathml_space_list_attribute_normalize (&table->column_spacing, 0.0, &column_spacing_default, style);
 	lsm_mathml_space_list_attribute_normalize (&table->frame_spacing, 0.0, &frame_spacing_default, style);
+	lsm_mathml_length_attribute_normalize (&table->label_spacing, 0.0, &label_spacing_default, style);
 }
 
 static const LsmMathmlBbox *
@@ -92,6 +94,7 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 	double max_depth = 0.0;
 	double height;
 	gboolean stretchy_found = FALSE;
+	gboolean has_label = FALSE;
 
 	table->line_width = LSM_MATHML_TABLE_ELEMENT_LINE_WIDTH;
 
@@ -141,6 +144,10 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 		column = 0;
 		table->heights[row] = 0.0;
 		table->depths[row] = 0.0;
+		if (LSM_MATHML_TABLE_ROW_ELEMENT(row_node)->type ==
+			LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW) {
+				has_label = TRUE;
+		}
 		for (cell_node = row_node->first_child;
 		     cell_node != NULL;
 		     cell_node = cell_node->next_sibling) {
@@ -216,6 +223,9 @@ lsm_mathml_table_element_measure (LsmMathmlElement *self, LsmMathmlView *view, c
 	self->bbox.depth = height - self->bbox.height;
 
 	self->bbox.width += 2 * table->frame_spacing.values[0];
+	if (has_label) {
+		self->bbox.width += table->label_spacing.value;
+	}
 
 	{
 		double axis_offset;
@@ -322,15 +332,26 @@ lsm_mathml_table_element_layout (LsmMathmlElement *self, LsmMathmlView *view,
 					x_cell = x + x_offset + (table->widths[column] - bbox->width) * 0.5;
 			}
 
-			lsm_mathml_element_layout (LSM_MATHML_ELEMENT (cell_node), view,
-						x_cell, y_cell, bbox);
-
-			if (column < table->n_columns - 1) {
-				x_offset += table->widths[column];
-				x_offset += table->column_spacing.values[MIN (column, max_column)];
-				x_offset += table->line_width;
-				column++;
+			/* the first cell in <mlabeledtr> is the label; by default this should
+			   render to the right */
+			if (cell_node == row_node->first_child &&
+					LSM_MATHML_TABLE_ROW_ELEMENT(row_node)->type ==
+						LSM_MATHML_TABLE_ROW_ELEMENT_TYPE_LABELED_ROW) {
+						x_cell = self->bbox.width - x_offset - table->widths[column];
+						if (column < table->n_columns - 1) {
+							column++;
+						}
 			}
+			else {
+				if (column < table->n_columns - 1) {
+					x_offset += table->widths[column];
+					x_offset += table->column_spacing.values[MIN (column, max_column)];
+					x_offset += table->line_width;
+					column++;
+				}
+			}
+			lsm_mathml_element_layout (LSM_MATHML_ELEMENT (cell_node), view,
+				x_cell, y_cell, bbox);
 		}
 
 		if (row < table->n_rows - 1) {
@@ -513,6 +534,12 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlTableElement, frame_spacing),
 		.trait_class = &lsm_mathml_space_list_trait_class,
 		.trait_default = &frame_spacing_default
+	},
+	{
+		.name = "minlabelspacing",
+		.attribute_offset = offsetof (LsmMathmlTableElement, label_spacing),
+		.trait_class = &lsm_mathml_length_trait_class,
+		.trait_default = &label_spacing_default
 	}
 };
 
