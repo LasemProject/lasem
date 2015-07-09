@@ -275,6 +275,30 @@ const LsmTraitClass lsm_mathml_notation_trait_class = {
 	.to_string = lsm_mathml_notation_trait_to_string
 };
 
+static gboolean
+lsm_mathml_linebreak_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmMathmlLinebreak *value = (LsmMathmlLinebreak *) abstract_trait;
+
+	*value = lsm_mathml_linebreak_from_string (string);
+
+	return *value >= 0;
+}
+
+static char *
+lsm_mathml_linebreak_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmMathmlLinebreak *value = (LsmMathmlLinebreak *) abstract_trait;
+
+	return g_strdup (lsm_mathml_linebreak_to_string (*value));
+}
+
+const LsmTraitClass lsm_mathml_linebreak_trait_class = {
+	.size = sizeof (int),
+	.from_string = lsm_mathml_linebreak_trait_from_string,
+	.to_string = lsm_mathml_linebreak_trait_to_string
+};
+
 typedef int (*LsmMathmlEnumFromString) (const char *string);
 typedef char * (*LsmMathmlEnumToString) (unsigned int value);
 

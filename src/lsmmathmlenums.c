@@ -470,3 +470,27 @@ lsm_mathml_notation_from_string	 (const char *string)
 	return lsm_enum_value_from_string (string, lsm_mathml_notation_strings,
 					   G_N_ELEMENTS (lsm_mathml_notation_strings));
 }
+
+static const char *lsm_mathml_linebreak_strings[] = {
+	"auto",
+	"newline",
+	"nobreak",
+	"goodbreak",
+	"badbreak"
+};
+
+const char *
+lsm_mathml_linebreak_to_string (LsmMathmlLinebreak linebreak)
+{
+	if (linebreak < 0 || linebreak > LSM_MATHML_LINEBREAK_BADBREAK)
+		return NULL;
+
+	return lsm_mathml_linebreak_strings[linebreak];
+}
+
+LsmMathmlLinebreak
+lsm_mathml_linebreak_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_mathml_linebreak_strings,
+					   G_N_ELEMENTS (lsm_mathml_linebreak_strings));
+}

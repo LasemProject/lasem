@@ -116,4 +116,3 @@ lsm_enum_value_from_string (const char *string, const char **strings, unsigned i
 
 	return -1;
 }
-

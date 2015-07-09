@@ -207,7 +207,18 @@ typedef enum {
 const char *		lsm_mathml_notation_to_string		(LsmMathmlNotation notation);
 LsmMathmlNotation	lsm_mathml_notation_from_string		(const char *string);
 
+typedef enum {
+	LSM_MATHML_LINEBREAK_ERROR = -1,
+	LSM_MATHML_LINEBREAK_AUTO,
+	LSM_MATHML_LINEBREAK_NEWLINE,
+	LSM_MATHML_LINEBREAK_NOBREAK,
+	LSM_MATHML_LINEBREAK_GOODBREAK,
+	LSM_MATHML_LINEBREAK_BADBREAK
+} LsmMathmlLinebreak;
+
+const char * 		lsm_mathml_linebreak_to_string 		(LsmMathmlLinebreak linebreak);
+LsmMathmlLinebreak 		lsm_mathml_linebreak_from_string 		(const char *string);
+
 G_END_DECLS
 
 #endif
-

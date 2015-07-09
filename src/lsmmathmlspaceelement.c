@@ -59,11 +59,17 @@ static const LsmMathmlBbox *
 lsm_mathml_space_element_measure (LsmMathmlElement *self, LsmMathmlView *view, const LsmMathmlBbox *bbox)
 {
 	LsmMathmlSpaceElement *space_element = LSM_MATHML_SPACE_ELEMENT (self);
+	LsmMathmlLinebreak linebreak;
 
 	self->bbox.width = space_element->width.value;
 	self->bbox.height = space_element->height.value;
 	self->bbox.depth = space_element->depth.value;
 	self->bbox.is_defined = TRUE;
+	linebreak = space_element->linebreak.value;
+
+	if (linebreak == LSM_MATHML_LINEBREAK_NEWLINE) {
+
+	}
 
 	return &self->bbox;
 }
@@ -85,6 +91,7 @@ lsm_mathml_space_element_new (void)
 
 static const LsmMathmlSpace space_default = {LSM_MATHML_SPACE_NAME_ERROR, {0.0, LSM_MATHML_UNIT_EM}};
 static const LsmMathmlLength length_default = {1.0, LSM_MATHML_UNIT_NONE};
+static const LsmMathmlLinebreak linebreak_default = LSM_MATHML_LINEBREAK_AUTO;
 
 static void
 lsm_mathml_space_element_init (LsmMathmlSpaceElement *self)
@@ -92,6 +99,7 @@ lsm_mathml_space_element_init (LsmMathmlSpaceElement *self)
 	self->width.space = space_default;
 	self->height.length = length_default;
 	self->depth.length = length_default;
+	self->linebreak.value = linebreak_default;
 }
 
 /* LsmMathmlSpaceElement class */
@@ -114,6 +122,12 @@ static const LsmAttributeInfos _attribute_infos[] = {
 		.attribute_offset = offsetof (LsmMathmlSpaceElement, height),
 		.trait_class = &lsm_mathml_length_trait_class,
 		.trait_default = &length_default
+	},
+	{
+		.name = "linebreak",
+		.attribute_offset = offsetof (LsmMathmlSpaceElement, linebreak),
+		.trait_class = &lsm_mathml_linebreak_trait_class,
+		.trait_default = &linebreak_default
 	}
 };
 

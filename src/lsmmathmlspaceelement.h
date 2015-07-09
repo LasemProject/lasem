@@ -44,6 +44,7 @@ struct _LsmMathmlSpaceElement {
 	LsmMathmlSpaceAttribute width;
 	LsmMathmlLengthAttribute height;
 	LsmMathmlLengthAttribute depth;
+	LsmMathmlEnumAttribute linebreak;
 };
 
 struct _LsmMathmlSpaceElementClass {
@@ -57,4 +58,3 @@ LsmDomNode * 	lsm_mathml_space_element_new 	(void);
 G_END_DECLS
 
 #endif
-
