@@ -1881,58 +1881,59 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element) &&
 	    view->pattern_data->pattern != NULL) {
-		cairo_matrix_t matrix;
-		LsmBox subregion;
-
-		view->filter_surfaces = NULL;
-
 		cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
+		if (surface != NULL) {
+			cairo_matrix_t matrix;
+			LsmBox subregion;
 
-		subregion.x = 0;
-		subregion.y = 0;
-		subregion.width = cairo_image_surface_get_width (surface);
-		subregion.height = cairo_image_surface_get_height (surface);
+			view->filter_surfaces = NULL;
 
-		filter_surface = lsm_svg_filter_surface_new_with_content ("SourceGraphic", surface, &subregion);
-		cairo_pattern_get_matrix (view->pattern_data->pattern, &matrix);
+			subregion.x = 0;
+			subregion.y = 0;
+			subregion.width = cairo_image_surface_get_width (surface);
+			subregion.height = cairo_image_surface_get_height (surface);
 
-		view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
+			filter_surface = lsm_svg_filter_surface_new_with_content ("SourceGraphic", surface, &subregion);
+			cairo_pattern_get_matrix (view->pattern_data->pattern, &matrix);
 
-		lsm_svg_element_force_render (filter_element, view);
+			view->filter_surfaces = g_slist_prepend (view->filter_surfaces, filter_surface);
 
-		if (view->debug_filter) {
-			GSList *iter;
-			char *filename;
-			static int count = 0;
+			lsm_svg_element_force_render (filter_element, view);
 
-			for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
-				LsmSvgFilterSurface *surface = iter->data;
+			if (view->debug_filter) {
+				GSList *iter;
+				char *filename;
+				static int count = 0;
 
-				filename = g_strdup_printf ("filter-%04d-%s-%s.png", count++,
-							    view->style->filter->value,
-							    lsm_svg_filter_surface_get_name (surface));
-				cairo_surface_write_to_png (lsm_svg_filter_surface_get_cairo_surface (surface), filename);
-				g_free (filename);
+				for (iter = view->filter_surfaces; iter != NULL; iter = iter->next) {
+					LsmSvgFilterSurface *surface = iter->data;
+
+					filename = g_strdup_printf ("filter-%04d-%s-%s.png", count++,
+							view->style->filter->value,
+							lsm_svg_filter_surface_get_name (surface));
+					cairo_surface_write_to_png (lsm_svg_filter_surface_get_cairo_surface (surface), filename);
+					g_free (filename);
+				}
 			}
+
+			if (view->filter_surfaces->next != NULL) {
+				cairo_pattern_t *pattern;
+				cairo_surface_t *surface;
+
+				surface = lsm_svg_filter_surface_get_cairo_surface (view->filter_surfaces->data);
+				pattern = cairo_pattern_create_for_surface (surface);
+				cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
+				cairo_pattern_set_matrix (pattern, &matrix);
+				cairo_set_source (view->pattern_data->old_cairo, pattern);
+				cairo_pattern_destroy (pattern);
+				cairo_paint_with_alpha (view->pattern_data->old_cairo, view->style->opacity->value);
+			}
+
+			for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
+				lsm_svg_filter_surface_unref (iter->data);
+			g_slist_free (view->filter_surfaces);
+			view->filter_surfaces = NULL;
 		}
-
-		if (view->filter_surfaces->next != NULL) {
-			cairo_pattern_t *pattern;
-			cairo_surface_t *surface;
-
-			surface = lsm_svg_filter_surface_get_cairo_surface (view->filter_surfaces->data);
-			pattern = cairo_pattern_create_for_surface (surface);
-			cairo_pattern_set_extend (pattern, CAIRO_EXTEND_NONE);
-			cairo_pattern_set_matrix (pattern, &matrix);
-			cairo_set_source (view->pattern_data->old_cairo, pattern);
-			cairo_pattern_destroy (pattern);
-			cairo_paint_with_alpha (view->pattern_data->old_cairo, view->style->opacity->value);
-		}
-
-		for (iter = view->filter_surfaces; iter != NULL; iter = iter->next)
-			lsm_svg_filter_surface_unref (iter->data);
-		g_slist_free (view->filter_surfaces);
-		view->filter_surfaces = NULL;
 	}
 
 	_end_pattern (view);
