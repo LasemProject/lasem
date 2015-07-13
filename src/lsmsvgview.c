@@ -331,10 +331,19 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 	g_return_val_if_fail (view->pattern_data != NULL, FALSE);
 	g_return_val_if_fail (view->dom_view.cairo == NULL, FALSE);
 
+	/* Calculate a scale that will allow us to create a surface pattern
+	 * for which a pixel will also be roughly a pixel on the final
+	 * image */
+
 	x1 = viewport->x;
 	y1 = viewport->y;
 	x2 = viewport->x + viewport->width;
 	y2 = viewport->y;
+
+	if (pattern_matrix != NULL) {
+		lsm_svg_matrix_transform_point (pattern_matrix, &x1, &y1);
+		lsm_svg_matrix_transform_point (pattern_matrix, &x2, &y2);
+	}
 
 	cairo_user_to_device (view->pattern_data->old_cairo, &x1, &y1);
 	cairo_user_to_device (view->pattern_data->old_cairo, &x2, &y2);
@@ -343,6 +352,10 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 
 	x2 = viewport->x;
 	y2 = viewport->y + viewport->height;
+
+	if (pattern_matrix != NULL) {
+		lsm_svg_matrix_transform_point (pattern_matrix, &x2, &y2);
+	}
 
 	cairo_user_to_device (view->pattern_data->old_cairo, &x2, &y2);
 
