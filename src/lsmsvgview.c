@@ -361,10 +361,10 @@ lsm_svg_view_create_surface_pattern (LsmSvgView *view,
 
 	device_height = sqrt ((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2));
 
-	if (surface_type == LSM_SVG_VIEW_SURFACE_TYPE_IMAGE) {
-		device_height = ceil (device_height);
-		device_width = ceil (device_width);
-	}
+	/* Create new surface with integer size */
+
+	device_height = ceil (device_height);
+	device_width = ceil (device_width);
 
 	x_scale = device_width / viewport->width;
 	y_scale = device_height / viewport->height;
