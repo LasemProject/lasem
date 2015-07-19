@@ -1774,23 +1774,25 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 		cairo_pop_group_to_source (cairo);
 		if (view->pattern_data->pattern != NULL) {
 			cairo_surface_t *surface;
-			int width, height, row, i, stride;
-			unsigned char *pixels;
 
-			cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
-			pixels = cairo_image_surface_get_data (surface);
-			height = cairo_image_surface_get_height (surface);
-			width = cairo_image_surface_get_width (surface);
-			stride = cairo_image_surface_get_stride (surface);
+			if (cairo_pattern_get_surface (view->pattern_data->pattern, &surface) == CAIRO_STATUS_SUCCESS) {
+				int width, height, row, i, stride;
+				unsigned char *pixels;
 
-			for (row = 0; row < height; row++) {
-				guint8 *row_data = (pixels + (row * stride));
-				for (i = 0; i < width; i++) {
-					guint32 *pixel = (guint32 *) row_data + i;
-					*pixel = ((((*pixel & 0x00ff0000) >> 16) * 13817 +
-						   ((*pixel & 0x0000ff00) >> 8) * 46518 +
-						   ((*pixel & 0x000000ff)) * 4688) * 0xff
-						  /* * opacity */);
+				pixels = cairo_image_surface_get_data (surface);
+				height = cairo_image_surface_get_height (surface);
+				width = cairo_image_surface_get_width (surface);
+				stride = cairo_image_surface_get_stride (surface);
+
+				for (row = 0; row < height; row++) {
+					guint8 *row_data = (pixels + (row * stride));
+					for (i = 0; i < width; i++) {
+						guint32 *pixel = (guint32 *) row_data + i;
+						*pixel = ((((*pixel & 0x00ff0000) >> 16) * 13817 +
+							   ((*pixel & 0x0000ff00) >> 8) * 46518 +
+							   ((*pixel & 0x000000ff)) * 4688) * 0xff
+							  /* * opacity */);
+					}
 				}
 			}
 
@@ -1881,8 +1883,7 @@ lsm_svg_view_pop_filter (LsmSvgView *view)
 
 	if (LSM_IS_SVG_FILTER_ELEMENT (filter_element) &&
 	    view->pattern_data->pattern != NULL) {
-		cairo_pattern_get_surface (view->pattern_data->pattern, &surface);
-		if (surface != NULL) {
+		if (cairo_pattern_get_surface (view->pattern_data->pattern, &surface) == CAIRO_STATUS_SUCCESS) {
 			cairo_matrix_t matrix;
 			LsmBox subregion;
 
