@@ -104,6 +104,71 @@ const LsmTraitClass lsm_svg_enable_background_trait_class = {
 };
 
 static gboolean
+lsm_svg_vector_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgVector *vector = (LsmSvgVector *) abstract_trait;
+	unsigned int n_values = 1;
+	gboolean success = FALSE;
+	char *iter = (char *) string;
+
+	g_free (vector->values);
+	vector->n_values = 0;
+	vector->values = NULL;
+
+	while (*iter != '\0') {
+		if (*iter == ',' ||
+		    *iter == ' ') {
+			n_values++;
+			do {
+				iter++;
+			} while (*iter == ',' ||
+				 *iter == ' ');
+		} else
+			iter++;
+	}
+
+	vector->values = g_new (double, n_values);
+	vector->n_values = n_values;
+
+	iter = (char *)string;
+	n_values = lsm_str_parse_double_list (&iter, vector->n_values, vector->values);
+	success = n_values != vector->n_values;
+
+	if (!success) {
+		g_free (vector->values);
+		vector->values = NULL;
+		vector->n_values = 0;
+	}
+
+	return TRUE;
+}
+
+static char *
+lsm_svg_vector_trait_to_string (LsmTrait *abstract_trait)
+{
+	g_assert_not_reached ();
+
+	return NULL;
+}
+
+static void
+lsm_svg_vector_trait_finalize (LsmTrait *abstract_trait)
+{
+	LsmSvgVector *svg_vector = (LsmSvgVector *) abstract_trait;
+
+	g_free (svg_vector->values);
+	svg_vector->n_values = 0;
+	svg_vector->values = NULL;
+}
+
+const LsmTraitClass lsm_svg_vector_trait_class = {
+	.size = sizeof (LsmSvgVector),
+	.from_string = lsm_svg_vector_trait_from_string,
+	.to_string = lsm_svg_vector_trait_to_string,
+	.finalize = lsm_svg_vector_trait_finalize
+};
+
+static gboolean
 lsm_svg_length_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgLength *svg_length = (LsmSvgLength *) abstract_trait;
@@ -933,6 +998,30 @@ const LsmTraitClass lsm_svg_color_trait_class = {
 	.size = sizeof (LsmSvgColor),
 	.from_string = lsm_svg_color_trait_from_string,
 	.to_string = lsm_svg_color_trait_to_string
+};
+
+static gboolean
+lsm_svg_color_filter_type_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgColorFilterType *trait = (LsmSvgColorFilterType *) abstract_trait;
+
+	*trait = lsm_svg_color_filter_type_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_color_filter_type_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgColorFilterType *trait = (LsmSvgColorFilterType *) abstract_trait;
+
+	return g_strdup (lsm_svg_color_filter_type_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_color_filter_type_trait_class = {
+	.size = sizeof (LsmSvgColorFilterType),
+	.from_string = lsm_svg_color_filter_type_trait_from_string,
+	.to_string = lsm_svg_color_filter_type_trait_to_string
 };
 
 static gboolean

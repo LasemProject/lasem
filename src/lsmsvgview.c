@@ -2179,6 +2179,30 @@ lsm_svg_view_apply_offset (LsmSvgView *view, const char *input, const char *outp
 }
 
 void
+lsm_svg_view_apply_color_matrix (LsmSvgView *view, const char *input, const char *output,
+				 const LsmBox *subregion, LsmSvgColorFilterType type,
+				 unsigned int n_values, const double *values)
+{
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
+	LsmBox subregion_px;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, input);
+
+	if (input_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_offset] Input '%s' not found", input);
+		return;
+	}
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
+
+	lsm_svg_filter_surface_offset (input_surface, output_surface, 0, 0);
+}
+
+void
 lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterSurface *input_surface;

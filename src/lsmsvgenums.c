@@ -542,3 +542,26 @@ lsm_svg_writing_mode_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_writing_mode_strings));
 }
 
+static const char *lsm_svg_color_filter_type_strings[] = {
+	"matrix",
+	"saturate",
+	"hueRotate",
+	"luminanceToAlpha"
+};
+
+const char *
+lsm_svg_color_filter_type_to_string (LsmSvgColorFilterType color_filter_type)
+{
+	if (color_filter_type < 0 || color_filter_type > LSM_SVG_COLOR_FILTER_TYPE_LUMINANCE_TO_ALPHA)
+		return NULL;
+
+	return lsm_svg_color_filter_type_strings[color_filter_type];
+}
+
+LsmSvgColorFilterType
+lsm_svg_color_filter_type_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_color_filter_type_strings,
+					   G_N_ELEMENTS (lsm_svg_color_filter_type_strings));
+}
+

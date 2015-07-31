@@ -352,6 +352,17 @@ typedef enum {
 const char * 		lsm_svg_writing_mode_to_string 		(LsmSvgWritingMode writing_mode);
 LsmSvgWritingMode	lsm_svg_writing_mode_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_COLOR_FILTER_TYPE_ERROR = -1,
+	LSM_SVG_COLOR_FILTER_TYPE_MATRIX,
+	LSM_SVG_COLOR_FILTER_TYPE_SATURATE,
+	LSM_SVG_COLOR_FILTER_TYPE_HUE_ROTATE,
+	LSM_SVG_COLOR_FILTER_TYPE_LUMINANCE_TO_ALPHA
+} LsmSvgColorFilterType;
+
+const char * 		lsm_svg_color_filter_type_to_string 	(LsmSvgColorFilterType type);
+LsmSvgColorFilterType	lsm_svg_color_filter_type_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

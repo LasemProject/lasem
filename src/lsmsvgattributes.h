@@ -50,6 +50,11 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	LsmSvgVector value;
+} LsmSvgVectorAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	LsmSvgDashArray *value;
 } LsmSvgDashArrayAttribute;
 
@@ -107,6 +112,11 @@ typedef struct {
 	LsmAttribute base;
 	LsmSvgMarkerUnits value;
 } LsmSvgMarkerUnitsAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	LsmSvgColorFilterType value;
+} LsmSvgColorFilterTypeAttribute;
 
 typedef struct {
 	LsmAttribute base;

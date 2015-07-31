@@ -31,6 +31,11 @@
 G_BEGIN_DECLS
 
 typedef struct {
+	unsigned int n_values;
+	double *values;
+} LsmSvgVector;
+
+typedef struct {
 	LsmSvgAngleType type;
 	double angle;
 } LsmSvgAngle;
@@ -76,6 +81,7 @@ extern const LsmTraitClass lsm_svg_angle_trait_class;
 extern const LsmTraitClass lsm_svg_blending_mode_trait_class;
 extern const LsmTraitClass lsm_svg_enable_background_trait_class;
 extern const LsmTraitClass lsm_svg_color_trait_class;
+extern const LsmTraitClass lsm_svg_color_filter_type_trait_class;
 extern const LsmTraitClass lsm_svg_comp_op_trait_class;
 extern const LsmTraitClass lsm_svg_dash_array_trait_class;
 extern const LsmTraitClass lsm_svg_display_trait_class;
@@ -90,6 +96,7 @@ extern const LsmTraitClass lsm_svg_line_cap_trait_class;
 extern const LsmTraitClass lsm_svg_marker_units_trait_class;
 extern const LsmTraitClass lsm_svg_matrix_trait_class;
 extern const LsmTraitClass lsm_svg_one_or_two_double_trait_class;
+extern const LsmTraitClass lsm_svg_vector_trait_class;
 extern const LsmTraitClass lsm_svg_overflow_trait_class;
 extern const LsmTraitClass lsm_svg_paint_trait_class;
 extern const LsmTraitClass lsm_svg_pattern_units_trait_class;
