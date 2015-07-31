@@ -246,7 +246,7 @@ compare_surfaces (const char *test_name, cairo_surface_t *surface_a, cairo_surfa
 }
 
 static void
-lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Statistic *statistic)
+lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, gboolean save_png, Statistic *statistic)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -341,7 +341,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 		statistic->rendered_count++;
 		g_timer_destroy (timer);
 
-		if (!dry_run)
+		if (!dry_run && save_png)
 			cairo_surface_write_to_png (surface, png_filename);
 
 		if (check) {
@@ -368,39 +368,41 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, Sta
 		g_object_unref (view);
 		g_object_unref (document);
 
-		lasem_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
-		lasem_test_html ("<tr>");
+		if (save_png) {
+			lasem_test_html ("<table border=\"1\" cellpadding=\"8\">\n");
+			lasem_test_html ("<tr>");
 
-		lasem_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
-				   filename, png_filename);
-		lasem_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
+			lasem_test_html ("<td><a href=\"%s\"><img border=\"0\" src=\"%s\"/></a></td>",
+					 filename, png_filename);
+			lasem_test_html ("<td><img src=\"%s\"/></td>", reference_png_filename);
 
-		lasem_test_html ("<td>");
+			lasem_test_html ("<td>");
 
-		if (is_mathml) {
-			regex = g_regex_new ("<math>", 0, 0, &error);
-			assert (error == NULL);
+			if (is_mathml) {
+				regex = g_regex_new ("<math>", 0, 0, &error);
+				assert (error == NULL);
 
-			filtered_buffer = g_regex_replace (regex, xml,
-							   -1, 0,
-							   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
-							   0, NULL);
-			g_regex_unref (regex);
+				filtered_buffer = g_regex_replace (regex, xml,
+								   -1, 0,
+								   "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">",
+								   0, NULL);
+				g_regex_unref (regex);
 
-			lasem_test_html ("%s", filtered_buffer);
+				lasem_test_html ("%s", filtered_buffer);
 
-			g_free (filtered_buffer);
+				g_free (filtered_buffer);
+			}
+
+			if (is_svg) {
+				lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
+				lasem_test_html ("%s", filename);
+				lasem_test_html ("\" width=\"%dpx\"/>", width + 2);
+			}
+
+			lasem_test_html ("</td>");
+			lasem_test_html ("</tr>\n");
+			lasem_test_html ("</table>\n");
 		}
-
-		if (is_svg) {
-			lasem_test_html ("<object type=\"image/svg+xml\" data=\"");
-			lasem_test_html ("%s", filename);
-			lasem_test_html ("\" width=\"%dpx\"/>", width + 2);
-		}
-
-		lasem_test_html ("</td>");
-		lasem_test_html ("</tr>\n");
-		lasem_test_html ("</table>\n");
 
 		if (!is_xml && !g_file_test (reference_png_filename, G_FILE_TEST_IS_REGULAR) && !dry_run) {
 			FILE *file;
@@ -476,13 +478,15 @@ lasem_test_process_dir (const char *name, gboolean compare, gboolean dry_run, St
 		    strstr (entry, "ignore-") != entry &&
 		    strcmp (entry, "images") != 0)
 		{
+			gboolean save_png = strstr (entry, "dont-render-") != entry;
+
 			filename = g_build_filename (name, entry, NULL);
 
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
 				lasem_test_process_dir (filename, compare, dry_run, statistic);
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
 				 g_regex_match (regex_mml, filename, 0, NULL)) {
-				lasem_test_render (filename, compare, dry_run, statistic);
+				lasem_test_render (filename, compare, dry_run, save_png, statistic);
 				n_files++;
 			}
 
@@ -570,7 +574,7 @@ main (int argc, char **argv)
 	else {
 		if (n_input_files > 0)
 			for (i = 0; i < n_input_files; i++)
-				lasem_test_render (option_input_filenames[i], TRUE, option_dry_run, &statistic);
+				lasem_test_render (option_input_filenames[i], TRUE, option_dry_run, TRUE, &statistic);
 		else
 			lasem_test_process_dir (".", TRUE, option_dry_run, &statistic);
 	}
