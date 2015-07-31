@@ -167,6 +167,9 @@ box_blur (cairo_surface_t *in,
 
     rowstride = cairo_image_surface_get_stride (in);
 
+    g_return_if_fail (in_pixels != NULL);
+    g_return_if_fail (output_pixels != NULL);
+
     intermediate = g_new (guchar, MAX (kw, kh));
 
     if (kw > 1) {
@@ -245,6 +248,9 @@ lsm_svg_filter_surface_fast_blur (LsmSvgFilterSurface *input,
 
 	if (width != cairo_image_surface_get_width (output->surface) ||
 	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	if (width < 1 || height < 1)
 		return;
 
 	if (kx > 1 || ky > 1) {
