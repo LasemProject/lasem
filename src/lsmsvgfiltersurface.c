@@ -21,6 +21,9 @@
  * Authors:
  *	Caleb Moore <c.moore@student.unsw.edu.au>
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
+ *
+ * Image manipulation routines in this file are an adaptation of the code
+ * of librsvg: https://git.gnome.org/browse/librsvg
  */
 
 #include <lsmsvgfiltersurface.h>
@@ -456,6 +459,146 @@ lsm_svg_filter_surface_alpha (LsmSvgFilterSurface *input, LsmSvgFilterSurface *o
 	cairo = cairo_create (output->surface);
 	cairo_set_source_rgb (cairo, 0, 0, 0);
 	cairo_mask_surface (cairo, input->surface, 0, 0);
+
+	cairo_destroy (cairo);
+}
+
+void
+lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+				     LsmSvgColorFilterType type, unsigned n_values, const double *values)
+{
+	cairo_t *cairo;
+	unsigned i;
+	int matrix[20];
+	double cosval;
+	double sinval;
+	int ch;
+	gint x, y;
+	gint width, height;
+	gint rowstride;
+	gint sum;
+	guchar *in_pixels;
+	guchar *output_pixels;
+	int channelmap[4] = {2, 1, 0, 3};
+	double setting;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+	g_return_if_fail (values != NULL || n_values < 1);
+
+	width = cairo_image_surface_get_width (input->surface);
+	height = cairo_image_surface_get_height (input->surface);
+
+	if (width != cairo_image_surface_get_width (output->surface) ||
+	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	memset (matrix, 0, sizeof (*matrix) * G_N_ELEMENTS (matrix));
+
+	switch (type) {
+		case LSM_SVG_COLOR_FILTER_TYPE_MATRIX:
+			for (i = 0; i < G_N_ELEMENTS (matrix) && i < n_values; i++)
+				matrix[i] = values[i] * 255.0;
+			break;
+		case LSM_SVG_COLOR_FILTER_TYPE_SATURATE:
+			if (n_values > 0)
+				setting = values[0];
+			else
+				setting = 1.0;
+
+			matrix[0] =  255.0 * (0.213 + 0.787 * setting);
+			matrix[1] =  255.0 * (0.715 - 0.715 * setting);
+			matrix[2] =  255.0 * (0.072 - 0.072 * setting);
+			matrix[5] =  255.0 * (0.213 - 0.213 * setting);
+			matrix[6] =  255.0 * (0.715 + 0.285 * setting);
+			matrix[7] =  255.0 * (0.072 - 0.072 * setting);
+			matrix[10] = 255.0 * (0.213 - 0.213 * setting);
+			matrix[11] = 255.0 * (0.715 - 0.715 * setting);
+			matrix[12] = 255.0 * (0.072 + 0.928 * setting);
+			matrix[18] = 255;
+			break;
+		case LSM_SVG_COLOR_FILTER_TYPE_HUE_ROTATE:
+			if (n_values > 0)
+				setting = values[0];
+			else
+				setting = 0.0;
+
+			cosval = cos (setting);
+			sinval = sin (setting);
+
+			matrix[0] = (0.213 + cosval * 0.787 + sinval * -0.213) * 255.;
+			matrix[1] = (0.715 + cosval * -0.715 + sinval * -0.715) * 255.;
+			matrix[2] = (0.072 + cosval * -0.072 + sinval * 0.928) * 255.;
+			matrix[5] = (0.213 + cosval * -0.213 + sinval * 0.143) * 255.;
+			matrix[6] = (0.715 + cosval * 0.285 + sinval * 0.140) * 255.;
+			matrix[7] = (0.072 + cosval * -0.072 + sinval * -0.283) * 255.;
+			matrix[10] = (0.213 + cosval * -0.213 + sinval * -0.787) * 255.;
+			matrix[11] = (0.715 + cosval * -0.715 + sinval * 0.715) * 255.;
+			matrix[12] = (0.072 + cosval * 0.928 + sinval * 0.072) * 255.;
+			matrix[18] = 255;
+			break;
+		case LSM_SVG_COLOR_FILTER_TYPE_LUMINANCE_TO_ALPHA:
+			matrix[15] = 0.2125 * 255.;
+			matrix[16] = 0.7154 * 255.;
+			matrix[17] = 0.0721 * 255.;
+			break;
+		default:
+			return;
+	}
+
+	cairo_surface_flush (input->surface);
+	cairo = cairo_create (output->surface);
+
+	in_pixels = cairo_image_surface_get_data (input->surface);
+	output_pixels = cairo_image_surface_get_data (output->surface);
+	rowstride = cairo_image_surface_get_stride (input->surface);
+
+	for (y = input->subregion.y; y < input->subregion.y + input->subregion.height; y++)
+		for (x = input->subregion.x; x < input->subregion.x + input->subregion.width; x++) {
+			int umch;
+			int alpha = in_pixels[4 * x + y * rowstride + channelmap[3]];
+			if (!alpha)
+				for (umch = 0; umch < 4; umch++) {
+					sum = matrix[umch * 5 + 4];
+					if (sum > 255)
+						sum = 255;
+					if (sum < 0)
+						sum = 0;
+					output_pixels[4 * x + y * rowstride + channelmap[umch]] = sum;
+				} else
+					for (umch = 0; umch < 4; umch++) {
+						int umi;
+						ch = channelmap[umch];
+						sum = 0;
+						for (umi = 0; umi < 4; umi++) {
+							i = channelmap[umi];
+							if (umi != 3)
+								sum += matrix[umch * 5 + umi] *
+									in_pixels[4 * x + y * rowstride + i] / alpha;
+							else
+								sum += matrix[umch * 5 + umi] *
+									in_pixels[4 * x + y * rowstride + i] / 255;
+						}
+						sum += matrix[umch * 5 + 4];
+
+
+
+						if (sum > 255)
+							sum = 255;
+						if (sum < 0)
+							sum = 0;
+
+						output_pixels[4 * x + y * rowstride + ch] = sum;
+					}
+				for (umch = 0; umch < 3; umch++) {
+					ch = channelmap[umch];
+					output_pixels[4 * x + y * rowstride + ch] =
+						output_pixels[4 * x + y * rowstride + ch] *
+						output_pixels[4 * x + y * rowstride + channelmap[3]] / 255;
+				}
+		}
+
+	cairo_surface_mark_dirty (output->surface);
 
 	cairo_destroy (cairo);
 }

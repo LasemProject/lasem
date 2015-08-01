@@ -25,6 +25,7 @@
 #define LSM_SVG_FILTER_SURFACE_H
 
 #include <lsmtypes.h>
+#include <lsmsvgenums.h>
 #include <cairo.h>
 
 G_BEGIN_DECLS
@@ -60,6 +61,8 @@ void 			lsm_svg_filter_surface_offset 		(LsmSvgFilterSurface *input, LsmSvgFilte
 								 int dx, int dy);
 void 			lsm_svg_filter_surface_merge 		(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output);
 void 			lsm_svg_filter_surface_tile 		(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output);
+void 			lsm_svg_filter_surface_color_matrix 	(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+								 LsmSvgColorFilterType type, unsigned n_values, const double *values);
 
 G_END_DECLS
 

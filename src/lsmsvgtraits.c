@@ -132,7 +132,7 @@ lsm_svg_vector_trait_from_string (LsmTrait *abstract_trait, char *string)
 
 	iter = (char *)string;
 	n_values = lsm_str_parse_double_list (&iter, vector->n_values, vector->values);
-	success = n_values != vector->n_values;
+	success = n_values == vector->n_values;
 
 	if (!success) {
 		g_free (vector->values);
@@ -140,7 +140,7 @@ lsm_svg_vector_trait_from_string (LsmTrait *abstract_trait, char *string)
 		vector->n_values = 0;
 	}
 
-	return TRUE;
+	return success;
 }
 
 static char *

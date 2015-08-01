@@ -2192,14 +2192,14 @@ lsm_svg_view_apply_color_matrix (LsmSvgView *view, const char *input, const char
 	input_surface = _get_filter_surface (view, input);
 
 	if (input_surface == NULL) {
-		lsm_debug_render ("[SvgView::apply_offset] Input '%s' not found", input);
+		lsm_debug_render ("[SvgView::apply_color_matrix] Input '%s' not found", input);
 		return;
 	}
 
 	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
-	lsm_svg_filter_surface_offset (input_surface, output_surface, 0, 0);
+	lsm_svg_filter_surface_color_matrix (input_surface, output_surface, type, n_values, values);
 }
 
 void
