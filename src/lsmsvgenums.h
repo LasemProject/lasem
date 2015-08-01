@@ -363,6 +363,15 @@ typedef enum {
 const char * 		lsm_svg_color_filter_type_to_string 	(LsmSvgColorFilterType type);
 LsmSvgColorFilterType	lsm_svg_color_filter_type_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_MORPHOLOGY_OPERATOR_ERROR = -1,
+	LSM_SVG_MORPHOLOGY_OPERATOR_ERODE,
+	LSM_SVG_MORPHOLOGY_OPERATOR_DILATE
+} LsmSvgMorphologyOperator;
+
+const char * 			lsm_svg_morphology_operator_to_string 	(LsmSvgMorphologyOperator morpholoy_operator);
+LsmSvgMorphologyOperator	lsm_svg_morphology_operator_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

@@ -565,3 +565,23 @@ lsm_svg_color_filter_type_from_string (const char *string)
 					   G_N_ELEMENTS (lsm_svg_color_filter_type_strings));
 }
 
+static const char *lsm_svg_morphology_operator_strings[] = {
+	"erode",
+	"dilate"
+};
+
+const char *
+lsm_svg_morphology_operator_to_string (LsmSvgMorphologyOperator morphology_operator)
+{
+	if (morphology_operator < 0 || morphology_operator > LSM_SVG_MORPHOLOGY_OPERATOR_DILATE)
+		return NULL;
+
+	return lsm_svg_morphology_operator_strings[morphology_operator];
+}
+
+LsmSvgMorphologyOperator
+lsm_svg_morphology_operator_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_morphology_operator_strings,
+					   G_N_ELEMENTS (lsm_svg_morphology_operator_strings));
+}

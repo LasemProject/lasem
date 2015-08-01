@@ -1319,3 +1319,26 @@ const LsmTraitClass lsm_svg_writing_mode_trait_class = {
 	.to_string = lsm_svg_writing_mode_trait_to_string
 };
 
+static gboolean
+lsm_svg_morphology_operator_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgMorphologyOperator *trait = (LsmSvgMorphologyOperator *) abstract_trait;
+
+	*trait = lsm_svg_morphology_operator_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_morphology_operator_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgMorphologyOperator *trait = (LsmSvgMorphologyOperator *) abstract_trait;
+
+	return g_strdup (lsm_svg_morphology_operator_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_morphology_operator_trait_class = {
+	.size = sizeof (LsmSvgMorphologyOperator),
+	.from_string = lsm_svg_morphology_operator_trait_from_string,
+	.to_string = lsm_svg_morphology_operator_trait_to_string
+};

@@ -123,6 +123,11 @@ typedef struct {
 	LsmSvgAngle value;
 } LsmSvgAngleAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	LsmSvgMorphologyOperator value;
+} LsmSvgMorphologyOperatorAttribute;
+
 G_END_DECLS
 
 #endif
