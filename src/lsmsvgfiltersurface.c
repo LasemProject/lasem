@@ -473,7 +473,7 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 	double cosval;
 	double sinval;
 	int ch;
-	gint x, y;
+	gint x, y, x1, x2, y1, y2;
 	gint width, height;
 	gint rowstride;
 	gint sum;
@@ -491,6 +491,9 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 
 	if (width != cairo_image_surface_get_width (output->surface) ||
 	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	if (height < 1 || width < 1)
 		return;
 
 	memset (matrix, 0, sizeof (*matrix) * G_N_ELEMENTS (matrix));
@@ -553,8 +556,13 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 	output_pixels = cairo_image_surface_get_data (output->surface);
 	rowstride = cairo_image_surface_get_stride (input->surface);
 
-	for (y = input->subregion.y; y < input->subregion.y + input->subregion.height; y++)
-		for (x = input->subregion.x; x < input->subregion.x + input->subregion.width; x++) {
+	x1 = CLAMP (input->subregion.x, 0, width);
+	x2 = CLAMP (input->subregion.x + input->subregion.width, 0, width);
+	y1 = CLAMP (input->subregion.y, 0, height);
+	y2 = CLAMP (input->subregion.y + input->subregion.height, 0, height);
+
+	for (y = y1; y < y2; y++)
+		for (x = x1; x < x2; x++) {
 			int umch;
 			int alpha = in_pixels[4 * x + y * rowstride + channelmap[3]];
 			if (!alpha)
