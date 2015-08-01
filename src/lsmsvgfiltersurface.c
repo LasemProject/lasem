@@ -610,3 +610,39 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 
 	cairo_destroy (cairo);
 }
+
+void
+lsm_svg_filter_surface_image (LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
+			      LsmSvgPreserveAspectRatio preserve_aspect_ratio)
+{
+	cairo_t *cairo;
+	int width, height;
+	double zoom_x, zoom_y;
+
+	g_return_if_fail (output != NULL);
+	g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+	
+	if (output->subregion.width < 1 ||
+	    output->subregion.height < 1)
+		return;
+
+	/* TODO Implement preserve_aspect_ratio support */
+
+	width = gdk_pixbuf_get_height (pixbuf);
+	height = gdk_pixbuf_get_width (pixbuf);
+
+	if (height < 1 || width < 1)
+		return;
+
+	zoom_x = (double) output->subregion.width / (double) width;
+	zoom_y = (double) output->subregion.height / (double) height;
+
+	cairo = cairo_create (output->surface);
+	
+	cairo_translate (cairo, output->subregion.x, output->subregion.y);
+	cairo_scale (cairo, zoom_x, zoom_y);
+	lsm_cairo_set_source_pixbuf (cairo, pixbuf, 0, 0);
+	cairo_paint (cairo);
+
+	cairo_destroy (cairo);
+}

@@ -138,6 +138,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfiltercomposite.c			\
 	lsmsvgfilterflood.c			\
 	lsmsvgfiltergaussianblur.c		\
+	lsmsvgfilterimage.c			\
 	lsmsvgfilteroffset.c			\
 	lsmsvgfiltermerge.c			\
 	lsmsvgfiltermergenode.c			\

@@ -25,8 +25,9 @@
 #define LSM_SVG_FILTER_SURFACE_H
 
 #include <lsmtypes.h>
-#include <lsmsvgenums.h>
+#include <lsmsvgtraits.h>
 #include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
@@ -63,6 +64,8 @@ void 			lsm_svg_filter_surface_merge 		(LsmSvgFilterSurface *input, LsmSvgFilter
 void 			lsm_svg_filter_surface_tile 		(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output);
 void 			lsm_svg_filter_surface_color_matrix 	(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
 								 LsmSvgColorFilterType type, unsigned n_values, const double *values);
+void			lsm_svg_filter_surface_image 		(LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
+								 LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 
 G_END_DECLS
 

@@ -177,6 +177,8 @@ void 		lsm_svg_view_apply_color_matrix 	(LsmSvgView *view, const char *input, co
 							 unsigned int n_values, const double *values);
 void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
 void 		lsm_svg_view_apply_tile 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
+void		lsm_svg_view_apply_image 		(LsmSvgView *view, const char *output, const LsmBox *subregion,
+							 GdkPixbuf *pixbuf, LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 
 G_END_DECLS
 

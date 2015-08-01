@@ -33,6 +33,7 @@
 #include <lsmsvgfiltercomposite.h>
 #include <lsmsvgfilterflood.h>
 #include <lsmsvgfiltergaussianblur.h>
+#include <lsmsvgfilterimage.h>
 #include <lsmsvgfilteroffset.h>
 #include <lsmsvgfiltermerge.h>
 #include <lsmsvgfiltermergenode.h>
@@ -169,6 +170,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_specular_lighting_new ();
 	else if (strcmp (tag_name, "feColorMatrix") == 0)
 		node = lsm_svg_filter_color_matrix_new ();
+	else if (strcmp (tag_name, "feImage") == 0)
+		node = lsm_svg_filter_image_new ();
 	else if (strcmp (tag_name, "feTile") == 0)
 		node = lsm_svg_filter_tile_new ();
 

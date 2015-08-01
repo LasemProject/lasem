@@ -2110,10 +2110,30 @@ lsm_svg_view_apply_flood (LsmSvgView *view, const char *output, const LsmBox *su
 		        subregion_px.x, subregion_px.y);
 
 	lsm_svg_filter_surface_flood (output_surface,
-				  view->style->flood_color->value.red,
-				  view->style->flood_color->value.green,
-				  view->style->flood_color->value.blue,
-				  view->style->flood_opacity->value);
+				      view->style->flood_color->value.red,
+				      view->style->flood_color->value.green,
+				      view->style->flood_color->value.blue,
+				      view->style->flood_opacity->value);
+}
+
+void
+lsm_svg_view_apply_image (LsmSvgView *view, const char *output, const LsmBox *subregion,
+			  GdkPixbuf *pixbuf, LsmSvgPreserveAspectRatio preserve_aspect_ratio)
+{
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmBox subregion_px;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, NULL);
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
+
+	lsm_log_render ("[SvgView::apply_image]");
+
+	lsm_svg_filter_surface_image (output_surface, pixbuf, preserve_aspect_ratio);
 }
 
 void
