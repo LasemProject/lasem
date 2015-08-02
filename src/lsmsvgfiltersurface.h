@@ -64,6 +64,10 @@ void 			lsm_svg_filter_surface_merge 		(LsmSvgFilterSurface *input, LsmSvgFilter
 void 			lsm_svg_filter_surface_tile 		(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output);
 void 			lsm_svg_filter_surface_color_matrix 	(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
 								 LsmSvgColorFilterType type, unsigned n_values, const double *values);
+void 			lsm_svg_filter_surface_convolve_matrix 	(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+								 unsigned x_order, unsigned y_order,
+								 unsigned n_values, const double *values,
+								 LsmSvgEdgeMode edge_mode);
 void			lsm_svg_filter_surface_image 		(LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 								 LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 void 			lsm_svg_filter_surface_morphology 	(LsmSvgFilterSurface *input_surface, LsmSvgFilterSurface *output_surface,

@@ -77,6 +77,11 @@ typedef struct {
 	double b;
 } LsmSvgOneOrTwoDouble;
 
+typedef struct {
+	int a;
+	int b;
+} LsmSvgOneOrTwoInteger;
+
 extern const LsmTraitClass lsm_svg_angle_trait_class;
 extern const LsmTraitClass lsm_svg_blending_mode_trait_class;
 extern const LsmTraitClass lsm_svg_enable_background_trait_class;
@@ -85,10 +90,12 @@ extern const LsmTraitClass lsm_svg_color_filter_type_trait_class;
 extern const LsmTraitClass lsm_svg_comp_op_trait_class;
 extern const LsmTraitClass lsm_svg_dash_array_trait_class;
 extern const LsmTraitClass lsm_svg_display_trait_class;
+extern const LsmTraitClass lsm_svg_edge_mode_trait_class;
 extern const LsmTraitClass lsm_svg_fill_rule_trait_class;
 extern const LsmTraitClass lsm_svg_font_stretch_trait_class;
 extern const LsmTraitClass lsm_svg_font_style_trait_class;
 extern const LsmTraitClass lsm_svg_font_weight_trait_class;
+extern const LsmTraitClass lsm_svg_one_or_two_integer_trait_class;
 extern const LsmTraitClass lsm_svg_length_trait_class;
 extern const LsmTraitClass lsm_svg_length_list_trait_class;
 extern const LsmTraitClass lsm_svg_line_join_trait_class;
@@ -97,13 +104,13 @@ extern const LsmTraitClass lsm_svg_marker_units_trait_class;
 extern const LsmTraitClass lsm_svg_matrix_trait_class;
 extern const LsmTraitClass lsm_svg_morphology_operator_trait_class;
 extern const LsmTraitClass lsm_svg_one_or_two_double_trait_class;
-extern const LsmTraitClass lsm_svg_vector_trait_class;
 extern const LsmTraitClass lsm_svg_overflow_trait_class;
 extern const LsmTraitClass lsm_svg_paint_trait_class;
 extern const LsmTraitClass lsm_svg_pattern_units_trait_class;
 extern const LsmTraitClass lsm_svg_preserve_aspect_ratio_trait_class;
 extern const LsmTraitClass lsm_svg_spread_method_trait_class;
 extern const LsmTraitClass lsm_svg_text_anchor_trait_class;
+extern const LsmTraitClass lsm_svg_vector_trait_class;
 extern const LsmTraitClass lsm_svg_visibility_trait_class;
 extern const LsmTraitClass lsm_svg_writing_mode_trait_class;
 

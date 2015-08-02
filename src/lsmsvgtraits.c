@@ -1272,6 +1272,47 @@ const LsmTraitClass lsm_svg_one_or_two_double_trait_class = {
 };
 
 static gboolean
+lsm_svg_one_or_two_integer_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgOneOrTwoInteger *trait = (LsmSvgOneOrTwoInteger *) abstract_trait;
+	char *end_ptr;
+
+	trait->a = g_ascii_strtoll (string, &end_ptr, 10);
+	if (end_ptr == string) {
+		trait->a = 0;
+		trait->b = 0;
+		return FALSE;
+	}
+
+	string = end_ptr;
+
+	lsm_str_skip_spaces (&string);
+
+	if (string[0] == '\0') {
+		trait->b = trait->a;
+		return TRUE;
+	}
+
+	trait->b = g_ascii_strtoll (string, &end_ptr, 10);
+
+	return TRUE;
+}
+
+static char *
+lsm_svg_one_or_two_integer_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgOneOrTwoInteger *trait = (LsmSvgOneOrTwoInteger *) abstract_trait;
+
+	return g_strdup_printf ("%d %d", trait->a, trait->b);
+}
+
+const LsmTraitClass lsm_svg_one_or_two_integer_trait_class = {
+	.size = sizeof (double),
+	.from_string = lsm_svg_one_or_two_integer_trait_from_string,
+	.to_string = lsm_svg_one_or_two_integer_trait_to_string
+};
+
+static gboolean
 lsm_svg_overflow_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	LsmSvgOverflow *trait = (LsmSvgOverflow *) abstract_trait;
@@ -1341,4 +1382,28 @@ const LsmTraitClass lsm_svg_morphology_operator_trait_class = {
 	.size = sizeof (LsmSvgMorphologyOperator),
 	.from_string = lsm_svg_morphology_operator_trait_from_string,
 	.to_string = lsm_svg_morphology_operator_trait_to_string
+};
+
+static gboolean
+lsm_svg_edge_mode_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgEdgeMode *trait = (LsmSvgEdgeMode *) abstract_trait;
+
+	*trait = lsm_svg_edge_mode_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_edge_mode_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgEdgeMode *trait = (LsmSvgEdgeMode *) abstract_trait;
+
+	return g_strdup (lsm_svg_edge_mode_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_edge_mode_trait_class = {
+	.size = sizeof (LsmSvgEdgeMode),
+	.from_string = lsm_svg_edge_mode_trait_from_string,
+	.to_string = lsm_svg_edge_mode_trait_to_string
 };

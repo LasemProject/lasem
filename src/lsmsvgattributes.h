@@ -128,6 +128,16 @@ typedef struct {
 	LsmSvgMorphologyOperator value;
 } LsmSvgMorphologyOperatorAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	LsmSvgEdgeMode value;
+} LsmSvgEdgeModeAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	LsmSvgOneOrTwoInteger value;
+} LsmSvgOneOrTwoIntegerAttribute;
+
 G_END_DECLS
 
 #endif

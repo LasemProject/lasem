@@ -613,6 +613,129 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 }
 
 void
+lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+					 unsigned order_x, unsigned order_y, unsigned n_values, const double *values,
+					 LsmSvgEdgeMode edge_mode)
+{
+	cairo_t *cairo;
+	int ch;
+	gint x, y, x1, x2, y1, y2;
+	gint width, height;
+	gint rowstride;
+	guchar *in_pixels;
+	guchar *output_pixels;
+	double kval, sum;
+	guchar sval;
+	int sx, sy, kx, ky;
+	/* TODO target */
+	double targetx = 0.0, targety = 0.0;
+	/* TODO d */
+	double dx = 1.0, dy = 1.0;
+	/* TODO */
+	gboolean preserve_alpha = FALSE;
+	/* TODO */
+	double divisor = 1.0;
+	/* TODO */
+	double bias = 0.0;
+	int umch, i, j;
+	gint tempresult;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+	g_return_if_fail (values != NULL || n_values < 1);
+
+	width = cairo_image_surface_get_width (input->surface);
+	height = cairo_image_surface_get_height (input->surface);
+
+	if (width != cairo_image_surface_get_width (output->surface) ||
+	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	if (height < 1 || width < 1)
+		return;
+
+	if (order_y * order_x != n_values)
+		return;
+
+	x1 = CLAMP (input->subregion.x, 0, width);
+	x2 = CLAMP (input->subregion.x + input->subregion.width, 0, width);
+	y1 = CLAMP (input->subregion.y, 0, height);
+	y2 = CLAMP (input->subregion.y + input->subregion.height, 0, height);
+
+	cairo_surface_flush (input->surface);
+	cairo = cairo_create (output->surface);
+
+	in_pixels = cairo_image_surface_get_data (input->surface);
+	output_pixels = cairo_image_surface_get_data (output->surface);
+	rowstride = cairo_image_surface_get_stride (input->surface);
+
+	for (y = y1; y < y2; y++)
+		for (x = x1; x < x2; x++) {
+			for (umch = 0; umch < 3 + !preserve_alpha; umch++) {
+				ch = channelmap[umch];
+				sum = 0;
+				for (i = 0; i < order_y; i++)
+					for (j = 0; j < order_x; j++) {
+						int alpha;
+						sx = x - targetx + j * dx;
+						sy = y - targety + i * dy;
+						if (edge_mode == LSM_SVG_EDGE_MODE_DUPLICATE) {
+							if (sx < x1)
+								sx = x1;
+							if (sx >= x2)
+								sx = x2 - 1;
+							if (sy < y1)
+								sy = y1;
+							if (sy >= y2)
+								sy = y2 - 1;
+						} else if (edge_mode == LSM_SVG_EDGE_MODE_WRAP) {
+							if (sx < x1 || (sx >= x2))
+								sx = x1 + (sx - x1) % (x2 - x1);
+							if (sy < y1 || (sy >= y2))
+								sy = y1 + (sy - y1) % (y2 - y1);
+						} else if (edge_mode == LSM_SVG_EDGE_MODE_NONE)
+							if (sx < x1 || (sx >= x2) ||
+							    sy < y1 || (sy >= y2))
+								continue;
+
+						kx = order_x - j - 1;
+						ky = order_y - i - 1;
+						alpha = in_pixels[4 * sx + sy * rowstride + 3];
+						if (ch == 3)
+							sval = alpha;
+						else if (alpha)
+							sval = in_pixels[4 * sx + sy * rowstride + ch] * 255 / alpha;
+						else
+							sval = 0;
+						kval = values[kx + ky * order_x];
+						sum += (double) sval *kval;
+					}
+				tempresult = sum / divisor + bias;
+
+				if (tempresult > 255)
+					tempresult = 255;
+				if (tempresult < 0)
+					tempresult = 0;
+
+				output_pixels[4 * x + y * rowstride + ch] = tempresult;
+			}
+			if (preserve_alpha)
+				output_pixels[4 * x + y * rowstride + channelmap[3]] =
+					in_pixels[4 * x + y * rowstride + channelmap[3]];
+			for (umch = 0; umch < 3; umch++) {
+				ch = channelmap[umch];
+				output_pixels[4 * x + y * rowstride + ch] =
+					output_pixels[4 * x + y * rowstride + ch] *
+					output_pixels[4 * x + y * rowstride + channelmap[3]] / 255;
+			}
+		}
+
+	cairo_surface_mark_dirty (output->surface);
+
+	cairo_destroy (cairo);
+}
+
+void
 lsm_svg_filter_surface_image (LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 			      LsmSvgPreserveAspectRatio preserve_aspect_ratio)
 {

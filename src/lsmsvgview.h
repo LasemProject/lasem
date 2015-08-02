@@ -181,6 +181,9 @@ void		lsm_svg_view_apply_image 		(LsmSvgView *view, const char *output, const Ls
 							 GdkPixbuf *pixbuf, LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 void 		lsm_svg_view_apply_morphology 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
 							 LsmSvgMorphologyOperator op, double radius);
+void 		lsm_svg_view_apply_convolve_matrix 	(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
+							 unsigned a, unsigned b, unsigned n_values, double *values,
+							 LsmSvgEdgeMode edge_mode);
 
 G_END_DECLS
 

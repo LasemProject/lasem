@@ -30,7 +30,9 @@
 #include <lsmsvgellipseelement.h>
 #include <lsmsvgfilterelement.h>
 #include <lsmsvgfilterblend.h>
+#include <lsmsvgfiltercolormatrix.h>
 #include <lsmsvgfiltercomposite.h>
+#include <lsmsvgfilterconvolvematrix.h>
 #include <lsmsvgfilterflood.h>
 #include <lsmsvgfiltergaussianblur.h>
 #include <lsmsvgfilterimage.h>
@@ -39,7 +41,6 @@
 #include <lsmsvgfiltermergenode.h>
 #include <lsmsvgfiltermorphology.h>
 #include <lsmsvgfilterspecularlighting.h>
-#include <lsmsvgfiltercolormatrix.h>
 #include <lsmsvgfiltertile.h>
 #include <lsmsvggelement.h>
 #include <lsmsvgimageelement.h>
@@ -171,6 +172,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_specular_lighting_new ();
 	else if (strcmp (tag_name, "feColorMatrix") == 0)
 		node = lsm_svg_filter_color_matrix_new ();
+	else if (strcmp (tag_name, "feConvolveMatrix") == 0)
+		node = lsm_svg_filter_convolve_matrix_new ();
 	else if (strcmp (tag_name, "feImage") == 0)
 		node = lsm_svg_filter_image_new ();
 	else if (strcmp (tag_name, "feMorphology") == 0)

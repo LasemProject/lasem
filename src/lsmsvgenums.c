@@ -585,3 +585,25 @@ lsm_svg_morphology_operator_from_string (const char *string)
 	return lsm_enum_value_from_string (string, lsm_svg_morphology_operator_strings,
 					   G_N_ELEMENTS (lsm_svg_morphology_operator_strings));
 }
+
+static const char *lsm_svg_edge_mode_strings[] = {
+	"duplicate",
+	"wrap",
+	"none"
+};
+
+const char *
+lsm_svg_edge_mode_to_string (LsmSvgEdgeMode edge_mode)
+{
+	if (edge_mode < 0 || edge_mode > LSM_SVG_EDGE_MODE_NONE)
+		return NULL;
+
+	return lsm_svg_edge_mode_strings[edge_mode];
+}
+
+LsmSvgEdgeMode
+lsm_svg_edge_mode_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_edge_mode_strings,
+					   G_N_ELEMENTS (lsm_svg_edge_mode_strings));
+}

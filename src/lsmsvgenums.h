@@ -372,6 +372,16 @@ typedef enum {
 const char * 			lsm_svg_morphology_operator_to_string 	(LsmSvgMorphologyOperator morpholoy_operator);
 LsmSvgMorphologyOperator	lsm_svg_morphology_operator_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_EDGE_MODE_ERROR = -1,
+	LSM_SVG_EDGE_MODE_DUPLICATE,
+	LSM_SVG_EDGE_MODE_WRAP,
+	LSM_SVG_EDGE_MODE_NONE
+} LsmSvgEdgeMode;
+
+const char * 		lsm_svg_edge_mode_to_string 	(LsmSvgEdgeMode edge_mode);
+LsmSvgEdgeMode		lsm_svg_edge_mode_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif
