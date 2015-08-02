@@ -66,6 +66,8 @@ void 			lsm_svg_filter_surface_color_matrix 	(LsmSvgFilterSurface *input, LsmSvg
 								 LsmSvgColorFilterType type, unsigned n_values, const double *values);
 void			lsm_svg_filter_surface_image 		(LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 								 LsmSvgPreserveAspectRatio preserve_aspect_ratio);
+void 			lsm_svg_filter_surface_morphology 	(LsmSvgFilterSurface *input_surface, LsmSvgFilterSurface *output_surface,
+								 LsmSvgMorphologyOperator op, double rx, double ry);
 
 G_END_DECLS
 

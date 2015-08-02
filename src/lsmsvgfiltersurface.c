@@ -32,6 +32,8 @@
 #include <math.h>
 #include <string.h>
 
+static const int channelmap[4] = {2, 1, 0, 3};
+
 struct _LsmSvgFilterSurface {
 	char *name;
 	cairo_surface_t *surface;
@@ -479,7 +481,6 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 	gint sum;
 	guchar *in_pixels;
 	guchar *output_pixels;
-	int channelmap[4] = {2, 1, 0, 3};
 	double setting;
 
 	g_return_if_fail (input != NULL);
@@ -646,3 +647,82 @@ lsm_svg_filter_surface_image (LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 
 	cairo_destroy (cairo);
 }
+
+void
+lsm_svg_filter_surface_morphology (LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+				   LsmSvgMorphologyOperator op, double rx, double ry)
+{
+	cairo_t *cairo;
+	int i, j;
+	int ch, extreme;
+	gint x, y, x1, x2, y1, y2;
+	gint width, height;
+	gint rowstride;
+	guchar *in_pixels;
+	guchar *output_pixels;
+	gint kx, ky;
+	guchar val;
+
+	g_return_if_fail (input != NULL);
+	g_return_if_fail (output != NULL);
+
+	width = cairo_image_surface_get_width (input->surface);
+	height = cairo_image_surface_get_height (input->surface);
+
+	if (width != cairo_image_surface_get_width (output->surface) ||
+	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	if (height < 1 || width < 1)
+		return;
+
+	kx = rx;
+	ky = ry;
+
+	if (kx < 1 && ky < 1)
+		return;
+
+	cairo_surface_flush (input->surface);
+	cairo = cairo_create (output->surface);
+
+	in_pixels = cairo_image_surface_get_data (input->surface);
+	output_pixels = cairo_image_surface_get_data (output->surface);
+	rowstride = cairo_image_surface_get_stride (input->surface);
+
+	x1 = CLAMP (input->subregion.x, 0, width);
+	x2 = CLAMP (input->subregion.x + input->subregion.width, 0, width);
+	y1 = CLAMP (input->subregion.y, 0, height);
+	y2 = CLAMP (input->subregion.y + input->subregion.height, 0, height);
+
+	for (y = y1; y < y2; y++)
+		for (x = x1; x < x2; x++)
+			for (ch = 0; ch < 4; ch++) {
+				if (op == LSM_SVG_MORPHOLOGY_OPERATOR_ERODE)
+					extreme = 255;
+				else
+					extreme = 0;
+				for (i = -ky; i < ky + 1; i++)
+					for (j = -kx; j < kx + 1; j++) {
+						if (y + i >= height || y + i < 0 || x + j >= width || x + j < 0)
+							continue;
+
+						val = in_pixels[(y + i) * rowstride + (x + j) * 4 + ch];
+
+
+						if (op == LSM_SVG_MORPHOLOGY_OPERATOR_ERODE) {
+							if (extreme > val)
+								extreme = val;
+						} else {
+							if (extreme < val)
+								extreme = val;
+						}
+
+					}
+				output_pixels[y * rowstride + x * 4 + ch] = extreme;
+			}
+
+	cairo_surface_mark_dirty (output->surface);
+
+	cairo_destroy (cairo);
+}
+

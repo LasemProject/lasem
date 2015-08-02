@@ -179,6 +179,8 @@ void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const ch
 void 		lsm_svg_view_apply_tile 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
 void		lsm_svg_view_apply_image 		(LsmSvgView *view, const char *output, const LsmBox *subregion,
 							 GdkPixbuf *pixbuf, LsmSvgPreserveAspectRatio preserve_aspect_ratio);
+void 		lsm_svg_view_apply_morphology 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
+							 LsmSvgMorphologyOperator op, double radius);
 
 G_END_DECLS
 

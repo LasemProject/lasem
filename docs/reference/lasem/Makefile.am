@@ -153,11 +153,14 @@ IGNORE_HFILES=\
 	lsmsvgfilterprimitive.h			\
 	lsmsvgfilterblend.h			\
 	lsmsvgfiltercomposite.h			\
+	lsmsvgfiltercolormatrix.h		\
 	lsmsvgfilterflood.h			\
 	lsmsvgfiltergaussianblur.h		\
+	lsmsvgfilterimage.h			\
 	lsmsvgfilteroffset.h			\
 	lsmsvgfiltermerge.h			\
 	lsmsvgfiltermergenode.h			\
+	lsmsvgfiltermorphology.h		\
 	lsmsvgfilterspecularlighting.h		\
 	lsmsvgfiltertile.h			\
 	lsmsvgfiltersurface.h

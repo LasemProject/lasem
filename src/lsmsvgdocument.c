@@ -37,6 +37,7 @@
 #include <lsmsvgfilteroffset.h>
 #include <lsmsvgfiltermerge.h>
 #include <lsmsvgfiltermergenode.h>
+#include <lsmsvgfiltermorphology.h>
 #include <lsmsvgfilterspecularlighting.h>
 #include <lsmsvgfiltercolormatrix.h>
 #include <lsmsvgfiltertile.h>
@@ -172,6 +173,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_color_matrix_new ();
 	else if (strcmp (tag_name, "feImage") == 0)
 		node = lsm_svg_filter_image_new ();
+	else if (strcmp (tag_name, "feMorphology") == 0)
+		node = lsm_svg_filter_morphology_new ();
 	else if (strcmp (tag_name, "feTile") == 0)
 		node = lsm_svg_filter_tile_new ();
 

@@ -2222,6 +2222,34 @@ lsm_svg_view_apply_color_matrix (LsmSvgView *view, const char *input, const char
 	lsm_svg_filter_surface_color_matrix (input_surface, output_surface, type, n_values, values);
 }
 
+void 
+lsm_svg_view_apply_morphology (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
+			       LsmSvgMorphologyOperator op, double radius)
+{
+	LsmSvgFilterSurface *input_surface;
+	LsmSvgFilterSurface *output_surface;
+	LsmBox subregion_px;
+	double rx, ry;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, input);
+
+	if (input_surface == NULL) {
+		lsm_debug_render ("[SvgView::apply_morphoogy] Input '%s' not found", input);
+		return;
+	}
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
+
+	rx = radius;
+	ry = radius;
+	cairo_user_to_device_distance (view->dom_view.cairo, &rx, &ry);
+
+	lsm_svg_filter_surface_morphology (input_surface, output_surface, op, rx, ry);
+}
+
 void
 lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
