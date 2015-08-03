@@ -38,9 +38,16 @@ lsm_svg_filter_specular_lighting_get_node_name (LsmDomNode *node)
 
 static void
 lsm_svg_filter_specular_lighting_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
-				     const char *input, const char *output, const LsmBox *subregion)
+					 const char *input, const char *output, const LsmBox *subregion)
 {
-/*        lsm_svg_view_apply_specular_lighting (view, output, subregion);*/
+	LsmSvgFilterSpecularLighting *specular_lighting = LSM_SVG_FILTER_SPECULAR_LIGHTING (self);
+
+	lsm_svg_view_apply_specular_lighting (view, output, subregion,
+					      specular_lighting->surface_scale.value,
+					      specular_lighting->specular_constant.value,
+					      specular_lighting->specular_exponent.value,
+					      specular_lighting->kernel_unit_length.value.a,
+					      specular_lighting->kernel_unit_length.value.b);
 }
 
 /* LsmSvgFilterSpecularLighting implementation */

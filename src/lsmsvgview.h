@@ -184,6 +184,9 @@ void 		lsm_svg_view_apply_morphology 		(LsmSvgView *view, const char *input, con
 void 		lsm_svg_view_apply_convolve_matrix 	(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
 							 unsigned a, unsigned b, unsigned n_values, double *values,
 							 LsmSvgEdgeMode edge_mode);
+void 		lsm_svg_view_apply_specular_lighting 	(LsmSvgView *view, const char *output, const LsmBox *subregion,
+							 double surface_scale, double specular_constant, double specular_exponent,
+							 double dx, double dy);
 
 G_END_DECLS
 

@@ -736,6 +736,44 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 }
 
 void
+lsm_svg_filter_surface_specular_lighting (LsmSvgFilterSurface *output,
+					  double surface_scale, double specular_constant, double specular_exponent,
+					  double dx, double dy)
+{
+	cairo_t *cairo;
+	int width, height;
+#if 0
+	guchar *output_pixels;
+	gint rowstride;
+	gint x1, x2, y1, y2;
+#endif
+
+	g_return_if_fail (output != NULL);
+
+	width = cairo_image_surface_get_width (output->surface);
+	height = cairo_image_surface_get_height (output->surface);
+
+	if (height < 1 || width < 1)
+		return;
+
+	cairo = cairo_create (output->surface);
+
+#if 0
+	output_pixels = cairo_image_surface_get_data (output->surface);
+	rowstride = cairo_image_surface_get_stride (output->surface);
+
+	x1 = CLAMP (output->subregion.x, 0, width);
+	x2 = CLAMP (output->subregion.x + output->subregion.width, 0, width);
+	y1 = CLAMP (output->subregion.y, 0, height);
+	y2 = CLAMP (output->subregion.y + output->subregion.height, 0, height);
+#endif
+
+	cairo_surface_mark_dirty (output->surface);
+
+	cairo_destroy (cairo);
+}
+
+void
 lsm_svg_filter_surface_image (LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 			      LsmSvgPreserveAspectRatio preserve_aspect_ratio)
 {

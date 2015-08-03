@@ -2273,6 +2273,31 @@ lsm_svg_view_apply_convolve_matrix (LsmSvgView *view, const char *input, const c
 	lsm_svg_filter_surface_convolve_matrix (input_surface, output_surface, x_order, y_order, n_values, values, edge_mode);
 }
 
+void 
+lsm_svg_view_apply_specular_lighting (LsmSvgView *view, const char *output, const LsmBox *subregion,
+				      double surface_scale, double specular_constant, double specular_exponent,
+				      double dx, double dy)
+{
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmBox subregion_px;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, NULL);
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
+
+	lsm_log_render ("[SvgView::apply_specular_lighting] subregion %gx%g px at %g,%g px",
+			subregion_px.width, subregion_px.height,
+			subregion_px.x, subregion_px.y);
+
+	cairo_user_to_device_distance (view->dom_view.cairo, &dx, &dy);
+
+	lsm_svg_filter_surface_specular_lighting (output_surface, surface_scale, specular_constant, specular_exponent, dx, dy);
+}
+
 void
 lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {

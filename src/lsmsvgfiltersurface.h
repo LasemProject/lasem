@@ -72,6 +72,9 @@ void			lsm_svg_filter_surface_image 		(LsmSvgFilterSurface *output, GdkPixbuf *p
 								 LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 void 			lsm_svg_filter_surface_morphology 	(LsmSvgFilterSurface *input_surface, LsmSvgFilterSurface *output_surface,
 								 LsmSvgMorphologyOperator op, double rx, double ry);
+void 			lsm_svg_filter_surface_specular_lighting(LsmSvgFilterSurface *output_surface,
+								 double surface_scale, double specular_constant, double specular_exponent,
+								 double dx, double dy);
 
 G_END_DECLS
 
