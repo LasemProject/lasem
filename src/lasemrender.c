@@ -104,21 +104,21 @@ int main(int argc, char **argv)
 	if (!g_option_context_parse (context, &argc, &argv, &error))
 	{
 		g_option_context_free (context);
-		g_print (_("Option parsing failed: %s\n"), error->message);
+		printf ("%s %s\n", _("Option parsing failed:"), error->message);
 		return EXIT_FAILURE;
 	}
 
 	g_option_context_free (context);
 
 	if (option_zoom < 0.0) {
-		g_print (_("Invalid zoom value"));
+		printf ("%s\n", _("Invalid zoom value"));
 		return EXIT_FAILURE;
 	}
 
 	lsm_debug_enable (option_debug_domains);
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
-		g_print (_("One input file name is required\n"));
+		printf ("%s\n", _("Missing input filename"));
 		return EXIT_FAILURE;
 	}
 
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 			if (g_ascii_strcasecmp (option_output_file_format, file_formats[format]) == 0)
 				break;
 		if (FORMAT_UNKNOWN == format) {
-			g_print (_("Unknown format: %s\n"), option_output_file_format);
+			printf ("%s %s\n", _("Unknown format:"), option_output_file_format);
 			return EXIT_FAILURE;
 		}
 	} else
@@ -168,6 +168,11 @@ int main(int argc, char **argv)
 		g_free (directory);
 	}
 
+	if (format == FORMAT_UNKNOWN) {
+		printf ("%s\n", _("Don't know which format to use, please either give a format (-f) or an output filename (-o)"));
+		return EXIT_FAILURE;
+	}
+
 	document = lsm_dom_document_new_from_path (input_filename,
 						   NULL);
 	if (document == NULL) {
@@ -191,7 +196,7 @@ int main(int argc, char **argv)
 			lsm_dom_document_save_to_memory (document, &buffer, &size, NULL);
 
 			if (buffer != NULL) {
-				g_printf ("%*s\n", (int) size, (char *) buffer);
+				printf ("%*s\n", (int) size, (char *) buffer);
 				g_free (buffer);
 			}
 		}
@@ -254,7 +259,8 @@ int main(int argc, char **argv)
 
 		lsm_debug_render ("width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else {
-		g_print (_("Can't load '%s'\n"), input_filename);
+		printf (_("Can't load '%s'"), input_filename);
+		printf ("\n");
 
 		return EXIT_FAILURE;
 	}
