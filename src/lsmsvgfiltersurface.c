@@ -615,7 +615,8 @@ lsm_svg_filter_surface_color_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSur
 void
 lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
 					 unsigned order_x, unsigned order_y, unsigned n_values, const double *values,
-					 LsmSvgEdgeMode edge_mode)
+					 double divisor, double bias, unsigned target_x, unsigned target_y,
+					 LsmSvgEdgeMode edge_mode, gboolean preserve_alpha)
 {
 	cairo_t *cairo;
 	int ch;
@@ -627,22 +628,17 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 	double kval, sum;
 	guchar sval;
 	int sx, sy, kx, ky;
-	/* TODO target */
-	double targetx = 0.0, targety = 0.0;
 	/* TODO d */
 	double dx = 1.0, dy = 1.0;
-	/* TODO */
-	gboolean preserve_alpha = FALSE;
-	/* TODO */
-	double divisor = 1.0;
-	/* TODO */
-	double bias = 0.0;
 	int umch, i, j;
 	gint tempresult;
 
 	g_return_if_fail (input != NULL);
 	g_return_if_fail (output != NULL);
 	g_return_if_fail (values != NULL || n_values < 1);
+
+	if (divisor <= 0.0)
+		return;
 
 	width = cairo_image_surface_get_width (input->surface);
 	height = cairo_image_surface_get_height (input->surface);
@@ -655,6 +651,9 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 		return;
 
 	if (order_y * order_x != n_values)
+		return;
+
+	if (target_x > order_x || target_y > order_y)
 		return;
 
 	x1 = CLAMP (input->subregion.x, 0, width);
@@ -677,8 +676,8 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 				for (i = 0; i < order_y; i++)
 					for (j = 0; j < order_x; j++) {
 						int alpha;
-						sx = x - targetx + j * dx;
-						sy = y - targety + i * dy;
+						sx = x - target_x + j * dx;
+						sy = y - target_y + i * dy;
 						if (edge_mode == LSM_SVG_EDGE_MODE_DUPLICATE) {
 							if (sx < x1)
 								sx = x1;

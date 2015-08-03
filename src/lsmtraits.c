@@ -31,6 +31,59 @@ const LsmTraitClass lsm_null_trait_class = {
 };
 
 static gboolean
+lsm_boolean_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	gboolean *trait = (gboolean *) abstract_trait;
+
+	if (g_strcmp0 ("true", string) == 0)
+		*trait = TRUE;
+	else if (g_strcmp0 ("false", string) == 0)
+		*trait = FALSE;
+	else return FALSE;
+
+	return TRUE;
+}
+
+static char *
+lsm_boolean_trait_to_string (LsmTrait *abstract_trait)
+{
+	gboolean *trait = (gboolean *) abstract_trait;
+
+	return g_strdup_printf ("%s", *trait ? "true" : "false");
+}
+
+const LsmTraitClass lsm_boolean_trait_class = {
+	.size = sizeof (gboolean),
+	.from_string = lsm_boolean_trait_from_string,
+	.to_string = lsm_boolean_trait_to_string
+};
+
+static gboolean
+lsm_integer_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	int *trait = (int *) abstract_trait;
+	char *end_ptr;
+
+	*trait = g_ascii_strtoll (string, &end_ptr, 10);
+
+	return end_ptr != string;
+}
+
+static char *
+lsm_integer_trait_to_string (LsmTrait *abstract_trait)
+{
+	int *trait = (int *) abstract_trait;
+
+	return g_strdup_printf ("%d", *trait);
+}
+
+const LsmTraitClass lsm_integer_trait_class = {
+	.size = sizeof (int),
+	.from_string = lsm_integer_trait_from_string,
+	.to_string = lsm_integer_trait_to_string
+};
+
+static gboolean
 lsm_double_trait_from_string (LsmTrait *abstract_trait, char *string)
 {
 	double *trait = (double *) abstract_trait;

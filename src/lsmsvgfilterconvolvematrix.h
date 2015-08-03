@@ -43,7 +43,12 @@ struct _LsmSvgFilterConvolveMatrix {
 
 	LsmSvgOneOrTwoIntegerAttribute order;
 	LsmSvgVectorAttribute kernel;
+	LsmSvgDoubleAttribute divisor;
+	LsmSvgDoubleAttribute bias;
+	LsmSvgIntegerAttribute target_x;
+	LsmSvgIntegerAttribute target_y;
 	LsmSvgEdgeModeAttribute edge_mode;
+	LsmSvgBooleanAttribute preserve_alpha;
 };
 
 struct _LsmSvgFilterConvolveMatrixClass {

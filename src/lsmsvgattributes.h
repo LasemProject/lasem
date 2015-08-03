@@ -40,6 +40,16 @@ typedef struct {
 
 typedef struct {
 	LsmAttribute base;
+	gboolean value;
+} LsmSvgBooleanAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	int value;
+} LsmSvgIntegerAttribute;
+
+typedef struct {
+	LsmAttribute base;
 	double value;
 } LsmSvgDoubleAttribute;
 

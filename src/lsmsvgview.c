@@ -2252,7 +2252,9 @@ lsm_svg_view_apply_morphology (LsmSvgView *view, const char *input, const char *
 
 void
 lsm_svg_view_apply_convolve_matrix (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
-				    unsigned x_order, unsigned y_order, unsigned n_values, double *values, LsmSvgEdgeMode edge_mode)
+				    unsigned x_order, unsigned y_order, unsigned n_values, double *values,
+				    double divisor, double bias, int target_x, int target_y,
+				    LsmSvgEdgeMode edge_mode, gboolean preserve_alpha)
 {
 	LsmSvgFilterSurface *input_surface;
 	LsmSvgFilterSurface *output_surface;
@@ -2270,7 +2272,8 @@ lsm_svg_view_apply_convolve_matrix (LsmSvgView *view, const char *input, const c
 	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
 	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
 
-	lsm_svg_filter_surface_convolve_matrix (input_surface, output_surface, x_order, y_order, n_values, values, edge_mode);
+	lsm_svg_filter_surface_convolve_matrix (input_surface, output_surface, x_order, y_order, n_values, values,
+						divisor, bias, target_x, target_y, edge_mode, preserve_alpha);
 }
 
 void 

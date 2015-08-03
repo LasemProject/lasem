@@ -39,6 +39,8 @@ typedef struct {
 } LsmTraitClass;
 
 extern const LsmTraitClass lsm_null_trait_class;
+extern const LsmTraitClass lsm_boolean_trait_class;
+extern const LsmTraitClass lsm_integer_trait_class;
 extern const LsmTraitClass lsm_double_trait_class;
 extern const LsmTraitClass lsm_box_trait_class;
 
