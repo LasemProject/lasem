@@ -32,7 +32,8 @@ build_file_list (const char *path, GRegex *filename_regex)
 			if (g_file_test (filename, G_FILE_TEST_IS_DIR))
 				files = g_slist_concat (files, build_file_list (filename, filename_regex));
 			else if (g_file_test (filename, G_FILE_TEST_IS_REGULAR) &&
-				 g_regex_match (filename_regex, filename, 0, NULL)) {
+				 g_regex_match (filename_regex, filename, 0, NULL) &&
+				 !g_key_file_get_boolean (suite_options, entry, "ignore", NULL)) {
 				files = g_slist_prepend (files, g_strdup (filename));
 			}
 
