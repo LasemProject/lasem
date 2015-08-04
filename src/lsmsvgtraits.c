@@ -1407,3 +1407,51 @@ const LsmTraitClass lsm_svg_edge_mode_trait_class = {
 	.from_string = lsm_svg_edge_mode_trait_from_string,
 	.to_string = lsm_svg_edge_mode_trait_to_string
 };
+
+static gboolean
+lsm_svg_stitch_tiles_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgStitchTiles *trait = (LsmSvgStitchTiles *) abstract_trait;
+
+	*trait = lsm_svg_stitch_tiles_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_stitch_tiles_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgStitchTiles *trait = (LsmSvgStitchTiles *) abstract_trait;
+
+	return g_strdup (lsm_svg_stitch_tiles_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_stitch_tiles_trait_class = {
+	.size = sizeof (LsmSvgStitchTiles),
+	.from_string = lsm_svg_stitch_tiles_trait_from_string,
+	.to_string = lsm_svg_stitch_tiles_trait_to_string
+};
+
+static gboolean
+lsm_svg_turbulence_type_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgTurbulenceType *trait = (LsmSvgTurbulenceType *) abstract_trait;
+
+	*trait = lsm_svg_turbulence_type_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_turbulence_type_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgTurbulenceType *trait = (LsmSvgTurbulenceType *) abstract_trait;
+
+	return g_strdup (lsm_svg_turbulence_type_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_turbulence_type_trait_class = {
+	.size = sizeof (LsmSvgTurbulenceType),
+	.from_string = lsm_svg_turbulence_type_trait_from_string,
+	.to_string = lsm_svg_turbulence_type_trait_to_string
+};

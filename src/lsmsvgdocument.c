@@ -41,6 +41,7 @@
 #include <lsmsvgfiltermergenode.h>
 #include <lsmsvgfiltermorphology.h>
 #include <lsmsvgfilterspecularlighting.h>
+#include <lsmsvgfilterturbulence.h>
 #include <lsmsvgfiltertile.h>
 #include <lsmsvggelement.h>
 #include <lsmsvgimageelement.h>
@@ -158,28 +159,30 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_blend_new ();
 	else if (strcmp (tag_name, "feComposite") == 0)
 		node = lsm_svg_filter_composite_new ();
-	else if (strcmp (tag_name, "feFlood") == 0)
-		node = lsm_svg_filter_flood_new ();
-	else if (strcmp (tag_name, "feGaussianBlur") == 0)
-		node = lsm_svg_filter_gaussian_blur_new ();
-	else if (strcmp (tag_name, "feMerge") == 0)
-		node = lsm_svg_filter_merge_new ();
-	else if (strcmp (tag_name, "feMergeNode") == 0)
-		node = lsm_svg_filter_merge_node_new ();
-	else if (strcmp (tag_name, "feOffset") == 0)
-		node = lsm_svg_filter_offset_new ();
-	else if (strcmp (tag_name, "feSpecularLighting") == 0)
-		node = lsm_svg_filter_specular_lighting_new ();
 	else if (strcmp (tag_name, "feColorMatrix") == 0)
 		node = lsm_svg_filter_color_matrix_new ();
 	else if (strcmp (tag_name, "feConvolveMatrix") == 0)
 		node = lsm_svg_filter_convolve_matrix_new ();
+	else if (strcmp (tag_name, "feFlood") == 0)
+		node = lsm_svg_filter_flood_new ();
+	else if (strcmp (tag_name, "feGaussianBlur") == 0)
+		node = lsm_svg_filter_gaussian_blur_new ();
 	else if (strcmp (tag_name, "feImage") == 0)
 		node = lsm_svg_filter_image_new ();
+	else if (strcmp (tag_name, "feMerge") == 0)
+		node = lsm_svg_filter_merge_new ();
+	else if (strcmp (tag_name, "feMergeNode") == 0)
+		node = lsm_svg_filter_merge_node_new ();
 	else if (strcmp (tag_name, "feMorphology") == 0)
 		node = lsm_svg_filter_morphology_new ();
+	else if (strcmp (tag_name, "feOffset") == 0)
+		node = lsm_svg_filter_offset_new ();
+	else if (strcmp (tag_name, "feSpecularLighting") == 0)
+		node = lsm_svg_filter_specular_lighting_new ();
 	else if (strcmp (tag_name, "feTile") == 0)
 		node = lsm_svg_filter_tile_new ();
+	else if (strcmp (tag_name, "feTurbulence") == 0)
+		node = lsm_svg_filter_turbulence_new ();
 
 	if (node != NULL)
 		lsm_debug_dom ("[LsmSvgDocument::create_element] Create a %s element", tag_name);

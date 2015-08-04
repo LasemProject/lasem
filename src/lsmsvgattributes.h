@@ -148,6 +148,16 @@ typedef struct {
 	LsmSvgOneOrTwoInteger value;
 } LsmSvgOneOrTwoIntegerAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	LsmSvgStitchTiles value;
+} LsmSvgStitchTilesAttribute;
+
+typedef struct {
+	LsmAttribute base;
+	LsmSvgTurbulenceType value;
+} LsmSvgTurbulenceTypeAttribute;
+
 G_END_DECLS
 
 #endif

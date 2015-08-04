@@ -146,6 +146,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvgfiltermorphology.c		\
 	lsmsvgfilterspecularlighting.c		\
 	lsmsvgfiltertile.c			\
+	lsmsvgfilterturbulence.c		\
 	lsmsvgfiltersurface.c
 
 LASEM_DOM_HDRS = 				\
@@ -268,6 +269,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvgfiltermorphology.h		\
 	lsmsvgfilterspecularlighting.h		\
 	lsmsvgfiltertile.h			\
+	lsmsvgfilterturbulence.h		\
 	lsmsvgfiltersurface.h
 
 

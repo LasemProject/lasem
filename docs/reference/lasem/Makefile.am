@@ -164,6 +164,7 @@ IGNORE_HFILES=\
 	lsmsvgfiltermorphology.h		\
 	lsmsvgfilterspecularlighting.h		\
 	lsmsvgfiltertile.h			\
+	lsmsvgfilterturbulence.h		\
 	lsmsvgfiltersurface.h
 
 # Images to copy into HTML directory.

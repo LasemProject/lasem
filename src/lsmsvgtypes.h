@@ -58,6 +58,7 @@ typedef struct _LsmSvgFilterMergeNode LsmSvgFilterMergeNode;
 typedef struct _LsmSvgFilterMorphology LsmSvgFilterMorphology;
 typedef struct _LsmSvgFilterOffset LsmSvgFilterOffset;
 typedef struct _LsmSvgFilterSpecularLighting LsmSvgFilterSpecularLighting;
+typedef struct _LsmSvgFilterTurbulence LsmSvgFilterTurbulence;
 typedef struct _LsmSvgFilterTile LsmSvgFilterTile;
 typedef struct _LsmSvgLineElement LsmSvgLineElement;
 typedef struct _LsmSvgPolylineElement LsmSvgPolylineElement;

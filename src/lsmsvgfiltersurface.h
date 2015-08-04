@@ -76,6 +76,10 @@ void 			lsm_svg_filter_surface_morphology 	(LsmSvgFilterSurface *input_surface, 
 void 			lsm_svg_filter_surface_specular_lighting(LsmSvgFilterSurface *output_surface,
 								 double surface_scale, double specular_constant, double specular_exponent,
 								 double dx, double dy);
+void			lsm_svg_filter_surface_turbulence 	(LsmSvgFilterSurface *output_surface,
+								 double base_frequency_x, double base_frequency_y,
+								 int n_octaves, double seed,
+								 LsmSvgStitchTiles stitch_tiles, LsmSvgTurbulenceType type);
 
 G_END_DECLS
 

@@ -2302,6 +2302,33 @@ lsm_svg_view_apply_specular_lighting (LsmSvgView *view, const char *output, cons
 }
 
 void
+lsm_svg_view_apply_turbulence (LsmSvgView *view, const char *output, const LsmBox *subregion,
+			       double base_frequency_x, double base_frequency_y,
+			       int n_octaves, double seed,
+			       LsmSvgStitchTiles stitch_tiles,
+			       LsmSvgTurbulenceType type)
+{
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_surface;
+	LsmBox subregion_px;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_surface = _get_filter_surface (view, NULL);
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_surface, &subregion_px);
+
+	lsm_log_render ("[SvgView::apply_turbulence] subregion %gx%g px at %g,%g px",
+			subregion_px.width, subregion_px.height,
+			subregion_px.x, subregion_px.y);
+
+	cairo_user_to_device_distance (view->dom_view.cairo, &base_frequency_x, &base_frequency_y);
+
+	lsm_svg_filter_surface_turbulence (output_surface, base_frequency_x, base_frequency_y, n_octaves, seed, stitch_tiles, type);
+}
+
+void
 lsm_svg_view_apply_merge (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion)
 {
 	LsmSvgFilterSurface *input_surface;

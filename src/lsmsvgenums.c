@@ -607,3 +607,45 @@ lsm_svg_edge_mode_from_string (const char *string)
 	return lsm_enum_value_from_string (string, lsm_svg_edge_mode_strings,
 					   G_N_ELEMENTS (lsm_svg_edge_mode_strings));
 }
+
+static const char *lsm_svg_stitch_tiles_strings[] = {
+	"noStitch",
+	"stitch"
+};
+
+const char *
+lsm_svg_stitch_tiles_to_string (LsmSvgStitchTiles stitch_tiles)
+{
+	if (stitch_tiles < 0 || stitch_tiles > LSM_SVG_STITCH_TILES_STITCH)
+		return NULL;
+
+	return lsm_svg_stitch_tiles_strings[stitch_tiles];
+}
+
+LsmSvgStitchTiles
+lsm_svg_stitch_tiles_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_stitch_tiles_strings,
+					   G_N_ELEMENTS (lsm_svg_stitch_tiles_strings));
+}
+
+static const char *lsm_svg_turbulence_type_strings[] = {
+	"turbulence",
+	"fractalNoise"
+};
+
+const char *
+lsm_svg_turbulence_type_to_string (LsmSvgTurbulenceType turbulence_type)
+{
+	if (turbulence_type < 0 || turbulence_type > LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE)
+		return NULL;
+
+	return lsm_svg_turbulence_type_strings[turbulence_type];
+}
+
+LsmSvgTurbulenceType
+lsm_svg_turbulence_type_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_turbulence_type_strings,
+					   G_N_ELEMENTS (lsm_svg_turbulence_type_strings));
+}

@@ -188,6 +188,11 @@ void 		lsm_svg_view_apply_convolve_matrix 	(LsmSvgView *view, const char *input,
 void 		lsm_svg_view_apply_specular_lighting 	(LsmSvgView *view, const char *output, const LsmBox *subregion,
 							 double surface_scale, double specular_constant, double specular_exponent,
 							 double dx, double dy);
+void		lsm_svg_view_apply_turbulence 		(LsmSvgView *view, const char *output, const LsmBox *subregion,
+							 double base_frequency_x, double base_frequency_y,
+							 int n_octaves, double seed,
+							 LsmSvgStitchTiles stitch_tiles,
+							 LsmSvgTurbulenceType type);
 
 G_END_DECLS
 

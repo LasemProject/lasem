@@ -382,6 +382,24 @@ typedef enum {
 const char * 		lsm_svg_edge_mode_to_string 	(LsmSvgEdgeMode edge_mode);
 LsmSvgEdgeMode		lsm_svg_edge_mode_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_STITCH_TILES_ERROR = -1,
+	LSM_SVG_STITCH_TILES_NO_STITCH,
+	LSM_SVG_STITCH_TILES_STITCH
+} LsmSvgStitchTiles;
+
+const char * 		lsm_svg_stitch_tiles_to_string 		(LsmSvgStitchTiles stitch_tiles);
+LsmSvgStitchTiles	lsm_svg_stitch_tiles_from_string	(const char *string);
+
+typedef enum {
+	LSM_SVG_TURBULENCE_TYPE_ERROR = -1,
+	LSM_SVG_TURBULENCE_TYPE_TURBULENCE,
+	LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE
+} LsmSvgTurbulenceType;
+
+const char * 		lsm_svg_turbulence_type_to_string 	(LsmSvgTurbulenceType turbulence_type);
+LsmSvgTurbulenceType	lsm_svg_turbulence_type_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif
