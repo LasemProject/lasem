@@ -2,15 +2,15 @@
 # Copyright (C) 2013 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
 #
-# Marek Černocký <marek@manet.cz>, 2013.
+# Marek Černocký <marek@manet.cz>, 2013, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-03 08:52+0000\n"
-"PO-Revision-Date: 2013-02-18 11:09+0100\n"
+"POT-Creation-Date: 2015-08-03 12:59+0000\n"
+"PO-Revision-Date: 2015-08-06 09:11+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -40,27 +40,31 @@ msgstr "Přiblížení"
 msgid "Debug domains"
 msgstr "Ladit domény"
 
-#: ../src/lasemrender.c:106
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Selhalo zpracování voleb: %s\n"
+#: ../src/lasemrender.c:107
+msgid "Option parsing failed:"
+msgstr "Selhalo zpracování voleb:"
 
-#: ../src/lasemrender.c:113
-#, c-format
+#: ../src/lasemrender.c:114
 msgid "Invalid zoom value"
 msgstr "Neplatná hodnota přiblížení"
 
-#: ../src/lasemrender.c:120
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Je vyžadován název jednoho vstupního souboru\n"
+#: ../src/lasemrender.c:121
+msgid "Missing input filename"
+msgstr "Schází název vstupního souboru"
 
-#: ../src/lasemrender.c:131
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Neznámý formát: %s\n"
+#: ../src/lasemrender.c:132
+msgid "Unknown format:"
+msgstr "Neznámý formát:"
 
-#: ../src/lasemrender.c:256
+#: ../src/lasemrender.c:172
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Není známo, jaký použít formát. Zadejte prosím buď formát (-f) nebo název "
+"vstupního souboru (-o)"
+
+#: ../src/lasemrender.c:262
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "Nelze načíst „%s“\n"
+msgid "Can't load '%s'"
+msgstr "Nelze načíst „%s“"
