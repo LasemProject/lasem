@@ -85,8 +85,10 @@ render_test (gconstpointer user_data)
 
 		if (cairo_status (cairo) != CAIRO_STATUS_SUCCESS) {
 			g_test_message ("cairo_status = %s", cairo_status_to_string (cairo_status (cairo)));
-			if (!g_key_file_get_boolean (suite_options, basename, "ignore-cairo-status", NULL))
+			if (!g_key_file_get_boolean (suite_options, basename, "ignore-cairo-status", NULL)) {
+				g_test_message ("incorrect cairo status");
 				g_test_fail ();
+			}
 		}
 	}
 
