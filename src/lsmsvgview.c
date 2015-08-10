@@ -2166,7 +2166,7 @@ lsm_svg_view_apply_gaussian_blur (LsmSvgView *view, const char *input, const cha
 	lsm_log_render ("[SvgView::apply_gaussian_blur] %g px,%g px",
 			std_x, std_y);
 
-	lsm_svg_filter_surface_fast_blur (input_surface, output_surface, std_x, std_y);
+	lsm_svg_filter_surface_blur (input_surface, output_surface, std_x, std_y);
 }
 
 void

@@ -54,7 +54,7 @@ void 			lsm_svg_filter_surface_blend 		(LsmSvgFilterSurface *input_1,
 								 LsmSvgFilterSurface *input_2,
 								 LsmSvgFilterSurface *output,
 								 int blending_mode);
-void 			lsm_svg_filter_surface_fast_blur 	(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
+void 			lsm_svg_filter_surface_blur 		(LsmSvgFilterSurface *input, LsmSvgFilterSurface *output,
 								 double sx, double sy);
 void 			lsm_svg_filter_surface_flood 		(LsmSvgFilterSurface *surface,
 								 double red, double green, double blue, double opacity);

@@ -21,6 +21,7 @@
  * Authors:
  *	Caleb Moore <c.moore@student.unsw.edu.au>
  * 	Emmanuel Pacaud <emmanuel@gnome.org>
+ *	Mario Klingemann <mario@quasimondo.com>
  *
  * Image manipulation routines in this file are an adaptation of the code
  * of librsvg: https://git.gnome.org/browse/librsvg
@@ -146,96 +147,270 @@ lsm_svg_filter_surface_unref (LsmSvgFilterSurface *filter_surface)
 
 G_DEFINE_BOXED_TYPE (LsmSvgFilterSurface, lsm_svg_filter_surface, lsm_svg_filter_surface_ref, lsm_svg_filter_surface_unref)
 
+/*
+ * The stack blur algorithm was invented by Mario Klingemann <mario@quasimondo.com>
+ * http://incubator.quasimondo.com/processing/fast_blur_deluxe.php
+ *
+ * Compared to Mario's original source code, the lookup table is removed as the benefit
+ * doesn't worth the memory usage in case of large radiuses. Also, the following code adds
+ * alpha channel support and different radius for vertical and horizontal directions.
+ */
+
 static void
-box_blur (cairo_surface_t *in,
-          cairo_surface_t *output,
-          int kw,
-          int kh,
-          int shiftx,
-          int shifty,
-	  int x0,
-	  int y0,
-	  int x1,
-	  int y1)
+stack_blur (cairo_surface_t *input, cairo_surface_t *output, int rx, int ry)
 {
-    gint ch;
-    gint x, y;
-    gint offset;
-    gint rowstride;
-    guchar *intermediate;
-    guchar *in_pixels;
-    guchar *output_pixels;
-    gint sum;
+	guint32 *input_pixels;
+	guint32 *output_pixels;
+	int w, h, wm, hm, wh, div;
+	int *r, *g, *b, *a;
 
-    in_pixels = cairo_image_surface_get_data (in);
-    output_pixels = cairo_image_surface_get_data (output);
+	int rsum,gsum,bsum,asum,x,y,i,p,yp,yi,yw;
+	int *vmin;
+	int divsum;
 
-    rowstride = cairo_image_surface_get_stride (in);
+	yw=yi=0;
 
-    g_return_if_fail (in_pixels != NULL);
-    g_return_if_fail (output_pixels != NULL);
+	int *stack;
+	int stackpointer;
+	int stackstart;
+	int *sir;
+	int rbs;
+	int r1;
+	int routsum,goutsum,boutsum, aoutsum;
+	int rinsum,ginsum,binsum, ainsum;
+	int rowstride;
 
-    intermediate = g_new (guchar, MAX (kw, kh));
+	g_return_if_fail (rx > 0 || ry > 0);
 
-    if (kw > 1) {
-        offset = shiftx - kw / 2;
-        for (ch = 0; ch < 4; ch++) {
-            for (y = y0; y < y1; y++) {
-                sum = 0;
-                for (x = x0; x < x0 + kw; x++) {
-                    sum += (intermediate[x % kw] = in_pixels[4 * x + y * rowstride + ch]);
-                    if (x + offset >= 0 && x + offset < x1)
-                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
-                }
-                for (x = x0 + kw; x < x1; x++) {
-                    sum -= intermediate[x % kw];
-                    sum += (intermediate[x % kw] = in_pixels[4 * x + y * rowstride + ch]);
-                    if (x + offset >= 0 && x + offset < x1)
-                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
-                }
-                for (x = x1; x < x1 + kw; x++) {
-                    sum -= intermediate[x % kw];
-                    if (x + offset >= 0 && x + offset < x1)
-                        output_pixels[4 * (x + offset) + y * rowstride + ch] = sum / kw;
-                }
-            }
-        }
-        in_pixels = output_pixels;
-    }
+	input_pixels = (guint32 *) cairo_image_surface_get_data (input);
+	output_pixels = (guint32 *) cairo_image_surface_get_data (output);
+	rowstride = cairo_image_surface_get_stride (input);
+	w = cairo_image_surface_get_width (input);
+	h = cairo_image_surface_get_height (input);
 
-    if (kh > 1) {
-        offset = shifty - kh / 2;
-        for (ch = 0; ch < 4; ch++) {
-            for (x = x0; x < x1; x++) {
-                sum = 0;
+	g_return_if_fail (cairo_image_surface_get_width (output) == w);
+	g_return_if_fail (cairo_image_surface_get_height (output) == h);
+	g_return_if_fail (cairo_image_surface_get_stride (output) == rowstride);
 
-                for (y = y0; y < y0 + kh; y++) {
-                    sum += (intermediate[y % kh] = in_pixels[4 * x + y * rowstride + ch]);
-                    if (y + offset >= 0 && y + offset < y1)
-                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
-                }
-                for (y = y0 + kh; y < y1; y++) {
-                    sum -= intermediate[y % kh];
-                    sum += (intermediate[y % kh] = in_pixels[4 * x + y * rowstride + ch]);
-                    if (y + offset >= 0 && y + offset < y1)
-                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
-                }
-                for (y = y1; y < y1 + kh; y++) {
-                    sum -= intermediate[y % kh];
-                    if (y + offset >= 0 && y + offset < y1)
-                        output_pixels[4 * x + (y + offset) * rowstride + ch] = sum / kh;
-                }
-            }
-        }
-    }
-    
-    g_free (intermediate);
+	wm = w - 1;
+	hm = h - 1;
+	wh = w * h;
+	
+	r = g_new (int, wh);
+	g = g_new (int, wh);
+	b = g_new (int, wh);
+	a = g_new (int, wh);
+
+	div = 2 * rx + 1;
+	divsum = (div + 1) >> 1; 
+	divsum *= divsum;
+	stack = g_new (int, div * 4);
+	r1 = rx + 1;
+
+	vmin = g_new (int, w);
+	for (y =0; y < h; y++) {
+		rinsum=ginsum=binsum=ainsum=routsum=goutsum=boutsum=aoutsum=rsum=gsum=bsum=asum=0;
+		yi = y * rowstride / 4;
+
+		for (i = -rx; i <= rx; i++) {
+			p = input_pixels [yi + MIN (wm, MAX (i, 0))];
+			sir = &stack [4 * (i + rx)];
+			sir[0]=(p & 0x00ff0000)>>16;
+			sir[1]=(p & 0x0000ff00)>>8;
+			sir[2]=(p & 0x000000ff);
+			sir[3]=(p & 0xff0000ff)>>24;
+			rbs= r1 - ABS (i);
+			rsum+=sir[0]*rbs;
+			gsum+=sir[1]*rbs;
+			bsum+=sir[2]*rbs;
+			asum+=sir[3]*rbs;
+			if (i>0){
+				rinsum+=sir[0];
+				ginsum+=sir[1];
+				binsum+=sir[2];
+				ainsum+=sir[3];
+			} else {
+				routsum+=sir[0];
+				goutsum+=sir[1];
+				boutsum+=sir[2];
+				aoutsum+=sir[3];
+			}
+		}
+		stackpointer=rx;
+
+		for (x=0;x<w;x++){
+
+			r[yi] = rsum / divsum;
+			g[yi] = gsum / divsum;
+			b[yi] = bsum / divsum;
+			a[yi] = asum / divsum;
+			rsum-=routsum;
+			gsum-=goutsum;
+			bsum-=boutsum;
+			asum-=aoutsum;
+
+			stackstart=stackpointer-rx+div;
+			sir = &stack [4 * (stackstart % div)];
+
+			routsum-=sir[0];
+			goutsum-=sir[1];
+			boutsum-=sir[2];
+			aoutsum-=sir[3];
+
+			if(y==0){
+				vmin[x]=MIN (x + rx + 1, wm);
+			}
+			p = input_pixels [yw + vmin[x]];
+
+			sir[0]=(p & 0x00ff0000)>>16;
+			sir[1]=(p & 0x0000ff00)>>8;
+			sir[2]=(p & 0x000000ff);
+			sir[3]=(p & 0xff000000)>>24;
+
+			rinsum+=sir[0];
+			ginsum+=sir[1];
+			binsum+=sir[2];
+			ainsum+=sir[3];
+
+			rsum+=rinsum;
+			gsum+=ginsum;
+			bsum+=binsum;
+			asum+=ainsum;
+
+			stackpointer = (stackpointer + 1) % div;
+			sir = &stack [4 * ((stackpointer) % div)];
+
+			routsum+=sir[0];
+			goutsum+=sir[1];
+			boutsum+=sir[2];
+			aoutsum+=sir[3];
+
+			rinsum-=sir[0];
+			ginsum-=sir[1];
+			binsum-=sir[2];
+			ainsum-=sir[3];
+
+			yi++;
+		}
+		yw+=w;
+	}
+	g_free (vmin);
+	g_free (stack);
+
+	div = 2 * ry + 1;
+	divsum = (div + 1) >> 1; 
+	divsum *= divsum;
+
+	stack = g_new0 (int, div * 4);
+	r1 = ry + 1;
+
+	vmin = g_new0 (int, h);
+	for (x=0;x<w;x++){
+		rinsum=ginsum=binsum=ainsum=routsum=goutsum=boutsum=aoutsum=rsum=gsum=bsum=asum=0;
+		yp=-ry*w;
+		for(i=-ry;i<=ry;i++){
+			yi= MAX(0,yp)+x;
+
+			sir = &stack [4 * (i + ry)];
+
+			sir[0]=r[yi];
+			sir[1]=g[yi];
+			sir[2]=b[yi];
+			sir[3]=a[yi];
+
+			rbs=r1 - ABS(i);
+
+			rsum+=r[yi]*rbs;
+			gsum+=g[yi]*rbs;
+			bsum+=b[yi]*rbs;
+			asum+=a[yi]*rbs;
+
+			if (i>0){
+				rinsum+=sir[0];
+				ginsum+=sir[1];
+				binsum+=sir[2];
+				ainsum+=sir[3];
+			} else {
+				routsum+=sir[0];
+				goutsum+=sir[1];
+				boutsum+=sir[2];
+				aoutsum+=sir[3];
+			}
+
+			if(i<hm){
+				yp+=w;
+			}
+		}
+		yi=x;
+		stackpointer=ry;
+		for (y=0;y<h;y++){
+			output_pixels [yi] = 
+				((asum / divsum) << 24) |
+				((rsum / divsum) << 16) |
+				((gsum / divsum) << 8) |
+				(bsum / divsum);
+			rsum-=routsum;
+			gsum-=goutsum;
+			bsum-=boutsum;
+			asum-=aoutsum;
+
+			stackstart=stackpointer-ry+div;
+			sir = &stack [4 * (stackstart % div)];
+
+			routsum-=sir[0];
+			goutsum-=sir[1];
+			boutsum-=sir[2];
+			aoutsum-=sir[3];
+
+			if(x==0) {
+				vmin[y] = MIN(y+r1,hm)*w;
+			}
+			p=x+vmin[y];
+
+			sir[0]=r[p];
+			sir[1]=g[p];
+			sir[2]=b[p];
+			sir[3]=a[p];
+
+			rinsum+=sir[0];
+			ginsum+=sir[1];
+			binsum+=sir[2];
+			ainsum+=sir[3];
+
+			rsum+=rinsum;
+			gsum+=ginsum;
+			bsum+=binsum;
+			asum+=ainsum;
+
+			stackpointer=(stackpointer+1)%div;
+			sir = &stack[4 * stackpointer];
+
+			routsum+=sir[0];
+			goutsum+=sir[1];
+			boutsum+=sir[2];
+			aoutsum+=sir[3];
+
+			rinsum-=sir[0];
+			ginsum-=sir[1];
+			binsum-=sir[2];
+			ainsum-=sir[3];
+
+			yi+= rowstride / 4;
+		}
+	}
+	g_free (vmin);
+	g_free (stack);
+
+	g_free (r);
+	g_free (g);
+	g_free (b);
+	g_free (a);
 }
 
 void
-lsm_svg_filter_surface_fast_blur (LsmSvgFilterSurface *input,
-				  LsmSvgFilterSurface *output,
-				  double sx, double sy)
+lsm_svg_filter_surface_blur (LsmSvgFilterSurface *input,
+			     LsmSvgFilterSurface *output,
+			     double sx, double sy)
 {
 	int kx, ky;
 	int width, height;
@@ -282,9 +457,7 @@ lsm_svg_filter_surface_fast_blur (LsmSvgFilterSurface *input,
 		} else
 			blur_surface = output->surface;
 
-		box_blur (input->surface, blur_surface, kx, ky, 0, 0, x1, y1, x2, y2);
-		box_blur (blur_surface, blur_surface, kx, ky, (kx + 1) % 2, (ky + 1) % 2, x1, y1, x2, y2);
-		box_blur (blur_surface, blur_surface, kx + (kx + 1) % 2, ky + (ky + 1) % 2, 0, 0, x1, y1, x2, y2);
+		stack_blur (input->surface, blur_surface, kx, ky);
 
 		cairo_surface_mark_dirty (blur_surface);
 
