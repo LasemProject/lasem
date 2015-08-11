@@ -14,7 +14,7 @@ noinst_PROGRAMS = lsm-test
 lsm_test_SOURCES = lsmtest.c
 lsm_test_LDADD = $(test_progs_ldadd)
 
-TEST_PROGS += dom str suite
+TEST_PROGS += dom str filter suite
 
 noinst_PROGRAMS += $(TEST_PROGS)
 
@@ -23,6 +23,9 @@ str_LDADD = $(test_progs_ldadd)
 
 dom_SOURCES = dom.c
 dom_LDADD = $(test_progs_ldadd)
+
+filter_SOURCES = filter.c
+filter_LDADD = $(test_progs_ldadd)
 
 suite_SOURCES = suite.c
 suite_LDADD = $(test_progs_ldadd)

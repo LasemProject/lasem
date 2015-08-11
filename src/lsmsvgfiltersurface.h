@@ -42,7 +42,6 @@ LsmSvgFilterSurface * 	lsm_svg_filter_surface_new 		(const char *name, unsigned 
 LsmSvgFilterSurface * 	lsm_svg_filter_surface_new_with_content	(const char *name, cairo_surface_t *surface, const LsmBox *subregion);
 LsmSvgFilterSurface *	lsm_svg_filter_surface_new_similar	(const char *name, LsmSvgFilterSurface *model, const LsmBox *subregion);
 
-void 			lsm_svg_filter_surface_copy_data 	(LsmSvgFilterSurface *to, LsmSvgFilterSurface *from);
 const char * 		lsm_svg_filter_surface_get_name 	(LsmSvgFilterSurface *surface);
 cairo_surface_t *	lsm_svg_filter_surface_get_cairo_surface(LsmSvgFilterSurface *surface);
 const LsmBox *		lsm_svg_filter_surface_get_subregion 	(LsmSvgFilterSurface *surface);
