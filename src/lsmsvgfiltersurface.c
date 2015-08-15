@@ -608,14 +608,14 @@ lsm_svg_filter_surface_tile (LsmSvgFilterSurface *input, LsmSvgFilterSurface *ou
 
 	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, input->subregion.width, input->subregion.height);
 	cairo = cairo_create (surface);
-	cairo_set_source_surface (cairo, input->surface, input->subregion.x, input->subregion.y);
+	cairo_set_source_surface (cairo, input->surface, -input->subregion.x, -input->subregion.y);
 	cairo_paint (cairo);
 	cairo_destroy (cairo);
 
 	cairo = cairo_create (output->surface);
 	cairo_rectangle (cairo, output->subregion.x, output->subregion.y, output->subregion.width, output->subregion.height);
 	cairo_clip (cairo);
-	cairo_set_source_surface (cairo, surface, 0, 0);
+	cairo_set_source_surface (cairo, surface, input->subregion.x, input->subregion.y);
 	pattern = cairo_get_source (cairo);
 	cairo_pattern_set_extend (pattern, CAIRO_EXTEND_REPEAT);
 	cairo_paint (cairo);
