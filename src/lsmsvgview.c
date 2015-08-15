@@ -2323,8 +2323,6 @@ lsm_svg_view_apply_turbulence (LsmSvgView *view, const char *output, const LsmBo
 			subregion_px.width, subregion_px.height,
 			subregion_px.x, subregion_px.y);
 
-	cairo_user_to_device_distance (view->dom_view.cairo, &base_frequency_x, &base_frequency_y);
-
 	lsm_svg_filter_surface_turbulence (output_surface, base_frequency_x, base_frequency_y, n_octaves, seed, stitch_tiles, type);
 }
 
