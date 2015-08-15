@@ -47,6 +47,10 @@ similar (void)
 static void
 operations (LsmSvgFilterSurface *input_1, LsmSvgFilterSurface *input_2, LsmSvgFilterSurface *output)
 {
+	cairo_matrix_t transform;
+
+	cairo_matrix_init_identity (&transform);
+
 	lsm_svg_filter_surface_alpha (input_1, output);
 	lsm_svg_filter_surface_blend (input_1, input_2, output, LSM_SVG_BLENDING_MODE_XOR);
 	lsm_svg_filter_surface_blur (input_1, output, 0.0, 0.0);
@@ -63,7 +67,8 @@ operations (LsmSvgFilterSurface *input_1, LsmSvgFilterSurface *input_2, LsmSvgFi
 	lsm_svg_filter_surface_convolve_matrix (input_1, output, 0, 0, 0, NULL, 1.0, 0.0, 0, 0, LSM_SVG_EDGE_MODE_NONE, TRUE);
 	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_ERODE, 1, 1);
 	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_DILATE, 1, 1);
-	lsm_svg_filter_surface_turbulence (output, 10.0, 10.0, 2, 1.0, LSM_SVG_STITCH_TILES_STITCH, LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE);
+	lsm_svg_filter_surface_turbulence (output, 10.0, 10.0, 2, 1.0, LSM_SVG_STITCH_TILES_STITCH, LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE,
+					   &transform);
 }
 
 static void

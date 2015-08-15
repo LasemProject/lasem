@@ -2311,6 +2311,7 @@ lsm_svg_view_apply_turbulence (LsmSvgView *view, const char *output, const LsmBo
 	LsmSvgFilterSurface *output_surface;
 	LsmSvgFilterSurface *input_surface;
 	LsmBox subregion_px;
+	cairo_matrix_t transform;
 
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 
@@ -2323,7 +2324,10 @@ lsm_svg_view_apply_turbulence (LsmSvgView *view, const char *output, const LsmBo
 			subregion_px.width, subregion_px.height,
 			subregion_px.x, subregion_px.y);
 
-	lsm_svg_filter_surface_turbulence (output_surface, base_frequency_x, base_frequency_y, n_octaves, seed, stitch_tiles, type);
+	cairo_get_matrix (view->dom_view.cairo, &transform);
+
+	lsm_svg_filter_surface_turbulence (output_surface, base_frequency_x, base_frequency_y, n_octaves, seed, stitch_tiles, type,
+					   &transform);
 }
 
 void

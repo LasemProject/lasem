@@ -1292,7 +1292,8 @@ void
 lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 				   double base_frequency_x, double base_frequency_y,
 				   int n_octaves, double seed,
-				   LsmSvgStitchTiles stitch_tiles, LsmSvgTurbulenceType type)
+				   LsmSvgStitchTiles stitch_tiles, LsmSvgTurbulenceType type,
+				   const cairo_matrix_t *transform)
 {
 	LsmSvgTurbulence turbulence;
 	cairo_t *cairo;
@@ -1303,6 +1304,11 @@ lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 	cairo_matrix_t affine;
 
 	g_return_if_fail (output != NULL);
+	g_return_if_fail (transform != NULL);
+
+	affine = *transform;
+	if (cairo_matrix_invert (&affine) != CAIRO_STATUS_SUCCESS)
+		return;
 
 	width = cairo_image_surface_get_width (output->surface);
 	height = cairo_image_surface_get_height (output->surface);
@@ -1319,8 +1325,6 @@ lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 	x2 = CLAMP (output->subregion.x + output->subregion.width, 0, width);
 	y1 = CLAMP (output->subregion.y, 0, height);
 	y2 = CLAMP (output->subregion.y + output->subregion.height, 0, height);
-
-	cairo_matrix_init_identity (&affine);
 
 	turbulence.base_frequency_x = base_frequency_x;
 	turbulence.base_frequency_y = base_frequency_y;

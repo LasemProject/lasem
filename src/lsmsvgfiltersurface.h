@@ -78,7 +78,8 @@ void 			lsm_svg_filter_surface_specular_lighting(LsmSvgFilterSurface *output_sur
 void			lsm_svg_filter_surface_turbulence 	(LsmSvgFilterSurface *output_surface,
 								 double base_frequency_x, double base_frequency_y,
 								 int n_octaves, double seed,
-								 LsmSvgStitchTiles stitch_tiles, LsmSvgTurbulenceType type);
+								 LsmSvgStitchTiles stitch_tiles, LsmSvgTurbulenceType type,
+								 const cairo_matrix_t *transform);
 
 G_END_DECLS
 
