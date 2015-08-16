@@ -906,6 +906,169 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 	cairo_destroy (cairo);
 }
 
+static guchar
+_get_interp_pixel (guchar * src, gdouble ox, gdouble oy, guchar ch,
+		   gint x1, gint x2, gint y1, gint y2,
+		   guint rowstride)
+{
+	double xmod, ymod;
+	double dist1, dist2, dist3, dist4;
+	double c, c1, c2, c3, c4;
+	double fox, foy, cox, coy;
+
+	xmod = fmod (ox, 1.0);
+	ymod = fmod (oy, 1.0);
+
+	dist1 = (1 - xmod) * (1 - ymod);
+	dist2 = (xmod) * (1 - ymod);
+	dist3 = (xmod) * (ymod);
+	dist4 = (1 - xmod) * (ymod);
+
+	fox = floor (ox);
+	foy = floor (oy);
+	cox = ceil (ox);
+	coy = ceil (oy);
+
+	if (fox <= x1 || fox >= x2 ||
+	    foy <= y1 || foy >= y2)
+		c1 = 0;
+	else
+		c1 = src[(guint) foy * rowstride + (guint) fox * 4 + ch];
+
+	if (cox <= x1 || cox >= x2 ||
+	    foy <= y1 || foy >= y2)
+		c2 = 0;
+	else
+		c2 = src[(guint) foy * rowstride + (guint) cox * 4 + ch];
+
+	if (cox <= x1 || cox >= x2 ||
+	    coy <= y1 || coy >= y2)
+		c3 = 0;
+	else
+		c3 = src[(guint) coy * rowstride + (guint) cox * 4 + ch];
+
+	if (fox <= x1 || fox >= x2 ||
+	    coy <= y1 || coy >= y2)
+		c4 = 0;
+	else
+		c4 = src[(guint) coy * rowstride + (guint) fox * 4 + ch];
+
+	c = (c1 * dist1 + c2 * dist2 + c3 * dist3 + c4 * dist4) / (dist1 + dist2 + dist3 + dist4);
+
+	return (guchar) c;
+}
+
+void
+lsm_svg_filter_surface_displacement_map (LsmSvgFilterSurface *input_1,
+					 LsmSvgFilterSurface *input_2,
+					 LsmSvgFilterSurface *output,
+					 double x_scale,
+					 double y_scale,
+					 LsmSvgChannelSelector x_channel_selector,
+					 LsmSvgChannelSelector y_channel_selector)
+{
+	guchar ch, xch, ych;
+	gint x, y, x1, x2, y1, y2;
+	double ox, oy;
+	gint rowstride, height, width;
+	guchar *in_pixels;
+	guchar *in2_pixels;
+	guchar *output_pixels;
+	cairo_t *cairo;
+
+	g_return_if_fail (input_1 != NULL);
+	g_return_if_fail (input_2 != NULL);
+	g_return_if_fail (output != NULL);
+
+	height = cairo_image_surface_get_height (input_1->surface);
+	width = cairo_image_surface_get_width (input_1->surface);
+
+	if (width != cairo_image_surface_get_width (input_2->surface) ||
+	    height != cairo_image_surface_get_height (input_2->surface))
+		return;
+
+	if (width != cairo_image_surface_get_width (output->surface) ||
+	    height != cairo_image_surface_get_height (output->surface))
+		return;
+
+	cairo_surface_flush (input_1->surface);
+	cairo_surface_flush (input_2->surface);
+
+	cairo = cairo_create (output->surface);
+
+	in_pixels = cairo_image_surface_get_data (input_1->surface);
+	in2_pixels = cairo_image_surface_get_data (input_2->surface);
+
+	rowstride = cairo_image_surface_get_stride (input_1->surface);
+
+	output_pixels = cairo_image_surface_get_data (output->surface);
+
+	switch (x_channel_selector) {
+		case LSM_SVG_CHANNEL_SELECTOR_RED:
+			xch = 0;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_GREEN:
+			xch = 1;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_BLUE:
+			xch = 2;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_ALPHA:
+			xch = 3;
+			break;
+		default:
+			xch = 4;
+	};
+
+	switch (y_channel_selector) {
+		case LSM_SVG_CHANNEL_SELECTOR_RED:
+			ych = 0;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_GREEN:
+			ych = 1;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_BLUE:
+			ych = 2;
+			break;
+		case LSM_SVG_CHANNEL_SELECTOR_ALPHA:
+			ych = 3;
+			break;
+		default:
+			ych = 4;
+	};
+
+	x1 = CLAMP (input_1->subregion.x, 0, width);
+	x2 = CLAMP (input_1->subregion.x + input_1->subregion.width, 0, width);
+	y1 = CLAMP (input_1->subregion.y, 0, height);
+	y2 = CLAMP (input_1->subregion.y + input_1->subregion.height, 0, height);
+
+	xch = channelmap[xch];
+	ych = channelmap[ych];
+	for (y = y1; y < y2; y++)
+		for (x = x1; x < x2; x++) {
+			if (xch != 4)
+				ox = x + x_scale *
+					((double) in2_pixels[y * rowstride + x * 4 + xch] / 255.0 - 0.5);
+			else
+				ox = x;
+
+			if (ych != 4)
+				oy = y + y_scale *
+					((double) in2_pixels[y * rowstride + x * 4 + ych] / 255.0 - 0.5);
+			else
+				oy = y;
+
+			for (ch = 0; ch < 4; ch++) {
+				output_pixels[y * rowstride + x * 4 + ch] =
+					_get_interp_pixel (in_pixels, ox, oy, ch, x1, x2, y1, y2, rowstride);
+			}
+		}
+
+	cairo_surface_mark_dirty (output->surface);
+
+	cairo_destroy (cairo);
+}
+
 void
 lsm_svg_filter_surface_specular_lighting (LsmSvgFilterSurface *output,
 					  double surface_scale, double specular_constant, double specular_exponent,

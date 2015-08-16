@@ -68,6 +68,12 @@ void 			lsm_svg_filter_surface_convolve_matrix 	(LsmSvgFilterSurface *input, Lsm
 								 unsigned n_values, const double *values,
 								 double divisor, double bias, unsigned target_x, unsigned target_y,
 								 LsmSvgEdgeMode edge_mode, gboolean preserve_alpha);
+void			lsm_svg_filter_surface_displacement_map (LsmSvgFilterSurface *input_1,
+								 LsmSvgFilterSurface *input_2,
+								 LsmSvgFilterSurface *output,
+								 double x_scale, double y_scale,
+								 LsmSvgChannelSelector x_channel_selector,
+								 LsmSvgChannelSelector y_channel_selector);
 void			lsm_svg_filter_surface_image 		(LsmSvgFilterSurface *output, GdkPixbuf *pixbuf,
 								 LsmSvgPreserveAspectRatio preserve_aspect_ratio);
 void 			lsm_svg_filter_surface_morphology 	(LsmSvgFilterSurface *input_surface, LsmSvgFilterSurface *output_surface,

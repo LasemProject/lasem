@@ -1455,3 +1455,27 @@ const LsmTraitClass lsm_svg_turbulence_type_trait_class = {
 	.from_string = lsm_svg_turbulence_type_trait_from_string,
 	.to_string = lsm_svg_turbulence_type_trait_to_string
 };
+
+static gboolean
+lsm_svg_channel_selector_trait_from_string (LsmTrait *abstract_trait, char *string)
+{
+	LsmSvgChannelSelector *trait = (LsmSvgChannelSelector *) abstract_trait;
+
+	*trait = lsm_svg_channel_selector_from_string (string);
+
+	return *trait >= 0;
+}
+
+static char *
+lsm_svg_channel_selector_trait_to_string (LsmTrait *abstract_trait)
+{
+	LsmSvgChannelSelector *trait = (LsmSvgChannelSelector *) abstract_trait;
+
+	return g_strdup (lsm_svg_channel_selector_to_string (*trait));
+}
+
+const LsmTraitClass lsm_svg_channel_selector_trait_class = {
+	.size = sizeof (LsmSvgChannelSelector),
+	.from_string = lsm_svg_channel_selector_trait_from_string,
+	.to_string = lsm_svg_channel_selector_trait_to_string
+};

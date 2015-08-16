@@ -649,3 +649,26 @@ lsm_svg_turbulence_type_from_string (const char *string)
 	return lsm_enum_value_from_string (string, lsm_svg_turbulence_type_strings,
 					   G_N_ELEMENTS (lsm_svg_turbulence_type_strings));
 }
+
+static const char *lsm_svg_channel_selector_strings[] = {
+	"R",
+	"G",
+	"B",
+	"A"
+};
+
+const char *
+lsm_svg_channel_selector_to_string (LsmSvgChannelSelector channel_selector)
+{
+	if (channel_selector < 0 || channel_selector > LSM_SVG_CHANNEL_SELECTOR_ALPHA)
+		return NULL;
+
+	return lsm_svg_channel_selector_strings[channel_selector];
+}
+
+LsmSvgChannelSelector
+lsm_svg_channel_selector_from_string (const char *string)
+{
+	return lsm_enum_value_from_string (string, lsm_svg_channel_selector_strings,
+					   G_N_ELEMENTS (lsm_svg_channel_selector_strings));
+}

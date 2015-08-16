@@ -33,6 +33,7 @@
 #include <lsmsvgfiltercolormatrix.h>
 #include <lsmsvgfiltercomposite.h>
 #include <lsmsvgfilterconvolvematrix.h>
+#include <lsmsvgfilterdisplacementmap.h>
 #include <lsmsvgfilterflood.h>
 #include <lsmsvgfiltergaussianblur.h>
 #include <lsmsvgfilterimage.h>
@@ -163,6 +164,8 @@ _create_element (LsmDomDocument *document, const char *tag_name)
 		node = lsm_svg_filter_color_matrix_new ();
 	else if (strcmp (tag_name, "feConvolveMatrix") == 0)
 		node = lsm_svg_filter_convolve_matrix_new ();
+	else if (strcmp (tag_name, "feDisplacementMap") == 0)
+		node = lsm_svg_filter_displacement_map_new ();
 	else if (strcmp (tag_name, "feFlood") == 0)
 		node = lsm_svg_filter_flood_new ();
 	else if (strcmp (tag_name, "feGaussianBlur") == 0)

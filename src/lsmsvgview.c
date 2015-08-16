@@ -2222,6 +2222,40 @@ lsm_svg_view_apply_color_matrix (LsmSvgView *view, const char *input, const char
 	lsm_svg_filter_surface_color_matrix (input_surface, output_surface, type, n_values, values);
 }
 
+void
+lsm_svg_view_apply_displacement_map (LsmSvgView *view, const char *input_1, const char *input_2, const char *output,
+				     const LsmBox *subregion,
+				     double scale, LsmSvgChannelSelector x_channel_selector, LsmSvgChannelSelector y_channel_selector)
+{
+	LsmSvgFilterSurface *output_surface;
+	LsmSvgFilterSurface *input_1_surface;
+	LsmSvgFilterSurface *input_2_surface;
+	LsmBox subregion_px;
+	cairo_matrix_t transform;
+	double x_scale, y_scale;
+
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+
+	input_1_surface = _get_filter_surface (view, input_1);
+	input_2_surface = _get_filter_surface (view, input_2);
+
+	if (input_1_surface == NULL || input_2_surface == NULL) {
+		lsm_warning_render ("[SvgView::apply_displacement_map] Inputs '%s' or '%s' not found", input_1, input_2);
+		return;
+	}
+
+	lsm_cairo_box_user_to_device (view->dom_view.cairo, &subregion_px, subregion);
+	output_surface = _create_filter_surface (view, output, input_1_surface, &subregion_px);
+
+	cairo_get_matrix (view->dom_view.cairo, &transform);
+
+	x_scale = transform.xx * scale;
+	y_scale = transform.yy * scale;
+
+	lsm_svg_filter_surface_displacement_map (input_1_surface, input_2_surface, output_surface, x_scale, y_scale,
+						 x_channel_selector, y_channel_selector);
+}
+
 void 
 lsm_svg_view_apply_morphology (LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion,
 			       LsmSvgMorphologyOperator op, double radius)

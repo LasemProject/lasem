@@ -175,6 +175,10 @@ void 		lsm_svg_view_apply_offset 		(LsmSvgView *view, const char *input, const c
 void 		lsm_svg_view_apply_color_matrix 	(LsmSvgView *view, const char *input, const char *output,
 							 const LsmBox *subregion, LsmSvgColorFilterType type,
 							 unsigned int n_values, const double *values);
+void		lsm_svg_view_apply_displacement_map 	(LsmSvgView *view, const char *input_1, const char *input_2, const char *output,
+							 const LsmBox *subregion, double scale,
+							 LsmSvgChannelSelector x_channel_selector,
+							 LsmSvgChannelSelector y_channel_selector);
 void 		lsm_svg_view_apply_merge 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
 void 		lsm_svg_view_apply_tile 		(LsmSvgView *view, const char *input, const char *output, const LsmBox *subregion);
 void		lsm_svg_view_apply_image 		(LsmSvgView *view, const char *output, const LsmBox *subregion,

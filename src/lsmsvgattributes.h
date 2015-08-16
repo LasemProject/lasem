@@ -158,6 +158,11 @@ typedef struct {
 	LsmSvgTurbulenceType value;
 } LsmSvgTurbulenceTypeAttribute;
 
+typedef struct {
+	LsmAttribute base;
+	LsmSvgChannelSelector value;
+} LsmSvgChannelSelectorAttribute;
+
 G_END_DECLS
 
 #endif

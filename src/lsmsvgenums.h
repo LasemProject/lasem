@@ -400,6 +400,17 @@ typedef enum {
 const char * 		lsm_svg_turbulence_type_to_string 	(LsmSvgTurbulenceType turbulence_type);
 LsmSvgTurbulenceType	lsm_svg_turbulence_type_from_string	(const char *string);
 
+typedef enum {
+	LSM_SVG_CHANNEL_SELECTOR_ERROR = -1,
+	LSM_SVG_CHANNEL_SELECTOR_RED,
+	LSM_SVG_CHANNEL_SELECTOR_GREEN,
+	LSM_SVG_CHANNEL_SELECTOR_BLUE,
+	LSM_SVG_CHANNEL_SELECTOR_ALPHA
+} LsmSvgChannelSelector;
+
+const char * 		lsm_svg_channel_selector_to_string 	(LsmSvgChannelSelector channel_selector);
+LsmSvgChannelSelector	lsm_svg_channel_selector_from_string	(const char *string);
+
 G_END_DECLS
 
 #endif

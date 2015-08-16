@@ -57,16 +57,22 @@ operations (LsmSvgFilterSurface *input_1, LsmSvgFilterSurface *input_2, LsmSvgFi
 	lsm_svg_filter_surface_blur (input_1, output, 1.0, 1.0);
 	lsm_svg_filter_surface_blur (input_1, output, 10.0, 10.0);
 	lsm_svg_filter_surface_blur (input_1, output, 1000.0, 1000.0);
+	lsm_svg_filter_surface_color_matrix (input_1, output, LSM_SVG_COLOR_FILTER_TYPE_HUE_ROTATE, 0, NULL);
+	lsm_svg_filter_surface_convolve_matrix (input_1, output, 0, 0, 0, NULL, 1.0, 0.0, 0, 0, LSM_SVG_EDGE_MODE_NONE, TRUE);
+	lsm_svg_filter_surface_displacement_map (input_1, input_2, output, 2.0, 2.0,
+						 LSM_SVG_CHANNEL_SELECTOR_RED, LSM_SVG_CHANNEL_SELECTOR_GREEN);
+	lsm_svg_filter_surface_displacement_map (input_1, input_2, output, 2.0, 3.0,
+						 LSM_SVG_CHANNEL_SELECTOR_BLUE, LSM_SVG_CHANNEL_SELECTOR_ALPHA);
+	lsm_svg_filter_surface_displacement_map (input_1, input_2, output, 0.0, 0.0,
+						 LSM_SVG_CHANNEL_SELECTOR_ALPHA, LSM_SVG_CHANNEL_SELECTOR_ALPHA);
 	lsm_svg_filter_surface_flood (output, 1.0, 0.0, 0.5, 0.25);
+	lsm_svg_filter_surface_merge (input_1, output);
+	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_ERODE, 1, 1);
+	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_DILATE, 1, 1);
 	lsm_svg_filter_surface_offset (input_1, output, 10, 10);
 	lsm_svg_filter_surface_offset (input_1, output, -10, -10);
 	lsm_svg_filter_surface_offset (input_1, output, -1000, -1000);
-	lsm_svg_filter_surface_merge (input_1, output);
 	lsm_svg_filter_surface_tile (input_1, output);
-	lsm_svg_filter_surface_color_matrix (input_1, output, LSM_SVG_COLOR_FILTER_TYPE_HUE_ROTATE, 0, NULL);
-	lsm_svg_filter_surface_convolve_matrix (input_1, output, 0, 0, 0, NULL, 1.0, 0.0, 0, 0, LSM_SVG_EDGE_MODE_NONE, TRUE);
-	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_ERODE, 1, 1);
-	lsm_svg_filter_surface_morphology (input_1, output, LSM_SVG_MORPHOLOGY_OPERATOR_DILATE, 1, 1);
 	lsm_svg_filter_surface_turbulence (output, 10.0, 10.0, 2, 1.0, LSM_SVG_STITCH_TILES_STITCH, LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE,
 					   &transform);
 }
@@ -112,12 +118,12 @@ processing_null (void)
 {
 	unsigned int i;
 
-	for (i = 0; i < 17; i++)
+	for (i = 0; i < 20; i++)
 		g_test_expect_message ("Lasem", G_LOG_LEVEL_CRITICAL, "*assertion*NULL*failed");
 
 	operations (NULL, NULL, NULL);
 
-	for (i = 0; i < 17; i++)
+	for (i = 0; i < 20; i++)
 		g_test_assert_expected_messages ();
 }
 

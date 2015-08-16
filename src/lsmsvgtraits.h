@@ -85,6 +85,7 @@ typedef struct {
 extern const LsmTraitClass lsm_svg_angle_trait_class;
 extern const LsmTraitClass lsm_svg_blending_mode_trait_class;
 extern const LsmTraitClass lsm_svg_enable_background_trait_class;
+extern const LsmTraitClass lsm_svg_channel_selector_trait_class;
 extern const LsmTraitClass lsm_svg_color_trait_class;
 extern const LsmTraitClass lsm_svg_color_filter_type_trait_class;
 extern const LsmTraitClass lsm_svg_comp_op_trait_class;

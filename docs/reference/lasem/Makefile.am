@@ -155,6 +155,7 @@ IGNORE_HFILES=\
 	lsmsvgfiltercolormatrix.h		\
 	lsmsvgfiltercomposite.h			\
 	lsmsvgfilterconvolvematrix.h		\
+	lsmsvgfilterdisplacementmap.h		\
 	lsmsvgfilterflood.h			\
 	lsmsvgfiltergaussianblur.h		\
 	lsmsvgfilterimage.h			\
