@@ -801,7 +801,6 @@ lsm_svg_filter_surface_convolve_matrix (LsmSvgFilterSurface *input, LsmSvgFilter
 	double kval, sum;
 	guchar sval;
 	int sx, sy, kx, ky;
-	/* TODO d */
 	double dx = 1.0, dy = 1.0;
 	int umch, i, j;
 	gint tempresult;
@@ -1066,15 +1065,16 @@ lsm_svg_filter_surface_morphology (LsmSvgFilterSurface *input, LsmSvgFilterSurfa
    To test: the algorithm should produce the result 1043618065
    as the 10,000th generated number if the original seed is 1.
 */
-#define feTurbulence_RAND_m 2147483647  /* 2**31 - 1 */
-#define feTurbulence_RAND_a 16807       /* 7**5; primitive root of m */
-#define feTurbulence_RAND_q 127773      /* m / a */
-#define feTurbulence_RAND_r 2836        /* m % a */
-#define feTurbulence_BSize 0x100
-#define feTurbulence_BM 0xff
-#define feTurbulence_PerlinN 0x1000
-#define feTurbulence_NP 12      /* 2^PerlinN */
-#define feTurbulence_NM 0xfff
+
+#define LSM_SVG_TURBULENCE_RAND_m 	2147483647  /* 2**31 - 1 */
+#define LSM_SVG_TURBULENCE_RAND_a 	16807       /* 7**5; primitive root of m */
+#define LSM_SVG_TURBULENCE_RAND_q 	127773      /* m / a */
+#define LSM_SVG_TURBULENCE_RAND_r 	2836        /* m % a */
+#define LSM_SVG_TURBULENCE_BSize 	0x100
+#define LSM_SVG_TURBULENCE_BM 		0xff
+#define LSM_SVG_TURBULENCE_PerlinN 	0x1000
+#define LSM_SVG_TURBULENCE_NP 		12      /* 2^PerlinN */
+#define LSM_SVG_TURBULENCE_NM 		0xfff
 
 typedef struct {
 	double base_frequency_x;
@@ -1084,59 +1084,58 @@ typedef struct {
 	LsmSvgStitchTiles stitch_tiles;
 	LsmSvgTurbulenceType type;
 
-	int uLatticeSelector[feTurbulence_BSize + feTurbulence_BSize + 2];
-	double fGradient[4][feTurbulence_BSize + feTurbulence_BSize + 2][2];
+	int uLatticeSelector[LSM_SVG_TURBULENCE_BSize + LSM_SVG_TURBULENCE_BSize + 2];
+	double fGradient[4][LSM_SVG_TURBULENCE_BSize + LSM_SVG_TURBULENCE_BSize + 2][2];
 } LsmSvgTurbulence;
 
-struct feTurbulence_StitchInfo {
+typedef struct  {
 	int nWidth;                 /* How much to subtract to wrap for stitching. */
 	int nHeight;
 	int nWrapX;                 /* Minimum value to wrap. */
 	int nWrapY;
-};
+} LsmSvgTurbulenceStitchInfo;
 
 static long
-feTurbulence_setup_seed (int lSeed)
+_turbulence_setup_seed (int lSeed)
 {
 	if (lSeed <= 0)
-		lSeed = -(lSeed % (feTurbulence_RAND_m - 1)) + 1;
-	if (lSeed > feTurbulence_RAND_m - 1)
-		lSeed = feTurbulence_RAND_m - 1;
+		lSeed = -(lSeed % (LSM_SVG_TURBULENCE_RAND_m - 1)) + 1;
+	if (lSeed > LSM_SVG_TURBULENCE_RAND_m - 1)
+		lSeed = LSM_SVG_TURBULENCE_RAND_m - 1;
 	return lSeed;
 }
 
 static long
-feTurbulence_random (int lSeed)
+_turbulence_random (int lSeed)
 {
 	long result;
 
 	result =
-		feTurbulence_RAND_a * (lSeed % feTurbulence_RAND_q) -
-		feTurbulence_RAND_r * (lSeed / feTurbulence_RAND_q);
+		LSM_SVG_TURBULENCE_RAND_a * (lSeed % LSM_SVG_TURBULENCE_RAND_q) -
+		LSM_SVG_TURBULENCE_RAND_r * (lSeed / LSM_SVG_TURBULENCE_RAND_q);
 	if (result <= 0)
-		result += feTurbulence_RAND_m;
+		result += LSM_SVG_TURBULENCE_RAND_m;
 	return result;
 }
 
 static void
-feTurbulence_init (LsmSvgTurbulence *turbulence)
+_turbulence_init (LsmSvgTurbulence *turbulence)
 {
 	double s;
 	int i, j, k, lSeed;
 
-	lSeed = feTurbulence_setup_seed (turbulence->seed);
+	lSeed = _turbulence_setup_seed (turbulence->seed);
 	for (k = 0; k < 4; k++) {
-		for (i = 0; i < feTurbulence_BSize; i++) {
+		for (i = 0; i < LSM_SVG_TURBULENCE_BSize; i++) {
 			turbulence->uLatticeSelector[i] = i;
 			for (j = 0; j < 2; j++)
 				turbulence->fGradient[k][i][j] =
 					(double) (((lSeed =
-						    feTurbulence_random (lSeed)) % (feTurbulence_BSize +
-										    feTurbulence_BSize)) -
-						  feTurbulence_BSize) / feTurbulence_BSize;
-			s = (double) (sqrt
-				      (turbulence->fGradient[k][i][0] * turbulence->fGradient[k][i][0] +
-				       turbulence->fGradient[k][i][1] * turbulence->fGradient[k][i][1]));
+						    _turbulence_random (lSeed)) % (LSM_SVG_TURBULENCE_BSize +
+										   LSM_SVG_TURBULENCE_BSize)) -
+						  LSM_SVG_TURBULENCE_BSize) / LSM_SVG_TURBULENCE_BSize;
+			s = (double) (sqrt (turbulence->fGradient[k][i][0] * turbulence->fGradient[k][i][0] +
+					    turbulence->fGradient[k][i][1] * turbulence->fGradient[k][i][1]));
 			turbulence->fGradient[k][i][0] /= s;
 			turbulence->fGradient[k][i][1] /= s;
 		}
@@ -1145,37 +1144,35 @@ feTurbulence_init (LsmSvgTurbulence *turbulence)
 	while (--i) {
 		k = turbulence->uLatticeSelector[i];
 		turbulence->uLatticeSelector[i] = turbulence->uLatticeSelector[j =
-			(lSeed =
-			 feTurbulence_random (lSeed)) %
-			feTurbulence_BSize];
+			(lSeed = _turbulence_random (lSeed)) % LSM_SVG_TURBULENCE_BSize];
 		turbulence->uLatticeSelector[j] = k;
 	}
 
-	for (i = 0; i < feTurbulence_BSize + 2; i++) {
-		turbulence->uLatticeSelector[feTurbulence_BSize + i] = turbulence->uLatticeSelector[i];
+	for (i = 0; i < LSM_SVG_TURBULENCE_BSize + 2; i++) {
+		turbulence->uLatticeSelector[LSM_SVG_TURBULENCE_BSize + i] = turbulence->uLatticeSelector[i];
 		for (k = 0; k < 4; k++)
 			for (j = 0; j < 2; j++)
-				turbulence->fGradient[k][feTurbulence_BSize + i][j] = turbulence->fGradient[k][i][j];
+				turbulence->fGradient[k][LSM_SVG_TURBULENCE_BSize + i][j] = turbulence->fGradient[k][i][j];
 	}
 }
 
-#define feTurbulence_s_curve(t) ( t * t * (3. - 2. * t) )
-#define feTurbulence_lerp(t, a, b) ( a + t * (b - a) )
+#define _turbulence_s_curve(t) 		( t * t * (3. - 2. * t) )
+#define _turbulence_lerp(t, a, b) 	( a + t * (b - a) )
 
 static double
-feTurbulence_noise2 (LsmSvgTurbulence * turbulence,
-                     int nColorChannel, double vec[2], struct feTurbulence_StitchInfo *pStitchInfo)
+_turbulence_noise2 (LsmSvgTurbulence * turbulence,
+		    int nColorChannel, double vec[2], LsmSvgTurbulenceStitchInfo *pStitchInfo)
 {
 	int bx0, bx1, by0, by1, b00, b10, b01, b11;
 	double rx0, rx1, ry0, ry1, *q, sx, sy, a, b, t, u, v;
 	register int i, j;
 
-	t = vec[0] + feTurbulence_PerlinN;
+	t = vec[0] + LSM_SVG_TURBULENCE_PerlinN;
 	bx0 = (int) t;
 	bx1 = bx0 + 1;
 	rx0 = t - (int) t;
 	rx1 = rx0 - 1.0f;
-	t = vec[1] + feTurbulence_PerlinN;
+	t = vec[1] + LSM_SVG_TURBULENCE_PerlinN;
 	by0 = (int) t;
 	by1 = by0 + 1;
 	ry0 = t - (int) t;
@@ -1193,39 +1190,39 @@ feTurbulence_noise2 (LsmSvgTurbulence * turbulence,
 			by1 -= pStitchInfo->nHeight;
 	}
 
-	bx0 &= feTurbulence_BM;
-	bx1 &= feTurbulence_BM;
-	by0 &= feTurbulence_BM;
-	by1 &= feTurbulence_BM;
+	bx0 &= LSM_SVG_TURBULENCE_BM;
+	bx1 &= LSM_SVG_TURBULENCE_BM;
+	by0 &= LSM_SVG_TURBULENCE_BM;
+	by1 &= LSM_SVG_TURBULENCE_BM;
 	i = turbulence->uLatticeSelector[bx0];
 	j = turbulence->uLatticeSelector[bx1];
 	b00 = turbulence->uLatticeSelector[i + by0];
 	b10 = turbulence->uLatticeSelector[j + by0];
 	b01 = turbulence->uLatticeSelector[i + by1];
 	b11 = turbulence->uLatticeSelector[j + by1];
-	sx = (double) (feTurbulence_s_curve (rx0));
-	sy = (double) (feTurbulence_s_curve (ry0));
+	sx = (double) (_turbulence_s_curve (rx0));
+	sy = (double) (_turbulence_s_curve (ry0));
 	q = turbulence->fGradient[nColorChannel][b00];
 	u = rx0 * q[0] + ry0 * q[1];
 	q = turbulence->fGradient[nColorChannel][b10];
 	v = rx1 * q[0] + ry0 * q[1];
-	a = feTurbulence_lerp (sx, u, v);
+	a = _turbulence_lerp (sx, u, v);
 	q = turbulence->fGradient[nColorChannel][b01];
 	u = rx0 * q[0] + ry1 * q[1];
 	q = turbulence->fGradient[nColorChannel][b11];
 	v = rx1 * q[0] + ry1 * q[1];
-	b = feTurbulence_lerp (sx, u, v);
+	b = _turbulence_lerp (sx, u, v);
 
-	return feTurbulence_lerp (sy, a, b);
+	return _turbulence_lerp (sy, a, b);
 }
 
 static double
-feTurbulence_turbulence (LsmSvgTurbulence * turbulence,
-                         int nColorChannel, double *point,
-                         double fTileX, double fTileY, double fTileWidth, double fTileHeight)
+_turbulence (LsmSvgTurbulence * turbulence,
+	     int nColorChannel, double *point,
+	     double fTileX, double fTileY, double fTileWidth, double fTileHeight)
 {
-	struct feTurbulence_StitchInfo stitch;
-	struct feTurbulence_StitchInfo *pStitchInfo = NULL; /* Not stitching when NULL. */
+	LsmSvgTurbulenceStitchInfo stitch;
+	LsmSvgTurbulenceStitchInfo *pStitchInfo = NULL; /* Not stitching when NULL. */
 
 	double fSum = 0.0f, vec[2], ratio = 1.;
 	int nOctave;
@@ -1255,9 +1252,9 @@ feTurbulence_turbulence (LsmSvgTurbulence * turbulence,
 		/* Set up initial stitch values. */
 		pStitchInfo = &stitch;
 		stitch.nWidth = (int) (fTileWidth * turbulence->base_frequency_x + 0.5f);
-		stitch.nWrapX = fTileX * turbulence->base_frequency_x + feTurbulence_PerlinN + stitch.nWidth;
+		stitch.nWrapX = fTileX * turbulence->base_frequency_x + LSM_SVG_TURBULENCE_PerlinN + stitch.nWidth;
 		stitch.nHeight = (int) (fTileHeight * turbulence->base_frequency_y + 0.5f);
-		stitch.nWrapY = fTileY * turbulence->base_frequency_y + feTurbulence_PerlinN + stitch.nHeight;
+		stitch.nWrapY = fTileY * turbulence->base_frequency_y + LSM_SVG_TURBULENCE_PerlinN + stitch.nHeight;
 	}
 
 	vec[0] = point[0] * turbulence->base_frequency_x;
@@ -1266,10 +1263,10 @@ feTurbulence_turbulence (LsmSvgTurbulence * turbulence,
 	for (nOctave = 0; nOctave < turbulence->n_octaves; nOctave++) {
 		if (turbulence->type == LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE)
 			fSum +=
-				(double) (feTurbulence_noise2 (turbulence, nColorChannel, vec, pStitchInfo) / ratio);
+				(double) (_turbulence_noise2 (turbulence, nColorChannel, vec, pStitchInfo) / ratio);
 		else
 			fSum +=
-				(double) (fabs (feTurbulence_noise2 (turbulence, nColorChannel, vec, pStitchInfo)) /
+				(double) (fabs (_turbulence_noise2 (turbulence, nColorChannel, vec, pStitchInfo)) /
 					  ratio);
 
 		vec[0] *= 2;
@@ -1280,14 +1277,15 @@ feTurbulence_turbulence (LsmSvgTurbulence * turbulence,
 			/* Update stitch values. Subtracting PerlinN before the multiplication and
 			   adding it afterward simplifies to subtracting it once. */
 			stitch.nWidth *= 2;
-			stitch.nWrapX = 2 * stitch.nWrapX - feTurbulence_PerlinN;
+			stitch.nWrapX = 2 * stitch.nWrapX - LSM_SVG_TURBULENCE_PerlinN;
 			stitch.nHeight *= 2;
-			stitch.nWrapY = 2 * stitch.nWrapY - feTurbulence_PerlinN;
+			stitch.nWrapY = 2 * stitch.nWrapY - LSM_SVG_TURBULENCE_PerlinN;
 		}
 	}
 
 	return fSum;
 }
+
 void
 lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 				   double base_frequency_x, double base_frequency_y,
@@ -1333,7 +1331,7 @@ lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 	turbulence.stitch_tiles = stitch_tiles;
 	turbulence.type = type;
 
-	feTurbulence_init (&turbulence);
+	_turbulence_init (&turbulence);
 
 	tileWidth = x2 - x1;
 	tileHeight = y2 - y1;
@@ -1351,8 +1349,8 @@ lsm_svg_filter_surface_turbulence (LsmSvgFilterSurface *output,
 			for (i = 0; i < 4; i++) {
 				double cr;
 
-				cr = feTurbulence_turbulence (&turbulence, i, point, (double) x, (double) y,
-							      (double) tileWidth, (double) tileHeight);
+				cr = _turbulence (&turbulence, i, point, (double) x, (double) y,
+						  (double) tileWidth, (double) tileHeight);
 
 				if (type == LSM_SVG_TURBULENCE_TYPE_FRACTAL_NOISE)
 					cr = ((cr * 255.) + 255.) / 2.;
