@@ -2,15 +2,15 @@
 # Copyright (C) 2012 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2012.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2012, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-04 10:51+0000\n"
-"PO-Revision-Date: 2012-12-04 11:52+0100\n"
+"POT-Creation-Date: 2015-08-03 12:59+0000\n"
+"PO-Revision-Date: 2015-08-20 11:23+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -18,50 +18,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
-#: ../src/lasemrender.c:66
+#: ../src/lasemrender.c:67
 msgid "Output filename"
 msgstr "Nombre del archivo de salida"
 
-#: ../src/lasemrender.c:68
+#: ../src/lasemrender.c:69
 msgid "Output format"
 msgstr "Formato de salida"
 
-#: ../src/lasemrender.c:70
+#: ../src/lasemrender.c:71
 msgid "Pixel per inch"
 msgstr "Píxeles por pulgada"
 
-#: ../src/lasemrender.c:72
+#: ../src/lasemrender.c:73
 msgid "Zoom"
 msgstr "Ampliación"
 
-#: ../src/lasemrender.c:74
+#: ../src/lasemrender.c:75
 msgid "Debug domains"
 msgstr "Dominios de depuración"
 
-#: ../src/lasemrender.c:100
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Falló al analizar la opción: %s\n"
-
 #: ../src/lasemrender.c:107
-#, c-format
+#| msgid "Option parsing failed: %s\n"
+msgid "Option parsing failed:"
+msgstr "Falló al analizar la opción:"
+
+#: ../src/lasemrender.c:114
 msgid "Invalid zoom value"
 msgstr "Valor de ampliación no válido"
 
-#: ../src/lasemrender.c:114
-#, c-format
-#| msgid "One input filename is required\n"
-msgid "One input file name is required\n"
-msgstr "Se necesita un nombre de archivo de entrada\n"
+#: ../src/lasemrender.c:121
+#| msgid "Output filename"
+msgid "Missing input filename"
+msgstr "Falta el nombre del archivo de salida"
 
-#: ../src/lasemrender.c:125
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Formato desconocido: %s\n"
+#: ../src/lasemrender.c:132
+#| msgid "Unknown format: %s\n"
+msgid "Unknown format:"
+msgstr "Formato desconocido:"
 
-#: ../src/lasemrender.c:250
+#: ../src/lasemrender.c:172
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"No se sabe qué formato usar. Indique un formato (-f) o un nombre de archivo "
+"de salida (-o)"
+
+#: ../src/lasemrender.c:262
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "No se puede cargar «%s»\n"
+#| msgid "Can't load '%s'\n"
+msgid "Can't load '%s'"
+msgstr "No se puede cargar «%s»"
+
+#~| msgid "One input filename is required\n"
+#~ msgid "One input file name is required\n"
+#~ msgstr "Se necesita un nombre de archivo de entrada\n"
