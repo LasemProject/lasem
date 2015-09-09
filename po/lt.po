@@ -1,15 +1,15 @@
 # Lithuanian translation for lasem.
 # Copyright (C) 2013 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
-# Aurimas Černius <aurisc4@gmail.com>, 2013.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-12 20:29+0000\n"
-"PO-Revision-Date: 2013-03-16 22:34+0200\n"
+"POT-Creation-Date: 2015-08-03 12:59+0000\n"
+"PO-Revision-Date: 2015-09-09 17:14+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
 "%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 2.91.7\n"
 
 #: ../src/lasemrender.c:67
 msgid "Output filename"
@@ -40,27 +40,38 @@ msgstr "Didinimas"
 msgid "Debug domains"
 msgstr "Derinimo sritys"
 
-#: ../src/lasemrender.c:106
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Nepavyko perskaityti parinkčių: %s\n"
+#: ../src/lasemrender.c:107
+#| msgid "Option parsing failed: %s\n"
+msgid "Option parsing failed:"
+msgstr "Nepavyko perskaityti parametrų:"
 
-#: ../src/lasemrender.c:113
-#, c-format
+#: ../src/lasemrender.c:114
 msgid "Invalid zoom value"
 msgstr "Netinkama didinimo vertė"
 
-#: ../src/lasemrender.c:120
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Reikalingas vienas failo pavadinimas\n"
+#: ../src/lasemrender.c:121
+#| msgid "Output filename"
+msgid "Missing input filename"
+msgstr "Trūksta įvesties failo"
 
-#: ../src/lasemrender.c:131
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Nežinomas formatas: %s\n"
+#: ../src/lasemrender.c:132
+#| msgid "Unknown format: %s\n"
+msgid "Unknown format:"
+msgstr "Nežinomas formatas:"
 
-#: ../src/lasemrender.c:256
+#: ../src/lasemrender.c:172
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Nežinoma, kurį formatą naudoti, nurodykite formatą (-f) arba išvesties failo "
+"pavadinimą (-o)"
+
+#: ../src/lasemrender.c:262
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "Nepavyksta įkelti „%s“\n"
+#| msgid "Can't load '%s'\n"
+msgid "Can't load '%s'"
+msgstr "Nepavyksta įkelti „%s“"
+
+#~ msgid "One input file name is required\n"
+#~ msgstr "Reikalingas vienas failo pavadinimas\n"
