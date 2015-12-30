@@ -1,14 +1,14 @@
 # Serbian translation for lasem.
 # Copyright (C) 2013 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2013.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2013—2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=lasem&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-06 19:39+0000\n"
-"PO-Revision-Date: 2013-02-03 09:38+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=lasem&k"
+"eywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-08-03 12:59+0000\n"
+"PO-Revision-Date: 2015-12-30 12:30+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -39,27 +39,38 @@ msgstr "Uveličanje"
 msgid "Debug domains"
 msgstr "Domeni pročišćavanja"
 
-#: ../src/lasemrender.c:106
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Nije uspela obrada opcije: %s\n"
+#: ../src/lasemrender.c:107
+#| msgid "Option parsing failed: %s\n"
+msgid "Option parsing failed:"
+msgstr "Nije uspela obrada opcije:"
 
-#: ../src/lasemrender.c:113
-#, c-format
+#: ../src/lasemrender.c:114
 msgid "Invalid zoom value"
 msgstr "Neispravna vrednost uveličanja"
 
-#: ../src/lasemrender.c:120
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Zahtevan je naziv jedne ulazne datoteke\n"
+#: ../src/lasemrender.c:121
+#| msgid "Output filename"
+msgid "Missing input filename"
+msgstr "Nedostaje naziv ulazne datoteke"
 
-#: ../src/lasemrender.c:131
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Nepoznat zapis „%s“\n"
+#: ../src/lasemrender.c:132
+#| msgid "Unknown format: %s\n"
+msgid "Unknown format:"
+msgstr "Nepoznat zapis:"
 
-#: ../src/lasemrender.c:256
+#: ../src/lasemrender.c:172
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Ne znam koji zapis da koristim, dajte zapis (-f) ili naziv izlazne datoteke "
+"(-o)"
+
+#: ../src/lasemrender.c:262
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "Ne mogu da učitam „%s“\n"
+#| msgid "Can't load '%s'\n"
+msgid "Can't load '%s'"
+msgstr "Ne mogu da učitam „%s“"
+
+#~ msgid "One input file name is required\n"
+#~ msgstr "Zahtevan je naziv jedne ulazne datoteke\n"
