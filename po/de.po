@@ -1,15 +1,15 @@
 # German translation for lasem
 # Copyright (C) 2010 Emmanuel Pacaud <emmanuel@gnome.org>
 # This file is distributed under the same license as the lasem package.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2012, 2016.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-05 10:23+0000\n"
-"PO-Revision-Date: 2012-12-07 21:53+0100\n"
+"POT-Creation-Date: 2015-08-03 12:59+0000\n"
+"PO-Revision-Date: 2016-01-01 19:06+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -17,10 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Poedit-Language: German\n"
-"X-Poedit-Country: GERMANY\n"
 "X-Language: de_DE\n"
 "X-Source-Language: C\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: ../src/lasemrender.c:67
 msgid "Output filename"
@@ -42,27 +41,32 @@ msgstr "Vergrößerung"
 msgid "Debug domains"
 msgstr "Debug-Domains"
 
-#: ../src/lasemrender.c:106
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Verarbeitung der Option ist gescheitert: %s\n"
+#: ../src/lasemrender.c:107
+msgid "Option parsing failed:"
+msgstr "Verarbeitung der Option ist gescheitert"
 
-#: ../src/lasemrender.c:113
-#, c-format
+#: ../src/lasemrender.c:114
 msgid "Invalid zoom value"
 msgstr "Ungültiger Vergrößerungswert"
 
-#: ../src/lasemrender.c:120
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Nur ein Name der Eingabedatei wird benötigt\n"
+#: ../src/lasemrender.c:121
+msgid "Missing input filename"
+msgstr "Name der Eingabedatei fehlt"
 
-#: ../src/lasemrender.c:131
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Unbekanntes Format : %s\n"
+#: ../src/lasemrender.c:132
+msgid "Unknown format:"
+msgstr "Unbekanntes Format"
 
-#: ../src/lasemrender.c:256
+#: ../src/lasemrender.c:172
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Bitte geben Sie entweder ein Format (mit -f) oder den Namen der "
+"Ausgabedatei (mit -o) an"
+
+#: ../src/lasemrender.c:262
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "»%s« kann nicht geladen werden\n"
+msgid "Can't load '%s'"
+msgstr "»%s« kann nicht geladen werden"
+
