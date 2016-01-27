@@ -1,3 +1,20 @@
+Release 0.5.1
+=============
+
+  * svg: implement overflow, viewBox and preserveAspectRatio for <symbol> (Emmanuel)
+  * svg: fix a crash in blur filter in case of a null input surface (Emmanuel
+  * svg: <feColorMatrix> support
+  * svg: <feImage> support
+  * svg: <feMorphology> support
+  * svg: <feConvolveMatrix> support
+  * svg: <feTurbulence> support
+  * svg: <feDisplacementMap> support
+  * svg: use Mario Klingeman's stackblur algorithm for <feBlur> 
+  * mathml: negative spacing constant support (Garen)
+  * mathml: minlabelspacing support for <mlabeledtr> (Garen)
+  * build: OSX compilation fix (Garen)
+  * translation updates (Мирослав, Aurimas, Balázs, Piotr, Tom, Anders, Daniel, Andika, Marek, Pedro, Duarte, Cédric, Samir)
+
 Release 0.5.0
 =============
 
