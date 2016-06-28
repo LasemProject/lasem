@@ -27,7 +27,6 @@
 #include <lsmmathml.h>
 #include <glib.h>
 #include <glib/gi18n.h>
-#include <glib/gprintf.h>
 #include <gio/gio.h>
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
@@ -104,21 +103,21 @@ int main(int argc, char **argv)
 	if (!g_option_context_parse (context, &argc, &argv, &error))
 	{
 		g_option_context_free (context);
-		printf ("%s %s\n", _("Option parsing failed:"), error->message);
+		fprintf (stderr, "%s %s\n", _("Option parsing failed:"), error->message);
 		return EXIT_FAILURE;
 	}
 
 	g_option_context_free (context);
 
 	if (option_zoom < 0.0) {
-		printf ("%s\n", _("Invalid zoom value"));
+		fprintf (stderr, "%s\n", _("Invalid zoom value"));
 		return EXIT_FAILURE;
 	}
 
 	lsm_debug_enable (option_debug_domains);
 
 	if (option_input_filenames == NULL || g_strv_length (option_input_filenames) > 1) {
-		printf ("%s\n", _("Missing input filename"));
+		fprintf (stderr, "%s\n", _("Missing input filename"));
 		return EXIT_FAILURE;
 	}
 
@@ -129,7 +128,7 @@ int main(int argc, char **argv)
 			if (g_ascii_strcasecmp (option_output_file_format, file_formats[format]) == 0)
 				break;
 		if (FORMAT_UNKNOWN == format) {
-			printf ("%s %s\n", _("Unknown format:"), option_output_file_format);
+			fprintf (stderr, "%s %s\n", _("Unknown format:"), option_output_file_format);
 			return EXIT_FAILURE;
 		}
 	} else
@@ -169,7 +168,7 @@ int main(int argc, char **argv)
 	}
 
 	if (format == FORMAT_UNKNOWN) {
-		printf ("%s\n", _("Don't know which format to use, please either give a format (-f) or an output filename (-o)"));
+		fprintf (stderr, "%s\n", _("Don't know which format to use, please either give a format (-f) or an output filename (-o)"));
 		return EXIT_FAILURE;
 	}
 
@@ -259,8 +258,8 @@ int main(int argc, char **argv)
 
 		lsm_debug_render ("width = %g pt, height = %g pt",  width_pt, height_pt);
 	} else {
-		printf (_("Can't load '%s'"), input_filename);
-		printf ("\n");
+		fprintf (stderr, _("Can't load '%s'"), input_filename);
+		fprintf (stderr, "\n");
 
 		return EXIT_FAILURE;
 	}
