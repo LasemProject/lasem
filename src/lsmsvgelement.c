@@ -322,8 +322,6 @@ lsm_svg_element_finalize (GObject *object)
 
 /* LsmSvgElement class */
 
-static const LsmSvgMatrix matrix_default =	 { 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, LSM_SVG_MATRIX_FLAGS_IDENTITY};
-
 static const LsmAttributeInfos lsm_svg_attribute_infos[] = {
 	{
 		.name = "id",
