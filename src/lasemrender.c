@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <lsm.h>
 #include <lsmmathml.h>
+#include <lsmsvg.h>
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <gio/gio.h>
@@ -39,6 +40,7 @@ static char *option_debug_domains = NULL;
 static char *option_output_file_format = NULL;
 static char **option_input_filenames = NULL;
 static char *option_output_filename = NULL;
+static char *option_element_id = NULL;
 double option_ppi = 72.0;
 double option_zoom = 1.0;
 
@@ -70,12 +72,49 @@ static const GOptionEntry entries[] =
 		&option_ppi, 			N_("Pixel per inch"), NULL },
 	{ "zoom", 		'z', 0, G_OPTION_ARG_DOUBLE,
 		&option_zoom, 			N_("Zoom"), NULL },
+	{ "id", 		'i', 0, G_OPTION_ARG_STRING,
+		&option_element_id, 		N_("Element id"), NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
 		&option_debug_domains,		N_("Debug domains"), NULL },
 	{ NULL }
 };
 
-int main(int argc, char **argv)
+static gboolean
+_hide_before_object (LsmDomDocument *document, const char *id)
+{
+	LsmDomNode *node;
+	LsmDomNode *sibling;
+	LsmDomNode *parent;
+
+	/* TODO: Handle other document types */
+	if (!LSM_IS_SVG_DOCUMENT (document)) {
+		fprintf (stderr, "%s\n", _("Invalid document type (SVG expected)"));
+		return  FALSE;
+	}
+
+	node = LSM_DOM_NODE (lsm_svg_document_get_element_by_id (LSM_SVG_DOCUMENT (document), id));
+	if (!LSM_IS_DOM_NODE (node)) {
+		fprintf (stderr, _("Element '%s' not found"), id);
+		fprintf (stderr, "\n");
+		return FALSE;
+	}
+
+	for (parent = lsm_dom_node_get_parent_node (node);
+	     LSM_IS_DOM_NODE (parent);
+	     node = parent, parent = lsm_dom_node_get_parent_node (parent)) {
+		for (sibling = lsm_dom_node_get_first_child (parent);
+		     LSM_IS_DOM_NODE (sibling);
+		     sibling = lsm_dom_node_get_next_sibling (sibling)) {
+			if (sibling != node && LSM_IS_SVG_ELEMENT (sibling))
+				lsm_dom_element_set_attribute (LSM_DOM_ELEMENT (sibling), "display", "none");
+		}
+	}
+
+	return TRUE;
+}
+
+int
+main(int argc, char **argv)
 {
 	LsmDomDocument *document;
 	LsmDomView *view;
@@ -184,6 +223,13 @@ int main(int argc, char **argv)
 				document = LSM_DOM_DOCUMENT (lsm_mathml_document_new_from_itex_url (input_filename,
 												    NULL));
 			}
+		}
+	}
+
+	if (document != NULL && option_element_id != NULL) {
+		if (!_hide_before_object (document, option_element_id)) {
+			g_object_unref (document);
+			return EXIT_FAILURE;
 		}
 	}
 
