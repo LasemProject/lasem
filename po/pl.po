@@ -4,14 +4,14 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2012-2015.
-# Aviary.pl <gnomepl@aviary.pl>, 2012-2015.
+# Piotr Drąg <piotrdrag@gmail.com>, 2012-2016.
+# Aviary.pl <gnomepl@aviary.pl>, 2012-2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 01:40+0200\n"
-"PO-Revision-Date: 2015-08-31 01:41+0200\n"
+"POT-Creation-Date: 2016-06-29 17:39+0200\n"
+"PO-Revision-Date: 2016-06-29 17:40+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -23,43 +23,56 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:68
 msgid "Output filename"
 msgstr "Nazwa pliku wyjściowego"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:70
 msgid "Output format"
 msgstr "Format wyjściowy"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:72
 msgid "Pixel per inch"
 msgstr "Piksele na cal"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:74
 msgid "Zoom"
 msgstr "Powiększenie"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:76
+msgid "Element id"
+msgstr "Identyfikator elementu"
+
+#: ../src/lasemrender.c:78
 msgid "Debug domains"
 msgstr "Domeny debugowania"
 
-#: ../src/lasemrender.c:107
+#: ../src/lasemrender.c:91
+msgid "Invalid document type (SVG expected)"
+msgstr "Nieprawidłowy typ dokumentu (oczekiwano SVG)"
+
+#: ../src/lasemrender.c:97
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Nie odnaleziono elementu „%s”"
+
+#: ../src/lasemrender.c:145
 msgid "Option parsing failed:"
 msgstr "Przetworzenie opcji się nie powiodło:"
 
-#: ../src/lasemrender.c:114
+#: ../src/lasemrender.c:152
 msgid "Invalid zoom value"
 msgstr "Nieprawidłowa wartość powiększenia"
 
-#: ../src/lasemrender.c:121
+#: ../src/lasemrender.c:159
 msgid "Missing input filename"
 msgstr "Brak nazwy pliku wejściowego"
 
-#: ../src/lasemrender.c:132
+#: ../src/lasemrender.c:170
 msgid "Unknown format:"
 msgstr "Nieznany format:"
 
-#: ../src/lasemrender.c:172
+#: ../src/lasemrender.c:210
 msgid ""
 "Don't know which format to use, please either give a format (-f) or an "
 "output filename (-o)"
@@ -67,7 +80,7 @@ msgstr ""
 "Nie wiadomo, którego formatu użyć. Proszę podać format (-f) lub nazwę pliku "
 "wyjściowego (-o)"
 
-#: ../src/lasemrender.c:262
+#: ../src/lasemrender.c:307
 #, c-format
 msgid "Can't load '%s'"
 msgstr "Nie można wczytać „%s”"
