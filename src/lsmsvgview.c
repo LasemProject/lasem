@@ -2657,7 +2657,8 @@ lsm_svg_view_get_clip_extents (LsmSvgView *view)
 }
 
 static void
-lsm_svg_view_measure (LsmDomView *view, double *width, double *height, double *baseline)
+lsm_svg_view_measure (LsmDomView *view, LsmDomViewMeasurement measurement,
+		      double *x, double *y, double *width, double *height, double *baseline)
 {
 	LsmSvgSvgElement *svg_element;
 
@@ -2665,7 +2666,7 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height, double *b
 	if (svg_element == NULL)
 		return;
 
-	lsm_svg_svg_element_measure (svg_element, LSM_SVG_VIEW (view), width, height);
+	lsm_svg_svg_element_measure (svg_element, LSM_SVG_VIEW (view), measurement, x, y, width, height);
 	if (baseline)
 		*baseline = *height;
 }

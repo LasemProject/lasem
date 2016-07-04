@@ -1249,9 +1249,15 @@ _view_measure (LsmMathmlView *view, double *width, double *height, double *basel
 }
 
 static void
-lsm_mathml_view_measure (LsmDomView *dom_view, double *width, double *height, double *baseline)
+lsm_mathml_view_measure (LsmDomView *dom_view, LsmDomViewMeasurement measurement, 
+			 double *x, double *y, double *width, double *height, double *baseline)
 {
 	_view_measure (LSM_MATHML_VIEW (dom_view), width, height, baseline);
+
+	if (x != NULL)
+		*x = 0.0;
+	if (y != NULL)
+		*y = 0.0;
 }
 
 static void

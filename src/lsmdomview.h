@@ -31,6 +31,11 @@
 
 G_BEGIN_DECLS
 
+typedef enum {
+	LSM_DOM_VIEW_MEASUREMENT_VIEWPORT,
+	LSM_DOM_VIEW_MEASUREMENT_EXTENTS
+} LsmDomViewMeasurement;
+
 #define LSM_DOM_VIEW_DEFAULT_RESOLUTION 	 72.0
 #define LSM_DOM_VIEW_DEFAULT_VIEWBOX_WIDTH	320.0
 #define LSM_DOM_VIEW_DEFAULT_VIEWBOX_HEIGHT 	200.0
@@ -64,7 +69,8 @@ struct _LsmDomViewClass {
 
 	GType document_type;
 
-	void (*measure)		(LsmDomView *view, double *width, double *height, double *baseline);
+	void (*measure)		(LsmDomView *view, LsmDomViewMeasurement measurement,
+				 double *x, double *y, double *width, double *height, double *baseline);
 	void (*render)		(LsmDomView *view);
 	void (*set_debug)	(LsmDomView *view, const char *feature, gboolean enable);
 };
@@ -84,6 +90,9 @@ void 		lsm_dom_view_render 		(LsmDomView *view, cairo_t *cairo, double x, double
 void		lsm_dom_view_get_size		(LsmDomView *view, double *width, double *height, double *baseline);
 void 		lsm_dom_view_get_size_pixels 	(LsmDomView *view, unsigned int *width, unsigned int *height,
 						 unsigned int *baseline);
+
+void		lsm_dom_view_get_extents	(LsmDomView *view, double *x, double *y, double *width, double *height);
+void		lsm_dom_view_get_extents_pixels	(LsmDomView *view, unsigned *x, unsigned *y, unsigned *width, unsigned *height);
 
 void		lsm_dom_view_set_debug		(LsmDomView *view, const char *feature, gboolean enable);
 

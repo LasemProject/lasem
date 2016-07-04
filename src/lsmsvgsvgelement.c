@@ -42,7 +42,8 @@ lsm_svg_svg_element_get_node_name (LsmDomNode *node)
 /* LsmSvgElement implementation */
 
 void
-lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, double *width, double *height)
+lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, LsmDomViewMeasurement measurement,
+			     double *x, double *y, double *width, double *height)
 {
 	LsmSvgViewbox *svg_viewbox;
 	LsmBox viewport;
@@ -78,7 +79,7 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, double *w
 
 	if (lsm_attribute_is_defined (&self->width.base))
 		svg_width = lsm_svg_length_normalize (&self->width.length, svg_viewbox,
-						       font_size, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+						      font_size, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
 	else
 		svg_width = viewport.width;
 
@@ -99,9 +100,13 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, double *w
 	self->svg_box.height = svg_height;
 
 	lsm_debug_measure ("[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
-		   svg_x, svg_y, svg_width, svg_height);
-
+			   svg_x, svg_y, svg_width, svg_height);
 	lsm_svg_viewbox_free (svg_viewbox);
+
+	if (x != NULL)
+		*x = 0.0;
+	if (y != NULL)
+		*y = 0.0;
 }
 
 /* LsmSvgGraphic implementation */

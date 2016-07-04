@@ -169,7 +169,7 @@ lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
 	if (view_class->measure != NULL)
-		view_class->measure (view, width, height, baseline);
+		view_class->measure (view, LSM_DOM_VIEW_MEASUREMENT_VIEWPORT, NULL, NULL, width, height, baseline);
 }
 
 /**
@@ -208,6 +208,38 @@ lsm_dom_view_get_size_pixels (LsmDomView *view, unsigned int *width, unsigned in
 		*height = (double) (0.5 + height_pt * resolution_ppi / 72.0);
 	if (baseline != NULL)
 		*baseline = (double) (0.5 + baseline_pt * resolution_ppi / 72.0);
+}
+
+void
+lsm_dom_view_get_extents (LsmDomView *view, double *x, double *y, double *width, double *height)
+{
+	LsmDomViewClass *view_class;
+	double dummy_x = 0.0;
+	double dummy_y = 0.0;
+	double dummy_width = 0.0;
+	double dummy_height = 0.0;
+	double baseline;
+
+	g_return_if_fail (LSM_IS_DOM_VIEW (view));
+	g_return_if_fail (view->document != NULL);
+
+	if (width == NULL)
+		width = &dummy_width;
+	if (height == NULL)
+		height = &dummy_height;
+	if (x == NULL)
+		x = &dummy_x;
+	if (y == NULL)
+		y = &dummy_y;
+
+	view_class = LSM_DOM_VIEW_GET_CLASS (view);
+	if (view_class->measure != NULL)
+		view_class->measure (view, LSM_DOM_VIEW_MEASUREMENT_EXTENTS, x, y, width, height, &baseline);
+}
+
+void
+lsm_dom_view_get_extents_pixels	(LsmDomView *view, unsigned *x, unsigned *y, unsigned *width, unsigned *height)
+{
 }
 
 static void
