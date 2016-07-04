@@ -142,7 +142,8 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 	lsm_svg_view_show_viewport (view, &viewport);
 
 	lsm_svg_view_push_viewport (view, &viewport, is_viewbox_defined ? &svg->viewbox.value : NULL,
-				    &svg->preserve_aspect_ratio.value, LSM_SVG_OVERFLOW_HIDDEN);
+				    &svg->preserve_aspect_ratio.value,
+				    is_outermost_svg ? LSM_SVG_OVERFLOW_VISIBLE : LSM_SVG_OVERFLOW_HIDDEN);
 
 	LSM_SVG_ELEMENT_CLASS (parent_class)->render (self, view);
 
@@ -154,7 +155,12 @@ _svg_element_render (LsmSvgElement *self, LsmSvgView *view)
 void
 lsm_svg_svg_element_render (LsmSvgSvgElement *svg, LsmSvgView *view)
 {
-	lsm_svg_view_push_viewport (view, &svg->svg_box, NULL, NULL, LSM_SVG_OVERFLOW_HIDDEN);
+	gboolean is_outermost_svg;
+
+	is_outermost_svg = LSM_IS_SVG_DOCUMENT (lsm_dom_node_get_parent_node (LSM_DOM_NODE (svg)));
+
+	lsm_svg_view_push_viewport (view, &svg->svg_box, NULL, NULL,
+				    is_outermost_svg ? LSM_SVG_OVERFLOW_VISIBLE : LSM_SVG_OVERFLOW_HIDDEN);
 	lsm_svg_element_render (LSM_SVG_ELEMENT (svg), view);
 	lsm_svg_view_pop_viewport (view);
 }
