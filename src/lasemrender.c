@@ -41,6 +41,8 @@ static char *option_output_file_format = NULL;
 static char **option_input_filenames = NULL;
 static char *option_output_filename = NULL;
 static char *option_element_id = NULL;
+static char *option_offset = NULL;
+static char *option_size = NULL;
 double option_ppi = 72.0;
 double option_zoom = 1.0;
 
@@ -74,6 +76,10 @@ static const GOptionEntry entries[] =
 		&option_zoom, 			N_("Zoom"), NULL },
 	{ "id", 		'i', 0, G_OPTION_ARG_STRING,
 		&option_element_id, 		N_("Element id"), NULL },
+	{ "offset", 		't', 0, G_OPTION_ARG_STRING,
+		&option_offset, 		N_("Offset"), NULL },
+	{ "size", 		's', 0, G_OPTION_ARG_STRING,
+		&option_size, 		N_("Size"), NULL },
 	{ "debug", 		'd', 0, G_OPTION_ARG_STRING,
 		&option_debug_domains,		N_("Debug domains"), NULL },
 	{ NULL }
@@ -125,8 +131,11 @@ main(int argc, char **argv)
 	FileFormat format;
 	char *output_filename;
 	char *input_filename;
+	double offset_x_pt, offset_y_pt;
 	double height_pt, width_pt;
 	unsigned int height, width;
+	double size[2];
+	double offset[2];
 
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -151,6 +160,31 @@ main(int argc, char **argv)
 	if (option_zoom < 0.0) {
 		fprintf (stderr, "%s\n", _("Invalid zoom value"));
 		return EXIT_FAILURE;
+	}
+
+	if (option_offset != NULL) {
+		unsigned n_values;
+
+		n_values = lsm_str_parse_double_list (&option_offset, 2, offset);
+		if (n_values != 2) {
+			fprintf (stderr, "%s\n", _("Invalid number of arguments for offset option"));
+			return EXIT_FAILURE;
+		}
+	}
+
+	if (option_size != NULL) {
+		unsigned n_values;
+
+		n_values = lsm_str_parse_double_list (&option_size, 2, size);
+		if (n_values != 2) {
+			fprintf (stderr, "%s\n", _("Invalid number of arguments for size option"));
+			return EXIT_FAILURE;
+		}
+		if (size[0] <= 0.0 ||
+		    size[1] <= 0.0) {
+			fprintf (stderr, "%s\n", _("Invalid export size"));
+			return EXIT_FAILURE;
+		}
 	}
 
 	lsm_debug_enable (option_debug_domains);
@@ -254,11 +288,25 @@ main(int argc, char **argv)
 
 		lsm_dom_view_get_size (view, &width_pt, &height_pt, NULL);
 		lsm_dom_view_get_size_pixels (view, &width, &height, NULL);
+		
+		if (option_offset == NULL) {
+			offset_x_pt = offset_y_pt = 0.0;
+		} else {
+			offset_x_pt = option_zoom * offset[0];
+			offset_y_pt = option_zoom * offset[1];
+		}
 
-		width_pt *= option_zoom;
-		height_pt *= option_zoom;
-		width *= option_zoom;
-		height *= option_zoom;
+		if (option_size == NULL) {
+			width_pt *= option_zoom;
+			height_pt *= option_zoom;
+			width *= option_zoom;
+			height *= option_zoom;
+		}  else {
+			width_pt = option_zoom * size[0];
+			height_pt = option_zoom * size[1];
+			width = width_pt;
+			height = height_pt;
+		}
 
 		switch (format) {
 			case FORMAT_PDF:
@@ -285,7 +333,7 @@ main(int argc, char **argv)
 		cairo_surface_destroy (surface);
 		cairo_scale (cairo, option_zoom, option_zoom);
 
-		lsm_dom_view_render (view, cairo, 0, 0);
+		lsm_dom_view_render (view, cairo, -offset_x_pt, -offset_y_pt);
 
 		switch (format) {
 			case FORMAT_PNG:
