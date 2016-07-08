@@ -8,62 +8,95 @@ msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-03 12:59+0000\n"
-"PO-Revision-Date: 2015-08-07 14:25+0700\n"
+"POT-Creation-Date: 2016-07-04 19:36+0000\n"
+"PO-Revision-Date: 2016-07-08 21:09+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.8.8\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Nama berkas keluaran"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Format keluaran"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "Piksel per inci"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Zum"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "ID elemen"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Ofset"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Ukuran"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Ranah pengawakutuan"
 
-#: ../src/lasemrender.c:107
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Tipe dokumen tidak valid (diharapkan SVG)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Elemen '%s' tidak ditemukan"
+
+#: ../src/lasemrender.c:154
 msgid "Option parsing failed:"
 msgstr "Gagal mengurai opsi:"
 
-#: ../src/lasemrender.c:114
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Nilai zum tak valid"
 
-#: ../src/lasemrender.c:121
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Cacah argumen bagi opsi ofset tidak valid"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Cacah argumen bagi opsi ukuran tidak valid"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Ukuran ekspor tidak valid"
+
+#: ../src/lasemrender.c:193
 msgid "Missing input filename"
 msgstr "Kurang nama berkas keluaran"
 
-#: ../src/lasemrender.c:132
+#: ../src/lasemrender.c:204
 msgid "Unknown format:"
 msgstr "Format tak dikenal:"
 
-#: ../src/lasemrender.c:172
+#: ../src/lasemrender.c:244
 msgid ""
 "Don't know which format to use, please either give a format (-f) or an "
 "output filename (-o)"
 msgstr ""
-"Tak tahu format mana yang akan dipakai, harap berikan suatu format (-"
-"f) atau sebuah nama berkas keluaran (-o)"
+"Tak tahu format mana yang akan dipakai, harap berikan suatu format (-f) atau "
+"sebuah nama berkas keluaran (-o)"
 
-#: ../src/lasemrender.c:262
+#: ../src/lasemrender.c:355
 #, c-format
 msgid "Can't load '%s'"
 msgstr "Tak bisa memuat '%s'"
