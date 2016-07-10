@@ -5,10 +5,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=lasem&"
-"keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-03 12:59+0000\n"
-"PO-Revision-Date: 2016-03-18 03:54-0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=lasem&k"
+"eywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2016-07-04 19:36+0000\n"
+"PO-Revision-Date: 2016-07-09 21:47-0200\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -19,51 +19,84 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Nome do arquivo de saída"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Formato de saída"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "Pixel por polegada"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "ID de elemento"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Posição"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Tamanho"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Domínios de depuração"
 
-#: ../src/lasemrender.c:107
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Tipo de documento inválido (esperava SVG)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Elemento \"%s\" não encontrado"
+
+#: ../src/lasemrender.c:154
 msgid "Option parsing failed:"
 msgstr "Análise de opção falhou:"
 
-#: ../src/lasemrender.c:114
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Valor de zoom inválido"
 
-#: ../src/lasemrender.c:121
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Número inválido de argumentos da opção de posição"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Número inválido de argumentos da opção de tamanho"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Tamanho de exportação inválido"
+
+#: ../src/lasemrender.c:193
 msgid "Missing input filename"
 msgstr "Faltando nome de arquivo de entrada"
 
-#: ../src/lasemrender.c:132
+#: ../src/lasemrender.c:204
 msgid "Unknown format:"
 msgstr "Formato desconhecido:"
 
-#: ../src/lasemrender.c:172
+#: ../src/lasemrender.c:244
 msgid ""
 "Don't know which format to use, please either give a format (-f) or an "
 "output filename (-o)"
 msgstr ""
-"Não sei qual formato devo usar, por favor forneça um formato (-f) ou "
-"um nome de arquivo de saída (-o)"
+"Não sei qual formato devo usar, por favor forneça um formato (-f) ou um nome "
+"de arquivo de saída (-o)"
 
-#: ../src/lasemrender.c:262
+#: ../src/lasemrender.c:355
 #, c-format
 msgid "Can't load '%s'"
 msgstr "Não foi possível carregar \"%s\""
