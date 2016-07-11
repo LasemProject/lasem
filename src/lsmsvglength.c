@@ -32,7 +32,7 @@ lsm_svg_viewbox_new (double resolution_ppi,
 {
 	LsmSvgViewbox *svg_viewbox;
 
-	svg_viewbox = g_new (LsmSvgViewbox, 1);
+	svg_viewbox = g_slice_new (LsmSvgViewbox);
 	svg_viewbox->resolution_ppi = resolution_ppi;
 	svg_viewbox->viewbox = *viewbox;
 	svg_viewbox->diagonal = sqrt (viewbox->width * viewbox->width +
@@ -44,7 +44,7 @@ lsm_svg_viewbox_new (double resolution_ppi,
 void
 lsm_svg_viewbox_free (LsmSvgViewbox *viewbox)
 {
-	g_free (viewbox);
+	g_slice_free (LsmSvgViewbox, viewbox);
 }
 
 double
