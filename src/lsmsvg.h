@@ -33,6 +33,7 @@
 #include <lsmsvgstyle.h>
 #include <lsmsvgcolors.h>
 #include <lsmsvglength.h>
+#include <lsmsvgruler.h>
 #include <lsmsvgview.h>
 #include <lsmsvgmatrix.h>
 #include <lsmsvgdocument.h>

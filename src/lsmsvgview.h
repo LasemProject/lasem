@@ -26,6 +26,7 @@
 
 #include <lsmdom.h>
 #include <lsmsvgtypes.h>
+#include <lsmsvgruler.h>
 #include <lsmsvgelement.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
 
@@ -53,11 +54,9 @@ struct _LsmSvgView {
 
 	double resolution_ppi;
 
-	const LsmSvgStyle *style;
+	LsmSvgRuler *ruler;
 
-	GSList *style_stack;
 	GSList *element_stack;
-	GSList *viewbox_stack;
 	GSList *matrix_stack;
 	GSList *pango_layout_stack;
 	GList *background_stack;

@@ -47,6 +47,7 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, LsmDomVie
 {
 	LsmSvgViewbox *svg_viewbox;
 	LsmBox viewport;
+	LsmExtents extents = {0.0, 0.0, 0.0, 0.0};
 	gboolean is_outermost_svg;
 	double resolution_ppi;
 	double svg_x;
@@ -99,14 +100,22 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, LsmDomVie
 	self->svg_box.width = svg_width;
 	self->svg_box.height = svg_height;
 
-	lsm_debug_measure ("[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
-			   svg_x, svg_y, svg_width, svg_height);
-	lsm_svg_viewbox_free (svg_viewbox);
+	switch (measurement) {
+		case LSM_DOM_VIEW_MEASUREMENT_VIEWPORT:
+			lsm_debug_measure ("[LsmSvgSvgElement::measure] Size = %g, %g, %g, %g",
+					   svg_x, svg_y, svg_width, svg_height);
 
-	if (x != NULL)
-		*x = 0.0;
-	if (y != NULL)
-		*y = 0.0;
+			if (x != NULL)
+				*x = 0.0;
+			if (y != NULL)
+				*y = 0.0;
+			break;
+		case LSM_DOM_VIEW_MEASUREMENT_EXTENTS:
+			lsm_svg_element_get_extents (LSM_SVG_ELEMENT (self), view, &extents);
+			break;
+	}
+
+	lsm_svg_viewbox_free (svg_viewbox);
 }
 
 /* LsmSvgGraphic implementation */

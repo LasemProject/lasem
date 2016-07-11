@@ -103,6 +103,7 @@ LASEM_SVG_SRCS =				\
 	lsmsvglength.c				\
 	lsmsvgview.c				\
 	lsmsvgmatrix.c				\
+	lsmsvgruler.c				\
 	lsmsvgdocument.c			\
 	lsmsvgelement.c				\
 	lsmsvgtransformable.c			\
@@ -227,6 +228,7 @@ LASEM_SVG_HDRS =				\
 	lsmsvglength.h				\
 	lsmsvgview.h				\
 	lsmsvgmatrix.h				\
+	lsmsvgruler.h				\
 	lsmsvgdocument.h			\
 	lsmsvgelement.h				\
 	lsmsvgtransformable.h			\

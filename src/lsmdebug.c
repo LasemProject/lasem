@@ -56,6 +56,12 @@ LsmDebugCategory lsm_debug_category_render =
 	.level = -1
 };
 
+LsmDebugCategory lsm_debug_category_ruler =
+{
+	.name = (char *) "ruler",
+	.level = -1
+};
+
 LsmDebugCategory lsm_debug_category_viewport =
 {
 	.name = (char *) "viewport",

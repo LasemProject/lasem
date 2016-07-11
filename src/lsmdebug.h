@@ -42,6 +42,7 @@ extern LsmDebugCategory lsm_debug_category_dom;
 extern LsmDebugCategory lsm_debug_category_measure;
 extern LsmDebugCategory lsm_debug_category_update;
 extern LsmDebugCategory lsm_debug_category_render;
+extern LsmDebugCategory lsm_debug_category_ruler;
 extern LsmDebugCategory lsm_debug_category_viewport;
 
 #define lsm_debug_dom(...) 		lsm_debug (&lsm_debug_category_dom, __VA_ARGS__)
@@ -59,6 +60,10 @@ extern LsmDebugCategory lsm_debug_category_viewport;
 #define lsm_debug_render(...) 		lsm_debug (&lsm_debug_category_render, __VA_ARGS__)
 #define lsm_log_render(...)		lsm_log (&lsm_debug_category_render, __VA_ARGS__)
 #define lsm_warning_render(...)		lsm_warning (&lsm_debug_category_render, __VA_ARGS__)
+
+#define lsm_debug_ruler(...) 		lsm_debug (&lsm_debug_category_ruler, __VA_ARGS__)
+#define lsm_log_ruler(...)		lsm_log (&lsm_debug_category_ruler, __VA_ARGS__)
+#define lsm_warning_ruler(...)		lsm_warning (&lsm_debug_category_ruler, __VA_ARGS__)
 
 void 		lsm_warning 			(LsmDebugCategory *category, const char *format, ...) G_GNUC_PRINTF(2,3);
 void 		lsm_debug 			(LsmDebugCategory *category, const char *format, ...) G_GNUC_PRINTF(2,3);
