@@ -30,6 +30,22 @@ lsm_svg_matrix_is_identity (const LsmSvgMatrix *matrix)
 	return ((matrix->flags & LSM_SVG_MATRIX_FLAGS_IDENTITY) != 0);
 }
 
+static double
+_compute_determinant (const LsmSvgMatrix *matrix)
+{
+    return matrix->a * matrix->d - matrix->b * matrix->c;
+}
+
+gboolean
+lsm_svg_matrix_is_invertible (const LsmSvgMatrix *matrix)
+{
+    double det;
+
+    det = _compute_determinant (matrix);
+
+    return isfinite (det) && det != 0.;
+}
+
 void
 lsm_svg_matrix_init (LsmSvgMatrix *matrix, double a, double b, double c, double d, double e, double f)
 {

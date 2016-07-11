@@ -35,7 +35,8 @@ typedef struct {
 	LsmSvgMatrixFlags flags;
 } LsmSvgMatrix;
 
-gboolean lsm_svg_matrix_is_identity (const LsmSvgMatrix *matrix);
+gboolean lsm_svg_matrix_is_identity 		(const LsmSvgMatrix *matrix);
+gboolean lsm_svg_matrix_is_invertible		(const LsmSvgMatrix *matrix);
 
 void 	lsm_svg_matrix_init 			(LsmSvgMatrix *matrix, double a, double b,
 					                               double c, double d,
