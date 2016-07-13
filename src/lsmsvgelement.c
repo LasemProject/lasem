@@ -227,22 +227,6 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 	lsm_svg_element_render (element, view);
 }
 
-void
-lsm_svg_element_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
-{
-	LsmSvgElementClass *element_class;
-	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
-	g_return_if_fail (extents != NULL);
-
-	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-
-	if (element_class->transformed_get_extents != NULL)
-		element_class->transformed_get_extents (element, view, extents);
-	else
-		element_class->get_extents (element, view, extents);
-}
-
 static void
 _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 {
@@ -256,15 +240,10 @@ _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 		if (LSM_IS_SVG_ELEMENT (node)) {
 			LsmExtents child_extents;
 			LsmSvgElement *child_element;
-			LsmSvgElementClass *child_element_class;
 
 			child_element = LSM_SVG_ELEMENT (node);
-			child_element_class = LSM_SVG_ELEMENT_GET_CLASS (node);
 			
-			if (child_element_class->transformed_get_extents != NULL)
-				child_element_class->transformed_get_extents (child_element, view, &child_extents);
-			else
-				child_element_class->get_extents (child_element, view, &child_extents);
+			lsm_svg_element_transformed_get_extents (child_element, view, &child_extents);
 
 			if (first_child) {
 				element_extents = child_extents;
@@ -281,17 +260,35 @@ _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 	*extents = element_extents;
 }
 
+static void
+_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgElementClass *element_class;
+
+	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+
+	element_class->get_extents (element, view, extents);
+}
+
 void
 lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 {
 	LsmSvgElementClass *element_class;
+	const LsmSvgStyle *parent_style;
+	LsmSvgStyle *style;
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (extents != NULL);
 
-	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-	element_class->get_extents (element, view, extents);
+	parent_style = lsm_svg_view_get_current_style (view);
+	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
+
+	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
+	    style->display->value != LSM_SVG_DISPLAY_NONE) {
+		element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+		element_class->get_extents (element, view, extents);
+	}
 
 	if (element->id.value != NULL)
 		lsm_debug_measure ("LsmSvgElement::get_extents] Extents for '%s' = %g,%g %g,%g",
@@ -301,6 +298,26 @@ lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtent
 		lsm_debug_measure ("LsmSvgElement::get_extents] Extents for <%s> = %g,%g %g,%g",
 				   lsm_dom_node_get_node_name (LSM_DOM_NODE (element)),
 				   extents->x1, extents->y1, extents->x2, extents->y2);
+}
+
+void
+lsm_svg_element_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+{
+	LsmSvgElementClass *element_class;
+	const LsmSvgStyle *parent_style;
+	LsmSvgStyle *style;
+	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
+	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (extents != NULL);
+
+	parent_style = lsm_svg_view_get_current_style (view);
+	style = lsm_svg_style_new_inherited (parent_style, &element->property_bag);
+
+	if (style->visibility->value == LSM_SVG_VISIBILITY_VISIBLE &&
+	    style->display->value != LSM_SVG_DISPLAY_NONE) {
+		element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
+		element_class->transformed_get_extents (element, view, extents);
+	}
 }
 
 static void
@@ -363,7 +380,7 @@ lsm_svg_element_class_init (LsmSvgElementClass *s_element_class)
 	s_element_class->render = _render;
 	s_element_class->get_extents = _get_extents;
 	s_element_class->transformed_render = _transformed_render;
-	s_element_class->transformed_get_extents = NULL;
+	s_element_class->transformed_get_extents = _transformed_get_extents;
 	s_element_class->attribute_manager = lsm_attribute_manager_new (G_N_ELEMENTS (lsm_svg_attribute_infos),
 									lsm_svg_attribute_infos);
 }
