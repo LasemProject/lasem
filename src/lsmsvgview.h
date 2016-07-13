@@ -90,6 +90,8 @@ GType lsm_svg_view_get_type (void);
 
 LsmSvgView *	lsm_svg_view_new 			(LsmSvgDocument *document);
 
+LsmSvgRuler * 	lsm_svg_view_get_ruler 			(LsmSvgView *view);
+
 double 		lsm_svg_view_normalize_length 		(LsmSvgView *view, const LsmSvgLength *length,
 							 LsmSvgLengthDirection direction);
 double * 	lsm_svg_view_normalize_length_list 	(LsmSvgView *view, const LsmSvgLengthList *list, LsmSvgLengthDirection direction,

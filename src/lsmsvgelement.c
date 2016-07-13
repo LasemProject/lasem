@@ -228,23 +228,23 @@ lsm_svg_element_force_render (LsmSvgElement *element, LsmSvgView *view)
 }
 
 void
-lsm_svg_element_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_element_transformed_get_extents (LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgElementClass *element_class;
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (ruler != NULL);
 	g_return_if_fail (extents != NULL);
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 
 	if (element_class->transformed_get_extents != NULL)
-		element_class->transformed_get_extents (element, view, extents);
+		element_class->transformed_get_extents (element, ruler, extents);
 	else
-		element_class->get_extents (element, view, extents);
+		element_class->get_extents (element, ruler, extents);
 }
 
 static void
-_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+_get_extents (LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmDomNode *node;
 	gboolean first_child = TRUE;
@@ -262,9 +262,9 @@ _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 			child_element_class = LSM_SVG_ELEMENT_GET_CLASS (node);
 			
 			if (child_element_class->transformed_get_extents != NULL)
-				child_element_class->transformed_get_extents (child_element, view, &child_extents);
+				child_element_class->transformed_get_extents (child_element, ruler, &child_extents);
 			else
-				child_element_class->get_extents (child_element, view, &child_extents);
+				child_element_class->get_extents (child_element, ruler, &child_extents);
 
 			if (first_child) {
 				element_extents = child_extents;
@@ -282,16 +282,16 @@ _get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
 }
 
 void
-lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_element_get_extents (LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgElementClass *element_class;
 
 	g_return_if_fail (LSM_IS_SVG_ELEMENT (element));
-	g_return_if_fail (LSM_IS_SVG_VIEW (view));
+	g_return_if_fail (ruler != NULL);
 	g_return_if_fail (extents != NULL);
 
 	element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
-	element_class->get_extents (element, view, extents);
+	element_class->get_extents (element, ruler, extents);
 
 	if (element->id.value != NULL)
 		lsm_debug_measure ("LsmSvgElement::get_extents] Extents for '%s' = %g,%g %g,%g",

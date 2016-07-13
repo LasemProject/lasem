@@ -111,7 +111,7 @@ lsm_svg_svg_element_measure (LsmSvgSvgElement *self, LsmSvgView *view, LsmDomVie
 				*y = 0.0;
 			break;
 		case LSM_DOM_VIEW_MEASUREMENT_EXTENTS:
-			lsm_svg_element_get_extents (LSM_SVG_ELEMENT (self), view, &extents);
+			lsm_svg_element_get_extents (LSM_SVG_ELEMENT (self), lsm_svg_view_get_ruler (view), &extents);
 			break;
 	}
 

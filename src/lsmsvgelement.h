@@ -27,6 +27,7 @@
 #include <lsmsvgtypes.h>
 #include <lsmsvgattributes.h>
 #include <lsmsvgstyle.h>
+#include <lsmsvgruler.h>
 #include <lsmdom.h>
 #include <cairo.h>
 
@@ -59,9 +60,9 @@ struct _LsmSvgElementClass {
 
 	void		(*enable_rendering)		(LsmSvgElement *element);
 	void 		(*render)			(LsmSvgElement *element, LsmSvgView *view);
-	void 		(*get_extents)			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 	void 		(*transformed_render)		(LsmSvgElement *element, LsmSvgView *view);
-	void 		(*transformed_get_extents)	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+	void 		(*get_extents)			(LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents);
+	void 		(*transformed_get_extents)	(LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents);
 
 	gboolean is_shape_element;
 };
@@ -71,10 +72,9 @@ GType lsm_svg_element_get_type (void);
 LsmSvgElementCategory	lsm_svg_element_get_category	(LsmSvgElement *element);
 
 void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
-void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
 void 		lsm_svg_element_force_render 			(LsmSvgElement *element, LsmSvgView *view);
-void		lsm_svg_element_get_extents			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
-void 		lsm_svg_element_transformed_get_extents 	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
+void		lsm_svg_element_get_extents			(LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents);
+void 		lsm_svg_element_transformed_get_extents 	(LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents);
 
 G_END_DECLS
 

@@ -40,11 +40,11 @@ lsm_svg_circle_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
-_normalize_length (LsmSvgCircleElement *circle, LsmSvgView *view, double *cx, double *cy, double *r)
+_normalize_length (LsmSvgCircleElement *circle, LsmSvgRuler *ruler, double *cx, double *cy, double *r)
 {
-	*cx = lsm_svg_view_normalize_length (view, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	*cy = lsm_svg_view_normalize_length (view, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	*r  = lsm_svg_view_normalize_length (view, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
+	*cx = lsm_svg_ruler_normalize_length (ruler, &circle->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*cy = lsm_svg_ruler_normalize_length (ruler, &circle->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*r  = lsm_svg_ruler_normalize_length (ruler, &circle->r.length,  LSM_SVG_LENGTH_DIRECTION_DIAGONAL);
 }
 
 static void
@@ -53,7 +53,7 @@ lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	double cx, cy, r;
 
-	_normalize_length (circle, view, &cx,&cy,&r);
+	_normalize_length (circle, lsm_svg_view_get_ruler (view), &cx,&cy,&r);
 
 	lsm_debug_render ("[LsmSvgCircleElement::render] cx = %g, cy = %g, r = %g", cx, cy, r);
 
@@ -61,12 +61,12 @@ lsm_svg_circle_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_circle_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_circle_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgCircleElement *circle = LSM_SVG_CIRCLE_ELEMENT (self);
 	double cx, cy, r;
 
-	_normalize_length (circle, view, &cx,&cy,&r);
+	_normalize_length (circle, ruler, &cx,&cy,&r);
 
 	extents->x1 = cx - r;
 	extents->y1 = cy - r;

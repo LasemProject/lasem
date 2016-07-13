@@ -39,12 +39,12 @@ lsm_svg_ellipse_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
-_normalize_length (LsmSvgEllipseElement *ellipse, LsmSvgView *view, double *cx, double *cy, double *rx, double *ry)
+_normalize_length (LsmSvgEllipseElement *ellipse, LsmSvgRuler *ruler, double *cx, double *cy, double *rx, double *ry)
 {
-	*cx = lsm_svg_view_normalize_length (view, &ellipse->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	*cy = lsm_svg_view_normalize_length (view, &ellipse->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	*rx = lsm_svg_view_normalize_length (view, &ellipse->rx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	*ry = lsm_svg_view_normalize_length (view, &ellipse->ry.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*cx = lsm_svg_ruler_normalize_length (ruler, &ellipse->cx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*cy = lsm_svg_ruler_normalize_length (ruler, &ellipse->cy.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*rx = lsm_svg_ruler_normalize_length (ruler, &ellipse->rx.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*ry = lsm_svg_ruler_normalize_length (ruler, &ellipse->ry.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 }
 
 static void
@@ -53,18 +53,18 @@ lsm_svg_ellipse_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
 	double cx, cy, rx, ry;
 
-	_normalize_length (ellipse, view, &cx, &cy, &rx, &ry);
+	_normalize_length (ellipse, lsm_svg_view_get_ruler (view), &cx, &cy, &rx, &ry);
 
 	lsm_svg_view_show_ellipse (view, cx, cy, rx, ry);
 }
 
 static void
-lsm_svg_ellipse_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_ellipse_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgEllipseElement *ellipse = LSM_SVG_ELLIPSE_ELEMENT (self);
 	double cx, cy, rx, ry;
 
-	_normalize_length (ellipse, view, &cx, &cy, &rx, &ry);
+	_normalize_length (ellipse, ruler, &cx, &cy, &rx, &ry);
 
 	extents->x1 = cx - rx;
 	extents->y1 = cy - ry;

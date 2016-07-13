@@ -55,12 +55,12 @@ lsm_svg_transformable_transformed_render (LsmSvgElement *element, LsmSvgView *vi
 }
 
 static void
-lsm_svg_transformable_transformed_get_extents (LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_transformable_transformed_get_extents (LsmSvgElement *element, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgTransformable *transformable = LSM_SVG_TRANSFORMABLE (element);
 	LsmSvgElementClass *element_class = LSM_SVG_ELEMENT_GET_CLASS (element);
 
-	element_class->get_extents (element, view, extents);
+	element_class->get_extents (element, ruler, extents);
 
 	if (!lsm_svg_matrix_is_identity (&transformable->transform.matrix))
 		lsm_svg_matrix_transform_bounding_box (&transformable->transform.matrix,

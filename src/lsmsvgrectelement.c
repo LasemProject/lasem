@@ -66,16 +66,16 @@ lsm_svg_rect_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_rect_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_rect_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgRectElement *rect = LSM_SVG_RECT_ELEMENT (self);
 	double x, y;
 	double w, h;
 
-	x = lsm_svg_view_normalize_length (view, &rect->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y = lsm_svg_view_normalize_length (view, &rect->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	w = lsm_svg_view_normalize_length (view, &rect->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	h = lsm_svg_view_normalize_length (view, &rect->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	x = lsm_svg_ruler_normalize_length (ruler, &rect->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	y = lsm_svg_ruler_normalize_length (ruler, &rect->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	w = lsm_svg_ruler_normalize_length (ruler, &rect->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	h = lsm_svg_ruler_normalize_length (ruler, &rect->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
 	extents->x1 = x;
 	extents->y1 = y;

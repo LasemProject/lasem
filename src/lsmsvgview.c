@@ -1686,7 +1686,7 @@ lsm_svg_view_push_clip (LsmSvgView *view)
 	g_return_if_fail (LSM_IS_SVG_VIEW (view));
 	g_return_if_fail (!view->is_clipping);
 
-	lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
+	lsm_svg_element_get_extents (view->element_stack->data, view->ruler, &extents);
 
 	style = lsm_svg_ruler_get_style (view->ruler);
 	url = style->clip_path->value;
@@ -1751,7 +1751,7 @@ lsm_svg_view_pop_mask (LsmSvgView *view)
 		LsmBox mask_extents;
 		cairo_t *cairo;
 
-		lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
+		lsm_svg_element_get_extents (view->element_stack->data, view->ruler, &extents);
 
 		mask_extents.x = extents.x1;
 		mask_extents.y = extents.y1;
@@ -1827,7 +1827,7 @@ lsm_svg_view_push_filter (LsmSvgView *view)
 	g_return_if_fail (view->element_stack != NULL);
 
 	style = lsm_svg_ruler_get_style (view->ruler);
-	lsm_svg_element_get_extents (view->element_stack->data, view, &extents);
+	lsm_svg_element_get_extents (view->element_stack->data, view->ruler, &extents);
 
 	object_extents.x = extents.x1;
 	object_extents.y = extents.y1;
@@ -2623,6 +2623,14 @@ lsm_svg_view_get_clip_extents (LsmSvgView *view)
 	g_return_val_if_fail (view->is_clipping, &null_extents);
 
 	return &view->clip_extents;
+}
+
+LsmSvgRuler *
+lsm_svg_view_get_ruler (LsmSvgView *view)
+{
+	g_return_val_if_fail (LSM_IS_SVG_VIEW (view), NULL);
+
+	return view->ruler;
 }
 
 static void

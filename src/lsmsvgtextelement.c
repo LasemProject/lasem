@@ -96,7 +96,7 @@ lsm_svg_text_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_text_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_text_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 /*        LsmSvgTextElement *text = LSM_SVG_TEXT_ELEMENT (self);*/
 	LsmDomNode *iter;
@@ -112,7 +112,7 @@ lsm_svg_text_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExte
 /*        x = lsm_svg_view_normalize_length (view, &text->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);*/
 /*        y = lsm_svg_view_normalize_length (view, &text->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);*/
 
-	lsm_svg_view_text_extents (view, g_strstrip (string->str), 0, 0, 0, NULL, 0, NULL, extents);
+/*        lsm_svg_view_text_extents (view, g_strstrip (string->str), 0, 0, 0, NULL, 0, NULL, extents);*/
 
 	g_string_free (string, TRUE);
 }

@@ -126,42 +126,9 @@ lsm_svg_filter_element_enable_rendering (LsmSvgElement *element)
 }
 
 static void
-lsm_svg_filter_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_filter_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
-	LsmSvgFilterElement *filter = LSM_SVG_FILTER_ELEMENT (self);
-	const LsmBox *source_extents;
-	double x, y;
-	double w, h;
-	gboolean is_object_bounding_box;
-
-	source_extents = lsm_svg_view_get_pattern_extents (view);
-
-	is_object_bounding_box = (filter->units.value == LSM_SVG_PATTERN_UNITS_OBJECT_BOUNDING_BOX);
-
-	if (is_object_bounding_box) {
-		LsmBox viewbox = {.x = 0.0, .y = .0, .width = 1.0, .height = 1.0};
-
-		lsm_svg_view_push_viewbox (view, &viewbox);
-	}
-
-	x = lsm_svg_view_normalize_length (view, &filter->x.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y = lsm_svg_view_normalize_length (view, &filter->y.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	w  = lsm_svg_view_normalize_length (view, &filter->width.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	h = lsm_svg_view_normalize_length (view, &filter->height.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-
-	if (is_object_bounding_box) {
-		lsm_svg_view_pop_viewbox (view);
-
-		x = x * source_extents->width + source_extents->x;
-		y = y * source_extents->height + source_extents->y;
-		w *= source_extents->width;
-		h *= source_extents->height;
-	}
-
-	extents->x1 = x;
-	extents->y1 = y;
-	extents->x2 = x + w;
-	extents->y2 = y + h;
+	g_assert_not_reached ();
 }
 
 /* LsmSvgGraphic implementation */

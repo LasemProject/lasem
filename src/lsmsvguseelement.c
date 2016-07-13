@@ -111,7 +111,7 @@ lsm_svg_use_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgUseElement *use_element = LSM_SVG_USE_ELEMENT (self);
 	LsmDomElement *element;
@@ -138,20 +138,20 @@ lsm_svg_use_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExten
 
 	use_element->flags |= LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS;
 
-	x = lsm_svg_view_normalize_length (view, &use_element->x.length,
+	x = lsm_svg_ruler_normalize_length (ruler, &use_element->x.length,
 					   LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	y = lsm_svg_view_normalize_length (view, &use_element->y.length,
+	y = lsm_svg_ruler_normalize_length (ruler, &use_element->y.length,
 					   LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 
-	lsm_svg_element_transformed_get_extents (LSM_SVG_ELEMENT (element), view, extents);
+	lsm_svg_element_transformed_get_extents (LSM_SVG_ELEMENT (element), ruler, extents);
 
 	lsm_svg_matrix_init_translate (&matrix, x, y);
 
-	if (lsm_svg_view_push_matrix (view, &matrix))
+	if (lsm_svg_ruler_push_matrix (ruler, &matrix))
 		lsm_svg_matrix_transform_bounding_box (&matrix,
 						       &extents->x1, &extents->y1,
 						       &extents->x2, &extents->y2);
-	lsm_svg_view_pop_matrix (view);
+	lsm_svg_ruler_pop_matrix (ruler);
 
 	use_element->flags &= ~LSM_SVG_USE_ELEMENT_FLAGS_IN_USE_FOR_GET_EXTENTS;
 }

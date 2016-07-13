@@ -48,11 +48,12 @@ lsm_svg_path_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_path_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_path_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgPathElement *path = LSM_SVG_PATH_ELEMENT (self);
 
-	lsm_svg_view_path_extents (view, path->d.value, extents);
+	/* FIXME */
+/*        lsm_svg_view_path_extents (view, path->d.value, extents);*/
 }
 
 /* LsmSvgPathElement implementation */

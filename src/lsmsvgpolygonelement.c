@@ -47,7 +47,7 @@ lsm_svg_polygon_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_polygon_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_polygon_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgPolygonElement *polygon = LSM_SVG_POLYGON_ELEMENT (self);
 

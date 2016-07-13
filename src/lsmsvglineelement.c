@@ -40,13 +40,12 @@ lsm_svg_line_element_get_node_name (LsmDomNode *node)
 /* LsmSvgGraphic implementation */
 
 static void
-_normalize_length (LsmSvgLineElement *line, LsmSvgView *view, double *x1, double *y1, double *x2, double *y2)
+_normalize_length (LsmSvgLineElement *line, LsmSvgRuler *ruler, double *x1, double *y1, double *x2, double *y2)
 {
-	*x1 = lsm_svg_view_normalize_length (view, &line->x1.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	*y1 = lsm_svg_view_normalize_length (view, &line->y1.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-	*x2 = lsm_svg_view_normalize_length (view, &line->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
-	*y2 = lsm_svg_view_normalize_length (view, &line->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
-
+	*x1 = lsm_svg_ruler_normalize_length (ruler, &line->x1.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*y1 = lsm_svg_ruler_normalize_length (ruler, &line->y1.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
+	*x2 = lsm_svg_ruler_normalize_length (ruler, &line->x2.length, LSM_SVG_LENGTH_DIRECTION_HORIZONTAL);
+	*y2 = lsm_svg_ruler_normalize_length (ruler, &line->y2.length, LSM_SVG_LENGTH_DIRECTION_VERTICAL);
 }
 
 static void
@@ -55,7 +54,7 @@ lsm_svg_line_element_render (LsmSvgElement *self, LsmSvgView *view)
 	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
 	double x1, y1, x2, y2;
 
-	_normalize_length (line, view, &x1, &y1, &x2, &y2);
+	_normalize_length (line, lsm_svg_view_get_ruler (view), &x1, &y1, &x2, &y2);
 
 	lsm_debug_render ("[LsmSvgLineElement::render] %g, %g, %g, %g", x1, y1, x2, y2);
 
@@ -63,12 +62,12 @@ lsm_svg_line_element_render (LsmSvgElement *self, LsmSvgView *view)
 }
 
 static void
-lsm_svg_line_element_get_extents (LsmSvgElement *self, LsmSvgView *view, LsmExtents *extents)
+lsm_svg_line_element_get_extents (LsmSvgElement *self, LsmSvgRuler *ruler, LsmExtents *extents)
 {
 	LsmSvgLineElement *line = LSM_SVG_LINE_ELEMENT (self);
 	double x1, y1, x2, y2;
 
-	_normalize_length (line, view, &x1, &y1, &x2, &y2);
+	_normalize_length (line, ruler, &x1, &y1, &x2, &y2);
 
 	extents->x1 = MIN (x1, x2);
 	extents->y1 = MIN (y1, y2);
