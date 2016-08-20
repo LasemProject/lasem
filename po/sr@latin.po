@@ -1,14 +1,14 @@
 # Serbian translation for lasem.
 # Copyright (C) 2013 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2013—2015.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2013—2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=lasem&k"
-"eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2015-08-03 12:59+0000\n"
-"PO-Revision-Date: 2015-12-30 12:30+0200\n"
+"eywords=I18N+L10N&component=Other\n"
+"POT-Creation-Date: 2016-08-15 10:29+0000\n"
+"PO-Revision-Date: 2016-08-20 23:53+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -19,46 +19,76 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Naziv izlazne datoteke"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Izlazni zapis"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
-msgstr "Tačkica po inču"
+msgstr "Piksela po inču"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Uveličanje"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "IB elementa"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Pomeraj"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Veličina"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Domeni pročišćavanja"
 
-#: ../src/lasemrender.c:107
-#| msgid "Option parsing failed: %s\n"
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Neispravna vrsta dokumenta (SVG je očekivana)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Nisam našao element „%s“"
+
+#: ../src/lasemrender.c:154
 msgid "Option parsing failed:"
 msgstr "Nije uspela obrada opcije:"
 
-#: ../src/lasemrender.c:114
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Neispravna vrednost uveličanja"
 
-#: ../src/lasemrender.c:121
-#| msgid "Output filename"
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Neispravan broj argumenata za opciju pomeraja"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Neispravan broj argumenata za opciju veličine"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Neispravna veličina izvoza"
+
+#: ../src/lasemrender.c:193
 msgid "Missing input filename"
 msgstr "Nedostaje naziv ulazne datoteke"
 
-#: ../src/lasemrender.c:132
-#| msgid "Unknown format: %s\n"
+#: ../src/lasemrender.c:204
 msgid "Unknown format:"
 msgstr "Nepoznat zapis:"
 
-#: ../src/lasemrender.c:172
+#: ../src/lasemrender.c:244
 msgid ""
 "Don't know which format to use, please either give a format (-f) or an "
 "output filename (-o)"
@@ -66,9 +96,8 @@ msgstr ""
 "Ne znam koji zapis da koristim, dajte zapis (-f) ili naziv izlazne datoteke "
 "(-o)"
 
-#: ../src/lasemrender.c:262
+#: ../src/lasemrender.c:355
 #, c-format
-#| msgid "Can't load '%s'\n"
 msgid "Can't load '%s'"
 msgstr "Ne mogu da učitam „%s“"
 
