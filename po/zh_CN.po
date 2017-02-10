@@ -1,63 +1,100 @@
-# Chinese (China) translation for lasem.
-# Copyright (C) 2014 lasem's COPYRIGHT HOLDER
+# Chinese (China) translation of lasem
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
-# Wylmer Wang <wantinghard@gmail.com>, 2014.
+# Yuqing Wu <yuqingwucn.pl@gmail.com>, 2015.
+# Aron Xu <happyaron.xu@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-12-19 14:30+0000\n"
-"PO-Revision-Date: 2014-01-05 15:33+0800\n"
-"Last-Translator: Wylmer Wang <wantinghard@gmail.com>\n"
-"Language-Team: Chinese (Simplified) <i18n-zh@googlegroups.com>\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-10 18:33+0800\n"
+"PO-Revision-Date: 2017-02-10 18:35+0800\n"
+"Last-Translator: Yuqing Wu <yuqingwucn.pl@gmail.com>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
-msgstr "输出名"
+msgstr "输出文件名"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "输出格式"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
-msgstr "像素每英寸"
+msgstr "每英寸像素数"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
-msgstr "缩放"
+msgstr "放大"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "元素 ID"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "偏移"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "尺寸"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "调试域"
 
-#: ../src/lasemrender.c:105
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "解析选项失败：%s\n"
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "无效的文档类型(应为 SVG)"
 
-#: ../src/lasemrender.c:112
+#: ../src/lasemrender.c:103
 #, c-format
+msgid "Element '%s' not found"
+msgstr "未找到元素 %s"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "选项解析失败："
+
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "无效的缩放值"
 
-#: ../src/lasemrender.c:119
-#, c-format
-msgid "One input file name is required\n"
-msgstr "需要一个输入文件名\n"
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr ""
 
-#: ../src/lasemrender.c:130
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "未知的格式：%s\n"
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr ""
 
-#: ../src/lasemrender.c:255
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "无效的导出尺寸"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "缺少输出文件名"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "未知格式："
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+
+#: ../src/lasemrender.c:355
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "无法加载“%s”\n"
+msgid "Can't load '%s'"
+msgstr "无法加载 %s"
