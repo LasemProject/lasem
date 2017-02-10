@@ -1,0 +1,86 @@
+# Chinese (China) translation of lasem
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Yuqing Wu <yuqingwucn.pl@gmail.com>, 2015.
+# Aron Xu <happyaron.xu@gmail.com>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-10 18:37+0800\n"
+"PO-Revision-Date: 2017-02-10 18:37+0800\n"
+"Last-Translator: Yuqing Wu <yuqingwucn.pl@gmail.com>\n"
+"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "输出文件名"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "输出格式"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "每英寸像素数"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "放大"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "调试域"
+
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "选项解析失败：%s\n"
+
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "无效的缩放值"
+
+#: ../src/lasemrender.c:121
+#, c-format
+msgid "One input file name is required\n"
+msgstr ""
+
+#: ../src/lasemrender.c:132
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "未知格式：%s\n"
+
+#: ../src/lasemrender.c:257
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "无法加载 %s\n"
+
+#~ msgid "Element id"
+#~ msgstr "元素 ID"
+
+#~ msgid "Offset"
+#~ msgstr "偏移"
+
+#~ msgid "Size"
+#~ msgstr "尺寸"
+
+#~ msgid "Invalid document type (SVG expected)"
+#~ msgstr "无效的文档类型(应为 SVG)"
+
+#~ msgid "Element '%s' not found"
+#~ msgstr "未找到元素 %s"
+
+#~ msgid "Invalid export size"
+#~ msgstr "无效的导出尺寸"
+
+#~ msgid "Missing input filename"
+#~ msgstr "缺少输出文件名"
