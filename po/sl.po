@@ -2,15 +2,15 @@
 # Copyright (C) 2012 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2012-2016.
+# Matej Urbančič <mateju@svn.gnome.org>, 2012–2017.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-03-12 21:39+0100\n"
-"PO-Revision-Date: 2016-03-12 21:40+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=Other\n"
+"POT-Creation-Date: 2017-09-18 21:12+0200\n"
+"PO-Revision-Date: 2017-09-18 21:14+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -20,54 +20,87 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 2.0.1\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Odvodno ime datoteke"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Odvodni zapis"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "Točke na palec"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Približanje"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "ID Predmeta"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Odmik"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Velikost"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Domene razhroščevanja"
 
-#: ../src/lasemrender.c:107
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Neveljavna vrsta dokumenta (pričakovan je zapis SVG)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Predmeta »%s« ni mogoče najti"
+
+#: ../src/lasemrender.c:154
 msgid "Option parsing failed:"
 msgstr "Razčlenjevanje možnosti je spodletelo:"
 
-#: ../src/lasemrender.c:114
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Neveljavna vrednost približanja"
 
-#: ../src/lasemrender.c:121
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Neveljavno število argumentov za možnost odmika"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Neveljavno število argumentov za možnost velikosti"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Neveljavna velikost izvoza"
+
+#: ../src/lasemrender.c:193
 msgid "Missing input filename"
 msgstr "Manjka ime vhodne datoteke"
 
-#: ../src/lasemrender.c:132
+#: ../src/lasemrender.c:204
 msgid "Unknown format:"
 msgstr "Neznan zapis:"
 
-#: ../src/lasemrender.c:172
+#: ../src/lasemrender.c:244
 msgid ""
 "Don't know which format to use, please either give a format (-f) or an "
 "output filename (-o)"
 msgstr ""
 
-#: ../src/lasemrender.c:262
+#: ../src/lasemrender.c:355
 #, c-format
 msgid "Can't load '%s'"
-msgstr "Ni mogoče naložiti '%s'"
+msgstr "Ni mogoče naložiti »%s«"
 
 #~ msgid "Option parsing failed: %s\n"
 #~ msgstr "Razčlenjevanje možnosti je spodletelo: %s\n"
