@@ -2,7 +2,7 @@
 # Copyright (C) 2012 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2012–2017.
+# Matej Urbančič <mateju@svn.gnome.org>, + 2012–2017.
 #
 msgid ""
 msgstr ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
 "product=lasem&keywords=I18N+L10N&component=Other\n"
 "POT-Creation-Date: 2017-09-20 12:19+0200\n"
-"PO-Revision-Date: 2017-09-20 12:20+0200\n"
+"PO-Revision-Date: 2017-10-15 20:48+0200\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.0.1\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: ../src/lasemrender.c:70
 msgid "Output filename"
@@ -40,7 +40,7 @@ msgstr "Približanje"
 
 #: ../src/lasemrender.c:78
 msgid "Element id"
-msgstr "ID Predmeta"
+msgstr "ID predmeta"
 
 #: ../src/lasemrender.c:80
 msgid "Offset"
@@ -102,7 +102,7 @@ msgstr ""
 #: ../src/lasemrender.c:355
 #, c-format
 msgid "Can't load '%s'"
-msgstr "Ni mogoče naložiti »%s«"
+msgstr "Datoteke »%s« ni mogoče naložiti"
 
 #~ msgid "Option parsing failed: %s\n"
 #~ msgstr "Razčlenjevanje možnosti je spodletelo: %s\n"
