@@ -1,0 +1,62 @@
+# Norwegian bokmål translation of lasem.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Kjartan Maraas <kmaraas@gnome.org>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-07-25 14:21+0200\n"
+"PO-Revision-Date: 2014-07-25 14:24+0200\n"
+"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
+"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language: nb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Filnavn for utdata"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Utdataformat"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Piksler per tomme"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Feilsøkingsdomener"
+
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Lesing av valg feilet: %s\n"
+
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Ugyldig verdi for zoom"
+
+#: ../src/lasemrender.c:121
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Navn på en inndatafil kreves\n"
+
+#: ../src/lasemrender.c:132
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Ukjent format: %s\n"
+
+#: ../src/lasemrender.c:257
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Kan ikke laste «%s»\n"
