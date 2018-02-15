@@ -269,13 +269,13 @@ main(int argc, char **argv)
 
 	if (document != NULL) {
 		if (lsm_debug_check (&lsm_debug_category_dom, LSM_DEBUG_LEVEL_LOG)) {
-			void *buffer;
+			char *buffer;
 			gsize size;
 
 			lsm_dom_document_save_to_memory (document, &buffer, &size, NULL);
 
 			if (buffer != NULL) {
-				printf ("%*s\n", (int) size, (char *) buffer);
+				printf ("%*s\n", (int) size, buffer);
 				g_free (buffer);
 			}
 		}

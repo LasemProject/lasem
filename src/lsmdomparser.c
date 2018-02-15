@@ -259,7 +259,7 @@ typedef enum {
 
 static LsmDomDocument *
 _parse_memory (LsmDomDocument *document, LsmDomNode *node,
-	       const void *buffer, gssize size, GError **error)
+	       const char *buffer, gssize size, GError **error)
 {
 	static LsmDomSaxParserState state;
 
@@ -304,7 +304,7 @@ _parse_memory (LsmDomDocument *document, LsmDomNode *node,
 
 void
 lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
-				     const void *buffer, gssize size, GError **error)
+				     const char *buffer, gssize size, GError **error)
 {
 	g_return_if_fail (LSM_IS_DOM_DOCUMENT (document));
 	g_return_if_fail (LSM_IS_DOM_NODE (node) || node == NULL);
@@ -323,11 +323,11 @@ lsm_dom_document_append_from_memory (LsmDomDocument *document, LsmDomNode *node,
  */
 
 LsmDomDocument *
-lsm_dom_document_new_from_memory (const void *buffer, gssize size, GError **error)
+lsm_dom_document_new_from_memory (const char *buffer, gssize size, GError **error)
 {
 	g_return_val_if_fail (buffer != NULL, NULL);
 
-	return _parse_memory (NULL, NULL, buffer, size, error); 
+	return _parse_memory (NULL, NULL, buffer, size, error);
 }
 
 /**
@@ -432,15 +432,15 @@ lsm_dom_document_save_to_stream (LsmDomDocument *document, GOutputStream *stream
 /**
  * lsm_dom_document_save_to_memory:
  * @document: a #LsmDomDocument
- * @buffer: placeholder for a pointer to the resulting data buffer
- * @size: placeholder for the data size
+ * @buffer: (out callee-allocates): placeholder for a pointer to the resulting data buffer
+ * @size: (out) (optional): placeholder for the data size
  * @error: placeholder for a #GError
  *
  * Save @document as an xml representation into @buffer.
  */
 
 void
-lsm_dom_document_save_to_memory	(LsmDomDocument *document, void **buffer, gsize *size, GError **error)
+lsm_dom_document_save_to_memory	(LsmDomDocument *document, char **buffer, gsize *size, GError **error)
 {
 	GOutputStream *stream;
 

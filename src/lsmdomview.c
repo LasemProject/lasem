@@ -145,9 +145,9 @@ lsm_dom_view_get_viewport_pixels (LsmDomView *self)
 /**
  * lsm_dom_view_get_size:
  * @view: a #LsmDomView
- * @width: view width placeholder, in points
- * @height: view height placeholder, in points
- * @baseline: view baseline, in points
+ * @width: (out) (optional): view width placeholder, in points
+ * @height: (out) (optional): view height placeholder, in points
+ * @baseline: (out) (optional): view baseline, in points
  *
  * Get the view size and baseline. Baseline is for use of view inside bloc of text.
  */
@@ -175,9 +175,9 @@ lsm_dom_view_get_size (LsmDomView *view, double *width, double *height, double *
 /**
  * lsm_dom_view_get_size_pixels:
  * @view: a #LsmDomView
- * @width: view width placeholder, in pixels
- * @height: view height placeholder, in pixels
- * @baseline: view baseline, in pixels
+ * @width: (out) (optional): view width placeholder, in pixels
+ * @height: (out) (optional): view height placeholder, in pixels
+ * @baseline: (out) (optional): view baseline, in pixels
  *
  * Get the view size and baseline. Baseline is for use of view inside bloc of text.
  */
