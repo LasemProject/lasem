@@ -1,0 +1,102 @@
+# Dutch translation for lasem.
+# Copyright (C) 2017 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Nathan Follens <nthn@unseen.is>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?"
+"product=lasem&keywords=I18N+L10N&component=Other\n"
+"POT-Creation-Date: 2017-08-06 06:21+0000\n"
+"PO-Revision-Date: 2017-09-11 00:04+0200\n"
+"Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"X-Generator: Poedit 2.0.3\n"
+
+#: ../src/lasemrender.c:70
+msgid "Output filename"
+msgstr "Uitvoerbestandsnaam"
+
+#: ../src/lasemrender.c:72
+msgid "Output format"
+msgstr "Uitvoerformaat"
+
+#: ../src/lasemrender.c:74
+msgid "Pixel per inch"
+msgstr "Pixel per inch"
+
+#: ../src/lasemrender.c:76
+msgid "Zoom"
+msgstr "Zoomen"
+
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "Element-ID"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Offset"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Grootte"
+
+#: ../src/lasemrender.c:84
+msgid "Debug domains"
+msgstr "Debugdomeinen"
+
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Ongeldig documenttype (SVG verwacht)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Element ‘%s’ niet gevonden"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "Verwerken van optie mislukt:"
+
+#: ../src/lasemrender.c:161
+msgid "Invalid zoom value"
+msgstr "Ongeldig zoomniveau"
+
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Ongeldig aantal parameters voor offset-optie"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Ongeldig aantal parameters voor grootte-optie"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Ongeldige exportgrootte"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "Ontbrekende invoerbestandsnaam"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "Onbekend formaat:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Geen idee welk formaat te gebruiken, voer ofwel een formaat (-f), "
+"ofwel een uitvoerbestandsnaam (-o) in"
+
+#: ../src/lasemrender.c:355
+#, c-format
+msgid "Can't load '%s'"
+msgstr "Kan ‘%s’ niet laden"
