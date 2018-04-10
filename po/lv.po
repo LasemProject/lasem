@@ -1,66 +1,109 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2013, 2018.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-08-30 15:45+0000\n"
-"PO-Revision-Date: 2013-10-14 19:39+0300\n"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=lasem"
+"&keywords=I18N+L10N&component=Other\n"
+"POT-Creation-Date: 2018-02-15 10:31+0000\n"
+"PO-Revision-Date: 2018-04-10 21:03+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
-"2);\n"
-"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 :"
+" 2);\n"
+"X-Generator: Lokalize 2.0\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Izvades datnes nosaukums"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Izvades formāts"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "Pikseļi collā"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Tālummaiņa"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "Elementa id"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Nobīde"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Izmērs"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Atkļūdošanas domēni"
 
-#: ../src/lasemrender.c:105
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Neizdevās parsēt opcijas: %s\n"
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Nederīgs dokumenta tips (SVG sagaidīts)"
 
-#: ../src/lasemrender.c:112
+#: ../src/lasemrender.c:103
 #, c-format
+msgid "Element '%s' not found"
+msgstr "Elements “%s” nav atrasts"
+
+#: ../src/lasemrender.c:154
+#| msgid "Option parsing failed: %s\n"
+msgid "Option parsing failed:"
+msgstr "Neizdevās parsēt opcijas:"
+
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Nederīga tālummaiņas vērtība"
 
-#: ../src/lasemrender.c:119
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Nepieciešams viens ievades datnes nosaukums\n"
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Nederīgs argumentu skaits nobīdes opcijai"
 
-#: ../src/lasemrender.c:130
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Nezināms formāts: %s\n"
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Nederīgs argumentu skaits izmēra opcijai"
 
-#: ../src/lasemrender.c:255
-#, c-format
-msgid "Can't load '%s'\n"
-msgstr "Nevar ielādēt “%s”\n"
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Nederīgs eksportēšanas izmērs"
 
+#: ../src/lasemrender.c:193
+#| msgid "Output filename"
+msgid "Missing input filename"
+msgstr "Trūkst ievades datnes nosaukuma"
+
+#: ../src/lasemrender.c:204
+#| msgid "Unknown format: %s\n"
+msgid "Unknown format:"
+msgstr "Nezināms formāts:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Nav zināms, kuru formātu izmantot, lūdzu, vai nu norādiet formātu (-f) vai"
+" izvades datnes nosaukumu (-o)"
+
+#: ../src/lasemrender.c:355
+#, c-format
+#| msgid "Can't load '%s'\n"
+msgid "Can't load '%s'"
+msgstr "Nevar ielādēt “%s”"
+
+#~ msgid "One input file name is required\n"
+#~ msgstr "Nepieciešams viens ievades datnes nosaukums\n"
