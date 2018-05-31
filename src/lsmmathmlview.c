@@ -1255,7 +1255,7 @@ lsm_mathml_view_measure (LsmDomView *dom_view, double *width, double *height, do
 }
 
 static void
-lsm_mathml_view_render (LsmDomView *dom_view)
+lsm_mathml_view_paint (LsmDomView *dom_view)
 {
 	LsmMathmlView *view = LSM_MATHML_VIEW (dom_view);
 	LsmMathmlMathElement *math_element;
@@ -1319,7 +1319,7 @@ lsm_mathml_view_class_init (LsmMathmlViewClass *view_class)
 	object_class->finalize = lsm_mathml_view_finalize;
 
 	d_view_class->measure = lsm_mathml_view_measure;
-	d_view_class->render = lsm_mathml_view_render;
+	d_view_class->paint = lsm_mathml_view_paint;
 }
 
 G_DEFINE_TYPE (LsmMathmlView, lsm_mathml_view, LSM_TYPE_DOM_VIEW)

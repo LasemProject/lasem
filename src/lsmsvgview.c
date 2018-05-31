@@ -2671,7 +2671,7 @@ lsm_svg_view_measure (LsmDomView *view, double *width, double *height, double *b
 }
 
 static void
-lsm_svg_view_render (LsmDomView *view)
+lsm_svg_view_paint (LsmDomView *view)
 {
 	LsmSvgView *svg_view;
 	LsmSvgSvgElement *svg_element;
@@ -2790,7 +2790,7 @@ lsm_svg_view_class_init (LsmSvgViewClass *view_class)
 	object_class->finalize = lsm_svg_view_finalize;
 
 	d_view_class->measure = lsm_svg_view_measure;
-	d_view_class->render = lsm_svg_view_render;
+	d_view_class->paint = lsm_svg_view_paint;
 	d_view_class->set_debug = lsm_svg_view_set_debug;
 }
 

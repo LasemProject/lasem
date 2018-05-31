@@ -346,4 +346,31 @@ typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
 CLEANFILES += $(gir_DATA) $(typelib_DATA)
 
+if HAVE_VAPIGEN
+
+vapi: lasem.vapi
+
+
+lasem-0.6.deps:
+	echo "glib-2.0\ngobject-2.0\ncairo\npangocairo\nlibxml-2.0\ngdk-pixbuf-2.0" > lasem-0.6.deps
+
+lasem-0.6.vapi: Lasem-0.6.gir
+	$(VAPIGEN) --metadatadir=$(top_srcdir)/src \
+	--library lasem-0.6 --pkg glib-2.0 --pkg gobject-2.0 \
+	--pkg cairo --pkg pangocairo --pkg libxml-2.0 --pkg gdk-pixbuf-2.0 $^
+
+vapidir = $(datadir)/vala/vapi
+vapi_DATA=lasem-0.6.vapi lasem-0.6.deps
+
+EXTRA_DIST += \
+        $(vapi_DATA) \
+	$(NULL)
+
+DISTCLEANFILES= \
+	lasem-0.6.deps \
+	lasem-0.6.vapi \
+	$(NULL)
+
+endif
+
 endif

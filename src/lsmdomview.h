@@ -65,7 +65,7 @@ struct _LsmDomViewClass {
 	GType document_type;
 
 	void (*measure)		(LsmDomView *view, double *width, double *height, double *baseline);
-	void (*render)		(LsmDomView *view);
+	void (*paint)		(LsmDomView *view);
 	void (*set_debug)	(LsmDomView *view, const char *feature, gboolean enable);
 };
 

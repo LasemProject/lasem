@@ -287,8 +287,8 @@ lsm_dom_view_render (LsmDomView *view, cairo_t *cairo, double x, double y)
 	cairo_translate (view->cairo, x, y);
 
 	view_class = LSM_DOM_VIEW_GET_CLASS (view);
-	if (view_class->render != NULL)
-		view_class->render (view);
+	if (view_class->paint != NULL)
+		view_class->paint (view);
 
 	cairo_restore (view->cairo);
 	cairo_new_path (cairo);

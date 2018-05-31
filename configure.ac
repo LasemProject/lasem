@@ -116,6 +116,10 @@ GOBJECT_INTROSPECTION_CHECK([0.6.7])
 GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes" || test ! -f "autogen.sh"])
 
+AC_PATH_PROG(VAPIGEN, vapigen, [no])
+AC_SUBST(VAPIGEN)
+AM_CONDITIONAL(HAVE_VAPIGEN, test "x$VAPIGEN" != "xno")
+
 AC_CONFIG_FILES([
 Makefile
 itex2mml/Makefile
