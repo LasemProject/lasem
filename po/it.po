@@ -1,64 +1,104 @@
 # Italian translations for lasem package
-# Copyright (C) 2013 Free Software Foundation, Inc
+# Copyright (C) 2013, 2018 Free Software Foundation, Inc
 # This file is distributed under the same license as the lasem package.
-# Milo Casagrande <milo@milo.name>, 2013.
+# Milo Casagrande <milo@milo.name>, 2013, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-18 15:31+0200\n"
-"PO-Revision-Date: 2013-08-18 15:31+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2018-06-10 17:37+0000\n"
+"PO-Revision-Date: 2018-12-06 09:51+0100\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Poedit 2.2\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Nome file di output"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Formato output"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "Pixel per pollice"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "ID elemento"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Spostamento"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Dimensione"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Domini di debug"
 
-#: ../src/lasemrender.c:105
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Analisi dell'opzione non riuscita: %s\n"
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Tipo di documento non valido (atteso SVG)"
 
-#: ../src/lasemrender.c:112
+#: ../src/lasemrender.c:103
 #, c-format
+msgid "Element '%s' not found"
+msgstr "Elemento «%s» non trovato"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "Analisi dell'opzione non riuscita:"
+
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Valore di zoom non valido"
 
-#: ../src/lasemrender.c:119
-#, c-format
-msgid "One input file name is required\n"
-msgstr "È richiesto almeno un nome file di input\n"
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Numero di argomenti non valido per l'opzione spostamento"
 
-#: ../src/lasemrender.c:130
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Formato sconosciuto: %s\n"
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Numero di argomenti non valido per l'opzione dimensione"
 
-#: ../src/lasemrender.c:255
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Dimensione di esportazione non valida"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "Nome file di input mancante"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "Formato sconosciuto:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Formato da usare sconosciuto: indicare un formato (-f) o il nome del "
+"file di output (-o)"
+
+#: ../src/lasemrender.c:355
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "Impossibile caricare «%s»\n"
+msgid "Can't load '%s'"
+msgstr "Impossibile caricare «%s»"
+
+#~ msgid "One input file name is required\n"
+#~ msgstr "È richiesto almeno un nome file di input\n"
