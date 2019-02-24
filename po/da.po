@@ -1,0 +1,99 @@
+# Danish translation for lasem.
+# Copyright (C) 2019 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# scootergrisen, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2019-02-09 15:06+0000\n"
+"PO-Revision-Date: 2019-02-19 00:00+0200\n"
+"Last-Translator: scootergrisen\n"
+"Language-Team: Danish\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/lasemrender.c:70
+msgid "Output filename"
+msgstr "Outputfilnavn"
+
+#: ../src/lasemrender.c:72
+msgid "Output format"
+msgstr "Outputformat"
+
+#: ../src/lasemrender.c:74
+msgid "Pixel per inch"
+msgstr "Pixel pr. inch"
+
+#: ../src/lasemrender.c:76
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "Element-id"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Forskydning"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Størrelse"
+
+#: ../src/lasemrender.c:84
+msgid "Debug domains"
+msgstr "Fejlretningsdomæner"
+
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Ugyldig dokumenttype (SVG forventet)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "Elementet “%s” blev ikke fundet"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "Fortolkning af tilvalg mislykkedes:"
+
+#: ../src/lasemrender.c:161
+msgid "Invalid zoom value"
+msgstr "Ugyldig zoomværdi"
+
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Ugyldigt antal argumenter for tilvalget forskydning"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Ugyldigt antal argumenter for tilvalget størrelse"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Ugyldig eksportstørrelse"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "Manglende inputfilnavn"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "Ukendt format:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Ved ikke hvilket format der skal bruges - angiv venligst enten et format (-f) "
+"eller et outputfilnavn (-o)"
+
+#: ../src/lasemrender.c:355
+#, c-format
+msgid "Can't load '%s'"
+msgstr "Kan ikke indlæse “%s”"
