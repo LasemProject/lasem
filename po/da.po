@@ -1,0 +1,62 @@
+# Danish translation for lasem.
+# Copyright (C) 2019 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# scootergrisen, 2019.
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem lasem-0-4\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2018-06-10 17:38+0000\n"
+"PO-Revision-Date: 2019-02-19 00:00+0200\n"
+"Last-Translator: scootergrisen\n"
+"Language-Team: Danish\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Outputfilnavn"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Outputformat"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Pixel pr. inch"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoom"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Fejlretningsdomæner"
+
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Fortolkning af tilvalg mislykkedes: %s\n"
+
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Ugyldig zoomværdi"
+
+#: ../src/lasemrender.c:121
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Der kræves ét inputfilnavn\n"
+
+#: ../src/lasemrender.c:132
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Ukendt format: %s\n"
+
+#: ../src/lasemrender.c:257
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Kan ikke indlæse “%s”\n"
