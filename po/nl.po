@@ -1,0 +1,94 @@
+# Dutch translation for lasem.
+# Copyright (C) 2017 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Nathan Follens <nthn@unseen.is>, 2017, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2019-02-24 13:48+0000\n"
+"PO-Revision-Date: 2019-03-08 11:31+0100\n"
+"Last-Translator: Nathan Follens <nthn@unseen.is>\n"
+"Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#: ../src/lasemrender.c:67
+msgid "Output filename"
+msgstr "Uitvoerbestandsnaam"
+
+#: ../src/lasemrender.c:69
+msgid "Output format"
+msgstr "Uitvoerformaat"
+
+#: ../src/lasemrender.c:71
+msgid "Pixel per inch"
+msgstr "Pixel per inch"
+
+#: ../src/lasemrender.c:73
+msgid "Zoom"
+msgstr "Zoomen"
+
+#: ../src/lasemrender.c:75
+msgid "Debug domains"
+msgstr "Debugdomeinen"
+
+#: ../src/lasemrender.c:107
+#, c-format
+msgid "Option parsing failed: %s\n"
+msgstr "Ontleden van optie mislukt: %s\n"
+
+#: ../src/lasemrender.c:114
+#, c-format
+msgid "Invalid zoom value"
+msgstr "Ongeldig zoomniveau"
+
+#: ../src/lasemrender.c:121
+#, c-format
+msgid "One input file name is required\n"
+msgstr "Eén invoerbestandsnaam is vereist\n"
+
+#: ../src/lasemrender.c:132
+#, c-format
+msgid "Unknown format: %s\n"
+msgstr "Onbekend formaat: %s\n"
+
+#: ../src/lasemrender.c:257
+#, c-format
+msgid "Can't load '%s'\n"
+msgstr "Kan ‘%s’ niet laden\n"
+
+#~ msgid "Element id"
+#~ msgstr "Element-ID"
+
+#~ msgid "Offset"
+#~ msgstr "Offset"
+
+#~ msgid "Size"
+#~ msgstr "Grootte"
+
+#~ msgid "Invalid document type (SVG expected)"
+#~ msgstr "Ongeldig documenttype (SVG verwacht)"
+
+#~ msgid "Element '%s' not found"
+#~ msgstr "Element ‘%s’ niet gevonden"
+
+#~ msgid "Invalid number of arguments for offset option"
+#~ msgstr "Ongeldig aantal parameters voor offset-optie"
+
+#~ msgid "Invalid number of arguments for size option"
+#~ msgstr "Ongeldig aantal parameters voor grootte-optie"
+
+#~ msgid "Invalid export size"
+#~ msgstr "Ongeldige exportgrootte"
+
+#~ msgid "Missing input filename"
+#~ msgstr "Ontbrekende invoerbestandsnaam"
+
+#~ msgid "Don't know which format to use, please either give a format (-f) or an output filename (-o)"
+#~ msgstr "Geen idee welk formaat te gebruiken, voer ofwel een formaat (-f), ofwel een uitvoerbestandsnaam (-o) in"
