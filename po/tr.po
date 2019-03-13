@@ -2,64 +2,104 @@
 # Copyright (C) 2013 lasem's COPYRIGHT HOLDER
 # This file is distributed under the same license as the lasem package.
 # Muhammet Kara <muhammetk@gmail.com>, 2013.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: lasem master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=lasem&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-02 21:21+0000\n"
-"PO-Revision-Date: 2013-04-03 00:54+0300\n"
-"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
-"Language-Team: Turkish <gnome-turk@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2018-12-16 01:05+0000\n"
+"PO-Revision-Date: 2019-03-13 14:04+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 2.91.6\n"
+"X-Generator: Gtranslator 3.30.1\n"
 
-#: ../src/lasemrender.c:67
+#: ../src/lasemrender.c:70
 msgid "Output filename"
 msgstr "Çıktı dosyası adı"
 
-#: ../src/lasemrender.c:69
+#: ../src/lasemrender.c:72
 msgid "Output format"
 msgstr "Çıktı biçimi"
 
-#: ../src/lasemrender.c:71
+#: ../src/lasemrender.c:74
 msgid "Pixel per inch"
 msgstr "İnç başına düşen piksel sayısı"
 
-#: ../src/lasemrender.c:73
+#: ../src/lasemrender.c:76
 msgid "Zoom"
 msgstr "Yakınlaştır"
 
-#: ../src/lasemrender.c:75
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "Öge kimliği"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "Ofset"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "Boyut"
+
+#: ../src/lasemrender.c:84
 msgid "Debug domains"
 msgstr "Hata ayıklama etki alanları"
 
-#: ../src/lasemrender.c:106
-#, c-format
-msgid "Option parsing failed: %s\n"
-msgstr "Seçenek ayrıştırma başarısız oldu: %s\n"
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "Geçersiz belge türü (SVG bekleniyor)"
 
-#: ../src/lasemrender.c:113
+#: ../src/lasemrender.c:103
 #, c-format
+msgid "Element '%s' not found"
+msgstr "'%s' ögesi bulunamadı"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "Seçenek ayrıştırma başarısız oldu:"
+
+#: ../src/lasemrender.c:161
 msgid "Invalid zoom value"
 msgstr "Geçersiz yakınlaştırma değeri"
 
-#: ../src/lasemrender.c:120
-#, c-format
-msgid "One input file name is required\n"
-msgstr "Bir girdi dosyası adı gerekiyor\n"
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "Ofset seçeneği için bağımsız değişken sayısı geçersiz"
 
-#: ../src/lasemrender.c:131
-#, c-format
-msgid "Unknown format: %s\n"
-msgstr "Bilinmeyen biçim: %s\n"
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "Boyut seçeneği için bağımsız değişken sayısı geçersiz"
 
-#: ../src/lasemrender.c:256
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "Geçersiz dışa aktarma boyutu"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "Eksik giriş dosya adı"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "Bilinmeyen biçim:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an "
+"output filename (-o)"
+msgstr ""
+"Hangi biçimi kullanacağınızı bilmiyorsanız, lütfen bir biçim (-f) veya bir "
+"çıktı dosya adı (-o) verin)"
+
+#: ../src/lasemrender.c:355
 #, c-format
-msgid "Can't load '%s'\n"
-msgstr "'%s' yüklenemiyor\n"
+msgid "Can't load '%s'"
+msgstr "'%s' yüklenemiyor"
+
+#~ msgid "One input file name is required\n"
+#~ msgstr "Bir girdi dosyası adı gerekiyor\n"
