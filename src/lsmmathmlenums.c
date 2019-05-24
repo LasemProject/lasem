@@ -232,6 +232,7 @@ lsm_mathml_variant_set_font_style (LsmMathmlVariant *variant, LsmMathmlFontStyle
 				case LSM_MATHML_VARIANT_ERROR:
 					return;
 			}
+			break;
 		case LSM_MATHML_FONT_WEIGHT_NORMAL:
 			switch (*variant) {
 				case LSM_MATHML_VARIANT_ITALIC:
@@ -259,6 +260,7 @@ lsm_mathml_variant_set_font_style (LsmMathmlVariant *variant, LsmMathmlFontStyle
 				case LSM_MATHML_VARIANT_ERROR:
 					return;
 			}
+			break;
 		default:
 			return;
 	}
@@ -302,6 +304,7 @@ lsm_mathml_variant_set_font_weight (LsmMathmlVariant *variant, LsmMathmlFontWeig
 				case LSM_MATHML_VARIANT_ERROR:
 					return;
 			}
+			break;
 		case LSM_MATHML_FONT_WEIGHT_NORMAL:
 			switch (*variant) {
 				case LSM_MATHML_VARIANT_BOLD:
@@ -333,6 +336,7 @@ lsm_mathml_variant_set_font_weight (LsmMathmlVariant *variant, LsmMathmlFontWeig
 				case LSM_MATHML_VARIANT_ERROR:
 					return;
 			}
+			break;
 		default:
 			return;
 	}
