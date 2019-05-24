@@ -53,7 +53,7 @@ lsm_svg_filter_image_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
 {
 	LsmSvgFilterImage *filter = LSM_SVG_FILTER_IMAGE (self);
 
-	/* TODO href can also be a reference to an element */ 
+	/* TODO href can also be a reference to an element */
 	/* TODO this code can be factorized with the one of <image> */
 
 	if (filter->pixbuf == NULL) {
@@ -77,7 +77,9 @@ lsm_svg_filter_image_apply  (LsmSvgFilterPrimitive *self, LsmSvgView *view,
 				gdk_pixbuf_loader_close (loader, NULL);
 
 				filter->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
-				g_object_ref (filter->pixbuf);
+
+				if (filter->pixbuf != NULL)
+					g_object_ref (filter->pixbuf);
 
 				g_object_unref (loader);
 			} else
