@@ -9,11 +9,13 @@ Release 0.5.1
   * svg: <feConvolveMatrix> support
   * svg: <feTurbulence> support
   * svg: <feDisplacementMap> support
-  * svg: use Mario Klingeman's stackblur algorithm for <feBlur> 
+  * svg: use Mario Klingeman's stackblur algorithm for <feBlur>
   * mathml: negative spacing constant support (Garen)
   * mathml: minlabelspacing support for <mlabeledtr> (Garen)
+  * introspection: better python support (Emmanuel)
+  * cairo: avoid integer oveflow (RyuzakiKK)
   * build: OSX compilation fix (Garen)
-  * translation updates (Мирослав, Aurimas, Balázs, Piotr, Tom, Anders, Daniel, Andika, Marek, Pedro, Duarte, Cédric, Samir)
+  * translation updates (Мирослав, Aurimas, Balázs, Piotr, Tom, Anders, Daniel, Andika, Marek, Pedro, Duarte, Cédric, Samir, Serdar, Ask, Milo, Rūdolfs, Nathan, Matej, Fabio, Aron, Mario, Rafael, Andika)
 
 Release 0.5.0
 =============
