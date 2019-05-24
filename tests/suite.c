@@ -115,8 +115,7 @@ main (int argc, char *argv[])
 
 	result = g_test_run();
 
-	g_slist_foreach (files, (GFunc) g_free, NULL);
-	g_slist_free (files);
+	g_slist_free_full (files, g_free);
 	g_regex_unref (filename_regex);
 
 	lsm_shutdown ();
