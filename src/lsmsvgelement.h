@@ -71,7 +71,6 @@ GType lsm_svg_element_get_type (void);
 LsmSvgElementCategory	lsm_svg_element_get_category	(LsmSvgElement *element);
 
 void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
-void 		lsm_svg_element_render 				(LsmSvgElement *element, LsmSvgView *view);
 void 		lsm_svg_element_force_render 			(LsmSvgElement *element, LsmSvgView *view);
 void		lsm_svg_element_get_extents			(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
 void 		lsm_svg_element_transformed_get_extents 	(LsmSvgElement *element, LsmSvgView *view, LsmExtents *extents);
