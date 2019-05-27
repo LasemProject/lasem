@@ -253,7 +253,7 @@ static LsmMathmlDocument *
 lsm_mathml_document_new_from_itex_file (GFile *file, GError **error)
 {
 	LsmMathmlDocument *document;
-	gssize size = 0;
+	gsize size = 0;
 	char *contents = NULL;
 
 	if (!g_file_load_contents (file, NULL, &contents, &size, NULL, error))
