@@ -30,8 +30,6 @@
  *	    Carl Worth <cworth@cworth.org>
  */
 
-#include "config.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -254,7 +252,7 @@ lasem_test_render (char const *filename, gboolean compare, gboolean dry_run, gbo
 	cairo_t *cairo;
 	cairo_surface_t *surface;
 	char *buffer = NULL;
-	gssize size;
+	gsize size;
 	char *png_filename;
 	char *reference_png_filename;
 	char *test_name;
