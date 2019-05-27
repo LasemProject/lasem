@@ -32,7 +32,6 @@
 #include <cairo-pdf.h>
 #include <cairo-svg.h>
 #include <cairo-ps.h>
-#include <../config.h>
 
 #include <../itex2mml/itex2MML.h>
 

@@ -11,7 +11,7 @@
 
 #define YYSTYPE char *
 
-#include "y.tab.h"
+#include "itex2MML.tab.h"
 #include "itex2MML.h"
 
 #define YY_NEVER_INTERACTIVE 1
