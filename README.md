@@ -1,7 +1,7 @@
-Lasem aims to be a C/Gobject based SVG/Mathml renderer and editor, supporting CSS
-style sheets (only rendering is implemented for now). It uses cairo and pango as
-it's rendering abstraction layer, and then support numerous output formats: xlib,
-PNG, SVG, PDF, PS, EPS...
+### What is Lasem ?
+
+Lasem is a C/Gobject based SVG/Mathml renderer. It uses cairo and pango as it's rendering abstraction layer, and then
+support numerous output formats: xlib, PNG, SVG, PDF, PS, EPS...
 
 The API tries to follow the SVG and MathML DOM.
 
@@ -20,7 +20,7 @@ rendering, lasem rendering, and if present the reference output. The html
 filename is lasemtest.xml. It's main use is the rendering of the sample files
 in the samples directory, by invoking "cd test && ./lsm-test data".
 
-Requirements:
+### Requirements
 
 gobject, glib, gio, gdk-pixbuf, gdk, cairo, pangocairo, libxml, bison, flex
 
