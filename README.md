@@ -1,3 +1,5 @@
+# ![](lasem.svg)
+
 ### What is Lasem ?
 
 Lasem is a C/Gobject based SVG/Mathml renderer. It uses cairo and pango as it's rendering abstraction layer, and then
