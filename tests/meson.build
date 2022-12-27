@@ -3,7 +3,7 @@ tests = [
 	['str', 	[]],
 	['filter', 	[]],
 	['suite',	['-DSUITE_DATA_DIRECTORY="@0@/tests/data"'.format (meson.project_source_root ()),
-	                 '-DSUITE_OPTION_FILE="@0@/tests/suite.ini"'.format (meson.project_build_root ())]]
+	                 '-DSUITE_OPTION_FILE="@0@/tests/suite.ini"'.format (meson.project_source_root ())]]
 ]
 
 foreach t: tests
