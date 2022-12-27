@@ -296,15 +296,24 @@ lasem_render = executable ('lasem-render-@0@'.format (lasem_api_version),
 			   install: true)
 
 
-if get_option ('introspection')
-	gnome.generate_gir(lasem_library,
-			   sources : [dom_sources, dom_headers, dom_enums],
-			   nsversion : lasem_api_version,
-			   namespace : 'Lasem',
-			   symbol_prefix : 'lsm_',
-			   identifier_prefix : 'Lsm',
-			   export_packages : 'lasem',
-			   includes : ['GObject-2.0', 'Gio-2.0', 'cairo-1.0', 'GdkPixbuf-2.0'],
-			   install : true
-			  )
+introspection_option = get_option('introspection')
+introspection_enabled = false
+if introspection_option.auto() or introspection_option.enabled()
+  gir_scanner = find_program('g-ir-scanner', required: introspection_option)
+  gi_dep = dependency('gobject-introspection-1.0', required: introspection_option)
+
+  if gir_scanner.found() and gi_dep.found()
+    lasem_gir = gnome.generate_gir (
+      lasem_library,
+      sources : [dom_sources, dom_headers, dom_enums],
+      nsversion : lasem_api_version,
+      namespace : 'Lasem',
+      symbol_prefix : 'lsm_',
+      identifier_prefix : 'Lsm',
+      export_packages : 'lasem',
+      includes : ['GObject-2.0', 'Gio-2.0', 'cairo-1.0', 'GdkPixbuf-2.0'],
+      install : true
+    )
+    introspection_enabled = true
+  endif
 endif

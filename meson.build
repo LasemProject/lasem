@@ -1,4 +1,4 @@
-project ('lasem', 'c', version: '0.5.2', meson_version: '>=0.47.0')
+project ('lasem', 'c', version: '0.5.2', meson_version: '>=0.56.0')
 
 gnome = import('gnome')
 i18n = import ('i18n')
@@ -31,6 +31,15 @@ subdir ('itex2mml')
 subdir ('src')
 subdir ('tests')
 
-if get_option ('documentation')
-	subdir ('docs/reference/lasem')
-endif
+doc_deps = dependency ('gi-docgen', version:'>= 2021.1', fallback: ['gi-docgen', 'dummy_dep'], required:get_option('documentation'))
+subdir('docs', if_found: doc_deps)
+
+summary (
+  {
+  'prefix': get_option('prefix'),
+  'bindir': get_option('bindir'),
+  'libdir': get_option('libdir'),
+  'datadir': get_option('datadir'),
+  },
+  section: 'Directories'
+)
