@@ -26,6 +26,10 @@ jobs:
         CC: gcc
     - name: Tests
       run: meson test -C build/ -v
+    - name: Render
+      run: |
+        cp -r ./tests/data ./build/docs/reference/lasem/lasem-0.6
+        cd ./build/docs/reference/lasem/lasem-0.6  && ../../../../tests/lsm-test data
     - uses: actions/upload-artifact@v2
       if: failure()
       with:
