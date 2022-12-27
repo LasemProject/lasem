@@ -23,6 +23,16 @@ rendering, lasem rendering, and if present the reference output. The html
 filename is lasemtest.xml. It's main use is the rendering of the sample files in
 the samples directory, by invoking "cd test && ./lsm-test data".
 
+### Documentation
+
+The latest documentation is available
+[here](https://lasemproject.github.io/lasem).
+
+The Lasem test suite is rendered in a single page
+[here](https://lasemproject.github.io/lasem/lasemtest.xml). The first column is
+the Lasem rendering, the middle one the reference rendering and the last one the
+rendering of your browser.
+
 ### Installing Lasem
 
 Lasem uses the meson build system ( http://mesonbuild.com/ ). After you have
