@@ -1,6 +1,4 @@
 # Documentation and introspection
 
-option('documentation', type: 'boolean', value: true,
-  description: 'Build API reference (requires gtk-doc and xlstproc)')
-option('introspection', type: 'boolean', value: true,
-  description: 'Build introspection data (requires gobject-introspection)')
+option('introspection', type: 'feature', value: 'auto', description: 'Build introspection data (requires gobject-introspection)')
+option('documentation', type: 'feature', value: 'disabled', description: 'Build API reference (requires gi-docgen)')
