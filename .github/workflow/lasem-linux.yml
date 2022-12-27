@@ -1,0 +1,40 @@
+name: Lasem-Linux
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+  workflow_dispatch:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        pip3 install meson ninja Markdown toml typogrify
+        sudo apt update
+        sudo apt install python3 gobject-introspection valgrind python3-gi gettext cairo libpango1.0-dev libcairo2-dev
+    - name: Build
+      run: |
+        meson --buildtype=plain -Ddocumentation=enabled -Dintrospection=enabled . ./build
+        ninja -C ./build
+      env:
+        CC: gcc
+    - name: Tests
+      run: meson test -C build/ -v
+    - uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: Linux_Meson_Testlog
+        path: build/meson-logs/testlog.txt
+    - name: Documentation
+      uses: peaceiris/actions-gh-pages@v3
+      if: ${{ github.ref == 'refs/heads/main' }}
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/docs/reference/lasem/lasem-0.8
+
