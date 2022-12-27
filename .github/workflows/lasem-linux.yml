@@ -17,7 +17,7 @@ jobs:
       run: |
         pip3 install meson ninja Markdown toml typogrify
         sudo apt update
-        sudo apt install python3 gobject-introspection valgrind python3-gi gettext cairo libpango1.0-dev libcairo2-dev
+        sudo apt install python3 gobject-introspection valgrind python3-gi gettext libpango1.0-dev libcairo2-dev libgirepository1.0-dev
     - name: Build
       run: |
         meson --buildtype=plain -Ddocumentation=enabled -Dintrospection=enabled . ./build
