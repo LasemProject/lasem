@@ -29,6 +29,7 @@ jobs:
     - name: Render
       run: |
         cp -r ./tests/data ./build/docs/reference/lasem/lasem-0.6
+        rm ./build/docs/reference/lasem/lasem-0.6/data/.gitignore
         cd ./build/docs/reference/lasem/lasem-0.6  && ../../../../tests/lsm-test data
     - uses: actions/upload-artifact@v2
       if: failure()
