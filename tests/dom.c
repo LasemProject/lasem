@@ -157,8 +157,6 @@ add_remove_element_test (void)
 	g_assert (lsm_dom_node_get_owner_document (LSM_DOM_NODE (element)) == document);
 	g_assert (lsm_dom_node_get_first_child (LSM_DOM_NODE (document)) == LSM_DOM_NODE (element));
 
-	g_object_ref (element);
-
 	lsm_dom_node_remove_child (LSM_DOM_NODE (document), LSM_DOM_NODE (element));
 	g_assert (lsm_dom_node_get_first_child (LSM_DOM_NODE (document)) == NULL);
 	g_assert (lsm_dom_node_get_parent_node (LSM_DOM_NODE (element)) == NULL);
