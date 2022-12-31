@@ -69,10 +69,12 @@ lsm_svg_filter_surface_new_with_content (const char *name, cairo_surface_t *surf
 	    cairo_image_surface_get_format (surface) != CAIRO_FORMAT_ARGB32) {
 		surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, 0, 0);
 		subregion = &null_subregion;
-	} else if (subregion == NULL)
+	} else if (subregion == NULL) {
 		subregion = &null_subregion;
-
-	cairo_surface_reference (surface);
+		cairo_surface_reference (surface);
+	} else {
+		cairo_surface_reference (surface);
+	}
 
 	filter_surface = g_new (LsmSvgFilterSurface, 1);
 	filter_surface->name = g_strdup (name);
