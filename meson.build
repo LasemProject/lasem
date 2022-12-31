@@ -14,7 +14,7 @@ lasem_micro_version = versions[2].to_int ()
 
 cc = meson.get_compiler ('c')
 
-glib_dep = dependency ('glib-2.0', version: '>=2.32', required: true)
+glib_dep = dependency ('glib-2.0', version: '>=2.36', required: true)
 gobject_dep = dependency ('gobject-2.0', required: true)
 gio_dep = dependency ('gio-2.0', required: true)
 gdk_dep = dependency ('gdk-pixbuf-2.0', required: true)
