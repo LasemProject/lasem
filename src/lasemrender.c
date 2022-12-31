@@ -140,10 +140,6 @@ main(int argc, char **argv)
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-#if !GLIB_CHECK_VERSION(2,36,0)
-	g_type_init ();
-#endif
-
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, entries, NULL);
 
@@ -287,7 +283,7 @@ main(int argc, char **argv)
 
 		lsm_dom_view_get_size (view, &width_pt, &height_pt, NULL);
 		lsm_dom_view_get_size_pixels (view, &width, &height, NULL);
-		
+
 		if (option_offset == NULL) {
 			offset_x_pt = offset_y_pt = 0.0;
 		} else {

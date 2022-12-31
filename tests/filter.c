@@ -145,10 +145,6 @@ main (int argc, char *argv[])
 	g_test_add_func ("/filter/processing_mismatch", processing_mismatch);
 	g_test_add_func ("/filter/processing_null", processing_null);
 
-#if !GLIB_CHECK_VERSION(2,36,0)
-	g_type_init ();
-#endif
-
 	result = g_test_run ();
 
 	lsm_shutdown ();

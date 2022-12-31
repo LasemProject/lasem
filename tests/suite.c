@@ -118,10 +118,6 @@ main (int argc, char *argv[])
 	GSList *files;
 	int result;
 
-#if !GLIB_CHECK_VERSION(2,36,0)
-	g_type_init ();
-#endif
-
 	suite_options = g_key_file_new ();
 	g_assert (g_key_file_load_from_file (suite_options, SUITE_OPTION_FILE, G_KEY_FILE_NONE, NULL));
 
