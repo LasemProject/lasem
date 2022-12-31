@@ -1,3 +1,15 @@
+add_test_setup (
+  'valgrind',
+  exe_wrapper:[
+    'valgrind',
+    '--tool=memcheck',
+    '--leak-check=yes',
+    '--suppressions=' + meson.project_source_root() / 'tests' / 'lasem.supp',
+    '--error-exitcode=1'
+  ],
+  timeout_multiplier=10
+)
+
 tests = [
 	['dom',		[]],
 	['str', 	[]],
