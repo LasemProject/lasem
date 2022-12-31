@@ -505,6 +505,7 @@ lsm_svg_filter_surface_flood (LsmSvgFilterSurface *surface,
 	cairo_clip (cairo);
 	cairo_set_source_rgba (cairo, red, green, blue, opacity);
 	cairo_paint (cairo);
+	cairo_destroy (cairo);
 }
 
 void
