@@ -7,7 +7,7 @@ add_test_setup (
     '--suppressions=' + meson.project_source_root() / 'tests' / 'lasem.supp',
     '--error-exitcode=1'
   ],
-  timeout_multiplier=10
+  timeout_multiplier:10
 )
 
 tests = [

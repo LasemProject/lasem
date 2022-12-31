@@ -21,11 +21,13 @@ surface (void)
 
 	lsm_svg_filter_surface_unref (surface);
 
-	g_test_expect_message ("Lasem", G_LOG_LEVEL_CRITICAL, "*assertion*ref_count*failed");
+	if (g_test_undefined()) {
+		g_test_expect_message ("Lasem", G_LOG_LEVEL_CRITICAL, "*assertion*ref_count*failed");
 
-	lsm_svg_filter_surface_unref (surface);
+		lsm_svg_filter_surface_unref (surface);
 
-	g_test_assert_expected_messages ();
+		g_test_assert_expected_messages ();
+	}
 }
 
 static void
@@ -117,6 +119,9 @@ static void
 processing_null (void)
 {
 	unsigned int i;
+
+	if (!g_test_undefined())
+		return;
 
 	for (i = 0; i < 20; i++)
 		g_test_expect_message ("Lasem", G_LOG_LEVEL_CRITICAL, "*assertion*NULL*failed");
