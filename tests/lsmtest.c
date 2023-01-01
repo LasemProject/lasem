@@ -34,9 +34,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
 
 #include <lsmmathml.h>
 #include <glib.h>
@@ -525,8 +522,8 @@ main (int argc, char **argv)
 	if (!check_for_compare())
 		return EXIT_FAILURE;
 
-#ifdef HAVE_UNISTD_H
-	if (isatty (2)) {
+#if GLIB_CHECK_VERSION(2,50,0)
+	if (g_log_writer_supports_color (STDOUT_FILENO)) {
 		fail_face = "\033[41m\033[37m\033[1m";
 		success_face = "\033[42m\033[37m\033[1m";
 		normal_face = "\033[m";
