@@ -22,6 +22,7 @@
  */
 
 #include <lsmdomimplementation.h>
+#include <lsmmathmloperatordictionary.h>
 #include <lsm.h>
 
 void
