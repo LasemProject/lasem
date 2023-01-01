@@ -28,4 +28,5 @@ void
 lsm_shutdown (void)
 {
 	lsm_dom_implementation_cleanup ();
+	lsm_mathml_operator_dictionary_cleanup ();
 }

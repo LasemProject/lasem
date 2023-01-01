@@ -3213,10 +3213,11 @@ static const LsmMathmlOperatorDictionaryEntry lsm_mathml_operator_entries[] = {
 	}
 };
 
+static GHashTable *operator_hash = NULL;
+
 static GHashTable *
 _get_operator_dictionary (void)
 {
-	static GHashTable *operator_hash = NULL;
 	const char *utf8, *prefix;
 	char *key;
 	int i;
@@ -3246,6 +3247,8 @@ _get_operator_dictionary (void)
 		if (g_hash_table_lookup (operator_hash, key) == NULL)
 			g_hash_table_insert (operator_hash, key,
 					     (void *) &lsm_mathml_operator_entries[i]);
+		else
+			g_free (key);
 	}
 
 	return operator_hash;
@@ -3329,4 +3332,11 @@ lsm_mathml_operator_dictionary_lookup (const char *utf8, LsmMathmlForm form)
 			  prefix, utf8);
 
 	return &lsm_mathml_operator_dictionary_default_entry;
+}
+
+void
+lsm_mathml_operator_dictionary_cleanup (void)
+{
+	if (operator_hash != NULL)
+		g_hash_table_unref (operator_hash);
 }
