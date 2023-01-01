@@ -647,10 +647,19 @@ lsm_svg_paint_trait_to_string (LsmTrait *abstract_trait)
 				100.0 * paint->color.blue);
 }
 
+static void
+lsm_svg_paint_trait_finalize (LsmTrait *abstract_trait)
+{
+	LsmSvgPaint *paint = (LsmSvgPaint *) abstract_trait;
+
+	g_free (paint->url);
+}
+
 const LsmTraitClass lsm_svg_paint_trait_class = {
 	.size = sizeof (LsmSvgPaint),
 	.from_string = lsm_svg_paint_trait_from_string,
-	.to_string = lsm_svg_paint_trait_to_string
+	.to_string = lsm_svg_paint_trait_to_string,
+	.finalize = lsm_svg_paint_trait_finalize,
 };
 
 static gboolean
