@@ -26,6 +26,8 @@ jobs:
         CC: gcc
     - name: Tests
       run: meson test -C build/ -v
+    - name: Memcheck
+      run: meson test -C build/ -v --setup="valgrind" --test-args="-m no-undefined" str dom filter
     - name: Render
       run: |
         cp -r ./tests/data ./build/docs/reference/lasem/lasem-0.6
