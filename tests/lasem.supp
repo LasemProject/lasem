@@ -1,3 +1,102 @@
+# vfs
+
+{
+  g_daemon_vfs_init
+  Memcheck:Leak
+  fun:calloc
+  ...
+  fun:g_daemon_vfs_init
+}
+
+# fontconfig
+
+{
+  FcDefaultSubstitute
+  Memcheck:Leak
+  fun:realloc
+  ...
+  fun:FcDefaultSubstitute
+}
+
+{
+  FcFontSetMatch
+  Memcheck:Leak
+  fun:realloc
+  ...
+  fun:FcFontSetMatch
+}
+
+{
+  FcFontSetMatch calloc
+  Memcheck:Leak
+  fun:calloc
+  ...
+  fun:FcFontSetMatch
+}
+
+{
+  FcFontSetSort
+  Memcheck:Leak
+  fun:realloc
+  ...
+  fun:FcFontSetSort
+}
+
+{
+  FcFontSetSort malloc
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:FcFontSetSort
+}
+
+{
+  FcFontRenderPrepare
+  Memcheck:Leak
+  match-leak-kinds: definite
+  fun:realloc
+  obj:/usr/lib*/libfontconfig.so*
+  obj:/usr/lib*/libfontconfig.so*
+  fun:FcFontRenderPrepare
+}
+
+{
+  FcPatternObjectInsertElt
+  Memcheck:Leak
+  match-leak-kinds: definite
+  fun:malloc
+  fun:FcPatternObjectInsertElt
+}
+
+# pango
+
+{
+   pango_cairo_fc_font_map_fontset_key_substitute
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   obj:/usr/lib*/libfontconfig.so*
+   obj:/usr/lib*/libfontconfig.so*
+   obj:/usr/lib*/libcairo.so*
+   fun:pango_cairo_fc_font_map_fontset_key_substitute
+}
+
+{
+  pango_language_from_string
+  Memcheck:Leak
+  fun:calloc
+  ...
+  fun:pango_language_from_string
+}
+
+{
+   pango_fc_font_map_load_fontset
+   Memcheck:Leak
+   fun:*alloc
+   ...
+   fun:pango_fc_font_map_load_fontset
+}
+
 # glib
 
 {
