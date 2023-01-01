@@ -200,12 +200,17 @@ double
 lsm_mathml_operator_element_get_slant (const LsmMathmlOperatorElement *operator_element, LsmMathmlView *view)
 {
 	char *text;
+	double slant;
 
 	g_return_val_if_fail (LSM_IS_MATHML_OPERATOR_ELEMENT (operator_element), 0.0);
 
 	text = lsm_mathml_presentation_token_get_text (LSM_MATHML_PRESENTATION_TOKEN (operator_element));
 
-	return lsm_mathml_view_get_operator_slant (view, &LSM_MATHML_ELEMENT (operator_element)->style, text);
+	slant = lsm_mathml_view_get_operator_slant (view, &LSM_MATHML_ELEMENT (operator_element)->style, text);
+
+	g_free (text);
+
+	return slant;
 }
 
 LsmDomNode *
