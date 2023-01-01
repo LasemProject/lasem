@@ -1,7 +1,0 @@
-dom
-str
-filter
-lsm-test
-fuzz.*
-*-diff.png
-lasemtest.xml
