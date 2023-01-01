@@ -46,7 +46,8 @@ typedef struct {
 	gboolean	 symmetric;
 } LsmMathmlOperatorDictionaryEntry;
 
-const LsmMathmlOperatorDictionaryEntry *	lsm_mathml_operator_dictionary_lookup (const char *utf8, LsmMathmlForm form);
+const LsmMathmlOperatorDictionaryEntry *	lsm_mathml_operator_dictionary_lookup  (const char *utf8, LsmMathmlForm form);
+void						lsm_mathml_operator_dictionary_cleanup (void);
 
 G_END_DECLS
 
