@@ -1,11 +1,11 @@
-/*             itex2MML 1.4.5
- *   itex2MML.h last modified 10/2/2010
+/*             itex2MML 1.6.1
+ *   itex2MML.h last modified 10/3/2021
  */
 
 #ifndef ITEX2MML_H
 #define ITEX2MML_H
 
-#define ITEX2MML_VERSION "1.4.5"
+#define ITEX2MML_VERSION "1.6.1"
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,7 +13,7 @@ extern "C" {
 
   /* Step 1. Parse a buffer with itex source; return value is mathml, or 0 on failure (e.g., parse error).
    */
-  extern char * itex2MML_parse (const char * buffer, unsigned long length);
+  extern char * itex2MML_parse (const char * buffer, size_t length);
 
   /* Step 2. Free the string from Step 1.
    */
@@ -22,26 +22,26 @@ extern "C" {
 
   /* Alternatively, to filter generic source and converting embedded equations, use:
    */
-  extern int    itex2MML_filter (const char * buffer, unsigned long length);
+  extern int    itex2MML_filter (const char * buffer, size_t length);
 
-  extern int    itex2MML_html_filter (const char * buffer, unsigned long length);
-  extern int    itex2MML_strict_html_filter (const char * buffer, unsigned long length);
+  extern int    itex2MML_html_filter (const char * buffer, size_t length);
+  extern int    itex2MML_strict_html_filter (const char * buffer, size_t length);
 
 
   /* To change output methods:
    *
    * Note: If length is 0, then buffer is treated like a string; otherwise only length bytes are written.
    */
-  extern void (*itex2MML_write) (const char * buffer, unsigned long length); /* default writes to stdout */
+  extern void (*itex2MML_write) (const char * buffer, size_t length); /* default writes to stdout */
   extern void (*itex2MML_write_mathml) (const char * mathml);                /* default calls itex2MML_write(mathml,0) */
   extern void (*itex2MML_error) (const char * msg);                          /* default writes to stderr */
 
 
   /* Other stuff:
    */
-  extern void   itex2MML_setup (const char * buffer, unsigned long length);
+  extern void   itex2MML_setup (const char * buffer, size_t length);
 
-  extern void   itex2MML_restart (void);
+  extern void   itex2MML_restart ();
 
   extern char * itex2MML_copy_string (const char * str);
   extern char * itex2MML_copy_string_extra (const char * str, unsigned extra);

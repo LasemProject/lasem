@@ -7,7 +7,7 @@ arguments : ['-P', '@BASENAME@_yy', '-o', '@OUTPUT@', '@INPUT@'])
 
 pgen = generator(bison,
 output : ['@BASENAME@.tab.c', '@BASENAME@.tab.h'],
-arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@', '-v', '-y', '-p', '@BASENAME@_yy', '-d'])
+arguments : ['@INPUT@', '--defines=@OUTPUT1@', '--output=@OUTPUT0@', '--warning=no-conflicts-rr', '--warnings=no-conflicts-sr', '-v', '-y', '-p', '@BASENAME@_yy', '-d'])
 
 itex2mml_files = [
 	lgen.process ('itex2MML.l'),
