@@ -33,7 +33,7 @@ jobs:
         cp -r ./tests/data ./build/docs/reference/lasem/lasem-0.6
         rm ./build/docs/reference/lasem/lasem-0.6/data/.gitignore
         cd ./build/docs/reference/lasem/lasem-0.6  && ../../../../tests/lsm-test data
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: Linux_Meson_Testlog
@@ -44,4 +44,5 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./build/docs/reference/lasem/lasem-0.6
+        force_orphan: true
 
