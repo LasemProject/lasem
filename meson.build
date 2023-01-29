@@ -30,7 +30,7 @@ subdir ('po')
 subdir ('itex2mml')
 subdir ('src')
 subdir ('tests')
-subdir ('demo')
+subdir ('viewer')
 
 doc_deps = dependency ('gi-docgen', version:'>= 2021.1', fallback: ['gi-docgen', 'dummy_dep'], required:get_option('documentation'))
 subdir('docs', if_found: doc_deps)
