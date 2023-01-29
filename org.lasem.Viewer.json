@@ -1,9 +1,9 @@
 {
-    "app-id" : "io.github.LasemProject.LasemDemo",
+    "app-id" : "org.lasem.Viewer",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "43",
+    "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
-    "command" : "lsm-demo",
+    "command" : "lsm-viewer",
     "finish-args" : [
         "--share=network",
         "--share=ipc",
@@ -28,7 +28,7 @@
             "builddir" : true,
             "buildsystem" : "meson",
             "config-opts" : [
-            	"-Ddemo=enabled"
+            	"-Dviewer=enabled"
             ],
             "sources" : [
                 {
