@@ -80,16 +80,11 @@ display_error (ViewerWindow *window, GError *error, const char *error_text)
         ? error->message
         : "Undetermined Error";
 
-    GtkWidget *dlg = gtk_message_dialog_new (GTK_WINDOW (window),
-                                             GTK_DIALOG_MODAL,
-                                             GTK_MESSAGE_ERROR,
-                                             GTK_BUTTONS_OK,
-                                             "%s: %s\n",
-                                             error_text,
-                                             message);
+    GtkAlertDialog *dlg = gtk_alert_dialog_new ("%s: %s\n",
+						error_text,
+						message);
 
     gtk_window_set_modal (GTK_WINDOW (dlg), TRUE);
-    gtk_window_set_transient_for (GTK_WINDOW (dlg), GTK_WINDOW (window));
     g_signal_connect (dlg, "response", G_CALLBACK (gtk_window_destroy), NULL);
 
     gtk_window_present (GTK_WINDOW (dlg));
@@ -179,7 +174,7 @@ viewer_on_file_open (GtkFileDialog *dialog,
     }
     else
     {
-        display_error (GTK_WINDOW (self), error, "File Chooser error");
+        display_error (self, error, "File Chooser error");
 
         if (error != NULL)
             g_error_free (error);
@@ -219,7 +214,7 @@ viewer_window_init (ViewerWindow *self)
     GtkWidget *open_btn = gtk_button_new_with_label ("Open");
     gtk_widget_add_css_class (open_btn, "suggested-action");
     g_signal_connect_swapped (open_btn, "clicked", G_CALLBACK (viewer_show_file_chooser), self);
-    gtk_header_bar_pack_start (header_bar, open_btn);
+    gtk_header_bar_pack_start (GTK_HEADER_BAR (header_bar), open_btn);
 
     GtkWidget *lasem_view = gtk_drawing_area_new ();
     gtk_window_set_child (GTK_WINDOW (self), lasem_view);
@@ -237,7 +232,7 @@ activate (GtkApplication* app,
 {
     // Create and show a new ViewerWindow instance
     GtkWidget *window = viewer_window_new(app);
-    gtk_widget_show (window);
+    gtk_widget_set_visible (window, TRUE);
 }
 
 int
