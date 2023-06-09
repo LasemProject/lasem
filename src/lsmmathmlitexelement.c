@@ -25,6 +25,7 @@
 #include <lsmmathmlview.h>
 #include <lsmdomtext.h>
 #include <lsmdebug.h>
+#include <lsmmisc.h>
 
 static GObjectClass *parent_class;
 
@@ -74,23 +75,24 @@ _update (LsmMathmlElement *self, LsmMathmlStyle *style)
 
 	if (need_conversion) {
 		LsmMathmlDocument *document;
+		size_t length;
 
 		g_free (itex_element->itex);
-		itex_element->itex = string->str;
+		length = string->len;
+		itex_element->itex = lsm_g_string_free_and_steal (string);
 
 		lsm_debug_update ("[MathmlItex::update] need conversion");
 
-		document = lsm_mathml_document_new_from_itex (itex_element->itex,
-							      string->len, NULL);
+		document = lsm_mathml_document_new_from_itex (itex_element->itex, length, NULL);
 		if (document != NULL) {
 			if (itex_element->math != NULL)
 				g_object_unref (lsm_dom_node_get_owner_document (LSM_DOM_NODE (itex_element->math)));
 
 			itex_element->math = LSM_MATHML_ELEMENT (lsm_mathml_document_get_root_element (document));
 		}
+	} else {
+		g_string_free (string, TRUE);
 	}
-
-	g_string_free (string, FALSE);
 
 	if (itex_element->math != NULL) {
 		lsm_dom_node_changed (LSM_DOM_NODE (itex_element->math));

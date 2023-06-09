@@ -23,6 +23,7 @@
 
 #include <lsmattributes.h>
 #include <lsmdebug.h>
+#include <lsmmisc.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -240,7 +241,6 @@ lsm_attribute_manager_serialize	(LsmAttributeManager *manager,
 	LsmAttribute *attribute;
 	GString *string;
 	GHashTableIter iter;
-	char *c_string;
 	gpointer key, value;
 	gboolean attribute_found = FALSE;
 
@@ -272,8 +272,5 @@ lsm_attribute_manager_serialize	(LsmAttributeManager *manager,
 		return NULL;
 	}
 
-	c_string = string->str;
-	g_string_free (string, FALSE);
-
-	return c_string;
+	return lsm_g_string_free_and_steal (string);
 }

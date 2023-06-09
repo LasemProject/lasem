@@ -24,6 +24,7 @@
 #include <lsmproperties.h>
 #include <lsmdebug.h>
 #include <lsmstr.h>
+#include <lsmmisc.h>
 #include <string.h>
 
 #define PROPERTY_TRAIT(property) ((void *) (((char *) property) + sizeof (LsmProperty)))
@@ -281,7 +282,6 @@ lsm_property_manager_serialize (LsmPropertyManager *manager,
 	LsmProperty *property;
 	GSList *iter;
 	GString *string;
-	char *c_string;
 	gboolean attribute_found = FALSE;
 
 	g_return_val_if_fail (property_bag != NULL, NULL);
@@ -310,10 +310,7 @@ lsm_property_manager_serialize (LsmPropertyManager *manager,
 		return NULL;
 	}
 
-	c_string = string->str;
-	g_string_free (string, FALSE);
-
-	return c_string;
+	return lsm_g_string_free_and_steal (string);
 }
 
 void
