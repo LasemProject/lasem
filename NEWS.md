@@ -1,3 +1,13 @@
+Release 0.5.2
+=============
+
+  * viewer: new simple mathml and svg viewer (mjakeman)
+  * itex2mml: update to 1.6.1 (Emmanuel)
+  * build: switch to meson (Emmanuel)
+  * build: deprecation warning fixes (Emmanuel)
+  * documentation: port API doc to gi-docgen (Emmanuel)
+  * ci: linux pipeline, valgrind checks, publication of aravis test suite rendering (Emmanuel)
+
 Release 0.5.1
 =============
 
