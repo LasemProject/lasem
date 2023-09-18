@@ -222,15 +222,12 @@ viewer_window_init (ViewerWindow *self)
                                     (GtkDrawingAreaDrawFunc) lasem_view_draw,
                                     self, NULL);
     self->lasem_view = lasem_view;
-
-    viewer_show_file_chooser (self);
 }
 
 static void
 activate (GtkApplication* app,
           gpointer        user_data)
 {
-    // Create and show a new ViewerWindow instance
     GtkWidget *window = viewer_window_new(app);
     gtk_widget_set_visible (window, TRUE);
 }
