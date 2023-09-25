@@ -432,7 +432,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		{LSM_MATHML_FONT_ERROR,		""},
 		1,
 		{
-			{LSM_MATHML_FONT_DEFAULT,	"\xcc\xb2"}
+			{LSM_MATHML_FONT_DEFAULT,	"\xe2\x80\x8c\xcc\xb2"}
 		}
 	},
 	{
