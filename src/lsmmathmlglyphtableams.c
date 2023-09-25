@@ -482,7 +482,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		{
 			{LSM_MATHML_FONT_CMEX10,	"e"},
 			{LSM_MATHML_FONT_CMEX10,	"f"},
-			{LSM_MATHML_FONT_CMEX10,	"g"}
+			{LSM_MATHML_FONT_CMEX10,	"g"},
 		}
 	},
 	{
@@ -535,7 +535,7 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 	},
 	{
 		"-",
-		0,
+		LSM_MATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -557,6 +557,18 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 			{LSM_MATHML_FONT_DEFAULT,	"|"}
 		}
 	},
+	{
+		"\x5e" /* ^ &Hat; */,
+		LSM_MATHML_GLYPH_FLAG_STRETCH_HORIZONTAL,
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		1,
+		{
+			{LSM_MATHML_FONT_DEFAULT,	"\x5e"}
+		}
+	},
 };
 
 static GHashTable *
@@ -566,7 +578,7 @@ _get_glyph_table (void)
 	LsmMathmlOperatorGlyph glyph_template =
 	{
 		"\xcc\x80",
-		LSM_MATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		0,
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
 		{LSM_MATHML_FONT_ERROR,		""},
@@ -604,11 +616,12 @@ _get_glyph_table (void)
 		glyph = g_new(LsmMathmlOperatorGlyph, 1);
 		memcpy (glyph, &glyph_template, sizeof (LsmMathmlOperatorGlyph));
 
-		g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
+		if (g_hash_table_lookup (glyph_table, (char *) glyph->utf8) == NULL)
+			g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
 	}
 
 	utf8[0] = '\xcd';
-	sized_utf8[0] = '\xcd';
+	sized_utf8[3] = '\xcd';
 	for (i = 0x80; i < 0xaf; i++) {
 		LsmMathmlOperatorGlyph *glyph;
 		char *utf8 = (char *) &glyph_template.utf8;
@@ -620,7 +633,8 @@ _get_glyph_table (void)
 		glyph = g_new(LsmMathmlOperatorGlyph, 1);
 		memcpy (glyph, &glyph_template, sizeof (LsmMathmlOperatorGlyph));
 
-		g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
+		if (g_hash_table_lookup (glyph_table, (char *) glyph->utf8) == NULL)
+			g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
 	}
 
 	return glyph_table;
