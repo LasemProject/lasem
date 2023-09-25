@@ -1,0 +1,205 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <semantics>
+  <mrow>
+   <mtable>
+    <mtr>
+     <mtd>
+      <mrow>
+       <msub>
+        <mi>S</mi>
+        <mi>n</mi>
+       </msub>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow/>
+        <mo stretchy="false">=</mo>
+        <mrow/>
+       </mrow>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow>
+         <mrow>
+          <mrow>
+           <mn>1</mn>
+           <mo stretchy="false">+</mo>
+           <mi>r</mi>
+          </mrow>
+          <mo stretchy="false">+</mo>
+          <msup>
+           <mi>r</mi>
+           <mn>2</mn>
+          </msup>
+         </mrow>
+         <mo stretchy="false">+</mo>
+         <mo stretchy="false">⋯</mo>
+        </mrow>
+        <mo stretchy="false">+</mo>
+        <msup>
+         <mi>r</mi>
+         <mi>n</mi>
+        </msup>
+       </mrow>
+      </mrow>
+     </mtd>
+    </mtr>
+    <mtr>
+     <mtd>
+      <mrow>
+       <msub>
+        <mi mathvariant="italic">rS</mi>
+        <mi>n</mi>
+       </msub>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow/>
+        <mo stretchy="false">=</mo>
+        <mrow/>
+       </mrow>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow>
+         <mrow>
+          <mi>r</mi>
+          <mo stretchy="false">+</mo>
+          <mo stretchy="false">⋯</mo>
+         </mrow>
+         <mo stretchy="false">+</mo>
+         <msup>
+          <mi>r</mi>
+          <mi>n</mi>
+         </msup>
+        </mrow>
+        <mo stretchy="false">+</mo>
+        <msup>
+         <mi>r</mi>
+         <mrow>
+          <mrow>
+           <mi>n</mi>
+           <mo stretchy="false">+</mo>
+           <mn>1</mn>
+          </mrow>
+         </mrow>
+        </msup>
+       </mrow>
+      </mrow>
+     </mtd>
+    </mtr>
+    <mtr>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mo stretchy="false">(</mo>
+        <mrow>
+         <mrow>
+          <mn>1</mn>
+          <mo stretchy="false">−</mo>
+          <mi>r</mi>
+         </mrow>
+        </mrow>
+        <mo stretchy="false">)</mo>
+       </mrow>
+       <msub>
+        <mi>S</mi>
+        <mi>n</mi>
+       </msub>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow/>
+        <mo stretchy="false">=</mo>
+        <mrow/>
+       </mrow>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mn>1</mn>
+        <mo stretchy="false">−</mo>
+        <msup>
+         <mi>r</mi>
+         <mrow>
+          <mrow>
+           <mi>n</mi>
+           <mo stretchy="false">+</mo>
+           <mn>1</mn>
+          </mrow>
+         </mrow>
+        </msup>
+       </mrow>
+      </mrow>
+     </mtd>
+    </mtr>
+    <mtr>
+     <mtd>
+      <mrow>
+       <msub>
+        <mi>S</mi>
+        <mi>n</mi>
+       </msub>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mrow>
+        <mrow/>
+        <mo stretchy="false">=</mo>
+        <mrow/>
+       </mrow>
+      </mrow>
+     </mtd>
+     <mtd>
+      <mrow>
+       <mfrac>
+        <mrow>
+         <mrow>
+          <mn>1</mn>
+          <mo stretchy="false">−</mo>
+          <msup>
+           <mi>r</mi>
+           <mrow>
+            <mrow>
+             <mi>n</mi>
+             <mo stretchy="false">+</mo>
+             <mn>1</mn>
+            </mrow>
+           </mrow>
+          </msup>
+         </mrow>
+        </mrow>
+        <mrow>
+         <mrow>
+          <mn>1</mn>
+          <mo stretchy="false">−</mo>
+          <mi>r</mi>
+         </mrow>
+        </mrow>
+       </mfrac>
+      </mrow>
+     </mtd>
+    </mtr>
+   </mtable>
+  </mrow>
+  <annotation encoding="StarMath 5.0">matrix {
+S_n #{}={}# alignl 1 + r + r^2 + dotsaxis + r^n ##
+rS_n #{}={}# alignl r + dotsaxis + r^n + r^{n+1} ##
+(1-r)S_n #{}={}# alignl 1 - r^{n+1} ##
+S_n #{}={}# alignl {1 - r^{n+1} } over {1-r}
+}
+</annotation>
+ </semantics>
+</math>

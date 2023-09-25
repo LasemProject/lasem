@@ -1,0 +1,327 @@
+<!--
+  This test verifies the BoundingBox of the character "base + over" using the Over element, in wich
+  accent.width > base.width.
+  In this test base and accent have different mathvariant.
+-->
+
+
+<!--
+  The correspondent Tex file is accentOverBboxTable2.xml
+-->
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mtable>
+  <mtr>
+    <mtd> <mi mathvariant="normal">i</mi> <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mi mathvariant="normal">f</mi> <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mi mathvariant="normal">l</mi> <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mi mathvariant="normal">j</mi> <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mi mathvariant="normal">I</mi> <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mi mathvariant="italic">i</mi> <mi>b</mi> </mtd>
+    <mtd> <mi mathvariant="italic">f</mi> <mi>b</mi> </mtd>
+    <mtd> <mi mathvariant="italic">l</mi> <mi>b</mi> </mtd>
+    <mtd> <mi mathvariant="italic">j</mi> <mi>b</mi> </mtd>
+    <mtd> <mi mathvariant="italic">I</mi> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x300;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x300;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x300;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x300;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x300;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x300;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x300;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x300;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x300;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x300;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x301;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x301;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x301;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x301;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x301;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x301;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x301;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x301;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x301;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x301;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+				<mo mathvariant="italic" stretchy="false">&#x302;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x302;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi>
+				<mo mathvariant="italic" stretchy="false">&#x302;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x302;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x302;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x302;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x302;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x302;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x302;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x302;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+				<mo mathvariant="italic" stretchy="false">&#x303;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x303;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi>
+				<mo mathvariant="italic" stretchy="false">&#x303;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x303;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic" stretchy="false">&#x303;</mo> </mover>
+	  <mi mathvariant="normal">b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x303;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x303;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x303;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x303;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal" stretchy="false">&#x303;</mo> </mover>
+	  <mi>b</mi>
+    </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x304;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x304;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x304;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x304;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x304;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x304;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x304;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x304;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x304;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x304;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x307;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x307;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x307;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x307;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x307;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x307;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x307;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x307;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x307;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x307;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x308;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x308;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x308;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x308;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x308;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x308;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x308;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x308;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x308;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x308;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x30a;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x30a;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x30a;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x30a;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x30a;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x30a;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x30a;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x30a;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x30a;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x30a;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x30b;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x30b;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x30b;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x30b;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x30b;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x30b;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x30b;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x30b;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x30b;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x30b;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">i</mi>
+			        <mo mathvariant="italic">&#x30c;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">f</mi>
+				<mo mathvariant="italic">&#x30c;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">l</mi> 
+				<mo mathvariant="italic">&#x30c;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">j</mi> 
+				<mo mathvariant="italic">&#x30c;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">I</mi> 
+				<mo mathvariant="italic">&#x30c;</mo> </mover>
+	  <mi mathvariant="normal">b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">i</mi> 
+				<mo mathvariant="normal">&#x30c;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">f</mi> 
+				<mo mathvariant="normal">&#x30c;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">l</mi> 
+				<mo mathvariant="normal">&#x30c;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">j</mi> 
+				<mo mathvariant="normal">&#x30c;</mo> </mover> <mi>b</mi> </mtd>
+    <mtd> <mover accent="true"> <mi mathvariant="italic">I</mi> 
+				<mo mathvariant="normal">&#x30c;</mo> </mover> <mi>b</mi> </mtd>
+  </mtr>
+ </mtable>
+</math>

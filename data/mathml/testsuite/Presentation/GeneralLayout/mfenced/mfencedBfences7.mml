@@ -1,0 +1,16 @@
+    <math> 
+      <mfenced> 
+        <mrow> 
+          <mi>a</mi> 
+          <mo>+</mo> 
+          <mi>b</mi> 
+        </mrow> 
+      </mfenced> 
+      <mo>+</mo> 
+      <mfenced> 
+        <mfrac> 
+          <mi>1</mi> 
+          <mi>2</mi> 
+        </mfrac> 
+      </mfenced> 
+    </math>

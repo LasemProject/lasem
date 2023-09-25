@@ -1,0 +1,30 @@
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="180" height="250">
+  <defs>
+    <filter id="extents" filterUnits="objectBoundingBox" x="0" y="0" width="100%" height="100%">
+      <feFlood result="flood" flood-color="blue" flood-opacity="0.5"/>
+      <feComposite in="SourceGraphic" in2="flood" operator="over"/>
+    </filter>
+  <path id="path" d="M25 25 l10 0 l-10 10"/>
+  <g id="shapes" style="fill:red;fill-opacity:0.5">
+    <rect x="5" y="5" height="10" width="10" filter="url(#extents)"/>
+    <circle cx="10" cy="30" r="5" filter="url(#extents)"/>
+    <text x="30" y="15" text-anchor="middle" font-size="10px" filter="url(#extents)">Txt</text>
+    <use xlink:href="#path" filter="url(#extents)"/>
+    <polyline points="5,45 15,45 5,55" filter="url(#extents)"/>
+    <polygon points="25,45 35,45 25,55" filter="url(#extents)"/>
+    <ellipse cx="50" cy="10" rx="5" ry="5" filter="url(#extents)"/>
+    <line x1="45" y1="25" x2="55" y2="35" filter="url(#extents)"/>
+    <path d="M45 45 C55,45 55,55 45,55" filter="url(#extents)"/>
+  </g>
+  </defs>
+
+  <use xlink:href="#shapes" transform="translate(0,0)"/>
+  <use xlink:href="#shapes" transform="translate(60.5,0)"/>
+  <use xlink:href="#shapes" transform="translate(40,60) rotate(45)"/>
+  <use xlink:href="#shapes" transform="translate(120,0)" filter="url(#extents)"/>
+  <use xlink:href="#shapes" transform="translate(90,60) scale(1.4)" filter="url(#extents)"/>
+  <use xlink:href="#shapes" transform="translate(30,190) scale(1.4) rotate(-45)" filter="url(#extents)"/>
+
+  <rect x="0.5" y ="0.5" width="179" height="249" style="stroke:black;fill:none;"/>
+
+</svg>

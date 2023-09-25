@@ -1,0 +1,17 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+   <mrow>
+    <mi>x</mi>
+    <mo stretchy="false">=</mo>
+    <mi>sin</mi>
+   </mrow>
+   <mfenced open="&lfloor;" close="&rfloor;">
+    <mrow>
+     <mfrac>
+      <mi mathvariant="italic">by</mi>
+      <mi>z</mi>
+     </mfrac>
+    </mrow>
+   </mfenced>
+  </mrow>
+</math>

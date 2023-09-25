@@ -1,0 +1,13 @@
+<!-- Exercize of clipping of <use> content with default width and height attributes (100%). --> 
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40">
+	<defs>
+		<symbol id="glyph" overflow="visible">
+			<path style="stroke: none;" d="M -10 -10 L 10 -10 L 10 10 L -10 10 Z"/>
+		</symbol>
+	</defs>
+	<g style="fill: red;">
+		<use xlink:href="#glyph" x="20" y="20"/>
+	</g>
+	<path d="M 10 10.5 L 5 10.5 M 10.5 10 L 10.5 5" stroke-width="1" stroke="black" fill="none"/>
+	<path d="M 30 29.5 L 35 29.5 M 29.5 30 L 29.5 35" stroke-width="1" stroke="black" fill="none"/>
+</svg>

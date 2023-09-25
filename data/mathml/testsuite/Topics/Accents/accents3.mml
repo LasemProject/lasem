@@ -1,0 +1,22 @@
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
+      <mover> 
+        <mi>H</mi> 
+        <mi>&#x00302;</mi> 
+      </mover> 
+      <mover> 
+        <mi>H</mi> 
+        <mi>&#x000AF;</mi> 
+      </mover> 
+      <mover> 
+        <mi>H</mi> 
+        <mi>&#x02713;</mi> 
+      </mover> 
+      <mover> 
+        <mi>H</mi> 
+        <mi>&#x0221A;</mi> 
+      </mover> 
+      <mover> 
+        <mi>H</mi> 
+        <mi>&#x002DC;</mi> 
+      </mover> 
+    </math>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100px" height="100px" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <desc>Example link01 - a link on an ellipse
+  </desc>
+  <rect x="0.5" y="0.5" width="99" height="99" fill="none" stroke="blue" stroke-width="1"/>
+  <a xlink:href="http://www.w3.org">
+    <ellipse cx="50" cy="50" rx="45" ry="30" fill="red"/>
+  </a>
+</svg>

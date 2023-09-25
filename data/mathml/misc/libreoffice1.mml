@@ -1,0 +1,20 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <semantics>
+  <mrow>
+   <mrow>
+    <mi>x</mi>
+    <mo stretchy="false">=</mo>
+    <mi>sin</mi>
+   </mrow>
+   <mfenced open="(" close=")">
+    <mrow>
+     <mfrac>
+      <mi mathvariant="italic">by</mi>
+      <mi>z</mi>
+     </mfrac>
+    </mrow>
+   </mfenced>
+  </mrow>
+  <annotation encoding="StarMath 5.0">x =sin left( by over z right)</annotation>
+ </semantics>
+</math>

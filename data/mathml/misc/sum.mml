@@ -1,0 +1,42 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle mathcolor="blue" displaystyle="true" fontfamily="serif">
+    <mrow>
+      <munderover>
+        <mo>&sum;</mo>
+        <mrow>
+          <mi>i</mi>
+          <mo>=</mo>
+          <mn>1</mn>
+        </mrow>
+        <mi>n</mi>
+      </munderover>
+    </mrow>
+    <msup>
+      <mi>i</mi>
+      <mn>3</mn>
+    </msup>
+    <mo>=</mo>
+    <msup>
+      <mrow>
+        <mo>(</mo>
+        <mfrac>
+
+          <mrow>
+            <mi>n</mi>
+            <mrow>
+              <mo>(</mo>
+              <mi>n</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>)</mo>
+            </mrow>
+          </mrow>
+
+          <mn>2</mn>
+        </mfrac>
+        <mo>)</mo>
+      </mrow>
+      <mn>2</mn>
+    </msup>
+  </mstyle>
+</math>

@@ -1,0 +1,11 @@
+    <math> 
+      <mrow> 
+        <mi>A</mi> 
+        <mstyle color='Red' background='Green'> 
+          <mphantom> 
+            <mi>A</mi> 
+          </mphantom> 
+        </mstyle> 
+        <mi>A</mi> 
+      </mrow> 
+    </math>

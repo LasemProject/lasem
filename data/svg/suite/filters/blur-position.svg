@@ -1,0 +1,40 @@
+<!--
+	Exercise blur algorithm.
+-->
+
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45">
+  <defs>
+    <filter id="blur1" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+    <filter id="blur2" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+    <filter id="blur3" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1"/>
+    </filter>
+    <filter id="blur4" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+    <g id="square1">
+      <rect x="5" y="5" height="9.9" width="9.9" style="stroke:none; fill:blue; filter:url(#blur1)"/>
+      <path d="M5.5 0 L5.5 5 M0 5.5 L5 5.5 M14.5 15 L14.5 20 M15 14.5 L 20 14.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+    <g id="square2">
+      <rect x="5" y="5" height="9.9" width="9.9" style="stroke:none; fill:blue; filter:url(#blur2)"/>
+      <path d="M5.5 0 L5.5 5 M0 5.5 L5 5.5 M14.5 15 L14.5 20 M15 14.5 L 20 14.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+    <g id="square3">
+      <rect x="5" y="5" height="9.9" width="9.9" style="stroke:none; fill:blue; filter:url(#blur3)"/>
+      <path d="M5.5 0 L5.5 5 M0 5.5 L5 5.5 M14.5 15 L14.5 20 M15 14.5 L 20 14.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+    <g id="square4">
+      <rect x="5" y="5" height="9.9" width="9.9" style="stroke:none; fill:blue; filter:url(#blur4)"/>
+      <path d="M5.5 0 L5.5 5 M0 5.5 L5 5.5 M14.5 15 L14.5 20 M15 14.5 L 20 14.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+  </defs>
+  <use xlink:href="#square1" />
+  <use xlink:href="#square2" transform="translate(20,0)" />
+  <use xlink:href="#square3" transform="translate(0,20)"/>
+  <use xlink:href="#square4" transform="translate(20,20)"/>
+</svg>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="70" height="70">
+    <rect x="10" y="10" width="10" height="10" fill="red"/>
+    <rect x="20" y="10" width="10" height="10" fill="hsl(0,100%,50%)"/>
+    
+    <rect x="10" y="30" width="10" height="10" fill="lime"/>
+    <rect x="20" y="30" width="10" height="10" fill="hsl(120,100%,50%)"/>
+
+    <rect x="10" y="50" width="10" height="10" fill="blue"/>
+    <rect x="20" y="50" width="10" height="10" fill="hsl(240,100%,50%)"/>
+
+    <rect x="40" y="10" width="10" height="10" fill="indigo"/>
+    <rect x="50" y="10" width="10" height="10" fill="hsl(275, 100%, 25%)"/>
+
+    <rect x="40" y="30" width="10" height="10" fill="olive"/>
+    <rect x="50" y="30" width="10" height="10" fill="hsl(60, 100%, 25%)"/>
+
+    <rect x="40" y="50" width="10" height="10" fill="darkgray"/>
+    <rect x="50" y="50" width="10" height="10" fill="hsl(0, 0%, 66%)"/>
+</svg>
