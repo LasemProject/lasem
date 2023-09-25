@@ -251,6 +251,16 @@ lsm_mathml_view_get_font_metrics (LsmMathmlView *view,
 		*descent = bbox.depth;
 }
 
+char *
+_add_zero_width_non_joiner_to_combining (const char *text)
+{
+	if (text != NULL && ((text[0] == '\xcc' && text[1] >= '\x80' && text[1] <= '\xbf') ||
+			     (text[0] == '\xcd' && text[1] >= '\x80' && text[1] <= '\xaf')) && text[2] == '\0')
+		return g_strdup_printf ("\xe2\x80\x8c%s", text);
+	else
+		return g_strdup (text);
+}
+
 void
 lsm_mathml_view_measure_text (LsmMathmlView *view,
 			   const LsmMathmlElementStyle *style,
@@ -258,6 +268,7 @@ lsm_mathml_view_measure_text (LsmMathmlView *view,
 			   LsmMathmlBbox *bbox)
 {
 	PangoRectangle ink_rect;
+	char *actual_text;
 	int baseline;
 
 	g_return_if_fail (LSM_IS_MATHML_VIEW (view));
@@ -269,8 +280,10 @@ lsm_mathml_view_measure_text (LsmMathmlView *view,
 		return;
 	}
 
-	lsm_mathml_view_update_layout_for_text (view, style, text,
+	actual_text = _add_zero_width_non_joiner_to_combining(text);
+	lsm_mathml_view_update_layout_for_text (view, style, actual_text,
 					     view->dom_view.measure_pango_layout, &ink_rect, NULL, &baseline);
+	g_free (actual_text);
 
 	bbox->width = pango_units_to_double (ink_rect.width);
 	bbox->height = pango_units_to_double (baseline - ink_rect.y);
@@ -285,6 +298,7 @@ lsm_mathml_view_show_text (LsmMathmlView *view,
 {
 	PangoLayout *pango_layout;
 	PangoRectangle rect, ink_rect;
+	char *actual_text;
 	cairo_t *cairo;
 	int baseline;
 
@@ -294,13 +308,17 @@ lsm_mathml_view_show_text (LsmMathmlView *view,
 	if (text == NULL || strlen (text) < 1)
 		return;
 
+	actual_text = _add_zero_width_non_joiner_to_combining (text);
+
+	actual_text = _add_zero_width_non_joiner_to_combining(text);
 	lsm_debug_render ("[LsmMathmlView::show_text] '%s' at %g, %g (size = %g) %s",
-		   text, x, y, style->math_size,
+		   actual_text, x, y, style->math_size,
 		   lsm_mathml_variant_to_string (style->math_variant));
 
-	lsm_mathml_view_update_layout_for_text (view, style, text,
+	lsm_mathml_view_update_layout_for_text (view, style, actual_text,
 					     view->dom_view.pango_layout, &ink_rect, &rect, &baseline);
 	lsm_mathml_view_show_layout (view, x, y, baseline, &ink_rect, &rect);
+	g_free (actual_text);
 
 	if (ink_rect.width <= 0 || ink_rect.height <= 0)
 		return;
