@@ -556,22 +556,72 @@ const LsmMathmlOperatorGlyph AMS_table[] = {
 		{
 			{LSM_MATHML_FONT_DEFAULT,	"|"}
 		}
-	}
+	},
 };
 
 static GHashTable *
 _get_glyph_table (void)
 {
 	static GHashTable *glyph_table = NULL;
+	LsmMathmlOperatorGlyph glyph_template =
+	{
+		"\xcc\x80",
+		LSM_MATHML_GLYPH_FLAG_STRETCH_VERTICAL,
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		{LSM_MATHML_FONT_ERROR,		""},
+		1,
+		{
+			{LSM_MATHML_FONT_DEFAULT,	"\xe2\x80\x8c\xcc\x80"}
+		}
+	};
+	char *utf8 = (char *) &glyph_template.utf8;
+	char *sized_utf8 = (char *) &glyph_template.sized_glyphs[0].utf8;
 	unsigned int i;
 
 	if (glyph_table != NULL)
 		return glyph_table;
 
-	glyph_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
+	glyph_table = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, g_free);
 
-	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++)
-		g_hash_table_insert (glyph_table, (void *) AMS_table[i].utf8, (void *) &AMS_table[i]);
+	for (i = 0; i < G_N_ELEMENTS (AMS_table); i++) {
+		LsmMathmlOperatorGlyph *glyph;
+
+		glyph = g_new(LsmMathmlOperatorGlyph, 1);
+		memcpy (glyph, &AMS_table[i], sizeof (LsmMathmlOperatorGlyph));
+
+		g_hash_table_insert (glyph_table, (void *) AMS_table[i].utf8, glyph);
+	}
+
+	/* Add a Zero Width Non-joiner character to combining characters in order to avoid dotted circles */
+	for (i = 0x80; i < 0xbf; i++) {
+		LsmMathmlOperatorGlyph *glyph;
+
+		utf8[1] = i;
+		sized_utf8[4] = i;
+
+		glyph = g_new(LsmMathmlOperatorGlyph, 1);
+		memcpy (glyph, &glyph_template, sizeof (LsmMathmlOperatorGlyph));
+
+		g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
+	}
+
+	utf8[0] = '\xcd';
+	sized_utf8[0] = '\xcd';
+	for (i = 0x80; i < 0xaf; i++) {
+		LsmMathmlOperatorGlyph *glyph;
+		char *utf8 = (char *) &glyph_template.utf8;
+		char *sized_utf8 = (char *) &glyph_template.sized_glyphs[0].utf8;
+
+		utf8[1] = i;
+		sized_utf8[4] = i;
+
+		glyph = g_new(LsmMathmlOperatorGlyph, 1);
+		memcpy (glyph, &glyph_template, sizeof (LsmMathmlOperatorGlyph));
+
+		g_hash_table_insert (glyph_table, (char *) glyph->utf8, glyph);
+	}
 
 	return glyph_table;
 }

@@ -53,11 +53,11 @@ typedef enum {
 
 typedef struct {
 	LsmMathmlFont 	font;
-	const char 	utf8[4];
+	const char 	utf8[6];
 } LsmMathmlGlyph;
 
 typedef struct {
-	const char		*utf8;
+	const char		utf8[6];
 	LsmMathmlGlyphFlags	flags;
 	LsmMathmlGlyph		start_glyph;
 	LsmMathmlGlyph		middle_glyph;
