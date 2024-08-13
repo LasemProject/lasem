@@ -1,0 +1,62 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle displaystyle='true'> 
+              <mrow> 
+                <mi>f</mi> 
+                <mo stretchy='false'>(</mo> 
+                <mi>z</mi> 
+                <mo stretchy='false'>)</mo> 
+                <mtext>&#x02009;</mtext> 
+                <mo>&#x000B7;</mo> 
+                <msubsup> 
+                  <mstyle fontstyle='normal'> 
+                    <mrow> 
+                      <mi>I</mi> 
+                      <mi>n</mi> 
+                      <mi>d</mi> 
+                    </mrow> 
+                  </mstyle> 
+                  <mi>&#x003B3;</mi> 
+                  <mrow></mrow> 
+                </msubsup> 
+                <mo stretchy='false'>(</mo> 
+                <mi>z</mi> 
+                <mo stretchy='false'>)</mo> 
+                <mo>=</mo> 
+                <mfrac> 
+                  <mn>1</mn> 
+                  <mrow> 
+                    <mn>2</mn> 
+                    <mi>&#x003C0;</mi> 
+                    <mi>i</mi> 
+                  </mrow> 
+                </mfrac> 
+                <munderover> 
+                  <mo>&#x0222E;</mo> 
+                  <mi>&#x003B3;</mi> 
+                  <mrow></mrow> 
+                </munderover> 
+                <mfrac> 
+                  <mrow> 
+                    <mi>f</mi> 
+                    <mo stretchy='false'>(</mo> 
+                    <mstyle scriptlevel='1'> 
+                      <mi>&#x003BE;</mi> 
+                    </mstyle> 
+                    <mo stretchy='false'>)</mo> 
+                  </mrow> 
+                  <mrow> 
+                    <mstyle scriptlevel='1'> 
+                      <mi>&#x003BE;</mi> 
+                    </mstyle> 
+                    <mo>-</mo> 
+                    <mi>z</mi> 
+                  </mrow> 
+                </mfrac> 
+                <mtext>&#x02009;</mtext> 
+                <mi>d</mi> 
+                <mstyle scriptlevel='1'> 
+                  <mi>&#x003BE;</mi> 
+                </mstyle> 
+              </mrow> 
+            </mstyle> 
+    </math>

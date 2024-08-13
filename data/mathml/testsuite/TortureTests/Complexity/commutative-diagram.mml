@@ -1,0 +1,37 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mtable equalcolumns='false' equalrows='false'> 
+              <mtr> 
+                <mtd> 
+                  <mi>H</mi> 
+                </mtd> 
+                <mtd> 
+                  <mo>&#x02190;</mo> 
+                </mtd> 
+                <mtd> 
+                  <mi>K</mi> 
+                </mtd> 
+              </mtr> 
+              <mtr> 
+                <mtd> 
+                  <mo>&#x02193;</mo> 
+                </mtd> 
+                <mtd> 
+                  <mspace height='100px' width='150px' /> 
+                </mtd> 
+                <mtd> 
+                  <mo>&#x02191;</mo> 
+                </mtd> 
+              </mtr> 
+              <mtr> 
+                <mtd> 
+                  <mi>H</mi> 
+                </mtd> 
+                <mtd> 
+                  <mo>&#x02192;</mo> 
+                </mtd> 
+                <mtd> 
+                  <mi>K</mi> 
+                </mtd> 
+              </mtr> 
+            </mtable> 
+    </math>

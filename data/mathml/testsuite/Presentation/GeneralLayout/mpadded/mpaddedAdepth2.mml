@@ -1,0 +1,38 @@
+    <math> 
+      <mrow> 
+        <munder> 
+          <mi>y</mi> 
+          <mi>x</mi> 
+        </munder> 
+        <munder> 
+          <mpadded depth='1.0 height'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </munder> 
+        <munder> 
+          <mpadded depth='3 width'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </munder> 
+        <munder> 
+          <mpadded depth='200% height'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </munder> 
+        <munder> 
+          <mpadded depth='-1ex'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </munder> 
+        <munder> 
+          <mpadded depth='10pt'> 
+            <mi>y</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </munder> 
+      </mrow> 
+    </math>

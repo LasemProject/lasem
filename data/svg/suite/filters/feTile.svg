@@ -1,0 +1,19 @@
+<svg version="1.1" baseProfile="basic" id="svg-root" width="480" height="360" viewBox="0 0 480 360" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" zoomAndPan="magnify">
+	<g id="test-body-content">
+		<defs>
+			<filter id="feTileFilter" filterUnits="userSpaceOnUse" primitiveUnits="userSpaceOnUse" x="115" y="40" width="250" height="250">
+				<feFlood x="115" y="40" width="54" height="19" flood-color="red"/>
+				<feOffset x="115" y="40" width="50" height="25" dx="6" dy="6" result="offset"/>
+				<feTile/>
+			</filter>
+		</defs>
+		<!-- The 'g' has no content, but the filter causes a rectangle
+         to be created which is filled with a tiled pattern. -->
+		<g filter="url(#feTileFilter)"/>
+		<!-- Show the outline of the rectangle which is filled with the tiled pattern. -->
+		<rect x="115.5" y="40.5" width="250" height="250" fill="none" stroke="blue" stroke-width="1"/>
+		<!-- draw a semi-transparent rectangle over one of the tiles -->
+		<rect x="215.5" y="115.5" width="50" height="25" fill="blue" fill-opacity="0.5" stroke="black"/>
+	</g>
+	<rect id="test-frame" x="0.5" y="0.5" width="479" height="359" fill="none" stroke="#000000"/>
+</svg>

@@ -1,0 +1,12 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable frame="solid" columnwidth="3cm 50%" equalcolumns="false">
+    <mtr>
+      <mtd>
+        <mtext>blah</mtext>
+      </mtd>
+      <mtd>
+        <mtext>questa cella e' vincolata da quella prima che ha dimensione fissata</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>

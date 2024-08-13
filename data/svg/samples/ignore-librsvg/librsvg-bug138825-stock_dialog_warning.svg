@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 9.0, SVG Export Plug-In  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20000303 Stylable//EN"   "http://www.w3.org/TR/2000/03/WD-SVG-20000303/DTD/svg-20000303-stylable.dtd" [
+	<!ENTITY st0 "fill:url(#aigrd1);stroke:none;">
+	<!ENTITY st1 "fill:#A70F18;stroke-width:5.1333;">
+	<!ENTITY st2 "font-size:22.0539;">
+	<!ENTITY st3 "font-family:'Myriad-Bold';">
+	<!ENTITY st4 "fill:url(#aigrd2);stroke:none;">
+	<!ENTITY st5 "fill:none;stroke:none;">
+	<!ENTITY st6 "opacity:0.58;fill:#FFFFFF;stroke:none;">
+	<!ENTITY st7 "fill-rule:nonzero;clip-rule:nonzero;stroke:#000000;stroke-miterlimit:4;">
+	<!ENTITY st8 "stroke:none;">
+	<!ENTITY st9 "opacity:0.23;fill:#FFFFFF;stroke:none;">
+	<!ENTITY st10 "opacity:0.26;stroke:none;">
+]>
+<svg  width="48pt" height="48pt" viewBox="0 0 48 48" xml:space="preserve">
+	<style type="text/css">
+	<![CDATA[
+@font-face{font-family:'Myriad-Bold';src:url("data:;base64,\
+T1RUTwACACAAAQAAQ0ZGIJKScKUAAAAsAAABjWNtYXD/5wBWAAABvAAAACwBAAQCAAEBAQxNeXJp\
+YWQtQm9sZAABAQEg+BsB+BQEZPuOHATo+ecFHQAApAQN93wP938R3ffPEgABAQGqQ29weXJpZ2h0\
+IChjKSAxOTkyLCAxOTk0IEFkb2JlIFN5c3RlbXMgSW5jb3Jwb3JhdGVkLiAgQWxsIFJpZ2h0cyBS\
+ZXNlcnZlZC5NeXJpYWQgaXMgYSB0cmFkZW1hcmsgb2YgQWRvYmUgU3lzdGVtcyBJbmNvcnBvcmF0\
+ZWQgbWF5IGJlIHJlZ2lzdGVyZWQgaW4gY2VydGFpbiBqdXJpc2RpY3Rpb25zLgAAAAACAAIBAQRL\
+914O96CA90r7NXb5QXcSt/dH+zH3HBNwE2j3U/dxFaH4WQX7Mgah/FkFE3DE+3wVwa6yvx8TsMGK\
+aLBWG1ZmZlUfE3BXr2TAHg6Alvk2lvtYl/cplryWBveZkPxmjnOTB4CW+TaW+12X9y6WvJYI95mQ\
+/GaRcJQJHqBgRYKZ/wwJHnoJmZmfDAr3BAr3LAv3BJgMDPcslAwNjAwOAAAAAAAAAQAAAAMAAAAM\
+AAQAIAAAAAQABAABAAAAIf//AAAAIf///+AAAQAAAADNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc39\
+/f393d3d3TECAABhAAAAUMwHBnDeBwYAAAAAAAAAACwAAAABAAAArUIBAP39/f2weAcG4LIHBrB4\
+")}
+	]]>
+	</style>
+	<g id="Layer_x0020_3" style="&st7;">
+		<path style="&st1;" d="M43.4,35.9L26.8,7.5c-0.7-1.1-1.9-1.8-3.2-1.8c-1.3,0-2.5,0.7-3.1,1.9L4.7,36c-0.6,1.1-0.6,2.5,0,3.6c0.7,1.1,1.8,1.8,3.1,1.8h32.4c1.3,0,2.5-0.7,3.1-1.8c0.6-1.1,0.6-2.5,0-3.6z"/>
+		<linearGradient id="aigrd1" gradientUnits="userSpaceOnUse" x1="40.2373" y1="51.0068" x2="12.1656" y2="19.493">
+			<stop  offset="0" style="stop-color:#707070"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path style="&st0;" d="M43.4,35.9L26.8,7.5c-0.7-1.1-1.9-1.8-3.2-1.8c-1.3,0-2.5,0.7-3.1,1.9L4.7,36c-0.6,1.1-0.6,2.5,0,3.6c0.7,1.1,1.8,1.8,3.1,1.8h32.4c1.3,0,2.5-0.7,3.1-1.8c0.6-1.1,0.6-2.5,0-3.6z"/>
+		<linearGradient id="aigrd2" gradientUnits="userSpaceOnUse" x1="14.1167" y1="20.9849" x2="28.7473" y2="42.8781">
+			<stop  offset="0" style="stop-color:#F8C20F"/>
+			<stop  offset="1" style="stop-color:#E2B016"/>
+		</linearGradient>
+		<path style="&st4;" d="M23.9,9.1L7.8,37.9h32.9L23.9,9.1z"/>
+		<text transform="matrix(1 0 0 1 21.1802 34.25)"><tspan x="0" y="0" style="&st8; &st3; &st2;">!</tspan></text>
+		<path style="&st10;" d="M23.9,9.1l16.8,28.8H7.8l30.9-1.2L23.9,9.1z"/>
+		<path style="&st6;" d="M23.9,9.1L7.8,37.9H9L23.9,9.1z"/>
+		<path style="&st9;" d="M5.3,40.3c-0.7-1.1-0.7-2.5,0-3.6L21.1,8.2c0.6-1.1,1.8-1.8,3.1-1.9c0.7,0,1.4,0.2,2,0.6c-0.7-0.9-1.8-1.4-2.9-1.4c-1.3,0-2.5,0.7-3.1,1.9L4.3,35.8c-0.6,1.1-0.6,2.5,0,3.6c0.3,0.5,0.7,0.9,1.2,1.2c-0.1-0.1-0.2-0.2-0.3-0.4z"/>
+	</g>
+	<g id="Layer_x0020_2" style="&st7;">
+		<path style="&st5;" d="M48,48H0V0h48v48z"/>
+	</g>
+</svg>

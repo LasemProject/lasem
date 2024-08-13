@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+  <defs>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="10 0" in="SourceGraphic" />
+    </filter>
+  </defs>
+  <g>
+    <rect width="100" height="100" x="-50" y="-50"
+       transform="translate(100,100) rotate(45) skewX(30)"
+       style="fill:#0000ff;fill-opacity:1;fill-rule:nonzero;stroke:none;filter:url(#blur);enable-background:new" />
+  </g>
+</svg>

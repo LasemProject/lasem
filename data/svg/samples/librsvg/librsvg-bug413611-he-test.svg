@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="510"
+   height="500"
+   id="svg5817"
+   sodipodi:version="0.32"
+   inkscape:version="0.44.1"
+   version="1.0"
+   sodipodi:docbase="C:\Documents and Settings\USER\Desktop"
+   sodipodi:docname="Price_of_market_balance.svg">
+  <defs
+     id="defs5819">
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible">
+      <path
+         id="path2986"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path2989"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.4,0,0,0.4,4,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible">
+      <path
+         id="path2992"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path2995"
+         d="M 0,0 L 5,-5 L -12.5,0 L 5,5 L 0,0 z "
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none"
+         transform="matrix(0.8,0,0,0.8,10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Dot_l"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Dot_l"
+       style="overflow:visible">
+      <path
+         id="path2933"
+         d="M -2.5,-1 C -2.5,1.76 -4.74,4 -7.5,4 C -10.26,4 -12.5,1.76 -12.5,-1 C -12.5,-3.76 -10.26,-6 -7.5,-6 C -4.74,-6 -2.5,-3.76 -2.5,-1 z "
+         style="fill-rule:evenodd;stroke:black;stroke-width:1pt;marker-start:none;marker-end:none"
+         transform="matrix(0.8,0,0,0.8,5.92,0.8)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="523.68373"
+     inkscape:cy="305.60936"
+     inkscape:document-units="px"
+     inkscape:current-layer="g11273"
+     inkscape:window-width="1280"
+     inkscape:window-height="938"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     width="510px"
+     height="500px" />
+  <metadata
+     id="metadata5822">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-5.548828,-8.112183)">
+    <g
+       id="g11273"
+       transform="translate(-5,-45)">
+      <path
+         id="path5878"
+         d="M 155,191.36218 L 458,191.36218 L 291,314.86218 L 155,191.36218 z "
+         style="fill:#fbb088;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         id="path5880"
+         d="M 290.5,314.36218 L 413.5,423.36218 L 143.5,422.86218 L 290.5,314.36218 z "
+         style="fill:#b9fa85;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <g
+         id="g11263">
+        <path
+           id="path5868"
+           d="M 49,65.375 L 49,512.375 L 49,513.375 L 50,513.375 L 499,513.375 L 499,511.375 L 51,511.375 L 51,65.375 L 49,65.375 z "
+           style="fill:black;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1" />
+        <path
+           id="path11269"
+           d="M 50,73.362183 L 54,77.362183 L 50,63.362183 L 46,77.362183 L 50,73.362183 z "
+           style="fill-rule:evenodd;stroke:black;stroke-width:0.4pt;marker-start:none" />
+        <path
+           id="path11271"
+           d="M 491,512.36218 L 487,516.36218 L 501,512.36218 L 487,508.36218 L 491,512.36218 z "
+           style="fill-rule:evenodd;stroke:black;stroke-width:0.4pt;marker-start:none" />
+      </g>
+      <path
+         id="path5872"
+         d="M 468.5,471.86218 L 85.5,132.86218"
+         style="fill:none;fill-rule:evenodd;stroke:#03ab06;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path5876"
+         d="M 510,152.86218 L 86.5,464.36218"
+         style="fill:none;fill-rule:evenodd;stroke:#cc1b00;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path7656"
+         d="M 289.5625,310.25 C 288.21733,310.25 287.02746,310.89742 286.25,311.875 L 49,311.875 L 49,316.875 L 286.03125,316.875 C 286.79393,318.00361 288.09879,318.75 289.5625,318.75 C 291.02621,318.75 292.29982,318.00361 293.0625,316.875 L 493,316.875 L 493,311.875 L 292.875,311.875 C 292.09776,310.89205 290.91197,310.25 289.5625,310.25 z "
+         style="fill:#0015fe;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         id="path5870"
+         d="M 289.5,311.625 C 288.23943,311.625 287.1994,312.46758 286.875,313.625 L 49.25,313.625 L 49.25,315.125 L 286.875,315.125 C 287.20867,316.26798 288.2497,317.125 289.5,317.125 C 290.7503,317.125 291.79133,316.26798 292.125,315.125 L 493.25,315.125 L 493.25,313.625 L 292.125,313.625 C 291.8006,312.46758 290.76057,311.625 289.5,311.625 z "
+         style="fill:#13fed0;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         id="text11220"
+         y="340.36218"
+         x="426"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:center;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:middle;opacity:1;color:black;fill:#0015fe;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;font-family:Miriam Fixed"
+         xml:space="preserve"><tspan
+           id="tspan11260"
+           y="340.36218"
+           x="426"
+           sodipodi:role="line">מחיר שווי</tspan><tspan
+           y="370.36218"
+           x="426"
+           sodipodi:role="line"
+           id="tspan1909">משקל</tspan></text>
+      <text
+         transform="matrix(0,-1,1,0,0,0)"
+         id="text11224"
+         y="32.783203"
+         x="-266.69812"
+         style="font-size:12px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Miriam Fixed"
+         xml:space="preserve"><tspan
+           style="font-size:24px;font-family:Miriam Fixed"
+           y="32.783203"
+           x="-266.69812"
+           id="tspan11226"
+           sodipodi:role="line">מחיר</tspan></text>
+      <text
+         id="text11228"
+         y="144.36218"
+         x="177"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;opacity:1;color:black;fill:#03ab06;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;font-family:Miriam Fixed"
+         xml:space="preserve"><tspan
+           y="144.36218"
+           x="177"
+           id="tspan11230"
+           sodipodi:role="line">ביקוש</tspan></text>
+      <text
+         id="text11232"
+         y="225.36218"
+         x="300.71484"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:center;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:middle;opacity:1;color:black;fill:black;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;font-family:Miriam Fixed"
+         xml:space="preserve"><tspan
+           style="font-size:16px;text-align:center;text-anchor:middle;font-family:Miriam Fixed"
+           y="225.36218"
+           x="300.71484"
+           sodipodi:role="line"
+           id="tspan1913">ב' - עודף היצע</tspan><tspan
+           style="font-size:16px;text-align:center;text-anchor:middle;font-family:Miriam Fixed"
+           y="245.36218"
+           x="300.71484"
+           sodipodi:role="line"
+           id="tspan1919">כאשר P &gt; P0</tspan></text>
+      <text
+         id="text11236"
+         y="386.36218"
+         x="284.59375"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:center;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:middle;opacity:1;color:black;fill:black;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           id="tspan11252"
+           style="font-size:16px;font-family:Miriam Fixed"
+           y="386.36218"
+           x="284.59375"
+           sodipodi:role="line">א' עודף ביקוש</tspan><tspan
+           id="tspan11256"
+           style="font-size:16px;font-family:Miriam Fixed"
+           y="406.36218"
+           x="284.59375"
+           sodipodi:role="line">כאשר P &lt; P0</tspan></text>
+      <text
+         id="text11240"
+         y="156.36218"
+         x="490"
+         style="font-size:24px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;opacity:1;color:black;fill:#cc1b00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;font-family:Miriam Fixed"
+         xml:space="preserve"><tspan
+           y="156.36218"
+           x="490"
+           id="tspan11242"
+           sodipodi:role="line">היצע</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-weight:normal;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Miriam Fixed"
+         x="346.39258"
+         y="538.36218"
+         id="text11248"><tspan
+           sodipodi:role="line"
+           id="tspan11250"
+           x="346.39258"
+           y="538.36218"
+           style="font-size:24px;font-family:Miriam Fixed">כמות הסחורה</tspan></text>
+    </g>
+  </g>
+</svg>

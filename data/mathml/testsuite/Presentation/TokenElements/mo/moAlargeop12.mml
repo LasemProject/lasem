@@ -1,0 +1,23 @@
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
+      <mrow> 
+        <mo>&#x0222B;</mo> 
+        <mi>x</mi> 
+        <mo>=</mo> 
+        <mo largeop='true'>&#x0222B;</mo> 
+        <mi>x</mi> 
+        <mo>=</mo> 
+        <mo largeop='false'>&#x0222B;</mo> 
+        <mi>x</mi> 
+        <mo>=</mo> 
+        <mstyle displaystyle='true'> 
+          <mo>&#x0222B;</mo> 
+          <mi>x</mi> 
+          <mo>=</mo> 
+          <mo largeop='true'>&#x0222B;</mo> 
+          <mi>x</mi> 
+          <mo>=</mo> 
+          <mo largeop='false'>&#x0222B;</mo> 
+          <mi>x</mi> 
+        </mstyle> 
+      </mrow> 
+    </math>

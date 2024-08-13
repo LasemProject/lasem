@@ -1,0 +1,64 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mtable>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi>
+				<mo mathvariant="normal" mathcolor="red">&#x300;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi>
+				<mo mathcolor="red">&#x300;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" mathcolor="blue">&#x301;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo mathcolor="blue">&#x301;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" stretchy="false" mathcolor="green">&#x302;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo stretchy="false" mathcolor="green">&#x302;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" stretchy="false" mathcolor="yellow">&#x303;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo mathcolor="yellow" stretchy="false">&#x303;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" mathcolor="red">&#x304;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo mathcolor="red">&#x304;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" mathcolor="green">&#x307;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo mathcolor="green">&#x307;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi> 
+				<mo mathvariant="normal" mathcolor="blue">&#x308;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi> 
+				<mo mathcolor="blue">&#x308;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi>
+				<mo mathvariant="normal" mathcolor="yellow">&#x30a;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi>
+				<mo mathcolor="yellow">&#x30a;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi>
+				<mo mathvariant="normal" mathcolor="red">&#x30b;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi>
+				<mo mathcolor="red">&#x30b;</mo> </mover> </mtd>
+  </mtr>
+  <mtr>
+    <mtd> <mover accent="true"> <mi mathvariant="normal">x</mi>
+				<mo mathvariant="normal" mathcolor="blue">&#x30c;</mo> </mover> </mtd>
+    <mtd> <mover accent="true"> <mi>x</mi>
+				<mo mathcolor="blue">&#x30c;</mo> </mover> </mtd>
+  </mtr>
+ </mtable>
+</math>
