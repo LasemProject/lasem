@@ -1,3 +1,8 @@
+Release 0.6.0
+=============
+
+  * parser: fix libxml2 deprecation warning (Emmanuel)
+
 Release 0.5.2
 =============
 
