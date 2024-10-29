@@ -1,0 +1,101 @@
+# Georgian translation for lasem.
+# Copyright (C) 2024 lasem's COPYRIGHT HOLDER
+# This file is distributed under the same license as the lasem package.
+# Temuri Doghonadze <temuri.doghonadze@gmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lasem master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/lasem/issues\n"
+"POT-Creation-Date: 2019-02-09 15:06+0000\n"
+"PO-Revision-Date: 2024-10-29 02:41+0100\n"
+"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Language-Team: Georgian\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: ../src/lasemrender.c:70
+msgid "Output filename"
+msgstr "გამოტანის ფაილის სახელი"
+
+#: ../src/lasemrender.c:72
+msgid "Output format"
+msgstr "გამოტანის ფორმატი"
+
+#: ../src/lasemrender.c:74
+msgid "Pixel per inch"
+msgstr "პიქსელი თითოეულ დუიმზე"
+
+#: ../src/lasemrender.c:76
+msgid "Zoom"
+msgstr "მასშტაბი"
+
+#: ../src/lasemrender.c:78
+msgid "Element id"
+msgstr "ელემენტის id"
+
+#: ../src/lasemrender.c:80
+msgid "Offset"
+msgstr "წანაცვლება"
+
+#: ../src/lasemrender.c:82
+msgid "Size"
+msgstr "ზომა"
+
+#: ../src/lasemrender.c:84
+msgid "Debug domains"
+msgstr "გამართვის დომენები"
+
+#: ../src/lasemrender.c:97
+msgid "Invalid document type (SVG expected)"
+msgstr "არასწორი დოკუმენტის ტიპი (მოველოდი SVG-ს)"
+
+#: ../src/lasemrender.c:103
+#, c-format
+msgid "Element '%s' not found"
+msgstr "ელემენტი '%s' აღმოჩენილი არაა"
+
+#: ../src/lasemrender.c:154
+msgid "Option parsing failed:"
+msgstr "პარამეტრების დამუშავება ჩავარდა:"
+
+#: ../src/lasemrender.c:161
+msgid "Invalid zoom value"
+msgstr "არასორი გადიდების მნიშვნელობა"
+
+#: ../src/lasemrender.c:170
+msgid "Invalid number of arguments for offset option"
+msgstr "არასწორი არგუმენტების რაოდენობა წანაცვლების პარამეტრისთვის"
+
+#: ../src/lasemrender.c:180
+msgid "Invalid number of arguments for size option"
+msgstr "არასწორი არგუმენტების რაოდენობა ზომის პარამეტრისთვის"
+
+#: ../src/lasemrender.c:185
+msgid "Invalid export size"
+msgstr "არასწორი გატანის ზომა"
+
+#: ../src/lasemrender.c:193
+msgid "Missing input filename"
+msgstr "შეყვანის ფაილის სახელი მითითებული არაა"
+
+#: ../src/lasemrender.c:204
+msgid "Unknown format:"
+msgstr "უცნობი ფორმატი:"
+
+#: ../src/lasemrender.c:244
+msgid ""
+"Don't know which format to use, please either give a format (-f) or an output "
+"filename (-o)"
+msgstr ""
+"არ ვიცი, რომელი ფორმატი გამოვიყენო. ან მიუთითეთ ფორმატი (-f) ან გამოტანის "
+"ფაილის სახელი (-o)"
+
+#: ../src/lasemrender.c:355
+#, c-format
+msgid "Can't load '%s'"
+msgstr "'%s ვერ ჩაიტვირთა"
