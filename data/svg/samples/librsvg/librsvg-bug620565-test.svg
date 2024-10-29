@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="50">
+<g transform="translate(10,0) scale(4)">
+<path stroke="red" d="M.5,.5h38.5h.5v9H.5z" stroke-width="1" fill="#FFF"/>
+<!-- 
+  Top line of above rectangle should be precicesly covered by the 
+  following line. Instead of starting at (0.5,0.5), the path starts
+  at (0,0) with librsvg.
+-->
+<path stroke="black" d="M0,.5H40"/>
+<!--
+  Note that in the above path, M0,.5 is interpreted correctly by librsvg.
+  The horizontal coordinate of the right rectangle edge should be 39, but
+  it falsely is 78, as is shown by the following line (subtract half a 
+  line width from 78.5):
+-->
+<path stroke="black" d="M0,4.5H78.5"/>
+</g>
+</svg>

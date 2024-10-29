@@ -1,0 +1,18 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>segue tabella ---</mi>
+  <mtable frame="dashed" rowlines="solid" columnlines="solid dashed" equalcolumns="false"
+  equalrows="false"
+  columnalign="left center right" align="baseline 1"
+  >
+    <mtr>
+      <mtd><mi>ciao</mi></mtd>
+      <mtd><mi>da</mi></mtd>
+      <mtd><mi>Luca</mi></mtd>
+    </mtr>
+    <mtr>
+      <mtd><mi>questa e' la seconda</mi></mtd>
+      <mtd><mi>riga</mi></mtd>
+      <mtd><mi>del piffero</mi></mtd>
+    </mtr>
+  </mtable>
+</math>

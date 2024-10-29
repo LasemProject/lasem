@@ -1,0 +1,153 @@
+<!--
+  This test verifies the positioning of the accent over the base using the String element. 
+  The test creates a table in which we consider every accent.
+-->
+
+<!--
+  The correspondent Tex file is accentStringTable.tex
+-->
+
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+ <mtable>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x131;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x131;&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x300;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x300;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x131;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x131;&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x301;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x301;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x0131;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x131;&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x302;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x302;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x303;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x303;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x304;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x304;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x307;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x307;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">&#x131;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">&#x131;&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x308;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x308;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x30a;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x30a;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x30b;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x30b;</mtext> </mtd>
+  </mtr>
+  <mtr>
+   <mtd> <mtext mathvariant="normal">i&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">x&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">m&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">I&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">X&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="normal">M&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">i&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">x&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">m&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">I&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">X&#x30c;</mtext> </mtd>
+   <mtd> <mtext mathvariant="italic">M&#x30c;</mtext> </mtd>
+  </mtr>
+ </mtable>
+</math>

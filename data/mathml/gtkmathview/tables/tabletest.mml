@@ -1,0 +1,82 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mtable frame="solid" columnlines="solid" rowlines="solid" equalrows="false" equalcolumns="false"
+    columnwidth="fit">
+    <mtr>
+      <mtd columnspan="2" rowalign="center">
+        <mi>...as</mi>
+	<mi mathcolor="red" fontweight="bold">you</mi>
+	<mi> can see...</mi>
+      </mtd>
+      <mtd rowspan="2" rowalign="bottom" columnalign="right">
+        <mi fontweight="bold" fontsize="10pt">illegal</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd rowspan="2" rowalign="bottom" columnalign="right">
+        <mstyle fontsize="10pt" mathcolor="navy">
+          <mtable frame="solid">
+	   <mtr>
+            <mtd> <mi>row span=2</mi> </mtd>
+	   </mtr>
+	   <mtr>
+	    <mtd> <mi>row align=bottom</mi> </mtd>
+	   </mtr>
+	   <mtr>
+	    <mtd> <mi>column align=right</mi> </mtd>
+	   </mtr>
+	  </mtable>
+	</mstyle>
+      </mtd>
+      <mtd columnspan="2" rowalign="center" columnalign="left">
+        <mtable frame="solid" framespacing="0pt 0pt" columnspacing="0pt" rowspacing="0pt">
+	  <mtr>
+	    <mtd> <mstyle background="#f08000"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#e08010"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#d08020"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#c08030"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#b08040"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#a08050"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#908060"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#808070"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#708080"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#608090"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#5080a0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#4080b0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#3080c0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#2080d0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#1080e0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	    <mtd> <mstyle background="#0080f0"><mspace width="3mm" height="1cm"/></mstyle> </mtd>
+	  </mtr>
+	</mtable>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+        <mstyle fontsize="10pt" background="#c0c0c0">
+          <mrow>
+	    <mi>A row...</mi>
+	    <mspace width="1cm" height="1cm"/>
+	    <mi>with 1cm*1cm space</mi>
+	  </mrow>
+	</mstyle>
+      </mtd>
+      <mtd>
+        <mstyle fontsize="14pt" mathbackground="teal">
+	  <mtable columnwidth="fit" frame="dashed" columnlines="solid" columnalign="right">
+	    <mtr>
+	      <mtd>
+	        <mi mathcolor="white">1</mi>
+	      </mtd>
+	      <mtd>
+	        <mi mathcolor="white">2</mi>
+	      </mtd>
+	      <mtd columnalign="left">
+	        <mi mathcolor="white">fit</mi>
+	      </mtd>
+	    </mtr>
+	  </mtable>
+	</mstyle>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>

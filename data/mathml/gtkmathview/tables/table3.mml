@@ -1,0 +1,11 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+    <mtable frame="solid" columnlines="solid" equalcolumns="true"
+    columnwidth="auto" columnspacing="0"
+    >
+      <mtr>
+        <mtd> <mi>un</mi> </mtd>
+	<mtd> <mi>grande</mi> </mtd>
+	<mtd> <mi>ciao</mi> </mtd>
+      </mtr>
+    </mtable>
+</math>

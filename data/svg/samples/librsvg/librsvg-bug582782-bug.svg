@@ -1,0 +1,22 @@
+<!--[if IE]><html><b>Your browser sucks!</b></html><![endif]--><!--[if !IE]><!-->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg"
+    width="200" height="600"
+    viewBox="0,-200 100,300">
+    <title>Test</title>
+    <defs>
+        <filter id="Gaussian_Blur" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%" >
+            <feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+        </filter>
+    </defs>
+    
+    <circle cx="50" cy="50" r="50" filter="url(#Gaussian_Blur)"/>
+    <text x="10" y="50" fill="#0c0">original</text>
+    
+    <circle cx="50" cy="50" r="50" filter="url(#Gaussian_Blur)" transform="scale(1,-1)"/>
+    <text x="10" y="-50" fill="#c00">flipped</text>
+    
+    <circle cx="50" cy="50" r="50" filter="url(#Gaussian_Blur)" transform="translate(0,-200)"/>
+    <text x="10" y="-150" fill="#0c0">translated</text>
+    
+</svg>

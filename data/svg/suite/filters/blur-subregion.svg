@@ -1,0 +1,16 @@
+<!--
+	Exercise blur filter subregion.
+-->
+
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40">
+  <defs>
+    <filter id="filter" filterUnits="objectBoundingBox" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur x="10" y="10" width="20" height="20" stdDeviation="5 5" />
+    </filter>
+    <g id="square">
+      <rect x="10" y="10" height="20" width="20" style="stroke:none;fill:blue;filter:url(#filter);"/>
+      <path d="M10.5 5 L10.5 10 M5 10.5 L10 10.5 M29.5 35 L29.5 30 M30 29.5 L35 29.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+  </defs>
+  <use xlink:href="#square" />
+</svg>

@@ -1,0 +1,279 @@
+<?xml version="1.0"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg width="15cm" height="18cm" viewBox="0 0 750 900" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>A pictorial description of the $FIftiMain format from CHM files.</title>
+	<defs>
+		<desc>This image describes the $FIftiMain format from CHM files. It shows the relationships between WLCs, leaf nodes, index nodes, free space, the header and the /#TOPICS file.</desc>
+		<style type="text/css"><![CDATA[
+			rect {
+				fill: #fcfcfc;
+				stroke: black;
+				stroke-width: 2.5;
+			}
+			rect.pointerstart {
+				fill: black;
+				stroke: none;
+			}
+			rect.header { fill: white; }
+			rect.wlc { fill: #e0e0e0; }
+			rect.leaf { fill: #e0ffe0; }
+			rect.index1 { fill: #ffe0e0; }
+			rect.index2 { fill: #ffd0d0; }
+			rect.freespace { fill: #e0e0ff; }
+			rect.pointer { fill: grey; stroke-width: 1; }
+			path {
+				fill: none;
+				stroke: black;
+				stroke-width: 2.5;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+			path.pointer {
+				marker-end: url(#arrow);
+				stroke-width: 1.5;
+			}
+			path.size { stroke-width: 1.5; }
+			text {
+				font-size: 25pt;
+				text-anchor: middle;
+				alignment-baseline: middle;
+			}
+			text.offsetlabel { font-size: 15pt; text-anchor: end; }
+			text.keylabel { font-size: 20pt; }
+			text.data { text-anchor: start; font-size: 12pt; font-family: Lucida Console, Bitstream Vera Sans Mono, Lucida Sans Typewriter, Courier New, monospace; }
+		]]></style>
+		<marker id="triangle"
+			viewBox="0 0 15 15" refX="7.5" refY="7.5"
+			markerUnits="strokeWidth"
+			markerWidth="10" markerHeight="10"
+			orient="auto">
+			<path d="M 2.5 2.5 L 12.5 7.5 L 2.5 12.5 z" style="fill: black; stroke: black; stroke-width: 1;"/>
+		</marker>
+		<marker id="triangle2"
+			viewBox="0 0 13 13" refX="7.5" refY="7.5"
+			markerUnits="strokeWidth"
+			markerWidth="10" markerHeight="10"
+			orient="auto">
+			<path d="M 2.5 7.5 L 12.5 12.5 L 12.5 2.5 z" style="fill: black; stroke: black; stroke-width: 1;"/>
+		</marker>
+		<marker id="arrow"
+			viewBox="-1 -1 16 16" refX="10" refY="5"
+			markerUnits="strokeWidth"
+			markerWidth="10" markerHeight="10"
+			orient="auto">
+			<path d="M 10 5 L 0 0 L 0 10 z" style="fill: black; stroke: black; stroke-width: 1;"/>
+		</marker>
+		<g id="title">
+			<title>A word from the &lt;title&gt; tag in the header.</title>
+			<circle cx="0" cy="0" r="5"/>
+			<text x="0" y="3" class="data" style="text-anchor: middle; font-size: 6pt; stroke: white; fill: white;">T</text>
+		</g>
+
+	</defs>
+
+	<!-- Labels n shit -->
+	<text x="137.5" y="30"><tspan>Leaf nodes</tspan><tspan x="137.5" y="55">&amp; WLCs</tspan></text>
+	<text x="337.5" y="30"><tspan>Index nodes</tspan><tspan x="337.5" y="55">Level 1</tspan></text>
+	<text x="537.5" y="30"><tspan>Index nodes</tspan><tspan x="537.5" y="55">Level 2</tspan></text>
+	<text x="0" y="0" transform="translate(700,475) rotate(90)">Offset in $FIftiMain file</text>
+	<!--path d="M625 875 L625 75 L75 75 L75 875" marker-start="url(#triangle2)" marker-end="url(#triangle)"/-->
+	<path d="M675 800 L675 75 L75 75" marker-start="url(#triangle2)"/>
+	<rect x="5" y="290" width="35" height="170" style="fill: #eeeeee;"/>
+	<text x="0" y="0" transform="translate(30,375) rotate(-90)">/#TOPICS file</text>
+	<text x="137.5" y="225">...</text>
+
+	<!-- WLCs n Nodes -->
+	<rect x="100" y="75" width="75" height="40" class="header"/>
+	<rect x="100" y="115" width="75" height="15" class="wlc"/>
+	<rect x="100" y="130" width="75" height="80" class="leaf"/>
+	<rect x="100" y="195" width="75" height="15" class="freespace"/>
+	<rect x="100" y="235" width="75" height="20" class="wlc"/>
+	<rect x="100" y="255" width="75" height="80" class="leaf"/>
+	<rect x="100" y="325" width="75" height="10" class="freespace"/>
+	<rect x="300" y="335" width="75" height="80" class="index1"/>
+	<rect x="300" y="405" width="75" height="10" class="freespace"/>
+	<rect x="100" y="415" width="75" height="25" class="wlc"/>
+	<rect x="100" y="440" width="75" height="80" class="leaf"/>
+	<rect x="100" y="505" width="75" height="35" class="freespace"/>
+	<rect x="100" y="520" width="75" height="15" class="wlc"/>
+	<rect x="100" y="535" width="75" height="80" class="leaf"/>
+	<rect x="100" y="580" width="75" height="35" class="freespace"/>
+	<rect x="300" y="615" width="75" height="80" class="index1"/>
+	<rect x="300" y="645" width="75" height="50" class="freespace"/>
+	<rect x="500" y="695" width="75" height="80" class="index2"/>
+	<rect x="500" y="720" width="75" height="65" class="freespace"/>
+
+	<!-- Offset labels -->
+	<path d="M675 115 L670 115"/>
+	<path d="M675 130 L670 130"/>
+	<path d="M675 210 L670 210"/>
+	<path d="M675 235 L670 235"/>
+	<path d="M675 255 L670 255"/>
+	<path d="M675 335 L670 335"/>
+	<path d="M675 415 L670 415"/>
+	<path d="M675 440 L670 440"/>
+	<path d="M675 520 L670 520"/>
+	<path d="M675 535 L670 535"/>
+	<path d="M675 615 L670 615"/>
+	<path d="M675 695 L670 695"/>
+	<path d="M675 785 L670 785"/>
+	<text x="665" y="100" class="offsetlabel">1024 (header)</text>
+	<text x="665" y="125" class="offsetlabel">variable</text>
+	<text x="665" y="175" class="offsetlabel">2048</text>
+	<text x="665" y="248.3333333" class="offsetlabel">variable</text>
+	<text x="665" y="300" class="offsetlabel">2048</text>
+	<text x="665" y="380" class="offsetlabel">2048</text>
+	<text x="665" y="431.6666667" class="offsetlabel">variable</text>
+	<text x="665" y="485" class="offsetlabel">2048</text>
+	<text x="665" y="532.5" class="offsetlabel">variable</text>
+	<text x="665" y="580" class="offsetlabel">2048</text>
+	<text x="665" y="660" class="offsetlabel">2048</text>
+	<text x="665" y="745" class="offsetlabel">2048</text>
+
+	<!-- Header to Root -->
+	<rect x="105" y="105" width="10" height="3" class="pointer"/>
+	<path d="M110 106.5 Q 600 106.52 610 650 Q 610 695 580 695" class="pointer"/>
+
+	<!-- Leaf & Index headers -->
+	<rect x="100" y="130" width="20" height="3" class="header"/>
+	<rect x="100" y="255" width="20" height="3" class="header"/>
+	<rect x="100" y="440" width="20" height="3" class="header"/>
+	<rect x="100" y="535" width="20" height="3" class="header"/>
+	<rect x="300" y="335" width="5" height="3" class="header"/>
+	<rect x="300" y="615" width="5" height="3" class="header"/>
+	<rect x="500" y="695" width="5" height="3" class="header"/>
+
+	<!-- Leaf to Leaf pointers -->
+	<path d="M105 131.5 Q30 175.75 95 221" class="pointer"/>
+	<path d="M95 224.5 Q50 237.5 95 255" class="pointer"/>
+	<path d="M105 256.5 Q20 348.25 95 440" class="pointer"/>
+	<path d="M105 441.5 Q50 488.25 95 535" class="pointer"/>
+
+	<!-- Free space pointers -->
+	<path d="M117.5 131.5 Q75 167 90 202.5 M95 195 L 90 195 L 90 210 L 95 210" class="size"/>
+	<path d="M117.5 256.5 Q75 293.25 90 330 M95 325 L 90 325 L 90 335 L 95 335" class="size"/>
+	<path d="M117.5 441.5 Q75 477 90 512.5 M95 505 L 90 505 L 90 520 L 95 520" class="size"/>
+	<path d="M117.5 536.5 Q60 567 90 597.5 M95 580 L 90 580 L 90 615 L 95 615" class="size"/>
+	<path d="M302.5 336.5 Q250 373.25 290 410 M295 405 L 290 405 L 290 415 L 295 415" class="size"/>
+	<path d="M302.5 616.5 Q260 643.25 290 670 M295 645 L 290 645 L 290 695L 295 695" class="size"/>
+	<path d="M502.5 696.5 Q460 724.5 490 752.5 M495 720 L 490 720 L 490 785L 495 785" class="size"/>
+
+	<!-- Index to Node pointers -->
+	<rect x="360" y="345" width="10" height="3" class="pointer"/>
+	<rect x="360" y="355" width="10" height="3" class="pointer"/>
+	<rect x="360" y="365" width="10" height="3" class="pointer"/>
+	<rect x="360" y="375" width="10" height="3" class="pointer"/>
+	<rect x="360" y="385" width="10" height="3" class="pointer"/>
+	<rect x="360" y="395" width="10" height="3" class="pointer"/>
+	<rect x="360" y="625" width="10" height="3" class="pointer"/>
+	<rect x="360" y="635" width="10" height="3" class="pointer"/>
+	<rect x="560" y="700" width="10" height="3" class="pointer"/>
+	<rect x="560" y="710" width="10" height="3" class="pointer"/>
+	<path d="M365 346.5 Q365 130 185 130" class="pointer"/>
+	<path d="M365 356.5 Q325 215 185 215" class="pointer"/>
+	<path d="M365 366.5 Q335 217 185 220" class="pointer"/>
+	<path d="M365 376.5 Q345 218 185 225" class="pointer"/>
+	<path d="M365 386.5 Q355 230 185 230" class="pointer"/>
+	<path d="M365 396.5 Q425 255 185 255" class="pointer"/>
+	<path d="M365 626.5 Q365 440 185 440" class="pointer"/>
+	<path d="M365 636.5 Q315 535 185 535" class="pointer"/>
+	<path d="M565 701.5 Q565 335 385 335" class="pointer"/>
+	<path d="M565 711.5 Q515 615 385 615" class="pointer"/>
+
+	<!-- Key -->
+	<text x="40" y="840">Key</text>
+	<rect x="90" y="820" width="30" height="30" class="header"/>
+	<rect x="190" y="820" width="30" height="30" class="wlc"/>
+	<rect x="290" y="820" width="30" height="30" class="leaf"/>
+	<rect x="390" y="820" width="30" height="30" class="index1"/>
+	<rect x="490" y="820" width="30" height="30" class="index2"/>
+	<rect x="590" y="820" width="30" height="30" class="freespace"/>
+	<use x="690" y="835" xlink:href="#title"/>
+	<text x="105" y="880" class="keylabel">Header</text>
+	<text x="205" y="880" class="keylabel">WLCs</text>
+	<text x="305" y="880" class="keylabel">Leaf</text>
+	<text x="405" y="880" class="keylabel">Index L1</text>
+	<text x="505" y="880" class="keylabel">Index L2</text>
+	<text x="605" y="880" class="keylabel">Free space</text>
+	<text x="690" y="880" class="keylabel">Title</text>
+
+	<!-- Fake Leaf & Index Data -->
+	<text x="110" y="150" class="data" xml:space="preserve">anna</text>
+	<text x="110" y="160" class="data" xml:space="preserve">  t</text>
+	<text x="110" y="170" class="data" xml:space="preserve"> unty</text>
+	<text x="110" y="180" class="data" xml:space="preserve">banana</text>
+	<text x="110" y="190" class="data" xml:space="preserve">  tty</text>
+
+	<text x="110" y="275" class="data" xml:space="preserve">bits</text>
+	<text x="110" y="285" class="data" xml:space="preserve"> lood</text>
+	<text x="110" y="295" class="data" xml:space="preserve">class</text>
+	<text x="110" y="305" class="data" xml:space="preserve"> ook</text>
+	<text x="110" y="315" class="data" xml:space="preserve">    y</text>
+
+	<text x="110" y="460" class="data" xml:space="preserve">farce</text>
+	<text x="110" y="470" class="data" xml:space="preserve"> lute</text>
+	<text x="110" y="480" class="data" xml:space="preserve"> oal</text>
+	<text x="110" y="490" class="data" xml:space="preserve">  ot</text>
+	<text x="110" y="500" class="data" xml:space="preserve">    </text>
+
+	<text x="110" y="555" class="data" xml:space="preserve">fore</text>
+	<text x="110" y="565" class="data" xml:space="preserve">   t</text>
+	<text x="110" y="575" class="data" xml:space="preserve">  xy</text>
+
+	<text x="310" y="350" class="data" xml:space="preserve">batty</text>
+	<text x="310" y="360" class="data" xml:space="preserve">bazaar</text>
+	<text x="310" y="370" class="data" xml:space="preserve">beer</text>
+	<text x="310" y="380" class="data" xml:space="preserve">beta</text>
+	<text x="310" y="390" class="data" xml:space="preserve">binary</text>
+	<text x="310" y="400" class="data" xml:space="preserve">cooky</text>
+
+	<text x="310" y="630" class="data" xml:space="preserve">foot</text>
+	<text x="310" y="640" class="data" xml:space="preserve">  xy</text>
+
+	<text x="510" y="705" class="data" xml:space="preserve">cooky</text>
+	<text x="510" y="715" class="data" xml:space="preserve">foxy</text>
+
+	<!-- Title Indicators -->
+	<use x="155" y="292.5" xlink:href="#title"/>
+	<use x="155" y="467.5" xlink:href="#title"/>
+	<use x="155" y="497.5" xlink:href="#title"/>
+
+	<!-- Leaf -> WLC pointers -->
+	<rect x="162.5" y="145" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="155" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="165" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="175" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="185" width="7.5" height="3" class="pointer"/>
+	<path d="M166.25 146.5 Q165 125 140 127.5 Q 115 127.5 115 125 m -10 -5 l 0 5 l 20 0 l 0 -5" class="size"/>
+	<rect x="162.5" y="270" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="280" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="290" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="300" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="310" width="7.5" height="3" class="pointer"/>
+	<path d="M166.25 271.5 Q165 250 140 250 Q 115 250 115 245 m -10 -5 l 0 5 l 20 0 l 0 -5" class="size"/>
+	<rect x="162.5" y="455" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="465" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="475" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="485" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="495" width="7.5" height="3" class="pointer"/>
+	<path d="M166.25 456.5 Q165 435 140 435 Q 115 435 115 430 m -10 -5 l 0 5 l 20 0 l 0 -5" class="size"/>
+	<rect x="162.5" y="550" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="560" width="7.5" height="3" class="pointer"/>
+	<rect x="162.5" y="570" width="7.5" height="3" class="pointer"/>
+	<path d="M166.25 551.5 Q165 535 140 535 Q 115 535 115 530 m -10 -5 l 0 5 l 20 0 l 0 -5" class="size"/>
+
+	<!-- WLC -> /#TOPICS pointers -->
+	<path d="M107.5 120.5 Q25 70 30 290" class="pointer"/>
+	<path d="M115 120.5 Q20 60 20 290" class="pointer"/>
+	<path d="M122.5 120.5 Q15 50 10 290" class="pointer"/>
+
+	<path d="M115 240 Q40 220 40 290" class="pointer"/>
+
+	<path d="M110 425 Q110 400 40 400" class="pointer"/>
+	<path d="M120 425 Q120 380 40 380" class="pointer"/>
+
+	<path d="M110 525 Q110 460 40 450" class="pointer"/>
+	<path d="M120 525 Q120 440 40 430" class="pointer"/>
+
+</svg>
+

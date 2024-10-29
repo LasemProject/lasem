@@ -1,0 +1,30 @@
+    <math> 
+      <mstyle background='#88cc88'> 
+        <mfenced> 
+          <mrow> 
+            <mi>a</mi> 
+            <mo>+</mo> 
+            <mi>b</mi> 
+          </mrow> 
+        </mfenced> 
+      </mstyle> 
+      <mo>=</mo> 
+      <mstyle fontweight='bold'> 
+        <mfenced> 
+          <mfrac> 
+            <mi>&#x003B1;</mi> 
+            <mi>&#x003B2;</mi> 
+          </mfrac> 
+        </mfenced> 
+      </mstyle> 
+      <mo>=</mo> 
+      <mstyle fontfamily='Helvetica'> 
+        <mfenced open='['> 
+          <mrow> 
+            <mi>a</mi> 
+            <mo>+</mo> 
+            <mi>b</mi> 
+          </mrow> 
+        </mfenced> 
+      </mstyle> 
+    </math>

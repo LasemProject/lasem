@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="265" height="265">
+  <defs>
+    <linearGradient id="ridgeGradient" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#A53139;" />
+      <stop offset="45%" style="stop-color:#C55159;" />
+      <stop offset="55%" style="stop-color:#851119;" />
+      <stop offset="100%" style="stop-color:#A53139;" />
+    </linearGradient>    
+  </defs>
+  
+  <rect transform="translate(15, 15) rotate(0)"
+        x="50" y="-15" height="30" width="200" stroke="none" fill="url(#ridgeGradient)"/>
+  <rect transform="translate(15, 15) rotate(10)"
+        x="50" y="-15" height="30" width="200" stroke="none" fill="url(#ridgeGradient)"/>
+  <rect transform="translate(15, 15) rotate(45)"
+        x="50" y="-15" height="30" width="200" stroke="none" fill="url(#ridgeGradient)"/>
+  <rect transform="translate(15, 15) rotate(80)"
+        x="50" y="-15" height="30" width="200" stroke="none" fill="url(#ridgeGradient)"/>
+  <rect transform="translate(15, 15) rotate(90)"
+        x="50" y="-15" height="30" width="200" stroke="none" fill="url(#ridgeGradient)"/>
+</svg>

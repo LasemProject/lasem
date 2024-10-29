@@ -1,0 +1,25 @@
+    <math xmlns="http://www.w3.org/1998/Math/MathML"> 
+      <mrow> 
+        <munder accentunder="true"> 
+          <mrow> 
+            <mi> x </mi> 
+            <mo> + </mo> 
+            <mi> y </mi> 
+            <mo> + </mo> 
+            <mi> z </mi> 
+          </mrow> 
+          <mo stretchy='true'> &#x0FE38; </mo> 
+        </munder> 
+        <mtext> vs </mtext> 
+        <munder accentunder="false"> 
+          <mrow> 
+            <mi> x </mi> 
+            <mo> + </mo> 
+            <mi> y </mi> 
+            <mo> + </mo> 
+            <mi> z </mi> 
+          </mrow> 
+          <mo stretchy='true'> &#x0FE38; </mo> 
+        </munder> 
+      </mrow> 
+    </math>
