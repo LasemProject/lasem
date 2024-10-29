@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <lsm.h>
 #include <lsmmathml.h>
 #include <lsmsvg.h>
@@ -136,6 +137,7 @@ main(int argc, char **argv)
 	double size[2];
 	double offset[2];
 
+	setlocale (LC_ALL, "");
 	bindtextdomain (GETTEXT_PACKAGE, PACKAGE_LOCALE_DIR);
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);

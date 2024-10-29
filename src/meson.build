@@ -287,7 +287,7 @@ pkg.generate (libraries: [lasem_library, libm],
 	      requires: [glib_dep, gobject_dep, gio_dep, cairo_dep, gdk_dep])
 
 render_c_args = [
-	'-DPACKAGE_LOCALE_DIR="@0@"'.format (join_paths (get_option ('prefix'), 'locale')),
+	'-DPACKAGE_LOCALE_DIR="@0@"'.format (get_option ('prefix') / get_option ('localedir')),
 ]
 
 lasem_render = executable ('lasem-render-@0@'.format (lasem_api_version),
