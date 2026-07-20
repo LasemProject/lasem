@@ -276,6 +276,7 @@ lasem_library = library ('lasem-@0@'.format (lasem_api_version),
 			 install: true)
 
 lasem_library_dependencies = declare_dependency (dependencies: lasem_dependencies,
+						 include_directories: [library_inc, itex2mml_inc],
 						 link_with: lasem_library)
 
 pkg.generate (libraries: [lasem_library, libm],
