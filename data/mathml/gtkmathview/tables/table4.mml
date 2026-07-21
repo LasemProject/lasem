@@ -1,0 +1,19 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <!-- example of a table with missing cells -->
+  <mtable rowlines="solid" frame="solid" columnlines="solid">
+    <mtr>
+      <mtd><mi>cell 1,1</mi></mtd>
+      <mtd><mi>cell 1,2</mi></mtd>
+      <mtd><mi>cell 1,3</mi></mtd>
+    </mtr>
+    <mtr>
+      <mtd rowspan="2">
+        <mi>cell 2,1</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd><mi>cell x,y</mi></mtd>
+      <mtd><mi>cell a,b</mi></mtd>
+    </mtr>
+  </mtable>
+</math>

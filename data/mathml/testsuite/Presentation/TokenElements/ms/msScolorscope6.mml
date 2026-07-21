@@ -1,0 +1,13 @@
+    <math> 
+      <mrow> 
+        <ms fontsize='14pt'>boy</ms> 
+        <mo color='black'>+</mo> 
+        <mstyle fontsize='24pt' color='GREEN'> 
+          <ms>girl</ms> 
+          <mo color='red'>+</mo> 
+          <ms color='red'>apple</ms> 
+        </mstyle> 
+        <mo>+</mo> 
+        <ms>fig</ms> 
+      </mrow> 
+    </math>

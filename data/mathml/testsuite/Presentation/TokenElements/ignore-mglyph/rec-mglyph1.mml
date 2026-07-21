@@ -1,0 +1,13 @@
+    <math> 
+      <mi> 
+        <mglyph fontfamily="my-braid-font" index="2" alt="23braid"/> 
+      </mi> 
+      <mspace width="10px"/> 
+      <mn> 
+        <mglyph fontfamily="Curlz MT" index="65" alt="script 'A'"/> 
+      </mn> 
+      <mspace width="10px"/> 
+      <mn> 
+        <mglyph fontfamily="Arial" index="97" alt="lowercase 'a'"/> 
+      </mn> 
+    </math>

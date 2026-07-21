@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12" height="12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+  <defs>
+    <clipPath id="clip0">
+      <rect width="12" height="12"/>
+    </clipPath>
+  </defs>
+  <g id="surface0" clip-path="url(#clip0)">
+    <rect x="0" y="0" width="12" height="12" style="fill: rgb(0%,0%,0%); opacity: 0; stroke: none;"/>
+    <image width="4" height="4" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAABmJLR0QA/wD/AP+gvaeT&#13;&#10;AAAAB3RJTUUH1gIFEA0bZkDiEQAAACVJREFUCJltyrENADAMwzC66P8vO0unoJo4KG0LEnCs&#13;&#10;buSx/2MAHj0FCUVNXyMAAAAASUVORK5CYII=" transform="matrix(2,-0,-0,2,2,2)"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+    <math> 
+      <mi>x</mi> 
+      <mo>+</mo> 
+      <mstyle background='yellow'> 
+        <mpadded lspace='200px'> 
+          <mfrac> 
+            <mn>1</mn> 
+            <mi>&#x0210F;</mi> 
+          </mfrac> 
+          <mo>+</mo> 
+          <mi>y</mi> 
+        </mpadded> 
+      </mstyle> 
+      <mo>+</mo> 
+      <mi>x</mi> 
+    </math>

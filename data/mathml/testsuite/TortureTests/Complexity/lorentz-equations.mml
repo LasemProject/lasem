@@ -1,0 +1,71 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mtable columnalign='right center left' equalcolumns='false'> 
+              <mtr> 
+                <mtd> 
+                  <munderover accent='true'> 
+                    <mi>x</mi> 
+                    <mrow></mrow> 
+                    <mo>&#x002D9;</mo> 
+                  </munderover> 
+                </mtd> 
+                <mtd> 
+                  <mo>=</mo> 
+                </mtd> 
+                <mtd> 
+                  <mrow> 
+                    <mi>&#x003C3;</mi> 
+                    <mo stretchy='false'>(</mo> 
+                    <mi>y</mi> 
+                    <mo>-</mo> 
+                    <mi>x</mi> 
+                    <mo stretchy='false'>)</mo> 
+                  </mrow> 
+                </mtd> 
+              </mtr> 
+              <mtr> 
+                <mtd> 
+                  <munderover accent='true'> 
+                    <mi>y</mi> 
+                    <mrow></mrow> 
+                    <mo>&#x002D9;</mo> 
+                  </munderover> 
+                </mtd> 
+                <mtd> 
+                  <mo>=</mo> 
+                </mtd> 
+                <mtd> 
+                  <mrow> 
+                    <mi>&#x003C1;</mi> 
+                    <mi>x</mi> 
+                    <mo>-</mo> 
+                    <mi>y</mi> 
+                    <mo>-</mo> 
+                    <mi>x</mi> 
+                    <mi>z</mi> 
+                  </mrow> 
+                </mtd> 
+              </mtr> 
+              <mtr> 
+                <mtd> 
+                  <munderover accent='true'> 
+                    <mi>z</mi> 
+                    <mrow></mrow> 
+                    <mo>&#x002D9;</mo> 
+                  </munderover> 
+                </mtd> 
+                <mtd> 
+                  <mo>=</mo> 
+                </mtd> 
+                <mtd> 
+                  <mrow> 
+                    <mo>-</mo> 
+                    <mi>&#x003B2;</mi> 
+                    <mi>z</mi> 
+                    <mo>+</mo> 
+                    <mi>x</mi> 
+                    <mi>y</mi> 
+                  </mrow> 
+                </mtd> 
+              </mtr> 
+            </mtable> 
+	    </math>

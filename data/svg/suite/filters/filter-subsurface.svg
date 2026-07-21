@@ -1,0 +1,20 @@
+<!--
+	Exercise the filter subsurface creation. Subsurface is an image surface, with integer dimension.
+	Pattern matrix should take care to map the subsurface dimension to the actual filter dimension.
+-->
+
+<svg  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="45" height="45">
+  <defs>
+    <filter id="flood" filterUnits="objectBoundingBox" x="0" y="0" width="100%" height="100%">
+      <feFlood flood-color="blue"/>
+    </filter>
+    <g id="square">
+      <rect x="5" y="5" height="9.9" width="9.9" style="stroke:none; fill:none; filter:url(#flood);"/>
+      <path d="M5.5 0 L5.5 5 M0 5.5 L5 5.5 M14.5 15 L14.5 20 M15 14.5 L 20 14.5" stroke-width="1" stroke="black" fill="none" />
+    </g>
+  </defs>
+  <use xlink:href="#square" />
+  <use xlink:href="#square" transform="translate(20.25,0.25)"/>
+  <use xlink:href="#square" transform="translate(0.75,20.75)"/>
+  <use xlink:href="#square" transform="translate(29,29) rotate(45) translate(-10,-10)"/>
+</svg>

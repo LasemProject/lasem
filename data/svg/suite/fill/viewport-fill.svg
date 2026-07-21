@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny"
+     viewport-fill="red" height="100" width="100">
+
+  <desc>
+    Everything here has a red background.
+    The rectangle is not filled, so the red background will show through.
+  </desc>
+
+  <rect x="10.5" y="10.5" width="80" height="80" fill="none" stroke="black"/>
+
+</svg>

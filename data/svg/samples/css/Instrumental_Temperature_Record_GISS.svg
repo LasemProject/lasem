@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="480" height="384" xmlns="http://www.w3.org/2000/svg">
+
+<title>Instrumental Temperature Record</title>
+
+<defs>
+
+  <style type="text/css"><![CDATA[
+
+    .background {
+      fill: #ccc;
+      stroke: none;
+    }
+
+    .frame {
+      fill: white;
+      stroke: black;
+      stroke-width: 0.75;
+    }
+
+    .grid {
+      stroke: #999;
+      stroke-width: 0.5;
+      stroke-dasharray: 0, 0.6667, 0.6667, 0.6667;
+    }
+
+    .title {
+      font-family: Verdana, Tahoma, sans-serif;
+      font-size: 6pt;
+    }
+
+    .legend {
+      font-family: Verdana, Tahoma, sans-serif;
+      font-size: 4pt;
+    }
+
+    .tempLabel {
+      font-family: Verdana, Tahoma, sans-serif;
+      font-size: 4pt;
+      text-anchor: end;
+    }
+
+    .yearLabel {
+      font-family: Verdana, Tahoma, sans-serif;
+      font-size: 4pt;
+      text-anchor: middle;
+    }
+
+    .tempDesc {
+      font-family: Verdana, Tahoma, sans-serif;
+      font-size: 5pt;
+    }
+
+    .tempMarker {
+      fill: blue;
+      stroke: blue;
+    }
+
+    .annualTemp {
+      fill: none;
+      stroke: #333;
+      stroke-width: 0.5;
+      stroke-linecap: butt;
+      stroke-linejoin: bevel;
+      marker: url(#tempMarker);
+    }
+
+    .fiveYearTemp {
+      fill: none;
+      stroke: red;
+      stroke-width: 1.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+  ]]></style>
+
+  <marker id="tempMarker" markerWidth="4" markerHeight="4" refX="2" refY="2">
+    <circle cx="2" cy="2" r="1.5" class="tempMarker"/>
+  </marker>
+
+</defs>
+
+<g transform="scale(3,3) translate(-1880,70) translate(25,4) scale(1,-1)">
+
+  <!-- background -->
+  <rect class="background" x="1855" y="-60" width="200" height="200"/>
+
+  <!-- graph frame -->
+  <rect class="frame" x="1880" y="-44" width="130" height="114"/>
+ 
+  <!-- horizontal grid lines -->
+  <line class="grid" x1="1880" y1="60" x2="2010" y2="60"/>
+  <line class="grid" x1="1880" y1="40" x2="2010" y2="40"/>
+  <line class="grid" x1="1880" y1="20" x2="2010" y2="20"/>
+  <line class="grid" x1="1880" y1="0" x2="2010" y2="0"/>
+  <line class="grid" x1="1880" y1="-20" x2="2010" y2="-20"/>
+  <line class="grid" x1="1880" y1="-40" x2="2010" y2="-40"/>
+
+  <!-- vertical grid lines -->
+  <line class="grid" x1="1900" y1="70" x2="1900" y2="-44"/>
+  <line class="grid" x1="1920" y1="70" x2="1920" y2="-44"/>
+  <line class="grid" x1="1940" y1="70" x2="1940" y2="-44"/>
+  <line class="grid" x1="1960" y1="70" x2="1960" y2="-44"/>
+  <line class="grid" x1="1980" y1="70" x2="1980" y2="-44"/>
+  <line class="grid" x1="2000" y1="70" x2="2000" y2="-44"/>
+
+  <!-- title, legend, and labels -->
+  <polyline class="annualTemp" points="1888 54, 1893 54, 1898 54"/>
+  <polyline class="fiveYearTemp" points="1888 46, 1893 46, 1898 46"/>
+  <g transform="scale(1,-1)">
+    <text class="title" x="1885" y="-62">Global Temperatures</text>
+    <text class="legend" x="1902" y="-52">Annual Average</text>
+    <text class="legend" x="1902" y="-44">Five-Year Average</text>
+    <text class="tempLabel" x="1878" y="-58">0.6</text>
+    <text class="tempLabel" x="1878" y="-38">0.4</text>
+    <text class="tempLabel" x="1878" y="-18">0.2</text>
+    <text class="tempLabel" x="1878" y="2">0.0</text>
+    <text class="tempLabel" x="1878" y="22">–0.2</text>
+    <text class="tempLabel" x="1878" y="42">–0.4</text>
+    <text class="yearLabel" x="1880" y="50">1880</text>
+    <text class="yearLabel" x="1900" y="50">1900</text>
+    <text class="yearLabel" x="1920" y="50">1920</text>
+    <text class="yearLabel" x="1940" y="50">1940</text>
+    <text class="yearLabel" x="1960" y="50">1960</text>
+    <text class="yearLabel" x="1980" y="50">1980</text>
+    <text class="yearLabel" x="2000" y="50">2000</text>
+    <text class="tempDesc" x="1863" y="38" transform="rotate(-90,1863,38)">Temperature Anomaly (°C)</text>
+  </g>
+
+  <!-- annual average temperatures -->
+  <polyline class="annualTemp" points=" 1880 -25, 1881 -20, 1882 -22, 1883 -24, 1884 -30,  1885 -30, 1886 -25, 1887 -35, 1888 -27, 1889 -15,  1890 -37, 1891 -27, 1892 -32, 1893 -31, 1894 -33,  1895 -27, 1896 -16, 1897 -12, 1898 -24, 1899 -17,  1900 -09, 1901 -15, 1902 -27, 1903 -31, 1904 -34,  1905 -24, 1906 -20, 1907 -38, 1908 -34, 1909 -35,  1910 -33, 1911 -33, 1912 -34, 1913 -32, 1914 -15,  1915 -09, 1916 -31, 1917 -40, 1918 -32, 1919 -20,  1920 -19, 1921 -13, 1922 -24, 1923 -20, 1924 -21,  1925 -16, 1926 -01, 1927 -13, 1928 -11, 1929 -25,  1930 -07, 1931 -01, 1932 -06, 1933 -18, 1934 -07,  1935 -11, 1936 -03, 1937  08, 1938  11, 1939  03,  1940  05, 1941  10, 1942  03, 1943  10, 1944  20,  1945  07, 1946 -04, 1947  00, 1948 -04, 1949 -07,  1950 -15, 1951 -04, 1952  03, 1953  11, 1954 -10,  1955 -10, 1956 -17, 1957  07, 1958  08, 1959  06,  1960 -01, 1961  08, 1962  04, 1963  08, 1964 -21,  1965 -11, 1966 -03, 1967  00, 1968 -04, 1969  08,  1970  03, 1971 -10, 1972  00, 1973  14, 1974 -08,  1975 -05, 1976 -16, 1977  13, 1978  01, 1979  09,  1980  18, 1981  26, 1982  05, 1983  26, 1984  09,  1985  05, 1986  13, 1987  26, 1988  31, 1989  20,  1990  38, 1991  35, 1992  13, 1993  14, 1994  23,  1995  38, 1996  29, 1997  40, 1998  56, 1999  32,  2000  33, 2001  48, 2002  56, 2003  55, 2004  49,  2005  63, 2006  54, 2007  57, 2008  43, 2009  57"/>
+
+  <!-- five-year average temperatures -->
+  <polyline class="fiveYearTemp" points="                     1882 -24, 1883 -25, 1884 -26,  1885 -29, 1886 -29, 1887 -26, 1888 -28, 1889 -28,  1890 -27, 1891 -28, 1892 -32, 1893 -30, 1894 -28,  1895 -24, 1896 -22, 1897 -19, 1898 -16, 1899 -15,  1900 -18, 1901 -20, 1902 -23, 1903 -26, 1904 -27,  1905 -29, 1906 -30, 1907 -30, 1908 -32, 1909 -35,  1910 -34, 1911 -33, 1912 -29, 1913 -25, 1914 -24,  1915 -25, 1916 -25, 1917 -26, 1918 -28, 1919 -25,  1920 -22, 1921 -19, 1922 -19, 1923 -19, 1924 -17,  1925 -14, 1926 -13, 1927 -13, 1928 -12, 1929 -11,  1930 -10, 1931 -11, 1932 -08, 1933 -08, 1934 -09,  1935 -06, 1936  00, 1937  02, 1938  05, 1939  08,  1940  07, 1941  06, 1942  10, 1943  10, 1944  07,  1945  07, 1946  04, 1947 -01, 1948 -06, 1949 -06,  1950 -05, 1951 -02, 1952 -03, 1953 -02, 1954 -05,  1955 -04, 1956 -04, 1957 -01, 1958  01, 1959  06,  1960  05, 1961  05, 1962  00, 1963 -02, 1964 -05,  1965 -05, 1966 -08, 1967 -02, 1968  01, 1969 -01,  1970 -01, 1971  03, 1972  00, 1973 -02, 1974 -03,  1975  00, 1976 -03, 1977  00, 1978  05, 1979  13,  1980  12, 1981  17, 1982  17, 1983  14, 1984  11,  1985  16, 1986  17, 1987  19, 1988  26, 1989  30,  1990  27, 1991  24, 1992  25, 1993  25, 1994  23,  1995  29, 1996  37, 1997  39, 1998  38, 1999  42,  2000  45, 2001  45, 2002  48, 2003  54, 2004  55,  2005  55, 2006  53, 2007  55"/>
+
+</g>
+
+</svg>

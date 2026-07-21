@@ -1,0 +1,8 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mi>ciao da luca</mi>
+    <mtable frame="solid" framespacing="2mm 1cm">
+      <mtr> <mtd> <mi>Luca</mi> </mtd> </mtr>
+    </mtable>
+  </mrow>
+</math>

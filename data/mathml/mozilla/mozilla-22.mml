@@ -1,0 +1,69 @@
+<math mode="display" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo stretchy="false">{</mo>
+    <munder>
+      <mrow>
+        <mover>
+          <mrow>
+            <mpadded width="0">
+              <mphantom>
+                <mo>(</mo>
+              </mphantom>
+            </mpadded>
+            <mi>a</mi>
+            <mo>,</mo>
+            <mo>...</mo>
+            <mo>,</mo>
+            <mi>a</mi>
+          </mrow>
+          <mover>
+            <mo>&#x23DE;</mo>
+            <mrow>
+              <mi>k</mi>
+              <mtext></mtext>
+              <mi>a</mi>
+              <mtext>'s</mtext>
+            </mrow>
+          </mover>
+        </mover>
+        <mo>,</mo>
+        <mover>
+          <mrow>
+            <mpadded width="0">
+              <mphantom>
+                <mo>(</mo>
+              </mphantom>
+            </mpadded>
+            <mi>b</mi>
+            <mo>,</mo>
+            <mo>...</mo>
+            <mo>,</mo>
+            <mi>b</mi>
+          </mrow>
+          <mover>
+            <mo>&#x23DE;</mo>
+            <mrow>
+              <mi>&lscr;</mi>
+              <mtext></mtext>
+              <mi>b</mi>
+              <mtext>'s</mtext>
+            </mrow>
+          </mover>
+        </mover>
+      </mrow>
+      <munder>
+
+        <mo>&#x23DF;</mo>
+
+        <mrow>
+          <mi>k</mi>
+          <mo>+</mo>
+          <mi>&lscr;</mi>
+          <mtext>elements</mtext>
+        </mrow>
+      </munder>
+    </munder>
+    <mo stretchy="false">}</mo>
+  </mrow>
+</math>
+

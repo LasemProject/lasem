@@ -1,0 +1,12 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML" xmlns:lasem="lasem.dtd">
+	<mstyle mathsize="20pt">
+		<mfrac>
+			<mstyle displaystyle="false"><lasem:itex>f(x)=\sqrt{\frac{x-1}{x+1}}</lasem:itex></mstyle>
+			<mrow>
+				<mi>a</mi>
+				<mo>+</mo>
+				<mstyle displaystyle="true"><lasem:itex>\int^\infinity_0{x dx}</lasem:itex></mstyle>
+			</mrow>
+		</mfrac>
+	</mstyle>
+</math>

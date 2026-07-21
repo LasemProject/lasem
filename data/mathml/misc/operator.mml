@@ -1,0 +1,13 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+
+    <mrow>
+      <mi>a</mi>
+      <mo lspace="0.2em" rspace="0.2em" form="infix">&PlusMinus;</mo>
+      <mi>b</mi>
+    </mrow>
+
+    <mo form="infix" lspace="0.4em" rspace="0.4em">&leq;</mo>
+    <mi>c</mi>
+  </mrow>
+</math>

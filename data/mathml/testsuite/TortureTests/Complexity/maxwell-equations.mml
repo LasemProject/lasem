@@ -1,0 +1,174 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle displaystyle='true'> 
+              <mrow> 
+                <mo>{</mo> 
+                <mtable columnalign='right center left' equalrows='false' equalcolumns='false'> 
+                  <mtr> 
+                    <mtd> 
+                      <mrow> 
+                        <mo>&#x02207;</mo> 
+                        <mtext>&#x0200B;</mtext> 
+                        <mo>&#x000D7;</mo> 
+                        <munderover accent='true'> 
+                          <mstyle fontweight='bold'> 
+                            <mi>B</mi> 
+                          </mstyle> 
+                          <mrow></mrow> 
+                          <mo stretchy='true'>&#x021BC;</mo> 
+                        </munderover> 
+                        <mo>-</mo> 
+                        <mtext>&#x02009;</mtext> 
+                        <mfrac> 
+                          <mn>1</mn> 
+                          <mi>c</mi> 
+                        </mfrac> 
+                        <mtext>&#x02009;</mtext> 
+                        <mfrac> 
+                          <mrow> 
+                            <mo>&#x02202;</mo> 
+                            <mtext>&#x0200B;</mtext> 
+                            <munderover accent='true'> 
+                              <mstyle fontweight='bold'> 
+                                <mi>E</mi> 
+                              </mstyle> 
+                              <mrow></mrow> 
+                              <mo stretchy='true'>&#x021BC;</mo> 
+                            </munderover> 
+                          </mrow> 
+                          <mrow> 
+                            <mo>&#x02202;</mo> 
+                            <mtext>&#x0200B;</mtext> 
+                            <mi>t</mi> 
+                          </mrow> 
+                        </mfrac> 
+                      </mrow> 
+                    </mtd> 
+                    <mtd> 
+                      <mo>=</mo> 
+                    </mtd> 
+                    <mtd> 
+                      <mrow> 
+                        <mfrac> 
+                          <mrow> 
+                            <mn>4</mn> 
+                            <mi>&#x003C0;</mi> 
+                          </mrow> 
+                          <mi>c</mi> 
+                        </mfrac> 
+                        <mtext>&#x02009;</mtext> 
+                        <munderover accent='true'> 
+                          <mstyle fontweight='bold'> 
+                            <mi>j</mi> 
+                          </mstyle> 
+                          <mrow></mrow> 
+                          <mo stretchy='true'>&#x021BC;</mo> 
+                        </munderover> 
+                      </mrow> 
+                    </mtd> 
+                  </mtr> 
+                  <mtr> 
+                    <mtd> 
+                      <mrow> 
+                        <mo>&#x02207;</mo> 
+                        <mtext>&#x0200B;</mtext> 
+                        <mo>&#x000B7;</mo> 
+                        <munderover accent='true'> 
+                          <mstyle fontweight='bold'> 
+                            <mi>E</mi> 
+                          </mstyle> 
+                          <mrow></mrow> 
+                          <mo stretchy='true'>&#x021BC;</mo> 
+                        </munderover> 
+                      </mrow> 
+                    </mtd> 
+                    <mtd> 
+                      <mo>=</mo> 
+                    </mtd> 
+                    <mtd> 
+                      <mrow> 
+                        <mn>4</mn> 
+                        <mi>&#x003C0;</mi> 
+                        <mi>&#x003C1;</mi> 
+                      </mrow> 
+                    </mtd> 
+                  </mtr> 
+                  <mtr> 
+                    <mtd> 
+                      <mrow> 
+                        <mo>&#x02207;</mo> 
+                        <mtext>&#x0200B;</mtext> 
+                        <mo>&#x000D7;</mo> 
+                        <munderover accent='true'> 
+                          <mstyle fontweight='bold'> 
+                            <mi>E</mi> 
+                          </mstyle> 
+                          <mrow></mrow> 
+                          <mo stretchy='true'>&#x021BC;</mo> 
+                        </munderover> 
+                        <mtext>&#x02009;</mtext> 
+                        <mo>+</mo> 
+                        <mtext>&#x02009;</mtext> 
+                        <mfrac> 
+                          <mn>1</mn> 
+                          <mi>c</mi> 
+                        </mfrac> 
+                        <mtext>&#x02009;</mtext> 
+                        <mfrac> 
+                          <mrow> 
+                            <mo>&#x02202;</mo> 
+                            <mtext>&#x0200B;</mtext> 
+                            <munderover accent='true'> 
+                              <mstyle fontweight='bold'> 
+                                <mi>B</mi> 
+                              </mstyle> 
+                              <mrow></mrow> 
+                              <mo stretchy='true'>&#x021BC;</mo> 
+                            </munderover> 
+                          </mrow> 
+                          <mrow> 
+                            <mo>&#x02202;</mo> 
+                            <mtext>&#x0200B;</mtext> 
+                            <mi>t</mi> 
+                          </mrow> 
+                        </mfrac> 
+                      </mrow> 
+                    </mtd> 
+                    <mtd> 
+                      <mo>=</mo> 
+                    </mtd> 
+                    <mtd> 
+                      <munderover accent='true'> 
+                        <mstyle fontweight='bold'> 
+                          <mn>0</mn> 
+                        </mstyle> 
+                        <mrow></mrow> 
+                        <mo stretchy='true'>&#x021BC;</mo> 
+                      </munderover> 
+                    </mtd> 
+                  </mtr> 
+                  <mtr> 
+                    <mtd> 
+                      <mrow> 
+                        <mo>&#x02207;</mo> 
+                        <mtext>&#x0200B;</mtext> 
+                        <mo>&#x000B7;</mo> 
+                        <munderover accent='true'> 
+                          <mstyle fontweight='bold'> 
+                            <mi>B</mi> 
+                          </mstyle> 
+                          <mrow></mrow> 
+                          <mo stretchy='true'>&#x021BC;</mo> 
+                        </munderover> 
+                      </mrow> 
+                    </mtd> 
+                    <mtd> 
+                      <mo>=</mo> 
+                    </mtd> 
+                    <mtd> 
+                      <mn>0</mn> 
+                    </mtd> 
+                  </mtr> 
+                </mtable> 
+              </mrow> 
+            </mstyle> 
+	    </math>

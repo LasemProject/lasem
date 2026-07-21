@@ -1,0 +1,10 @@
+    <math> 
+      <mrow> 
+        <mtext color='#f05'> Theorem 1: </mtext> 
+        <mtext fontweight='bold'> Now is </mtext> 
+        <mtext fontstyle='italic'> the time 
+        </mtext> 
+        <mtext fontfamily='Helvetica'> for </mtext> 
+        <mtext fontsize='10pt'> MathML </mtext> 
+      </mrow> 
+    </math>

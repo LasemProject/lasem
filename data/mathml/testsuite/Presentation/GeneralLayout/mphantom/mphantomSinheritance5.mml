@@ -1,0 +1,30 @@
+    <math> 
+      <mstyle background='Blue'> 
+        <mi>A</mi> 
+        <mstyle scriptlevel='2'> 
+          <mphantom> 
+            <mi>A</mi> 
+          </mphantom> 
+        </mstyle> 
+        <mi>A</mi> 
+        <mstyle fontweight='bold'> 
+          <mphantom> 
+            <mi>A</mi> 
+            <mo>+</mo> 
+            <mi>A</mi> 
+          </mphantom> 
+          <mi>A</mi> 
+        </mstyle> 
+      </mstyle> 
+      <mi>A</mi> 
+      <mstyle scriptlevel='2'> 
+        <mi>A</mi> 
+      </mstyle> 
+      <mi>A</mi> 
+      <mstyle fontweight='bold'> 
+        <mi>A</mi> 
+        <mo>+</mo> 
+        <mi>A</mi> 
+        <mi>A</mi> 
+      </mstyle> 
+    </math>

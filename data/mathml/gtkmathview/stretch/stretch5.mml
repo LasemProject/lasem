@@ -1,0 +1,19 @@
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <!--
+    <munder>
+      <mo minsize="5">[</mo>
+      <mn>0</mn>
+    </munder>
+    -->
+    <msubsup>
+      <mo minsize="10cm">[</mo>
+      <mn>0</mn>
+      <mrow>
+        <mo>+</mo>
+	<mi>&infin;</mi>
+      </mrow>
+    </msubsup>
+    <mo minsize="5cm">]</mo>
+  </mrow>
+</math>

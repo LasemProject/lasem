@@ -1,0 +1,38 @@
+    <math> 
+      <mrow> 
+        <mover> 
+          <mi>A</mi> 
+          <mi>x</mi> 
+        </mover> 
+        <mover> 
+          <mpadded height='1.5 height'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </mover> 
+        <mover> 
+          <mpadded height='3 width'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </mover> 
+        <mover> 
+          <mpadded height='150% height'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </mover> 
+        <mover> 
+          <mpadded height='1ex'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </mover> 
+        <mover> 
+          <mpadded height='10pt'> 
+            <mi>A</mi> 
+          </mpadded> 
+          <mi>x</mi> 
+        </mover> 
+      </mrow> 
+    </math>

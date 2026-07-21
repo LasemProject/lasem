@@ -1,0 +1,54 @@
+<math mode="display" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mrow>
+      <mo>(</mo>
+      <mfrac>
+        <msup>
+          <mo>&PartialD;</mo>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>&PartialD;</mo>
+          <msup>
+            <mi>x</mi>
+            <mn>2</mn>
+          </msup>
+        </mrow>
+      </mfrac>
+      <mo>+</mo>
+
+      <mfrac>
+        <msup>
+          <mo>&PartialD;</mo>
+          <mn>2</mn>
+        </msup>
+        <mrow>
+          <mo>&PartialD;</mo>
+          <msup>
+            <mi>y</mi>
+            <mn>2</mn>
+          </msup>
+        </mrow>
+      </mfrac>
+
+      <mo>)</mo>
+    </mrow>
+    <msup>
+      <mrow>
+        <mo minsize="1.5">|</mo>
+        <mi>&varphi;</mi>
+        <mo stretchy="false">(</mo>
+        <mi>x</mi>
+        <mo>+</mo>
+        <mi fontstyle="normal">i</mi>
+        <mi>y</mi>
+        <mo stretchy="false">)</mo>
+        <mo minsize="1.5">|</mo>
+      </mrow>
+      <mn>2</mn>
+    </msup>
+    <mo>=</mo>
+    <mn>0</mn>
+  </mrow>
+</math>
+

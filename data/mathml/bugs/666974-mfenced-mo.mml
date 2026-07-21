@@ -1,0 +1,24 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable>
+    <mtr>
+      <mtd>
+	<mfrac><mn>1</mn><mn>2</mn></mfrac>
+	<mi>f</mi>
+	<mfenced>
+	  <mi>x</mi>
+	</mfenced>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd>
+	<mfrac><mn>1</mn><mn>2</mn></mfrac>
+	<mi>f</mi>
+	<mrow>
+	  <mo>(</mo>
+	  <mi>x</mi>
+	  <mo>)</mo>
+	</mrow>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>

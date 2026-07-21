@@ -1,0 +1,12 @@
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right">
+    <mtr>
+      <mtd>
+        <mtext>
+          Quest' e' un esempio di testo dentro una cella che ha l'allineamento a destra. Il testo quindi
+          risulta allineato anch'esso a destra, non solo il blocco nel complesso, ma le singole righe.
+        </mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math>

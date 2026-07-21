@@ -1,0 +1,66 @@
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo symmetric="false">(</mo>
+    <mfrac>
+      <mrow>
+        <mo symmetric="false">(</mo>
+        <mi mathsize="big">X</mi>
+        <mfrac>
+          <mi>top</mi>
+          <mi>bottom</mi>
+        </mfrac>
+        <mo symmetric="false">)</mo>
+        <mo symmetric="false">(</mo>
+        <mi mathsize="big">X</mi>
+        <mfrac>
+          <mrow>
+            <mo symmetric="false">(</mo>
+            <mi mathsize="big">X</mi>
+            <mfrac>
+              <mrow>
+                <mo symmetric="false">(</mo>
+                <mi>X</mi>
+                <mfrac>
+                  <mrow>
+                    <mo symmetric="false">(</mo>
+                    <mi mathsize="big">X</mi>
+                    <mfrac>
+                      <mi>top</mi>
+                      <mrow>
+                        <mo symmetric="false">(</mo>
+                        <mi mathsize="big">X</mi>
+                        <mfrac>
+                          <mi>top</mi>
+                          <mi>bottom</mi>
+                        </mfrac>
+                        <mo symmetric="false">)</mo>
+                      </mrow>
+                    </mfrac>
+                    <mo symmetric="false">)</mo>
+                  </mrow>
+                  <mi>bottom</mi>
+                </mfrac>
+                <mo symmetric="false">)</mo>
+              </mrow>
+              <mi>bottom</mi>
+            </mfrac>
+            <mo symmetric="false">)</mo>
+          </mrow>
+          <mi>bottom</mi>
+        </mfrac>
+        <mo symmetric="false">)</mo>
+      </mrow>
+      <mrow>
+        <mfrac>
+          <mrow>
+            <mo symmetric="false">(</mo>
+            <mi>Numerator</mi>
+            <mo symmetric="false">)</mo>
+          </mrow>
+          <mi>Denominator</mi>
+        </mfrac>
+      </mrow>
+    </mfrac>
+    <mo symmetric="false">)</mo>
+  </mrow>
+</math>

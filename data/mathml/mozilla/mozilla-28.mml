@@ -1,0 +1,14 @@
+<math mode="display" xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+
+    <mi>y</mi>
+
+    <mn>3</mn>
+    <mrow>
+      <mo>&prime;</mo>
+      <mo>&prime;</mo>
+      <mo>&prime;</mo>
+    </mrow>
+  </msubsup>
+</math>
+
